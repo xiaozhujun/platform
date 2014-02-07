@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.address.mapper.AddressMapper">
+    <sql id="address_fields">
+		ID,PROVINCE,CITY,PARENT,LEVEL
+	</sql>
+
+    <resultMap id="addressResultMap" type="Address">
+        <id property="id" column="ID" />
+        <result property="province" column="PROVINCE" />
+        <result property="city" column="CITY" />
+        <result property="area" column="AREA" />
+        <result property="parent" column="PARENT" />
+        <result property="level" column="LEVEL" />
+    </resultMap>
+
+    <insert id="insert" parameterType="Address" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        address(
+        <include refid="address_fields" />
+        )
+        VALUES (#{id}, #{name}, #{password);
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM address
+        <where>
+            <if test="province != null">PROVINCE=#{province}</if>
+            <if test="city != null">CITY=#{city}</if>
+            <if test="area != null">AREA=#{area}</if>
+        </where>
+    </select>
+
+
+    <update id="update" parameterType="Address">
+        UPDATE address
+        <set>
+            <if test="province != null">PROVINCE=#{province},</if>
+            <if test="city != null">CITY=#{city},</if>
+            <if test="area != null">AREA=#{area}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <update id="delete" parameterType="Address">
+        DELETE FROM address
+        WHERE
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </update>
+
+    <select id="get" parameterType="Address" resultMap="addressResultMap">
+        SELECT
+        <include refid="address_fields" />
+        FROM address WHERE ID=#{id};
+    </select>
+
+    <select id="findById" parameterType="java.lang.String" resultMap="addressResultMap">
+        SELECT
+        <include refid="address_fields" />
+        FROM address where ID=#{id}
+    </select>
+</mapper>

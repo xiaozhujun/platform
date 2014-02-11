@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans  xmlns="http://www.springframework.org/schema/security"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- 以下文件不检查权限 -->
+    <http pattern="/resource/*" security="none"/>
+    <http pattern="/rs/user/login" security="none"/>
+    <http auto-config="true">
+        <!-- 访问权限 -->
+        <intercept-url pattern="/rs/**" access="ROLE_USER"/>
+        <intercept-url pattern="/user.html" access="ROLE_USER"/>
+        <intercept-url pattern="/admin.html" access="ROLE_ADMIN"/>
+        <!--<form-login login-page="/j_spring_security_login"/>-->
+        <logout invalidate-session="true" logout-success-url="/" logout-url="/logout"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="user" password="user" authorities="ROLE_USER" />
+                <user name="admin" password="admin" authorities="ROLE_ADMIN" />
+                <user name="xiaozhujun" password="xiaozhujun" authorities="ROLE_USER,ROLE_ADMIN" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

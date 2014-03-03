@@ -49,4 +49,25 @@ public class AddressServiceWeb {
         // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
         return JsonResultUtils.getObjectResultByStringAsDefault(address,JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("findByArea/{area}")
+    @GET
+    public String findByArea(@PathParam("area") String area){
+        if (area == null) {
+            return JsonResultUtils
+                    .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+        Address address;
+        try {
+            address = addressService.findByArea(area);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+        // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
+        return JsonResultUtils.getObjectResultByStringAsDefault(address,JsonResultUtils.Code.SUCCESS);
+    }
 }

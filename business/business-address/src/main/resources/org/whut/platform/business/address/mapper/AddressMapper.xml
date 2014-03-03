@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.address.mapper.AddressMapper">
     <sql id="address_fields">
-		ID,PROVINCE,CITY,PARENT,LEVEL
+		ID,PROVINCE,CITY,AREA
 	</sql>
 
     <resultMap id="addressResultMap" type="Address">
@@ -12,8 +12,6 @@
         <result property="province" column="PROVINCE" />
         <result property="city" column="CITY" />
         <result property="area" column="AREA" />
-        <result property="parent" column="PARENT" />
-        <result property="level" column="LEVEL" />
     </resultMap>
 
     <insert id="insert" parameterType="Address" keyProperty="id"
@@ -68,5 +66,11 @@
         SELECT
         <include refid="address_fields" />
         FROM address where ID=#{id}
+    </select>
+
+    <select id="findByArea" parameterType="java.lang.String" resultMap="addressResultMap">
+        SELECT
+        <include refid="address_fields" />
+        FROM address where area=#{area}
     </select>
 </mapper>

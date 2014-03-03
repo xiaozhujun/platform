@@ -19,4 +19,12 @@ public class AddressService {
     public Address findById(long id){
         return mapper.findById(id);
     }
+
+    public Address findByArea(String area){
+        if(area==null || area.trim().equals("")){
+            return null;
+        }
+        return mapper.findByArea(area);
+    }
+
 }

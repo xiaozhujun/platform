@@ -12,8 +12,6 @@ public class Address {
     private String province;
     private String city;
     private String area;
-    private long parent;
-    private int level;
 
     public long getId() {
         return id;
@@ -45,21 +43,5 @@ public class Address {
 
     public void setArea(String area) {
         this.area = area;
-    }
-
-    public long getParent() {
-        return parent;
-    }
-
-    public void setParent(long parent) {
-        this.parent = parent;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 }

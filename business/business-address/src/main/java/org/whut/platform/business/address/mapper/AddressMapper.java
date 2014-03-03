@@ -12,4 +12,6 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  */
 public interface AddressMapper extends AbstractMapper {
     public Address findById(long id);
+    public Address findByArea(String area);
+
 }

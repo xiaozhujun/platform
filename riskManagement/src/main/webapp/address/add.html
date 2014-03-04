@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加地址</title>
+    <link rel="stylesheet" type="text/css" href="../css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/adress.css">
+    <link rel="stylesheet" type="text/css" href="../css/themes/base/jquery.ui.all.css">
+    <script src="../js/jquery-1.10.2.js"></script>
+    <script src="../js/ui/jquery.ui.core.js"></script>
+    <script src="../js/ui/jquery.ui.widget.js"></script>
+    <script src="../js/ui/jquery.ui.button.js"></script>
+    <script src="../js/ui/jquery.ui.position.js"></script>
+    <script src="../js/ui/jquery.ui.menu.js"></script>
+    <script src="../js/ui/jquery.ui.autocomplete.js"></script>
+    <script src="../js/ui/jquery.ui.tooltip.js"></script>
+
+    <style>
+        .custom-combobox {
+            position: relative;
+            display: inline-block;
+        }
+        .custom-combobox-toggle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin-left: -1px;
+            padding: 0;
+            /* support: IE7 */
+            *height: 1.7em;
+            *top: 0.1em;
+        }
+        .custom-combobox-input {
+            margin: 0;
+            padding: 0.3em;
+        }
+    </style>
+
+    <script>
+
+        (function( $ ) {
+            $.widget( "custom.combobox", {
+                _create: function() {
+                    this.wrapper = $( "<span>" )
+                            .addClass( "custom-combobox" )
+                            .insertAfter( this.element );
+
+                    this.element.hide();
+                    this._createAutocomplete();
+                    this._createShowAllButton();
+                },
+
+                _createAutocomplete: function() {
+                    var selected = this.element.children( ":selected" ),
+                            value = selected.val() ? selected.text() : "";
+                    this.input = $( "<input id='provinceInput'>" )
+                            .appendTo( this.wrapper )
+                            .val( value )
+                            .attr( "title", "" )
+                            .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+                            .autocomplete({
+                                delay: 0,
+                                minLength: 0,
+                                source: $.proxy( this, "_source" )
+                            })
+                            .tooltip({
+                                tooltipClass: "ui-state-highlight"
+                            }).change(function(){
+
+                            });
+
+                    this._on( this.input, {
+                        autocompleteselect: function( event, ui ) {
+                            ui.item.option.selected = true;
+                            this._trigger( "select", event, {
+                                item: ui.item.option
+                            });
+                            $("#provinceInput").change();
+                        },
+
+                        autocompletechange: "_removeIfInvalid"
+                    });
+                },
+
+                _createShowAllButton: function() {
+                    var input = this.input,
+                            wasOpen = false;
+
+                    $( "<a>" )
+                            .attr( "tabIndex", -1 )
+                            .attr( "title", "Show All Items" )
+                            .tooltip()
+                            .appendTo( this.wrapper )
+                            .button({
+                                icons: {
+                                    primary: "ui-icon-triangle-1-s"
+                                },
+                                text: false
+                            })
+                            .removeClass( "ui-corner-all" )
+                            .addClass( "custom-combobox-toggle ui-corner-right" )
+                            .mousedown(function() {
+                                wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+                            })
+                            .click(function() {
+                                input.focus();
+
+                                // Close if already visible
+                                if ( wasOpen ) {
+                                    return;
+                                }
+
+                                // Pass empty string as value to search for, displaying all results
+                                input.autocomplete( "search", "" );
+                            });
+                },
+
+                _source: function( request, response ) {
+                    var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+                    response( this.element.children( "option" ).map(function() {
+                        var text = $( this ).text();
+                        if ( this.value && ( !request.term || matcher.test(text) ) )
+                            return {
+                                label: text,
+                                value: text,
+                                option: this
+                            };
+                    }) );
+                },
+
+                _removeIfInvalid: function( event, ui ) {
+
+                    // Selected an item, nothing to do
+                    if ( ui.item ) {
+                        return;
+                    }
+
+                    // Search for a match (case-insensitive)
+                    var value = this.input.val(),
+                            valueLowerCase = value.toLowerCase(),
+                            valid = false;
+                    this.element.children( "option" ).each(function() {
+                        if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+                            this.selected = valid = true;
+                            return false;
+                        }
+                    });
+
+                    // Found a match, nothing to do
+                    if ( valid ) {
+                        return;
+                    }
+
+                    // Remove invalid value
+                    this.input
+                            .val( "" )
+                            .attr( "title", value + " didn't match any item" )
+                            .tooltip( "open" );
+                    this.element.val( "" );
+                    this._delay(function() {
+                        this.input.tooltip( "close" ).attr( "title", "" );
+                    }, 2500 );
+                    this.input.data( "ui-autocomplete" ).term = "";
+                },
+
+                _destroy: function() {
+                    this.wrapper.remove();
+                    this.element.show();
+                }
+            });
+        })( jQuery );
+
+        $(function(){
+            $("#dashbord").click(function(){
+                $("#dashbordMenu").toggle();
+            });
+
+            $("#dashbordMenu").mouseleave(function(){
+                $("#dashbordMenu").hide();
+            });
+            $( "#combobox" ).combobox();
+            $( "#toggle" ).click(function() {
+                $( "#combobox" ).toggle();
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+
+<div class="fullMainContainer">
+    <div class="borderContainer">
+        <ul>
+            <li id="logo"></li>
+            <li id="title">起重机械风险管理平台</li>
+            <li id="dashbord" class="button">控制台</li>
+        </ul>
+    </div>
+    <div id="dashbordMenu" class="borderContainer hidden">
+        <ul>
+            <li>地址管理</li>
+            <li>权限管理</li>
+        </ul>
+    </div>
+    <div id="addressAddContainer">
+         <ul>
+             <li>
+                 <select id="combobox">
+                     <option value="请选择省份..." selected="selected">请选择省份...</option>
+                     <option value="北京市">北京市</option>
+                     <option value="天津市">天津市</option>
+                     <option value="上海市">上海市</option>
+                     <option value="重庆市">重庆市</option>
+                     <option value="河北省">河北省</option>
+                     <option value="山西省">山西省</option>
+                     <option value="辽宁省">辽宁省</option>
+                     <option value="吉林省">吉林省</option>
+                     <option value="黑龙江省">黑龙江省</option>
+                     <option value="江苏省">江苏省</option>
+                     <option value="浙江省">浙江省</option>
+                     <option value="安徽省">安徽省</option>
+                     <option value="福建省">福建省</option>
+                     <option value="江西省">江西省</option>
+                     <option value="山东省">山东省</option>
+                     <option value="河南省">河南省</option>
+                     <option value="湖北省">湖北省</option>
+                     <option value="湖南省">湖南省</option>
+                     <option value="广东省">广东省</option>
+                     <option value="海南省">海南省</option>
+                     <option value="四川省">四川省</option>
+                     <option value="贵州省">贵州省</option>
+                     <option value="云南省">云南省</option>
+                     <option value="陕西省">陕西省</option>
+                     <option value="甘肃省">甘肃省</option>
+                     <option value="青海省">青海省</option>
+                     <option value="广西">广西</option>
+                     <option value="内蒙古">内蒙古</option>
+                     <option value="宁夏">宁夏</option>
+                     <option value="新疆">新疆</option>
+                 </select>
+             </li>
+             <li></li>
+             <li></li>
+         </ul>
+    </div>
+</div>
+</body>
+</html>

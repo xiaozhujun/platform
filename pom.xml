@@ -25,9 +25,17 @@
         <slf4j.version>1.7.1</slf4j.version>
         <logback.version>1.0.7</logback.version>
         <commons.io.version>2.4</commons.io.version>
+        <commons.lang3.version>3.1</commons.lang3.version>
         <commons.pool.version>1.6</commons.pool.version>
         <commons.dbcp.version>1.4</commons.dbcp.version>
         <mysql.connector.version>5.1.18</mysql.connector.version>
+        <jxl.version>2.6</jxl.version>
+        <servlet.api.version>2.5</servlet.api.version>
+        <jodatime.version>2.1</jodatime.version>
+        <commons.fileupload.version>1.2.2</commons.fileupload.version>
+        <commons.codec.version>1.7</commons.codec.version>
+        <google.guava.version>13.0.1</google.guava.version>
+        <commons.compress.version>1.4.1</commons.compress.version>
     </properties>
 
     <dependencyManagement>
@@ -159,6 +167,17 @@
             </dependency>
 
             <dependency>
+                <groupId>net.sourceforge.jexcelapi</groupId>
+                <artifactId>jxl</artifactId>
+                <version>${jxl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>commons-pool</groupId>
                 <artifactId>commons-pool</artifactId>
                 <version>${commons.pool.version}</version>
@@ -186,6 +205,43 @@
                 <artifactId>spring-security-config</artifactId>
                 <version>${spring.security.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${jodatime.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons.fileupload.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${google.guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${commons.compress.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

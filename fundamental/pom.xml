@@ -17,6 +17,9 @@
         <module>fundamental-datasource</module>
         <module>fundamental-orm</module>
         <module>fundamental-util</module>
+        <module>fundamental-jxl</module>
+        <module>fundamental-fileupload</module>
+        <module>fundamental-exception</module>
     </modules>
 
 

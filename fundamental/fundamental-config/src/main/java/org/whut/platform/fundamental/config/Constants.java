@@ -1,4 +1,4 @@
-package platform.fundamental.config;
+package org.whut.platform.fundamental.config;
 
 public final class Constants {
 

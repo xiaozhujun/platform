@@ -1,4 +1,4 @@
-package platform.fundamental.config;
+package org.whut.platform.fundamental.config;
 
 import java.util.Properties;
 

@@ -1,4 +1,4 @@
-package platform.fundamental.config;
+package org.whut.platform.fundamental.config;
 
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.apache.commons.io.IOUtils;

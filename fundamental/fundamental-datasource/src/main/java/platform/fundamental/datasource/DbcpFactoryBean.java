@@ -1,6 +1,6 @@
 package platform.fundamental.datasource;
 
-import platform.fundamental.config.FundamentalConfigProvider;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.DisposableBean;

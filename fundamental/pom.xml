@@ -20,6 +20,8 @@
         <module>fundamental-jxl</module>
         <module>fundamental-fileupload</module>
         <module>fundamental-exception</module>
+        <module>fundamental-mongoConnector</module>
+        <module>fundamental-redisConnector</module>
     </modules>
 
 

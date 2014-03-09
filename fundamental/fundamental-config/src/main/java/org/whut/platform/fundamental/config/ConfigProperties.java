@@ -2,6 +2,7 @@ package org.whut.platform.fundamental.config;
 
 import java.util.Properties;
 
+
 public class ConfigProperties {
     private static Properties properties;
 

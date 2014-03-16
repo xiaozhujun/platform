@@ -21,7 +21,14 @@ public class UserService {
          userMapper.add(user);
     }
 
-    public List<User> findByName(String name){
-        return userMapper.findByName(name);
+    public User findByName(String name){
+        if(name==null || name.trim().equals("")){
+            return null;
+        }
+        List<User> list = userMapper.findByName(name);
+        if(list.size()>=1){
+            return list.get(0);
+        }
+        return null;
     }
 }

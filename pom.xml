@@ -36,6 +36,8 @@
         <commons.codec.version>1.7</commons.codec.version>
         <google.guava.version>13.0.1</google.guava.version>
         <commons.compress.version>1.4.1</commons.compress.version>
+        <mongo.driver.version>2.11.3</mongo.driver.version>
+        <jedis.version>2.1.0</jedis.version>
     </properties>
 
     <dependencyManagement>
@@ -240,6 +242,18 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${commons.compress.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongo-java-driver</artifactId>
+                <version>${mongo.driver.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
             </dependency>
 
         </dependencies>

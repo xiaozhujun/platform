@@ -60,9 +60,9 @@ public class UserServiceWeb {
             return JsonResultUtils
                     .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        List<User> userList;
+       User user;
         try {
-            userList = userService.findByName(name);
+            user = userService.findByName(name);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -70,6 +70,6 @@ public class UserServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
         // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
-        return JsonResultUtils.getObjectResultByStringAsDefault(userList,JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getObjectResultByStringAsDefault(user,JsonResultUtils.Code.SUCCESS);
     }
 }

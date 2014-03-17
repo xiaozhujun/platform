@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.user.mapper.UserAuthorityMapper">
+    <sql id="user_authority_fields">
+		ID,USERID,AUTHORITYID,USERNAME,AUTHORITYNAME
+	</sql>
+
+    <resultMap id="userAuthorityResultMap" type="UserAuthority">
+        <id property="id" column="ID" />
+        <result property="userId" column="USERID" />
+        <result property="authorityId" column="AUTHORITYID" />
+        <result property="userName" column="USERNAME" />
+        <result property="authorityName" column="AUTHORITYNAME" />
+    </resultMap>
+
+    <insert id="insert" parameterType="UserAuthority" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        user(
+        <include refid="user_authority_fields" />
+        )
+        VALUES (#{id}, #{userId}, #{authorityId},#{userName},#{authorityName});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="UserAUTHORITY">
+        UPDATE user_authority
+        <set>
+            <if test="id != null">ID=#{id},</if>
+            <if test="userId != null">USERID=#{userId},</if>
+            <if test="authorityId != null">AUTHORITYID=#{authorityId}</if>
+            <if test="userName != null">USERNAME=#{userName},</if>
+            <if test="authorityName != null">AUTHORITYNAME=#{authorityName}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <update id="delete" parameterType="UserAUTHORITY">
+        DELETE FROM user_authority
+        WHERE
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </update>
+
+    <select id="get" parameterType="UserAUTHORITY" resultMap="userAuthorityResultMap">
+        SELECT
+        <include refid="user_authority_fields" />
+        FROM user_authority WHERE ID=#{id};
+    </select>
+
+    <select id="findByUserName" parameterType="java.lang.String" resultMap="userAuthorityResultMap">
+        SELECT
+        <include refid="user_authority_fields" />
+        FROM user_authority where userName=#{userName}
+    </select>
+</mapper>

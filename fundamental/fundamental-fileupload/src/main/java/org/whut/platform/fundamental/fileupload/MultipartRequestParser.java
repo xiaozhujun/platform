@@ -10,7 +10,7 @@ import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import java.io.*;
 import java.util.List;
 import java.util.Locale;
 
@@ -88,7 +88,44 @@ public class MultipartRequestParser {
 		}
 		return result;
 	}
+    /*
+      新加入的 zhuzhenhua
+     */
+    public FileInfo parseRequest(HttpServletRequest request,int maxSize, FileService fileService)
+            throws Exception {
 
+        long byteMaxSize = MEGA_SIZE * MEGA_SIZE * maxSize;
+
+        FileInfo fileInfo=null;
+
+        if (!ServletFileUpload.isMultipartContent(request)) {
+            LOGGER.debug("upload request is not multipart.");
+            return fileInfo;
+        }
+
+        List<FileItem> items = this.parseRequest(request);
+
+        if (items == null) {
+            LOGGER.debug("after parse, there is no FileItem, just return.");
+            return fileInfo;
+        }
+        for (FileItem item : items) {
+            String fileItemName = item.getName();
+            if (!item.isFormField() && StringUtils.isNotBlank(fileItemName)) {
+                String fileName = FileUtil.getFileFullName(fileItemName);
+
+                this.fileValidate(fileService, fileName, item.getSize(),
+                        byteMaxSize);
+                InputStream inputStream=item.getInputStream();
+                fileInfo=new FileInfo();
+                fileInfo.setInputStream(inputStream);
+                fileInfo.setName(fileName);
+            } else {
+
+            }
+        }
+        return fileInfo;
+    }
 	private String parseFilePath(String destFileAbsolutePath,
 			String dealedRootPath) {
 		return StringUtils.substringAfter(destFileAbsolutePath, dealedRootPath);

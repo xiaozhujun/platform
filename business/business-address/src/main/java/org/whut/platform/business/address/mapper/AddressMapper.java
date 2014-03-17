@@ -1,7 +1,10 @@
 package org.whut.platform.business.address.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,5 +16,6 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 public interface AddressMapper extends AbstractMapper {
     public Address findById(long id);
     public Address findByArea(String area);
+    public Long findIdByArea(@Param("province") String province,@Param("city")String city,@Param("area")String area);
 
 }

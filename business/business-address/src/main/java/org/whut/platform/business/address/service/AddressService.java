@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.mapper.AddressMapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
@@ -25,6 +27,12 @@ public class AddressService {
             return null;
         }
         return mapper.findByArea(area);
+    }
+    public Long findIdByArea(String province,String city,String area){
+          if(province==null||province.trim().equals("")||city==null||city.trim().equals("")||area==null||area.trim().equals("")){
+              return null;
+          }
+        return mapper.findIdByArea(province,city,area);
     }
 
 }

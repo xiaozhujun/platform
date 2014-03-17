@@ -1,5 +1,4 @@
 package org.whut.platform.fundamental.jxl.utils;
-
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -11,12 +10,14 @@ import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,6 +86,58 @@ public final class JxlExportImportUtils {
 		em.setContents(listContent);
 		return em;
 	}
+    /*
+      通过字节流解析Excel
+     */
+    public static ExcelMap analysisExcel(InputStream inputStream) {
+       /* JXL_LOGGER.debug("file.exists is " + inputStream.);*/
+        Workbook wb = null;
+        try {
+            // 构造Workbook（工作薄）对象
+            wb = Workbook.getWorkbook(inputStream);
+        } catch (BiffException e) {
+            JXL_LOGGER.debug("Get workbook throw BiffException:{}", e);
+        } catch (IOException e) {
+            JXL_LOGGER.debug("Get workbook throw IOException:{}", e);
+        }
+        if (wb == null) {
+            return null;
+        }
+        Sheet sheet = wb.getSheet(0);
+        // 得到当前工作表的行数
+        int rowNum = sheet.getRows();
+        List<String> listTitle = new ArrayList<String>();
+        List<List<String>> listContent = new ArrayList<List<String>>();
+        // 循环每行
+        for (int j = 0; j < rowNum; j++) {
+            // 每行开始时，新建一个list，用来存放从第2行开始的每行数据
+            List<String> listRow = new ArrayList<String>();
+            // 得到当前行的所有单元格
+            Cell[] cells = sheet.getRow(j);
+            if (cells != null && cells.length > 0) {
+                // 对每个单元格进行循环
+                for (int k = 0; k < cells.length; k++) {
+                    // 读取当前单元格的值
+                    String cellValue = cells[k].getContents();
+                    if (j == 0) {
+                        listTitle.add(cellValue);
+                    } else {
+                        listRow.add(cellValue);
+                    }
+                }
+            }
+            if (listRow.size() != 0) {
+                listContent.add(listRow);
+            }
+
+        }
+        // 最后关闭资源，释放内存
+        wb.close();
+        ExcelMap em = new ExcelMap();
+        em.setHeads(listTitle);
+        em.setContents(listContent);
+        return em;
+    }
 
 	/**
 	 * 根据标题确定及顺序确定的list列表生成excel表格返回
@@ -105,6 +158,7 @@ public final class JxlExportImportUtils {
 		WritableWorkbook wwb = null;
 		// 指定文件生成的路径，可用"testCreate.xls"将文件生成在当前项目的要路径下
 		String filePath = createFilePath();
+        System.out.print(filePath+"000009");
 		File file = new File(filePath);
 		try {
 			// 首先要使用Workbook类的工厂方法创建一个可写入的工作薄(Workbook)对象
@@ -131,6 +185,52 @@ public final class JxlExportImportUtils {
 		}
 		return file;
 	}
+    /**
+     * 根据标题确定及顺序确定的list列表生成excel表格返回
+     *
+     * @param listTitles
+     * @return
+     * 新加入的 2014/3/17 zhuzhenhua
+     */
+    public static File createExcel(List<String> listTitles,
+                                   List<List<String>> listContents,String fileName) {
+        // 将标题行与内容行合到同一个list中
+        List<List<String>> list = new ArrayList<List<String>>();
+        list.add(listTitles);
+        if (listContents != null && listContents.size() > 0) {
+            for (List<String> l : listContents) {
+                list.add(l);
+            }
+        }
+        WritableWorkbook wwb = null;
+        // 指定文件生成的路径，可用"testCreate.xls"将文件生成在当前项目的要路径下
+        String filePath = createFilePath(fileName);
+        File file = new File(filePath);
+        try {
+            // 首先要使用Workbook类的工厂方法创建一个可写入的工作薄(Workbook)对象
+            wwb = Workbook.createWorkbook(file);
+            if (wwb != null) {
+                // 创建一个可写入的工作表
+                // Workbook的createSheet方法有两个参数，第一个是工作表的名称，第二个是工作表在工作薄中的位置
+                WritableSheet ws = wwb.createSheet("sheet1", 0);
+                int rowSize = list.size();
+                int columnSize = list.get(0).size();
+                writeData(ws, list, rowSize, columnSize);
+                // 从内存中写入文件中
+                wwb.write();
+                // 关闭资源，释放内存
+                wwb.close();
+            }
+        } catch (IOException e) {
+            JXL_LOGGER.debug("create work book throw io exception:{}", e);
+        } catch (RowsExceededException e) {
+            JXL_LOGGER.debug("write excel row throw RowsExceededException:{}",
+                    e);
+        } catch (WriteException e) {
+            JXL_LOGGER.debug("write excel throw WriteException:{}", e);
+        }
+        return file;
+    }
 
 	private static void writeData(WritableSheet ws, List<List<String>> list,
 			int rowSize, int columnSize) throws WriteException {
@@ -219,14 +319,36 @@ public final class JxlExportImportUtils {
 	 * @return
 	 */
 	private static String createFilePath() {
-		String dirName = "c:/template";
+		String dirName = FundamentalConfigProvider.get("tempDir");
+       /* String dirName="c:/template";*/
 		FileCreator.createDir(dirName);
 		String prefix = "temp";
 		String suffix = ".xls";
 		return FileCreator.createTempFile(prefix, suffix, dirName);
 	}
-
-	/**
+    /*
+       新加入的 2014/3/17 zhuzhenhua
+     */
+    private static String createFilePath(String fileName) {
+        String dirName = FundamentalConfigProvider.get("tempDir");
+       /* String dirName="c:/template";*/
+        FileCreator.createDir(dirName);
+        String prefix = SeparateFileFullNameToGetFileName(fileName)+"_Error";
+        String suffix = "."+SeparateFileFullNameToGetFileSuffix(fileName);
+        return FileCreator.createTempFile(prefix, suffix, dirName);
+    }
+    /*
+      zhuzhenhua 2014/3/17
+     */
+    public static String SeparateFileFullNameToGetFileName(String fileFullName){
+        String[] str=fileFullName.split("\\.");
+        return str[0];
+    }
+    public static String SeparateFileFullNameToGetFileSuffix(String fileFullName){
+        String[] str=fileFullName.split("\\.");
+        return str[1];
+    }
+    /**
 	 * 不存储于硬盘上，直接在内存中返回数据给用户，在前台自己构造excel
 	 * 
 	 * @param listTitles

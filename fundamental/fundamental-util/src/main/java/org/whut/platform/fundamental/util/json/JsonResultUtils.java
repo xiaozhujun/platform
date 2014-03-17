@@ -28,7 +28,6 @@ public final class JsonResultUtils {
         }
 
     }
-
     private JsonResultUtils() {
         throw new Error("Utility classes should not instantiated!");
     }

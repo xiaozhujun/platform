@@ -1,10 +1,14 @@
 package org.whut.platform.fundamental.fileupload;
 
+import java.io.InputStream;
+
 public class FileInfo {
 	
 	private String name;
 	
 	private String path;
+
+    private InputStream inputStream;
 
 	public FileInfo() {
 
@@ -30,4 +34,12 @@ public class FileInfo {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 }

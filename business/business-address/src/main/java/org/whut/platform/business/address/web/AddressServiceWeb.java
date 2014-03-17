@@ -12,6 +12,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,4 +72,16 @@ public class AddressServiceWeb {
         // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
         return JsonResultUtils.getObjectResultByStringAsDefault(address,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("findByArea/{province},{city},{area}")
+    @GET
+    public String findIdByArea(@PathParam("province") String province,@PathParam("city") String city,@PathParam("area") String area){
+        if (area == null) {
+            return JsonResultUtils
+                    .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+        Long addressId=addressService.findIdByArea(province,city,area);
+        System.out.print(addressId+"......");
+        return JsonResultUtils
+                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);    }
 }

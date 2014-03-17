@@ -48,6 +48,5 @@
         <property name="basePackage"
                   value="org.whut.platform.business" />
     </bean>
-
     <import resource="security-applicationContext.xml"/>
 </beans>

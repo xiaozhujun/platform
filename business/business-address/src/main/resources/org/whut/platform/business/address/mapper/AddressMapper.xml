@@ -36,8 +36,6 @@
             <if test="area != null">AREA=#{area}</if>
         </where>
     </select>
-
-
     <update id="update" parameterType="Address">
         UPDATE address
         <set>
@@ -72,5 +70,20 @@
         SELECT
         <include refid="address_fields" />
         FROM address where area=#{area}
+    </select>
+    <select id="findIdByArea" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM address
+        <where>
+            <if test="province != null">
+                PROVINCE=#{province}
+            </if>
+            <if test="city != null">
+                and CITY=#{city}
+            </if>
+            <if test="area != null">
+                and AREA=#{area}
+            </if>
+        </where>
     </select>
 </mapper>

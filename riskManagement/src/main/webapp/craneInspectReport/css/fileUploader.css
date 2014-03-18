@@ -1,0 +1,147 @@
+.px-form-input {
+	float: left;
+}
+.px-buttons {
+	float: left;
+}
+
+.px-input-button {
+	overflow: hidden;
+}
+
+.px-input-button input {
+	position:absolute;
+	top: 0;
+	right: 0;
+	-moz-opacity:0;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	cursor: pointer;
+	border-right: 100px solid #FFF;
+	border-bottom: 100px solid #FFF;
+	direction: ltr;
+	margin: 0;
+	padding: 0;
+	-o-transform: translate(250px, -50px) scale(1);
+	-moz-transform: translate(-300px, 0) scale(4);
+}
+
+.upload-data {
+	padding: 5px;
+	width: 420px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	position: relative;
+}
+
+.upload-data.pending {
+	border: 1px solid #fbd850;
+}
+
+.upload-data.uploading {
+	border: 1px solid #EDBE05;
+}
+
+.upload-data.success {
+	border: 1px solid #CCCCCC;
+}
+
+.upload-data.error, .upload-data.cancel {
+	border: 1px solid #FF0000;
+}
+
+.px-widget ul.actions {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	margin: 0;
+    padding: 0;
+}
+
+.px-widget ul.actions li {
+	cursor: pointer;
+	float: left;
+	list-style: none outside none;
+	margin: 2px;
+	padding: 4px;
+	position: relative;
+}
+
+.upload-data .filename {
+	padding-right: 10px;
+	width: 120px;
+}
+
+.upload-data .status {
+	clear: both;
+}
+
+/* jQuery UI progressbar */
+.progress {
+	display: none;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.progressBar {
+	float: left;
+	width: 280px;
+	height: 22px;
+}
+.percentage {
+	float: left;
+	padding-left: 5px;
+	width: 50px;
+}
+.uploading .ui-progressbar-value {
+	background-image: url(ui-lightness/images/pbar-ani.gif);
+}
+
+.px-widget .ui-button {
+	height: 40px;
+}
+#upload_dialog{
+    border: 1px solid #999999;
+    background-color: #EEEEEE;
+    width: 450px;
+    margin: auto;
+    margin-top: 50px;
+    display: none;
+    height: 200px;
+    min-height: 200px;
+    height: auto;
+}
+#upload_title{
+    background-color: #999999;
+    width: 450px;
+    height: 30px;
+    margin-top: 2px;
+}
+.title_font{
+    width: 120px;
+    height: 26px;
+    display: inline-block;
+    margin-top: 2px;
+    margin-left: 4px;
+    color: #ffffff;
+    font-weight: bold;
+}
+.dialog_close{
+    width:37px ;
+    height: 26px;
+    display: inline-block;
+    margin-top:2px;
+    color: #ffffff;
+    font-weight: bold;
+    float: right;
+    cursor: pointer;
+    text-align: center;
+}
+.dialog_close:hover{
+    background-color: #666666;
+}
+#main_container{
+    width: 450px;
+    min-height: 150px;
+    margin-top: 10px;
+    height: auto;
+}

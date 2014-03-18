@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper">
+    <sql id="craneInspectReport_fields">
+		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTNUMBER,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL
+	</sql>
+
+    <resultMap id="craneInspectReportResultMap" type="CraneInspectReport">
+        <id property="id" column="ID" />
+        <result property="reportNumber" column="REPORTNUMBER" />
+        <result property="unitAddress" column="UNITADDRESS" />
+        <result property="addressId" column="ADDRESSID" />
+        <result property="organizeCode" column="ORGANIZECODE" />
+        <result property="userPoint" column="USEPOINT" />
+        <result property="safeManager" column="SAFEMANAGER" />
+        <result property="contactNumber" column="CONTACTNUMBER" />
+        <result property="equipmentVariety" column="EQUIPMENTVARIETY" />
+        <result property="unitNumber" column="UNITNUMBER" />
+        <result property="manufactureUnit" column="MANUFACTUREUNIT" />
+        <result property="manufactureLicenseNumber" column="MANUFACTURELICENSENUMBER" />
+        <result property="manufactureDate" column="MANUFACTUREDATE" />
+        <result property="specification" column="SPECIFICATION" />
+        <result property="pNumber" column="PNUMBER" />
+        <result property="workLevel" column="WORKLEVEL" />
+    </resultMap>
+
+    <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        craneinspectreport(
+        <include refid="craneInspectReport_fields" />
+        )
+        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactNumber},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+</mapper>

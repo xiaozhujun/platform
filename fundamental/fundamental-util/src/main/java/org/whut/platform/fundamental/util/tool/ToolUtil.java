@@ -50,11 +50,13 @@ public class ToolUtil {
                  city=address.substring(4,9);
                  area=address.substring(9,12);
              }
+         }else{
+             return "0";
          }
          if(area.substring(2,3).equals("区")){
              return province+","+city+","+area;
          } else{
-              return null;
+              return "0";
          }
     }
      public static void main(String[] args){

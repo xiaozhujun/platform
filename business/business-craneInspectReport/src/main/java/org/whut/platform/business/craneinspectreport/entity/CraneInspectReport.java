@@ -24,7 +24,7 @@ public class CraneInspectReport {
 
     private String    safeManager;                  //安全管理人员
 
-    private String    contactNumber;                //联系电话
+    private String    contactPhone;                //联系电话
 
     private String    equipmentVariety;              //设备品种
 
@@ -98,12 +98,12 @@ public class CraneInspectReport {
         this.safeManager = safeManager;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public String getEquipmentVariety() {

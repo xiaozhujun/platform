@@ -34,11 +34,8 @@ public class CraneInspectReportService {
       mongoConnector.insertDocument(documentJson);
     }
     public String getMongoStringFromRequest(InputStream inputStream,String fileName){
+             String mString;
              excelMap=jxlExportImportUtils.analysisExcel(inputStream);
-             String province=null;
-             String city=null;
-             String area=null;
-             String mString=null;
              List<List<String>> listContents=new ArrayList<List<String>>();
              for(int i=0;i<excelMap.getContents().size();i++){
                  Address address=new Address();
@@ -46,7 +43,7 @@ public class CraneInspectReportService {
                  if(address==null){
                  listContents.add(excelMap.getContents().get(i));
                  }else{
-                 Long addressId=addressService.findIdByArea(province,city,area);
+                 Long addressId=addressService.findIdByArea(address.getProvince(),address.getCity(),address.getArea());
                  if(addressId==null){
                      //addressId查不到
                  }else{
@@ -64,9 +61,9 @@ public class CraneInspectReportService {
         for(int i=0;i<excelMap.getContents().size()-1;i++){
             String documentJson1="{";
             for(int j=0;j<excelMap.getContents().get(i).size()-1;j++){
-                documentJson1+=excelMap.getHeads().get(j)+":"+excelMap.getContents().get(i).get(j)+",";
+                documentJson1+=excelMap.getHeads().get(j)+":'"+excelMap.getContents().get(i).get(j)+"',";
                 if(j+1==excelMap.getContents().get(i).size()-1){
-                    documentJson1+=excelMap.getHeads().get(j+1)+":"+excelMap.getContents().get(i).get(j+1);
+                    documentJson1+=excelMap.getHeads().get(j+1)+":'"+excelMap.getContents().get(i).get(j+1)+"'";
                 }
             }
             documentJson+=documentJson1+"},";
@@ -79,13 +76,14 @@ public class CraneInspectReportService {
     }
     public CraneInspectReport transferExcelMapToCraneInspectReportObject(ExcelMap excelMap,int i,Long addressId){
              Date d=toolUtil.transferStringToDate(excelMap.getContents().get(i).get(10));
+             craneInspectReport=new CraneInspectReport();
              craneInspectReport.setReportNumber(excelMap.getContents().get(i).get(0));
              craneInspectReport.setUnitAddress(excelMap.getContents().get(i).get(1));
              craneInspectReport.setAddressId(addressId);
              craneInspectReport.setOrganizeCode(excelMap.getContents().get(i).get(2));
              craneInspectReport.setUserPoint(excelMap.getContents().get(i).get(3));
              craneInspectReport.setSafeManager(excelMap.getContents().get(i).get(4));
-             craneInspectReport.setContactNumber(excelMap.getContents().get(i).get(5));
+             craneInspectReport.setContactPhone(excelMap.getContents().get(i).get(5));
              craneInspectReport.setEquipmentVariety(excelMap.getContents().get(i).get(6));
              craneInspectReport.setUnitNumber(excelMap.getContents().get(i).get(7));
              craneInspectReport.setManufactureUnit(excelMap.getContents().get(i).get(8));
@@ -97,7 +95,7 @@ public class CraneInspectReportService {
              return craneInspectReport;
     }
     private Address getAddressFromExcel(ExcelMap excelMap,int i){
-        if(toolUtil.parseAddress(excelMap.getContents().get(i).get(1))==null){
+        if(toolUtil.parseAddress(excelMap.getContents().get(i).get(1)).equals("0")){
             return null;
         }else{
         String str[]=toolUtil.parseAddress(excelMap.getContents().get(i).get(1)).split(",");

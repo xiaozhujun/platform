@@ -1,6 +1,8 @@
 package org.whut.platform.business.user.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.service.UserService;
@@ -10,7 +12,6 @@ import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,6 +71,24 @@ public class UserServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
         // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
+        return JsonResultUtils.getObjectResultByStringAsDefault(user,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("currentUser")
+    @GET
+    public String  currentUser(){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        User user;
+        try {
+            user = userService.findByName(userDetails.getUsername());
+            user.setPassword("");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
         return JsonResultUtils.getObjectResultByStringAsDefault(user,JsonResultUtils.Code.SUCCESS);
     }
 }

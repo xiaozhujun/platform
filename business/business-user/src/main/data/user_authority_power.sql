@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-03-18 17:59:22
+Date: 2014-03-20 19:41:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,12 +44,13 @@ CREATE TABLE `authority_power` (
   `powerResource` varchar(255) DEFAULT NULL,
   `authorityName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authority_power
 -- ----------------------------
 INSERT INTO `authority_power` VALUES ('1', '1', '1', '/rs/**', 'ROLE_USER');
+INSERT INTO `authority_power` VALUES ('2', '1', '4', '/index.html', 'ROLE_USER');
 
 -- ----------------------------
 -- Table structure for power
@@ -60,7 +61,7 @@ CREATE TABLE `power` (
   `resource` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of power
@@ -68,6 +69,8 @@ CREATE TABLE `power` (
 INSERT INTO `power` VALUES ('1', '/rs/**', 'url');
 INSERT INTO `power` VALUES ('2', '/user.html', 'url');
 INSERT INTO `power` VALUES ('3', '/admin.html', 'url');
+INSERT INTO `power` VALUES ('4', '/index.html', 'url');
+INSERT INTO `power` VALUES ('5', null, null);
 
 -- ----------------------------
 -- Table structure for user

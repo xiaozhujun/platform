@@ -1,0 +1,4 @@
+1、构建本地riskmanagement数据库；
+2、将在所有business项目src/main/data目录下的sql文件导入到riskmanagement数据库；
+3、保持数据root/root可以登陆，或者修改系统中数据库连接配置的用户名和密码：fundamental-config/src/main/resources/fundamental.config.properties
+4、到此就可以运行riskManagement项目

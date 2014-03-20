@@ -238,7 +238,7 @@ public class CasClient
     }
 
     public static void main(String args[]){
-		CasClient casClient = new CasClient( "http://localhost:8181/cas/v1/");
+		CasClient casClient = new CasClient( "http://www.zuketuan.com/cas/v1/");
  		boolean loginResult = casClient.login("xiaozhujun", "123456", "http://localhost:8080/riskManagement/j_spring_cas_security_check");
 		if(loginResult){
 			String message = casClient.doGet("http://localhost:8080/riskManagement/rs/user/currentUser");

@@ -54,7 +54,10 @@
 24	        actual redirect that will be triggered after the CAS login sequence.
 25	    -->
     	    <beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
-    	        <beans:property name="service" value="http://localhost:8080/riskManagement/j_spring_cas_security_check"></beans:property>
+                <!--config for web localhost test -->
+                <beans:property name="service" value="http://localhost:8080/riskManagement/j_spring_cas_security_check"></beans:property>
+                <!--config for android test -->
+                <!--<beans:property name="service" value="http://localhost:8080/riskManagement/j_spring_cas_security_check"></beans:property>-->
     	        <beans:property name="sendRenew" value="false"></beans:property>
     	    </beans:bean>
 
@@ -72,7 +75,7 @@
 40	        It redirects to the CAS loginUrl for the CAS login page.
 41	    -->
     	    <beans:bean id="casAuthenticationEntryPoint" class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
-    	        <beans:property name="loginUrl" value="https://localhost:8444/cas/login"></beans:property>
+    	        <beans:property name="loginUrl" value="http://www.zuketuan.com/cas/login"></beans:property>
     	        <beans:property name="serviceProperties" ref="serviceProperties"></beans:property>
     	    </beans:bean>
 
@@ -84,7 +87,7 @@
     	        <beans:property name="serviceProperties" ref="serviceProperties"></beans:property>
     	        <beans:property name="ticketValidator">
     	            <beans:bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
-    	                <beans:constructor-arg index="0" value="https://localhost:8444/cas"></beans:constructor-arg>
+    	                <beans:constructor-arg index="0" value="http://www.zuketuan.com/cas"></beans:constructor-arg>
     	            </beans:bean>
     	        </beans:property>
     	        <beans:property name="key" value="cas"></beans:property>

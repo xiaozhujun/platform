@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper">
     <sql id="craneInspectReport_fields">
-		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTNUMBER,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL
+		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL
 	</sql>
 
     <resultMap id="craneInspectReportResultMap" type="CraneInspectReport">
@@ -15,7 +15,7 @@
         <result property="organizeCode" column="ORGANIZECODE" />
         <result property="userPoint" column="USEPOINT" />
         <result property="safeManager" column="SAFEMANAGER" />
-        <result property="contactNumber" column="CONTACTNUMBER" />
+        <result property="contactPhone" column="CONTACTPHONE" />
         <result property="equipmentVariety" column="EQUIPMENTVARIETY" />
         <result property="unitNumber" column="UNITNUMBER" />
         <result property="manufactureUnit" column="MANUFACTUREUNIT" />
@@ -32,7 +32,7 @@
         craneinspectreport(
         <include refid="craneInspectReport_fields" />
         )
-        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactNumber},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel});
+        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id

@@ -40,6 +40,7 @@ public class CraneInspectReportTest {
            File file=new File(path);
            excelMap=jxlExportImportUtils.analysisExcel(file);
            for(int i=0;i<excelMap.getContents().size();i++){
+               System.out.print(excelMap.getContents().get(i).get(0)+"test");
                for(int j=0;j<excelMap.getContents().get(i).size();j++){
                    System.out.print(excelMap.getContents().get(i).get(j));
                }
@@ -47,6 +48,7 @@ public class CraneInspectReportTest {
     }
     public static void main(String[] args){
         CraneInspectReportTest craneInspectReportTest=new CraneInspectReportTest();
-        System.out.print(craneInspectReportTest.getDocumentJson("E://门座式起重机.xls"));
+      /*  System.out.print(craneInspectReportTest.getDocumentJson("E://门座式起重机.xls"));*/
+        craneInspectReportTest.parseExcel("E://门座式起重机.xls");
     }
 }

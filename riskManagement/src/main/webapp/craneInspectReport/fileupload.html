@@ -3,62 +3,27 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>File Uploader</title>
-    <link rel="stylesheet" type="text/css" href="../css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/adress.css">
-    <link rel="stylesheet" type="text/css" href="../css/themes/base/jquery.ui.all.css">
-    <script src="../js/jquery-1.10.2.js"></script>
-    <script src="../js/ui/jquery.ui.core.js"></script>
-    <script src="../js/ui/jquery.ui.widget.js"></script>
-    <script src="../js/ui/jquery.ui.button.js"></script>
-    <script src="../js/ui/jquery.ui.position.js"></script>
-    <script src="../js/ui/jquery.ui.menu.js"></script>
-    <script src="../js/ui/jquery.ui.autocomplete.js"></script>
-    <script src="../js/ui/jquery.ui.tooltip.js"></script>
-    <link href="css/reset.css" rel="stylesheet" type="text/css" />
-    <link href="css/ui-lightness/jquery-ui-1.8.14.custom.css" rel="stylesheet" type="text/css" />
-    <link href="css/fileUploader.css" rel="stylesheet" type="text/css" />
-    <script src="js/jquery-1.6.2.min.js" type="text/javascript"></script>
-    <script src="js/jquery-ui-1.8.14.custom.min.js" type="text/javascript"></script>
-    <script src="js/jquery.fileUploader.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#create-user").click(function(){
-               $("#upload_dialog").css('display','block');
-            });
-            $("#dashbord").click(function(){
-                $("#dashbordMenu").toggle();
-            });
-
-            $("#dashbordMenu").mouseleave(function(){
-                $("#dashbordMenu").hide();
-            });
-            $(".dialog_close").click(function(){
-                $("#upload_dialog").css('display','none');
-            });
-        });
-    </script>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/address.css">
+    <link rel="stylesheet" type="text/css" href="css/themes/base/jquery.ui.all.css">
+    <script src="js/ui/jquery.ui.core.js"></script>
+    <script src="js/ui/jquery.ui.widget.js"></script>
+    <script src="js/ui/jquery.ui.button.js"></script>
+    <script src="js/ui/jquery.ui.position.js"></script>
+    <script src="js/ui/jquery.ui.menu.js"></script>
+    <script src="js/ui/jquery.ui.autocomplete.js"></script>
+    <script src="js/ui/jquery.ui.tooltip.js"></script>
+    <link href="craneInspectReport/css/ui-lightness/jquery-ui-1.8.14.custom.css" rel="stylesheet" type="text/css" />
+    <link href="craneInspectReport/css/fileUploader.css" rel="stylesheet" type="text/css" />
+    <script src="craneInspectReport/js/jquery.fileUploader.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="fullMainContainer">
-    <div class="borderContainer">
-        <ul>
-            <li id="logo"></li>
-            <li id="title">起重机械风险管理平台</li>
-            <li id="dashbord" class="button">控制台</li>
-        </ul>
-    </div>
-    <div id="dashbordMenu" class="borderContainer hidden">
-        <ul>
-            <li>地址管理</li>
-            <li>权限管理</li>
-            <li id="create-user">文件上传</li>
-        </ul>
-    </div>
 </div>
     <div id="upload_dialog">
     <div id="upload_title"><span class="title_font">Excel文件上传</span><span class="dialog_close">关闭</span></div>
     <div id="main_container">
-	<form action="../rs/craneinspectreport/upload" method="post" enctype="multipart/form-data">
+	<form action="rs/craneinspectreport/upload" method="post" enctype="multipart/form-data">
 		<input type="file" name="filename" class="fileUpload" multiple>
 		<button id="px-submit" type="submit">上传</button>
 		<button id="px-clear" type="reset">取消</button>

@@ -4,6 +4,5 @@ out
 target
 .classpath
 .project
-lib/
 auth
-
+*.jar

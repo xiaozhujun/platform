@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-03-20 19:41:42
+Date: 2014-03-24 00:21:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,8 +49,8 @@ CREATE TABLE `authority_power` (
 -- ----------------------------
 -- Records of authority_power
 -- ----------------------------
-INSERT INTO `authority_power` VALUES ('1', '1', '1', '/rs/**', 'ROLE_USER');
-INSERT INTO `authority_power` VALUES ('2', '1', '4', '/index.html', 'ROLE_USER');
+INSERT INTO `authority_power` VALUES ('1', '1', '1', 'rs/**', 'ROLE_USER');
+INSERT INTO `authority_power` VALUES ('2', '1', '4', 'index.html', 'ROLE_USER');
 
 -- ----------------------------
 -- Table structure for power
@@ -60,17 +60,23 @@ CREATE TABLE `power` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `resource` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of power
 -- ----------------------------
-INSERT INTO `power` VALUES ('1', '/rs/**', 'url');
-INSERT INTO `power` VALUES ('2', '/user.html', 'url');
-INSERT INTO `power` VALUES ('3', '/admin.html', 'url');
-INSERT INTO `power` VALUES ('4', '/index.html', 'url');
-INSERT INTO `power` VALUES ('5', null, null);
+INSERT INTO `power` VALUES ('1', 'rs/**', 'resource', '所有rest服务');
+INSERT INTO `power` VALUES ('2', 'user.html', 'url', null);
+INSERT INTO `power` VALUES ('3', 'admin.html', 'url', null);
+INSERT INTO `power` VALUES ('4', 'index.html', 'url', null);
+INSERT INTO `power` VALUES ('6', 'rs/power/**', 'service', 'test1');
+INSERT INTO `power` VALUES ('8', 'rs/power/**', 'service', 'test');
+INSERT INTO `power` VALUES ('9', 'rs/power/**', 'service', 'test');
+INSERT INTO `power` VALUES ('10', 'rs/user/**', 'service', '用户后台服务');
+INSERT INTO `power` VALUES ('11', 'rs/user/**', 'service', '用户后台服务');
+INSERT INTO `power` VALUES ('12', 'rs/user/**', 'service', '用户后台服务');
 
 -- ----------------------------
 -- Table structure for user

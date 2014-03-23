@@ -57,7 +57,7 @@
     <select id="get" parameterType="User" resultMap="userResultMap">
         SELECT
         <include refid="user_fields" />
-        FROM user WHERE ID=#{id};
+        FROM user WHERE ID=#{id}
     </select>
 
     <select id="findByName" parameterType="java.lang.String" resultMap="userResultMap">

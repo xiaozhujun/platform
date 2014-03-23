@@ -29,4 +29,5 @@
     <bean id="userService" class="org.whut.platform.business.user.service.UserService" depends-on="mappers"/>
     <bean id="userAuthorityService" class="org.whut.platform.business.user.service.UserAuthorityService" depends-on="mappers"/>
     <bean id="authorityPowerService" class="org.whut.platform.business.user.service.AuthorityPowerService" depends-on="mappers"/>
+    <bean id="powerService" class="org.whut.platform.business.user.service.PowerService" depends-on="mappers"/>
 </beans>

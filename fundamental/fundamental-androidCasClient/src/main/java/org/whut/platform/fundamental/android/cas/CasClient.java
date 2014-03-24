@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -218,6 +219,40 @@ public class CasClient
         return null;
     }
 
+    //发送 GET 请求
+    public String doPost(String service,HashMap<String,String> params){
+        HttpPost httpPost = new HttpPost (service);
+        try
+        {
+            List <NameValuePair> nvps = new ArrayList <NameValuePair> ();
+            for(String key:params.keySet()){
+                nvps.add(new BasicNameValuePair (key, params.get(key)));
+            }
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+
+            HttpResponse response = httpClient.execute(httpPost);
+            String responseBody = getResponseBody(response);
+            switch (response.getStatusLine().getStatusCode())
+            {
+                case 200:
+                {
+                    return responseBody;
+                }
+                default:
+                    break;
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
     /**
      * 从cas server 退出
      */
@@ -238,11 +273,17 @@ public class CasClient
     }
 
     public static void main(String args[]){
-		CasClient casClient = new CasClient( "http://www.zuketuan.com/cas/v1/");
+		CasClient casClient = new CasClient( "http://www.cseicms.com/cas/v1/");
  		boolean loginResult = casClient.login("xiaozhujun", "123456", "http://localhost:8080/riskManagement/j_spring_cas_security_check");
 		if(loginResult){
 			String message = casClient.doGet("http://localhost:8080/riskManagement/rs/user/currentUser");
 			System.out.println(message);
+            HashMap<String,String> params = new HashMap<String, String>();
+            params.put("resource","cas/**");
+            params.put("type","service");
+            params.put("description","cas client test from android");
+            message  = casClient.doPost("http://localhost:8080/riskManagement/rs/power/add",params);
+            System.out.print(message);
 		}
     }
 

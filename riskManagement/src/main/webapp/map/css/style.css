@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+#header{
+	width: 1400px;
+	height: 80px;
+	background-color: #999999;
+}
+.title{
+	display: inline-block;
+	text-align:center;
+	color:white;
+	font-weight: bold;
+	font-size: 30px;
+	margin-top: 25px;
+	margin-left: 550px;	
+}
+.backbtn{
+	display: inline-block;
+	margin-left:360px;
+	width: 100px;
+	height: 30px;
+	margin-top: 25px;
+	background-color: white;
+    color: #999999;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}

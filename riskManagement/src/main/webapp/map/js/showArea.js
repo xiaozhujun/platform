@@ -17,6 +17,26 @@ function getBoundary(data){
         for(var i=0;i<count;i++){
             var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,strokeColor:"#000000"});
             map.addOverlay(ply);
+            ply.addEventListener("click",function(e){
+                name=data.split("-")[0];
+                var latlng=e.point;
+                var info=new BMap.InfoWindow(name+" "+latlng.lat+","+latlng.lng,{width:220});
+                map.openInfoWindow(info,latlng);
+                //高亮闪烁显示鼠标点击的省
+                delay=0;
+                for (flashTimes=0;flashTimes<3;flashTimes++){
+                    delay+=400;
+                    setTimeout(function(){
+                        ply.setFillColor("#FFFF00");
+                    },delay);
+
+                    delay+=400;
+                    setTimeout(function(){
+                        ply.setFillColor(color);
+                    },delay);
+                }
+                $("#mainContainer").load("map/showCompany.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng));
+            });
         }
         if(maxPly){
             map.setViewport(maxPly.getPoints());

@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+body{
+	font-size:13px;
+	margin:0px
+	} 
+#main{
+	/* background-color:#999999; */
+	width:100%;
+	height:100%;
+	}
+#container{
+    width:100%;
+    height:100%;
+	} 
+#rightshow{
+	width:400px;
+	height:650px;
+	float: left;
+	margin-left:2px;
+	}
+#righttitle{
+	width:400px;
+	height:50px;
+	float: left;
+	background-color: #999999;
+	text-align: center;
+	line-height: 50px;
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+}
+#rightcontent{
+	width:400px;
+	height:595px;
+	float: left;
+	margin-top:5px;
+	/* overflow: auto; */
+}
+.rightitem{
+	width:400px;
+	height:80px;
+	margin-top: 2px;
+	border: 1px solid #999999;
+	
+}
+.rightitem:HOVER{
+	background-color: #999999;
+	color: white;
+	
+}
+.pic{
+	width: 110px;
+	height: 80px;
+	display: inline-block;
+	float: left;
+}
+.info{
+	width: 210px;
+	height: 80px;
+	display: inline-block;
+	float: left;
+
+	line-height: 80px;
+}
+.riskvalue{
+	width: 80px;
+	height: 80px;
+	display: inline-block;
+	float: left;
+	text-align: center;
+	line-height: 80px;
+}
+.pic img{
+	width: 110px;
+	height: 80px;
+}
+.itemfont{
+	margin-left: 8px;
+	font-size: 15px;
+	font-weight: bold;
+	
+}

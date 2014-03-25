@@ -14,6 +14,10 @@
 <div id="main">
     <div id="container"></div>
     <div id="rightshow">
+        <div id='righttitle'>
+        </div>
+        <div id="rightcontent">
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -83,20 +87,21 @@
                     _marker.addEventListener("click",function(){
                         this.openInfoWindow(_iw);
                         var name=markerArr[index];
-                        $.ajax({
-                            type:"POST",
-                            url:"ShowInfoServlet",
-                            dataType:"html",
-                            data:{pname:name.title},
-                            success:function(data){
-                                $("#rightshow").html(data);
-                            },
-                            error:function(data){
-                                $("#rightshow").html(data);
-                            }
-                        });
+                        $.post("/rs/device/showInfo",{"name":name.title},mapCallback,"json");
 
                     });
+                    function  mapCallback(data){
+                       if(data.code==200){
+                           $("#rightshow").css("display","block");
+                           $("#righttitle").html("");
+                           $("#rightcontent").html("");
+                           $("#righttitle").append(data.str);
+                           for(var i=0;i<data.data.length;i++){
+                               var dataString="<div class='rightitem'><span class='pic'><img src='../image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
+                               $("#rightcontent").append(dataString);
+                           }
+                       }
+                    }
                     _iw.addEventListener("open",function(){
                         _marker.getLabel().hide();
                     })
@@ -134,18 +139,19 @@
 
         if(pname=="朝阳区"){
             initMap(lng,lat,chaoyangMarker);//创建和初始化地图
-            $.ajax({
-                type:"POST",
-                url:"ShowInfoServlet",
-                dataType:"html",
-                data:{pname:chaoyangMarker[0].title},
-                success:function(data){
-                    $("#rightshow").html(data);
-                },
-                error:function(data){
-                    $("#rightshow").html(data);
+            $.post("/rs/device/showInfo",{"name":chaoyangMarker[0].title},pnameCallback,"json");
+        }
+        function pnameCallback(data){
+            if(data.code==200){
+                $("#rightshow").css("display","block");
+                $("#righttitle").html("");
+                $("#rightcontent").html("");
+                $("#righttitle").append(data.str);
+                for(var i=0;i<data.data.length;i++){
+                    var dataString="<div class='rightitem'><span class='pic'><img src='../image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
+                    $("#rightcontent").append(dataString);
                 }
-            });
+            }
         }
     });
 </script>

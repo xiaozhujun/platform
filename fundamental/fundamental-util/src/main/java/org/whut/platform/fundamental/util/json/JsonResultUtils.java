@@ -52,10 +52,28 @@ public final class JsonResultUtils {
         resultMap.put("message", message);
         return resultMap;
     }
+    /*
+    新加入
+     */
+    public static <T> Map<String, Object> getObjectStrResultMap(Integer code,
+                                                             Object object, String str) {
+        Map<String, Object> resultMap = Maps.newHashMap();
+        resultMap.put("code", code);
+        resultMap.put("data", object);
+        resultMap.put("str", str);
+        return resultMap;
+    }
 
     public static <T> Map<String, Object> getObjectResultMapAsDefault(
             Object object, Code status) {
         return getObjectResultMap(status.code, object, status.message);
+    }
+    /*
+    新加入
+     */
+    public static <T> Map<String, Object> getObjectStrResultMapAsDefault(
+            Object object, Code status) {
+        return getObjectStrResultMap(status.code, object, status.message);
     }
 
     public static <T> String getObjectResultAsJsonP(String cb, Object object,
@@ -116,6 +134,14 @@ public final class JsonResultUtils {
                                                           Code status) {
         return JsonMapper.buildNormalMapper().toJson(
                 getObjectResultMapAsDefault(object, status));
+    }
+    /*
+    新加入的
+     */
+    public static String getObjectStrResultByStringAsDefault(Object object,
+                                                             Integer code,String str) {
+        return JsonMapper.buildNormalMapper().toJson(
+                getObjectStrResultMap(code, object,str));
     }
 
 

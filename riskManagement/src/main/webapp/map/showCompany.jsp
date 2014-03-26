@@ -87,7 +87,7 @@
                     _marker.addEventListener("click",function(){
                         this.openInfoWindow(_iw);
                         var name=markerArr[index];
-                        $.post("/rs/device/showInfo",{"name":name.title},mapCallback,"json");
+                        $.post("rs/device/showInfo",{"name":name.title},mapCallback,"json");
 
                     });
                     function  mapCallback(data){
@@ -97,7 +97,7 @@
                            $("#rightcontent").html("");
                            $("#righttitle").append(data.str);
                            for(var i=0;i<data.data.length;i++){
-                               var dataString="<div class='rightitem'><span class='pic'><img src='../image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
+                               var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
                                $("#rightcontent").append(dataString);
                            }
                        }
@@ -139,7 +139,7 @@
 
         if(pname=="朝阳区"){
             initMap(lng,lat,chaoyangMarker);//创建和初始化地图
-            $.post("/rs/device/showInfo",{"name":chaoyangMarker[0].title},pnameCallback,"json");
+            $.post("rs/device/showInfo",{"name":chaoyangMarker[0].title},pnameCallback,"json");
         }
         function pnameCallback(data){
             if(data.code==200){
@@ -148,7 +148,7 @@
                 $("#rightcontent").html("");
                 $("#righttitle").append(data.str);
                 for(var i=0;i<data.data.length;i++){
-                    var dataString="<div class='rightitem'><span class='pic'><img src='../image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
+                    var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
                     $("#rightcontent").append(dataString);
                 }
             }

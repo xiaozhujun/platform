@@ -5,18 +5,20 @@ body{
 	} 
 #main{
 	/* background-color:#999999; */
-	width:100%;
+	width:1130px;
 	height:100%;
 	}
 #container{
-    width:100%;
+    width:713px;
     height:100%;
+    float: left;
 	} 
 #rightshow{
 	width:400px;
 	height:650px;
 	float: left;
 	margin-left:2px;
+    display: none;
 	}
 #righttitle{
 	width:400px;

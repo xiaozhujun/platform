@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.map.mapper.CompanyMapper">
+    <sql id="company_fields">
+		ID,NAME,DESCRIPTION
+	</sql>
+
+    <resultMap id="companyResultMap" type="Company">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="description" column="DESCRIPTION" />
+    </resultMap>
+
+    <select id="findIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT
+        id
+        FROM company where name=#{name}
+    </select>
+</mapper>

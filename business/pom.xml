@@ -15,6 +15,7 @@
         <module>business-user</module>
         <module>business-address</module>
         <module>business-craneInspectReport</module>
+        <module>business-map</module>
     </modules>
 
 

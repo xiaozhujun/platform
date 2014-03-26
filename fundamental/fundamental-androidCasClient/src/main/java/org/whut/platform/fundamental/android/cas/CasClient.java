@@ -274,15 +274,15 @@ public class CasClient
 
     public static void main(String args[]){
 		CasClient casClient = new CasClient( "http://www.cseicms.com/cas/v1/");
- 		boolean loginResult = casClient.login("xiaozhujun", "123456", "http://localhost:8080/riskManagement/j_spring_cas_security_check");
+ 		boolean loginResult = casClient.login("xiaozhujun", "123456", "http://www.cseicms.com/riskPlatform/j_spring_cas_security_check");
 		if(loginResult){
-			String message = casClient.doGet("http://localhost:8080/riskManagement/rs/user/currentUser");
+			String message = casClient.doGet("http://www.cseicms.com/riskPlatform/rs/user/currentUser");
 			System.out.println(message);
             HashMap<String,String> params = new HashMap<String, String>();
             params.put("resource","cas/**");
             params.put("type","service");
             params.put("description","cas client test from android");
-            message  = casClient.doPost("http://localhost:8080/riskManagement/rs/power/add",params);
+            message  = casClient.doPost("http://www.cseicms.com/riskPlatform/rs/power/add",params);
             System.out.print(message);
 		}
     }

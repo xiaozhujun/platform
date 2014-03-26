@@ -1,8 +1,9 @@
 if (typeof console == "undefined"){
     window.console = {log: function(){}};
 }
-var map = new BMap.Map("container");
-map.centerAndZoom(new BMap.Point(lng, lat),10);
+
+map = new BMap.Map("container");
+map.centerAndZoom(pname,10);
 var stdMapCtrl = new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL});
 map.addControl(stdMapCtrl);
 map.enableScrollWheelZoom();
@@ -35,7 +36,7 @@ function getBoundary(data){
                         ply.setFillColor(color);
                     },delay);
                 }
-                $("#mainContainer").load("map/showCompany.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng));
+                location = "companyRisk.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
             });
         }
         if(maxPly){

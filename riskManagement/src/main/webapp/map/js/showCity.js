@@ -2,8 +2,9 @@
 if (typeof console == "undefined"){
     window.console = {log: function(){}};
 }
-var map = new BMap.Map("container");
-map.centerAndZoom(new BMap.Point(lng, lat), 8);
+
+map = new BMap.Map("container");
+map.centerAndZoom(pname,8);
 var stdMapCtrl = new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL});
 map.addControl(stdMapCtrl);
 map.enableScrollWheelZoom();
@@ -36,7 +37,7 @@ function getBoundary(data){
                         ply.setFillColor(color);
                     },delay);
                 }
-                $("#mainContainer").load("map/showArea.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng));
+               location = "areaRisk.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
             });
         }
         if(maxPly){

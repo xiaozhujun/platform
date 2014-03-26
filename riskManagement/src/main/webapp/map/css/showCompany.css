@@ -5,49 +5,48 @@ body{
 	} 
 #main{
 	/* background-color:#999999; */
-	width:1130px;
+	width:100%;
 	height:100%;
 	}
 #container{
-    width:713px;
+    width:100%;
     height:100%;
-    float: left;
 	} 
 #rightshow{
 	width:400px;
-	height:650px;
+	height:100%;
 	float: left;
 	margin-left:2px;
-    display: none;
 	}
 #righttitle{
 	width:400px;
 	height:50px;
 	float: left;
-	background-color: #999999;
+	background-color: #F6F6F6;
 	text-align: center;
 	line-height: 50px;
-	color: white;
+	color: #454545;
 	font-weight: bold;
 	font-size: 15px;
+    border-bottom: 1px solid #AAAAAA;
 }
 #rightcontent{
 	width:400px;
 	height:595px;
 	float: left;
-	margin-top:5px;
+	margin-top:0px;
 	/* overflow: auto; */
 }
 .rightitem{
-	width:400px;
+	width:100%;
 	height:80px;
-	margin-top: 2px;
-	border: 1px solid #999999;
+	margin-top: 1px;
+	border-bottom: 1px solid #AAAAAA;
 	
 }
 .rightitem:HOVER{
-	background-color: #999999;
-	color: white;
+	background-color: #F6F6F6;
+	color: #454545;
 	
 }
 .pic{
@@ -65,7 +64,6 @@ body{
 	line-height: 80px;
 }
 .riskvalue{
-	width: 80px;
 	height: 80px;
 	display: inline-block;
 	float: left;

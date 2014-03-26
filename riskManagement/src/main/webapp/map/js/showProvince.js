@@ -1,8 +1,12 @@
 if (typeof console == "undefined"){
     window.console = {log: function(){}};
 }
+
+if(window.map){
+    delete map;
+}
 var map = new BMap.Map("container");
-map.centerAndZoom(new BMap.Point(116.403765, 39.914850), 5);
+map.centerAndZoom("中国", 5);
 var stdMapCtrl = new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL});
 map.addControl(stdMapCtrl);
 map.enableScrollWheelZoom();
@@ -36,7 +40,7 @@ function getBoundary(data){
                         ply.setFillColor(color);
                     },delay);
                 }
-                $("#mainContainer").load("map/showCity.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng));
+                location = "cityRisk.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
             });
 
         }

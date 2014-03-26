@@ -1,9 +1,10 @@
+<%@ page import="java.net.URLDecoder" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
 transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>起重机械风险管理平台-首页</title>
+    <title>起重机械风险管理平台-区域风险</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery-1.10.2.js" type="text/javascript"></script>
@@ -13,8 +14,14 @@ transitional.dtd">
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
     <script type="text/javascript" src="map/js/getParam.js"></script>
     <script src="js/config.js" type="text/javascript"></script>
-    <style type="text/css">
-    </style>
+    <link rel="stylesheet" href="map/css/showcity.css"/>
+    <link rel="stylesheet" href="map/css/style.css"/>
+    <script type="text/javascript" src="map/js/getParam.js"></script>
+    <script type="text/javascript">
+        var pname='<%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%>';
+        var lat='<%=request.getParameter("lat")%>';
+        var lng='<%=request.getParameter("lng")%>';
+    </script>
 
 
     <style type="text/css">
@@ -28,8 +35,7 @@ transitional.dtd">
 
 <div id="layout">
     <div id="mainContainer" position="center" title="">
-        <h4>$("#layout1").ligerLayout(); </h4>
-        默认为固定layout的高度百分一百
+        <div id="container"></div>
     </div>
     <!--<div position="right"></div>-->
     <div id="titleContainer" position="top"></div>
@@ -45,8 +51,8 @@ transitional.dtd">
     {
         $("#layout").ligerLayout({leftWidth:200});
         $("#titleContainer").load("title.html");
-        $("#mainContainer").load("map/showProvince.html");
     });
 </script>
+<script type="text/javascript" src="map/js/showArea.js"></script>
 </body>
 </html>

@@ -19,6 +19,6 @@
     <select id="findDeviceInfoById" parameterType="java.lang.Long" resultMap="deviceResultMap">
         SELECT
         d.*
-        FROM Device d,Company c WHERE c.id=d.cid AND c.id=#{cid}
+        FROM device d,company c WHERE c.id=d.cid AND c.id=#{cid}
     </select>
 </mapper>

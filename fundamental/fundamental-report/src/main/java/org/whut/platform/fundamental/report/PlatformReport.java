@@ -24,8 +24,8 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class PlatformReport {
-         private static PlatformMysqlConnector ds=new PlatformMysqlConnector();
-         private static Connection connection=ds.getConnection();
+          private  static PlatformMysqlConnector ds=new PlatformMysqlConnector();
+          private  static Connection connection=ds.getConnection();
          /*
          传入报表模板，一个map集合，还有导出报表的类型,导出报表
           */
@@ -33,7 +33,7 @@ public class PlatformReport {
               try{
                   request.setCharacterEncoding("UTF-8");
                   response.setContentType("text/html;charset=UTF-8");
-                  exportReportByType(reportTemplate,type,parameters,request,response);
+                  exportReportByType(reportTemplate, type, parameters, request, response);
               }catch (Exception e){
                   e.printStackTrace();
               }

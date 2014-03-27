@@ -98,10 +98,10 @@
         {
             if (confirm('确定删除?'))
             {
-                manager.deleteRow(rowid);
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
                 $.post($.URL.power.delete,{"jsonString":jsonString},updateCallback,"json");
+                manager.deleteRow(rowid);
             }
         }
 

@@ -4,6 +4,8 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
+import org.apache.commons.dbcp.BasicDataSource;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import platform.fundamental.datasource.DbcpFactoryBean;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -21,12 +24,19 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class PlatformReport {
-        private static DbcpFactoryBean ds=new DbcpFactoryBean();
+         private static PlatformMysqlConnector ds=new PlatformMysqlConnector();
+         private static Connection connection=ds.getConnection();
          /*
          传入报表模板，一个map集合，还有导出报表的类型,导出报表
           */
         public void getMapToExportReport(String reportTemplate,Map parameters,String type,HttpServletRequest request,HttpServletResponse response){
-               exportReportByType(reportTemplate,type,parameters,request,response);
+              try{
+                  request.setCharacterEncoding("UTF-8");
+                  response.setContentType("text/html;charset=UTF-8");
+                  exportReportByType(reportTemplate,type,parameters,request,response);
+              }catch (Exception e){
+                  e.printStackTrace();
+              }
         }
         /*
         传入模板，类型，map集合来根据map集合，输出不同类型的报表
@@ -44,7 +54,7 @@ public class PlatformReport {
                 JasperReport jasperReport= (JasperReport)JRLoader.loadObject(reportFile.getPath());
                 if(type.equals("html")){
                     response.setContentType("text/html");
-                    JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport,parameters,ds.getObject().getConnection());
+                    JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, connection);
                     request.getSession().setAttribute(
                             ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE,jasperPrint
                     );
@@ -55,7 +65,7 @@ public class PlatformReport {
                     exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,"image?image=");
                     exporter.exportReport();
                 }else if(type.equals("pdf")){
-                    byte[] bytes=JasperRunManager.runReportToPdf(reportFile.getPath(),parameters,ds.getObject().getConnection());
+                    byte[] bytes=JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, connection);
                     response.setContentType("application/pdf");
                     response.setContentLength(bytes.length);
                     ServletOutputStream outputStream=response.getOutputStream();
@@ -64,7 +74,7 @@ public class PlatformReport {
                     outputStream.close();
                 }else if(type.equals("excel")){
                     response.setContentType("application/vnd.ms-excel");
-                    JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport,parameters,ds.getObject().getConnection());
+                    JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport, parameters, connection);
                     ServletOutputStream outputStream=response.getOutputStream();
                     JRXlsExporter exporter=new JRXlsExporter();
                     exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint);
@@ -77,7 +87,7 @@ public class PlatformReport {
                     outputStream.close();
                 }else if(type.equals("word")){
                     response.setContentType("application/msword;charset=utf-8");
-                    JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport,parameters,ds.getObject().getConnection());
+                    JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport, parameters, connection);
                     ServletOutputStream outputStream=response.getOutputStream();
                     JRExporter exporter=new JRRtfExporter();
                     exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint);

@@ -16,18 +16,18 @@
             <artifactId>servlet-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>jasperreports</groupId>
+            <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>5.5.1</version>
+            <version>3.7.2</version>
         </dependency>
         <dependency>
-            <groupId>groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>1.8.6</version>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>1.7.5</version>
         </dependency>
         <dependency>
-            <groupId>iTextAsian</groupId>
-            <artifactId>iTextAsian</artifactId>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itextasian</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
@@ -39,6 +39,26 @@
             <groupId>platform</groupId>
             <artifactId>fundamental-datasource</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+            <version>2.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

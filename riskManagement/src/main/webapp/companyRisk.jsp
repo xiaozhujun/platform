@@ -58,15 +58,15 @@ transitional.dtd">
 </div>
 
 <script type="text/javascript">
+    var city='<%=URLDecoder.decode(request.getParameter("city"),"utf-8")%>';
     var pname='<%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%>';
     var lat='<%=request.getParameter("lat")%>';
     var lng='<%=request.getParameter("lng")%>';
 
-    function initMap(lng,lat,Marker){
+    function initMap(lng,lat){
         createMap(lng,lat);//创建地图
         setMapEvent();//设置地图事件
         addMapControl();//向地图添加控件
-        addMarker(Marker);//向地图中添加marker
     }
     //创建地图函数：
     function createMap(lng,lat){
@@ -122,7 +122,7 @@ transitional.dtd">
                 _marker.addEventListener("click",function(){
                     this.openInfoWindow(_iw);
                     var name=markerArr[index];
-                    $.post("rs/device/showInfo",{"name":name.title},mapCallback,"json");
+                    $.post("rs/craneinspectreport/getAreaInfoByUnitAddress",{"name":name.title},mapCallback,"json");
 
                 });
                 function  mapCallback(data){
@@ -133,7 +133,7 @@ transitional.dtd">
                         $("#rightcontent").html("");
                         $("#righttitle").append(data.str);
                         for(var i=0;i<data.data.length;i++){
-                            var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
+                            var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>详情</span></span><span class='riskvalue'>风险值:"+(i+2)+"</span> ";
                             $("#rightcontent").append(dataString);
                         }
                     }
@@ -166,13 +166,22 @@ transitional.dtd">
         var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
         return icon;
     }
-    //标注点数组
-    var chaoyangMarker = [{title:"北京市特种设备检测中心",content:"电梯2台,起重机1台,风险值:1",point:"116.422|40.002",isOpen:0,icon:{w:23,h:25,l:115,t:21,x:9,lb:12}}
-        ,{title:"中国特种设备检测研究院",content:"电梯1台,起重机1台,风险值:2",point:"116.412|39.983",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
-        ,{title:"北京百昌特种设备贸易有限公司",content:"电梯1台,起重机3台,风险值:3",point:"116.457|39.918",isOpen:0,icon:{w:23,h:25,l:92,t:21,x:9,lb:12}}
-        ,{title:"燃气集团有限责任公司特种设备检验所",content:"起重机2台,风险值:5",point:"116.404|39.9716",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:12}}
-    ];
 
+    function searchByStationName(address) {
+        //map.clearOverlays();//清空原来的标注
+        var keyword = address;
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            var poi = searchResult.getPoi(0);
+            //map.centerAndZoom(poi.point, 13);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+            map.addOverlay(marker);
+            var content = address+ "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
+            var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
+            marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+            // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        });
+        localSearch.search(keyword);
+    }
 
     function pnameCallback(data){
         if(data.code==200){
@@ -181,7 +190,7 @@ transitional.dtd">
             $("#rightcontent").html("");
             $("#righttitle").append(data.str);
             for(var i=0;i<data.data.length;i++){
-                var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].name+"</span><span class='itemfont'>"+data.data[i].description+"</span></span><span class='riskvalue'>风险值:"+data.data[i].riskvalue+"</span> ";
+                var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>详情</span></span><span class='riskvalue'>风险值:"+(i+1)+"</span> ";
                 $("#rightcontent").append(dataString);
             }
         }
@@ -201,10 +210,31 @@ transitional.dtd">
                 $("#rightshow").css("display","block");
             }
         });
+       $.post("rs/craneinspectreport/getAreaInfo",{"city":city,"pname":pname},areaInfoCallback,"json");
+       var chaoyangMarker=new Array();
+        function areaInfoCallback(data){
+             if(data.code==200){
+                 if(data.data[0]==undefined){
+                     var error="<div class='errorInfo'>对不起,数据不存在!</div>";
+                     $("#rightcontent").append(error);
+                 }else{
+                 for(i=0;i<data.data.length;i++){
+                     var item={};
+                     item.title=data.data[i].unitAddress;
+                     item.content=data.data[i].equipmentVariety;
+                     item.point=data.data[i].lng+"|"+data.data[i].lat;
+                     item.isOpen=0;
+                     item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};
+                     chaoyangMarker.push(item);
+                 }
+                 //创建和初始化地图函数：
+                 addMarker(chaoyangMarker);//向地图中添加marker
+                 $.post("rs/craneinspectreport/getAreaInfoByUnitAddress",{"name":chaoyangMarker[0].title},pnameCallback,"json");
+                 }
+             }
+        }
+            initMap(lng,lat);
 
-        //创建和初始化地图函数：
-        initMap(lng,lat,chaoyangMarker);//创建和初始化地图
-        $.post("rs/device/showInfo",{"name":chaoyangMarker[0].title},pnameCallback,"json");
     });
 </script>
 </body>

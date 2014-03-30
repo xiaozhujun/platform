@@ -42,6 +42,10 @@ public class CraneInspectReport {
 
     private String     workLevel;                     //工作级别
 
+    private String     lng;                            //经度
+
+    private String     lat;                            //纬度
+
     public long getId() {
         return id;
     }
@@ -168,5 +172,21 @@ public class CraneInspectReport {
 
     public void setWorkLevel(String workLevel) {
         this.workLevel = workLevel;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 }

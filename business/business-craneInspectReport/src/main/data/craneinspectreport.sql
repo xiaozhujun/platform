@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: riskmanagement
 Target Host: localhost
 Target Database: riskmanagement
-Date: 2014/3/19 19:24:42
+Date: 2014/3/30 23:10:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,8 +29,10 @@ CREATE TABLE `craneinspectreport` (
   `specification` varchar(255) DEFAULT NULL,
   `pnumber` varchar(255) DEFAULT NULL,
   `worklevel` varchar(255) DEFAULT NULL,
+  `lng` varchar(255) DEFAULT NULL,
+  `lat` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=424 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4711 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records 

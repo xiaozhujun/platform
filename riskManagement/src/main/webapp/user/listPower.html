@@ -28,7 +28,7 @@
         }
 
         var typeData = [{ type: 'menu', text: 'menu' },{ type: 'resource', text: 'resource' },{ type: 'service', text: 'service' }];
-
+        var sexData=[{Sex:1,text:'男'},{Sex:2,text:'女'}];
         var manager, g;
         function f_initGrid()
         {
@@ -82,10 +82,11 @@
         }
         function endEdit(rowid)
         {
-            manager.endEdit(rowid);
+
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
             $.post($.URL.power.update,{"jsonString":jsonString},updateCallback,"json");
+            manager.endEdit(rowid);
         }
 
         function updateCallback(data){

@@ -86,4 +86,17 @@
             </if>
         </where>
     </select>
+    <select id="findIdByCityArea" parameterType="map" resultType="java.lang.Long">
+        SELECT
+        id
+        FROM  address
+        <where>
+            <if test="city!=null">
+                CITY=#{city}
+            </if>
+            <if test="area!=null">
+                and AREA=#{area}
+            </if>
+        </where>
+    </select>
 </mapper>

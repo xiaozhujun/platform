@@ -126,5 +126,8 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getInfoByUnitAddress(String name){
         return mapper.getInfoByUnitAddress(name);
     }
+    public List<CraneInspectReport> getCraneInspectReportInfoByAddressAndEquipment(String unitAddress,String equipmentVariety){
+        return mapper.getCraneInspectReportInfoByAddressAndEquipment(unitAddress,equipmentVariety);
+    }
 
 }

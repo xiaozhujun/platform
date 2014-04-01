@@ -1,4 +1,5 @@
 package org.whut.platform.business.report.web;
+import groovy.time.BaseDuration;
 import org.springframework.stereotype.Component;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.report.PlatformReport;
@@ -26,7 +27,7 @@ public class ReportServiceWeb {
     @Context HttpServletRequest request;
     @Context HttpServletResponse response;
     @Path("/showUserReport")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String showUserAuthorityPowerReport(){
      /*
@@ -52,6 +53,25 @@ public class ReportServiceWeb {
                 "where u.id=ua.userId and au.id=ua.authorityId and au.id=aup.authorityId and aup.powerId=p.id";
         return sql;
     }
-
+    public String showUserSqlWithName(String name){
+        String sql="select u.name as uname,u.sex,au.name as rname,p.description"+
+        " from user u,user_authority ua,authority au,authority_power aup,power p "+
+        "where u.id=ua.userId and au.id=ua.authorityId and au.id=aup.authorityId and aup.powerId=p.id and u.name='"+name+"'";
+        return sql;
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/showUserWithName/{name}")
+    @GET
+    public String showUserWithName(@PathParam("name") String name){
+        System.out.print(name+".......bug.......");
+        if(name==null||name.trim().equals("")){
+        }
+        String sql=showUserSqlWithName(name);
+        Map parameter=new HashMap();
+        parameter.put("sql",sql);
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportDemo.jasper");
+        platformReport.getMapToExportReport(reportTemplate,parameter,"excel",request,response);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
 
 }

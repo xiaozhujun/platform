@@ -27,7 +27,6 @@
         <result property="lng" column="LNG" />
         <result property="lat" column="LAT" />
     </resultMap>
-
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
@@ -48,9 +47,15 @@
     </select>
     <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
         SELECT
-        distinct(equipmentvariety)
+         *
         FROM craneinspectreport
         where unitAddress=#{unitAddress}
+        group by equipmentvariety
     </select>
-
+    <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT
+        *
+        FROM craneinspectreport
+        where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety}
+    </select>
 </mapper>

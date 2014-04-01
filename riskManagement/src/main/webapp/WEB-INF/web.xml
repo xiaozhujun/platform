@@ -88,6 +88,13 @@
     </servlet-mapping>
 
     <!-- Servlet Configuration ========================================== -->
-
+     <servlet>
+         <servlet-name>ExportReportServlet</servlet-name>
+         <servlet-class>org.whut.platform.business.report.web.ExportReportServlet</servlet-class>
+     </servlet>
+    <servlet-mapping>
+        <servlet-name>ExportReportServlet</servlet-name>
+        <url-pattern>/ExportReportServlet</url-pattern>
+    </servlet-mapping>
 </web-app>
         

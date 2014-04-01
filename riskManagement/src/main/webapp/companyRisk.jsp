@@ -133,7 +133,7 @@ transitional.dtd">
                         $("#rightcontent").html("");
                         $("#righttitle").append(data.str);
                         for(var i=0;i<data.data.length;i++){
-                            var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>详情</span></span><span class='riskvalue'>风险值:"+(i+2)+"</span> ";
+                            var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='infofont'>详情</span></span><span class='riskvalue'>风险值:"+(i+2)+"</span> ";
                             $("#rightcontent").append(dataString);
                         }
                     }
@@ -182,7 +182,6 @@ transitional.dtd">
         });
         localSearch.search(keyword);
     }
-
     function pnameCallback(data){
         if(data.code==200){
             $("#rightshow").css("display","block");
@@ -190,10 +189,29 @@ transitional.dtd">
             $("#rightcontent").html("");
             $("#righttitle").append(data.str);
             for(var i=0;i<data.data.length;i++){
-                var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>详情</span></span><span class='riskvalue'>风险值:"+(i+1)+"</span> ";
+                var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+(i+1)+"</span><span class='hideField'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div>"
                 $("#rightcontent").append(dataString);
+                var infoFontNum="infofont"+data.data[i].id;
+
+                /* var itemInfo="<div class='itemInfo'>" +
+                 "<span class='infoImg'><img src='image/qizhongji.jpg'></span><span class='infoMsg'><span class='msgItem'><span class='msgItemFont'>"+data.data[i].equipmentVariety+"</span></span><span>使用单位地址:"+data.data[i].unitAddress+"</span><span>组织机构代码:"+data.data[i].unitNumber+"</span><span>使用地点:"+data.data[i].userPoint+"</span><span>安全管理人员:"+data.data[i].safeManager+"</span><span>联系电话:"+data.data[i].contactPhone+"</span>" +
+                 "<span>制造单位:"+data.data[i].manufactureUnit+"</span><span>制造许可编号:"+data.data[i].manufacturelicensenumber+"</span></span></div> ";*/
+
+                $("#"+infoFontNum).mouseover(function(){
+                    alert(this.id);
+                    var address_equipmentvariety=$(".hideField").text();
+                    $.post("/rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                    var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
+                    $(itemInfo).css("display","block");
+                });
             }
+            /*$(".itemInfo").mouseout(function(){
+                $(".itemInfo").css("display","none");
+            });*/
         }
+    }
+    function getCraneInspectReportInfoByAddressAndEquipmentCallBack(data){
+            alert(data.data[0]);
     }
 
     $(document).ready(function(){
@@ -210,6 +228,7 @@ transitional.dtd">
                 $("#rightshow").css("display","block");
             }
         });
+
        $.post("rs/craneinspectreport/getAreaInfo",{"city":city,"pname":pname},areaInfoCallback,"json");
        var chaoyangMarker=new Array();
         function areaInfoCallback(data){

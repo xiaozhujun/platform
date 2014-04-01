@@ -43,16 +43,11 @@ public class PlatformReport {
          */
         private void exportReportByType(String reportTemplate,String type,Map parameters,HttpServletRequest request,HttpServletResponse response){
             File reportFile=null;
-            PrintWriter out=null;
-            try{
-                out=response.getWriter();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
             reportFile=new File(reportTemplate);
             try{
                 JasperReport jasperReport= (JasperReport)JRLoader.loadObject(reportFile.getPath());
                 if(type.equals("html")){
+                    PrintWriter out=response.getWriter();
                     response.setContentType("text/html");
                     JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, connection);
                     request.getSession().setAttribute(
@@ -64,6 +59,8 @@ public class PlatformReport {
                     exporter.setParameter(JRExporterParameter.OUTPUT_WRITER,out);
                     exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,"image?image=");
                     exporter.exportReport();
+                    out.flush();
+                    out.close();
                 }else if(type.equals("pdf")){
                     byte[] bytes=JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, connection);
                     response.setContentType("application/pdf");

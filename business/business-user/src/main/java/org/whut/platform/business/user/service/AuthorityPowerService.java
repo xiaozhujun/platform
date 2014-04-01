@@ -21,4 +21,12 @@ public class AuthorityPowerService {
     public List<AuthorityPower> getAuthorityPowerList(){
         return mapper.getAuthorityPowerList();
     }
+
+    public void add(AuthorityPower authorityPower){
+         mapper.add(authorityPower);
+    }
+
+    public int deleteByAuthorityName(String name) {
+        return mapper.deleteByAuthorityName(name);
+    }
 }

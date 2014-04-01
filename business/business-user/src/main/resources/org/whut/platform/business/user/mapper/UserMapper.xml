@@ -4,22 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.user.mapper.UserMapper">
     <sql id="user_fields">
-		ID,NAME,PASSWORD
+		ID,NAME,PASSWORD,SEX,ROLE
 	</sql>
 
     <resultMap id="userResultMap" type="User">
         <id property="id" column="ID" />
         <result property="name" column="NAME" />
         <result property="password" column="PASSWORD" />
+        <result property="sex" column="SEX"/>
+        <result property="role" column="ROLE"/>
     </resultMap>
 
-    <insert id="insert" parameterType="User" keyProperty="id"
+    <insert id="add" parameterType="User"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
         user(
         <include refid="user_fields" />
         )
-        VALUES (#{id}, #{name}, #{password);
+        VALUES (#{id}, #{name}, #{password},#{sex},#{role});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -38,21 +40,22 @@
     <update id="update" parameterType="User">
         UPDATE user
         <set>
-            <if test="id != null">ID=#{id},</if>
             <if test="name != null">NAME=#{name},</if>
-            <if test="examOrgName != null">EXATE=#{isDelete}</if>
+            <if test="password != null">PASSWORD=#{password},</if>
+            <if test="sex != null">SEX=#{sex},</if>
+            <if test="role !=null">ROLE=#{role}</if>
         </set>
         WHERE ID = #{id};
     </update>
 
-    <update id="delete" parameterType="User">
+    <delete id="delete" parameterType="User">
         DELETE FROM user
-        WHERE
         <where>
             <if test="id != null">ID=#{id}</if>
-            <if test="name != null">NAME=#{name}</if>
+
+            <if test="name != null"> AND NAME=#{name}</if>
         </where>
-    </update>
+    </delete>
 
     <select id="get" parameterType="User" resultMap="userResultMap">
         SELECT
@@ -65,4 +68,22 @@
         <include refid="user_fields" />
         FROM user where name=#{name}
     </select>
+
+    <select id="findByCondition" parameterType="map" resultMap="userResultMap">
+        SELECT
+        <include refid="user_fields"/>
+        FROM user
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="password!=null">AND PASSWORD=#{password}</if>
+            <if test="sex!=null">AND SEX=#{sex}</if>
+            <if test="role!=null">AND ROLE=#{role}</if>
+        </where>
+     </select>
+
+     <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+         SELECT
+         id
+         FROM user WHERE NAME=#{name}
+     </select>
 </mapper>

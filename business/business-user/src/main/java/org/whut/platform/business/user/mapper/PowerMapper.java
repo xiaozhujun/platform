@@ -15,4 +15,5 @@ import java.util.Map;
  */
 public interface PowerMapper extends AbstractMapper<Power>{
     public List<Power> findByCondition(Map<String,Object> map);
+    public long getIdByResource(String name);
 }

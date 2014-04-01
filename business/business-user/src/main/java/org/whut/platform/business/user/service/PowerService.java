@@ -35,4 +35,7 @@ public class PowerService {
         return mapper.findByCondition(new HashMap<String, Object>());
     }
 
+    public long getIdByResource(String name){
+       return mapper.getIdByResource(name);
+    }
 }

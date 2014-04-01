@@ -4,6 +4,7 @@ import org.whut.platform.business.user.entity.User;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,4 +15,6 @@ import java.util.List;
  */
 public interface UserMapper extends AbstractMapper<User>{
     public List<User> findByName(String name);
+    public List<User> findByCondition(Map<String,Object> map);
+    public long getIdByName(String name);
 }

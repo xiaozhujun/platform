@@ -15,13 +15,13 @@
         <result property="authorityName" column="AUTHORITYNAME" />
     </resultMap>
 
-    <insert id="insert" parameterType="AuthorityPower" keyProperty="id"
+    <insert id="add" parameterType="AuthorityPower" keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
-        user(
+        authority_power(
         <include refid="authority_power_fields" />
         )
-        VALUES (#{id}, #{powerId}, #{authorityId},#{powerResource},#{authorityName});
+        VALUES (#{id}, #{powerId}, #{authorityId},#{authorityName},#{powerResource});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -40,13 +40,10 @@
         WHERE ID = #{id};
     </update>
 
-    <update id="delete" parameterType="UserAuthority">
+    <delete id="deleteByAuthorityName" parameterType="java.lang.String">
         DELETE FROM authority_power
-        WHERE
-        <where>
-            <if test="id != null">ID=#{id}</if>
-        </where>
-    </update>
+        WHERE AUTHORITYNAME = #{authorityName};
+    </delete>
 
     <select id="get" parameterType="UserAuthority" resultMap="authorityPowerResultMap">
         SELECT

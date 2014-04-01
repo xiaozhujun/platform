@@ -15,10 +15,10 @@
         <result property="authorityName" column="AUTHORITYNAME" />
     </resultMap>
 
-    <insert id="insert" parameterType="UserAuthority" keyProperty="id"
+    <insert id="add" parameterType="UserAuthority" keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
-        user(
+        user_authority(
         <include refid="user_authority_fields" />
         )
         VALUES (#{id}, #{userId}, #{authorityId},#{userName},#{authorityName});
@@ -28,27 +28,23 @@
         </selectKey>
     </insert>
 
-    <update id="update" parameterType="UserAUTHORITY">
+    <update id="update" parameterType="UserAuthority">
         UPDATE user_authority
         <set>
-            <if test="id != null">ID=#{id},</if>
             <if test="userId != null">USERID=#{userId},</if>
-            <if test="authorityId != null">AUTHORITYID=#{authorityId}</if>
+            <if test="authorityId != null">AUTHORITYID=#{authorityId},</if>
             <if test="userName != null">USERNAME=#{userName},</if>
             <if test="authorityName != null">AUTHORITYNAME=#{authorityName}</if>
         </set>
-        WHERE ID = #{id};
+        WHERE USERNAME = #{userName};
     </update>
 
-    <update id="delete" parameterType="UserAUTHORITY">
+    <delete id="deleteByUserName" parameterType="java.lang.String">
         DELETE FROM user_authority
-        WHERE
-        <where>
-            <if test="id != null">ID=#{id}</if>
-        </where>
-    </update>
+        WHERE USERNAME = #{userName};
+    </delete>
 
-    <select id="get" parameterType="UserAUTHORITY" resultMap="userAuthorityResultMap">
+    <select id="get" parameterType="UserAuthority" resultMap="userAuthorityResultMap">
         SELECT
         <include refid="user_authority_fields" />
         FROM user_authority WHERE ID=#{id};

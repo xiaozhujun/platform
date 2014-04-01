@@ -14,6 +14,7 @@ import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.util.JSONPObject;
 import org.codehaus.jackson.type.JavaType;
+import org.codehaus.jettison.json.JSONArray;
 import org.springframework.util.StringUtils;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 

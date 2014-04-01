@@ -17,5 +17,5 @@ public interface AddressMapper extends AbstractMapper {
     public Address findById(long id);
     public Address findByArea(String area);
     public Long findIdByArea(@Param("province") String province,@Param("city")String city,@Param("area")String area);
-
+    public Long findIdByCityArea(@Param("city")String city,@Param("area")String area);
 }

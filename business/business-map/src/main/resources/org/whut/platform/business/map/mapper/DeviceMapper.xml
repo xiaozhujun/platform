@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.map.mapper.DeviceMapper">
+    <sql id="device_fields">
+		ID,NAME,DESCRIPTION,PICURL,RISKVALUE,CID
+	</sql>
+
+    <resultMap id="deviceResultMap" type="Device">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="picurl" column="PICURL" />
+        <result property="riskvalue" column="RISKVALUE" />
+        <result property="cid" column="CID" />
+    </resultMap>
+
+    <select id="findDeviceInfoById" parameterType="java.lang.Long" resultMap="deviceResultMap">
+        SELECT
+        d.*
+        FROM device d,company c WHERE c.id=d.cid AND c.id=#{cid}
+    </select>
+</mapper>

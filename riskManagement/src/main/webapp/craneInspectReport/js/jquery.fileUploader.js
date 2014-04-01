@@ -381,68 +381,68 @@
 			}
 		}
 		
-		/*
-		*	Process form Upload
-		*/
-		function html5Upload($form) {
-			file = $form.data('input');
-			if (file) {
-				var fd = new FormData();
-				fd.append($form.find(selector).attr('name'), file);
-				//get other form input and append to formData
-				$form.find(':input').each(function() {
-					if (this.type != 'file') {
-						fd.append($(this).attr('name'), $(this).val());
-					}
-				});
-				
-				//show progress bar
-				$uploadData = $form.parent();
-				$uploadData.find('.progress').show();
-				$progressBar = $uploadData.find('.progressBar');
-				$percentage = $uploadData.find('.percentage');
-				
-				//Upload using jQuery AJAX
-				jqxhr = $.ajax({
-					url: $form.attr('action'),
-					data: fd,
-					cache: false,
-					contentType: false,
-					processData: false,
-					type: 'POST',
-					xhr: function() {
-						var req = $.ajaxSettings.xhr();
-						if (req) {
-							req.upload.addEventListener('progress',function(ev){
-								//Display progress Percentage
-								progress = Math.round(ev.loaded * 100 / ev.total);
-								$percentage.text(progress.toString() + '%');
-								$progressBar.progressbar({
-									value: progress
-								});
-							}, false);
-						}
-						return req;
-					}
-				})
-				.success(function(data) {
-					afterEachUpload($form.attr('id'), data );
-				})
-				.error(function(jqXHR, textStatus, errorThrown) {
-					afterEachUpload($form.attr('id'), null, textStatus, errorThrown );
-				})
-				.complete(function(jqXHR, textStatus) {
-					$progressBar.progressbar({
-						value: 100
-					});
-					$percentage.text('100%');
-					
-					uploadQueue();
-				});
-			}
-			
-			$form.remove();
-		}
+            /*
+            *	Process form Upload
+            */
+            function html5Upload($form) {
+                file = $form.data('input');
+                if (file) {
+                    var fd = new FormData();
+                    fd.append($form.find(selector).attr('name'), file);
+                    //get other form input and append to formData
+                    $form.find(':input').each(function() {
+                        if (this.type != 'file') {
+                            fd.append($(this).attr('name'), $(this).val());
+                        }
+                    });
+
+                    //show progress bar
+                    $uploadData = $form.parent();
+                    $uploadData.find('.progress').show();
+                    $progressBar = $uploadData.find('.progressBar');
+                    $percentage = $uploadData.find('.percentage');
+
+                    //Upload using jQuery AJAX
+                    jqxhr = $.ajax({
+                        url: $form.attr('action'),
+                        data: fd,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        xhr: function() {
+                            var req = $.ajaxSettings.xhr();
+                            if (req) {
+                                req.upload.addEventListener('progress',function(ev){
+                                    //Display progress Percentage
+                                    progress = Math.round(ev.loaded * 100 / ev.total);
+                                    $percentage.text(progress.toString() + '%');
+                                    $progressBar.progressbar({
+                                        value: progress
+                                    });
+                                }, false);
+                            }
+                            return req;
+                        }
+                    })
+                    .success(function(data) {
+                        afterEachUpload($form.attr('id'), data );
+                    })
+                    .error(function(jqXHR, textStatus, errorThrown) {
+                        afterEachUpload($form.attr('id'), null, textStatus, errorThrown );
+                    })
+                    .complete(function(jqXHR, textStatus) {
+                        $progressBar.progressbar({
+                            value: 100
+                        });
+                        $percentage.text('100%');
+
+                        uploadQueue();
+                    });
+                }
+
+                $form.remove();
+            }
 		
 		/*
 		*	Iframe Upload Process

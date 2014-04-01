@@ -23,6 +23,8 @@
         <module>fundamental-mongoConnector</module>
         <module>fundamental-redisConnector</module>
         <module>fundamental-androidCasClient</module>
+        <module>fundamental-report</module>
+        <module>fundamental-map</module>
     </modules>
 
 

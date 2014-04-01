@@ -7,10 +7,7 @@ import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Iterator;
 import java.util.List;
@@ -83,5 +80,8 @@ public class AddressServiceWeb {
         Long addressId=addressService.findIdByArea(province,city,area);
         System.out.print(addressId+"......");
         return JsonResultUtils
-                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);    }
+                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+
 }

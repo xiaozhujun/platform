@@ -201,14 +201,23 @@ public class UserServiceWeb {
     @Path("currentUser")
     @GET
     public String  currentUser(){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+        String username = null;
+        Object credential = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
+        if(credential instanceof UserDetails){
+            UserDetails userDetails = (UserDetails) credential;
+            username = userDetails.getUsername();
+        }else{
+            username = (String)credential;
+        }
+        logger.info("current user is "+username);
         User user;
         try {
-            user = userService.findByName(userDetails.getUsername());
+            user = userService.findByName(username);
             user.setPassword("");
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error(e.getMessage());
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }

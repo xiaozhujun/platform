@@ -130,4 +130,10 @@ public class CraneInspectReportService {
         return mapper.getCraneInspectReportInfoByAddressAndEquipment(unitAddress,equipmentVariety);
     }
 
+    public List<CraneInspectReport> getUnitaddressByArea(String province,String city,String area)
+    {
+        return mapper.getUnitaddressByArea(province,city,area);
+
+    }
+
 }

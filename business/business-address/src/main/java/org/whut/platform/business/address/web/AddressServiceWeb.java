@@ -9,6 +9,7 @@ import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -83,5 +84,34 @@ public class AddressServiceWeb {
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/list")
+    @POST
+    public String list()
+    {
+        List<Address> list=addressService.list();
+        List<Address> provinceList=addressService.getProvinceList();
+        List<List<Address>> List =new ArrayList<List<Address>>();
+        List.add(list);
+        List.add(provinceList);
+        return JsonResultUtils.getObjectResultByStringAsDefault(List,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/getCityByProvince")
+    @POST
+    public String getCityByProvince(@FormParam("province") String province)
+    {
+        List<Address> list=addressService.getCityByProvince(province);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/getAreaByCity")
+    @POST
+    public String getAreaByCity(@FormParam("city") String city)
+    {
+        List<Address> list=addressService.getAreaByCity(city);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 
 }

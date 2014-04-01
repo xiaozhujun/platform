@@ -118,4 +118,14 @@ public class CraneInspectReportServiceWeb {
            List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoByAddressAndEquipment(str[0],str[1]);
            return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @Path("/getUnitaddressByArea")
+    @POST
+    public String getUnitaddressByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area)
+    {
+        List<CraneInspectReport> list=craneInspectReportService.getUnitaddressByArea(province,city,area);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+
+    }
 }

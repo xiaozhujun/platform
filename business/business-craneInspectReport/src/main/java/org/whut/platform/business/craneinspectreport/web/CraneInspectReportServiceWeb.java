@@ -109,13 +109,13 @@ public class CraneInspectReportServiceWeb {
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
-    @Path("/getCraneInspectReportInfoById")
-    public String getCraneInspectReportInfoByAddressAndEquipment(@FormParam("address_equipmentvariety") String address_equipmentvariety){
+    @Path("/getCraneInspectReportInfoByAddressAndEquipment")
+    public String getCraneInspectReportInfoByAddressAndEquipment(@FormParam("address_equipmentvariety") String address_equipmentvariety,@FormParam("itemInfoId") String itemInfo){
         if(address_equipmentvariety==null||address_equipmentvariety.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
            String[] str=address_equipmentvariety.split(",");
            List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoByAddressAndEquipment(str[0],str[1]);
-           return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+           return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,itemInfo);
     }
 }

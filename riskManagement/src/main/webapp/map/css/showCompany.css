@@ -2,7 +2,7 @@
 body{
 	font-size:13px;
 	margin:0px
-	} 
+	}
 #main{
 	/* background-color:#999999; */
 	width:100%;
@@ -17,6 +17,7 @@ body{
 	height:100%;
 	float: left;
 	margin-left:2px;
+    overflow: auto;
 	}
 #righttitle{
 	width:400px;
@@ -25,7 +26,7 @@ body{
 	background-color: #F6F6F6;
 	text-align: center;
 	line-height: 50px;
-	color: #454545;
+	color: #888888;
 	font-weight: bold;
 	font-size: 15px;
     border-bottom: 1px solid #AAAAAA;
@@ -39,10 +40,13 @@ body{
 }
 .rightitem{
 	width:100%;
-	height:80px;
-	margin-top: 1px;
-	border-bottom: 1px solid #AAAAAA;
-	
+	height:auto;
+}
+.righttop{
+    width:100%;
+    height:80px;
+    margin-top: 1px;
+    border-bottom: 1px solid #AAAAAA;
 }
 .rightitem:HOVER{
 	background-color: #F6F6F6;
@@ -56,11 +60,10 @@ body{
 	float: left;
 }
 .info{
-	width: 210px;
+	width: 260px;
 	height: 80px;
 	display: inline-block;
 	float: left;
-
 	line-height: 80px;
 }
 .riskvalue{
@@ -71,22 +74,35 @@ body{
 	line-height: 80px;
 }
 .pic img{
-	width: 110px;
-	height: 80px;
+	width: 85px;
+	height: 60px;
+    margin-left: 9px;
+    margin-top: 10px;
 }
 .itemfont{
-	margin-left: 12px;
+	margin-left: 4px;
 	font-size: 15px;
 	font-weight: bold;
-	
+	color:#888888;
+}
+.titleFont{
+    margin-left: 4px;
+}
+._titleFont{
+    margin-left: 40px;
+    width: 200px;
+    margin-top: 6px;
+    height: 25px;
+    display: inline-block;
+    color:#888888;
 }
 .infofont{
-    margin-left: 14px;
+    margin-left: 12px;
     font-size: 15px;
-    font-weight: bold;
     cursor: pointer;
-    margin-left: 14px;
-    display: inline-block;
+    font-weight: bold;
+    float: right;
+    color:#888888;
 }
 .errorInfo{
     margin-left: 10px;
@@ -97,37 +113,64 @@ body{
 .itemInfo{
      display: none;
      width: 400px;
-     height: 200px;
-     z-index: 999;
-     position: relative;
-     clear: both;
+     height: auto;
+     /*position: absolute;*/
+    /* clear: both;*/
      border: 1px solid #999999;
+     float: left;
+}
+._infoTitle{
+     width: 400px;
+     height: 30px;
+     border-bottom: 1px solid #DDDDDD;
+     /*background-color: #ffffff;*/
+     display: inline-block;
+}
+._info{
+    border-bottom: 1px solid #999999;
+    width: 400px;
+    height: auto;
+    float: left;
+    background-color: #E7EFF6;
+}
+.titleItem{
+    width: 234px;
+    height: 25px;
+    margin-left: 2px;
+    margin-top: 2px;
+    background-color: #ffffff;
+    float: left;
 }
 .itemInfo img{
-    width: 150px;
-    height: 200px;
+    width: 300px;
+    height: 180px;
+    margin-top: 2px;
+    margin-left: 5px;
 }
 .infoImg{
-    width: 150px;
-    height: 200px;
+    width: 310px;
+    height: 188px;
+    margin-left: 35px;
     float: left;
 }
 .infoMsg{
-   width: 240px;
+    width: 300px;
     height: 200px;
     float: right;
-    margin-left: 1px;
+    margin-left: 40px;
     float: left;
+    overflow:auto;
+    background-color: #f5f5f5;
 }
 .msgItem{
-    background-color: red;
     width: 240px;
     height: 30px;
     display: inline-block;
-    margin-top: 1px;
+    margin-top: 2px;
+    color:#888888;
 }
 .msgItemFont{
-   margin-top: 2px;
+   margin-top: 4px;
    margin-left: 5px;
    display: inline-block;
   }
@@ -135,4 +178,25 @@ body{
     display: none;
 
 }
+.cl{
+    clear: both;
+}
+.detailMsg{
+    width:300px ;
+    height: 30px;
+    margin-left: 40px;
+    text-align: center;
+    line-height: 30px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    float: left;
+    background-color: #ffffff;
+    cursor: pointer;
+    color:#888888;
+}
+.detailMsg:hover{
+    background-color:#999999;
+    color: #FFFFFF;
+}
+
 

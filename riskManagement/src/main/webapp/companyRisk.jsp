@@ -1,7 +1,6 @@
 <%@ page import="java.net.URLDecoder" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
 transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>起重机械风险管理平台-企业风险</title>
@@ -17,18 +16,14 @@ transitional.dtd">
     <link rel="stylesheet" href="map/css/showCompany.css"/>
     <link rel="stylesheet" href="map/css/style.css"/>
     <script type="text/javascript" src="map/js/getParam.js"></script>
-
     <style type="text/css">
-        body{ padding:10px; margin:0;}
+        body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
             margin:0; padding:0;}
         h4{ margin:20px;}
     </style>
 </head>
 <body style="padding:10px">
-
-
-
 <div id="layout">
     <div id="mainContainer" position="center" title="">
         <div id="main">
@@ -37,7 +32,6 @@ transitional.dtd">
                 <div id="panelimg2" class="arrow_bg_img"></div>
                 <!--<img class="collapse-left3" src="img/panelarrow2.png" id="panelimg2">-->
             </div>
-
             <div id="rightshow">
                 <div id='righttitle'>
                 </div>
@@ -45,24 +39,19 @@ transitional.dtd">
                 </div>
             </div>
             <div id="container"></div>
-
         </div>
     </div>
     <!--<div position="right"></div>-->
     <div id="titleContainer" position="top"></div>
     <!--<div position="bottom"></div>-->
 </div>
-
 <div style="display:none;">
-
 </div>
-
 <script type="text/javascript">
     var city='<%=URLDecoder.decode(request.getParameter("city"),"utf-8")%>';
     var pname='<%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%>';
     var lat='<%=request.getParameter("lat")%>';
     var lng='<%=request.getParameter("lng")%>';
-
     function initMap(lng,lat){
         createMap(lng,lat);//创建地图
         setMapEvent();//设置地图事件
@@ -93,7 +82,6 @@ transitional.dtd">
         var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
         map.addControl(ctrl_sca);
     }
-
     //创建marker
     function addMarker(markerArr){
         for(var i=0;i<markerArr.length;i++){
@@ -123,7 +111,6 @@ transitional.dtd">
                     this.openInfoWindow(_iw);
                     var name=markerArr[index];
                     $.post("rs/craneinspectreport/getAreaInfoByUnitAddress",{"name":name.title},mapCallback,"json");
-
                 });
                 function  mapCallback(data){
                     if(data.code==200){
@@ -133,8 +120,20 @@ transitional.dtd">
                         $("#rightcontent").html("");
                         $("#righttitle").append(data.str);
                         for(var i=0;i<data.data.length;i++){
-                            var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='infofont'>详情</span></span><span class='riskvalue'>风险值:"+(i+2)+"</span> ";
+                            var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+(i+1)+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                             $("#rightcontent").append(dataString);
+                            var infoFontNum="infofont"+data.data[i].id;
+                            $("#"+infoFontNum).click(function(){
+                                var hideField="hideField"+(this.id).substring(8,(this.id).length);
+                                var address_equipmentvariety=$("#"+hideField).text();
+                                var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
+                                $(itemInfo).html("");
+                                $.post("/rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                                $(itemInfo).toggle();
+                                /*$(itemInfo).mouseup(function(){
+                                    $(itemInfo).css("display","none");
+                                });*/
+                            });
                         }
                     }
                 }
@@ -166,7 +165,6 @@ transitional.dtd">
         var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
         return icon;
     }
-
     function searchByStationName(address) {
         //map.clearOverlays();//清空原来的标注
         var keyword = address;
@@ -189,31 +187,33 @@ transitional.dtd">
             $("#rightcontent").html("");
             $("#righttitle").append(data.str);
             for(var i=0;i<data.data.length;i++){
-                var dataString="<div class='rightitem'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+(i+1)+"</span><span class='hideField'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div>"
+                var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+(i+1)+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div><div class='cl'></div></div>"
                 $("#rightcontent").append(dataString);
                 var infoFontNum="infofont"+data.data[i].id;
-
-                /* var itemInfo="<div class='itemInfo'>" +
-                 "<span class='infoImg'><img src='image/qizhongji.jpg'></span><span class='infoMsg'><span class='msgItem'><span class='msgItemFont'>"+data.data[i].equipmentVariety+"</span></span><span>使用单位地址:"+data.data[i].unitAddress+"</span><span>组织机构代码:"+data.data[i].unitNumber+"</span><span>使用地点:"+data.data[i].userPoint+"</span><span>安全管理人员:"+data.data[i].safeManager+"</span><span>联系电话:"+data.data[i].contactPhone+"</span>" +
-                 "<span>制造单位:"+data.data[i].manufactureUnit+"</span><span>制造许可编号:"+data.data[i].manufacturelicensenumber+"</span></span></div> ";*/
-
-                $("#"+infoFontNum).mouseover(function(){
-                    alert(this.id);
-                    var address_equipmentvariety=$(".hideField").text();
-                    $.post("/rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                $("#"+infoFontNum).click(function(){
+                    var hideField="#hideField"+(this.id).substring(8,(this.id).length);
+                    var address_equipmentvariety=$(hideField).text();
                     var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
-                    $(itemInfo).css("display","block");
+                    $(itemInfo).html("");
+                    $.post("/rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                    $(itemInfo).toggle();
+                   /* $(itemInfo).mouseup(function(){
+                        $(itemInfo).css("display","none");
+                    });*/
                 });
             }
-            /*$(".itemInfo").mouseout(function(){
-                $(".itemInfo").css("display","none");
-            });*/
         }
     }
     function getCraneInspectReportInfoByAddressAndEquipmentCallBack(data){
-            alert(data.data[0]);
+            if(data.code==200){
+                var itemInfoId=data.str;
+                for(i=0;i<data.data.length;i++){
+                    var itemInfo="<div class='_info'><span><span class='_infoTitle'><span class='_titleFont'>起重机风险管理平台</span></span><span class='infoImg'><img src='image/qizhongji.jpg'></span><span class='infoMsg'><span class='msgItem'><span class='msgItemFont'>"+data.data[i].equipmentVariety+"</span></span><span class='msgItem'><span class='msgItemFont'>制造许可编号:"+data.data[i].manufactureLicenseNumber+"</span></span><span class='msgItem'><span class='msgItemFont'>组织机构代码:"+data.data[i].unitNumber+"</span></span><span class='msgItem'><span class='msgItemFont'>使用地点:"+data.data[i].userPoint+"</span></span><span class='msgItem'><span class='msgItemFont'>安全管理人员:"+data.data[i].safeManager+"</span></span><span class='msgItem'><span class='msgItemFont'>联系电话:"+data.data[i].contactPhone+"</span></span>" +
+                            "<span class='msgItem'><span class='msgItemFont'>制造单位:"+data.data[i].manufactureUnit+"</span></span><span class='msgItem'><span class='msgItemFont'>使用单位地址:"+data.data[i].unitAddress+"</span></span></span><span class='detailMsg'>查看完整内容</span></div>";
+                         $(itemInfoId).append(itemInfo);
+                }
+            }
     }
-
     $(document).ready(function(){
 
         $("#layout").ligerLayout({leftWidth:200});
@@ -228,7 +228,6 @@ transitional.dtd">
                 $("#rightshow").css("display","block");
             }
         });
-
        $.post("rs/craneinspectreport/getAreaInfo",{"city":city,"pname":pname},areaInfoCallback,"json");
        var chaoyangMarker=new Array();
         function areaInfoCallback(data){
@@ -253,7 +252,6 @@ transitional.dtd">
              }
         }
             initMap(lng,lat);
-
     });
 </script>
 </body>

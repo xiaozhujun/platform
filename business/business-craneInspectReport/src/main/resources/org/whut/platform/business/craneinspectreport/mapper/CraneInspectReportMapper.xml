@@ -56,6 +56,6 @@
         SELECT
         *
         FROM craneinspectreport
-        where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety}
+        where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
     </select>
 </mapper>

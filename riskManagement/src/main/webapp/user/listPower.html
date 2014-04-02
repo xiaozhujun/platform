@@ -101,7 +101,11 @@
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
+<<<<<<< HEAD
+                $.post($.URL.power.delete,{"jsonString":jsonString},deleteCallback,"json");
+=======
                 $.post($.URL.power.delete,{"jsonString":jsonString},updateCallback,"json");
+>>>>>>> 81c637e175dc1a009f6e6d950ee229df5617c470
                 manager.deleteRow(rowid);
             }
         }

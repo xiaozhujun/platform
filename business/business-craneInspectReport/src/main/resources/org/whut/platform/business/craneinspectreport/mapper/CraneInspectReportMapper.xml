@@ -58,4 +58,25 @@
         FROM craneinspectreport
         where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
     </select>
+    <select id="getUnitaddressByArea" parameterType="map"   resultMap="craneInspectReportResultMap">
+        select
+        distinct (unitaddress)
+        from craneinspectreport
+        where
+        addressid=(
+        SELECT id
+        FROM address
+        <where>
+            <if test="province != null">
+                PROVINCE=#{province}
+            </if>
+            <if test="city != null">
+                and CITY=#{city}
+            </if>
+            <if test="area != null">
+                and AREA=#{area}
+            </if>
+        </where>
+        )
+    </select>
 </mapper>

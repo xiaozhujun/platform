@@ -18,9 +18,20 @@ public class UserAuthorityService {
     @Autowired
     private UserAuthorityMapper mapper;
 
+    public void add(UserAuthority userAuthority){
+        mapper.add(userAuthority);
+    }
     //查找用户对应的角色
     public List<UserAuthority> findByUserName(String username){
         if(username==null || username.trim().equals("")) return null;
         return mapper.findByUserName(username);
+    }
+
+    public int update(UserAuthority userAuthority){
+        return mapper.update(userAuthority);
+    }
+
+    public int deleteByUserName(String userName){
+        return mapper.deleteByUserName(userName);
     }
 }

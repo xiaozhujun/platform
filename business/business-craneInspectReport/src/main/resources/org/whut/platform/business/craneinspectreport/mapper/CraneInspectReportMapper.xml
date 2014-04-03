@@ -38,4 +38,62 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+
+    <update id="update" parameterType="CraneInspectReport">
+        UPDATE  craneinspectreport
+        <set>
+            <if test="unitAddress!=null" >UNITADDRESS=#{unitAddress},</if>
+            <if test="addressId!=null" >ADDRESSID=#{addressId},</if>
+            <if test="organizeCode!=null" >ORGANIZECODE=#{organizeCode},</if>
+            <if test="userPoint!=null" >USEPOINT=#{userPoint},</if>
+            <if test="safeManager!=null" >SAFEMANAGER=#{safeManager},</if>
+            <if test="contactPhone!=null" >CONTACTPHONE=#{contactPhone},</if>
+            <if test="equipmentVariety!=null" >EQUIPMENTVARIETY=#{equipmentVariety},</if>
+            <if test="unitNumber!=null" >UNITNUMBER=#{unitNumber},</if>
+            <if test="manufactureUnit!=null" >MANUFACTUREUNIT=#{manufactureUnit},</if>
+            <if test="manufactureLicenseNumber!=null">MANUFACTURELICENSENUMBER=#{manufactureLicenseNumber},</if>
+            <if test="manufactureDate!=null" >MANUFACTUREDATE=#{manufactureDate},</if>
+            <if test="specification!=null" >SPECIFICATION=#{specification},</if>
+            <if test="pNumber!=null" >PNUMBER=#{pNumber},</if>
+            <if test="workLevel!=null" >WORKLEVEL=#{workLevel}</if>
+        </set>
+        WHERE  REPORTNUMBER=#{reportNumber};
+    </update>
+
+    <select id="get" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM craneinspectreport WHERE ID=#{id}
+    </select>
+
+     <select id="getReportNumber" parameterType="java.lang.String" resultType="java.lang.String">
+         SELECT reportNumber
+         FROM craneinspectreport
+         WHERE REPORTNUMBER=#{reportNumber}
+     </select>
+
+
+    <select id="findByCondition" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM craneinspectreport
+        <where>
+            <if test="reportNumber!=null">REPORTNUMBER=#{reportNumber}</if>
+            <if test="unitAddress!=null">AND UNITADDRESS=#{unitAddress}</if>
+            <if test="addressId!=null">AND ADDRESSID=#{addressId}</if>
+            <if test="organizeCode!=null">AND ORGANIZECODE=#{organizeCode}</if>
+            <if test="userPoint!=null">AND USEPOINT=#{userPoint}</if>
+            <if test="safeManager!=null">AND SAFEMANAGER=#{safeManager}</if>
+            <if test="contactPhone!=null">AND CONTACTPHONE=#{contactPhone}</if>
+            <if test="equipmentVariety!=null">AND EQUIPMENTVARIETY=#{equipmentVariety}</if>
+            <if test="unitNumber!=null">AND UNITNUMBER=#{unitNumber}</if>
+            <if test="manufactureUnit!=null">AND MANUFACTUREUNIT=#{manufactureUnit}</if>
+            <if test="manufactureLicenseNumber!=null">AND MANUFACTURELICENSENUMBER=#{manufactureLicenseNumber}</if>
+            <if test="manufactureDate!=null">AND MANUFACTUREDATE=#{manufactureDate}</if>
+            <if test="specification!=null">AND SPECIFICATION=#{specification}</if>
+            <if test="pNumber!=null">AND PNUMBER=#{pNumber}</if>
+            <if test="workLevel!=null">AND WORKLEVEL=#{workLevel}</if>
+        </where>
+    </select>
+
 </mapper>

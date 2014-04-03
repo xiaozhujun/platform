@@ -30,7 +30,7 @@ public class UserServiceWeb {
     @Autowired
     private UserService userService;
 
-    @Path("add")
+    @Path("/add")
     @POST
     public Map<String,Object> add(@FormParam("jsonString") String jsonString){
         User user = JsonMapper.buildNormalMapper().fromJson(

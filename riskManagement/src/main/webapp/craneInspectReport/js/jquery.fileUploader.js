@@ -404,27 +404,27 @@
 				
 				//Upload using jQuery AJAX
 				jqxhr = $.ajax({
-					url: $form.attr('action'),
-					data: fd,
-					cache: false,
-					contentType: false,
-					processData: false,
-					type: 'POST',
-					xhr: function() {
-						var req = $.ajaxSettings.xhr();
-						if (req) {
-							req.upload.addEventListener('progress',function(ev){
-								//Display progress Percentage
-								progress = Math.round(ev.loaded * 100 / ev.total);
-								$percentage.text(progress.toString() + '%');
-								$progressBar.progressbar({
-									value: progress
-								});
-							}, false);
-						}
-						return req;
-					}
-				})
+                    url: $form.attr('action'),
+                    data: fd,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    xhr: function() {
+                        var req = $.ajaxSettings.xhr();
+                        if (req) {
+                            req.upload.addEventListener('progress',function(ev){
+                                //Display progress Percentage
+                                progress = Math.round(ev.loaded * 100 / ev.total);
+                                $percentage.text(progress.toString() + '%');
+                                $progressBar.progressbar({
+                                    value: progress
+                                });
+                            }, false);
+                        }
+                        return req;
+                    }
+                })
 				.success(function(data) {
 					afterEachUpload($form.attr('id'), data );
 				})

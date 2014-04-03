@@ -19,7 +19,7 @@
         user(
         <include refid="user_fields" />
         )
-        VALUES (#{id}, #{name}, #{password);
+        VALUES (#{id}, #{name}, #{password});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id

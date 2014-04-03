@@ -7,10 +7,12 @@ import org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMa
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
+import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.platform.fundamental.util.tool.ToolUtil;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 /**
  * Created with IntelliJ IDEA.
@@ -28,11 +30,14 @@ public class CraneInspectReportService {
     private JxlExportImportUtils jxlExportImportUtils;
     private CraneInspectReport craneInspectReport;
     private ToolUtil toolUtil=new ToolUtil();
+    private List<CraneInspectReport> listRepeat=new ArrayList<CraneInspectReport>();
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
+
     public void upload(InputStream inputStream,String fileName){
       String documentJson=getMongoStringFromRequest(inputStream,fileName);
       mongoConnector.insertDocument(documentJson);
     }
+    //返回MongoString
     public String getMongoStringFromRequest(InputStream inputStream,String fileName){
              String mString;
              excelMap=jxlExportImportUtils.analysisExcel(inputStream);
@@ -48,7 +53,13 @@ public class CraneInspectReportService {
                      //addressId查不到
                  }else{
                  craneInspectReport=transferExcelMapToCraneInspectReportObject(excelMap,i,addressId);
-                 mapper.insert(craneInspectReport);
+                 String s=craneInspectReport.getReportNumber();
+                 String  reportNumber=mapper.getReportNumber(s);
+                 if(reportNumber==null){
+                     mapper.insert(craneInspectReport);
+                 }else{
+                     listRepeat.add(craneInspectReport);
+                 }
                  }
                  }
              }
@@ -56,6 +67,14 @@ public class CraneInspectReportService {
                mString=getDocumentJson(excelMap);
                return mString;
     }
+    //获取重复的记录
+    public List<CraneInspectReport> getRepeatList(){
+        return listRepeat;
+    }
+    public int update(CraneInspectReport craneInspectReport){
+        return mapper.update(craneInspectReport);
+    }
+    //获取键值对
     public String getDocumentJson(ExcelMap excelMap){
         String documentJson="{craneinspectreports:[";
         for(int i=0;i<excelMap.getContents().size()-1;i++){
@@ -74,6 +93,7 @@ public class CraneInspectReportService {
         documentJson+="]}";
         return documentJson;
     }
+    //将execl的中数据转化成CraneInspectReport对象
     public CraneInspectReport transferExcelMapToCraneInspectReportObject(ExcelMap excelMap,int i,Long addressId){
              Date d=toolUtil.transferStringToDate(excelMap.getContents().get(i).get(10));
              craneInspectReport=new CraneInspectReport();
@@ -94,6 +114,7 @@ public class CraneInspectReportService {
              craneInspectReport.setWorkLevel(excelMap.getContents().get(i).get(13));
              return craneInspectReport;
     }
+    //从execl中获取地址信息
     private Address getAddressFromExcel(ExcelMap excelMap,int i){
         if(toolUtil.parseAddress(excelMap.getContents().get(i).get(1)).equals("0")){
             return null;
@@ -105,6 +126,9 @@ public class CraneInspectReportService {
         address.setArea(str[2]);
         return address;
         }
+    }
+    public List<CraneInspectReport> list(){
+        return mapper.findByCondition(new HashMap<String, Object>());
     }
 
 

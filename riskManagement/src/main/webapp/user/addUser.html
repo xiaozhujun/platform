@@ -15,20 +15,13 @@
     <script type="text/javascript">
         $(function ()
         {
-            $("#powerType").ligerComboBox({
-                data: [
-                    { text: 'menu', id: '1' },
-                    { text: 'resource', id: '2' },
-                    { text: 'service', id: '3' }
-                ], valueFieldID: 'powerTypeSelect'
-            });
-
             $("#submitBtn").click(function(){
                 var data = {};
-                data.resource = $("#powerName").val();
-                data.description = $("#powerDescription").val();
-                data.type = $("#powerType").val();
-                $.post($.URL.power.add,data,addResourceCallback,"json");
+                data.name = $("#userName").val();
+                data.password = $("#password").val();
+                data.sex = $("#sex").val();
+                data.role = $("#role").val();
+                $.post($.URL.user.add,data,addResourceCallback,"json");
             });
         });
 
@@ -53,22 +46,28 @@
     </div>
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
-            <td align="right" class="l-table-edit-td">内容:</td>
+            <td align="right" class="l-table-edit-td">用户名:</td>
             <td align="left" class="l-table-edit-td">
-                <input  type="text" id="powerName" ltype="text" /></td>
+                <input name="userName" type="text" id="userName" ltype="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">类型:</td>
+            <td align="right" class="l-table-edit-td">密码:</td>
             <td align="left" class="l-table-edit-td">
-               <input type="text" readonly="true" id="powerType">
-            </td>
+                <input type="text" name="password" id="password" ltype="text"/></td>
+            </td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">说明:</td>
+            <td align="right" class="l-table-edit-td">性别:</td>
             <td align="left" class="l-table-edit-td">
-                <textarea id="powerDescription" cols="100" rows="4" class="l-textarea" style="width:400px"></textarea>
-            </td><td align="left"></td>
+                <input type="text" name="sex" id="sex" ltype="text"/></td>
+            </td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">角色:</td>
+            <td align="left" class="l-table-edit-td">
+                <input type="text" name="role" id="role" ltype="text"/></td>
+            </td align="left"></td>
         </tr>
     </table>
     <br />

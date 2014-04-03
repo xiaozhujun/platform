@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.user.mapper.AuthorityMapper">
+    <sql id="authority-fileds">
+        ID,NAME,DESCRIPTION,STATUS
+    </sql>
+    <resultMap id="authorityResultMap" type="Authority">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="status" column="STATUS"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Authority" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        authority(
+        <include refid="authority-fileds"/>
+        )
+        VALUES (#{id},#{name},#{description},#{status});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Authority" >
+        UPDATE authority
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="status!=null">STATUS=#{status}</if>
+        </set>
+        WHERE  ID=#{id};
+    </update>
+
+    <delete id="delete" parameterType="Authority">
+        DELETE FROM authority
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="Authority" resultMap="authorityResultMap">
+        SELECT
+        <include refid="authority-fileds"/>
+        FROM authority WHERE ID=#{id}
+    </select>
+
+    <select id="findByCondition" parameterType="Authority" resultMap="authorityResultMap">
+        SELECT
+        <include refid="authority-fileds"/>
+        FROM authority
+        <where>
+            <if test="name!=null">TEST=#{name}</if>
+            <if test="description!=null">DESCRIPTION=#{description}</if>
+            <if test="status!=null">STATUS=#{status}</if>
+        </where>
+    </select>
+
+</mapper>

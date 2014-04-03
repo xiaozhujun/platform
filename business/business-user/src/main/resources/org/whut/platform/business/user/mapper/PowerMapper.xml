@@ -30,7 +30,7 @@
     <update id="update" parameterType="Power">
         UPDATE power
         <set>
-            <if test="resource != null">DESCRIPTION=#{resource},</if>
+            <if test="resource != null">RESOURCE=#{resource},</if>
             <if test="type != null">TYPE=#{type},</if>
             <if test="description != null">DESCRIPTION=#{description}</if>
         </set>
@@ -42,7 +42,6 @@
         <where>
             <if test="id != null">ID=#{id}</if>
         </where>
-
     </update>
 
     <select id="get" parameterType="Power" resultMap="powerResultMap">

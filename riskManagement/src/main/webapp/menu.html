@@ -20,6 +20,8 @@
 
             $("#fileUploadLi").trigger("click");
             $("div:contains(数据管理)").parent().trigger("click");
+            $("#fileDownloadLi").trigger("click");
+            $("div:contains(数据查询)").parent().trigger("click");
         });
 
     </script>
@@ -34,14 +36,14 @@
 <div id="accordion">
     <div title="用户管理" style="padding:10px">
         <ul>
-            <li>添加用户</li>
+            <li url="user/addUser.html">添加用户</li>
             <li>用户列表</li>
         </ul>
     </div>
     <div title="角色管理" style="padding:10px">
         <ul>
-            <li>添加角色</li>
-            <li>角色列表</li>
+            <li url="user/addAuthority.html">添加角色</li>
+            <li url="user/test.html">角色列表</li>
         </ul>
     </div>
     <div title="资源管理" style="padding:10px">
@@ -56,10 +58,15 @@
             <li>报表查询</li>
         </ul>
     </div>
-</div>
+    <div id="dataDiv-query" title="数据查询" style="padding:10px">
+        <ul>
+            <li id="fileDownloadLi" url="craneInspectReport/filedownload.html">报表展示</li>
+        </ul>
+    </div>
 
 <div style="display:none;">
 
+</div>
 </div>
 </body>
 </html>

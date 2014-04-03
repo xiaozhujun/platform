@@ -47,8 +47,14 @@ public class CraneInspectReportTest {
            }
     }
     public static void main(String[] args){
-        CraneInspectReportTest craneInspectReportTest=new CraneInspectReportTest();
-      /*  System.out.print(craneInspectReportTest.getDocumentJson("E://门座式起重机.xls"));*/
-        craneInspectReportTest.parseExcel("E://门座式起重机.xls");
+        /*CraneInspectReportTest craneInspectReportTest=new CraneInspectReportTest();
+      *//*  System.out.print(craneInspectReportTest.getDocumentJson("E://门座式起重机.xls"));*//*
+        craneInspectReportTest.parseExcel("E://门座式起重机.xls");*/
+        String s="Role_User"+"v";
+        String[] str=s.split(";");
+        for(int i=0;i<str.length;i++){
+            System.out.print(str[i]);
+        }
+
     }
 }

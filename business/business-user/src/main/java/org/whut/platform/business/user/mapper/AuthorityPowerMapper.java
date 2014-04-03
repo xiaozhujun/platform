@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface AuthorityPowerMapper extends AbstractMapper<AuthorityPower> {
     public List<AuthorityPower> getAuthorityPowerList();
+    public int deleteByAuthorityName(String name);
 }

@@ -34,5 +34,28 @@ public class AddressService {
           }
         return mapper.findIdByArea(province,city,area);
     }
+    public Long findIdByCityArea(String city,String area){
+        if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
+            return  null;
+        }
+        return mapper.findIdByCityArea(city,area);
+    }
+
+    public List<Address> getProvinceList()
+    {
+        return mapper.getProvinceList();
+    }
+    public List<Address> list()
+    {
+        return  mapper.list();
+    }
+    public List<Address> getCityByProvince(String province)
+    {
+        return mapper.getCityByProvince(province);
+    }
+    public List<Address> getAreaByCity(String city)
+    {
+        return mapper.getAreaByCity(city);
+    }
 
 }

@@ -4,7 +4,11 @@ Source Host: localhost
 Source Database: riskmanagement
 Target Host: localhost
 Target Database: riskmanagement
+<<<<<<< HEAD
 Date: 2014/4/1 16:41:56
+=======
+Date: 2014/3/30 23:10:43
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +36,11 @@ CREATE TABLE `craneinspectreport` (
   `lng` varchar(255) DEFAULT NULL,
   `lat` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=4853 DEFAULT CHARSET=utf8;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=4711 DEFAULT CHARSET=utf8;
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 
 -- ----------------------------
 -- Records 

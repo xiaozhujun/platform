@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-03-24 00:21:15
+Date: 2014-03-24 15:53:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,13 +44,14 @@ CREATE TABLE `authority_power` (
   `powerResource` varchar(255) DEFAULT NULL,
   `authorityName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authority_power
 -- ----------------------------
-INSERT INTO `authority_power` VALUES ('1', '1', '1', 'rs/**', 'ROLE_USER');
-INSERT INTO `authority_power` VALUES ('2', '1', '4', 'index.html', 'ROLE_USER');
+INSERT INTO `authority_power` VALUES ('1', '1', '1', '/rs/**', 'ROLE_USER');
+INSERT INTO `authority_power` VALUES ('2', '1', '4', '/index.html', 'ROLE_USER');
+INSERT INTO `authority_power` VALUES ('3', '2', '3', '/admin.html', 'ROLE_ADMIN');
 
 -- ----------------------------
 -- Table structure for power
@@ -62,21 +63,16 @@ CREATE TABLE `power` (
   `type` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of power
 -- ----------------------------
-INSERT INTO `power` VALUES ('1', 'rs/**', 'resource', '所有rest服务');
-INSERT INTO `power` VALUES ('2', 'user.html', 'url', null);
-INSERT INTO `power` VALUES ('3', 'admin.html', 'url', null);
-INSERT INTO `power` VALUES ('4', 'index.html', 'url', null);
-INSERT INTO `power` VALUES ('6', 'rs/power/**', 'service', 'test1');
-INSERT INTO `power` VALUES ('8', 'rs/power/**', 'service', 'test');
-INSERT INTO `power` VALUES ('9', 'rs/power/**', 'service', 'test');
-INSERT INTO `power` VALUES ('10', 'rs/user/**', 'service', '用户后台服务');
-INSERT INTO `power` VALUES ('11', 'rs/user/**', 'service', '用户后台服务');
-INSERT INTO `power` VALUES ('12', 'rs/user/**', 'service', '用户后台服务');
+INSERT INTO `power` VALUES ('1', '/rs/**', 'resource', '所有rest服务');
+INSERT INTO `power` VALUES ('2', '/user.html', 'url', null);
+INSERT INTO `power` VALUES ('3', '/admin.html', 'url', null);
+INSERT INTO `power` VALUES ('4', '/index.html', 'url', null);
+INSERT INTO `power` VALUES ('15', 'cas/**', 'service', 'cas client test from android');
 
 -- ----------------------------
 -- Table structure for user

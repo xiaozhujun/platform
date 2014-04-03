@@ -6,14 +6,21 @@ import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper;
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
+import org.whut.platform.fundamental.map.BaiduMapUtil;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.platform.fundamental.util.tool.ToolUtil;
 import java.io.InputStream;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+=======
+import java.security.PublicKey;
+import java.util.*;
+
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 /**
  * Created with IntelliJ IDEA.
  * User: zhuzhenhua
@@ -30,7 +37,11 @@ public class CraneInspectReportService {
     private JxlExportImportUtils jxlExportImportUtils;
     private CraneInspectReport craneInspectReport;
     private ToolUtil toolUtil=new ToolUtil();
+<<<<<<< HEAD
     private List<CraneInspectReport> listRepeat=new ArrayList<CraneInspectReport>();
+=======
+    private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
 
     public void upload(InputStream inputStream,String fileName){
@@ -112,9 +123,24 @@ public class CraneInspectReportService {
              craneInspectReport.setSpecification(excelMap.getContents().get(i).get(11));
              craneInspectReport.setpNumber(excelMap.getContents().get(i).get(12));
              craneInspectReport.setWorkLevel(excelMap.getContents().get(i).get(13));
+             Map map=getCoordinate(craneInspectReport.getUnitAddress());
+             craneInspectReport.setLng(map.get("lng").toString());
+             craneInspectReport.setLat(map.get("lat").toString());
              return craneInspectReport;
     }
+<<<<<<< HEAD
     //从execl中获取地址信息
+=======
+    private Map<String,String> getCoordinate(String unitAddress){
+        Map map=new HashMap();
+        try{
+        map=baiduMapUtil.getCoordinate(unitAddress);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return map;
+        }
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     private Address getAddressFromExcel(ExcelMap excelMap,int i){
         if(toolUtil.parseAddress(excelMap.getContents().get(i).get(1)).equals("0")){
             return null;
@@ -127,9 +153,25 @@ public class CraneInspectReportService {
         return address;
         }
     }
+<<<<<<< HEAD
     public List<CraneInspectReport> list(){
         return mapper.findByCondition(new HashMap<String, Object>());
+=======
+    public List<CraneInspectReport> getInfoByAddressId(Long id){
+        return mapper.getInfoByAddressId(id);
+    }
+    public List<CraneInspectReport> getInfoByUnitAddress(String name){
+        return mapper.getInfoByUnitAddress(name);
+    }
+    public List<CraneInspectReport> getCraneInspectReportInfoByAddressAndEquipment(String unitAddress,String equipmentVariety){
+        return mapper.getCraneInspectReportInfoByAddressAndEquipment(unitAddress,equipmentVariety);
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     }
 
+    public List<CraneInspectReport> getUnitaddressByArea(String province,String city,String area)
+    {
+        return mapper.getUnitaddressByArea(province,city,area);
+
+    }
 
 }

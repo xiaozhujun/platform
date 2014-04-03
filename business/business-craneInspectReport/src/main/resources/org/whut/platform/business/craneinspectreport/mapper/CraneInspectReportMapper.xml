@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper">
     <sql id="craneInspectReport_fields">
-		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL
+		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT
 	</sql>
 
     <resultMap id="craneInspectReportResultMap" type="CraneInspectReport">
@@ -24,20 +24,22 @@
         <result property="specification" column="SPECIFICATION" />
         <result property="pNumber" column="PNUMBER" />
         <result property="workLevel" column="WORKLEVEL" />
+        <result property="lng" column="LNG" />
+        <result property="lat" column="LAT" />
     </resultMap>
-
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
         craneinspectreport(
         <include refid="craneInspectReport_fields" />
         )
-        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel});
+        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel},#{lng},#{lat});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+<<<<<<< HEAD
 
     <update id="update" parameterType="CraneInspectReport">
         UPDATE  craneinspectreport
@@ -96,4 +98,46 @@
         </where>
     </select>
 
+=======
+    <select id="getInfoByAddressId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+       SELECT
+       <include refid="craneInspectReport_fields"/>
+       FROM  craneinspectreport
+       where addressId=#{addressId}
+    </select>
+    <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+        SELECT
+         *
+        FROM craneinspectreport
+        where unitAddress=#{unitAddress}
+        group by equipmentvariety
+    </select>
+    <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT
+        *
+        FROM craneinspectreport
+        where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
+    </select>
+    <select id="getUnitaddressByArea" parameterType="map"   resultMap="craneInspectReportResultMap">
+        select
+        distinct (unitaddress)
+        from craneinspectreport
+        where
+        addressid=(
+        SELECT id
+        FROM address
+        <where>
+            <if test="province != null">
+                PROVINCE=#{province}
+            </if>
+            <if test="city != null">
+                and CITY=#{city}
+            </if>
+            <if test="area != null">
+                and AREA=#{area}
+            </if>
+        </where>
+        )
+    </select>
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 </mapper>

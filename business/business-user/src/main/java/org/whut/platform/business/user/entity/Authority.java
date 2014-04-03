@@ -13,13 +13,23 @@ public class Authority {
     private String description;
     private int status;
 
+<<<<<<< HEAD
+=======
+    public void setId(long id){
+        this.id = id;
+    }
+
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     public long getId() {
         return id;
     }
 
+<<<<<<< HEAD
     public void setId(long id) {
         this.id = id;
     }
+=======
+>>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     public String getName() {
         return name;
     }

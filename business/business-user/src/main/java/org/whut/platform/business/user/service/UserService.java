@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.mapper.UserMapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,6 +22,20 @@ public class UserService {
          userMapper.add(user);
     }
 
+    public long getIdByName(String name){
+        return userMapper.getIdByName(name);
+    }
+    public int update(User user){
+        return userMapper.update(user);
+    }
+
+    public int delete(User user){
+        return userMapper.delete(user);
+    }
+
+    public List<User> list(){
+        return userMapper.findByCondition(new HashMap<String, Object>());
+    }
     public User findByName(String name){
         if(name==null || name.trim().equals("")){
             return null;

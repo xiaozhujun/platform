@@ -61,7 +61,7 @@ public class PowerServiceWeb {
         }
     }
 
-    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces( MediaType.APPLICATION_JSON+ ";charset=UTF-8")
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString") String jsonString){

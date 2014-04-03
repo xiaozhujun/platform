@@ -1,7 +1,11 @@
 package org.whut.platform.fundamental.util.tool;
 
+import net.sf.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -58,6 +62,34 @@ public class ToolUtil {
          } else{
               return "0";
          }
+    }
+    /*
+    解析下面格式的字串
+    {
+    "status":"OK",
+    "result":{
+        "location":{
+            "lng":116.421337,
+            "lat":39.973869
+        },
+        "precise":0,
+        "confidence":40,
+        "level":"\u6559\u80b2"
+    }
+}
+     */
+    public Map<String,String> parseJsonString(String str){
+        Map coordinateMap=new HashMap();
+        String[] strArray=str.split("\\{|\\}");
+        if(strArray.length<4){
+            return null;
+        }else{
+        String parseStr="{"+strArray[3]+"}";
+        JSONObject jsonObject=JSONObject.fromObject(parseStr);
+        coordinateMap.put("lng",jsonObject.get("lng"));
+        coordinateMap.put("lat",jsonObject.get("lat"));
+        }
+        return coordinateMap;
     }
      public static void main(String[] args){
          ToolUtil toolUtil=new ToolUtil();

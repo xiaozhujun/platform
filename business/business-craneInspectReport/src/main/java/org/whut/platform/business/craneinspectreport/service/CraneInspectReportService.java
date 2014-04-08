@@ -8,19 +8,11 @@ import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
-import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.platform.fundamental.util.tool.ToolUtil;
+
 import java.io.InputStream;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-=======
-import java.security.PublicKey;
 import java.util.*;
 
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 /**
  * Created with IntelliJ IDEA.
  * User: zhuzhenhua
@@ -37,11 +29,8 @@ public class CraneInspectReportService {
     private JxlExportImportUtils jxlExportImportUtils;
     private CraneInspectReport craneInspectReport;
     private ToolUtil toolUtil=new ToolUtil();
-<<<<<<< HEAD
     private List<CraneInspectReport> listRepeat=new ArrayList<CraneInspectReport>();
-=======
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
 
     public void upload(InputStream inputStream,String fileName){
@@ -128,9 +117,7 @@ public class CraneInspectReportService {
              craneInspectReport.setLat(map.get("lat").toString());
              return craneInspectReport;
     }
-<<<<<<< HEAD
     //从execl中获取地址信息
-=======
     private Map<String,String> getCoordinate(String unitAddress){
         Map map=new HashMap();
         try{
@@ -140,7 +127,6 @@ public class CraneInspectReportService {
         }
         return map;
         }
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     private Address getAddressFromExcel(ExcelMap excelMap,int i){
         if(toolUtil.parseAddress(excelMap.getContents().get(i).get(1)).equals("0")){
             return null;
@@ -153,10 +139,10 @@ public class CraneInspectReportService {
         return address;
         }
     }
-<<<<<<< HEAD
     public List<CraneInspectReport> list(){
         return mapper.findByCondition(new HashMap<String, Object>());
-=======
+    }
+
     public List<CraneInspectReport> getInfoByAddressId(Long id){
         return mapper.getInfoByAddressId(id);
     }
@@ -165,13 +151,11 @@ public class CraneInspectReportService {
     }
     public List<CraneInspectReport> getCraneInspectReportInfoByAddressAndEquipment(String unitAddress,String equipmentVariety){
         return mapper.getCraneInspectReportInfoByAddressAndEquipment(unitAddress,equipmentVariety);
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     }
 
     public List<CraneInspectReport> getUnitaddressByArea(String province,String city,String area)
     {
         return mapper.getUnitaddressByArea(province,city,area);
-
     }
 
 }

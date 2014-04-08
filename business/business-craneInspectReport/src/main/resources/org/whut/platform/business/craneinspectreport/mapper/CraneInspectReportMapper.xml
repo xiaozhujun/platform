@@ -39,7 +39,6 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-<<<<<<< HEAD
 
     <update id="update" parameterType="CraneInspectReport">
         UPDATE  craneinspectreport
@@ -98,7 +97,6 @@
         </where>
     </select>
 
-=======
     <select id="getInfoByAddressId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
        SELECT
        <include refid="craneInspectReport_fields"/>
@@ -139,5 +137,4 @@
         </where>
         )
     </select>
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 </mapper>

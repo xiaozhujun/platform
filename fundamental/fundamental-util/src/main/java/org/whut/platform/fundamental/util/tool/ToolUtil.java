@@ -1,6 +1,6 @@
 package org.whut.platform.fundamental.util.tool;
 
-import net.sf.json.JSONObject;
+import org.whut.platform.fundamental.util.json.JsonMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -85,7 +85,8 @@ public class ToolUtil {
             return null;
         }else{
         String parseStr="{"+strArray[3]+"}";
-        JSONObject jsonObject=JSONObject.fromObject(parseStr);
+        HashMap<String,String> jsonObject= JsonMapper.buildNonDefaultMapper().fromJson(parseStr,HashMap.class);
+        //JSONObject jsonObject=JSONObject.fromObject(parseStr);
         coordinateMap.put("lng",jsonObject.get("lng"));
         coordinateMap.put("lat",jsonObject.get("lat"));
         }

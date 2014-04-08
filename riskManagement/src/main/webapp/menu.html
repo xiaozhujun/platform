@@ -18,10 +18,10 @@
                 }
             });
 
-            $("#fileUploadLi").trigger("click");
-            $("div:contains(数据管理)").parent().trigger("click");
-            $("#fileDownloadLi").trigger("click");
-            $("div:contains(数据查询)").parent().trigger("click");
+            //$("#fileUploadLi").trigger("click");
+            $("#addUserMenu").parent().parent().trigger("click");
+            $("#addUserMenu").trigger("click");
+            //$("div:contains(数据查询)").parent().trigger("click");
         });
 
     </script>
@@ -36,22 +36,14 @@
 <div id="accordion">
     <div title="用户管理" style="padding:10px">
         <ul>
-            <li url="user/addUser.html">添加用户</li>
-<<<<<<< HEAD
-            <li>用户列表</li>
-=======
+            <li id="addUserMenu" url="user/addUser.html">添加用户</li>
             <li url="user/listUser.html">用户列表</li>
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
         </ul>
     </div>
     <div title="角色管理" style="padding:10px">
         <ul>
             <li url="user/addAuthority.html">添加角色</li>
-<<<<<<< HEAD
-            <li url="user/test.html">角色列表</li>
-=======
             <li url="user/listAuthority.html">角色列表</li>
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
         </ul>
     </div>
     <div title="资源管理" style="padding:10px">

@@ -39,10 +39,7 @@ public class UserServiceWeb {
     @Autowired
     private AuthorityService authorityService;
 
-<<<<<<< HEAD
-=======
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("password") String password,@FormParam("sex") String sex,@FormParam("role") String role){

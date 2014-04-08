@@ -13,25 +13,6 @@ public class User {
     private String password;
     private String sex;
     private String role;
-<<<<<<< HEAD
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-=======
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 
     public long getId() {
         return id;

@@ -1,11 +1,7 @@
 package org.whut.platform.business.craneinspectreport.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-<<<<<<< HEAD
-=======
-import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.service.CraneInspectReportService;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
@@ -15,24 +11,12 @@ import org.whut.platform.fundamental.fileupload.MultipartRequestParser;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
+
 import javax.servlet.http.HttpServletRequest;
-<<<<<<< HEAD
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-=======
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
 
 /**
  * Created with IntelliJ IDEA.
@@ -95,7 +79,6 @@ public class CraneInspectReportServiceWeb {
              return fileInfo;
       }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-<<<<<<< HEAD
     @Path("/list")
     @GET
       public String list(){
@@ -136,7 +119,8 @@ public class CraneInspectReportServiceWeb {
             craneInspectReportService.update(craneInspectReport);
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-=======
+    }
+
     @Path("/getAreaInfo")
     @POST
     public String getAreaInfo(@FormParam("city") String city,@FormParam("pname") String pname){
@@ -185,6 +169,5 @@ public class CraneInspectReportServiceWeb {
         List<CraneInspectReport> list=craneInspectReportService.getUnitaddressByArea(province,city,area);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
     }
 }

@@ -21,11 +21,7 @@
         user(
         <include refid="user_fields" />
         )
-<<<<<<< HEAD
-        VALUES (#{id}, #{name}, #{password});
-=======
         VALUES (#{id}, #{name}, #{password},#{sex},#{role});
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id

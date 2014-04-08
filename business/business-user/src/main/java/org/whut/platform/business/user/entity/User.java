@@ -1,3 +1,4 @@
+//测试冲突 朱禛华
 package org.whut.platform.business.user.entity;
 
 /**

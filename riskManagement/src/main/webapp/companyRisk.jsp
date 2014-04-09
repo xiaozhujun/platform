@@ -32,11 +32,18 @@ transitional.dtd">
                 <div id="panelimg2" class="arrow_bg_img"></div>
                 <!--<img class="collapse-left3" src="img/panelarrow2.png" id="panelimg2">-->
             </div>
+            <div id="rightmain">
+            <div id="rightbox">
+            <div id="rightRank">
+                <div class="righttitle"><span class="righttitleFont">风险排名</span><span id="next">详情</span></div>
+            </div>
             <div id="rightshow">
-                <div id='righttitle'>
+                <div><div class='righttitle' id="righttitle"><span id='back'>查看排名</span><span id="titleitem"></span></div>
                 </div>
-                <div id="rightcontent">
+                <div id="rightcontent" class="rightcontent">
                 </div>
+            </div>
+            </div>
             </div>
             <div id="container"></div>
         </div>
@@ -114,11 +121,11 @@ transitional.dtd">
                 });
                 function  mapCallback(data){
                     if(data.code==200){
-                        $("#rightshow").css("display","block");
+                        //$("#rightshow").css("display","block");
                         $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
-                        $("#righttitle").html("");
+                        $("#titleitem").html("");
                         $("#rightcontent").html("");
-                        $("#righttitle").append(data.str);
+                        $("#titleitem").append(data.str);
                         for(var i=0;i<data.data.length;i++){
                             var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                             $("#rightcontent").append(dataString);
@@ -182,10 +189,10 @@ transitional.dtd">
     }
     function pnameCallback(data){
         if(data.code==200){
-            $("#rightshow").css("display","block");
-            $("#righttitle").html("");
+            //$("#rightshow").css("display","block");
+            $("#titleitem").html("");
             $("#rightcontent").html("");
-            $("#righttitle").append(data.str);
+            $("#titleitem").append(data.str);
             for(var i=0;i<data.data.length;i++){
                 var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div><div class='cl'></div></div>"
                 $("#rightcontent").append(dataString);
@@ -215,14 +222,21 @@ transitional.dtd">
 
         $("#layout").ligerLayout({leftWidth:200});
         $("#titleContainer").load("title.html");
-
+        $("#next").click(function(){
+           $("#rightRank").css("display","none");
+           $("#rightshow").css("display","block");
+        });
+        $("#back").click(function(){
+            $("#rightRank").css("display","block");
+            $("#rightshow").css("display","none");
+        });
         $("#panelarrow2").click(function(){
-            if($("#rightshow").css("display")!='none'){
+            if($("#rightmain").css("display")!='none'){
                 $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -8px -20px rgba(0, 0, 0, 0)").parent().css("right","0");
-                $("#rightshow").css("display","none");
+                $("#rightmain").css("display","none");
             }else{
                 $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
-                $("#rightshow").css("display","block");
+                $("#rightmain").css("display","block");
             }
         });
        $.post("rs/craneinspectreport/getAreaInfo",{"city":city,"pname":pname},areaInfoCallback,"json");

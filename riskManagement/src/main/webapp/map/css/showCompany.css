@@ -11,7 +11,8 @@ body{
 #container{
     width:100%;
     height:100%;
-	} 
+	}
+
 #rightshow{
 	width:400px;
 	height:100%;
@@ -19,7 +20,7 @@ body{
 	margin-left:2px;
     overflow: auto;
 	}
-#righttitle{
+.righttitle{
 	width:400px;
 	height:50px;
 	float: left;
@@ -31,7 +32,7 @@ body{
 	font-size: 15px;
     border-bottom: 1px solid #AAAAAA;
 }
-#rightcontent{
+.rightcontent{
 	width:400px;
 	height:595px;
 	float: left;
@@ -197,6 +198,21 @@ body{
 .detailMsg:hover{
     background-color:#999999;
     color: #FFFFFF;
+}
+#next{
+    float: right;
+    display: inline-block;
+    width: 70px;
+    text-align: center;
+    cursor: pointer;
+}
+#back{
+    width: 70px;
+    float: left;
+    cursor: pointer;
+}
+.righttitleFont{
+    margin-left: 50px;
 }
 
 

@@ -157,5 +157,8 @@ public class CraneInspectReportService {
     {
         return mapper.getUnitaddressByArea(province,city,area);
     }
+    public Long findReportNumberByUnitAddress(String unitAddress){
+          return mapper.findReportNumberByUnitAddress(unitAddress);
+    }
 
 }

@@ -26,6 +26,7 @@
         <result property="workLevel" column="WORKLEVEL" />
         <result property="lng" column="LNG" />
         <result property="lat" column="LAT" />
+        <result property="riskValue" column="RISKVALUE"/>
     </resultMap>
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
             useGeneratedKeys="true">
@@ -104,11 +105,12 @@
        where addressId=#{addressId}
     </select>
     <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
-        SELECT
-         *
-        FROM craneinspectreport
-        where unitAddress=#{unitAddress}
-        group by equipmentvariety
+     SELECT
+     cr.*,r.riskValue
+     FROM craneinspectreport cr,riskvalue r
+     WHERE cr.reportnumber=r.reportnumber
+     AND cr.unitAddress=#{unitAddress}
+     GROUP BY cr.equipmentVariety
     </select>
     <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
@@ -136,5 +138,11 @@
             </if>
         </where>
         )
+    </select>
+    <select id="findReportNumberByUnitAddress" parameterType="java.lang.String" resultType="java.lang.Long">
+     SELECT round(avg(r.riskvalue))
+     FROM craneinspectreport cr,riskvalue r
+     WHERE cr.reportnumber=r.reportnumber
+     AND cr.unitAddress=#{unitAddress}
     </select>
 </mapper>

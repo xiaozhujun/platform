@@ -120,7 +120,7 @@ transitional.dtd">
                         $("#rightcontent").html("");
                         $("#righttitle").append(data.str);
                         for(var i=0;i<data.data.length;i++){
-                            var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+(i+1)+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                            var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                             $("#rightcontent").append(dataString);
                             var infoFontNum="infofont"+data.data[i].id;
                             $("#"+infoFontNum).click(function(){
@@ -128,7 +128,7 @@ transitional.dtd">
                                 var address_equipmentvariety=$("#"+hideField).text();
                                 var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
                                 $(itemInfo).html("");
-                                $.post("/rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                                $.post("rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
                                 $(itemInfo).toggle();
                                 /*$(itemInfo).mouseup(function(){
                                     $(itemInfo).css("display","none");
@@ -187,7 +187,7 @@ transitional.dtd">
             $("#rightcontent").html("");
             $("#righttitle").append(data.str);
             for(var i=0;i<data.data.length;i++){
-                var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+(i+1)+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div><div class='cl'></div></div>"
+                var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div><div class='cl'></div></div>"
                 $("#rightcontent").append(dataString);
                 var infoFontNum="infofont"+data.data[i].id;
                 $("#"+infoFontNum).click(function(){
@@ -195,11 +195,8 @@ transitional.dtd">
                     var address_equipmentvariety=$(hideField).text();
                     var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
                     $(itemInfo).html("");
-                    $.post("/rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                    $.post("rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
                     $(itemInfo).toggle();
-                   /* $(itemInfo).mouseup(function(){
-                        $(itemInfo).css("display","none");
-                    });*/
                 });
             }
         }
@@ -232,17 +229,41 @@ transitional.dtd">
        var chaoyangMarker=new Array();
         function areaInfoCallback(data){
              if(data.code==200){
-                 if(data.data[0]==undefined){
+                 if(data.data[0][0]==undefined){
                      var error="<div class='errorInfo'>对不起,数据不存在!</div>";
                      $("#rightcontent").append(error);
                  }else{
-                 for(i=0;i<data.data.length;i++){
+                 for(i=0;i<data.data[0].length;i++){
                      var item={};
-                     item.title=data.data[i].unitAddress;
-                     item.content=data.data[i].equipmentVariety;
-                     item.point=data.data[i].lng+"|"+data.data[i].lat;
+                     item.title=data.data[0][i].unitAddress;
+                     item.content=data.data[0][i].equipmentVariety+",风险值:"+data.data[1][i].riskValue;
+                     item.point=data.data[0][i].lng+"|"+data.data[0][i].lat;
                      item.isOpen=0;
-                     item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};
+                     /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
+                     item.icon={};
+                     item.icon.w=23;
+                     item.icon.h=25;
+                     item.icon.t=21;
+                     item.icon.x=9;
+                     item.icon.lb=12;
+                     if(data.data[1][i].riskValue==1){
+                     item.icon.l=23;
+                     }
+                     if(data.data[1][i].riskValue==2){
+                     item.icon.l=0;
+                     }
+                     if(data.data[1][i].riskValue==3){
+                     item.icon.l=69;
+                     }
+                     if(data.data[1][i].riskValue==4){
+                     item.icon.l=115;
+                     }
+                      if(data.data[1][i].riskValue==5){
+                         item.icon.l=46;
+                     }
+                      if(data.data[1][i].riskValue==6){
+                         item.icon.l=46;
+                     }
                      chaoyangMarker.push(item);
                  }
                  //创建和初始化地图函数：

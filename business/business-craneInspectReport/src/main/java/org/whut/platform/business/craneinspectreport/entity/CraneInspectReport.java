@@ -46,6 +46,8 @@ public class CraneInspectReport {
 
     private String     lat;                            //纬度
 
+    private Long      riskValue;                     //风险值
+
     public long getId() {
         return id;
     }
@@ -188,5 +190,13 @@ public class CraneInspectReport {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+    public Long getRiskValue() {
+        return riskValue;
+    }
+
+    public void setRiskValue(Long riskValue) {
+        this.riskValue = riskValue;
     }
 }

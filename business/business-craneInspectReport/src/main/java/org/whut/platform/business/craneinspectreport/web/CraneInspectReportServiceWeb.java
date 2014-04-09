@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -131,11 +133,23 @@ public class CraneInspectReportServiceWeb {
         if(addressId==null){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
+        List<List<CraneInspectReport>> resultList=new ArrayList<List<CraneInspectReport>>();
         List<CraneInspectReport> list=craneInspectReportService.getInfoByAddressId(addressId);
-        if(list==null){
+        List<CraneInspectReport> riskValueList=new ArrayList<CraneInspectReport>();
+        Iterator it=list.iterator();
+        while(it.hasNext()){
+            CraneInspectReport craneInspectReport=(CraneInspectReport)it.next();
+            CraneInspectReport craneReport=new CraneInspectReport();
+            Long riskValue=craneInspectReportService.findReportNumberByUnitAddress(craneInspectReport.getUnitAddress());
+            craneReport.setRiskValue(riskValue);
+            riskValueList.add(craneReport);
+        }
+         resultList.add(list);
+         resultList.add(riskValueList);
+        if(resultList==null){
           return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getObjectResultByStringAsDefault(resultList,JsonResultUtils.Code.SUCCESS);
         }
         }
     }

@@ -254,23 +254,68 @@ body{
     background-color: #999999;
     color:white
 }
-#risktable th{
-    width: 190px;
-    text-align: center;
+#riskttitle{
     background-color: #999999;
+    width: 385px;
     height: 30px;
-    color: #ffffff;
 }
-#risktable td{
-    width: 190px;
+.rtitleItem{
+    width: 225px;
     text-align: center;
     height: 28px;
+    color: #ffffff;
+    margin-top: 1px;
+    display: inline-block;
+    line-height: 28px;
+}
+.rtitleriskItem{
+    width: 80px;
+    text-align: center;
+    height: 28px;
+    color: #ffffff;
+    margin-top: 1px;
+    display: inline-block;
+    line-height:28px;
+}
+#riskcontent{
+    width: 385px;
+    height: auto;
+}
+.rtitlerank{
+    width: 60px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+    color:white;
+    margin-left: 10px;
+}
+.rrank{
+    width: 60px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+}
+.riskItem{
+    width: 40px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+}
+.rcontentItem{
+    width: 245px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
 }
 .unitFont{
     margin-left: 6px;
+    display: inline-block;
+    margin-top: 6px;
 }
 .riskFont{
     margin-left: 10px;
+    display: inline-block;
+    margin-top: 6px;
 }
 
 

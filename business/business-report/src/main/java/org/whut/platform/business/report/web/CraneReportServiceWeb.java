@@ -47,24 +47,6 @@ public class CraneReportServiceWeb {
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-    @Path("/showRiskRank")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    public String showCraneReport(@FormParam("city") String city,@FormParam("pname") String area){
-     /*
-     这个例子主要是展示传入一个sql语句，显示html格式的报表
-      */
-        String sql=showRiskRankSql(city,area);
-     /*
-     模板在项目riskmanagement下的repoprtTemplate文件夹下
-     */
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/pieReport.jasper");
-        Map parameter=new HashMap();
-        parameter.put("sql",sql);
-        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
-        return JsonResultUtils
-                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-    }
     @Path("/exportCraneReport/{data}")
     @GET
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -105,10 +87,6 @@ public class CraneReportServiceWeb {
             variety_sql=" and equipmentvariety=\""+equipmentvariety+"\"";
             sql+=variety_sql;
         }
-        return sql;
-    }
-    public String showRiskRankSql(String city,String area){
-        String sql="SELECT cr.unitAddress,r.riskvalue FROM craneinspectreport cr,riskvalue r,address a WHERE cr.reportnumber=r.reportnumber and a.id=cr.addressId AND a.city='"+city+"' and a.area='"+area+"' group by cr.unitAddress order by r.riskvalue desc limit 10";
         return sql;
     }
 }

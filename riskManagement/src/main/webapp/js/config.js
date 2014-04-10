@@ -19,7 +19,11 @@
         }  ,
         "craneinspectreport":
         {
-            "getUnitaddressByArea" :"rs/craneinspectreport/getUnitaddressByArea"
+            "getUnitaddressByArea" :"rs/craneinspectreport/getUnitaddressByArea",
+            "getAreaInfoByUnitAddress":"rs/craneinspectreport/getAreaInfoByUnitAddress",
+            "getCraneInspectReportInfoByAddressAndEquipment":"rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",
+            "getAreaInfo":"rs/craneinspectreport/getAreaInfo",
+            "showRiskRank":"rs/craneinspectreport/showRiskRank"
         },
         "craneInspectReport":{
             "list":"rs/craneinspectreport/list",

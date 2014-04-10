@@ -40,7 +40,7 @@ transitional.dtd">
             <div id="rightRank">
                 <div class="rankContent" id="rankContent">
                     <div id="rankTitle"></div>
-                    <div id="rankContent"></div>
+                    <div id="riskrankContent"></div>
                 </div>
             </div>
             <div id="rightshow">
@@ -153,7 +153,7 @@ transitional.dtd">
                 _marker.addEventListener("click",function(){
                     this.openInfoWindow(_iw);
                     var name=markerArr[index];
-                    $.post("rs/craneinspectreport/getAreaInfoByUnitAddress",{"name":name.title},mapCallback,"json");
+                    $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":name.title},mapCallback,"json");
                 });
                 function  mapCallback(data){
                     if(data.code==200){
@@ -171,7 +171,7 @@ transitional.dtd">
                                 var address_equipmentvariety=$("#"+hideField).text();
                                 var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
                                 $(itemInfo).html("");
-                                $.post("rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                                $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
                                 $(itemInfo).toggle();
                             });
                         }
@@ -205,21 +205,6 @@ transitional.dtd">
         var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
         return icon;
     }
-    function searchByStationName(address) {
-        //map.clearOverlays();//清空原来的标注
-        var keyword = address;
-        localSearch.setSearchCompleteCallback(function (searchResult) {
-            var poi = searchResult.getPoi(0);
-            //map.centerAndZoom(poi.point, 13);
-            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
-            map.addOverlay(marker);
-            var content = address+ "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
-            var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
-            marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
-            // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-        });
-        localSearch.search(keyword);
-    }
     function pnameCallback(data){
         if(data.code==200){
             //$("#rightshow").css("display","block");
@@ -235,7 +220,7 @@ transitional.dtd">
                     var address_equipmentvariety=$(hideField).text();
                     var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
                     $(itemInfo).html("");
-                    $.post("rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                    $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
                     $(itemInfo).toggle();
                 });
             }
@@ -252,16 +237,17 @@ transitional.dtd">
             }
     }
     $(document).ready(function(){
-
         $("#layout").ligerLayout({leftWidth:200});
         $("#titleContainer").load("title.html");
+        $("#riskRank").css("background-color","#999999");
+        $("#riskRank").css("color","#ffffff");
         $("#riskInfo").click(function(){
-            $("#riskRank").css("background-color","#F7F7F7");
-            $("#riskInfo").css("background-color","#999999");
-            $("#riskInfo").css("color","#ffffff");
-            $("#riskRank").css("color","#999999");
-           $("#rightRank").css("display","none");
-           $("#rightshow").css("display","block");
+        $("#riskRank").css("background-color","#F7F7F7");
+        $("#riskInfo").css("background-color","#999999");
+        $("#riskInfo").css("color","#ffffff");
+        $("#riskRank").css("color","#999999");
+        $("#rightRank").css("display","none");
+        $("#rightshow").css("display","block");
         });
         $("#riskRank").click(function(){
             $("#riskRank").css("background-color","#999999");
@@ -280,9 +266,8 @@ transitional.dtd">
                 $("#rightmain").css("display","block");
             }
         });
-       $.post("rs/craneinspectreport/getAreaInfo",{"city":city,"pname":pname},areaInfoCallback,"json");
-       /*$("#rankContent").load("rs/report/showRiskRank/",{"city":city,"pname":pname},showRiskRank,"json");*/
-        $.post("rs/craneinspectreport/showRiskRank",{"city":city,"pname":pname},showRiskRank,"json");
+       $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"pname":pname},areaInfoCallback,"json");
+       $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"pname":pname},showRiskRank,"json");
        var chaoyangMarker=new Array();
         function areaInfoCallback(data){
              if(data.code==200){
@@ -325,7 +310,7 @@ transitional.dtd">
                  }
                  //创建和初始化地图函数：
                  addMarker(chaoyangMarker);//向地图中添加marker
-                 $.post("rs/craneinspectreport/getAreaInfoByUnitAddress",{"name":chaoyangMarker[0].title},pnameCallback,"json");
+                 $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":chaoyangMarker[0].title},pnameCallback,"json");
 
                  }
              }
@@ -333,12 +318,12 @@ transitional.dtd">
        function showRiskRank(data1){
             if(data1.code==200){
                 $("#rankTitle").html("");
-                $("rankContent").html("");
-                var rankTitle="<table id='risktable'><tr><th>企业</th><th>风险值</th></tr>"
+                $("riskrankContent").html("");
+                var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                 $("#rankTitle").append(rankTitle);
                 for(i=0;i<data1.data.length;i++){
-                    var rankContent="<tr><td><span class='unitFont'>"+data1.data[i].unitAddress+"</span></td><td><span class='riskFont'>"+data1.data[i].riskValue+"</span></td></tr>"
-                    $("#rankTitle").append(rankContent);
+                    var rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>"
+                    $("#riskrankContent").append(rankContent);
                 }
             }
         }

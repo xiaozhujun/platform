@@ -311,7 +311,6 @@ transitional.dtd">
                  //创建和初始化地图函数：
                  addMarker(chaoyangMarker);//向地图中添加marker
                  $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":chaoyangMarker[0].title},pnameCallback,"json");
-
                  }
              }
         }

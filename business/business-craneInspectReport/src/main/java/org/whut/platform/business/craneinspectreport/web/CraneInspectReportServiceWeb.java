@@ -184,4 +184,14 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
+    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @Path("/showRiskRank")
+    @POST
+    public String showRiskRank(@FormParam("city") String city,@FormParam("pname") String area)
+    {
+        List<CraneInspectReport> list=craneInspectReportService.showRiskRank(city,area);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+
+    }
+
 }

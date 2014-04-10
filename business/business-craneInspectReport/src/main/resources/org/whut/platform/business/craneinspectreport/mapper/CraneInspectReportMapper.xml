@@ -145,4 +145,11 @@
      WHERE cr.reportnumber=r.reportnumber
      AND cr.unitAddress=#{unitAddress}
     </select>
+    <select id="showRiskRank" parameterType="map" resultMap="craneInspectReportResultMap">
+         SELECT cr.unitAddress,r.riskvalue
+         FROM craneinspectreport cr,riskvalue r,address a
+         WHERE cr.reportnumber=r.reportnumber
+         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
+         group by cr.unitAddress order by r.riskvalue desc
+    </select>
 </mapper>

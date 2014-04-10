@@ -86,7 +86,16 @@
         <servlet-name>jerseyServlet</servlet-name>
         <url-pattern>/rs/*</url-pattern>
     </servlet-mapping>
-
+    <servlet>
+        <servlet-name>JasperReportImageServlet</servlet-name>
+        <servlet-class>
+            net.sf.jasperreports.j2ee.servlets.ImageServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JasperReportImageServlet</servlet-name>
+        <url-pattern>/image</url-pattern>
+    </servlet-mapping>
     <!-- Servlet Configuration ========================================== -->
 </web-app>
         

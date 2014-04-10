@@ -8,6 +8,28 @@ body{
 	width:100%;
 	height:100%;
 	}
+#leftcontainer{
+    width: 100%;
+    height: 100%;
+}
+#search{
+    background-color: #F7F7F7;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #999999;
+}
+#titleSearch{
+    display: inline-block;
+    float: left;
+    font-size: 14px;
+    color:#999999;
+    display: inline-block;
+    margin-top: 9px;
+    width:auto;
+}
+.searchItem{
+    margin-left:10px;
+}
 #container{
     width:100%;
     height:100%;
@@ -199,20 +221,56 @@ body{
     background-color:#999999;
     color: #FFFFFF;
 }
-#next{
-    float: right;
-    display: inline-block;
-    width: 70px;
-    text-align: center;
-    cursor: pointer;
+#riskRank{
+     float: left;
+     display: inline-block;
+     width: 192px;
+     text-align: center;
+     cursor: pointer;
+     border: 1px solid #999999;
+     margin-top: 1px;
+     height:35px;
+     line-height: 35px;
+     color:#666666;
+ }
+#riskRank:hover{
+    background-color: #999999;
+    color:white
 }
-#back{
-    width: 70px;
+#riskInfo{
+    width: 190px;
     float: left;
     cursor: pointer;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    border-right: 1px solid #999999;
+    margin-top: 1px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    color:#666666;
 }
-.righttitleFont{
-    margin-left: 50px;
+#riskInfo:hover{
+    background-color: #999999;
+    color:white
+}
+#risktable th{
+    width: 190px;
+    text-align: center;
+    background-color: #999999;
+    height: 30px;
+    color: #ffffff;
+}
+#risktable td{
+    width: 190px;
+    text-align: center;
+    height: 28px;
+}
+.unitFont{
+    margin-left: 6px;
+}
+.riskFont{
+    margin-left: 10px;
 }
 
 

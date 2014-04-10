@@ -33,19 +33,55 @@ transitional.dtd">
                 <!--<img class="collapse-left3" src="img/panelarrow2.png" id="panelimg2">-->
             </div>
             <div id="rightmain">
-            <div id="rightbox">
+            <div id="tab">
+                <span id='riskRank'>风险排名</span>
+                <span id="riskInfo">风险详情</span>
+            </div>
             <div id="rightRank">
-                <div class="righttitle"><span class="righttitleFont">风险排名</span><span id="next">详情</span></div>
+                <div class="rankContent" id="rankContent">
+                    <div id="rankTitle"></div>
+                    <div id="rankContent"></div>
+                </div>
             </div>
             <div id="rightshow">
-                <div><div class='righttitle' id="righttitle"><span id='back'>查看排名</span><span id="titleitem"></span></div>
+                <div><div class='righttitle' id="righttitle"></div>
                 </div>
                 <div id="rightcontent" class="rightcontent">
                 </div>
             </div>
             </div>
+            <div id="leftcontainer">
+            <div id="search">
+                  <span id="titleSearch">
+                    <span class="searchItem">
+                        <select id="pro">
+                            <option>北京</option>
+                            <option>上海</option>
+                            <option>湖北</option>
+                        </select>
+                    </span>
+                       <span><select id="city">
+                           <option>北京市</option>
+                           <option>上海市</option>
+                           <option>武汉市</option>
+                       </select>
+                       </span>
+                        <span><select id="area">
+                            <option>朝阳区</option>
+                            <option>浦东区</option>
+                            <option>新洲区</option>
+                        </select>
+                         </span>
+                        <span><select id="unit">
+                          <option>中国特种设备检测研究院</option>
+                          <option>上海特检所</option>
+                          <option>湖北省武汉市新洲区阳逻双柳武船</option>
+                         </select>
+                         </span>
+                    </span>
             </div>
             <div id="container"></div>
+            </div>
         </div>
     </div>
     <!--<div position="right"></div>-->
@@ -123,9 +159,9 @@ transitional.dtd">
                     if(data.code==200){
                         //$("#rightshow").css("display","block");
                         $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
-                        $("#titleitem").html("");
+                        $("#righttitle").html("");
                         $("#rightcontent").html("");
-                        $("#titleitem").append(data.str);
+                        $("#righttitle").append(data.str);
                         for(var i=0;i<data.data.length;i++){
                             var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                             $("#rightcontent").append(dataString);
@@ -137,9 +173,6 @@ transitional.dtd">
                                 $(itemInfo).html("");
                                 $.post("rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
                                 $(itemInfo).toggle();
-                                /*$(itemInfo).mouseup(function(){
-                                    $(itemInfo).css("display","none");
-                                });*/
                             });
                         }
                     }
@@ -190,9 +223,9 @@ transitional.dtd">
     function pnameCallback(data){
         if(data.code==200){
             //$("#rightshow").css("display","block");
-            $("#titleitem").html("");
+            $("#righttitle").html("");
             $("#rightcontent").html("");
-            $("#titleitem").append(data.str);
+            $("#righttitle").append(data.str);
             for(var i=0;i<data.data.length;i++){
                 var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div><div class='cl'></div></div>"
                 $("#rightcontent").append(dataString);
@@ -222,11 +255,19 @@ transitional.dtd">
 
         $("#layout").ligerLayout({leftWidth:200});
         $("#titleContainer").load("title.html");
-        $("#next").click(function(){
+        $("#riskInfo").click(function(){
+            $("#riskRank").css("background-color","#F7F7F7");
+            $("#riskInfo").css("background-color","#999999");
+            $("#riskInfo").css("color","#ffffff");
+            $("#riskRank").css("color","#999999");
            $("#rightRank").css("display","none");
            $("#rightshow").css("display","block");
         });
-        $("#back").click(function(){
+        $("#riskRank").click(function(){
+            $("#riskRank").css("background-color","#999999");
+            $("#riskRank").css("color","#ffffff");
+            $("#riskInfo").css("color","#999999");
+            $("#riskInfo").css("background-color","#F7F7F7");
             $("#rightRank").css("display","block");
             $("#rightshow").css("display","none");
         });
@@ -240,6 +281,8 @@ transitional.dtd">
             }
         });
        $.post("rs/craneinspectreport/getAreaInfo",{"city":city,"pname":pname},areaInfoCallback,"json");
+       /*$("#rankContent").load("rs/report/showRiskRank/",{"city":city,"pname":pname},showRiskRank,"json");*/
+        $.post("rs/craneinspectreport/showRiskRank",{"city":city,"pname":pname},showRiskRank,"json");
        var chaoyangMarker=new Array();
         function areaInfoCallback(data){
              if(data.code==200){
@@ -283,8 +326,21 @@ transitional.dtd">
                  //创建和初始化地图函数：
                  addMarker(chaoyangMarker);//向地图中添加marker
                  $.post("rs/craneinspectreport/getAreaInfoByUnitAddress",{"name":chaoyangMarker[0].title},pnameCallback,"json");
+
                  }
              }
+        }
+       function showRiskRank(data1){
+            if(data1.code==200){
+                $("#rankTitle").html("");
+                $("rankContent").html("");
+                var rankTitle="<table id='risktable'><tr><th>企业</th><th>风险值</th></tr>"
+                $("#rankTitle").append(rankTitle);
+                for(i=0;i<data1.data.length;i++){
+                    var rankContent="<tr><td><span class='unitFont'>"+data1.data[i].unitAddress+"</span></td><td><span class='riskFont'>"+data1.data[i].riskValue+"</span></td></tr>"
+                    $("#rankTitle").append(rankContent);
+                }
+            }
         }
             initMap(lng,lat);
     });

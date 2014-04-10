@@ -160,5 +160,7 @@ public class CraneInspectReportService {
     public Long findReportNumberByUnitAddress(String unitAddress){
           return mapper.findReportNumberByUnitAddress(unitAddress);
     }
-
+     public List<CraneInspectReport> showRiskRank(String city,String area){
+         return mapper.showRiskRank(city,area);
+     }
 }

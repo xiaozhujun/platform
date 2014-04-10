@@ -22,4 +22,5 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
      public List<CraneInspectReport> getCraneInspectReportInfoByAddressAndEquipment(@Param("unitAddress") String unitAddress,@Param("equipmentVariety") String equipmentVariety);
     public List<CraneInspectReport> getUnitaddressByArea(@Param("province") String province,@Param("city") String city,@Param("area") String area);
     public Long findReportNumberByUnitAddress(String unitAddress);
+    public List<CraneInspectReport>showRiskRank(@Param("city") String city,@Param("area") String area);
 }

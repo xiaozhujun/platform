@@ -246,8 +246,12 @@ transitional.dtd">
         $("#riskInfo").css("background-color","#999999");
         $("#riskInfo").css("color","#ffffff");
         $("#riskRank").css("color","#999999");
-        $("#rightRank").css("display","none");
-        $("#rightshow").css("display","block");
+        //$("#rightshow").css("display","block");
+        $("#rightRank").animate({left:"400px"},rightCallback);
+        $("#rightshow").animate({left:""});
+        function  rightCallback(){
+           // $("#rightRank").css("display","none");
+            $("#rightshow").css("display","block");}
         });
         $("#riskRank").click(function(){
             $("#riskRank").css("background-color","#999999");
@@ -255,7 +259,12 @@ transitional.dtd">
             $("#riskInfo").css("color","#999999");
             $("#riskInfo").css("background-color","#F7F7F7");
             $("#rightRank").css("display","block");
-            $("#rightshow").css("display","none");
+            $("#rightRank").animate({left:""});
+            $("#rightshow").animate({left:"400px"});
+             /*function leftCallback(){
+                 $("#rightshow").css("display","none");
+             } */
+
         });
         $("#panelarrow2").click(function(){
             if($("#rightmain").css("display")!='none'){
@@ -320,8 +329,22 @@ transitional.dtd">
                 $("riskrankContent").html("");
                 var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                 $("#rankTitle").append(rankTitle);
-                for(i=0;i<data1.data.length;i++){
-                    var rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>"
+                var temp = data1.data[0].riskValue;
+                var j=1;
+                for(var i=0;i<data1.data.length;i++){
+                    var rankContent="";
+                    if(i==0){
+                        rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>";
+                    }
+                    else if(i>0&&data1.data[i].riskValue!=temp){
+                        j+=1;
+                        temp=data1.data[i].riskValue;
+                        rankContent="<hr/>"
+                        rankContent+="<div class='riskcontent'><span class='rrank'>"+j+"</span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>";
+                    }
+                    else{
+                       rankContent="<div class='riskcontent'><span class='rrank'></span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>";
+                    }
                     $("#riskrankContent").append(rankContent);
                 }
             }

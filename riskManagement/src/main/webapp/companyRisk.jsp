@@ -305,6 +305,7 @@ transitional.dtd">
        var chaoyangMarker=new Array();
         function areaInfoCallback(data){
              if(data.code==200){
+                 $("#rightcontent").html("");
                  if(data.data[0][0]==undefined){
                      var error="<div class='errorInfo'>对不起,数据不存在!</div>";
                      $("#rightcontent").append(error);
@@ -354,54 +355,34 @@ transitional.dtd">
                 $("#riskrankContent").html("");
                 var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                 $("#rankTitle").append(rankTitle);
-                if(data.data[0]==undefined){
-                    $("#riskrankContent").append("对不起,数据不存在!");
-                }else{
                 for(i=0;i<data.data.length;i++){
                     var rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
-                var temp = data1.data[0].riskValue;
-                var j=1;
-                for(var i=0;i<data1.data.length;i++){
-                    var rankContent="";
-                    if(i==0){
-                        rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>";
-                    }
-                    else if(i>0&&data1.data[i].riskValue!=temp){
-                        j+=1;
-                        temp=data1.data[i].riskValue;
-                        rankContent="<hr/>"
-                        rankContent+="<div class='riskcontent'><span class='rrank'>"+j+"</span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>";
-                    }
-                    else{
-                       rankContent="<div class='riskcontent'><span class='rrank'></span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>";
-                    }
                     $("#riskrankContent").append(rankContent);
-                }
                 }
             }
         }
        }
-         function showCompanyRisk(city,area){
-             initMap(area);
-             initAndAddMarker(city,area);
-         }
+        function showCompanyRisk(city,area){
+            initAndAddMarker(city,area);
+            initMap(area);
+        }
         showCompanyRisk(city,pname);
-        //联动回调函数
+        //联动回调
         function getProvinceListCallback(data){
-            if(data.code==200){
-                $("#province").html("");
-                var pSearch="<option>---请选择省份---</option>";
-                for(i=0;i<data.data.length;i++){
-                    pSearch+="<option value='"+data.data[i].province+"'>"+data.data[i].province+"</option>";
-                }
-                $("#province").html(pSearch);
-                $("#province option[value='"+province+"']").attr("selected",true);
-            }
+             if(data.code==200){
+                 $("#province").html("");
+                 var pSearch="<option>---请选择---</option>";
+                 for(i=0;i<data.data.length;i++){
+                     pSearch+="<option value='"+data.data[i].province+"'>"+data.data[i].province+"</option>";
+                 }
+                 $("#province").html(pSearch);
+                 $("#province option[value='"+province+"']").attr("selected",true);
+             }
         }
         function getCityByProvinceCallback(data){
               if(data.code==200){
                   $("#city").html("");
-                  var citySearch="<option>---请选择城市---</option>";
+                  var citySearch="<option>---请选择---</option>";
                   for(i=0;i<data.data.length;i++){
                       citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
                   }
@@ -409,30 +390,30 @@ transitional.dtd">
               }
         }
         function getAreaByProvinceAndCityCallback(data){
-                   if(data.code==200){
-                       $("#area").html("");
-                       var areaSearch="<option>---请选择地区---</option>";
-                       for(i=0;i<data.data.length;i++){
-                           areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>"
-                       }
-                       $("#area").html(areaSearch);
-                   }
+            if(data.code==200){
+                $("#area").html("");
+                var areaSearch="<option>---请选择---</option>";
+                for(i=0;i<data.data.length;i++){
+                    areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
+                }
+                $("#area").html(areaSearch);
+            }
         }
         function getUnitaddressByAreaCallback(data){
-                if(data.code==200){
-                    $("#unit").html("");
-                    var unitSearch="<option>---请选择单位---</option>";
-                    if(data.data[0]==undefined){
-                        unitSearch+="<option>抱歉,暂时没有单位信息!</option>"
-                    }else{
-                    for(i=0;i<data.data.length;i++){
-                        unitSearch+="<option>"+data.data[i].unitAddress+"</option>";
-                    }
-                    }
-                    $("#unit").html(unitSearch);
+            if(data.code==200){
+                $("#unit").html("");
+                var unitSearch="<option>---请选择---</option>";
+                if(data.data[0]==undefined){
+                    unitSearch+="<option>对不起,数据不存在!</option>"
+                }else{
+                for(i=0;i<data.data.length;i++){
+                    unitSearch+="<option value='"+data.data[i].unitAddress+"'>"+data.data[i].unitAddress+"</option>";
                 }
+                }
+                $("#unit").html(unitSearch);
+            }
         }
-           //联动效果
+        //联动
         $.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
     });
 </script>

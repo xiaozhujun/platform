@@ -22,4 +22,5 @@ public interface AddressMapper extends AbstractMapper {
     public List<Address> list();
     public List<Address> getCityByProvince(String province);
     public List<Address> getAreaByCity(String city);
+    public List<Address> getAreaByProvinceAndCity(@Param("province")String province,@Param("city")String city);
 }

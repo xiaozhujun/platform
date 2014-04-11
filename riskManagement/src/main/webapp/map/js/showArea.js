@@ -36,7 +36,7 @@ function getBoundary(city,data){
                         ply.setFillColor(color);
                     },delay);
                 }
-                location = "companyRisk.jsp?city="+encodeURI(city)+"&pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+                location = "companyRisk.jsp?province="+encodeURI(province)+"&city="+encodeURI(city)+"&pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
             });
         }
         if(maxPly){

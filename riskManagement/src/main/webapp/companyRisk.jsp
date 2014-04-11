@@ -53,29 +53,21 @@ transitional.dtd">
             <div id="leftcontainer">
             <div id="search">
                   <span id="titleSearch">
-                    <span class="searchItem">
-                        <select id="pro">
-                            <option>北京</option>
-                            <option>上海</option>
-                            <option>湖北</option>
-                        </select>
+                    <span class="searchItem" id="provinceSearch">
+                     <select id="province">
+                         <option><%=URLDecoder.decode(request.getParameter("province"),"utf-8")%></option>
+                     </select>
                     </span>
-                       <span><select id="city">
-                           <option>北京市</option>
-                           <option>上海市</option>
-                           <option>武汉市</option>
+                       <span id="citySearch"><select id="city">
+                           <option><%=URLDecoder.decode(request.getParameter("city"),"utf-8")%></option>
                        </select>
                        </span>
-                        <span><select id="area">
-                            <option>朝阳区</option>
-                            <option>浦东区</option>
-                            <option>新洲区</option>
+                        <span id="areaSearch"><select id="area">
+                            <option><%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%></option>
                         </select>
                          </span>
                         <span><select id="unit">
-                          <option>中国特种设备检测研究院</option>
-                          <option>上海特检所</option>
-                          <option>湖北省武汉市新洲区阳逻双柳武船</option>
+                            <option>---请选择单位----</option>
                          </select>
                          </span>
                     </span>
@@ -91,19 +83,20 @@ transitional.dtd">
 <div style="display:none;">
 </div>
 <script type="text/javascript">
+    var province='<%=URLDecoder.decode(request.getParameter("province"),"utf-8")%>';
     var city='<%=URLDecoder.decode(request.getParameter("city"),"utf-8")%>';
     var pname='<%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%>';
     var lat='<%=request.getParameter("lat")%>';
     var lng='<%=request.getParameter("lng")%>';
-    function initMap(lng,lat){
-        createMap(lng,lat);//创建地图
+    function initMap(address){
+        createMap(address);//创建地图
         setMapEvent();//设置地图事件
         addMapControl();//向地图添加控件
     }
     //创建地图函数：
-    function createMap(lng,lat){
+    function createMap(address){
         var map = new BMap.Map("container");//在百度地图容器中创建一个地图
-        map.centerAndZoom(pname,12);//设定地图的中心点和坐标并将地图显示在地图容器中
+        map.centerAndZoom(address,12);//设定地图的中心点和坐标并将地图显示在地图容器中
         window.map = map;//将map变量存储在全局
     }
     //地图事件设置函数：
@@ -241,6 +234,37 @@ transitional.dtd">
         $("#titleContainer").load("title.html");
         $("#riskRank").css("background-color","#999999");
         $("#riskRank").css("color","#ffffff");
+        $("#province").change(function(){
+            $("#city option:not(:first)").remove();
+            $("#area option:not(:first)").remove();
+            $("#unit option:not(:first)").remove();
+            var pro=$("#province option:selected").text();
+            initMap(pro);
+            $.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
+        });
+        $("#city").change(function(){
+            $("#area option:not(:first)").remove();
+            $("#unit option:not(:first)").remove();
+            var pro=$("#province").find('option:selected').text();
+            var city=$(this).find('option:selected').text();
+            initMap(city);
+            $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
+        });
+        $("#area").change(function(){
+            $("#unit option:not(:first)").remove();
+            var pro=$("#province").find('option:selected').text();
+            var city=$("#city").find('option:selected').text();
+            var area=$(this).find('option:selected').text();
+            showCompanyRisk(city,area);
+            $.post($.URL.craneinspectreport.getUnitaddressByArea,{"province":pro,"city":city,"area":area},getUnitaddressByAreaCallback,"json");
+        });
+        $("#unit").change(function(){
+            var pro=$("#province").find('option:selected').text();
+            var city=$("#city").find('option:selected').text();
+            var area=$("#area").find('option:selected').text();
+            var unit=$(this).find('option:selected').text();
+            initMap(unit);
+        });
         $("#riskInfo").click(function(){
         $("#riskRank").css("background-color","#F7F7F7");
         $("#riskInfo").css("background-color","#999999");
@@ -266,8 +290,9 @@ transitional.dtd">
                 $("#rightmain").css("display","block");
             }
         });
-       $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"pname":pname},areaInfoCallback,"json");
-       $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"pname":pname},showRiskRank,"json");
+       function initAndAddMarker(city,area){
+       $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"pname":area},areaInfoCallback,"json");
+       $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"pname":area},showRiskRank,"json");
        var chaoyangMarker=new Array();
         function areaInfoCallback(data){
              if(data.code==200){
@@ -314,19 +339,76 @@ transitional.dtd">
                  }
              }
         }
-       function showRiskRank(data1){
-            if(data1.code==200){
+       function showRiskRank(data){
+            if(data.code==200){
                 $("#rankTitle").html("");
-                $("riskrankContent").html("");
+                $("#riskrankContent").html("");
                 var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                 $("#rankTitle").append(rankTitle);
-                for(i=0;i<data1.data.length;i++){
-                    var rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data1.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data1.data[i].riskValue+"</span></span></div>"
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                }else{
+                for(i=0;i<data.data.length;i++){
+                    var rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
                     $("#riskrankContent").append(rankContent);
+                }
                 }
             }
         }
-            initMap(lng,lat);
+       }
+         function showCompanyRisk(city,area){
+             initMap(area);
+             initAndAddMarker(city,area);
+         }
+        showCompanyRisk(city,pname);
+        //联动回调函数
+        function getProvinceListCallback(data){
+            if(data.code==200){
+                $("#province").html("");
+                var pSearch="<option>---请选择省份---</option>";
+                for(i=0;i<data.data.length;i++){
+                    pSearch+="<option value='"+data.data[i].province+"'>"+data.data[i].province+"</option>";
+                }
+                $("#province").html(pSearch);
+                $("#province option[value='"+province+"']").attr("selected",true);
+            }
+        }
+        function getCityByProvinceCallback(data){
+              if(data.code==200){
+                  $("#city").html("");
+                  var citySearch="<option>---请选择城市---</option>";
+                  for(i=0;i<data.data.length;i++){
+                      citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
+                  }
+                  $("#city").html(citySearch);
+              }
+        }
+        function getAreaByProvinceAndCityCallback(data){
+                   if(data.code==200){
+                       $("#area").html("");
+                       var areaSearch="<option>---请选择地区---</option>";
+                       for(i=0;i<data.data.length;i++){
+                           areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>"
+                       }
+                       $("#area").html(areaSearch);
+                   }
+        }
+        function getUnitaddressByAreaCallback(data){
+                if(data.code==200){
+                    $("#unit").html("");
+                    var unitSearch="<option>---请选择单位---</option>";
+                    if(data.data[0]==undefined){
+                        unitSearch+="<option>抱歉,暂时没有单位信息!</option>"
+                    }else{
+                    for(i=0;i<data.data.length;i++){
+                        unitSearch+="<option>"+data.data[i].unitAddress+"</option>";
+                    }
+                    }
+                    $("#unit").html(unitSearch);
+                }
+        }
+           //联动效果
+        $.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
     });
 </script>
 </body>

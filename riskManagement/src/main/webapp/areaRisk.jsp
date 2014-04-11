@@ -18,6 +18,7 @@ transitional.dtd">
     <link rel="stylesheet" href="map/css/style.css"/>
     <script type="text/javascript" src="map/js/getParam.js"></script>
     <script type="text/javascript">
+        var province='<%=URLDecoder.decode(request.getParameter("province"),"utf-8")%>'
         var pname='<%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%>';
         var lat='<%=request.getParameter("lat")%>';
         var lng='<%=request.getParameter("lng")%>';

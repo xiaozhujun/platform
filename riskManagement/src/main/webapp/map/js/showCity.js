@@ -9,7 +9,7 @@ var stdMapCtrl = new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL
 map.addControl(stdMapCtrl);
 map.enableScrollWheelZoom();
 map.enableContinuousZoom();
-function getBoundary(data){
+function getBoundary(province,data){
     var bdary=new BMap.Boundary();
     bdary.get(data.split("-")[0],function(rs){
         console.log(rs);
@@ -37,7 +37,7 @@ function getBoundary(data){
                         ply.setFillColor(color);
                     },delay);
                 }
-               location = "areaRisk.jsp?pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+               location = "areaRisk.jsp?province="+encodeURI(province)+"&pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
             });
         }
         if(maxPly){
@@ -188,75 +188,75 @@ var xianggangs=[
     "香港-#FCFBBB"
 ];
 if(pname=="辽宁省"){
-    drawColor(liaonings);
+    drawColor(辽宁省,liaonings);
 }else if(pname=="内蒙古自治区"){
-    drawColor(neimenggus);
+    drawColor("内蒙古自治区",neimenggus);
 }else if(pname=="广西"){
-    drawColor(guangxis);
+    drawColor("广西",guangxis);
 }else if(pname=="广东"){
-    drawColor(guangdongs);
+    drawColor("广东",guangdongs);
 }else if(pname=="湖南"){
-    drawColor(hunans);
+    drawColor("湖南",hunans);
 }else if(pname=="贵州"){
-    drawColor(guizhous);
+    drawColor("贵州",guizhous);
 }else if(pname=="云南"){
-    drawColor(yunnans);
+    drawColor("云南",yunnans);
 }else if(pname=="福建"){
-    drawColor(fujians);
+    drawColor("福建",fujians);
 }else if(pname=="江西"){
-    drawColor(jiangxis);
+    drawColor("江西",jiangxis);
 }else if(pname=="浙江"){
-    drawColor(zhejiangs);
+    drawColor("浙江",zhejiangs);
 }else if(pname=="安徽"){
-    drawColor(anhuis);
+    drawColor("安徽",anhuis);
 }else if(pname=="湖北"){
-    drawColor(hubeis);
+    drawColor("湖北",hubeis);
 }else if(pname=="河南"){
-    drawColor(henans);
+    drawColor("河南",henans);
 }else if(pname=="江苏"){
-    drawColor(jiangsus);
+    drawColor("江苏",jiangsus);
 }else if(pname=="四川"){
-    drawColor(sichuans);
+    drawColor("四川",sichuans);
 }else if(pname=="海南省"){
-    drawColor(hainans);
+    drawColor("海南省",hainans);
 }else if(pname=="山东"){
-    drawColor(shandongs);
+    drawColor("山东",shandongs);
 }else if(pname=="辽宁"){
-    drawColor(liaonings);
+    drawColor("辽宁",liaonings);
 }else if(pname=="新疆"){
-    drawColor(xinjiangs);
+    drawColor("新疆",xinjiangs);
 }else if(pname=="西藏"){
-    drawColor(xizangs);
+    drawColor("西藏",xizangs);
 }else if(pname=="陕西"){
-    drawColor(shanxis);
+    drawColor("陕西",shanxis);
 }else if(pname=="河北"){
-    drawColor(hebeis);
+    drawColor("河北",hebeis);
 }else if(pname=="黑龙江"){
-    drawColor(heilongjiangs);
+    drawColor("黑龙江",heilongjiangs);
 }else if(pname=="宁夏"){
-    drawColor(ningxias);
+    drawColor("宁夏",ningxias);
 }else if(pname=="青海"){
-    drawColor(qinghais);
+    drawColor("青海",qinghais);
 }else if(pname=="甘肃"){
-    drawColor(gansus);
+    drawColor("甘肃",gansus);
 }else if(pname=="山西"){
-    drawColor(shanxishengs);
+    drawColor("山西",shanxishengs);
 }else if(pname=="吉林省"){
-    drawColor(jilins);
+    drawColor("吉林省",jilins);
 }else if(pname=="北京"){
-    drawColor(beijings);
+    drawColor("北京",beijings);
 }else if(pname=="天津"){
-    drawColor(tianjins);
+    drawColor("天津",tianjins);
 }else if(pname=="上海"){
-    drawColor(shanghais);
+    drawColor("上海",shanghais);
 }else if(pname=="重庆市"){
-    drawColor(chongqins);
+    drawColor("重庆市",chongqins);
 }else if(pname=="香港"){
-    drawColor(xianggangs);
+    drawColor("香港",xianggangs);
 }
 //给不同的市赋予不同颜色
-function drawColor(array){
+function drawColor(province,array){
     for(var i=0;i<array.length;i++){
-        getBoundary(array[i]);
+        getBoundary(province,array[i]);
     }
 }

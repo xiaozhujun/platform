@@ -148,7 +148,7 @@ var xianggangs=[
     "香港-#FCFBBB"
 ];
 if(province=="辽宁省"){
-    drawColor(辽宁省,liaonings);
+    drawColor("辽宁省",liaonings);
 }else if(province=="内蒙古自治区"){
     drawColor("内蒙古自治区",neimenggus);
 }else if(province=="广西"){

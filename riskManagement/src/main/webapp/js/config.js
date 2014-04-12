@@ -25,7 +25,8 @@
             "getAreaInfoByUnitAddress":"rs/craneinspectreport/getAreaInfoByUnitAddress",
             "getCraneInspectReportInfoByAddressAndEquipment":"rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",
             "getAreaInfo":"rs/craneinspectreport/getAreaInfo",
-            "showRiskRank":"rs/craneinspectreport/showRiskRank"
+            "showRiskRank":"rs/craneinspectreport/showRiskRank",
+            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo"
         },
         "craneInspectReport":{
             "list":"rs/craneinspectreport/list",

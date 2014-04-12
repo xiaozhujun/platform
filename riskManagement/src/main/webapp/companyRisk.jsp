@@ -99,6 +99,9 @@ transitional.dtd">
         map.centerAndZoom(address,12);//设定地图的中心点和坐标并将地图显示在地图容器中
         window.map = map;//将map变量存储在全局
     }
+    function clearAllMarker(){
+        window.map.clearOverlays();
+    }
     //地图事件设置函数：
     function setMapEvent(){
         map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
@@ -263,7 +266,7 @@ transitional.dtd">
             var city=$("#city").find('option:selected').text();
             var area=$("#area").find('option:selected').text();
             var unit=$(this).find('option:selected').text();
-            initMap(unit);
+            getCompanyInfoByUnitAddress(unit);
         });
         $("#riskInfo").click(function(){
         $("#riskRank").css("background-color","#F7F7F7");
@@ -299,11 +302,54 @@ transitional.dtd">
                 $("#rightmain").css("display","block");
             }
         });
+        //根据单位来添加覆盖物以及查询相应的信息
+       function getCompanyInfoByUnitAddress(unitAddress){
+           clearAllMarker();
+           $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},getOneUnitAddressInfoCallback,"json");
+           var unitAddressMarker=new Array();
+           function getOneUnitAddressInfoCallback(data){
+                if(data.code==200){
+                        var item={};
+                        item.title=data.data[0].unitAddress;
+                        item.content=data.data[0].equipmentVariety+",风险值:"+data.data[0].riskValue;
+                        item.point=data.data[0].lng+"|"+data.data[0].lat;
+                        item.isOpen=0;
+                        /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
+                        item.icon={};
+                        item.icon.w=23;
+                        item.icon.h=25;
+                        item.icon.t=21;
+                        item.icon.x=9;
+                        item.icon.lb=12;
+                        if(data.data[0].riskValue==1){
+                            item.icon.l=23;
+                        }
+                        if(data.data[0].riskValue==2){
+                            item.icon.l=0;
+                        }
+                        if(data.data[0].riskValue==3){
+                            item.icon.l=69;
+                        }
+                        if(data.data[0].riskValue==4){
+                            item.icon.l=115;
+                        }
+                        if(data.data[0].riskValue==5){
+                            item.icon.l=46;
+                        }
+                        if(data.data[0].riskValue==6){
+                            item.icon.l=46;
+                        }
+                        unitAddressMarker.push(item);
+                    addMarker(unitAddressMarker);
+                }
+           }
+       }
+       //根据省市区来添加覆盖物以及查询相应的企业信息
        function initAndAddMarker(city,area){
        $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"pname":area},areaInfoCallback,"json");
        $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"pname":area},showRiskRank,"json");
        var chaoyangMarker=new Array();
-        function areaInfoCallback(data){
+       function areaInfoCallback(data){
              if(data.code==200){
                  $("#rightcontent").html("");
                  if(data.data[0][0]==undefined){
@@ -355,19 +401,24 @@ transitional.dtd">
                 $("#riskrankContent").html("");
                 var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                 $("#rankTitle").append(rankTitle);
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                }else{
                 for(i=0;i<data.data.length;i++){
                     var rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
                     $("#riskrankContent").append(rankContent);
                 }
+                }
             }
         }
        }
+        //根据省市区查询,添加覆盖物并初始化地图
         function showCompanyRisk(city,area){
             initAndAddMarker(city,area);
             initMap(area);
         }
         showCompanyRisk(city,pname);
-        //联动回调
+       //联动回调
         function getProvinceListCallback(data){
              if(data.code==200){
                  $("#province").html("");

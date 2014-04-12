@@ -152,4 +152,11 @@
          AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
          group by cr.unitAddress order by r.riskvalue desc
     </select>
+    <select id="getOneUnitAddressInfo" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
+           SELECT *
+           FROM
+           craneinspectreport
+           WHERE unitAddress=#{unitAddress}
+           GROUP BY unitAddress
+    </select>
 </mapper>

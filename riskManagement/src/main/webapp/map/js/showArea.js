@@ -1,7 +1,7 @@
 if (typeof console == "undefined"){
     window.console = {log: function(){}};
 }
-$.initMap(pname,10);
+$.initMap(city,10);
 function getBoundary(city,data){
     $.drawBoundary("companyRisk.jsp",province,city,null,data);
 }
@@ -1303,685 +1303,685 @@ var aletaidiqus=[
 var shihezishis=[
     "阿拉尔市-#FF0000", "图木舒克市-#FF0066", "五家渠市-#FF0000"
 ];
-if(pname=="北京市"){
+if(city=="北京市"){
     drawColor("北京市",beijingshis);
-}else if(pname=="天津市"){
+}else if(city=="天津市"){
     drawColor("天津市",tianjingshis);
-}else if(pname=="石家庄市"){
+}else if(city=="石家庄市"){
     drawColor("石家庄市",shijiazhuangshis);
-}else if(pname=="唐山市"){
+}else if(city=="唐山市"){
     drawColor("唐山市",tangshanshis);
-}else if(pname=="秦皇岛市"){
+}else if(city=="秦皇岛市"){
     drawColor("秦皇岛市",qinghuangdaoshis);
-}else if(pname=="邯郸市"){
+}else if(city=="邯郸市"){
     drawColor("邯郸市",handanshis);
-}else if(pname=="邢台市"){
+}else if(city=="邢台市"){
     drawColor("邢台市",xingtaishis);
-}else if(pname=="保定市"){
+}else if(city=="保定市"){
     drawColor("保定市",baodingshis);
-}else if(pname=="张家口市"){
+}else if(city=="张家口市"){
     drawColor("张家口市",zhangjiakoushis);
-}else if(pname=="承德市"){
+}else if(city=="承德市"){
     drawColor("承德市",chengdeshis);
-}else if(pname=="沧州市"){
+}else if(city=="沧州市"){
     drawColor("沧州市",cangzhouzhis);
-}else if(pname=="廊坊市"){
+}else if(city=="廊坊市"){
     drawColor("廊坊市",langfangshis);
-}else if(pname=="衡水市"){
+}else if(city=="衡水市"){
     drawColor("衡水市",hengshuishis);
-}else if(pname=="太原市"){
+}else if(city=="太原市"){
     drawColor("太原市",taiyuanshis);
-}else if(pname=="大同市"){
+}else if(city=="大同市"){
     drawColor("大同市",datongshis);
-}else if(pname=="阳泉市"){
+}else if(city=="阳泉市"){
     drawColor("阳泉市",yangquanshis);
-}else if(pname=="长治市"){
+}else if(city=="长治市"){
     drawColor("长治市",changzhishis);
-}else if(pname=="晋城市"){
+}else if(city=="晋城市"){
     drawColor("晋城市",jinchengshis);
-}else if(pname=="朔州市"){
+}else if(city=="朔州市"){
     drawColor("朔州市",suzhoushis);
-}else if(pname=="晋中市"){
+}else if(city=="晋中市"){
     drawColor("晋中市",jinzhongshis);
-}else if(pname=="运城市"){
+}else if(city=="运城市"){
     drawColor("运城市",yunchengshis);
-}else if(pname=="忻州市"){
+}else if(city=="忻州市"){
     drawColor("忻州市",xinzhoushis);
-}else if(pname=="临汾市"){
+}else if(city=="临汾市"){
     drawColor("临汾市",linfenshis);
-}else if(pname=="吕梁市"){
+}else if(city=="吕梁市"){
     drawColor("吕梁市",lvliangshis);
-}else if(pname=="呼和浩特市"){
+}else if(city=="呼和浩特市"){
     drawColor("呼和浩特市",huhehaoteshis);
-}else if(pname=="包头市"){
+}else if(city=="包头市"){
     drawColor("包头市",baotoushis);
-}else if(pname=="乌海市"){
+}else if(city=="乌海市"){
     drawColor("乌海市",wuhaishis);
-}else if(pname=="赤峰市"){
+}else if(city=="赤峰市"){
     drawColor("赤峰市",chifengshis);
-}else if(pname=="通辽市"){
+}else if(city=="通辽市"){
     drawColor("通辽市",tongliaoshis);
-}else if(pname=="鄂尔多斯市"){
+}else if(city=="鄂尔多斯市"){
     drawColor("鄂尔多斯市",eerduoshis);
-}else if(pname=="呼伦贝尔市"){
+}else if(city=="呼伦贝尔市"){
     drawColor("呼伦贝尔市",hulubeiershis);
-}else if(pname=="巴彦淖尔市"){
+}else if(city=="巴彦淖尔市"){
     drawColor("巴彦淖尔市",bayanzhuoershis);
-}else if(pname=="乌兰察布市"){
+}else if(city=="乌兰察布市"){
     drawColor("乌兰察布市",wulanchabushis);
-}else if(pname=="兴安盟"){
+}else if(city=="兴安盟"){
     drawColor("兴安盟",xinanmens);
-}else if(pname=="锡林郭勒盟"){
+}else if(city=="锡林郭勒盟"){
     drawColor("锡林郭勒盟",xilinguolemens);
-}else if(pname=="阿拉善盟"){
+}else if(city=="阿拉善盟"){
     drawColor("阿拉善盟",alashanmens);
-}else if(pname=="沈阳市"){
+}else if(city=="沈阳市"){
     drawColor("沈阳市",shenyangshis);
-}else if(pname=="大连市"){
+}else if(city=="大连市"){
     drawColor("大连市",dalianshis);
-}else if(pname=="鞍山市"){
+}else if(city=="鞍山市"){
     drawColor("鞍山市",anshanshis);
-}else if(pname=="抚顺市"){
+}else if(city=="抚顺市"){
     drawColor("抚顺市",fushunshis);
-}else if(pname=="本溪市"){
+}else if(city=="本溪市"){
     drawColor("本溪市",benxishis);
-}else if(pname=="丹东市"){
+}else if(city=="丹东市"){
     drawColor("丹东市",dandongshis);
-}else if(pname=="锦州市"){
+}else if(city=="锦州市"){
     drawColor("锦州市",jinzhoushis);
-}else if(pname=="营口市"){
+}else if(city=="营口市"){
     drawColor("营口市",yinkoushis);
-}else if(pname=="阜新市"){
+}else if(city=="阜新市"){
     drawColor("阜新市",buxinshis);
-}else if(pname=="辽阳市"){
+}else if(city=="辽阳市"){
     drawColor("辽阳市",liaoyangshis);
-}else if(pname=="盘锦市"){
+}else if(city=="盘锦市"){
     drawColor("盘锦市",panjinshis);
-}else if(pname=="铁岭市"){
+}else if(city=="铁岭市"){
     drawColor("铁岭市",tielingshis);
-}else if(pname=="朝阳市"){
+}else if(city=="朝阳市"){
     drawColor("朝阳市",chaoyangshis);
-}else if(pname=="葫芦岛市"){
+}else if(city=="葫芦岛市"){
     drawColor("葫芦岛市",huludaoshis);
-}else if(pname=="长春市"){
+}else if(city=="长春市"){
     drawColor("长春市",changchunshis);
-}else if(pname=="吉林市"){
+}else if(city=="吉林市"){
     drawColor("吉林市",jilinshis);
-}else if(pname=="四平市"){
+}else if(city=="四平市"){
     drawColor("四平市",sipingshis);
-}else if(pname=="辽源市"){
+}else if(city=="辽源市"){
     drawColor("辽源市",liaoyuanshis);
-}else if(pname=="通化市"){
+}else if(city=="通化市"){
     drawColor("通化市",tonghuashis);
-}else if(pname=="白山市"){
+}else if(city=="白山市"){
     drawColor("白山市",baishanshis);
-}else if(pname=="松原市"){
+}else if(city=="松原市"){
     drawColor("松原市",songyuanshis);
-}else if(pname=="白城市"){
+}else if(city=="白城市"){
     drawColor("白城市",baichengshis);
-}else if(pname=="延边朝鲜族自治州"){
+}else if(city=="延边朝鲜族自治州"){
     drawColor("延边朝鲜族自治州",yanbianchaoxianzuzizhizhous);
-}else if(pname=="哈尔滨市"){
+}else if(city=="哈尔滨市"){
     drawColor("哈尔滨市",haerbinshis);
-}else if(pname=="齐齐哈尔市"){
+}else if(city=="齐齐哈尔市"){
     drawColor("齐齐哈尔市",qiqihaershis);
-}else if(pname=="鸡西市"){
+}else if(city=="鸡西市"){
     drawColor("鸡西市",jixishis);
-}else if(pname=="鹤岗市"){
+}else if(city=="鹤岗市"){
     drawColor("鹤岗市",hegangshis);
-}else if(pname=="双鸭山市"){
+}else if(city=="双鸭山市"){
     drawColor("双鸭山市",shuangyashanshis);
-}else if(pname=="大庆市"){
+}else if(city=="大庆市"){
     drawColor("大庆市",daqinshis);
-}else if(pname=="伊春市"){
+}else if(city=="伊春市"){
     drawColor("伊春市",yichunshis);
-}else if(pname=="佳木斯市"){
+}else if(city=="佳木斯市"){
     drawColor("佳木斯市",jiamusishis);
-}else if(pname=="七台河市"){
+}else if(city=="七台河市"){
     drawColor("七台河市",qitaiheshis);
-}else if(pname=="牡丹江市"){
+}else if(city=="牡丹江市"){
     drawColor("牡丹江市",mudanjiangshis);
-}else if(pname=="黑河市"){
+}else if(city=="黑河市"){
     drawColor("黑河市",heiheshis);
-}else if(pname=="绥化市"){
+}else if(city=="绥化市"){
     drawColor("绥化市",suihuashis);
-}else if(pname=="大兴安岭地区"){
+}else if(city=="大兴安岭地区"){
     drawColor("大兴安岭地区",daxinganlings);
-}else if(pname=="上海市"){
+}else if(city=="上海市"){
     drawColor("上海市",shanghaishis);
-}else if(pname=="南京市"){
+}else if(city=="南京市"){
     drawColor("南京市",nanjingshis);
-}else if(pname=="无锡市"){
+}else if(city=="无锡市"){
     drawColor("无锡市",wuxishis);
-}else if(pname=="徐州市"){
+}else if(city=="徐州市"){
     drawColor("徐州市",xuzhoushis);
-}else if(pname=="常州市"){
+}else if(city=="常州市"){
     drawColor("常州市",changzhoushis);
-}else if(pname=="苏州市"){
+}else if(city=="苏州市"){
     drawColor("苏州市",suzhoushis);
-}else if(pname=="南通市"){
+}else if(city=="南通市"){
     drawColor("南通市",nantongshis);
-}else if(pname=="连云港市"){
+}else if(city=="连云港市"){
     drawColor("连云港市",lianyungangshis);
-}else if(pname=="淮安市"){
+}else if(city=="淮安市"){
     drawColor("淮安市",huaianshis);
-}else if(pname=="盐城市"){
+}else if(city=="盐城市"){
     drawColor("盐城市",yanchengshis);
-}else if(pname=="扬州市"){
+}else if(city=="扬州市"){
     drawColor("扬州市",yangzhoushis);
-}else if(pname=="镇江市"){
+}else if(city=="镇江市"){
     drawColor("镇江市",zhenjiangshis);
-}else if(pname=="泰州市"){
+}else if(city=="泰州市"){
     drawColor("泰州市",taizhoushis);
-}else if(pname=="宿迁市"){
+}else if(city=="宿迁市"){
     drawColor("宿迁市",suqianshis);
-}else if(pname=="杭州市"){
+}else if(city=="杭州市"){
     drawColor("杭州市",hangzhoushis);
-}else if(pname=="宁波市"){
+}else if(city=="宁波市"){
     drawColor("宁波市",ningboshis);
-}else if(pname=="温州市"){
+}else if(city=="温州市"){
     drawColor("温州市",wenzhoushis);
-}else if(pname=="嘉兴市"){
+}else if(city=="嘉兴市"){
     drawColor("嘉兴市",jiaxingshis);
-}else if(pname=="湖州市"){
+}else if(city=="湖州市"){
     drawColor("湖州市",huzhoushis);
-}else if(pname=="绍兴市"){
+}else if(city=="绍兴市"){
     drawColor("绍兴市",shaoxinshis);
-}else if(pname=="金华市"){
+}else if(city=="金华市"){
     drawColor("金华市",jinhuashis);
-}else if(pname=="衢州市"){
+}else if(city=="衢州市"){
     drawColor("衢州市",quzhoushis);
-}else if(pname=="舟山市"){
+}else if(city=="舟山市"){
     drawColor("舟山市",zhoushanshis);
-}else if(pname=="台州市"){
+}else if(city=="台州市"){
     drawColor("台州市",tazhoushis);
-}else if(pname=="丽水市"){
+}else if(city=="丽水市"){
     drawColor("丽水市",lishuishis);
-}else if(pname=="合肥市"){
+}else if(city=="合肥市"){
     drawColor("合肥市",hefeishis);
-}else if(pname=="芜湖市"){
+}else if(city=="芜湖市"){
     drawColor("芜湖市",wuhushis);
-}else if(pname=="蚌埠市"){
+}else if(city=="蚌埠市"){
     drawColor("蚌埠市",bangbushis);
-}else if(pname=="淮南市"){
+}else if(city=="淮南市"){
     drawColor("淮南市",huainanshis);
-}else if(pname=="马鞍山市"){
+}else if(city=="马鞍山市"){
     drawColor("马鞍山市",maanhanshis);
-}else if(pname=="淮北市"){
+}else if(city=="淮北市"){
     drawColor("淮北市",huanbeishis);
-}else if(pname=="铜陵市"){
+}else if(city=="铜陵市"){
     drawColor("铜陵市",tonglingshis);
-}else if(pname=="安庆市"){
+}else if(city=="安庆市"){
     drawColor("安庆市",anqinshis);
-}else if(pname=="黄山市"){
+}else if(city=="黄山市"){
     drawColor("黄山市",huangshanshis);
-}else if(pname=="滁州市"){
+}else if(city=="滁州市"){
     drawColor("滁州市",xuzhoushis);
-}else if(pname=="阜阳市"){
+}else if(city=="阜阳市"){
     drawColor("阜阳市",buyangshis);
-}else if(pname=="宿州市"){
+}else if(city=="宿州市"){
     drawColor("宿州市",suzhoushis);
-}else if(pname=="巢湖市"){
+}else if(city=="巢湖市"){
     drawColor("巢湖市",chaohushis);
-}else if(pname=="六安市"){
+}else if(city=="六安市"){
     drawColor("六安市",liuanshis);
-}else if(pname=="亳州市"){
+}else if(city=="亳州市"){
     drawColor("亳州市",haozhoushis);
-}else if(pname=="池州市"){
+}else if(city=="池州市"){
     drawColor("池州市",chizhoushis);
-}else if(pname=="宣城市"){
+}else if(city=="宣城市"){
     drawColor("宣城市",xuanchengshis);
-}else if(pname=="福州市"){
+}else if(city=="福州市"){
     drawColor("福州市",fuzhoushis);
-}else if(pname=="厦门市"){
+}else if(city=="厦门市"){
     drawColor("厦门市",xiamenshis);
-}else if(pname=="莆田市"){
+}else if(city=="莆田市"){
     drawColor("莆田市",putianshis);
-}else if(pname=="三明市"){
+}else if(city=="三明市"){
     drawColor("三明市",sanmingshis);
-}else if(pname=="泉州市"){
+}else if(city=="泉州市"){
     drawColor("泉州市",quanzhoushis);
-}else if(pname=="漳州市"){
+}else if(city=="漳州市"){
     drawColor("漳州市",zhangzhouoshis);
-}else if(pname=="南平市"){
+}else if(city=="南平市"){
     drawColor("南平市",nanpingshis);
-}else if(pname=="龙岩市"){
+}else if(city=="龙岩市"){
     drawColor("龙岩市",longyanshis);
-}else if(pname=="宁德市"){
+}else if(city=="宁德市"){
     drawColor("宁德市",ningdeshis);
-}else if(pname=="南昌市"){
+}else if(city=="南昌市"){
     drawColor("南昌市",nanchangshis);
-}else if(pname=="景德镇市"){
+}else if(city=="景德镇市"){
     drawColor("景德镇市",jingdezhenshis);
-}else if(pname=="萍乡市"){
+}else if(city=="萍乡市"){
     drawColor("萍乡市",pingxiangshis);
-}else if(pname=="九江市"){
+}else if(city=="九江市"){
     drawColor("九江市",jiujiangshis);
-}else if(pname=="新余市"){
+}else if(city=="新余市"){
     drawColor("新余市",xinyushis);
-}else if(pname=="鹰潭市"){
+}else if(city=="鹰潭市"){
     drawColor("鹰潭市",yintanshis);
-}else if(pname=="赣州市"){
+}else if(city=="赣州市"){
     drawColor("赣州市",ganzhoushis);
-}else if(pname=="吉安市"){
+}else if(city=="吉安市"){
     drawColor("吉安市",jianshis);
-}else if(pname=="宜春市"){
+}else if(city=="宜春市"){
     drawColor("宜春市",yichongshis);
-}else if(pname=="抚州市"){
+}else if(city=="抚州市"){
     drawColor("抚州市",wuzhoushis);
-}else if(pname=="上饶市"){
+}else if(city=="上饶市"){
     drawColor("上饶市",shangraoshis);
-}else if(pname=="济南市"){
+}else if(city=="济南市"){
     drawColor("济南市",jinanshis);
-}else if(pname=="青岛市"){
+}else if(city=="青岛市"){
     drawColor("青岛市",qingdaoshis);
-}else if(pname=="淄博市"){
+}else if(city=="淄博市"){
     drawColor("淄博市",ziboshis);
-}else if(pname=="枣庄市"){
+}else if(city=="枣庄市"){
     drawColor("枣庄市",zaozhuangshis);
-}else if(pname=="东营市"){
+}else if(city=="东营市"){
     drawColor("东营市",dongyinshis);
-}else if(pname=="烟台市"){
+}else if(city=="烟台市"){
     drawColor("烟台市",yantaishis);
-}else if(pname=="潍坊市"){
+}else if(city=="潍坊市"){
     drawColor("潍坊市",weifangshis);
-}else if(pname=="济宁市"){
+}else if(city=="济宁市"){
     drawColor("济宁市",jiningshis);
-}else if(pname=="泰安市"){
+}else if(city=="泰安市"){
     drawColor("泰安市",qinanshis);
-}else if(pname=="威海市"){
+}else if(city=="威海市"){
     drawColor("威海市",weihaishis);
-}else if(pname=="日照市"){
+}else if(city=="日照市"){
     drawColor("日照市",rizhaoshis);
-}else if(pname=="莱芜市"){
+}else if(city=="莱芜市"){
     drawColor("莱芜市",laiwushis);
-}else if(pname=="临沂市"){
+}else if(city=="临沂市"){
     drawColor("临沂市",linxishis);
-}else if(pname=="德州市"){
+}else if(city=="德州市"){
     drawColor("德州市",dezhoushis);
-}else if(pname=="聊城市"){
+}else if(city=="聊城市"){
     drawColor("聊城市",laiochengshis);
-}else if(pname=="滨州市"){
+}else if(city=="滨州市"){
     drawColor("滨州市",binzhoushis);
-}else if(pname=="牡丹区"){
+}else if(city=="牡丹区"){
     drawColor("牡丹区",mudanqus);
-}else if(pname=="郑州市"){
+}else if(city=="郑州市"){
     drawColor("郑州市",zhenzhoushis);
-}else if(pname=="开封市"){
+}else if(city=="开封市"){
     drawColor("开封市",kaifenshis);
-}else if(pname=="洛阳市"){
+}else if(city=="洛阳市"){
     drawColor("洛阳市",luoyangshis);
-}else if(pname=="平顶山市"){
+}else if(city=="平顶山市"){
     drawColor("平顶山市",pingdingshanshis);
-}else if(pname=="安阳市"){
+}else if(city=="安阳市"){
     drawColor("安阳市",anyangshis);
-}else if(pname=="鹤壁市"){
+}else if(city=="鹤壁市"){
     drawColor("鹤壁市",hebishis);
-}else if(pname=="新乡市"){
+}else if(city=="新乡市"){
     drawColor("新乡市",xinxiangshis);
-}else if(pname=="焦作市"){
+}else if(city=="焦作市"){
     drawColor("焦作市",jiaozuoshis);
-}else if(pname=="濮阳市"){
+}else if(city=="濮阳市"){
     drawColor("濮阳市",puyangshis);
-}else if(pname=="许昌市"){
+}else if(city=="许昌市"){
     drawColor("许昌市",xuchangshis);
-}else if(pname=="漯河市"){
+}else if(city=="漯河市"){
     drawColor("漯河市",luoheshis);
-}else if(pname=="三门峡市"){
+}else if(city=="三门峡市"){
     drawColor("三门峡市",sanmenxiashis);
-}else if(pname=="南阳市"){
+}else if(city=="南阳市"){
     drawColor("南阳市",nanyangshis);
-}else if(pname=="商丘市"){
+}else if(city=="商丘市"){
     drawColor("商丘市",shangqiushis);
-}else if(pname=="信阳市"){
+}else if(city=="信阳市"){
     drawColor("信阳市",xinyangshis);
-}else if(pname=="周口市"){
+}else if(city=="周口市"){
     drawColor("周口市",zhoukoushis);
-}else if(pname=="驻马店市"){
+}else if(city=="驻马店市"){
     drawColor("驻马店市",zhumadianshis);
-}else if(pname=="武汉市"){
+}else if(city=="武汉市"){
     drawColor("武汉市",wuhanshis);
-}else if(pname=="黄石市"){
+}else if(city=="黄石市"){
     drawColor("黄石市",huangshishis);
-}else if(pname=="十堰市"){
+}else if(city=="十堰市"){
     drawColor("十堰市",shiyanshis);
-}else if(pname=="宜昌市"){
+}else if(city=="宜昌市"){
     drawColor("宜昌市",yichangshis);
-}else if(pname=="襄樊市"){
+}else if(city=="襄樊市"){
     drawColor("襄樊市",xiangfanshis);
-}else if(pname=="鄂州市"){
+}else if(city=="鄂州市"){
     drawColor("鄂州市",ezhoushis);
-}else if(pname=="荆门市"){
+}else if(city=="荆门市"){
     drawColor("荆门市",jinmenshis);
-}else if(pname=="孝感市"){
+}else if(city=="孝感市"){
     drawColor("孝感市",xiaoganshis);
-}else if(pname=="荆州市"){
+}else if(city=="荆州市"){
     drawColor("荆州市",jinzhoushis);
-}else if(pname=="黄冈市"){
+}else if(city=="黄冈市"){
     drawColor("黄冈市",huanggangshis);
-}else if(pname=="咸宁市"){
+}else if(city=="咸宁市"){
     drawColor("咸宁市",xianningshis);
-}else if(pname=="随州市"){
+}else if(city=="随州市"){
     drawColor("随州市",suizhoushis);
-}else if(pname=="恩施土家族苗族自治州"){
+}else if(city=="恩施土家族苗族自治州"){
     drawColor("恩施土家族苗族自治州",enshitujiazumiaozuzizhizhous);
-}else if(pname=="仙桃市"){
+}else if(city=="仙桃市"){
     drawColor("仙桃市",xiantaoshis);
-}else if(pname=="长沙市"){
+}else if(city=="长沙市"){
     drawColor("长沙市",changshashis);
-}else if(pname=="株洲市"){
+}else if(city=="株洲市"){
     drawColor("株洲市",zhuzhoushis);
-}else if(pname=="湘潭市"){
+}else if(city=="湘潭市"){
     drawColor("湘潭市",xiangtanshis);
-}else if(pname=="衡阳市"){
+}else if(city=="衡阳市"){
     drawColor("衡阳市",hengyangshis);
-}else if(pname=="邵阳市"){
+}else if(city=="邵阳市"){
     drawColor("邵阳市",shaoyangshis);
-}else if(pname=="岳阳市"){
+}else if(city=="岳阳市"){
     drawColor("岳阳市",yueyangshis);
-}else if(pname=="常德市"){
+}else if(city=="常德市"){
     drawColor("常德市",changdeshis);
-}else if(pname=="张家界市"){
+}else if(city=="张家界市"){
     drawColor("张家界市",zhangjiajieshis);
-}else if(pname=="益阳市"){
+}else if(city=="益阳市"){
     drawColor("益阳市",yiyangshis);
-}else if(pname=="郴州市"){
+}else if(city=="郴州市"){
     drawColor("郴州市",binzhoushis);
-}else if(pname=="永州市"){
+}else if(city=="永州市"){
     drawColor("永州市",yongzhoushis);
-}else if(pname=="怀化市"){
+}else if(city=="怀化市"){
     drawColor("怀化市",huaihuashis);
-}else if(pname=="娄底市"){
+}else if(city=="娄底市"){
     drawColor("娄底市",loudishis);
-}else if(pname=="湘西土家族苗族自治州"){
+}else if(city=="湘西土家族苗族自治州"){
     drawColor("湘西土家族苗族自治州",xiangxitujiazumiaozuzizhizhous);
-}else if(pname=="广州市"){
+}else if(city=="广州市"){
     drawColor("广州市",guangzhoushis);
-}else if(pname=="韶关市"){
+}else if(city=="韶关市"){
     drawColor("韶关市",shaoguanshis);
-}else if(pname=="深圳市"){
+}else if(city=="深圳市"){
     drawColor("深圳市",shenzhenshis);
-}else if(pname=="珠海市"){
+}else if(city=="珠海市"){
     drawColor("珠海市",zhuhaoshis);
-}else if(pname=="汕头市"){
+}else if(city=="汕头市"){
     drawColor("汕头市",shantoushis);
-}else if(pname=="佛山市"){
+}else if(city=="佛山市"){
     drawColor("佛山市",foshanshis);
-}else if(pname=="江门市"){
+}else if(city=="江门市"){
     drawColor("江门市",jiangmenshis);
-}else if(pname=="湛江市"){
+}else if(city=="湛江市"){
     drawColor("湛江市",zhanjiangshis);
-}else if(pname=="茂名市"){
+}else if(city=="茂名市"){
     drawColor("茂名市",maomingshis);
-}else if(pname=="肇庆市"){
+}else if(city=="肇庆市"){
     drawColor("肇庆市",zhaoqinshis);
-}else if(pname=="惠州市"){
+}else if(city=="惠州市"){
     drawColor("惠州市",huizhoushis);
-}else if(pname=="梅州市"){
+}else if(city=="梅州市"){
     drawColor("梅州市",meizhoushis);
-}else if(pname=="汕尾市"){
+}else if(city=="汕尾市"){
     drawColor("汕尾市",shanweishis);
-}else if(pname=="河源市"){
+}else if(city=="河源市"){
     drawColor("河源市",heyuanshis);
-}else if(pname=="阳江市"){
+}else if(city=="阳江市"){
     drawColor("阳江市",yangjiangshis);
-}else if(pname=="清远市"){
+}else if(city=="清远市"){
     drawColor("清远市",qingyuanshis);
-}else if(pname=="东莞市"){
+}else if(city=="东莞市"){
     drawColor("东莞市",dongwanshis);
-}else if(pname=="中山市"){
+}else if(city=="中山市"){
     drawColor("中山市",zhongshanshis);
-}else if(pname=="潮州市"){
+}else if(city=="潮州市"){
     drawColor("潮州市",chaozhoushis);
-}else if(pname=="揭阳市"){
+}else if(city=="揭阳市"){
     drawColor("揭阳市",jieyangshis);
-}else if(pname=="云浮市"){
+}else if(city=="云浮市"){
     drawColor("云浮市",yunfushis);
-}else if(pname=="南宁市"){
+}else if(city=="南宁市"){
     drawColor("南宁市",nanningshis);
-}else if(pname=="柳州市"){
+}else if(city=="柳州市"){
     drawColor("柳州市",guilinshis);
-}else if(pname=="桂林市"){
+}else if(city=="桂林市"){
     drawColor("桂林市",guizhoushis);
-}else if(pname=="梧州市"){
+}else if(city=="梧州市"){
     drawColor("梧州市",wuzhoushis);
-}else if(pname=="北海市"){
+}else if(city=="北海市"){
     drawColor("北海市",beihaishis);
-}else if(pname=="防城港市"){
+}else if(city=="防城港市"){
     drawColor("防城港市",fangchenggangshis);
-}else if(pname=="钦州市"){
+}else if(city=="钦州市"){
     drawColor("钦州市",qinzhoushis);
-}else if(pname=="贵港市"){
+}else if(city=="贵港市"){
     drawColor("贵港市",guigangshis);
-}else if(pname=="玉林市"){
+}else if(city=="玉林市"){
     drawColor("玉林市",yulinshis);
-}else if(pname=="百色市"){
+}else if(city=="百色市"){
     drawColor("百色市",baiseshis);
-}else if(pname=="贺州市"){
+}else if(city=="贺州市"){
     drawColor("贺州市",hezhoushis);
-}else if(pname=="河池市"){
+}else if(city=="河池市"){
     drawColor("河池市",hechishis);
-}else if(pname=="来宾市"){
+}else if(city=="来宾市"){
     drawColor("来宾市",laibinshis);
-}else if(pname=="崇左市"){
+}else if(city=="崇左市"){
     drawColor("崇左市",chongzuoshis);
-}else if(pname=="海口市"){
+}else if(city=="海口市"){
     drawColor("海口市",haikoushis);
-}else if(pname=="三亚市"){
+}else if(city=="三亚市"){
     drawColor("三亚市",sanyashis);
-}else if(pname=="五指山市"){
+}else if(city=="五指山市"){
     drawColor("五指山市",wuzhishanshis);
-}else if(pname=="重庆市"){
+}else if(city=="重庆市"){
     drawColor("重庆市",chongqinshis);
-}else if(pname=="成都市"){
+}else if(city=="成都市"){
     drawColor("成都市",chengdushis);
-}else if(pname=="自贡市"){
+}else if(city=="自贡市"){
     drawColor("自贡市",zigongshis);
-}else if(pname=="攀枝花市"){
+}else if(city=="攀枝花市"){
     drawColor("攀枝花市",panzhihuashis);
-}else if(pname=="泸州市"){
+}else if(city=="泸州市"){
     drawColor("泸州市",luzhoushis);
-}else if(pname=="德阳市"){
+}else if(city=="德阳市"){
     drawColor("德阳市",deyangshis);
-}else if(pname=="绵阳市"){
+}else if(city=="绵阳市"){
     drawColor("绵阳市",mianyangshis);
-}else if(pname=="广元市"){
+}else if(city=="广元市"){
     drawColor("广元市",guangyuanshis);
-}else if(pname=="遂宁市"){
+}else if(city=="遂宁市"){
     drawColor("遂宁市",suiningshis);
-}else if(pname=="内江市"){
+}else if(city=="内江市"){
     drawColor("内江市",neijiangshis);
-}else if(pname=="乐山市"){
+}else if(city=="乐山市"){
     drawColor("乐山市",leshanshis);
-}else if(pname=="南充市"){
+}else if(city=="南充市"){
     drawColor("南充市",nanchongshis);
-}else if(pname=="眉山市"){
+}else if(city=="眉山市"){
     drawColor("眉山市",meishanshis);
-}else if(pname=="宜宾市"){
+}else if(city=="宜宾市"){
     drawColor("宜宾市",yibishis);
-}else if(pname=="广安市"){
+}else if(city=="广安市"){
     drawColor("广安市",guanganshis);
-}else if(pname=="达州市"){
+}else if(city=="达州市"){
     drawColor("达州市",dazhoushis);
-}else if(pname=="雅安市"){
+}else if(city=="雅安市"){
     drawColor("雅安市",yaanshis);
-}else if(pname=="巴中市"){
+}else if(city=="巴中市"){
     drawColor("巴中市",bazhongshis);
-}else if(pname=="资阳市"){
+}else if(city=="资阳市"){
     drawColor("资阳市",ziyangshis);
-}else if(pname=="阿坝藏族羌族自治州"){
+}else if(city=="阿坝藏族羌族自治州"){
     drawColor("阿坝藏族羌族自治州",abazangzuqiangzuzizhizhous);
-}else if(pname=="甘孜藏族自治州"){
+}else if(city=="甘孜藏族自治州"){
     drawColor("甘孜藏族自治州",ganzizangzuzizhizhous);
-}else if(pname=="凉山彝族自治州"){
+}else if(city=="凉山彝族自治州"){
     drawColor("凉山彝族自治州",liangshanyizuzizhizhous);
-}else if(pname=="贵阳市"){
+}else if(city=="贵阳市"){
     drawColor("贵阳市",guiyangshis);
-}else if(pname=="六盘水市"){
+}else if(city=="六盘水市"){
     drawColor("六盘水市",liupanshuishis);
-}else if(pname=="遵义市"){
+}else if(city=="遵义市"){
     drawColor("遵义市",zunyishis);
-}else if(pname=="安顺市"){
+}else if(city=="安顺市"){
     drawColor("安顺市",anshunshis);
-}else if(pname=="铜仁地区"){
+}else if(city=="铜仁地区"){
     drawColor("铜仁地区",tongrediqus);
-}else if(pname=="兴义市"){
+}else if(city=="兴义市"){
     drawColor("兴义市",xingyishis);
-}else if(pname=="毕节地区"){
+}else if(city=="毕节地区"){
     drawColor("毕节地区",bijieditus);
-}else if(pname=="黔东南苗族侗族自治州"){
+}else if(city=="黔东南苗族侗族自治州"){
     drawColor("黔东南苗族侗族自治州",qiandongnanmiaozutongzuzizhizhous);
-}else if(pname=="黔南布依族苗族自治州"){
+}else if(city=="黔南布依族苗族自治州"){
     drawColor("黔南布依族苗族自治州",qiannanbuyizumiaozuzizhizhous);
-}else if(pname=="昆明市"){
+}else if(city=="昆明市"){
     drawColor("昆明市",kunmingshis);
-}else if(pname=="曲靖市"){
+}else if(city=="曲靖市"){
     drawColor("曲靖市",qujingshis);
-}else if(pname=="玉溪市"){
+}else if(city=="玉溪市"){
     drawColor("玉溪市",yuxishis);
-}else if(pname=="保山市"){
+}else if(city=="保山市"){
     drawColor("保山市",baoshanshis);
-}else if(pname=="昭通市"){
+}else if(city=="昭通市"){
     drawColor("昭通市",shaotongshis);
-}else if(pname=="丽江市"){
+}else if(city=="丽江市"){
     drawColor("丽江市",lijiangshis);
-}else if(pname=="墨江哈尼族自治县"){
+}else if(city=="墨江哈尼族自治县"){
     drawColor("墨江哈尼族自治县",mojianghanizuzizhixians);
-}else if(pname=="临沧市"){
+}else if(city=="临沧市"){
     drawColor("临沧市",lincangshis);
-}else if(pname=="楚雄彝族自治州"){
+}else if(city=="楚雄彝族自治州"){
     drawColor("楚雄彝族自治州",chuxiongyizuzizhizhous);
-}else if(pname=="红河哈尼族彝族自治州"){
+}else if(city=="红河哈尼族彝族自治州"){
     drawColor("红河哈尼族彝族自治州",honghehanizuyizuzizhizhous);
-}else if(pname=="文山壮族苗族自治州"){
+}else if(city=="文山壮族苗族自治州"){
     drawColor("文山壮族苗族自治州",wenshanzhuangzumiaozuzizhizhous);
-}else if(pname=="西双版纳傣族自治州"){
+}else if(city=="西双版纳傣族自治州"){
     drawColor("西双版纳傣族自治州",xishuangbannadaizuzizhizhous);
-}else if(pname=="大理白族自治州"){
+}else if(city=="大理白族自治州"){
     drawColor("大理白族自治州",dalibaizuzizhizhous);
-}else if(pname=="德宏傣族景颇族自治州"){
+}else if(city=="德宏傣族景颇族自治州"){
     drawColor("德宏傣族景颇族自治州",dehongdaizujingbozuzizhizhous);
-}else if(pname=="怒江傈僳族自治州"){
+}else if(city=="怒江傈僳族自治州"){
     drawColor("怒江傈僳族自治州",lujianglisuzizhizhous);
-}else if(pname=="迪庆藏族自治州"){
+}else if(city=="迪庆藏族自治州"){
     drawColor("迪庆藏族自治州",diqinzangzuzizhizhous);
-}else if(pname=="拉萨市"){
+}else if(city=="拉萨市"){
     drawColor("拉萨市",lasashis);
-}else if(pname=="昌都地区"){
+}else if(city=="昌都地区"){
     drawColor("昌都地区",changdudiqus);
-}else if(pname=="山南地区"){
+}else if(city=="山南地区"){
     drawColor("山南地区",shannandiqus);
-}else if(pname=="日喀则地区"){
+}else if(city=="日喀则地区"){
     drawColor("日喀则地区",rikazediqus);
-}else if(pname=="那曲地区"){
+}else if(city=="那曲地区"){
     drawColor("那曲地区",naqudiqus);
-}else if(pname=="阿里地区"){
+}else if(city=="阿里地区"){
     drawColor("阿里地区",alidiqus);
-}else if(pname=="林芝地区"){
+}else if(city=="林芝地区"){
     drawColor("林芝地区",linzhidiqus);
-}else if(pname=="西安市"){
+}else if(city=="西安市"){
     drawColor("西安市",xianshis);
-}else if(pname=="铜川市"){
+}else if(city=="铜川市"){
     drawColor("铜川市",tongchuanshis);
-}else if(pname=="宝鸡市"){
+}else if(city=="宝鸡市"){
     drawColor("宝鸡市",baojishis);
-}else if(pname=="咸阳市"){
+}else if(city=="咸阳市"){
     drawColor("咸阳市",xianyangshis);
-}else if(pname=="渭南市"){
+}else if(city=="渭南市"){
     drawColor("渭南市",weinanshis);
-}else if(pname=="延安市"){
+}else if(city=="延安市"){
     drawColor("延安市",yananshis);
-}else if(pname=="汉中市"){
+}else if(city=="汉中市"){
     drawColor("汉中市",hanzhongshis);
-}else if(pname=="榆林市"){
+}else if(city=="榆林市"){
     drawColor("榆林市",yulinshis);
-}else if(pname=="安康市"){
+}else if(city=="安康市"){
     drawColor("安康市",ankangshis);
-}else if(pname=="商洛市"){
+}else if(city=="商洛市"){
     drawColor("商洛市",shangluoshis);
-}else if(pname=="兰州市"){
+}else if(city=="兰州市"){
     drawColor("兰州市",nanzhoushis);
-}else if(pname=="嘉峪关市"){
+}else if(city=="嘉峪关市"){
     drawColor("嘉峪关市",jiayuguanshis);
-}else if(pname=="金昌市"){
+}else if(city=="金昌市"){
     drawColor("金昌市",jinchangshis);
-}else if(pname=="白银市"){
+}else if(city=="白银市"){
     drawColor("白银市",baiyinshis);
-}else if(pname=="天水市"){
+}else if(city=="天水市"){
     drawColor("天水市",tianshuishis);
-}else if(pname=="武威市"){
+}else if(city=="武威市"){
     drawColor("武威市",wuweishis);
-}else if(pname=="张掖市"){
+}else if(city=="张掖市"){
     drawColor("张掖市",zhangyeshis);
-}else if(pname=="平凉市"){
+}else if(city=="平凉市"){
     drawColor("平凉市",pingliangshis);
-}else if(pname=="酒泉市"){
+}else if(city=="酒泉市"){
     drawColor("酒泉市",jiuquanshis);
-}else if(pname=="庆阳市"){
+}else if(city=="庆阳市"){
     drawColor("庆阳市",qinyangshis);
-}else if(pname=="定西市"){
+}else if(city=="定西市"){
     drawColor("定西市",dingxishis);
-}else if(pname=="陇南市"){
+}else if(city=="陇南市"){
     drawColor("陇南市",longnanshis);
-}else if(pname=="临夏回族自治州"){
+}else if(city=="临夏回族自治州"){
     drawColor("临夏回族自治州",linxiahuizuzizhizhous);
-}else if(pname=="甘南藏族自治州"){
+}else if(city=="甘南藏族自治州"){
     drawColor("甘南藏族自治州",gannanzangzuzizhizhous);
-}else if(pname=="西宁市"){
+}else if(city=="西宁市"){
     drawColor("西宁市",xiningshis);
-}else if(pname=="海东地区"){
+}else if(city=="海东地区"){
     drawColor("海东地区",haidongdiqus);
-}else if(pname=="海北藏族自治州"){
+}else if(city=="海北藏族自治州"){
     drawColor("海北藏族自治州",haibeizangzuzizhizhous);
-}else if(pname=="黄南藏族自治州"){
+}else if(city=="黄南藏族自治州"){
     drawColor("黄南藏族自治州",huangnanzangzuzizhizhous);
-}else if(pname=="海南藏族自治州"){
+}else if(city=="海南藏族自治州"){
     drawColor("海南藏族自治州",hainanzangzuzizhizhous);
-}else if(pname=="果洛藏族自治州"){
+}else if(city=="果洛藏族自治州"){
     drawColor("果洛藏族自治州",guoluozangzuzizhizhous);
-}else if(pname=="玉树藏族自治州"){
+}else if(city=="玉树藏族自治州"){
     drawColor("玉树藏族自治州",yushuzangzuzizhizhous);
-}else if(pname=="海西蒙古族藏族自治州"){
+}else if(city=="海西蒙古族藏族自治州"){
     drawColor("海西蒙古族藏族自治州",haiximengguzuzangzuzizhizhous);
-}else if(pname=="银川市"){
+}else if(city=="银川市"){
     drawColor("银川市",yinchuanshis);
-}else if(pname=="石嘴山市"){
+}else if(city=="石嘴山市"){
     drawColor("石嘴山市",shizuishanshis);
-}else if(pname=="吴忠市"){
+}else if(city=="吴忠市"){
     drawColor("吴忠市",wuzhongshis);
-}else if(pname=="固原市"){
+}else if(city=="固原市"){
     drawColor("固原市",guyuanshis);
-}else if(pname=="中卫市"){
+}else if(city=="中卫市"){
     drawColor("中卫市",zhongweishis);
-}else if(pname=="乌鲁木齐市"){
+}else if(city=="乌鲁木齐市"){
     drawColor("乌鲁木齐市",wulumuqishis);
-}else if(pname=="克拉玛依市"){
+}else if(city=="克拉玛依市"){
     drawColor("克拉玛依市",kelamayishis);
-}else if(pname=="吐鲁番地区"){
+}else if(city=="吐鲁番地区"){
     drawColor("吐鲁番地区",tulufandiqus);
-}else if(pname=="哈密地区"){
+}else if(city=="哈密地区"){
     drawColor("哈密地区",hamidiqus);
-}else if(pname=="昌吉回族自治州"){
+}else if(city=="昌吉回族自治州"){
     drawColor("昌吉回族自治州",changjihuizuzizhizhous);
-}else if(pname=="博尔塔拉蒙古自治州"){
+}else if(city=="博尔塔拉蒙古自治州"){
     drawColor("博尔塔拉蒙古自治州",boertalamengguzizhizhous);
-}else if(pname=="巴音郭楞蒙古自治州"){
+}else if(city=="巴音郭楞蒙古自治州"){
     drawColor("巴音郭楞蒙古自治州",bayinguolengmengguzizhizhous);
-}else if(pname=="阿克苏地区"){
+}else if(city=="阿克苏地区"){
     drawColor("阿克苏地区",akesudiqus);
-}else if(pname=="阿图什市"){
+}else if(city=="阿图什市"){
     drawColor("阿图什市",atushishis);
-}else if(pname=="喀什地区"){
+}else if(city=="喀什地区"){
     drawColor("喀什地区",kashidiqus);
-}else if(pname=="和田地区"){
+}else if(city=="和田地区"){
     drawColor("和田地区",hetiandiqus);
-}else if(pname=="伊犁哈萨克自治州"){
+}else if(city=="伊犁哈萨克自治州"){
     drawColor("伊犁哈萨克自治州",yilihasakezizhizhous);
-}else if(pname=="塔城地区"){
+}else if(city=="塔城地区"){
     drawColor("塔城地区",tachengdiqus);
-}else if(pname=="阿勒泰地区"){
+}else if(city=="阿勒泰地区"){
     drawColor("阿勒泰地区",aletaidiqus);
-}else if(pname=="石河子市"){
+}else if(city=="石河子市"){
     drawColor("石河子市",shiziheshis);
 }
 //给不同的市赋予不同颜色

@@ -132,6 +132,7 @@ transitional.dtd">
             $("#unit option:not(:first)").remove();
             var pro=$("#province option:selected").text();
             $.initMap(pro,12);
+            $.drawBoundary(null,pro,null,null);
             $.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
         });
         $("#city").change(function(){

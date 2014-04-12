@@ -1,50 +1,11 @@
 if (typeof console == "undefined"){
     window.console = {log: function(){}};
 }
-
-map = new BMap.Map("container");
-map.centerAndZoom(pname,10);
-var stdMapCtrl = new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL});
-map.addControl(stdMapCtrl);
-map.enableScrollWheelZoom();
-map.enableContinuousZoom();
+$.initMap(pname,10);
 function getBoundary(city,data){
-    var bdary=new BMap.Boundary();
-    bdary.get(data.split("-")[0],function(rs){
-        console.log(rs);
-        var maxNum=-1,maxPly;
-        var color=data.split("-")[1];
-        var count=rs.boundaries.length;
-        for(var i=0;i<count;i++){
-            var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,strokeColor:"#000000"});
-            map.addOverlay(ply);
-            ply.addEventListener("click",function(e){
-                name=data.split("-")[0];
-                var latlng=e.point;
-                var info=new BMap.InfoWindow(name+" "+latlng.lat+","+latlng.lng,{width:220});
-                map.openInfoWindow(info,latlng);
-                //高亮闪烁显示鼠标点击的省
-                delay=0;
-                for (flashTimes=0;flashTimes<3;flashTimes++){
-                    delay+=400;
-                    setTimeout(function(){
-                        ply.setFillColor("#FFFF00");
-                    },delay);
-
-                    delay+=400;
-                    setTimeout(function(){
-                        ply.setFillColor(color);
-                    },delay);
-                }
-                location = "companyRisk.jsp?province="+encodeURI(province)+"&city="+encodeURI(city)+"&pname="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
-            });
-        }
-        if(maxPly){
-            map.setViewport(maxPly.getPoints());
-        }
-    });
+    $.drawBoundary("companyRisk.jsp",province,city,null,data);
 }
-map.clearOverlays();
+$.clearAllMarker;
 var beijingshis = [
     "东城区-#FF0000", "西城区-#33FF00", "崇文区-#FF0066", "宣武区-#33FF00", "朝阳区-#FF3300",
     "丰台区-#33FF00", "石景山区-#FF0000", "海淀区-#FF0000", "门头沟区-#33FF00", "房山区-#FF3300",

@@ -18,7 +18,8 @@ transitional.dtd">
     <link rel="stylesheet" href="map/css/style.css"/>
     <script type="text/javascript" src="map/js/getParam.js"></script>
     <script type="text/javascript">
-        var province='<%=URLDecoder.decode(request.getParameter("province"),"utf-8")%>'
+        var province='<%=request.getParameter("province")%>';
+        alert(province);
         var pname='<%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%>';
         var lat='<%=request.getParameter("lat")%>';
         var lng='<%=request.getParameter("lng")%>';
@@ -54,6 +55,7 @@ transitional.dtd">
         $("#titleContainer").load("title.html");
     });
 </script>
+<script type="text/javascript" src="map/js/initMap.js"></script>
 <script type="text/javascript" src="map/js/showArea.js"></script>
 </body>
 </html>

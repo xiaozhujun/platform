@@ -16,6 +16,7 @@ transitional.dtd">
     <link rel="stylesheet" href="map/css/showCompany.css"/>
     <link rel="stylesheet" href="map/css/style.css"/>
     <script type="text/javascript" src="map/js/getParam.js"></script>
+    <script type="text/javascript" src="map/js/initMap.js"></script>
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
@@ -55,7 +56,7 @@ transitional.dtd">
                   <span id="titleSearch">
                     <span class="searchItem" id="provinceSearch">
                      <select id="province">
-                         <option><%=URLDecoder.decode(request.getParameter("province"),"utf-8")%></option>
+                         <option><%=request.getParameter("province")%></option>
                      </select>
                     </span>
                        <span id="citySearch"><select id="city">
@@ -83,44 +84,11 @@ transitional.dtd">
 <div style="display:none;">
 </div>
 <script type="text/javascript">
-    var province='<%=URLDecoder.decode(request.getParameter("province"),"utf-8")%>';
+    var province='<%=request.getParameter("province")%>';
     var city='<%=URLDecoder.decode(request.getParameter("city"),"utf-8")%>';
     var pname='<%=URLDecoder.decode(request.getParameter("pname"),"utf-8")%>';
     var lat='<%=request.getParameter("lat")%>';
     var lng='<%=request.getParameter("lng")%>';
-    function initMap(address){
-        createMap(address);//创建地图
-        setMapEvent();//设置地图事件
-        addMapControl();//向地图添加控件
-    }
-    //创建地图函数：
-    function createMap(address){
-        var map = new BMap.Map("container");//在百度地图容器中创建一个地图
-        map.centerAndZoom(address,12);//设定地图的中心点和坐标并将地图显示在地图容器中
-        window.map = map;//将map变量存储在全局
-    }
-    function clearAllMarker(){
-        window.map.clearOverlays();
-    }
-    //地图事件设置函数：
-    function setMapEvent(){
-        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
-        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
-        map.enableKeyboard();//启用键盘上下左右键移动地图
-    }
-    //地图控件添加函数：
-    function addMapControl(){
-        //向地图中添加缩放控件
-        var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
-        map.addControl(ctrl_nav);
-        //向地图中添加缩略图控件
-        var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
-        map.addControl(ctrl_ove);
-        //向地图中添加比例尺控件
-        var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
-        map.addControl(ctrl_sca);
-    }
     //创建marker
     function addMarker(markerArr){
         for(var i=0;i<markerArr.length;i++){
@@ -242,7 +210,7 @@ transitional.dtd">
             $("#area option:not(:first)").remove();
             $("#unit option:not(:first)").remove();
             var pro=$("#province option:selected").text();
-            initMap(pro);
+            $.initMap(pro,12);
             $.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
         });
         $("#city").change(function(){
@@ -250,7 +218,7 @@ transitional.dtd">
             $("#unit option:not(:first)").remove();
             var pro=$("#province").find('option:selected').text();
             var city=$(this).find('option:selected').text();
-            initMap(city);
+            $.initMap(city,12);
             $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
         });
         $("#area").change(function(){
@@ -304,7 +272,7 @@ transitional.dtd">
         });
         //根据单位来添加覆盖物以及查询相应的信息
        function getCompanyInfoByUnitAddress(unitAddress){
-           clearAllMarker();
+           $.clearAllMarker();
            $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},getOneUnitAddressInfoCallback,"json");
            var unitAddressMarker=new Array();
            function getOneUnitAddressInfoCallback(data){
@@ -415,7 +383,7 @@ transitional.dtd">
         //根据省市区查询,添加覆盖物并初始化地图
         function showCompanyRisk(city,area){
             initAndAddMarker(city,area);
-            initMap(area);
+            $.initMap(area,12);
         }
         showCompanyRisk(city,pname);
        //联动回调

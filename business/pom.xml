@@ -17,6 +17,7 @@
         <module>business-craneInspectReport</module>
         <module>business-map</module>
         <module>business-report</module>
+        <module>business-riskcolor</module>
     </modules>
 
 

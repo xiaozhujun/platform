@@ -113,5 +113,20 @@ public class AddressServiceWeb {
         List<Address> list=addressService.getAreaByCity(city);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getAreaByProvinceAndCity")
+    public String getAreaByProvinceAndCity(@FormParam("province") String province,@FormParam("city") String city){
+        List<Address> list=addressService.getAreaByProvinceAndCity(province,city);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getProvinceList")
+    public String getProvinceList(){
+         List<Address> proviceList=addressService.getProvinceList();
+         return JsonResultUtils.getObjectResultByStringAsDefault(proviceList,JsonResultUtils.Code.SUCCESS);
+    }
 }

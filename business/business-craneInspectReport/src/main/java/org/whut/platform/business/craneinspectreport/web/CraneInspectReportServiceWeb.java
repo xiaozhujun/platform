@@ -193,5 +193,16 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getOneUnitAddressInfo")
+    public String getOneUnitAddressInfo(@FormParam("unitAddress") String unitAddress){
+            List<CraneInspectReport> list=new ArrayList<CraneInspectReport>();
+            CraneInspectReport craneInspectReport=craneInspectReportService.getOneUnitAddressInfo(unitAddress);
+            Long riskValue=craneInspectReportService.findReportNumberByUnitAddress(craneInspectReport.getUnitAddress());
+            craneInspectReport.setRiskValue(riskValue);
+            list.add(craneInspectReport);
+            return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 
 }

@@ -163,4 +163,7 @@ public class CraneInspectReportService {
      public List<CraneInspectReport> showRiskRank(String city,String area){
          return mapper.showRiskRank(city,area);
      }
+    public CraneInspectReport getOneUnitAddressInfo(String unitAddress){
+        return mapper.getOneUnitAddressInfo(unitAddress);
+    }
 }

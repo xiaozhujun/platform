@@ -57,5 +57,8 @@ public class AddressService {
     {
         return mapper.getAreaByCity(city);
     }
+    public List<Address> getAreaByProvinceAndCity(String province,String city){
+        return mapper.getAreaByProvinceAndCity(province,city);
+    }
 
 }

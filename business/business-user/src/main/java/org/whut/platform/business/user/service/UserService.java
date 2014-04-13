@@ -19,7 +19,7 @@ public class UserService {
     private UserMapper userMapper;
 
     public void add(User user){
-         userMapper.add(user);
+        userMapper.add(user);
     }
 
     public long getIdByName(String name){

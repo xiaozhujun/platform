@@ -34,7 +34,10 @@
 
         function addResourceCallback(data){
             if(data.code==200){
-                $.ligerDialog.success('操作成功')
+                $.ligerDialog.success('操作成功');
+            }
+            else if(data.code==500){
+                $.ligerDialog.error(data.message);
             }
         }
     </script>
@@ -54,14 +57,13 @@
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
             <td align="right" class="l-table-edit-td">内容:</td>
-            <td align="left" class="l-table-edit-td">
-                <input  type="text" id="powerName" ltype="text" /></td>
+            <td align="left" class="l-table-edit-td"><input name="powerName" type="text" id="powerName" ltype="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>
             <td align="right" class="l-table-edit-td">类型:</td>
             <td align="left" class="l-table-edit-td">
-               <input type="text" readonly="true" id="powerType">
+                <input type="text" readonly="true" id="powerType">
             </td>
         </tr>
         <tr>

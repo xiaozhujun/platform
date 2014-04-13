@@ -44,6 +44,13 @@
         WHERE USERNAME = #{userName};
     </delete>
 
+    <delete id="delete" parameterType="User">
+        DELETE FROM user_authority
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
+
     <select id="get" parameterType="UserAuthority" resultMap="userAuthorityResultMap">
         SELECT
         <include refid="user_authority_fields" />
@@ -54,5 +61,11 @@
         SELECT
         <include refid="user_authority_fields" />
         FROM user_authority where userName=#{userName}
+    </select>
+
+    <select id="findByAuthorityName" parameterType="java.lang.String" resultMap="userAuthorityResultMap">
+        SELECT
+        <include refid="user_authority_fields"/>
+        FROM user_authority WHERE authorityName=#{authorityName}
     </select>
 </mapper>

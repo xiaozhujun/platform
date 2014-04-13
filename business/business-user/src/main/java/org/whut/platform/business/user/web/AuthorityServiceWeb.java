@@ -2,12 +2,8 @@ package org.whut.platform.business.user.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whut.platform.business.user.entity.Authority;
-import org.whut.platform.business.user.entity.SubAuthority;
-import org.whut.platform.business.user.service.AuthorityPowerService;
-import org.whut.platform.business.user.service.AuthorityService;
-import org.whut.platform.business.user.service.PowerService;
-import org.whut.platform.business.user.entity.AuthorityPower;
+import org.whut.platform.business.user.entity.*;
+import org.whut.platform.business.user.service.*;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -37,6 +33,13 @@ public class AuthorityServiceWeb {
 
     @Autowired
     AuthorityPowerService authorityPowerService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserAuthorityService userAuthorityService;
+
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
@@ -44,38 +47,36 @@ public class AuthorityServiceWeb {
         /*if(name==null || name.trim().equals("") || description==null || description.trim().equals("") || status==null || status.trim().equals("")){
              return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
          }*/
-         long existAuthorityId;
-         try{
-             existAuthorityId = authorityService.getIdByName(name);
+        long existAuthorityId;
+        try{
+            existAuthorityId = authorityService.getIdByName(name);
 
-         }
-         catch(Exception ex){
-             existAuthorityId = 0;
         }
-         if(existAuthorityId==0){
-             Authority authority = new Authority();
-             authority.setName(name);
-             authority.setDescription(description);
-             authority.setStatus(Integer.parseInt(status));
-             authorityService.add(authority);
-             long currentAuthorityId = authorityService.getIdByName(name);
-             String[] resourceArray = resource.split(";");
-             for(int i = 0;i<resourceArray.length;i++){
-                 long powerId = powerService.getIdByResource(resourceArray[i]);
-                 AuthorityPower authorityPower = new AuthorityPower();
-                 authorityPower.setAuthorityId(currentAuthorityId);
-                 authorityPower.setPowerId(powerId);
-                 authorityPower.setPowerResource(resourceArray[i]);
-                 authorityPower.setAuthorityName(name);
-                 System.out.println(currentAuthorityId+powerId+resourceArray[i]+name);
-
-                 authorityPowerService.add(authorityPower);
-             }
-             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-         }
-         else{
-             return JsonResultUtils.getObjectResultByStringAsDefault("fail",JsonResultUtils.Code.ERROR);
-         }
+        catch(Exception ex){
+            existAuthorityId = 0;
+        }
+        if(existAuthorityId==0){
+            Authority authority = new Authority();
+            authority.setName(name);
+            authority.setDescription(description);
+            authority.setStatus(Integer.parseInt(status));
+            authorityService.add(authority);
+            long currentAuthorityId = authorityService.getIdByName(name);
+            String[] resourceArray = resource.split(";");
+            for(int i = 0;i<resourceArray.length;i++){
+                long powerId = powerService.getIdByResource(resourceArray[i]);
+                AuthorityPower authorityPower = new AuthorityPower();
+                authorityPower.setAuthorityId(currentAuthorityId);
+                authorityPower.setPowerId(powerId);
+                authorityPower.setPowerResource(resourceArray[i]);
+                authorityPower.setAuthorityName(name);
+                authorityPowerService.add(authorityPower);
+            }
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else{
+            return JsonResultUtils.getObjectResultByStringAsDefault("fail",JsonResultUtils.Code.ERROR);
+        }
 
 
     }
@@ -84,26 +85,22 @@ public class AuthorityServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-          SubAuthority subAuthority = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubAuthority.class);
-          long authorityId= subAuthority.getId();
-          String authorityName = subAuthority.getName();
-          String authorityDescription = subAuthority.getDescription();
-          int  authorityStatus = subAuthority.getStatus();
-          String resource = subAuthority.getResource();
-          Authority authority = new Authority();
-          authority.setId(authorityId);
-          authority.setName(authorityName);
-          authority.setDescription(authorityDescription);
-          authority.setStatus(authorityStatus);
-          System.out.println(authorityId+authorityName+authorityDescription+authorityStatus+resource);
-          int deleted = authorityPowerService.deleteByAuthorityName(authorityName);
-          System.out.println(deleted);
-          if(deleted>0){
+        SubAuthority subAuthority = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubAuthority.class);
+        long authorityId= subAuthority.getId();
+        String authorityName = subAuthority.getName();
+        String authorityDescription = subAuthority.getDescription();
+        int  authorityStatus = subAuthority.getStatus();
+        String resource = subAuthority.getResource();
+        Authority authority = new Authority();
+        authority.setId(authorityId);
+        authority.setName(authorityName);
+        authority.setDescription(authorityDescription);
+        authority.setStatus(authorityStatus);
+        int deleted = authorityPowerService.deleteByAuthorityName(authorityName);
+        if(deleted>=0){
             int result = authorityService.update(authority);
-            System.out.println(result);
             String[] resourceArray = resource.split(";");
             for(int i=0;i<resourceArray.length;i++){
-                System.out.println(resourceArray[i]);
                 Long powId = powerService.getIdByResource(resourceArray[i]);
                 AuthorityPower authorityPower = new AuthorityPower();
                 authorityPower.setAuthorityId(authorityId);
@@ -118,26 +115,57 @@ public class AuthorityServiceWeb {
             else{
                 return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
             }
-          }
-          else{
-               return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-          }
+        }
+        else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString") String jsonString){
-           Authority authority = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Authority.class);
-           String authorityName = authority.getName();
-           int numDeleted = authorityPowerService.deleteByAuthorityName(authorityName);
-           int result = authorityService.delete(authority);
-           if((result>0)&&(numDeleted>=0)){
-               return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-           }
-           else{
-               return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-           }
+        Authority authority = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Authority.class);
+        String authorityName = authority.getName();
+        int numDeleted = authorityPowerService.deleteByAuthorityName(authorityName);
+        int result = authorityService.delete(authority);
+        List<UserAuthority> userAuthorityList = userAuthorityService.findByAuthorityName(authorityName);
+        if(userAuthorityList.size()>0){
+            for(UserAuthority ua:userAuthorityList){
+                String userName = ua.getUserName();
+                User user = userService.findByName(userName);
+                String role = user.getRole();
+                String[] roles = role.split(";");
+                String[] newRoles = new String[roles.length-1];
+                int temp=0;
+                for(int i = 0;i<roles.length;i++){
+                    if(!roles[i].equals(authorityName)){
+                        newRoles[temp]=roles[i]+";";
+                        temp++;
+                    }
+                }
+                String roles2 = "";
+                String nr;
+                for(int i=0;i<newRoles.length;i++){
+                    roles2+=newRoles[i];
+                }
+                if(roles2.equals("")){
+                    nr="";
+                }
+                else{
+                    nr = roles2.substring(0,roles2.length()-1);
+                }
+                user.setRole(nr);
+                userService.update(user);
+                userAuthorityService.delete(ua);
+            }
+        }
+        if((result>0)&&(numDeleted>=0)){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -146,14 +174,32 @@ public class AuthorityServiceWeb {
     public String list(){
         List<Authority> list = authorityService.list();
         List<SubAuthority> listNew =new ArrayList<SubAuthority>();
-        List<AuthorityPower> authorityPowerList = authorityPowerService.getAuthorityPowerList();
+        //List<AuthorityPower> authorityPowerList = authorityPowerService.getAuthorityPowerList();
         for(Authority a:list){
-             SubAuthority subAuthority = new SubAuthority();
-             subAuthority.setId(a.getId());
-             subAuthority.setName(a.getName());
-             subAuthority.setDescription(a.getDescription());
-             subAuthority.setStatus(a.getStatus());
-             String resource="";
+            SubAuthority subAuthority = new SubAuthority();
+            String  authorityName = a.getName();
+            subAuthority.setId(a.getId());
+            subAuthority.setName(authorityName);
+            subAuthority.setDescription(a.getDescription());
+            subAuthority.setStatus(a.getStatus());
+            List<String> resourceList = authorityPowerService.getResourcesByAuthorityName(authorityName);
+            String resources = "";
+            for(String s:resourceList){
+                String s2 = s+";";
+                resources+=s2;
+                System.out.println(">>>>>>>>"+s);
+            }
+            System.out.println("<<<<<<<<"+resources);
+            String r1;
+            if(resources.equals("")){
+                r1="";
+            }
+            else{
+                r1 = resources.substring(0,resources.length()-1);
+            }
+            System.out.println(">>>>>>>>"+r1);
+            // String r2 = "\'"+r1+"\'";
+             /*String resource="";
              int length = authorityPowerList.size();
              for(int i = 0;i<length;i++){
                  String authorityName = authorityPowerList.get(i).getAuthorityName();
@@ -161,9 +207,9 @@ public class AuthorityServiceWeb {
                      String s = "\'"+authorityPowerList.get(i).getPowerResource()+"\'";
                      resource +=s ;
                  }
-             }
-             subAuthority.setResource(resource);
-             listNew.add(subAuthority);
+             } */
+            subAuthority.setResource(r1);
+            listNew.add(subAuthority);
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(listNew, JsonResultUtils.Code.SUCCESS);
     }

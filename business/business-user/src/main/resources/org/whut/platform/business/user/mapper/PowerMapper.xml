@@ -17,7 +17,7 @@
     <insert id="add" parameterType="Power" keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
-       power(
+        power(
         <include refid="power_fields" />
         )
         VALUES (#{id}, #{resource}, #{type},#{description});
@@ -42,6 +42,7 @@
         <where>
             <if test="id != null">ID=#{id}</if>
         </where>
+
     </delete>
 
     <select id="get" parameterType="Power" resultMap="powerResultMap">
@@ -64,5 +65,11 @@
         SELECT ID
         FROM power
         WHERE RESOURCE=#{resource}
+    </select>
+
+    <select id="findByResource" parameterType="java.lang.String" resultMap="powerResultMap">
+        SELECT
+        <include refid="power_fields"/>
+        FROM power WHERE RESOURCE=#{resource}
     </select>
 </mapper>

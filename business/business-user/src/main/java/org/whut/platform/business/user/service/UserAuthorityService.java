@@ -34,4 +34,13 @@ public class UserAuthorityService {
     public int deleteByUserName(String userName){
         return mapper.deleteByUserName(userName);
     }
+
+    public List<UserAuthority> findByAuthorityName(String authorityName){
+        if(authorityName==null||authorityName.trim().equals("")) return null;
+        return mapper.findByAuthorityName(authorityName);
+    }
+
+    public int delete(UserAuthority userAuthority){
+        return mapper.delete(userAuthority);
+    }
 }

@@ -18,17 +18,17 @@
             $.get($.URL.user.list,null,listCallback,"json");
             $.get($.URL.authority.list,null,listAuthorityCallback,"json");
         });
-         var roleData=[];
-         function listAuthorityCallback(data){
-             if(data.code==200){
-                 for(var i=0;i<data.data.length;i++){
-                     var role={};
-                     role.type =data.data[i].name;
-                     role.text=data.data[i].name;
-                     roleData.push(role);
-                 }
-             }
-          }
+        var roleData=[];
+        function listAuthorityCallback(data){
+            if(data.code==200){
+                for(var i=0;i<data.data.length;i++){
+                    var role={};
+                    role.type =data.data[i].name;
+                    role.text=data.data[i].name;
+                    roleData.push(role);
+                }
+            }
+        }
         var gridData = {};
         function listCallback(data){
             if(data.code==200){
@@ -39,7 +39,7 @@
         }
 
         /*var typeData = [{ type: 'admin', text: 'admin' },{ type: 'user', text: 'user' },{ type: 'superAdmin', text: 'superAdmin' }]; */
-
+        var sexData = [{ type: '男', text: '男' },{ type: '女', text: '女' }];
         var manager, g;
         function f_initGrid()
         {
@@ -47,13 +47,16 @@
                 columns: [
                     { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
                     { display: '用户名',name: 'name',
-                       editor: { type: 'text'}
+                        editor: { type: 'text'}
                     },
                     { display: '密码',name: 'password',
                         editor: { type: 'text'}
                     },
-                    { display: '性别',name: 'sex',
-                        editor: { type: 'text'}
+                    { display: '性别',name: 'sex',type:'string',
+                        editor: { type: 'select',data:sexData,valueField:'type'},
+                        render:function(item){
+                            return item.sex;
+                        }
                     },
                     { display: '角色', name: 'role', type: 'string',
                         editor: { type: 'select', data: roleData, valueField: 'type',isMultiSelect:true,isShowCheckBox:true},

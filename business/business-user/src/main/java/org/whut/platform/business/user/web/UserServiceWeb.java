@@ -43,7 +43,7 @@ public class UserServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("password") String password,@FormParam("sex") String sex,@FormParam("role") String role){
-       if(name==null || password=="" || password.trim().equals("") || sex.trim().equals("") || role.trim().equals("")){
+        if(name==null || password=="" || password.trim().equals("") || sex.trim().equals("") || role.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long id;
@@ -77,27 +77,27 @@ public class UserServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"用户名已存在!");
         }
     }
-   /* public Map<String,Object> add(@FormParam("jsonString") String jsonString){
-        User user = JsonMapper.buildNormalMapper().fromJson(
-                jsonString, User.class);
-        if (user == null) {
-            return JsonResultUtils
-                    .getCodeAndMesMapAsDefault(JsonResultUtils.Code.ERROR);
-        }
-        try {
-            userService.add(user);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            logger.error(e.getMessage());
-            return JsonResultUtils
-                    .getCodeAndMesMapAsDefault(JsonResultUtils.Code.ERROR);
-        }
-        // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
-        return JsonResultUtils
-                .getCodeAndMesMapAsDefault(JsonResultUtils.Code.SUCCESS);
-    }
-            */
+    /* public Map<String,Object> add(@FormParam("jsonString") String jsonString){
+         User user = JsonMapper.buildNormalMapper().fromJson(
+                 jsonString, User.class);
+         if (user == null) {
+             return JsonResultUtils
+                     .getCodeAndMesMapAsDefault(JsonResultUtils.Code.ERROR);
+         }
+         try {
+             userService.add(user);
+         } catch (Exception e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+             logger.error(e.getMessage());
+             return JsonResultUtils
+                     .getCodeAndMesMapAsDefault(JsonResultUtils.Code.ERROR);
+         }
+         // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
+         return JsonResultUtils
+                 .getCodeAndMesMapAsDefault(JsonResultUtils.Code.SUCCESS);
+     }
+             */
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/list")
     @GET
@@ -110,10 +110,10 @@ public class UserServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-         User user = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,User.class);
-         String userName = user.getName();
-         int deleted = userAuthorityService.deleteByUserName(userName);
-         if(deleted>0){
+        User user = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,User.class);
+        String userName = user.getName();
+        int deleted = userAuthorityService.deleteByUserName(userName);
+        if(deleted>=0){
             int  result = userService.update(user);
             long userId = userService.getIdByName(userName);
             String role = user.getRole();
@@ -130,15 +130,15 @@ public class UserServiceWeb {
                 userAuthorityService.add(userAuthority);
             }
             if(result>0){
-             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+                return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
             }
             else{
-             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+                return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
             }
-         }
-         else{
-             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-         }
+        }
+        else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")

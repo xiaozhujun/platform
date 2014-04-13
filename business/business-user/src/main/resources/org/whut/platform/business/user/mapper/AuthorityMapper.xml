@@ -7,11 +7,23 @@
 		ID,NAME,DESCRIPTION,STATUS
 	</sql>
 
+    <sql id="subAuthority_fields">
+         ID,NAME,DESCRIPTION,STATUS,RESOURCE
+    </sql>
+
     <resultMap id="authorityResultMap" type="Authority">
         <id property="id" column="ID" />
         <result property="name" column="NAME" />
         <result property="description" column="DESCRIPTION" />
         <result property="status" column="STATUS"/>
+    </resultMap>
+
+    <resultMap id="subAuthorityResultMap" type="SubAuthority">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="status" column="STATUS"/>
+        <result property="resource" column="RESOURCE"/>
     </resultMap>
 
     <insert id="add" parameterType="Authority" keyProperty="id"

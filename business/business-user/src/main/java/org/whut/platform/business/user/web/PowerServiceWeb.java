@@ -3,6 +3,7 @@ package org.whut.platform.business.user.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.entity.Power;
+import org.whut.platform.business.user.service.AuthorityPowerService;
 import org.whut.platform.business.user.service.PowerService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -25,6 +26,9 @@ public class PowerServiceWeb {
     @Autowired
     private PowerService powerService;
 
+    @Autowired
+    private AuthorityPowerService authorityPowerService;
+
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
@@ -32,12 +36,18 @@ public class PowerServiceWeb {
         if(resource==null || type=="" || resource.trim().equals("") || type.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
-        Power power = new Power();
-        power.setResource(resource);
-        power.setType(type);
-        power.setDescription(description);
-        powerService.add(power);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        List<Power> powerList = powerService.findByResource(resource);
+        if(powerList.size()>0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"资源已存在！");
+        }
+        else{
+            Power power = new Power();
+            power.setResource(resource);
+            power.setType(type);
+            power.setDescription(description);
+            powerService.add(power);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -55,9 +65,9 @@ public class PowerServiceWeb {
         Power power = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Power.class);
         int result = powerService.update(power);
         if(result>0){
-           return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }else{
-           return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
     }
 
@@ -66,11 +76,14 @@ public class PowerServiceWeb {
     @POST
     public String delete(@FormParam("jsonString") String jsonString){
         Power power = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Power.class);
+        String powerResource = power.getResource();
+        int deleted = authorityPowerService.deleteByPowerResource(powerResource);
         int result = powerService.delete(power);
-        if(result>0){
+        if(result>0&&deleted>=0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }else{
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
     }
 }
+

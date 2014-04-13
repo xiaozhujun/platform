@@ -36,12 +36,7 @@ CREATE TABLE `craneinspectreport` (
   `lng` varchar(255) DEFAULT NULL,
   `lat` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD
-) ENGINE=InnoDB AUTO_INCREMENT=4853 DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB AUTO_INCREMENT=4711 DEFAULT CHARSET=utf8;
->>>>>>> 23dd51744e660700d6196a2d52cb2394d49b9f1c
-
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 -- ----------------------------
 -- Records 
 -- ----------------------------

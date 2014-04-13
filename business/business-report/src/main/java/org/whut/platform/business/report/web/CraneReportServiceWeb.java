@@ -36,13 +36,34 @@ public class CraneReportServiceWeb {
      /*
      这个例子主要是展示传入一个sql语句，显示html格式的报表
       */
-        String sql=showCraneSql(province,city,area,unitaddress,equipmentvariety);
+//        String sql=showCraneSql(province,city,area,unitaddress,equipmentvariety);
      /*
      模板在项目riskmanagement下的repoprtTemplate文件夹下
      */
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/craneinspectreportdemo.jasper");
+        String whereArea="";
+        String whereCranevariety="";
+        String whereUnitaddress="";
+        province="湖北";
+        city="武汉市";
+        if(!(area.trim()).equals(""))
+        {
+            whereArea=" and area="+"\""+area+"\"";
+        }
+        if(!(unitaddress.trim()).equals(""))
+        {
+            whereUnitaddress=" and unitaddress="+"\""+unitaddress+"\"";
+        }
+        if(!(equipmentvariety.trim()).equals(""))
+        {
+            whereCranevariety=" and equipmentvariety="+"\""+equipmentvariety+"\"";
+        }
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
-        parameter.put("whereSQL",sql);
+        parameter.put("Province",province);
+        parameter.put("City",city);
+        parameter.put("whereArea",whereArea);
+        parameter.put("whereCranevariety",whereCranevariety);
+        parameter.put("whereUnitaddress",whereUnitaddress);
         platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -59,10 +80,30 @@ public class CraneReportServiceWeb {
         String area=datalist[3];
         String unitaddress=datalist[4];
         String equipmentvariety=datalist[5];
-        String sql=showCraneSql(province,city,area,unitaddress,equipmentvariety);
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/craneinspectreportdemo.jasper");
+        String whereArea="";
+        String whereCranevariety="";
+        String whereUnitaddress="";
+        province="湖北";
+        city="武汉市";
+        if(!(area.trim()).equals(""))
+        {
+            whereArea=" and area="+"\""+area+"\"";
+        }
+        if(!(unitaddress.trim()).equals(""))
+        {
+            whereUnitaddress=" and unitaddress="+"\""+unitaddress+"\"";
+        }
+        if(!(equipmentvariety.trim()).equals(""))
+        {
+            whereCranevariety=" and equipmentvariety="+"\""+equipmentvariety+"\"";
+        }
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
-        parameter.put("whereSQL",sql);
+        parameter.put("Province",province);
+        parameter.put("City",city);
+        parameter.put("whereArea",whereArea);
+        parameter.put("whereCranevariety",whereCranevariety);
+        parameter.put("whereUnitaddress",whereUnitaddress);
         platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response);
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils
@@ -70,7 +111,7 @@ public class CraneReportServiceWeb {
     }
 
 
-    public String showCraneSql(String province,String city,String area,String unitaddress,String equipmentvariety)
+   /* public String showCraneSql(String province,String city,String area,String unitaddress,String equipmentvariety)
     {
         String sql="select reportnumber,unitaddress,addressid,organizecode,usepoint,safemanager,contactphone,equipmentvariety,unitnumber from craneinspectreport";
         String variety_sql="";
@@ -88,7 +129,7 @@ public class CraneReportServiceWeb {
             sql+=variety_sql;
         }
         return sql;
-    }
+    }*/
 }
 
 

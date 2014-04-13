@@ -19,7 +19,6 @@ transitional.dtd">
     <script type="text/javascript" src="map/js/getParam.js"></script>
     <script type="text/javascript">
         var province='<%=URLDecoder.decode(request.getParameter("province"),"utf-8")%>';
-        alert(province);
         var lat='<%=request.getParameter("lat")%>';
         var lng='<%=request.getParameter("lng")%>';
     </script>
@@ -55,6 +54,8 @@ transitional.dtd">
     });
 </script>
 <script type="text/javascript" src="map/js/initMap.js"></script>
-<script type="text/javascript" src="map/js/showCity.js"></script>
+<script type="text/javascript">
+    $.initCity(province,8,0);
+</script>
 </body>
 </html>

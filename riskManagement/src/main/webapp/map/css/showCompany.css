@@ -323,5 +323,72 @@ body{
     display: inline-block;
     margin-top: 6px;
 }
-
+.riskcontenthead{
+    width: 385px;
+    height: auto;
+    margin: 5px;
+    background-color: #cccccc;
+}
+.firmtitle{
+    color: #000000;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 1px;
+    text-align: center;
+    width: 250px;
+}
+.riskvaluetitle{
+    color: #000000;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 1px;
+    text-align: center;
+    width: 135px;
+}
+.riskcontent{
+    width: 385px;
+    height: auto;
+    margin: 5px;
+}
+.unitaddress{
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    width: 240px;
+}
+.riskvalue2{
+    float: left;
+    height: 40px;
+    margin-top: 6px;
+    text-align: center;
+    width: 120px;
+}
+.riskrankvalue{
+    width: 120px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+}
+.riskranktitle{
+    display: inline-block;
+    height: 28px;
+    text-align: center;
+    width: 130px;
+}
+.riskmarktitle{
+    display: inline-block;
+    height: 28px;
+    text-align: center;
+    width: 130px;
+}
+.backcol{
+    float: left;
+    width: 385px;
+    height: auto;
+    position: relative;
+    border:1px solid #999999;
+}
 

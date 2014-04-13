@@ -177,7 +177,7 @@ $.extend({
             }
         }
     }
-    function showRiskRank(data){
+    /*function showRiskRank(data){
         if(data.code==200){
             $("#rankTitle").html("");
             $("#riskrankContent").html("");
@@ -192,6 +192,67 @@ $.extend({
                 }
             }
         }
-    }
+    } */
+        function showRiskRank(data){
+            if(data.code==200){
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                /*var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                 $("#rankTitle").append(rankTitle); */
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                }else{
+                    var temp = data.data[0].riskValue;
+                    var j=1;
+                    var title1 ="<div class='riskcontenthead'><span class='firmtitle'>企业</span><span class='riskvaluetitle'>风险值</span></div>";
+                    var rankContent="";
+                    var rankContent2="";
+
+                    for(var i=0;i<data.data.length;i++){
+                        var divName="div"+i;
+                        var content ="<div class='riskcontent'>"+
+                            "<span class='unitaddress'>"+data.data[i].unitAddress+"</span>" +
+                            "<span class='riskvalue2'>"+data.data[i].riskValue+"</span>" +
+                            "</div>";
+
+                        //读第一条数据
+                        if(i==0){
+
+                            rankContent="<div class='backcol' id="+divName+">"+"<div  class='riskcontenthead'>" +
+                                "<span class='riskranktitle'>风险排名</span>" +
+                                "<span class='riskmarktitle'></span>" +
+                                "<span class='riskrankvalue'>"+(i+1)+"</span>" +
+                                "</div>"+title1+content;
+
+                        }
+                        //读下一块数据
+                        else if(i>0&&data.data[i].riskValue!=temp){
+                            j+=1;
+                            temp=data.data[i].riskValue;
+
+
+                            rankContent="</div>"+"<div class ='backcol' id="+divName+"><div class='riskcontenthead'>" +
+                                "<span class='riskranktitle'>风险排名</span>" +
+                                "<span class='riskmarktitle'></span>" +
+                                "<span class='riskrankvalue'>"+j+"</span>" +
+                                "</div>"
+                                +title1+content;
+                        }
+                        // 读本块第二条数据
+                        else{
+
+                            rankContent=content;
+                        }
+                        while(i==data.data.length-1){
+                            rankContent="</div>";
+                            break;
+                        }
+
+                        rankContent2+=rankContent;
+                    }
+                    $("#riskrankContent").append(rankContent2);
+                }
+            }
+        }
 }
 });

@@ -19,6 +19,7 @@ transitional.dtd">
     <script type="text/javascript" src="map/js/initMap.js"></script>
     <script type="text/javascript" src="map/js/addMarker.js"></script>
     <script type="text/javascript" src="map/js/addressLinkAge.js"></script>
+    <script type="text/javascript" src="js/rightTab.js"></script>
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
@@ -125,28 +126,7 @@ transitional.dtd">
     $(document).ready(function(){
         $("#layout").ligerLayout({leftWidth:200});
         $("#titleContainer").load("title.html");
-        $("#riskRank").css("background-color","#999999");
-        $("#riskRank").css("color","#ffffff");
-        $("#riskInfo").click(function(){
-        $("#riskRank").css("background-color","#F7F7F7");
-        $("#riskInfo").css("background-color","#999999");
-        $("#riskInfo").css("color","#ffffff");
-        $("#riskRank").css("color","#999999");
-        //$("#rightshow").css("display","block");
-        $("#rightRank").animate({left:"400px"},rightCallback);
-        $("#rightshow").animate({left:""});
-        function  rightCallback(){
-            $("#rightshow").css("display","block");}
-        });
-        $("#riskRank").click(function(){
-            $("#riskRank").css("background-color","#999999");
-            $("#riskRank").css("color","#ffffff");
-            $("#riskInfo").css("color","#999999");
-            $("#riskInfo").css("background-color","#F7F7F7");
-            $("#rightRank").css("display","block");
-            $("#rightRank").animate({left:""});
-            $("#rightshow").animate({left:"400px"});
-        });
+        $.switchTab("riskRank","riskInfo","rightRank","rightshow");
         $("#panelarrow2").click(function(){
             if($("#rightmain").css("display")!='none'){
                 $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -8px -20px rgba(0, 0, 0, 0)").parent().css("right","0");

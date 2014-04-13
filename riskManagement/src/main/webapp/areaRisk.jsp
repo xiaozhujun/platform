@@ -55,6 +55,8 @@ transitional.dtd">
     });
 </script>
 <script type="text/javascript" src="map/js/initMap.js"></script>
-<script type="text/javascript" src="map/js/showArea.js"></script>
+<script type="text/javascript">
+    $.initArea(province,city,10)
+</script>
 </body>
 </html>

@@ -1972,5 +1972,9 @@ $.extend({
         $.clearAllMarker;
         var areaData= $.getAreaData();
         $.drawAreaBoundary(province,city,areaData,flag);
-    }
+    },
+    showCompanyRisk:function showCompanyRisk(city,area,size){
+    $.initAndAddMarker(city,area);
+    $.initMap(area,size);
+}
 });

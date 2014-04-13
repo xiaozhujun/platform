@@ -18,6 +18,7 @@ transitional.dtd">
     <script type="text/javascript" src="map/js/getParam.js"></script>
     <script type="text/javascript" src="map/js/initMap.js"></script>
     <script type="text/javascript" src="map/js/addMarker.js"></script>
+    <script type="text/javascript" src="map/js/addressLinkAge.js"></script>
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
@@ -126,37 +127,6 @@ transitional.dtd">
         $("#titleContainer").load("title.html");
         $("#riskRank").css("background-color","#999999");
         $("#riskRank").css("color","#ffffff");
-        $("#province").change(function(){
-            $("#city option:not(:first)").remove();
-            $("#area option:not(:first)").remove();
-            $("#unit option:not(:first)").remove();
-            var pro=$("#province option:selected").text();
-            $.initCity(pro,8,1);
-            $.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
-        });
-        $("#city").change(function(){
-            $("#area option:not(:first)").remove();
-            $("#unit option:not(:first)").remove();
-            var pro=$("#province").find('option:selected').text();
-            var city=$(this).find('option:selected').text();
-            $.initArea(pro,city,10,1);
-            $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
-        });
-        $("#area").change(function(){
-            $("#unit option:not(:first)").remove();
-            var pro=$("#province").find('option:selected').text();
-            var city=$("#city").find('option:selected').text();
-            var area=$(this).find('option:selected').text();
-            showCompanyRisk(city,area);
-            $.post($.URL.craneinspectreport.getUnitaddressByArea,{"province":pro,"city":city,"area":area},getUnitaddressByAreaCallback,"json");
-        });
-        $("#unit").change(function(){
-            var pro=$("#province").find('option:selected').text();
-            var city=$("#city").find('option:selected').text();
-            var area=$("#area").find('option:selected').text();
-            var unit=$(this).find('option:selected').text();
-            $.getCompanyInfoByUnitAddress(unit);
-        });
         $("#riskInfo").click(function(){
         $("#riskRank").css("background-color","#F7F7F7");
         $("#riskInfo").css("background-color","#999999");
@@ -186,60 +156,8 @@ transitional.dtd">
                 $("#rightmain").css("display","block");
             }
         });
-        //根据省市区查询,添加覆盖物并初始化地图
-        function showCompanyRisk(city,area){
-            $.initAndAddMarker(city,area);
-            $.initMap(area,12);
-        }
-        showCompanyRisk(city,area);
-       //联动回调
-        function getProvinceListCallback(data){
-             if(data.code==200){
-                 $("#province").html("");
-                 var pSearch="<option>---请选择---</option>";
-                 for(i=0;i<data.data.length;i++){
-                     pSearch+="<option value='"+data.data[i].province+"'>"+data.data[i].province+"</option>";
-                 }
-                 $("#province").html(pSearch);
-                 $("#province option[value='"+province+"']").attr("selected",true);
-             }
-        }
-        function getCityByProvinceCallback(data){
-              if(data.code==200){
-                  $("#city").html("");
-                  var citySearch="<option>---请选择---</option>";
-                  for(i=0;i<data.data.length;i++){
-                      citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
-                  }
-                  $("#city").html(citySearch);
-              }
-        }
-        function getAreaByProvinceAndCityCallback(data){
-            if(data.code==200){
-                $("#area").html("");
-                var areaSearch="<option>---请选择---</option>";
-                for(i=0;i<data.data.length;i++){
-                    areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
-                }
-                $("#area").html(areaSearch);
-            }
-        }
-        function getUnitaddressByAreaCallback(data){
-            if(data.code==200){
-                $("#unit").html("");
-                var unitSearch="<option>---请选择---</option>";
-                if(data.data[0]==undefined){
-                    unitSearch+="<option>对不起,数据不存在!</option>"
-                }else{
-                for(i=0;i<data.data.length;i++){
-                    unitSearch+="<option value='"+data.data[i].unitAddress+"'>"+data.data[i].unitAddress+"</option>";
-                }
-                }
-                $("#unit").html(unitSearch);
-            }
-        }
-        //联动
-        $.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
+        $.showCompanyRisk(city,area,12);
+        $.addressLinkAge("province","city","area","unit",province);
     });
 </script>
 </body>

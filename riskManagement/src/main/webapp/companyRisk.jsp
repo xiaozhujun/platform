@@ -131,7 +131,7 @@ transitional.dtd">
             $("#area option:not(:first)").remove();
             $("#unit option:not(:first)").remove();
             var pro=$("#province option:selected").text();
-            $.initMap(pro,12);
+            $.initCity(pro,8,1);
             $.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
         });
         $("#city").change(function(){
@@ -139,7 +139,7 @@ transitional.dtd">
             $("#unit option:not(:first)").remove();
             var pro=$("#province").find('option:selected').text();
             var city=$(this).find('option:selected').text();
-            $.initMap(city,12);
+            $.initArea(pro,city,10,1);
             $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
         });
         $("#area").change(function(){

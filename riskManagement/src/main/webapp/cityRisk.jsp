@@ -55,7 +55,7 @@ transitional.dtd">
 </script>
 <script type="text/javascript" src="map/js/initMap.js"></script>
 <script type="text/javascript">
-    $.initCity(province,8);
+    $.initCity(province,8,0);
 </script>
 </body>
 </html>

@@ -20,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -237,5 +238,46 @@ public class CraneInspectReportServiceWeb {
         }
         return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
 
+    }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getLatLngByProvince")
+    public String getLatLngByProvince(@FormParam("province") String province){
+        String latLng=null;
+        try{
+           Map map=baiduMapUtil.getCoordinate(province);
+           latLng=map.get("lng")+","+map.get("lat");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
+    }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getLatLngByCity")
+    public String getLatLngByCity(@FormParam("province") String province,@FormParam("city") String city){
+        String latLng=null;
+        try{
+            String address=province+""+city;
+            Map map=baiduMapUtil.getCoordinate(address);
+            latLng=map.get("lng")+","+map.get("lat");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
+    }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getLatLngByArea")
+    public String getLatLngByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area){
+        String latLng=null;
+        try{
+            String address=province+""+city+""+area;
+            Map map=baiduMapUtil.getCoordinate(address);
+            latLng=map.get("lng")+","+map.get("lat");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
     }
 }

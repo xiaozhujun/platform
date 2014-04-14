@@ -35,6 +35,29 @@ $.extend({
                      var name=markerArr[index];
                      $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":name.title},mapCallback,"json");
                  });
+                 _marker.addEventListener("mouseover",function(){
+                         this.openInfoWindow(_iw);
+                         var name=markerArr[index];
+                         $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":name.title},mouseoverCallback,"json");
+                  });
+                 _marker.addEventListener("mouseout",function(){
+                     var name=markerArr[index];
+                     $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":name.title},mouseoutCallback,"json");
+                 });
+                 function mouseoverCallback(data){
+                         if(data.code==200){
+                            var riskcontentId="#riskcontent"+data.data[0].id;
+                            $(riskcontentId).css("background-color","#999999");
+                            $(riskcontentId).css("color","#ffffff");
+                         }
+                 };
+                 function mouseoutCallback(data){
+                     if(data.code==200){
+                         var riskcontentId="#riskcontent"+data.data[0].id;
+                         $(riskcontentId).css("background-color","#EEEEEE");
+                         $(riskcontentId).css("color","#000000");
+                     }
+                 };
                  function  mapCallback(data){
                      if(data.code==200){
                          //$("#rightshow").css("display","block");
@@ -56,7 +79,7 @@ $.extend({
                              });
                          }
                      }
-                 }
+                 };
                  _iw.addEventListener("open",function(){
                      _marker.getLabel().hide();
                  })
@@ -210,7 +233,7 @@ $.extend({
 
                     for(var i=0;i<data.data.length;i++){
                         var divName="div"+i;
-                        var content ="<div class='riskcontent' id='"+data.data[i].id+"'>"+
+                        var content ="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+
                             "<span class='unitaddress'>"+data.data[i].unitAddress+"</span>" +
                             "<span class='riskvalue2'><span class='riskvalue2Font'>"+data.data[i].riskValue+"</span></span>" +
                             "</div>";

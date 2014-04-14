@@ -7,9 +7,7 @@
             "list":"rs/power/list"
         }  ,
         "address":{
-            "list" :"rs/address/list"  ,
             "getCityByProvince"  :"rs/address/getCityByProvince" ,
-            "getAreaByCity":"rs/address/getAreaByCity",
             "findIdByArea"  :"rs/address/findByArea/{province},{city},{area}",
             "getProvinceList":"rs/address/getProvinceList",
             "getAreaByProvinceAndCity":"rs/address/getAreaByProvinceAndCity"

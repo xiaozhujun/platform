@@ -380,5 +380,30 @@ $.extend({
                    }
                }
            }
-       }
+       },
+       showRiskInfo:function showRiskInfo(unit){
+        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unit},mapCallback,"json");
+           function  mapCallback(data){
+               if(data.code==200){
+                   //$("#rightshow").css("display","block");
+                   $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
+                   $("#righttitle").html("");
+                   $("#rightcontent").html("");
+                   $("#righttitle").append(data.str);
+                   for(var i=0;i<data.data.length;i++){
+                       var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                       $("#rightcontent").append(dataString);
+                       var infoFontNum="infofont"+data.data[i].id;
+                       $("#"+infoFontNum).click(function(){
+                           var hideField="hideField"+(this.id).substring(8,(this.id).length);
+                           var address_equipmentvariety=$("#"+hideField).text();
+                           var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
+                           $(itemInfo).html("");
+                           $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                           $(itemInfo).toggle();
+                       });
+                   }
+               }
+           }
+    }
 });

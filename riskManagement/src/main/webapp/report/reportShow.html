@@ -62,12 +62,13 @@
                     default:
                             {
                                 var type=item.text;
-                                var province = $("#province").val();
-                                var city = $("#city").val();
-                                var area = $("#area").val();
-                                var unitaddress = $("#unitaddress").val();
-                                var equipmentvariety=$("#equipmentvariety").val();
-                                var data=type+","+province+","+city+","+area+","+unitaddress+","+equipmentvariety;
+                                var province = $("#province").val()==''?' ':$("#province").val();
+                                var city = $("#city").val()==''?' ':$("#city").val();
+                                var area = $("#area").val()==''?' ': $("#area").val();
+                                var unitaddress = $("#unitaddress").val()==''?' ':$("#unitaddress").val();
+                                var riskvalue=$("#riskValue").val()==''?' ':$("#riskValue").val();
+                                var equipmentvariety=$("#equipmentvariety").val()==''?' ':$("#equipmentvariety").val();
+                                var data=type+","+province+","+city+","+area+","+unitaddress+","+riskvalue+","+equipmentvariety;
                                 location.href="rs/report/exportCraneReport/data="+encodeURI(data);
                             }
                 }
@@ -187,7 +188,7 @@
         /*
         获得风险值列表
          */
-        $.post($.URL.address.getProvinceList,null,getRiskValueListCallBack,"json");
+/*        $.post($.URL.address.getProvinceList,null,getRiskValueListCallBack,"json");
         function  getRiskValueListCallBack(riskvaluedata)
         {
             if(riskvaluedata.code==200)
@@ -205,11 +206,21 @@
                     valueFieldID: 'riskValueSelect'
                 })
             }
-        }
+        }*/
+        var riskvaluedata=
+                [{id:1,text:"1"},
+                    {id:2,text:"2"},
+                    {id:3,text:"3"},
+                    {id:4,text:"4"},
+                    {id:5,text:"5"},
+                    {id:6,text:"6"} ]
+        $("#riskValue").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
+            data: riskvaluedata
+            , valueFieldID: 'riskValueSelect' })
        /*
             load页面的显示报表全部数据
        */
-       var data1={province:"",city:"",area:"",unitaddress:"",equipmentvariety:""};
+       var data1={province:"",city:"",area:"",unitaddress:"",riskvalue:"",equipmentvariety:""};
         $.post($.URL.report.showCraneReport,data1,addResourceCallback,"json");
        function addResourceCallback(data1){
            if(data1.code==200){
@@ -226,6 +237,7 @@
             data.city = $("#city").val();
             data.area = $("#area").val();
             data.unitaddress = $("#unitaddress").val();
+            data.riskvalue=$("#riskValue").val();
             data.equipmentvariety=$("#equipmentvariety").val();
             $.post($.URL.report.showCraneReport,data,addResourceCallback,"json");
             //location.href="/rs/report/showCraneReport"

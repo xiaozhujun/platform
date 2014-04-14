@@ -74,7 +74,7 @@ public class BaiduMapUtil {
     }
     public static void main(String[] args) throws IOException {
         BaiduMapUtil baiduMapUtil = new BaiduMapUtil();
-        Map map=baiduMapUtil.getCoordinate("湖北省武汉市江岸区赵家条319号");
+        Map map=baiduMapUtil.getCoordinate("湖北省 武汉市 新洲区");
         System.out.print(map.get("lng")+""+map.get("lat"));
     }
 }

@@ -363,6 +363,7 @@ body{
     width: 385px;
     height: 40px;
     margin: 2px;
+    cursor: pointer;
 }
 .unitaddress{
     float: left;

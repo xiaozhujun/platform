@@ -204,15 +204,15 @@ $.extend({
                 }else{
                     var temp = data.data[0].riskValue;
                     var j=1;
-                    var title1 ="<div class='riskcontenthead'><span class='firmtitle'>企业</span><span class='riskvaluetitle'>风险值</span></div>";
+                    var title1 ="<div class='_riskcontenthead'><span class='firmtitle'><span class='firmtitleFont'>企业</span></span><span class='riskvaluetitle'><span class='riskvaluetitleFont'>风险值</span></span></div>";
                     var rankContent="";
                     var rankContent2="";
 
                     for(var i=0;i<data.data.length;i++){
                         var divName="div"+i;
-                        var content ="<div class='riskcontent'>"+
+                        var content ="<div class='riskcontent' id='"+data.data[i].id+"'>"+
                             "<span class='unitaddress'>"+data.data[i].unitAddress+"</span>" +
-                            "<span class='riskvalue2'>"+data.data[i].riskValue+"</span>" +
+                            "<span class='riskvalue2'><span class='riskvalue2Font'>"+data.data[i].riskValue+"</span></span>" +
                             "</div>";
 
                         //读第一条数据

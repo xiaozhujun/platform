@@ -325,18 +325,28 @@ body{
 }
 .riskcontenthead{
     width: 385px;
-    height: auto;
-    margin: 5px;
+    height: 30px;
+    margin: 1px;
+    background-color: #999999;
+    color:white;
+}
+._riskcontenthead{
+    width: 385px;
+    height: 30px;
+    margin: 1px;
     background-color: #cccccc;
 }
+
 .firmtitle{
     color: #000000;
     display: inline-block;
     height: 28px;
     line-height: 28px;
     margin-top: 1px;
-    text-align: center;
     width: 250px;
+}
+.firmtitleFont{
+    margin-left: 75px;
 }
 .riskvaluetitle{
     color: #000000;
@@ -344,13 +354,15 @@ body{
     height: 28px;
     line-height: 28px;
     margin-top: 1px;
-    text-align: center;
     width: 135px;
+}
+.riskvaluetitleFont{
+   margin-left: 16px;
 }
 .riskcontent{
     width: 385px;
-    height: auto;
-    margin: 5px;
+    height: 30px;
+    margin: 2px;
 }
 .unitaddress{
     float: left;
@@ -361,28 +373,34 @@ body{
 }
 .riskvalue2{
     float: left;
-    height: 40px;
+    height: 27px;
     margin-top: 6px;
-    text-align: center;
     width: 120px;
+}
+.riskvalue2Font{
+    margin-left: 35px;
 }
 .riskrankvalue{
-    width: 120px;
-    text-align: center;
+    width: 100px;
+    text-align: left;
     height: 28px;
-    display: inline-block;
+    float: left;
+    margin-right: 1px;
+    line-height: 28px;
 }
 .riskranktitle{
-    display: inline-block;
+    float:left;
     height: 28px;
-    text-align: center;
-    width: 130px;
+    text-align: right;
+    width: 120px;
+    line-height: 28px;
 }
 .riskmarktitle{
-    display: inline-block;
+    float:left;
     height: 28px;
     text-align: center;
-    width: 130px;
+    width: 164px;
+    line-height: 28px;
 }
 .backcol{
     float: left;

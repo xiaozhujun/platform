@@ -8,10 +8,39 @@ body{
 	width:100%;
 	height:100%;
 	}
+#leftcontainer{
+    width: 100%;
+    height: 100%;
+}
+#search{
+    background-color: #F7F7F7;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #999999;
+}
+#titleSearch{
+    display: inline-block;
+    float: left;
+    font-size: 14px;
+    color:#999999;
+    display: inline-block;
+    margin-top: 9px;
+    width:auto;
+}
+.searchItem{
+    margin-left:10px;
+}
 #container{
     width:100%;
     height:100%;
-	} 
+	}
+#rightRank{
+    width:400px;
+    height:100%;
+    float: left;
+    margin-left:2px;
+    overflow: auto;
+}
 #rightshow{
 	width:400px;
 	height:100%;
@@ -19,7 +48,7 @@ body{
 	margin-left:2px;
     overflow: auto;
 	}
-#righttitle{
+.righttitle{
 	width:400px;
 	height:50px;
 	float: left;
@@ -31,7 +60,7 @@ body{
 	font-size: 15px;
     border-bottom: 1px solid #AAAAAA;
 }
-#rightcontent{
+.rightcontent{
 	width:400px;
 	height:595px;
 	float: left;
@@ -198,5 +227,186 @@ body{
     background-color:#999999;
     color: #FFFFFF;
 }
+#riskRank{
+     float: left;
+     display: inline-block;
+     width: 192px;
+     text-align: center;
+     cursor: pointer;
+     border: 1px solid #999999;
+     margin-top: 1px;
+     height:35px;
+     line-height: 35px;
+     color:#666666;
+ }
+#riskRank:hover{
+    background-color: #999999;
+    color:white
+}
+#riskInfo{
+    width: 190px;
+    float: left;
+    cursor: pointer;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    border-right: 1px solid #999999;
+    margin-top: 1px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    color:#666666;
+}
+#riskInfo:hover{
+    background-color: #999999;
+    color:white
+}
+#riskttitle{
+    background-color: #999999;
+    width: 385px;
+    height: 30px;
+}
+.rtitleItem{
+    width: 225px;
+    text-align: center;
+    height: 28px;
+    color: #ffffff;
+    margin-top: 1px;
+    display: inline-block;
+    line-height: 28px;
+}
+.rtitleriskItem{
+    width: 80px;
+    text-align: center;
+    height: 28px;
+    color: #ffffff;
+    margin-top: 1px;
+    display: inline-block;
+    line-height:28px;
+}
+#riskcontent{
+    width: 385px;
+    height: auto;
+}
+.rtitlerank{
+    width: 60px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+    color:white;
+    margin-left: 10px;
+}
+.rrank{
+    width: 60px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+}
+.riskItem{
+    width: 40px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+}
+.rcontentItem{
+    width: 245px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+}
+.unitFont{
+    margin-left: 6px;
+    display: inline-block;
+    margin-top: 6px;
+}
+.riskFont{
+    margin-left: 10px;
+    display: inline-block;
+    margin-top: 6px;
+}
+.riskcontenthead{
+    width: 385px;
+    height: 30px;
+    margin: 1px;
+    background-color: #999999;
+    color:white;
+}
+._riskcontenthead{
+    width: 385px;
+    height: 30px;
+    margin: 1px;
+    background-color: #cccccc;
+}
 
+.firmtitle{
+    color: #000000;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 1px;
+    width: 250px;
+}
+.firmtitleFont{
+    margin-left: 75px;
+}
+.riskvaluetitle{
+    color: #000000;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 1px;
+    width: 135px;
+}
+.riskvaluetitleFont{
+   margin-left: 16px;
+}
+.riskcontent{
+    width: 385px;
+    height: 30px;
+    margin: 2px;
+}
+.unitaddress{
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    width: 240px;
+}
+.riskvalue2{
+    float: left;
+    height: 27px;
+    margin-top: 6px;
+    width: 120px;
+}
+.riskvalue2Font{
+    margin-left: 35px;
+}
+.riskrankvalue{
+    width: 100px;
+    text-align: left;
+    height: 28px;
+    float: left;
+    margin-right: 1px;
+    line-height: 28px;
+}
+.riskranktitle{
+    float:left;
+    height: 28px;
+    text-align: right;
+    width: 120px;
+    line-height: 28px;
+}
+.riskmarktitle{
+    float:left;
+    height: 28px;
+    text-align: center;
+    width: 164px;
+    line-height: 28px;
+}
+.backcol{
+    float: left;
+    width: 385px;
+    height: auto;
+    position: relative;
+    border:1px solid #999999;
+}
 

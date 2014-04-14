@@ -50,6 +50,8 @@ public class CraneInspectReport {
 
     private String     typePicURL;                   //每种类型起重器的图片路径
 
+    private Long      riskValue;                     //风险值
+
     public long getId() {
         return id;
     }
@@ -208,5 +210,13 @@ public class CraneInspectReport {
 
     public void setTypePicURL(String typePicURL) {
         this.typePicURL = typePicURL;
+    }
+
+    public Long getRiskValue() {
+        return riskValue;
+    }
+
+    public void setRiskValue(Long riskValue) {
+        this.riskValue = riskValue;
     }
 }

@@ -8,6 +8,12 @@
 </head> 
 <body>
 <div id="container"></div>
-<script type="text/javascript" src="map/js/showProvince.js"></script>
-</body> 
+<script type="text/javascript" src="map/js/initMap.js"></script>
+<script type="text/javascript">
+    if (typeof console == "undefined"){
+        window.console = {log: function(){}};
+    }
+    $.initProvince("中国",5,0);
+</script>
+</body>
 </html>  

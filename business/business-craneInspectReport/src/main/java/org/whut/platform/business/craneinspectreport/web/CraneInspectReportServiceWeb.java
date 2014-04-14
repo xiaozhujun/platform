@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -150,11 +152,23 @@ public class CraneInspectReportServiceWeb {
         if(addressId==null){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
+        List<List<CraneInspectReport>> resultList=new ArrayList<List<CraneInspectReport>>();
         List<CraneInspectReport> list=craneInspectReportService.getInfoByAddressId(addressId);
-        if(list==null){
+        List<CraneInspectReport> riskValueList=new ArrayList<CraneInspectReport>();
+        Iterator it=list.iterator();
+        while(it.hasNext()){
+            CraneInspectReport craneInspectReport=(CraneInspectReport)it.next();
+            CraneInspectReport craneReport=new CraneInspectReport();
+            Long riskValue=craneInspectReportService.findReportNumberByUnitAddress(craneInspectReport.getUnitAddress());
+            craneReport.setRiskValue(riskValue);
+            riskValueList.add(craneReport);
+        }
+         resultList.add(list);
+         resultList.add(riskValueList);
+        if(resultList==null){
           return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getObjectResultByStringAsDefault(resultList,JsonResultUtils.Code.SUCCESS);
         }
         }
     }
@@ -187,6 +201,41 @@ public class CraneInspectReportServiceWeb {
     {
         List<CraneInspectReport> list=craneInspectReportService.getUnitaddressByArea(province,city,area);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+
+    }
+    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @Path("/showRiskRank")
+    @POST
+    public String showRiskRank(@FormParam("city") String city,@FormParam("pname") String area)
+    {
+        List<CraneInspectReport> list=craneInspectReportService.showRiskRank(city,area);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+
+    }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getOneUnitAddressInfo")
+    public String getOneUnitAddressInfo(@FormParam("unitAddress") String unitAddress){
+            List<CraneInspectReport> list=new ArrayList<CraneInspectReport>();
+            CraneInspectReport craneInspectReport=craneInspectReportService.getOneUnitAddressInfo(unitAddress);
+            Long riskValue=craneInspectReportService.findReportNumberByUnitAddress(craneInspectReport.getUnitAddress());
+            craneInspectReport.setRiskValue(riskValue);
+            list.add(craneInspectReport);
+            return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/imageupload")
+    public String imageUpload(@Context HttpServletRequest request){
+        int uploadMaxSize= Integer.parseInt(FundamentalConfigProvider.get("uploadMaxSize"));
+        FileService fileService=new FileService("jpg");
+        String path=request.getSession().getServletContext().getRealPath("/imageupload");
+        try{
+        multipartRequestParser.parse(request,path,uploadMaxSize,fileService);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
 
     }
 }

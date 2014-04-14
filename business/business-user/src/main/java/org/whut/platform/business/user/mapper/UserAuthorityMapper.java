@@ -15,4 +15,5 @@ import java.util.List;
 public interface UserAuthorityMapper extends AbstractMapper<UserAuthority> {
     public List<UserAuthority> findByUserName(String username);
     public int deleteByUserName(String userName);
+    public List<UserAuthority> findByAuthorityName(String authorityName);
 }

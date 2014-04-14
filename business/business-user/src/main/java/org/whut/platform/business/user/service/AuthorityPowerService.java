@@ -23,10 +23,18 @@ public class AuthorityPowerService {
     }
 
     public void add(AuthorityPower authorityPower){
-         mapper.add(authorityPower);
+        mapper.add(authorityPower);
     }
 
     public int deleteByAuthorityName(String name) {
         return mapper.deleteByAuthorityName(name);
+    }
+
+    public List<String> getResourcesByAuthorityName(String name){
+        return mapper.getResourcesByAuthorityName(name);
+    }
+
+    public int deleteByPowerResource(String powerResource){
+        return mapper.deleteByPowerResource(powerResource);
     }
 }

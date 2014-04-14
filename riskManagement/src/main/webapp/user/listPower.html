@@ -21,9 +21,9 @@
         var gridData = {};
         function listCallback(data){
             if(data.code==200){
-               gridData.Rows = data.data;
-               gridData.Total = data.data.length;
-               f_initGrid();
+                gridData.Rows = data.data;
+                gridData.Total = data.data.length;
+                f_initGrid();
             }
         }
 
@@ -41,7 +41,7 @@
                     { display: '类型', width: 50, name: 'type', type: 'string',
                         editor: { type: 'select', data: typeData, valueField: 'type' },
                         render:function(item){
-                               return item.type;
+                            return item.type;
                         }
 
                     },
@@ -101,7 +101,11 @@
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
+
                 $.post($.URL.power.delete,{"jsonString":jsonString},deleteCallback,"json");
+
+
+
                 manager.deleteRow(rowid);
             }
         }
@@ -110,7 +114,7 @@
             if(data.code==200){
                 $.ligerDialog.success("成功删除！");
             }else{
-                $.ligerDialog.success("删除失败！");
+                $.ligerDialog.error("删除失败！");
             }
         }
 
@@ -121,11 +125,10 @@
         }
 
     </script>
-
 </head>
 <body  style="padding:10px">
 <div class="l-clear"></div>
-<div id="maingrid" style="margin-top:20px"></div><br/>
+<div id="maingrid" style="margin-top:20px"></div> <br />
 
 <div style="display:none;">
     <!-- g data total ttt -->

@@ -7,10 +7,10 @@
             "list":"rs/power/list"
         }  ,
         "address":{
-            "list" :"rs/address/list"  ,
             "getCityByProvince"  :"rs/address/getCityByProvince" ,
-            "getAreaByCity":"rs/address/getAreaByCity",
-            "findIdByArea"  :"rs/address/findByArea/{province},{city},{area}"
+            "findIdByArea"  :"rs/address/findByArea/{province},{city},{area}",
+            "getProvinceList":"rs/address/getProvinceList",
+            "getAreaByProvinceAndCity":"rs/address/getAreaByProvinceAndCity"
         },
         "report":
         {
@@ -19,7 +19,12 @@
         }  ,
         "craneinspectreport":
         {
-            "getUnitaddressByArea" :"rs/craneinspectreport/getUnitaddressByArea"
+            "getUnitaddressByArea" :"rs/craneinspectreport/getUnitaddressByArea",
+            "getAreaInfoByUnitAddress":"rs/craneinspectreport/getAreaInfoByUnitAddress",
+            "getCraneInspectReportInfoByAddressAndEquipment":"rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",
+            "getAreaInfo":"rs/craneinspectreport/getAreaInfo",
+            "showRiskRank":"rs/craneinspectreport/showRiskRank",
+            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo"
         },
         "craneInspectReport":{
             "list":"rs/craneinspectreport/list",

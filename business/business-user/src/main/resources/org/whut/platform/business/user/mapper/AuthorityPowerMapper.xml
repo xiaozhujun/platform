@@ -56,4 +56,15 @@
         <include refid="authority_power_fields" />
         FROM authority_power
     </select>
+
+    <select id="getResourcesByAuthorityName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT powerResource
+        FROM  authority_power
+        WHERE authorityName=#{name}
+    </select>
+
+    <delete id="deleteByPowerResource" parameterType="java.lang.String">
+        DELETE FROM authority_power
+        WHERE POWERRESOURCE=#{powerResource}
+    </delete>
 </mapper>

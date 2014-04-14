@@ -79,9 +79,9 @@
             <if test="sex!=null">AND SEX=#{sex}</if>
             <if test="role!=null">AND ROLE=#{role}</if>
         </where>
-     </select>
+    </select>
 
-     <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+    <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
          SELECT
          id
          FROM user WHERE NAME=#{name}

@@ -28,6 +28,7 @@
         <result property="lat" column="LAT" />
         <result property="singlePicURL" column="SINGLEPICURL"/>
         <result property="typePicURL" column="TYPEPICURL"/>
+        <result property="riskValue" column="RISKVALUE"/>
     </resultMap>
 
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
@@ -130,11 +131,12 @@
        where addressId=#{addressId}
     </select>
     <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
-        SELECT
-         *
-        FROM craneinspectreport
-        where unitAddress=#{unitAddress}
-        group by equipmentvariety
+     SELECT
+     cr.*,r.riskValue
+     FROM craneinspectreport cr,riskvalue r
+     WHERE cr.reportnumber=r.reportnumber
+     AND cr.unitAddress=#{unitAddress}
+     GROUP BY cr.equipmentVariety
     </select>
     <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
@@ -162,5 +164,25 @@
             </if>
         </where>
         )
+    </select>
+    <select id="findReportNumberByUnitAddress" parameterType="java.lang.String" resultType="java.lang.Long">
+     SELECT round(avg(r.riskvalue))
+     FROM craneinspectreport cr,riskvalue r
+     WHERE cr.reportnumber=r.reportnumber
+     AND cr.unitAddress=#{unitAddress}
+    </select>
+    <select id="showRiskRank" parameterType="map" resultMap="craneInspectReportResultMap">
+         SELECT cr.id,cr.unitAddress,r.riskvalue
+         FROM craneinspectreport cr,riskvalue r,address a
+         WHERE cr.reportnumber=r.reportnumber
+         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
+         group by cr.unitAddress order by r.riskvalue desc
+    </select>
+    <select id="getOneUnitAddressInfo" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
+           SELECT *
+           FROM
+           craneinspectreport
+           WHERE unitAddress=#{unitAddress}
+           GROUP BY unitAddress
     </select>
 </mapper>

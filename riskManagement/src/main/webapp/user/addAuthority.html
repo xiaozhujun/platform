@@ -17,18 +17,18 @@
         {
             $.get($.URL.power.list,null,listCallback,"json");
             function listCallback(data){
-               if(data.code==200){
-                  var myData = [];
-                  for(var i = 0;i<data.data.length;i++){
-                      var d= {};
-                      d["text"]=data.data[i].resource;
-                      d["id"]=data.data[i].id;
-                      myData.push(d);
-                  }
-                   $("#authorityPower").ligerComboBox({ isShowCheckBox:true, isMultiSelect:true,
-                       data:myData, valueFieldID: 'authorityPower'
-                   });
-               }
+                if(data.code==200){
+                    var myData = [];
+                    for(var i = 0;i<data.data.length;i++){
+                        var d= {};
+                        d["text"]=data.data[i].resource;
+                        d["id"]=data.data[i].id;
+                        myData.push(d);
+                    }
+                    $("#authorityPower").ligerComboBox({ isShowCheckBox:true, isMultiSelect:true,
+                        data:myData, valueFieldID: 'authorityPower'
+                    });
+                }
             }
 
             $("#authorityStatus").ligerComboBox({

@@ -36,6 +36,10 @@ public class PowerService {
     }
 
     public long getIdByResource(String name){
-       return mapper.getIdByResource(name);
+        return mapper.getIdByResource(name);
+    }
+
+    public List<Power> findByResource(String resource){
+        return mapper.findByResource(resource);
     }
 }

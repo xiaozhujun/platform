@@ -57,7 +57,37 @@
     z-index: 1;
     cursor: pointer;
 }
-
+#rightmain{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #AAAAAA;
+    margin: 0px;
+    position: absolute;
+    width: 385px;
+    z-index: 1;
+    right:0px;
+    float: left;
+}
+#tab{
+    width: 385px;
+    z-index: 1;
+    margin: 0px;
+    height: 40px;
+    background-color:#F7F7F7;
+}
+#rightRank{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #AAAAAA;
+    margin: 0px;
+    min-height: 500px;
+    position: absolute;
+    width: 385px;
+    z-index: 1;
+    right:0px;
+    float: left;
+    background-color: #EEEEEE;
+}
 #rightshow {
     background: none repeat scroll 0 0 #FFFFFF;
     border-right-width: 0;
@@ -68,6 +98,8 @@
     width: 385px;
     z-index: 1;
     right:0px;
+    float: left;
+    display: none;
 }
 
 

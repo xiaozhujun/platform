@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/address.css">
     <link rel="stylesheet" type="text/css" href="css/themes/base/jquery.ui.all.css">
     <script src="lib/json2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
@@ -21,17 +22,22 @@
             $('#form1').ajaxForm({
                 dataType: 'json',
                 success:function(data){
+                    f_hide();
                     if(data.code==200){
+                       /* $.post($.URL.craneInspectReport.refreshList,null,refreshCallback,"json");*/
                         alert(data.message);
                     }else if(data.code==302){
-                       /* $.post($.URL.craneInspectReport.upload,null,upLoadRepeat,"json");*/
+                        gridData={};
+                        f_show();
                         gridData.Rows = data.data;
                         gridData.Total = data.data.length;
                         f_initGrid();
-                        $.ligerDialog.confirm('下方表格展示重复数据，是否覆盖？',function(yes){
-                            $.post($.URL.craneInspectReport.addRepeat,null,addResourceCallback,"json");
-                            f_hide();
-                        })
+                        $.ligerDialog.confirm('下方表格展示重复数据，是否覆盖？',function(comfirm){
+                            if(comfirm){
+                                 $.post($.URL.craneInspectReport.addRepeat,null,addResourceCallback,"json");
+                            }
+                        });
+                       /* $.post($.URL.craneInspectReport.refreshRepeatList,null,refreshCallback,"json");*/
                     }
                 },
                 error:function(data){
@@ -39,6 +45,21 @@
                 }
             });
         });
+/*        function refreshCallback(data){
+
+        }*/
+        function addResourceCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success('操作成功');
+            }
+        }
+        function f_hide()
+        {
+            $('#maingrid').css('display','none');
+        }
+        function f_show(){
+            $('#maingrid').css('display','block');
+        }
         var gridData={};
         var manager, g;
         function f_initGrid()
@@ -97,19 +118,10 @@
                     $("#txtrowindex").val(rowindex);
                 },
                 enabledEdit: true,clickToEdit:false, isScroll: false,
-                data: gridData,
+                data: $.extend(true,{},gridData),
                 isAllowHide:true,
                 width: '100%'
             });
-        }
-        function addResourceCallback(data){
-            if(data.code==200){
-                $.ligerDialog.success('操作成功');
-            }
-        }
-        function f_hide()
-        {
-            $('#maingrid').css('display','none');
         }
     </script>
 </head>

@@ -42,38 +42,39 @@ public class CraneInspectReportService {
              String mString;
              excelMap=jxlExportImportUtils.analysisExcel(inputStream);
              List<List<String>> listContents=new ArrayList<List<String>>();
+             List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
+             listRepeat.clear();
              for(int i=0;i<excelMap.getContents().size();i++){
                  Address address=new Address();
                  address=getAddressFromExcel(excelMap,i);
                  if(address==null){
                  listContents.add(excelMap.getContents().get(i));
                  }else{
-                 Long addressId=addressService.findIdByArea(address.getProvince(),address.getCity(),address.getArea());
-                 if(addressId==null){
-                     //addressId查不到
-                 }else{
-                 craneInspectReport=transferExcelMapToCraneInspectReportObject(excelMap,i,addressId);
-                 String s=craneInspectReport.getReportNumber();
-                 String  reportNumber=mapper.getReportNumber(s);
-                 if(reportNumber==null){
-                     mapper.insert(craneInspectReport);
-                 }else{
-                     listRepeat.add(craneInspectReport);
+                     Long addressId=addressService.findIdByArea(address.getProvince(),address.getCity(),address.getArea());
+                     if(addressId==null){
+                         //addressId查不到
+                     }else{
+                         craneInspectReport=transferExcelMapToCraneInspectReportObject(excelMap,i,addressId);
+                         String s=craneInspectReport.getReportNumber();
+                         String  reportNumber=mapper.getReportNumber(s);
+                         if(reportNumber==null){
+                             craneInspectReportList.add(craneInspectReport);
+                             /*mapper.insert(craneInspectReport);*/
+                         }else{
+                             listRepeat.add(craneInspectReport);
+                         }
+                    }
                  }
-                 }
-                 }
+             }
+             if(craneInspectReportList!=null&&craneInspectReportList.size()!=0){
+                 System.out.print("jj");
+                 mapper.batchInsert(craneInspectReportList);
              }
                JxlExportImportUtils.createExcel(excelMap.getHeads(),listContents,fileName);
                mString=getDocumentJson(excelMap);
                return mString;
     }
-    //获取重复的记录
-    public List<CraneInspectReport> getRepeatList(){
-        return listRepeat;
-    }
-    public int update(CraneInspectReport craneInspectReport){
-        return mapper.update(craneInspectReport);
-    }
+
     //获取键值对
     public String getDocumentJson(ExcelMap excelMap){
         String documentJson="{craneinspectreports:[";
@@ -142,6 +143,22 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> list(){
         return mapper.findByCondition(new HashMap<String, Object>());
     }
+    //获取重复的记录
+    public List<CraneInspectReport> getRepeatList(){
+        return listRepeat;
+    }
+    /*    public void refreshRepeatList(){
+            listRepeat.clear();
+        }
+        public void refreshList(){
+            craneInspectReportList.clear();
+        }*/
+    public int update(CraneInspectReport craneInspectReport){
+        return mapper.update(craneInspectReport);
+    }
+    public int delete(CraneInspectReport craneInspectReport){
+        return mapper.delete(craneInspectReport);
+    }
 
     public List<CraneInspectReport> getInfoByAddressId(Long id){
         return mapper.getInfoByAddressId(id);
@@ -152,10 +169,8 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getCraneInspectReportInfoByAddressAndEquipment(String unitAddress,String equipmentVariety){
         return mapper.getCraneInspectReportInfoByAddressAndEquipment(unitAddress,equipmentVariety);
     }
-
     public List<CraneInspectReport> getUnitaddressByArea(String province,String city,String area)
     {
         return mapper.getUnitaddressByArea(province,city,area);
     }
-
 }

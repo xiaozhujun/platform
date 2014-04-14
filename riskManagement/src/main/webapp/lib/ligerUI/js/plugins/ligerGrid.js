@@ -1,11 +1,11 @@
 ﻿/**
-* jQuery ligerUI 1.2.3
-* 
-* http://ligerui.com
-*  
-* Author daomi 2014 [ gd_star@163.com ] 
-* 
-*/
+ * jQuery ligerUI 1.2.3
+ *
+ * http://ligerui.com
+ *
+ * Author daomi 2014 [ gd_star@163.com ]
+ *
+ */
 
 (function ($)
 {
@@ -230,14 +230,14 @@
             if (/(y+)/.test(format))
             {
                 format = format.replace(RegExp.$1, (date.getFullYear() + "")
-            .substr(4 - RegExp.$1.length));
+                    .substr(4 - RegExp.$1.length));
             }
             for (var k in o)
             {
                 if (new RegExp("(" + k + ")").test(format))
                 {
                     format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length));
+                        : ("00" + o[k]).substr(("" + o[k]).length));
                 }
             }
             return format;
@@ -550,7 +550,7 @@
                         g.gridview.height(Math.max(g.gridview1.height(), g.gridview2.height()));
                 });
                 return;
-            } 
+            }
             h = g._calculateGridBodyHeight(h);
             if (h > 0)
             {
@@ -873,10 +873,10 @@
             return editor;
         },
         /*
-        @description 使一行进入编辑状态
-        @param  {rowParm} rowindex或者rowdata
-        @param {containerBulider} 编辑器填充层构造器
-        */
+         @description 使一行进入编辑状态
+         @param  {rowParm} rowindex或者rowdata
+         @param {containerBulider} 编辑器填充层构造器
+         */
         beginEdit: function (rowParm, containerBulider)
         {
             var g = this, p = this.options;
@@ -1041,7 +1041,7 @@
             if (!p.frozen) return false;
             var cols = g.columns || [];
             if (g.enabledDetail() && p.frozenDetail || g.enabledCheckbox() && p.frozenCheckbox
-            || p.frozenRownumbers && p.rownumbers) return true;
+                || p.frozenRownumbers && p.rownumbers) return true;
             for (var i = 0, l = cols.length; i < l; i++)
             {
                 if (cols[i].frozen)
@@ -1135,10 +1135,10 @@
             g._removeSelected(rowdata);
         },
         /*
-        @param  {arg} column index、column name、column、单元格
-        @param  {value} 值
-        @param  {rowParm} rowindex或者rowdata
-        */
+         @param  {arg} column index、column name、column、单元格
+         @param  {value} 值
+         @param  {rowParm} rowindex或者rowdata
+         */
         updateCell: function (arg, value, rowParm)
         {
             var g = this, p = this.options;
@@ -2298,8 +2298,8 @@
             if (g.enabledFrozen()) targetRowObj.push(g.getRowObj(rowdata, true));
             var level = rowdata['__level'], indexInCollapsedRows;
             var linkbtn = $(".l-grid-tree-link:first", targetRowObj);
-            var opening = true; 
-            g.collapsedRows = g.collapsedRows || []; 
+            var opening = true;
+            g.collapsedRows = g.collapsedRows || [];
             if (linkbtn.hasClass("l-grid-tree-link-close")) //收缩
             {
                 if (g.hasBind('treeExpand') && g.trigger('treeExpand', [rowdata]) == false) return false;
@@ -2669,27 +2669,27 @@
             if ($.fn.ligerCheckBox)
             {
                 $('input:checkbox', g.popup).ligerCheckBox(
-                {
-                    onBeforeClick: function (obj)
                     {
-                        if (!obj.checked) return true;
-                        if ($('input:checked', g.popup).length <= p.minColToggle)
-                            return false;
-                        return true;
-                    }
-                });
+                        onBeforeClick: function (obj)
+                        {
+                            if (!obj.checked) return true;
+                            if ($('input:checked', g.popup).length <= p.minColToggle)
+                                return false;
+                            return true;
+                        }
+                    });
             }
             //表头 - 显示/隐藏'列控制'按钮事件
             if (p.allowHideColumn)
             {
                 $('tr', g.popup).hover(function ()
-                {
-                    $(this).addClass('l-popup-row-over');
-                },
-                function ()
-                {
-                    $(this).removeClass('l-popup-row-over');
-                });
+                    {
+                        $(this).addClass('l-popup-row-over');
+                    },
+                    function ()
+                    {
+                        $(this).removeClass('l-popup-row-over');
+                    });
                 var onPopupCheckboxChange = function ()
                 {
                     if ($('input:checked', g.popup).length + 1 <= p.minColToggle)
@@ -2738,15 +2738,15 @@
                 if (p.switchPageSizeApplyComboBox && $.fn.ligerComboBox)
                 {
                     $(".l-bar-selectpagesize select", g.toolbar).ligerComboBox(
-                    {
-                        onBeforeSelect: function ()
                         {
-                            if (p.url && g.isDataChanged && !confirm(p.isContinueByDataChanged))
-                                return false;
-                            return true;
-                        },
-                        width: 45
-                    });
+                            onBeforeSelect: function ()
+                            {
+                                if (p.url && g.isDataChanged && !confirm(p.isContinueByDataChanged))
+                                    return false;
+                                return true;
+                            },
+                            width: 45
+                        });
                 }
             }
             else
@@ -2921,9 +2921,9 @@
                     {
                         g._onRowOver(this, true);
                     }).bind('mouseout.gridrow', function ()
-                    {
-                        g._onRowOver(this, false);
-                    });
+                        {
+                            g._onRowOver(this, false);
+                        });
                 }
             }
             g._fixHeight();
@@ -2956,7 +2956,7 @@
                 var cell1 = g.getCellObj(rowid, column1), cell2 = g.getCellObj(rowid, column2);
                 var height = Math.max($(cell1).height(), ($(cell2).height()));
                 $(cell1).add(cell2).height(height);
-            } 
+            }
         },
         _getRowDomId: function (rowdata, frozen)
         {
@@ -3611,7 +3611,7 @@
                 if (scrollLeft != null)
                     g.gridheader[0].scrollLeft = scrollLeft;
                 if (scrollTop != null)
-                    g.f.gridbody[0].scrollTop = scrollTop; 
+                    g.f.gridbody[0].scrollTop = scrollTop;
                 g.trigger('SysGridHeightChanged');
             });
             //工具条 - 切换每页记录数事件
@@ -3621,7 +3621,7 @@
                     return false;
                 p.newPage = 1;
                 p.pageSize = this.value;
-                g.loadData(p.dataAction != "local" ? p.where : false); 
+                g.loadData(p.dataAction != "local" ? p.where : false);
             });
             //工具条 - 切换当前页事件
             $('span.pcontrol :text', g.toolbar).blur(function (e)

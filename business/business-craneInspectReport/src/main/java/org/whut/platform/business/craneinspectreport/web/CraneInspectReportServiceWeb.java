@@ -10,6 +10,7 @@ import org.whut.platform.fundamental.fileupload.FileService;
 import org.whut.platform.fundamental.fileupload.MultipartRequestParser;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
+import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,15 +86,32 @@ public class CraneInspectReportServiceWeb {
           List<CraneInspectReport> list=craneInspectReportService.list();
           return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
       }
-
-//    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-//    @Path("/listRepeat")
-//    @GET
-//    public String listRepeat(){
-//        List<CraneInspectReport> listRepeat=craneInspectReportService.getRepeatList();
-//        return JsonResultUtils.getObjectResultByStringAsDefault(listRepeat,JsonResultUtils.Code.DUPLICATE);
-//    }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/delete")
+    @POST
+      public String delete(@FormParam("jsonString") String jsonString){
+          CraneInspectReport craneInspectReport= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,CraneInspectReport.class);
+          int result=craneInspectReportService.delete(craneInspectReport);
+          if (result>0){
+              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+          }else{
+              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+          }
+      }
+/*    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/refreshRepeatList")
+    @POST
+    public String refreshRepeatList(){
+        craneInspectReportService.refreshRepeatList();
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/refreshList")
+    @POST
+    public String refreshList(){
+        craneInspectReportService.refreshList();
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }*/
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/addRepeat")
     @POST
@@ -118,6 +136,7 @@ public class CraneInspectReportServiceWeb {
             craneInspectReport.setWorkLevel(repeat.getWorkLevel());
             craneInspectReportService.update(craneInspectReport);
         }
+        list.clear();
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 

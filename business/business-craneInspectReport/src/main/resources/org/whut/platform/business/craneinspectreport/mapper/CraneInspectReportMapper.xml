@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper">
     <sql id="craneInspectReport_fields">
-		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT
+		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT,SINGLEPICURL,TYPEPICURL
 	</sql>
 
     <resultMap id="craneInspectReportResultMap" type="CraneInspectReport">
@@ -26,20 +26,35 @@
         <result property="workLevel" column="WORKLEVEL" />
         <result property="lng" column="LNG" />
         <result property="lat" column="LAT" />
+        <result property="singlePicURL" column="SINGLEPICURL"/>
+        <result property="typePicURL" column="TYPEPICURL"/>
     </resultMap>
+
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
         craneinspectreport(
         <include refid="craneInspectReport_fields" />
         )
-        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel},#{lng},#{lat});
-        <selectKey resultType="long" keyProperty="id">
+        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel},#{lng},#{lat},#{singlePicURL},#{typePicURL});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
             select
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        craneinspectreport(
+        <include refid="craneInspectReport_fields"/>)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.reportNumber},#{item.unitAddress},#{item.addressId},#{item.organizeCode},#{item.userPoint},#{item.safeManager},#{item.contactPhone},#{item.equipmentVariety},#{item.unitNumber},#{item.manufactureUnit},#{item.manufactureLicenseNumber},#{item.manufactureDate},#{item.specification},#{item.pNumber},#{item.workLevel},#{item.lng},#{item.lat},#{item.singlePicURL},#{item.typePicURL})
+        </foreach>
+    </insert>
     <update id="update" parameterType="CraneInspectReport">
         UPDATE  craneinspectreport
         <set>
@@ -56,7 +71,9 @@
             <if test="manufactureDate!=null" >MANUFACTUREDATE=#{manufactureDate},</if>
             <if test="specification!=null" >SPECIFICATION=#{specification},</if>
             <if test="pNumber!=null" >PNUMBER=#{pNumber},</if>
-            <if test="workLevel!=null" >WORKLEVEL=#{workLevel}</if>
+            <if test="workLevel!=null" >WORKLEVEL=#{workLevel},</if>
+            <if test="singlePicURL!=null">SINGLEPICURL=#{singlePicURL},</if>
+            <if test="typePicURL!=null">TYPEPICURL=#{typePicURL}</if>
         </set>
         WHERE  REPORTNUMBER=#{reportNumber};
     </update>
@@ -94,8 +111,17 @@
             <if test="specification!=null">AND SPECIFICATION=#{specification}</if>
             <if test="pNumber!=null">AND PNUMBER=#{pNumber}</if>
             <if test="workLevel!=null">AND WORKLEVEL=#{workLevel}</if>
+            <if test="singlePicURL!=null">AND SINGLEPICURL=#{singlePicURL} </if>
+            <if test="typePicURL!=null">AND TYPEPICURL=#{typePicURL}</if>
         </where>
     </select>
+
+    <delete id="delete" parameterType="CraneInspectReport">
+        DELETE FROM craneinspectreport
+            <where>
+                <if test="id!=null">ID=#{id}</if>
+            </where>
+    </delete>
 
     <select id="getInfoByAddressId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
        SELECT

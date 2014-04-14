@@ -46,6 +46,10 @@ public class CraneInspectReport {
 
     private String     lat;                            //纬度
 
+    private String     singlePicURL;                //单个起重机的图片路径
+
+    private String     typePicURL;                   //每种类型起重器的图片路径
+
     public long getId() {
         return id;
     }
@@ -188,5 +192,21 @@ public class CraneInspectReport {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+    public String getSinglePicURL() {
+        return singlePicURL;
+    }
+
+    public void setSinglePicURL(String singlePicURL) {
+        this.singlePicURL = singlePicURL;
+    }
+
+    public String getTypePicURL() {
+        return typePicURL;
+    }
+
+    public void setTypePicURL(String typePicURL) {
+        this.typePicURL = typePicURL;
     }
 }

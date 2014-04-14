@@ -24,8 +24,9 @@
         "craneInspectReport":{
             "list":"rs/craneinspectreport/list",
             "upload" :"rs/craneinspectreport/upload",
-            "listRepeat":"rs/craneinspectreport/listRepeat" ,
-            "addRepeat":"rs/craneinspectreport/addRepeat"
+            "addRepeat":"rs/craneinspectreport/addRepeat",
+            "delete":"rs/craneinspectreport/delete"
+
         },
         "authority":{
             "add":"rs/authority/add"

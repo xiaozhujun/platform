@@ -280,4 +280,11 @@ public class CraneInspectReportServiceWeb {
         }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
     }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/getCraneInspectReportInfoById")
+    public String getCraneInspectReportInfoById(@FormParam("id") long id){
+         List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoById(id);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 }

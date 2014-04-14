@@ -76,7 +76,7 @@ public class ReportServiceWeb {
     @Path("/showCraneReport")
     @POST
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    public String showCraneReport(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area,@FormParam("unitaddress") String unitaddress,@FormParam("equipmentvariety") String equipmentvariety){
+    public String showCraneReport(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area,@FormParam("unitaddress") String unitaddress,@FormParam("riskvalue") String riskvalue,@FormParam("equipmentvariety") String equipmentvariety){
      /*
      这个例子主要是展示传入一个sql语句，显示html格式的报表
       */
@@ -87,6 +87,7 @@ public class ReportServiceWeb {
         String whereArea="";
         String whereCranevariety="";
         String whereUnitaddress="";
+        String whereRiskvalue="";
         province="湖北";
         city="武汉市";
         if(!(area.trim()).equals(""))
@@ -101,6 +102,10 @@ public class ReportServiceWeb {
         {
             whereCranevariety=" and equipmentvariety="+"\""+equipmentvariety+"\"";
         }
+        if(!riskvalue.equals(""))
+        {
+            whereRiskvalue=" and riskvalue="+riskvalue;
+        }
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
@@ -109,6 +114,7 @@ public class ReportServiceWeb {
         parameter.put("whereArea",whereArea);
         parameter.put("whereCranevariety",whereCranevariety);
         parameter.put("whereUnitaddress",whereUnitaddress);
+        parameter.put("whereRiskvalue",whereRiskvalue);
         platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -124,10 +130,13 @@ public class ReportServiceWeb {
         String city=datalist[2];
         String area=datalist[3];
         String unitaddress=datalist[4];
-        String equipmentvariety=datalist[5];
+        String riskvalue=datalist[5];
+        String equipmentvariety=datalist[6];
         String whereArea="";
         String whereCranevariety="";
         String whereUnitaddress="";
+        String whereRiskvalue="";
+        System.out.println("风险值"+riskvalue);
         province="湖北";
         city="武汉市";
         if(!(area.trim()).equals(""))
@@ -142,6 +151,10 @@ public class ReportServiceWeb {
         {
             whereCranevariety=" and equipmentvariety="+"\""+equipmentvariety+"\"";
         }
+        if(!(riskvalue.trim()).equals(""))
+        {
+            whereRiskvalue=" and riskvalue="+riskvalue;
+        }
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
@@ -150,6 +163,7 @@ public class ReportServiceWeb {
         parameter.put("whereArea",whereArea);
         parameter.put("whereCranevariety",whereCranevariety);
         parameter.put("whereUnitaddress",whereUnitaddress);
+        parameter.put("whereRiskvalue",whereRiskvalue);
         platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response);
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils

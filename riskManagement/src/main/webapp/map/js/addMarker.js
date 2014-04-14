@@ -259,6 +259,7 @@ $.extend({
                    _marker.addEventListener("mouseover",function(){
                        this.openInfoWindow(_iw);
                        $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoverCallback,"json");
+                       $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title},mapCallback,"json");
                    });
                    _marker.addEventListener("mouseout",function(){
                        $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoutCallback,"json");
@@ -314,5 +315,70 @@ $.extend({
                        _marker.openInfoWindow(_iw);
                    }
                })()
+       },
+       showUnitRiskRank:function showUnitRiskRank(unitAddress){
+           $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},showUnitRiskRankCallback,"json");
+           function showUnitRiskRankCallback(data){
+               if(data.code==200){
+                   $("#rankTitle").html("");
+                   $("#riskrankContent").html("");
+                   /*var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle); */
+                   if(data.data[0]==undefined){
+                       $("#riskrankContent").append("对不起,数据不存在!");
+                   }else{
+                       var temp = data.data[0].riskValue;
+                       var j=1;
+                       var title1 ="<div class='_riskcontenthead'><span class='firmtitle'><span class='firmtitleFont'>企业</span></span><span class='riskvaluetitle'><span class='riskvaluetitleFont'>风险值</span></span></div>";
+                       var rankContent="";
+                       var rankContent2="";
+
+                       for(var i=0;i<data.data.length;i++){
+                           var divName="div"+i;
+                           var content ="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+
+                               "<span class='unitaddress'>"+data.data[i].unitAddress+"</span>" +
+                               "<span class='riskvalue2'><span class='riskvalue2Font'>"+data.data[i].riskValue+"</span></span>" +
+                               "</div>";
+
+                           //读第一条数据
+                           if(i==0){
+                               rankContent="<div class='backcol' id="+divName+">"+"<div  class='riskcontenthead'>" +
+                                   "<span class='riskranktitle'>风险排名</span>" +
+                                   "<span class='riskmarktitle'></span>" +
+                                   "<span class='riskrankvalue'>"+(i+1)+"</span>" +
+                                   "</div>"+title1+content;
+
+                           }
+                           //读下一块数据
+                           else if(i>0&&data.data[i].riskValue!=temp){
+                               j+=1;
+                               temp=data.data[i].riskValue;
+
+
+                               rankContent="</div>"+"<div class ='backcol' id="+divName+"><div class='riskcontenthead'>" +
+                                   "<span class='riskranktitle'>风险排名</span>" +
+                                   "<span class='riskmarktitle'></span>" +
+                                   "<span class='riskrankvalue'>"+j+"</span>" +
+                                   "</div>"
+                                   +title1+content;
+                           }
+                           // 读本块第二条数据
+                           else{
+                               rankContent=content;
+                           }
+                           /*while(i==data.data.length-1){
+                               rankContent="</div>";
+                               break;
+                           }*/
+
+                           rankContent2+=rankContent;
+                       }
+                       $("#riskrankContent").append(rankContent2);
+                       for(i=0;i<data.data.length;i++){
+                           $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                       }
+                   }
+               }
+           }
        }
 });

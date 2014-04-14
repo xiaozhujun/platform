@@ -204,5 +204,19 @@ public class CraneInspectReportServiceWeb {
             list.add(craneInspectReport);
             return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/imageupload")
+    public String imageUpload(@Context HttpServletRequest request){
+        int uploadMaxSize= Integer.parseInt(FundamentalConfigProvider.get("uploadMaxSize"));
+        FileService fileService=new FileService("jpg");
+        String path=request.getSession().getServletContext().getRealPath("/imageupload");
+        try{
+        multipartRequestParser.parse(request,path,uploadMaxSize,fileService);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
 
+    }
 }

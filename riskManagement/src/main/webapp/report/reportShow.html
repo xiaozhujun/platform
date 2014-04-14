@@ -62,11 +62,11 @@
                     default:
                             {
                                 var type=item.text;
-                                var province = $("#province").val();
-                                var city = $("#city").val();
-                                var area = $("#area").val();
-                                var unitaddress = $("#unitaddress").val();
-                                var equipmentvariety=$("#equipmentvariety").val();
+                                var province = $("#province").val()==''?' ':$("#province").val();
+                                var city = $("#city").val()==''?' ':$("#city").val();
+                                var area = $("#area").val()==''?' ':area = $("#area").val();
+                                var unitaddress = $("#unitaddress").val()==''?' ':$("#unitaddress").val();
+                                var equipmentvariety=$("#equipmentvariety").val()==''?' ':$("#equipmentvariety").val();
                                 var data=type+","+province+","+city+","+area+","+unitaddress+","+equipmentvariety;
                                 location.href="rs/report/exportCraneReport/data="+encodeURI(data);
                             }

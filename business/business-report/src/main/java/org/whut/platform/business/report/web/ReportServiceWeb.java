@@ -103,6 +103,7 @@ public class ReportServiceWeb {
         }
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
         parameter.put("Province",province);
         parameter.put("City",city);
         parameter.put("whereArea",whereArea);
@@ -143,6 +144,7 @@ public class ReportServiceWeb {
         }
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
         parameter.put("Province",province);
         parameter.put("City",city);
         parameter.put("whereArea",whereArea);

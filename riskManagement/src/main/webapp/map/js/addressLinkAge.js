@@ -47,6 +47,8 @@ $.extend({
            var area=$(aId).find('option:selected').text();
            var unit=$(this).find('option:selected').text();
            $.getCompanyInfoByUnitAddress(unit);
+           $.showUnitRiskRank(unit);
+           $.showRiskInfo(unit);
        });
        //联动回调
        function getProvinceListCallback(data){

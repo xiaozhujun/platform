@@ -9,93 +9,8 @@ $.extend({
      addMarker:function addMarker(markerArr){
          for(var i=0;i<markerArr.length;i++){
              var json = markerArr[i];
-             var p0 = json.point.split("|")[0];
-             var p1 = json.point.split("|")[1];
-             var point = new BMap.Point(p0,p1);
-             var iconImg = $.createIcon(json.icon);
-             var marker = new BMap.Marker(point,{icon:iconImg});
-             var iw = $.createInfoWindow(i,markerArr);
-             var label = new BMap.Label("",{"offset":new BMap.Size(json.icon.lb-json.icon.x+10,-20)});
-             marker.setLabel(label);
-             map.addOverlay(marker);
-             label.setStyle({
-                 borderColor:"#808080",
-                 color:"#333",
-                 cursor:"pointer"
-             });
-             (function(){
-                 var index = i;
-                 var _iw = $.createInfoWindow(i,markerArr);
-                 var _marker = marker;
-                 if(index==0){
-                     _marker.openInfoWindow(_iw);
-                 }
-                 _marker.addEventListener("click",function(){
-                     this.openInfoWindow(_iw);
-                     var name=markerArr[index];
-                     $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":name.title},mapCallback,"json");
-                 });
-                 _marker.addEventListener("mouseover",function(){
-                         this.openInfoWindow(_iw);
-                         var name=markerArr[index];
-                         $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":name.title},mouseoverCallback,"json");
-                  });
-                 _marker.addEventListener("mouseout",function(){
-                     var name=markerArr[index];
-                     $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":name.title},mouseoutCallback,"json");
-                 });
-                 function mouseoverCallback(data){
-                         if(data.code==200){
-                            var riskcontentId="#riskcontent"+data.data[0].id;
-                            $(riskcontentId).css("background-color","#999999");
-                            $(riskcontentId).css("color","#ffffff");
-                         }
-                 };
-                 function mouseoutCallback(data){
-                     if(data.code==200){
-                         var riskcontentId="#riskcontent"+data.data[0].id;
-                         $(riskcontentId).css("background-color","#EEEEEE");
-                         $(riskcontentId).css("color","#000000");
-                     }
-                 };
-                 function  mapCallback(data){
-                     if(data.code==200){
-                         //$("#rightshow").css("display","block");
-                         $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
-                         $("#righttitle").html("");
-                         $("#rightcontent").html("");
-                         $("#righttitle").append(data.str);
-                         for(var i=0;i<data.data.length;i++){
-                             var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
-                             $("#rightcontent").append(dataString);
-                             var infoFontNum="infofont"+data.data[i].id;
-                             $("#"+infoFontNum).click(function(){
-                                 var hideField="hideField"+(this.id).substring(8,(this.id).length);
-                                 var address_equipmentvariety=$("#"+hideField).text();
-                                 var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
-                                 $(itemInfo).html("");
-                                 $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                                 $(itemInfo).toggle();
-                             });
-                         }
-                     }
-                 };
-                 _iw.addEventListener("open",function(){
-                     _marker.getLabel().hide();
-                 })
-                 _iw.addEventListener("close",function(){
-                     _marker.getLabel().show();
-                 })
-                 label.addEventListener("click",function(){
-                     _marker.openInfoWindow(_iw);
-
-                 })
-                 if(!!json.isOpen){
-                     label.hide();
-                     _marker.openInfoWindow(_iw);
-                 }
-             })()
-         }
+             $.addOneMarker(json.title,json.content,json.point,json.isOpen,json.icon,i);
+            }
      },
     //创建InfoWindow
     createInfoWindow:function createInfoWindow(i,markerArr){
@@ -103,6 +18,10 @@ $.extend({
     var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>"+json.content+"</div>");
     return iw;
 },
+    createOneInfoWindow:function createOneInfoWindow(title,content){
+        var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + title + "'>" + title + "</b><div class='iw_poi_content'>"+content+"</div>");
+        return iw;
+    },
     //创建一个Icon
     createIcon:function createIcon(json){
     var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
@@ -200,22 +119,6 @@ $.extend({
             }
         }
     }
-    /*function showRiskRank(data){
-        if(data.code==200){
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
-            $("#rankTitle").append(rankTitle);
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                for(i=0;i<data.data.length;i++){
-                    var rankContent="<div class='riskcontent'><span class='rrank'>"+(i+1)+"</span><span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span><span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
-                    $("#riskrankContent").append(rankContent);
-                }
-            }
-        }
-    } */
         function showRiskRank(data){
             if(data.code==200){
                 $("#rankTitle").html("");
@@ -225,57 +128,226 @@ $.extend({
                 if(data.data[0]==undefined){
                     $("#riskrankContent").append("对不起,数据不存在!");
                 }else{
-                    var temp = data.data[0].riskValue;
+                    $("#rankTitle").html("");
+                    $("riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+
+
                     var j=1;
-                    var title1 ="<div class='_riskcontenthead'><span class='firmtitle'><span class='firmtitleFont'>企业</span></span><span class='riskvaluetitle'><span class='riskvaluetitleFont'>风险值</span></span></div>";
-                    var rankContent="";
-                    var rankContent2="";
-
                     for(var i=0;i<data.data.length;i++){
-                        var divName="div"+i;
-                        var content ="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+
-                            "<span class='unitaddress'>"+data.data[i].unitAddress+"</span>" +
-                            "<span class='riskvalue2'><span class='riskvalue2Font'>"+data.data[i].riskValue+"</span></span>" +
-                            "</div>";
-
-                        //读第一条数据
-                        if(i==0){
-
-                            rankContent="<div class='backcol' id="+divName+">"+"<div  class='riskcontenthead'>" +
-                                "<span class='riskranktitle'>风险排名</span>" +
-                                "<span class='riskmarktitle'></span>" +
-                                "<span class='riskrankvalue'>"+(i+1)+"</span>" +
-                                "</div>"+title1+content;
+                        if(i>0){
+                            preValue=data.data[i-1].riskValue;
+                            if(data.data[i].riskValue==preValue)
+                                j=j;
+                            else
+                            {
+                                j++;
+                            }
 
                         }
-                        //读下一块数据
-                        else if(i>0&&data.data[i].riskValue!=temp){
-                            j+=1;
-                            temp=data.data[i].riskValue;
-
-
-                            rankContent="</div>"+"<div class ='backcol' id="+divName+"><div class='riskcontenthead'>" +
-                                "<span class='riskranktitle'>风险排名</span>" +
-                                "<span class='riskmarktitle'></span>" +
-                                "<span class='riskrankvalue'>"+j+"</span>" +
-                                "</div>"
-                                +title1+content;
-                        }
-                        // 读本块第二条数据
-                        else{
-
-                            rankContent=content;
-                        }
-                        while(i==data.data.length-1){
-                            rankContent="</div>";
-                            break;
-                        }
-
-                        rankContent2+=rankContent;
+                        var rankContent="<div class='riskcontent'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        $("#riskrankContent").append(rankContent);
                     }
-                    $("#riskrankContent").append(rankContent2);
+                    for(i=0;i<data.data.length;i++){
+                        $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                    }
                 }
             }
         }
-}
+},
+        mouseEvent:function mouseEvent(title,content,point,isOpen,icon,i){
+            $.addOneMarker(title,content,point,isOpen,icon,i)
+        },
+        rightTabMouseEvent:function rightTabMouseEvent(id){
+            var _id="#"+id;
+            $(_id).mouseover(function(){
+                var cid=this.id.substring(11,this.id.length);
+                $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
+                var dataArray=new Array();
+                function getCraneInspectReportInfoByIdCallback(data){
+                      if(data.code==200){
+                          for(i=0;i<1;i++){
+                              var title=data.data[0].unitAddress;
+                              var content=data.data[0].equipmentVariety+",风险值:"+data.data[0].riskValue;
+                              var point=data.data[0].lng+"|"+data.data[0].lat;
+                              isOpen=0;
+                              var icon={};
+                              icon.w=23;
+                              icon.h=25;
+                              icon.t=21;
+                              icon.x=9;
+                              icon.lb=12;
+                              if(data.data[0].riskValue==1){
+                                  icon.l=23;
+                              }
+                              if(data.data[0].riskValue==2){
+                                  icon.l=0;
+                              }
+                              if(data.data[0].riskValue==3){
+                                  icon.l=69;
+                              }
+                              if(data.data[0].riskValue==4){
+                                  icon.l=115;
+                              }
+                              if(data.data[0].riskValue==5){
+                                  icon.l=46;
+                              }
+                              if(data.data[0].riskValue==6){
+                                  icon.l=46;
+                              }
+                         ;     $.mouseEvent(title,content,point,isOpen,icon,i);
+                          }
+                      }
+                }
+            });
+        },
+       addOneMarker:function addOneMarker(title,content,point,isOpen,icon,i){
+               var p0 = point.split("|")[0];
+               var p1 = point.split("|")[1];
+               var point = new BMap.Point(p0,p1);
+               var iconImg = $.createIcon(icon);
+               var marker = new BMap.Marker(point,{icon:iconImg});
+               var iw = $.createOneInfoWindow(title,content);
+               var label = new BMap.Label("",{"offset":new BMap.Size(icon.lb-icon.x+10,-20)});
+               marker.setLabel(label);
+               map.addOverlay(marker);
+               label.setStyle({
+                   borderColor:"#808080",
+                   color:"#333",
+                   cursor:"pointer"
+               });
+               (function(){
+                   var index = i;
+                   var _iw = $.createOneInfoWindow(title,content);
+                   var _marker = marker;
+                   if(index==0){
+                       _marker.openInfoWindow(_iw);
+                   }
+                   _marker.addEventListener("click",function(){
+                       this.openInfoWindow(_iw);
+                       $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title},mapCallback,"json");
+                   });
+                   _marker.addEventListener("mouseover",function(){
+                       this.openInfoWindow(_iw);
+                       $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoverCallback,"json");
+                       $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title},mapCallback,"json");
+                   });
+                   _marker.addEventListener("mouseout",function(){
+                       $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoutCallback,"json");
+                   });
+                   function mouseoverCallback(data){
+                       if(data.code==200){
+                           var riskcontentId="#riskcontent"+data.data[0].id;
+                           $(riskcontentId).removeClass("riskcontent").addClass("mouseEvent");
+
+                       }
+                   };
+                   function mouseoutCallback(data){
+                       if(data.code==200){
+                           var riskcontentId="#riskcontent"+data.data[0].id;
+                           $(riskcontentId).removeClass("mouseEvent").addClass("riskcontent");
+
+                       }
+                   };
+                   function  mapCallback(data){
+                       if(data.code==200){
+                           //$("#rightshow").css("display","block");
+                           $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
+                           $("#righttitle").html("");
+                           $("#rightcontent").html("");
+                           $("#righttitle").append(data.str);
+                           for(var i=0;i<data.data.length;i++){
+                               var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                               $("#rightcontent").append(dataString);
+                               var infoFontNum="infofont"+data.data[i].id;
+                               $("#"+infoFontNum).click(function(){
+                                   var hideField="hideField"+(this.id).substring(8,(this.id).length);
+                                   var address_equipmentvariety=$("#"+hideField).text();
+                                   var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
+                                   $(itemInfo).html("");
+                                   $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                                   $(itemInfo).toggle();
+                               });
+                           }
+                       }
+                   };
+                   _iw.addEventListener("open",function(){
+                       _marker.getLabel().hide();
+                   })
+                   _iw.addEventListener("close",function(){
+                       _marker.getLabel().show();
+                   })
+                   label.addEventListener("click",function(){
+                       _marker.openInfoWindow(_iw);
+
+                   })
+                   if(!!isOpen){
+                       label.hide();
+                       _marker.openInfoWindow(_iw);
+                   }
+               })()
+       },
+       showUnitRiskRank:function showUnitRiskRank(unitAddress){
+           $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},showUnitRiskRankCallback,"json");
+           function showUnitRiskRankCallback(data){
+               if(data.code==200){
+                   $("#rankTitle").html("");
+                   $("#riskrankContent").html("");
+                   /*var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle); */
+                   if(data.data[0]==undefined){
+                       $("#riskrankContent").append("对不起,数据不存在!");
+                   }else{
+                       $("#rankTitle").html("");
+                       $("riskrankContent").html("");
+                       var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                       $("#rankTitle").append(rankTitle);
+                       var j=1;
+                       for(var i=0;i<data.data.length;i++){
+                           if(i>0){
+                               preValue=data.data[i-1].riskValue;
+                               if(data.data[i].riskValue==preValue)
+                                   j=j;
+                               else
+                               {
+                                   j++;
+                               }
+
+                           }
+                           var rankContent="<div class='riskcontent'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                           $("#riskrankContent").append(rankContent);
+                       }
+                       for(i=0;i<data.data.length;i++){
+                           $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                       }
+                   }
+               }
+           }
+       },
+       showRiskInfo:function showRiskInfo(unit){
+        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unit},mapCallback,"json");
+           function  mapCallback(data){
+               if(data.code==200){
+                   //$("#rightshow").css("display","block");
+                   $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
+                   $("#righttitle").html("");
+                   $("#rightcontent").html("");
+                   $("#righttitle").append(data.str);
+                   for(var i=0;i<data.data.length;i++){
+                       var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                       $("#rightcontent").append(dataString);
+                       var infoFontNum="infofont"+data.data[i].id;
+                       $("#"+infoFontNum).click(function(){
+                           var hideField="hideField"+(this.id).substring(8,(this.id).length);
+                           var address_equipmentvariety=$("#"+hideField).text();
+                           var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
+                           $(itemInfo).html("");
+                           $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+                           $(itemInfo).toggle();
+                       });
+                   }
+               }
+           }
+    }
 });

@@ -182,4 +182,7 @@ public class CraneInspectReportService {
     public CraneInspectReport getOneUnitAddressInfo(String unitAddress){
         return mapper.getOneUnitAddressInfo(unitAddress);
     }
+    public List<CraneInspectReport> getCraneInspectReportInfoById(long id){
+        return mapper.getCraneInspectReportInfoById(id);
+    }
 }

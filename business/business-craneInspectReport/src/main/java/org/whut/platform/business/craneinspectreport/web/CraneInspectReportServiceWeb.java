@@ -142,7 +142,7 @@ public class CraneInspectReportServiceWeb {
         list.clear();
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/getAreaInfo")
     @POST
     public String getAreaInfo(@FormParam("city") String city,@FormParam("pname") String pname){
@@ -173,7 +173,7 @@ public class CraneInspectReportServiceWeb {
         }
         }
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAreaInfoByUnitAddress")
     public String  getAreaInfoByUnitAddress(@FormParam("name") String name){
@@ -195,7 +195,7 @@ public class CraneInspectReportServiceWeb {
            return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,itemInfo);
     }
 
-    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getUnitaddressByArea")
     @POST
     public String getUnitaddressByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area)
@@ -204,7 +204,7 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
-    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/showRiskRank")
     @POST
     public String showRiskRank(@FormParam("city") String city,@FormParam("pname") String area)
@@ -213,7 +213,7 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getOneUnitAddressInfo")
     public String getOneUnitAddressInfo(@FormParam("unitAddress") String unitAddress){
@@ -224,7 +224,7 @@ public class CraneInspectReportServiceWeb {
             list.add(craneInspectReport);
             return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/imageupload")
     public String imageUpload(@Context HttpServletRequest request){
@@ -239,7 +239,7 @@ public class CraneInspectReportServiceWeb {
         return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
 
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getLatLngByProvince")
     public String getLatLngByProvince(@FormParam("province") String province){
@@ -252,7 +252,7 @@ public class CraneInspectReportServiceWeb {
         }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getLatLngByCity")
     public String getLatLngByCity(@FormParam("province") String province,@FormParam("city") String city){
@@ -266,7 +266,7 @@ public class CraneInspectReportServiceWeb {
         }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getLatLngByArea")
     public String getLatLngByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area){
@@ -279,5 +279,12 @@ public class CraneInspectReportServiceWeb {
             e.printStackTrace();
         }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCraneInspectReportInfoById")
+    public String getCraneInspectReportInfoById(@FormParam("id") long id){
+         List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoById(id);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

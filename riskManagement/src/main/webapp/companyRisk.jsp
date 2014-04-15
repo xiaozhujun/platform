@@ -11,6 +11,7 @@ transitional.dtd">
     <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
     <script type="text/javascript" src="map/js/getParam.js"></script>
     <script src="js/config.js" type="text/javascript"></script>
     <link rel="stylesheet" href="map/css/showCompany.css"/>
@@ -57,8 +58,8 @@ transitional.dtd">
             <div id="leftcontainer">
             <div id="leftTab">
                 <span class='searchTabClick' id="searchTab">查询</span>
-                <span class='lineTab'>画线</span>
-                <span class='lineTab'>画圈</span>
+                <span class='lineTab' id="drawLine">画线</span>
+                <span class='lineTab' id="drawCircle">画圈</span>
             </div>
             <div id="search" class="searchShow">
                   <span id="titleSearch">
@@ -160,7 +161,34 @@ transitional.dtd">
                 $("#search").removeClass("searchHide").addClass("searchShow");
             }
         });
+        $("#drawCircle").click(function(){
+            var flag=false;
+            if($(this).hasClass("lineTabClick")){
+               $(this).removeClass("lineTabClick").addClass("lineTab");
+               flag=false;
+               $.drawCircle(flag);
+            }else if($(this).hasClass("lineTab")){
+                $(this).removeClass("lineTab").addClass("lineTabClick");
+                flag=true;
+                $.drawCircle(flag);
+            }
+
+        });
+        $("#drawLine").click(function(){
+            var flag=false;
+            if($(this).hasClass("lineTabClick")){
+                $(this).removeClass("lineTabClick").addClass("lineTab");
+                flag=false;
+                $.drawLine(flag);
+            }else if($(this).hasClass("lineTab")){
+                $(this).removeClass("lineTab").addClass("lineTabClick");
+                flag=true;
+                $.drawLine(flag);
+            }
+
+        });
     });
+
 </script>
 </body>
 </html>

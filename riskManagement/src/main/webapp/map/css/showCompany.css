@@ -1,18 +1,18 @@
 @CHARSET "UTF-8";
 body{
-	font-size:13px;
-	margin:0px
-	}
+    font-size:13px;
+    margin:0px
+}
 #main{
-	/* background-color:#999999; */
-	width:100%;
-	height:100%;
-	}
+    /* background-color:#999999; */
+    width:100%;
+    height:100%;
+}
 #leftcontainer{
     width: 100%;
     height: 100%;
 }
-#leftTab{
+#search{
     background-color: #F7F7F7;
     width: 100%;
     height: 40px;
@@ -104,7 +104,7 @@ body{
 #container{
     width:100%;
     height:100%;
-	}
+}
 #rightRank{
     width:400px;
     height:100%;
@@ -113,34 +113,34 @@ body{
     overflow: auto;
 }
 #rightshow{
-	width:400px;
-	height:100%;
-	float: left;
-	margin-left:2px;
+    width:400px;
+    height:100%;
+    float: left;
+    margin-left:2px;
     overflow: auto;
-	}
+}
 .righttitle{
-	width:400px;
-	height:50px;
-	float: left;
-	background-color: #F6F6F6;
-	text-align: center;
-	line-height: 50px;
-	color: #888888;
-	font-weight: bold;
-	font-size: 15px;
+    width:400px;
+    height:50px;
+    float: left;
+    background-color: #F6F6F6;
+    text-align: center;
+    line-height: 50px;
+    color: #888888;
+    font-weight: bold;
+    font-size: 15px;
     border-bottom: 1px solid #AAAAAA;
 }
 .rightcontent{
-	width:400px;
-	height:595px;
-	float: left;
-	margin-top:0px;
-	/* overflow: auto; */
+    width:400px;
+    height:595px;
+    float: left;
+    margin-top:0px;
+    /* overflow: auto; */
 }
 .rightitem{
-	width:100%;
-	height:auto;
+    width:100%;
+    height:auto;
 }
 .righttop{
     width:100%;
@@ -149,41 +149,41 @@ body{
     border-bottom: 1px solid #AAAAAA;
 }
 .rightitem:HOVER{
-	background-color: #F6F6F6;
-	color: #454545;
-	
+    background-color: #F6F6F6;
+    color: #454545;
+
 }
 .pic{
-	width: 110px;
-	height: 80px;
-	display: inline-block;
-	float: left;
+    width: 110px;
+    height: 80px;
+    display: inline-block;
+    float: left;
 }
 .info{
-	width: 260px;
-	height: 80px;
-	display: inline-block;
-	float: left;
-	line-height: 80px;
+    width: 260px;
+    height: 80px;
+    display: inline-block;
+    float: left;
+    line-height: 80px;
 }
 .riskvalue{
-	height: 80px;
-	display: inline-block;
-	float: left;
-	text-align: center;
-	line-height: 80px;
+    height: 80px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    line-height: 80px;
 }
 .pic img{
-	width: 85px;
-	height: 60px;
+    width: 85px;
+    height: 60px;
     margin-left: 9px;
     margin-top: 10px;
 }
 .itemfont{
-	margin-left: 4px;
-	font-size: 15px;
-	font-weight: bold;
-	color:#888888;
+    margin-left: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    color:#888888;
 }
 .titleFont{
     margin-left: 4px;
@@ -211,20 +211,20 @@ body{
     text-align: center;
 }
 .itemInfo{
-     display: none;
-     width: 400px;
-     height: auto;
-     /*position: absolute;*/
+    display: none;
+    width: 400px;
+    height: auto;
+    /*position: absolute;*/
     /* clear: both;*/
-     border: 1px solid #999999;
-     float: left;
+    border: 1px solid #999999;
+    float: left;
 }
 ._infoTitle{
-     width: 400px;
-     height: 30px;
-     border-bottom: 1px solid #DDDDDD;
-     /*background-color: #ffffff;*/
-     display: inline-block;
+    width: 400px;
+    height: 30px;
+    border-bottom: 1px solid #DDDDDD;
+    /*background-color: #ffffff;*/
+    display: inline-block;
 }
 ._info{
     border-bottom: 1px solid #999999;
@@ -270,10 +270,10 @@ body{
     color:#888888;
 }
 .msgItemFont{
-   margin-top: 4px;
-   margin-left: 5px;
-   display: inline-block;
-  }
+    margin-top: 4px;
+    margin-left: 5px;
+    display: inline-block;
+}
 .hideField{
     display: none;
 
@@ -299,17 +299,17 @@ body{
     color: #FFFFFF;
 }
 #riskRank{
-     float: left;
-     display: inline-block;
-     width: 192px;
-     text-align: center;
-     cursor: pointer;
-     border: 1px solid #999999;
-     margin-top: 1px;
-     height:35px;
-     line-height: 35px;
-     color:#666666;
- }
+    float: left;
+    display: inline-block;
+    width: 192px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #999999;
+    margin-top: 1px;
+    height:35px;
+    line-height: 35px;
+    color:#666666;
+}
 #riskRank:hover{
     background-color: #999999;
     color:white
@@ -394,107 +394,5 @@ body{
     display: inline-block;
     margin-top: 6px;
 }
-.riskcontenthead{
-    width: 385px;
-    height: 30px;
-    margin: 1px;
-    background-color: #999999;
-    color:white;
-}
-._riskcontenthead{
-    width: 385px;
-    height: 30px;
-    margin: 1px;
-    background-color: #cccccc;
-}
 
-.firmtitle{
-    color: #000000;
-    display: inline-block;
-    height: 28px;
-    line-height: 28px;
-    margin-top: 1px;
-    width: 250px;
-}
-.firmtitleFont{
-    margin-left: 75px;
-}
-.riskvaluetitle{
-    color: #000000;
-    display: inline-block;
-    height: 28px;
-    line-height: 28px;
-    margin-top: 1px;
-    width: 135px;
-}
-.riskvaluetitleFont{
-   margin-left: 16px;
-}
-.riskcontent{
-    width: 385px;
-    height: 40px;
-    margin: 2px;
-    cursor: pointer;
-}
-.unitaddress{
-    float: left;
-    margin-left: 6px;
-    margin-top: 6px;
-    text-align: center;
-    width: 240px;
-}
-.riskvalue2{
-    float: left;
-    height: 27px;
-    margin-top: 6px;
-    width: 120px;
-}
-.riskvalue2Font{
-    margin-left: 35px;
-}
-.riskrankvalue{
-    width: 100px;
-    text-align: left;
-    height: 28px;
-    float: left;
-    margin-right: 1px;
-    line-height: 28px;
-}
-.riskranktitle{
-    float:left;
-    height: 28px;
-    text-align: right;
-    width: 120px;
-    line-height: 28px;
-}
-.riskmarktitle{
-    float:left;
-    height: 28px;
-    text-align: center;
-    width: 164px;
-    line-height: 28px;
-}
-.backcol{
-    float: left;
-    width: 385px;
-    height: auto;
-    position: relative;
-    border:1px solid #999999;
-}
-.riskcontent:hover{
-   background-color: #999999;
-   color: #ffffff;
-   width: 385px;
-   height: 40px;
-   margin: 2px;
-   cursor: pointer;
-}
-.mouseEvent{
-    background-color: #999999;
-    color: #ffffff;
-    width: 385px;
-    height: 40px;
-    margin: 2px;
-    cursor: pointer;
-}
 

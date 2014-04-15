@@ -59,7 +59,20 @@
         FROM riskcolor WHERE ID=#{id}
     </select>
 
-    <select id="getRiskValues" parameterType="">
-
+    <select id="list" resultMap="riskColorResultMap">
+        SELECT
+        <include refid="risk_color_fields"/>
+        FROM riskcolor
+        <where>
+            <if test="riskValue!=null">RISKVALUE=#{riskValue}</if>
+            <if test="riskColor!=null">AND RISKCOLOR=#{riskColor}</if>
+        </where>
+        ORDER BY RISKVALUE
     </select>
+
+    <update id="setColor" parameterType="RiskColor">
+        UPDATE riskcolor
+        SET RISKCOLOR=#{riskColor}
+        WHERE RISKVALUE = #{riskValue}
+    </update>
 </mapper>

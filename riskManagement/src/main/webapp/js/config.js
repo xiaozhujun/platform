@@ -52,6 +52,10 @@
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
+        },
+        "riskColor":{
+           "list":"rs/riskColor/list",
+            "setColor":"rs/riskColor/setColor"
         }
     }
 })(jQuery);

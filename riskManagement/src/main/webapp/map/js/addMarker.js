@@ -132,8 +132,6 @@ $.extend({
                     $("riskrankContent").html("");
                     var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                     $("#rankTitle").append(rankTitle);
-
-
                     var j=1;
                     for(var i=0;i<data.data.length;i++){
                         if(i>0){
@@ -146,7 +144,7 @@ $.extend({
                             }
 
                         }
-                        var rankContent="<div class='riskcontent'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
                         $("#riskrankContent").append(rankContent);
                     }
                     for(i=0;i<data.data.length;i++){

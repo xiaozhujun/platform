@@ -56,7 +56,7 @@ transitional.dtd">
             </div>
             <div id="leftcontainer">
             <div id="leftTab">
-                <span class='searchTab'>查询</span>
+                <span class='searchTabClick' id="searchTab">查询</span>
                 <span class='lineTab'>画线</span>
                 <span class='lineTab'>画圈</span>
             </div>
@@ -148,7 +148,12 @@ transitional.dtd">
         });
         $.showCompanyRisk(city,area,12);
         $.addressLinkAge("province","city","area","unit",province);
-        $(".searchTab").click(function(){
+        $("#searchTab").click(function(){
+            if($(this).hasClass("searchTab")){
+                $(this).removeClass("searchTab").addClass("searchTabClick");
+            }else if($(this).hasClass("searchTabClick")){
+                $(this).removeClass("searchTabClick").addClass("searchTab");
+            }
             if($("#search").hasClass("searchShow")){
                 $("#search").removeClass("searchShow").addClass("searchHide");
             }else if($("#search").hasClass("searchHide")){

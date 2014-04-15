@@ -55,7 +55,12 @@ transitional.dtd">
             </div>
             </div>
             <div id="leftcontainer">
-            <div id="search">
+            <div id="leftTab">
+                <span class='searchTab'>查询</span>
+                <span class='lineTab'>画线</span>
+                <span class='lineTab'>画圈</span>
+            </div>
+            <div id="search" class="searchShow">
                   <span id="titleSearch">
                     <span class="searchItem" id="provinceSearch">
                      <select id="province">
@@ -73,6 +78,11 @@ transitional.dtd">
                         <span><select id="unit">
                             <option>---请选择单位----</option>
                          </select>
+                         </span>
+                       <span><select id="more">
+                           <option>---更多筛选----</option>
+                           <option>目前没有数据</option>
+                       </select>
                          </span>
                     </span>
             </div>
@@ -138,6 +148,13 @@ transitional.dtd">
         });
         $.showCompanyRisk(city,area,12);
         $.addressLinkAge("province","city","area","unit",province);
+        $(".searchTab").click(function(){
+            if($("#search").hasClass("searchShow")){
+                $("#search").removeClass("searchShow").addClass("searchHide");
+            }else if($("#search").hasClass("searchHide")){
+                $("#search").removeClass("searchHide").addClass("searchShow");
+            }
+        });
     });
 </script>
 </body>

@@ -12,11 +12,69 @@ body{
     width: 100%;
     height: 100%;
 }
-#search{
+#leftTab{
     background-color: #F7F7F7;
     width: 100%;
     height: 40px;
     border-bottom: 1px solid #999999;
+}
+.searchTab{
+    border: 1px solid #999999;
+    float: left;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+}
+.searchTab:hover{
+    background-color: #999999;
+    color:#ffffff;
+}
+.lineTab{
+    border: 1px solid #999999;
+    float: left;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+}
+.lineTab:hover{
+    background-color: #999999;
+    color:#ffffff;
+}
+.searchTabClick{
+    background-color: #999999;
+    color:#ffffff;
+    border: 1px solid #999999;
+    float: left;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+}
+.searchShow{
+    background-color: #F7F7F7;
+    width: 71%;
+    height: 40px;
+    border-bottom: 1px solid #999999;
+    z-index: 1;
+    position: absolute;
+}
+.searchHide{
+    background-color: #F7F7F7;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #999999;
+    display: none;
 }
 #titleSearch{
     display: inline-block;

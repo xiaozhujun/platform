@@ -21,6 +21,15 @@ transitional.dtd">
     <script type="text/javascript" src="map/js/addMarker.js"></script>
     <script type="text/javascript" src="map/js/addressLinkAge.js"></script>
     <script type="text/javascript" src="js/rightTab.js"></script>
+    <%--引入jslider--%>
+    <link rel="stylesheet" href="jslider/css/jslider.css" type="text/css">
+    <link rel="stylesheet" href="jslider/css/jslider.plastic.css" type="text/css">
+    <script type="text/javascript" src="jslider/js/jshashtable-2.1_src.js"></script>
+    <script type="text/javascript" src="jslider/js/jquery.numberformatter-1.2.3.js"></script>
+    <script type="text/javascript" src="jslider/js/tmpl.js"></script>
+    <script type="text/javascript" src="jslider/js/jquery.dependClass-0.1.js"></script>
+    <script type="text/javascript" src="jslider/js/draggable-0.1.js"></script>
+    <script type="text/javascript" src="jslider/js/jquery.slider.js"></script>
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
@@ -60,6 +69,14 @@ transitional.dtd">
                 <span class='searchTabClick' id="searchTab">查询</span>
                 <span class='lineTab' id="drawLine">画线</span>
                 <span class='lineTab' id="drawCircle">画圈</span>
+                <span class="slider">
+                    <div class="layout-slider">
+                        <input id="Slider4" type="slider" name="area" value="2;10" />
+                    </div>
+                    <script type="text/javascript" charset="utf-8">
+                        jQuery("#Slider4").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic", callback: function( value ){ console.dir( this ); } });
+                    </script>
+                </span>
             </div>
             <div id="search" class="searchShow">
                   <span id="titleSearch">
@@ -162,6 +179,11 @@ transitional.dtd">
             }
         });
         $("#drawCircle").click(function(){
+            if($(this).text()=="画圈"){
+                $(this).text("取消");
+            }else if($(this).text()=="取消"){
+                $(this).text("画圈");
+            }
             var flag=false;
             if($(this).hasClass("lineTabClick")){
                $(this).removeClass("lineTabClick").addClass("lineTab");
@@ -175,6 +197,11 @@ transitional.dtd">
 
         });
         $("#drawLine").click(function(){
+            if($(this).text()=="画线"){
+                $(this).text("取消");
+            }else if($(this).text()=="取消"){
+                $(this).text("画线");
+            }
             var flag=false;
             if($(this).hasClass("lineTabClick")){
                 $(this).removeClass("lineTabClick").addClass("lineTab");

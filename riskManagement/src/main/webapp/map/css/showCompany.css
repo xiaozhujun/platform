@@ -500,4 +500,13 @@ body{
     margin: 2px;
     cursor: pointer;
 }
-
+.layout-slider{
+    margin-bottom: 60px; width: 50%;
+}
+.slider{
+    margin-left: 20px;
+    display: inline-block;
+    margin-top: 8px;
+    width: 900px;
+    height: 30px;
+}

@@ -88,11 +88,25 @@ public class ReportServiceWeb {
         String whereCranevariety="";
         String whereUnitaddress="";
         String whereRiskvalue="";
+        String subreport="";
         province="湖北";
         city="武汉市";
+        if(province.equals(""))
+        {
+            return showChinaChart();
+        }
+        else
+        {
+            subreport="citychart.jasper";
+        }
+        if(!city.equals(""))
+        {
+            subreport="areachart.jasper";
+        }
         if(!(area.trim()).equals(""))
         {
             whereArea=" and area="+"\""+area+"\"";
+            subreport="blankchart.jasper";
         }
         if(!(unitaddress.trim()).equals(""))
         {
@@ -109,6 +123,7 @@ public class ReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
+        parameter.put("Subreport",subreport);
         parameter.put("Province",province);
         parameter.put("City",city);
         parameter.put("whereArea",whereArea);
@@ -136,12 +151,26 @@ public class ReportServiceWeb {
         String whereCranevariety="";
         String whereUnitaddress="";
         String whereRiskvalue="";
+        String subreport="";
         System.out.println("风险值"+riskvalue);
         province="湖北";
         city="武汉市";
+        if(province.equals(""))
+        {
+            return showChinaChart();
+        }
+        else
+        {
+            subreport="citychart.jasper";
+        }
+        if(!city.equals(""))
+        {
+            subreport="areachart.jasper";
+        }
         if(!(area.trim()).equals(""))
         {
             whereArea=" and area="+"\""+area+"\"";
+            subreport="blankchart.jasper";
         }
         if(!(unitaddress.trim()).equals(""))
         {
@@ -158,6 +187,7 @@ public class ReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
+        parameter.put("Subreport",subreport);
         parameter.put("Province",province);
         parameter.put("City",city);
         parameter.put("whereArea",whereArea);

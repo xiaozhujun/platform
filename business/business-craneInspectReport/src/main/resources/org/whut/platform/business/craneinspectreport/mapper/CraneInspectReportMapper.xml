@@ -204,5 +204,6 @@
         AND lat
         BETWEEN #{minLat}
         AND #{maxLat}
+        GROUP BY unitAddress
     </select>
 </mapper>

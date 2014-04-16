@@ -2,6 +2,8 @@ package org.whut.platform.business.riskcolor.mapper;
 import org.whut.platform.business.riskcolor.entity.RiskColor;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -10,4 +12,6 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  * To change this template use File | Settings | File Templates.
  */
 public interface RiskColorMapper extends AbstractMapper<RiskColor>{
+    public List<RiskColor> list();
+    public int setColor(RiskColor riskColor);
 }

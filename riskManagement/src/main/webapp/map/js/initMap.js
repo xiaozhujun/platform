@@ -1976,5 +1976,46 @@ $.extend({
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);
     $.initMap(area,size);
-}
+},
+    drawCircle:function drawCircle(flag){
+    var myDrawingManagerObject = new BMapLib.DrawingManager(map, {isOpen: flag,
+        drawingType: BMAP_DRAWING_CIRCLE, enableDrawingTool: true,
+        enableCalculate: false});
+    myDrawingManagerObject.setDrawingMode(BMAP_DRAWING_CIRCLE);
+    myDrawingManagerObject.addEventListener("overlaycomplete", function(e) {
+        var radius=e.overlay.getRadius();
+        var centerlng= e.overlay.getCenter().lng;
+        var centerlat= e.overlay.getCenter().lat;
+        var mPoint=new BMap.Point(centerlng,centerlat);
+        var local = new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}});
+        var bounds = getSquareBounds(e.overlay.getCenter(),e.overlay.getRadius());
+        function getSquareBounds(centerPoi,r){
+            var a = Math.sqrt(2)*r; //正方形边长
+            mPoi = getMecator(centerPoi);
+            var x0=mPoi.x, y0=mPoi.y;
+            var x1=x0+a/2,y1=y0+a/2;//东北点
+            var x2=x0-a/2,y2=y0-a/2;//西南点
+            var ne=getPoi(new BMap.Pixel(x1, y1)), sw=getPoi(new BMap.Pixel(x2, y2));
+            return new BMap.Bounds(sw, ne);
+        }
+        //根据球面坐标获得平面坐标。
+        function getMecator(poi){
+            return map.getMapType().getProjection().lngLatToPoint(poi);
+        }
+        //根据平面坐标获得球面坐标。
+        function getPoi(mecator){
+            return map.getMapType().getProjection().pointToLngLat(mecator);
+        }
+    });
+},
+    drawLine:function drawLine(flag){
+        var myDrawingManagerObject = new BMapLib.DrawingManager(map,{isOpen: flag,
+            drawingType: BMAP_DRAWING_POLYLINE, enableDrawingTool: true,
+            enableCalculate: false});
+        myDrawingManagerObject.setDrawingMode(BMAP_DRAWING_POLYLINE);
+        myDrawingManagerObject.addEventListener("overlaycomplete",function(e){
+
+        });
+
+    }
 });

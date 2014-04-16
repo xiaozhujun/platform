@@ -25,7 +25,8 @@
             "getCraneInspectReportInfoByAddressAndEquipment":"rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",
             "getAreaInfo":"rs/craneinspectreport/getAreaInfo",
             "showRiskRank":"rs/craneinspectreport/showRiskRank",
-            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo"
+            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
+            "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById"
         },
         "craneInspectReport":{
             "list":"rs/craneinspectreport/list",
@@ -52,6 +53,10 @@
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
+        },
+        "riskColor":{
+           "list":"rs/riskColor/list",
+            "setColor":"rs/riskColor/setColor"
         }
     }
 })(jQuery);

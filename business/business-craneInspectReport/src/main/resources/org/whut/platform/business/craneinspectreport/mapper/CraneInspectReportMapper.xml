@@ -185,4 +185,11 @@
            WHERE unitAddress=#{unitAddress}
            GROUP BY unitAddress
     </select>
+    <select id="getCraneInspectReportInfoById" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+          SELECT
+          *,riskvalue
+          FROM
+          craneinspectreport cr,riskvalue r
+          WHERE cr.reportnumber=r.reportnumber AND cr.id=#{id}
+    </select>
 </mapper>

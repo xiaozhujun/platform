@@ -16,7 +16,59 @@
     <script type="text/javascript">
         $(function(){
             $("#colorImg").colorpicker({fillcolor:true,event:'mouseover', target:$("#riskColor")});
+            $.get($.URL.riskColor.list,null,listCallback,"json");
+
+           var listData=[];
+            var riskValues=[];
+            function listCallback(data){
+              if(data.code==200){
+                  for(var i=0;i<data.data.length;i++){
+                    var a ={};
+                    var b= {};
+                    a.riskValue=data.data[i].riskValue;
+                    a.riskColor=data.data[i].riskColor;
+                    b.text=data.data[i].riskValue;
+                    b.id=data.data[i].riskValue;
+                    listData.push(a);
+                    riskValues.push(b);
+                  }
+                  $("#riskValue").ligerComboBox({
+                      data:riskValues,
+                      valueFieldID:'riskValueSelect',
+                      onSelected:function(newValue){
+                         /* for(var j=0;j<listData.length;j++){
+                             if(listData[j].riskValue==newValue){
+                                 document.getElementById("riskColor").value= listData[j].riskColor;
+                                 $("#riskColor").css("color",listData[j].riskColor);
+                             }
+                         } */
+                         for(var j=0;j<data.data.length;j++){
+                             if(data.data[j].riskValue==newValue){
+                                 $("#riskColor").val(data.data[j].riskColor);
+                                 $("#riskColor").css("color",listData[j].riskColor);
+                             }
+                         }
+                      }
+                  });
+              }
+
+            }
+            $("#submitBtn").click(function(){
+                var data ={};
+                data.riskValue = $("#riskValue").val();
+                data.riskColor = $("#riskColor").val();
+                $.post($.URL.riskColor.setColor,data,setColorCallback,"json");
+            });
+
         });
+            function setColorCallback(data){
+               if(data.code==200){
+                   $.ligerDialog.success("操作成功！");
+               }
+               else if(data.code==500){
+                   $.ligerDialog.error("操作失败！");
+               }
+            }
     </script>
     <style type="text/css">
         .l-table-edit {}

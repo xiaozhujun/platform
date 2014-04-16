@@ -70,8 +70,8 @@ $.extend({
 },
 //根据省市区来添加覆盖物以及查询相应的企业信息
     initAndAddMarker:function initAndAddMarker(city,area){
-    $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"pname":area},areaInfoCallback,"json");
-    $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"pname":area},showRiskRank,"json");
+    $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
+    $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"area":area},showRiskRank,"json");
     var chaoyangMarker=new Array();
     function areaInfoCallback(data){
         if(data.code==200){
@@ -129,7 +129,7 @@ $.extend({
                     $("#riskrankContent").append("对不起,数据不存在!");
                 }else{
                     $("#rankTitle").html("");
-                    $("riskrankContent").html("");
+                    $("#riskrankContent").html("");
                     var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                     $("#rankTitle").append(rankTitle);
                     var j=1;

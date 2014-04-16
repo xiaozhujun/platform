@@ -145,11 +145,11 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/getAreaInfo")
     @POST
-    public String getAreaInfo(@FormParam("city") String city,@FormParam("pname") String pname){
-        if(city==null||city.trim().equals("")||pname==null||pname.trim().equals("")){
+    public String getAreaInfo(@FormParam("city") String city,@FormParam("area") String area){
+        if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        Long addressId=addressService.findIdByCityArea(city,pname);
+        Long addressId=addressService.findIdByCityArea(city,area);
         if(addressId==null){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
@@ -207,7 +207,7 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/showRiskRank")
     @POST
-    public String showRiskRank(@FormParam("city") String city,@FormParam("pname") String area)
+    public String showRiskRank(@FormParam("city") String city,@FormParam("area") String area)
     {
         List<CraneInspectReport> list=craneInspectReportService.showRiskRank(city,area);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);

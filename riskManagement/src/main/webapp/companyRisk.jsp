@@ -30,6 +30,7 @@ transitional.dtd">
     <script type="text/javascript" src="jslider/js/jquery.dependClass-0.1.js"></script>
     <script type="text/javascript" src="jslider/js/draggable-0.1.js"></script>
     <script type="text/javascript" src="jslider/js/jquery.slider.js"></script>
+    <script type="text/javascript" src="map/js/mapLeftTab.js"></script>
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
@@ -166,54 +167,7 @@ transitional.dtd">
         });
         $.showCompanyRisk(city,area,12);
         $.addressLinkAge("province","city","area","unit",province);
-        $("#searchTab").click(function(){
-            if($(this).hasClass("searchTab")){
-                $(this).removeClass("searchTab").addClass("searchTabClick");
-            }else if($(this).hasClass("searchTabClick")){
-                $(this).removeClass("searchTabClick").addClass("searchTab");
-            }
-            if($("#search").hasClass("searchShow")){
-                $("#search").removeClass("searchShow").addClass("searchHide");
-            }else if($("#search").hasClass("searchHide")){
-                $("#search").removeClass("searchHide").addClass("searchShow");
-            }
-        });
-        $("#drawCircle").click(function(){
-            if($(this).text()=="画圈"){
-                $(this).text("取消");
-            }else if($(this).text()=="取消"){
-                $(this).text("画圈");
-            }
-            var flag=false;
-            if($(this).hasClass("lineTabClick")){
-               $(this).removeClass("lineTabClick").addClass("lineTab");
-               flag=false;
-               $.drawCircle(flag);
-            }else if($(this).hasClass("lineTab")){
-                $(this).removeClass("lineTab").addClass("lineTabClick");
-                flag=true;
-                $.drawCircle(flag);
-            }
-
-        });
-        $("#drawLine").click(function(){
-            if($(this).text()=="画线"){
-                $(this).text("取消");
-            }else if($(this).text()=="取消"){
-                $(this).text("画线");
-            }
-            var flag=false;
-            if($(this).hasClass("lineTabClick")){
-                $(this).removeClass("lineTabClick").addClass("lineTab");
-                flag=false;
-                $.drawLine(flag);
-            }else if($(this).hasClass("lineTab")){
-                $(this).removeClass("lineTab").addClass("lineTabClick");
-                flag=true;
-                $.drawLine(flag);
-            }
-
-        });
+        $.mapLeftTab("searchTab","search","drawCircle","drawLine");
     });
 
 </script>

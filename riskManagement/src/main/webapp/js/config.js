@@ -15,7 +15,8 @@
         "report":
         {
             "showCraneReport" :"rs/report/showCraneReport",
-            "exportCraneReport":"rs/report/exportCraneReport"
+            "exportCraneReport":"rs/report/exportCraneReport",
+            "showChinaChart":"rs/report/showChinaChart"
         }  ,
         "craneinspectreport":
         {

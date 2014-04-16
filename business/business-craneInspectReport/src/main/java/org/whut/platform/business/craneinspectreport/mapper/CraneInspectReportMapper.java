@@ -26,4 +26,6 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<CraneInspectReport>showRiskRank(@Param("city") String city,@Param("area") String area);
     public CraneInspectReport getOneUnitAddressInfo(String unitAddress);
     public List<CraneInspectReport> getCraneInspectReportInfoById(long id);
+    public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(@Param("maxLng") String maxLng,@Param("maxLat") String maxLat,@Param("minLng")String minLng,@Param("minLat") String minLat);
+
 }

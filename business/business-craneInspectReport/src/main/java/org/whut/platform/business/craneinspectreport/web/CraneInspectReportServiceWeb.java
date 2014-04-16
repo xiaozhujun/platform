@@ -287,4 +287,17 @@ public class CraneInspectReportServiceWeb {
          List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoById(id);
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCraneInspectReportInfoFromCircle")
+    public String getCraneInspectReportInfoFromCircle(@FormParam("radius") String radius,@FormParam("centerlng") String centerlng,@FormParam("centerlat") String centerlat){
+        Map map=baiduMapUtil.getAround(Double.parseDouble(centerlat),Double.parseDouble(centerlng),Double.parseDouble(radius));
+        String maxLng=map.get("maxLng").toString();
+        String maxLat=map.get("maxLat").toString();
+        String minLng=map.get("minLng").toString();
+        String minLat=map.get("minLat").toString();
+        List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoFromCircle(maxLng,maxLat,minLng,minLat);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+
+    }
 }

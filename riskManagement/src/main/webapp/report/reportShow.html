@@ -221,13 +221,13 @@
             load页面的显示报表全部数据
        */
        var data1={province:"",city:"",area:"",unitaddress:"",riskvalue:"",equipmentvariety:""};
-        $.post($.URL.report.showCraneReport,data1,addResourceCallback,"json");
+        $.post($.URL.report.showChinaChart,data1,addResourceCallback,"json");
        function addResourceCallback(data1){
            if(data1.code==200){
                $.ligerDialog.success('操作成功')
            }
        }
-        $("#reportresult").load("rs/report/showCraneReport",data1,addResourceCallback,"json");
+        $("#reportresult").load("rs/report/showChinaChart",data1,addResourceCallback,"json");
        /*
                提交页面的查询报表数据
         */

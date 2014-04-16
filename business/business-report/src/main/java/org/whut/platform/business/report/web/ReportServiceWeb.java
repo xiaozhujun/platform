@@ -169,4 +169,18 @@ public class ReportServiceWeb {
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+
+    @Path("/showChinaChart")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    public String showChinaChart(){
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/chart/chinachart.jasper");
+        Map parameter=new HashMap();
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/chart")+"/"));
+        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
+/*       System.out.print(data+"..........");*/
+        return JsonResultUtils
+                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
 }

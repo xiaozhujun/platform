@@ -72,10 +72,38 @@ public class BaiduMapUtil {
         }
         return map;
     }
+    //根据经纬度求出半径范围内最大最小经纬度
+    public Map<String,Double> getAround(double lat,double lon,double radius){
+        double PI=3.14159265;
+        double EARTH_RADIUS=6378137;
+        double RAD=Math.PI/180.0;
+        double latitude=lat;
+        double longitude=lon;
+        double degree =(24901*1609)/360.0;
+        double raidusMile=radius;
+        double dpmLat=1/degree;
+        double radiusLat=dpmLat*raidusMile;
+        double minLat=latitude-radiusLat;
+        double maxLat=latitude+radiusLat;
+        double mpdLng=degree*Math.cos(latitude*(PI/180));
+        double dpmLng=1/mpdLng;
+        double radiusLng=dpmLng*raidusMile;
+        double minLng=longitude-radiusLng;
+        double maxLng=longitude+radiusLng;
+        //System.out.println("["+minLat+","+minLng+","+maxLat+","+maxLng+"]");
+        Map<String,Double> map=new HashMap<String,Double>();
+        map.put("maxLng",maxLng);
+        map.put("maxLat",maxLat);
+        map.put("minLng",minLng);
+        map.put("minLat",minLat);
+        return map;
+    }
     public static void main(String[] args) throws IOException {
         BaiduMapUtil baiduMapUtil = new BaiduMapUtil();
-        Map map=baiduMapUtil.getCoordinate("湖北省 武汉市 新洲区");
-        System.out.print(map.get("lng")+""+map.get("lat"));
+       /* Map map=baiduMapUtil.getCoordinate("湖北省 武汉市 新洲区");
+        System.out.print(map.get("lng")+""+map.get("lat"));*/
+        Map map=baiduMapUtil.getAround(30.857224,114.587311,6621.525348039403);
+        System.out.print(map.get("maxLng")+","+map.get("maxLat")+","+map.get("minLng")+","+map.get("minLat"));
     }
 }
 

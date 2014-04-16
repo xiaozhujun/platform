@@ -1986,26 +1986,43 @@ $.extend({
         var radius=e.overlay.getRadius();
         var centerlng= e.overlay.getCenter().lng;
         var centerlat= e.overlay.getCenter().lat;
-        var mPoint=new BMap.Point(centerlng,centerlat);
-        var local = new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}});
-        var bounds = getSquareBounds(e.overlay.getCenter(),e.overlay.getRadius());
-        function getSquareBounds(centerPoi,r){
-            var a = Math.sqrt(2)*r; //正方形边长
-            mPoi = getMecator(centerPoi);
-            var x0=mPoi.x, y0=mPoi.y;
-            var x1=x0+a/2,y1=y0+a/2;//东北点
-            var x2=x0-a/2,y2=y0-a/2;//西南点
-            var ne=getPoi(new BMap.Pixel(x1, y1)), sw=getPoi(new BMap.Pixel(x2, y2));
-            return new BMap.Bounds(sw, ne);
+        var circledata={};
+        circledata.radius=radius;
+        circledata.centerlng=centerlng;
+        circledata.centerlat=centerlat;
+        $.post($.URL.craneinspectreport.getCraneInspectReportInfoFromCircle,circledata,getCraneInspectReportInfoFromCircleCallback,"json");
+        function getCraneInspectReportInfoFromCircleCallback(data){
+            if(data.code=200){
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                }else{
+                    $("#rankTitle").html("");
+                    $("#riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+                    for(i=0;i<data.data.length;i++){
+                        alert(data.data.length);
+                    /*var j=1;
+                    for(var i=0;i<data.data.length;i++){
+                        if(i>0){
+                            preValue=data.data[i-1].riskValue;
+                            if(data.data[i].riskValue==preValue)
+                                j=j;
+                            else
+                            {
+                                j++;
+                            }
+                        }*/
+                        var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+i+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        $("#riskrankContent").append(rankContent);
+                        $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                    }
+                }
+            }
         }
-        //根据球面坐标获得平面坐标。
-        function getMecator(poi){
-            return map.getMapType().getProjection().lngLatToPoint(poi);
-        }
-        //根据平面坐标获得球面坐标。
-        function getPoi(mecator){
-            return map.getMapType().getProjection().pointToLngLat(mecator);
-        }
+
     });
 },
     drawLine:function drawLine(flag){

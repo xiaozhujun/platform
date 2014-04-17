@@ -168,6 +168,7 @@ transitional.dtd">
         $.showCompanyRisk(city,area,12);
         $.addressLinkAge("province","city","area","unit",province);
         $.mapLeftTab("searchTab","search","drawCircle","drawLine");
+        $.dragAbleNavigate(area);
     });
 
 </script>

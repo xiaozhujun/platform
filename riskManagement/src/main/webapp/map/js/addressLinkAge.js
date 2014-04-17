@@ -40,6 +40,7 @@ $.extend({
            var area=$(this).find('option:selected').text();
            $.showCompanyRisk(city,area,12);
            $.post($.URL.craneinspectreport.getUnitaddressByArea,{"province":pro,"city":city,"area":area},getUnitaddressByAreaCallback,"json");
+           $.dragAbleNavigate(area);
        });
        $(uId).change(function(){
            var pro=$(pId).find('option:selected').text();

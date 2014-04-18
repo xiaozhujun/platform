@@ -187,4 +187,10 @@ public class CraneInspectReportService {
     public CraneInspectReport getOneUnitAddressInfo(String unitAddress){
         return mapper.getOneUnitAddressInfo(unitAddress);
     }
+    public List<CraneInspectReport> getCraneInspectReportInfoById(long id){
+        return mapper.getCraneInspectReportInfoById(id);
+    }
+    public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(String maxLng,String maxLat,String minLng,String minLat){
+        return mapper.getCraneInspectReportInfoFromCircle(maxLng,maxLat,minLng,minLat);
+    }
 }

@@ -30,15 +30,10 @@
             "addRepeat":"rs/craneinspectreport/addRepeat",
             "delete":"rs/craneinspectreport/delete",
             "update":"rs/craneinspectreport/update"
+            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
+            "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
+            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"
         },
-/*        "craneInspectReport":{
-            "list":"rs/craneinspectreport/list",
-            "upload" :"rs/craneinspectreport/upload",
-            "addRepeat":"rs/craneinspectreport/addRepeat",
-            "delete":"rs/craneinspectreport/delete",
-            "update":"rs/craneinspectreport/update"
-
-        },*/
         "authority":{
             "add":"rs/authority/add"
         },
@@ -57,6 +52,10 @@
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
+        },
+        "riskColor":{
+           "list":"rs/riskColor/list",
+            "setColor":"rs/riskColor/setColor"
         }
     }
 })(jQuery);

@@ -40,6 +40,7 @@ $.extend({
            var area=$(this).find('option:selected').text();
            $.showCompanyRisk(city,area,12);
            $.post($.URL.craneinspectreport.getUnitaddressByArea,{"province":pro,"city":city,"area":area},getUnitaddressByAreaCallback,"json");
+           $.dragAbleNavigate(area);
        });
        $(uId).change(function(){
            var pro=$(pId).find('option:selected').text();
@@ -47,6 +48,8 @@ $.extend({
            var area=$(aId).find('option:selected').text();
            var unit=$(this).find('option:selected').text();
            $.getCompanyInfoByUnitAddress(unit);
+           $.showUnitRiskRank(unit);
+           $.showRiskInfo(unit);
        });
        //联动回调
        function getProvinceListCallback(data){

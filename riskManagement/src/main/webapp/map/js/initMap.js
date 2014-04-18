@@ -1976,5 +1976,71 @@ $.extend({
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);
     $.initMap(area,size);
-}
+},
+    drawCircle:function drawCircle(flag){
+    var myDrawingManagerObject = new BMapLib.DrawingManager(map, {isOpen: flag,
+        drawingType: BMAP_DRAWING_CIRCLE, enableDrawingTool: true,
+        enableCalculate: false});
+    myDrawingManagerObject.setDrawingMode(BMAP_DRAWING_CIRCLE);
+    myDrawingManagerObject.addEventListener("overlaycomplete", function(e) {
+        var radius=e.overlay.getRadius();
+        var centerlng= e.overlay.getCenter().lng;
+        var centerlat= e.overlay.getCenter().lat;
+        var circledata={};
+        circledata.radius=radius;
+        circledata.centerlng=centerlng;
+        circledata.centerlat=centerlat;
+        $.post($.URL.craneinspectreport.getCraneInspectReportInfoFromCircle,circledata,getCraneInspectReportInfoFromCircleCallback,"json");
+        function getCraneInspectReportInfoFromCircleCallback(data){
+            if(data.code=200){
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                }else{
+                    $("#rankTitle").html("");
+                    $("#riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+                    for(i=0;i<data.data.length;i++){
+                    /*var j=1;
+                    for(var i=0;i<data.data.length;i++){
+                        if(i>0){
+                            preValue=data.data[i-1].riskValue;
+                            if(data.data[i].riskValue==preValue)
+                                j=j;
+                            else
+                            {
+                                j++;
+                            }
+                        }*/
+                        var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        $("#riskrankContent").append(rankContent);
+                        $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                    }
+                }
+            }
+        }
+
+    });
+},
+    drawLine:function drawLine(flag){
+        var myDrawingManagerObject = new BMapLib.DrawingManager(map,{isOpen: flag,
+            drawingType: BMAP_DRAWING_POLYLINE, enableDrawingTool: true,
+            enableCalculate: false});
+        myDrawingManagerObject.setDrawingMode(BMAP_DRAWING_POLYLINE);
+        myDrawingManagerObject.addEventListener("overlaycomplete",function(e){
+
+        });
+    },
+    dragAbleNavigate:function dragAbleNavigate(address){
+        var transit = new BMap.DrivingRoute(map, {
+            renderOptions: {
+                map: map,
+                panel: "rank",
+                enableDragging : true //起终点可进行拖拽
+            }
+        });
+        transit.search("汉口站",address);
+    }
 });

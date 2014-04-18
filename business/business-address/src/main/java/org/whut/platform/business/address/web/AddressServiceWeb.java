@@ -1,18 +1,14 @@
 package org.whut.platform.business.address.web;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
@@ -25,7 +21,6 @@ import java.util.List;
 public class AddressServiceWeb {
 
     private static PlatformLogger logger = PlatformLogger.getLogger(AddressServiceWeb.class);
-
     @Autowired
     private AddressService addressService;
 
@@ -129,4 +124,6 @@ public class AddressServiceWeb {
          List<Address> proviceList=addressService.getProvinceList();
          return JsonResultUtils.getObjectResultByStringAsDefault(proviceList,JsonResultUtils.Code.SUCCESS);
     }
+
+
 }

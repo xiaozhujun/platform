@@ -9,6 +9,7 @@ import org.whut.platform.fundamental.fileupload.FileInfo;
 import org.whut.platform.fundamental.fileupload.FileService;
 import org.whut.platform.fundamental.fileupload.MultipartRequestParser;
 import org.whut.platform.fundamental.fileupload.MultipartRequestResult;
+import org.whut.platform.fundamental.fileupload.MultipartRequestResult;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -143,14 +145,14 @@ public class CraneInspectReportServiceWeb {
         list.clear();
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/getAreaInfo")
     @POST
-    public String getAreaInfo(@FormParam("city") String city,@FormParam("pname") String pname){
-        if(city==null||city.trim().equals("")||pname==null||pname.trim().equals("")){
+    public String getAreaInfo(@FormParam("city") String city,@FormParam("area") String area){
+        if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        Long addressId=addressService.findIdByCityArea(city,pname);
+        Long addressId=addressService.findIdByCityArea(city,area);
         if(addressId==null){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
@@ -174,7 +176,7 @@ public class CraneInspectReportServiceWeb {
         }
         }
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAreaInfoByUnitAddress")
     public String  getAreaInfoByUnitAddress(@FormParam("name") String name){
@@ -196,7 +198,7 @@ public class CraneInspectReportServiceWeb {
            return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,itemInfo);
     }
 
-    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getUnitaddressByArea")
     @POST
     public String getUnitaddressByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area)
@@ -205,16 +207,16 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
-    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/showRiskRank")
     @POST
-    public String showRiskRank(@FormParam("city") String city,@FormParam("pname") String area)
+    public String showRiskRank(@FormParam("city") String city,@FormParam("area") String area)
     {
         List<CraneInspectReport> list=craneInspectReportService.showRiskRank(city,area);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getOneUnitAddressInfo")
     public String getOneUnitAddressInfo(@FormParam("unitAddress") String unitAddress){
@@ -225,7 +227,7 @@ public class CraneInspectReportServiceWeb {
             list.add(craneInspectReport);
             return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/imageupload")
     public String imageUpload(@Context HttpServletRequest request){
@@ -246,7 +248,70 @@ public class CraneInspectReportServiceWeb {
             e.printStackTrace();
         }
        // return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        return JsonResultUtils.getObjectResultByStringAsDefault(singlePicURL,JsonResultUtils.Code.SUCCESS);
+        //return JsonResultUtils.getObjectResultByStringAsDefault(singlePicURL,JsonResultUtils.Code.SUCCESS);
+        return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getLatLngByProvince")
+    public String getLatLngByProvince(@FormParam("province") String province){
+        String latLng=null;
+        try{
+           Map map=baiduMapUtil.getCoordinate(province);
+           latLng=map.get("lng")+","+map.get("lat");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getLatLngByCity")
+    public String getLatLngByCity(@FormParam("province") String province,@FormParam("city") String city){
+        String latLng=null;
+        try{
+            String address=province+""+city;
+            Map map=baiduMapUtil.getCoordinate(address);
+            latLng=map.get("lng")+","+map.get("lat");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getLatLngByArea")
+    public String getLatLngByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area){
+        String latLng=null;
+        try{
+            String address=province+""+city+""+area;
+            Map map=baiduMapUtil.getCoordinate(address);
+            latLng=map.get("lng")+","+map.get("lat");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(null,200,latLng);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCraneInspectReportInfoById")
+    public String getCraneInspectReportInfoById(@FormParam("id") long id){
+         List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoById(id);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCraneInspectReportInfoFromCircle")
+    public String getCraneInspectReportInfoFromCircle(@FormParam("radius") String radius,@FormParam("centerlng") String centerlng,@FormParam("centerlat") String centerlat){
+        Map map=baiduMapUtil.getAround(Double.parseDouble(centerlat), Double.parseDouble(centerlng), Double.parseDouble(radius));
+        String maxLng=map.get("maxLng").toString();
+        String maxLat=map.get("maxLat").toString();
+        String minLng=map.get("minLng").toString();
+        String minLat=map.get("minLat").toString();
+        List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoFromCircle(maxLng,maxLat,minLng,minLat);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/update")

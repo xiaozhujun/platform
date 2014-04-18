@@ -11,6 +11,7 @@ transitional.dtd">
     <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
     <script type="text/javascript" src="map/js/getParam.js"></script>
     <script src="js/config.js" type="text/javascript"></script>
     <link rel="stylesheet" href="map/css/showCompany.css"/>
@@ -20,6 +21,16 @@ transitional.dtd">
     <script type="text/javascript" src="map/js/addMarker.js"></script>
     <script type="text/javascript" src="map/js/addressLinkAge.js"></script>
     <script type="text/javascript" src="js/rightTab.js"></script>
+    <%--引入jslider--%>
+    <link rel="stylesheet" href="jslider/css/jslider.css" type="text/css">
+    <link rel="stylesheet" href="jslider/css/jslider.plastic.css" type="text/css">
+    <script type="text/javascript" src="jslider/js/jshashtable-2.1_src.js"></script>
+    <script type="text/javascript" src="jslider/js/jquery.numberformatter-1.2.3.js"></script>
+    <script type="text/javascript" src="jslider/js/tmpl.js"></script>
+    <script type="text/javascript" src="jslider/js/jquery.dependClass-0.1.js"></script>
+    <script type="text/javascript" src="jslider/js/draggable-0.1.js"></script>
+    <script type="text/javascript" src="jslider/js/jquery.slider.js"></script>
+    <script type="text/javascript" src="map/js/mapLeftTab.js"></script>
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
@@ -55,7 +66,20 @@ transitional.dtd">
             </div>
             </div>
             <div id="leftcontainer">
-            <div id="search">
+            <div id="leftTab">
+                <span class='searchTabClick' id="searchTab">查询</span>
+                <span class='lineTab' id="drawLine">画线</span>
+                <span class='lineTab' id="drawCircle">画圈</span>
+                <span class="slider">
+                    <div class="layout-slider">
+                        <input id="Slider4" type="slider" name="area" value="2;10" />
+                    </div>
+                    <script type="text/javascript" charset="utf-8">
+                        jQuery("#Slider4").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic", callback: function( value ){ console.dir( this ); } });
+                    </script>
+                </span>
+            </div>
+            <div id="search" class="searchShow">
                   <span id="titleSearch">
                     <span class="searchItem" id="provinceSearch">
                      <select id="province">
@@ -73,6 +97,11 @@ transitional.dtd">
                         <span><select id="unit">
                             <option>---请选择单位----</option>
                          </select>
+                         </span>
+                       <span><select id="more">
+                           <option>---更多筛选----</option>
+                           <option>目前没有数据</option>
+                       </select>
                          </span>
                     </span>
             </div>
@@ -138,7 +167,10 @@ transitional.dtd">
         });
         $.showCompanyRisk(city,area,12);
         $.addressLinkAge("province","city","area","unit",province);
+        $.mapLeftTab("searchTab","search","drawCircle","drawLine");
+        $.dragAbleNavigate(area);
     });
+
 </script>
 </body>
 </html>

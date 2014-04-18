@@ -16,6 +16,7 @@
 <script src="craneInspectReport/imageupload/js/jquery.form.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+ 
     $(function(){
         $.get($.URL.craneinspectreport.list ,null,listCallback,"json");
     });
@@ -225,13 +226,15 @@
             return false;
         }
     }
-
     //function to format bites bit.ly/19yoIPO
     function bytesToSize(bytes) {
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         if (bytes == 0) return '0 Bytes';
         var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+    function f_queryRiskValue(){
+
     }
 </script>
 
@@ -243,7 +246,6 @@
     <input id="btnOK" type="button" value="查询" style="width: 80" onclick="f_search()" />
     <input id="riskValue" type="text" style="width: 120;float: right"/>
     <input id="btnQueryRiskValue" type="button" value="获得平均风险值" style="width: 80;float: right" onclick="f_queryRiskValue"/>
-
 </div>
 <div id="maingrid" style="margin: 0;padding: 0"></div>
 
@@ -260,18 +262,6 @@
     </div>
 </div>
 
-
-<!--<div id="AppendBill_Div"  style="display:none;">
-    <table style="height:100%;width:100%">
-        <tr style="height:40px">
-            <td style="width:20%">
-                选择图片
-            </td>
-            <td><input type="file"  style="width:200px" id="fileupload" name="fileupload"/>
-            </td>
-        </tr>
-    </table>
-</div>-->
 
 <br/>
 

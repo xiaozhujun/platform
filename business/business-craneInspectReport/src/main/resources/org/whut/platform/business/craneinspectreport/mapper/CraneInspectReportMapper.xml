@@ -197,4 +197,25 @@
            WHERE unitAddress=#{unitAddress}
            GROUP BY unitAddress
     </select>
+    <select id="getCraneInspectReportInfoById" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+          SELECT
+          *,riskvalue
+          FROM
+          craneinspectreport cr,riskvalue r
+          WHERE cr.reportnumber=r.reportnumber AND cr.id=#{id}
+    </select>
+    <select id="getCraneInspectReportInfoFromCircle" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.*,r.riskvalue
+        FROM craneinspectreport cr,riskvalue r
+        WHERE
+        cr.reportnumber=r.reportnumber
+        AND
+        lng
+        BETWEEN #{minLng}
+        AND #{maxLng}
+        AND lat
+        BETWEEN #{minLat}
+        AND #{maxLat}
+        GROUP BY unitAddress
+    </select>
 </mapper>

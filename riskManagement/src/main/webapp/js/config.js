@@ -29,7 +29,7 @@
             "upload" :"rs/craneinspectreport/upload",
             "addRepeat":"rs/craneinspectreport/addRepeat",
             "delete":"rs/craneinspectreport/delete",
-            "update":"rs/craneinspectreport/update"
+            "update":"rs/craneinspectreport/update",
             "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
             "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
             "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"

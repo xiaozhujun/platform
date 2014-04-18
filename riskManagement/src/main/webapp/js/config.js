@@ -24,15 +24,21 @@
             "getCraneInspectReportInfoByAddressAndEquipment":"rs/craneinspectreport/getCraneInspectReportInfoByAddressAndEquipment",
             "getAreaInfo":"rs/craneinspectreport/getAreaInfo",
             "showRiskRank":"rs/craneinspectreport/showRiskRank",
-            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo"
-        },
-        "craneInspectReport":{
+            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
             "list":"rs/craneinspectreport/list",
             "upload" :"rs/craneinspectreport/upload",
             "addRepeat":"rs/craneinspectreport/addRepeat",
-            "delete":"rs/craneinspectreport/delete"
-
+            "delete":"rs/craneinspectreport/delete",
+            "update":"rs/craneinspectreport/update"
         },
+/*        "craneInspectReport":{
+            "list":"rs/craneinspectreport/list",
+            "upload" :"rs/craneinspectreport/upload",
+            "addRepeat":"rs/craneinspectreport/addRepeat",
+            "delete":"rs/craneinspectreport/delete",
+            "update":"rs/craneinspectreport/update"
+
+        },*/
         "authority":{
             "add":"rs/authority/add"
         },

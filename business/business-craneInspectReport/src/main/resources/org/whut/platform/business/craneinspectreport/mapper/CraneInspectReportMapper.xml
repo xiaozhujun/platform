@@ -78,7 +78,13 @@
         </set>
         WHERE  REPORTNUMBER=#{reportNumber};
     </update>
-
+    <update id="updateURL" parameterType="java.lang.String">
+        UPDATE craneinspectreport
+        <set>
+            <if test="singlePicURL!=null">SINGLEPICURL=#{singlePicURL}</if>
+        </set>
+        WHERE REPORTNUMBER=#{reportNumber};
+    </update>
     <select id="get" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
         <include refid="craneInspectReport_fields"/>
@@ -140,9 +146,15 @@
     </select>
     <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
-        *
+        <include refid="craneInspectReport_fields"/>
         FROM craneinspectreport
         where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
+    </select>
+    <select id="getCraneInspectReportByReportNumber" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM craneinspectreport
+        WHERE reportNumber=#{reportNumber}
     </select>
     <select id="getUnitaddressByArea" parameterType="map"   resultMap="craneInspectReportResultMap">
         select

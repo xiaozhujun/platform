@@ -159,7 +159,12 @@ public class CraneInspectReportService {
     public int delete(CraneInspectReport craneInspectReport){
         return mapper.delete(craneInspectReport);
     }
-
+    public CraneInspectReport getCraneInspectReportByReportNumber(String reportNumber){
+        return mapper.getCraneInspectReportByReportNumber(reportNumber);
+    }
+    public void updateURL(String singlePicURL) {
+        mapper.updateURL(singlePicURL);
+    }
     public List<CraneInspectReport> getInfoByAddressId(Long id){
         return mapper.getInfoByAddressId(id);
     }

@@ -8,6 +8,8 @@ import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.fileupload.FileInfo;
 import org.whut.platform.fundamental.fileupload.FileService;
 import org.whut.platform.fundamental.fileupload.MultipartRequestParser;
+import org.whut.platform.fundamental.fileupload.MultipartRequestResult;
+import org.whut.platform.fundamental.fileupload.MultipartRequestResult;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -37,6 +39,7 @@ public class CraneInspectReportServiceWeb {
     private CraneInspectReportService craneInspectReportService;
     @Autowired
     private AddressService addressService;
+    private String singlePicURL="";
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MultipartRequestParser multipartRequestParser=new MultipartRequestParser();
     @Produces(MediaType.MULTIPART_FORM_DATA)
@@ -240,12 +243,22 @@ public class CraneInspectReportServiceWeb {
     public String imageUpload(@Context HttpServletRequest request){
         int uploadMaxSize= Integer.parseInt(FundamentalConfigProvider.get("uploadMaxSize"));
         FileService fileService=new FileService("jpg");
-        String path=request.getSession().getServletContext().getRealPath("/imageupload");
+        /*singlePicURL=request.getSession().getServletContext().getInitParameter("UPLOAD_IMAGE_PATH");*/
+        String realPath=request.getSession().getServletContext().getRealPath("../imageupload");
         try{
-        multipartRequestParser.parse(request,path,uploadMaxSize,fileService);
+            MultipartRequestResult mrr=multipartRequestParser.parse(request,realPath,uploadMaxSize,fileService);
+            String path=mrr.getFileInfos().get(0).getPath();
+            String name=mrr.getFileInfos().get(0).getName();
+            singlePicURL="../imageupload"+path;
+           /* System.out.println(name+"jjjjjjjjj"+path);
+            System.out.println(singlePicURL);
+            singlePicURL=singlePicURL.replaceAll("\\\\","/");*/
+
         }catch (Exception e){
             e.printStackTrace();
         }
+       // return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        //return JsonResultUtils.getObjectResultByStringAsDefault(singlePicURL,JsonResultUtils.Code.SUCCESS);
         return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
 
     }
@@ -301,7 +314,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/getCraneInspectReportInfoFromCircle")
     public String getCraneInspectReportInfoFromCircle(@FormParam("radius") String radius,@FormParam("centerlng") String centerlng,@FormParam("centerlat") String centerlat){
-        Map map=baiduMapUtil.getAround(Double.parseDouble(centerlat),Double.parseDouble(centerlng),Double.parseDouble(radius));
+        Map map=baiduMapUtil.getAround(Double.parseDouble(centerlat), Double.parseDouble(centerlng), Double.parseDouble(radius));
         String maxLng=map.get("maxLng").toString();
         String maxLat=map.get("maxLat").toString();
         String minLng=map.get("minLng").toString();
@@ -310,4 +323,21 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/update")
+    @POST
+    public String update(@FormParam("reportNumber") String reportNumber){
+        CraneInspectReport craneInspectReport=craneInspectReportService.getCraneInspectReportByReportNumber(reportNumber);
+        craneInspectReport.setSinglePicURL(singlePicURL);
+        craneInspectReport.setTypePicURL("");
+        craneInspectReportService.update(craneInspectReport);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+/*    public static void main(String args[]){
+        String s="sfsf\\sdfsf/ssf\\sf";
+        //s=s.replaceAll("\\\\","/");
+        s=s.replace('\\','/');
+        System.out.println(s);
+
+    }*/
 }

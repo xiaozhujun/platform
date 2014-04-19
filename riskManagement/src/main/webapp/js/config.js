@@ -15,8 +15,7 @@
         "report":
         {
             "showCraneReport" :"rs/report/showCraneReport",
-            "exportCraneReport":"rs/report/exportCraneReport",
-            "showChinaChart":"rs/report/showChinaChart"
+            "exportCraneReport":"rs/report/exportCraneReport"
         }  ,
         "craneinspectreport":
         {
@@ -27,15 +26,14 @@
             "showRiskRank":"rs/craneinspectreport/showRiskRank",
             "showRiskRankByValueRange":"rs/craneinspectreport/showRiskRankByValueRange",
             "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
-            "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
-            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"
-        },
-        "craneInspectReport":{
             "list":"rs/craneinspectreport/list",
             "upload" :"rs/craneinspectreport/upload",
             "addRepeat":"rs/craneinspectreport/addRepeat",
-            "delete":"rs/craneinspectreport/delete"
-
+            "delete":"rs/craneinspectreport/delete",
+            "update":"rs/craneinspectreport/update",
+            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
+            "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
+            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"
         },
         "authority":{
             "add":"rs/authority/add"

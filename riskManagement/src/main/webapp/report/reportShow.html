@@ -87,14 +87,15 @@
                  取出省地址数据
                  */
                 var provinceList=[];
+                provinceList.push({id:0,text:"请选择"}) ;
                 for(var i=0;i<data.data.length;i++)
                 {
                     var j={};
                     j["text"]=data.data[i].province;
-                    j["id"]=i;
+                    j["id"]=i+1;
                     provinceList.push(j);
                 }
-                $("#province").ligerComboBox({
+                   $("#province").ligerComboBox({
                     data: provinceList,
                     isShowCheckBox:true,isMultiSelect:false,
                     valueFieldID: 'provinceSelect' ,
@@ -103,15 +104,19 @@
                      */
                     onSelected:function(a,b)
                     {
+                        if($("#province").val()!="请选择"&&$("#province").val()!="")
+                        {
                         $.post($.URL.address.getCityByProvince,{"province":b},getcitylistCallback,"json");
+                        }
                         function getcitylistCallback(citydata){
                             if(citydata.code==200){
                                 var cityList=[];
+                                cityList .push({id:0,text:"请选择"});
                                 for(var i=0;i<citydata.data.length;i++)
                                 {
                                     var j={};
                                     j["text"]=citydata.data[i].city;
-                                    j["id"]=i;
+                                    j["id"]=i+1;
                                     cityList.push(j);
                                 }
                                 $("#city").ligerComboBox({
@@ -122,37 +127,48 @@
                                      */
                                     onSelected:function(m,n)
                                     {
-                                        $.post($.URL.address.getAreaByProvinceAndCity,{"province":$("#province").val(),"city":n},getarealistCallback,"json");
+                                        if($("#city").val()!="请选择"&&$("#city").val()!="")
+                                        {
+                                            $.post($.URL.address.getAreaByProvinceAndCity,{"province":$("#province").val(),"city":$("#city").val()},getarealistCallback,"json");
+                                        }
+
                                         function getarealistCallback(areadata){
                                             if(areadata.code==200){
+
                                                 var areaList=[];
+                                                areaList .push({id:0,text:"请选择"}) ;
                                                 for(var i=0;i<areadata.data.length;i++)
                                                 {
                                                     var j={};
                                                     j["text"]=areadata.data[i].area;
-                                                    j["id"]=i;
+                                                    j["id"]=i+1;
                                                     areaList.push(j);
                                                 }
                                                 $("#area").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
-                                                   data:areaList, valueFieldID: 'areaSelect',
+                                                    data:areaList, valueFieldID: 'areaSelect',
                                                     /*
                                                      选择区域后的联动效果
                                                      */
                                                     onSelected:function(m,n)
                                                     {
                                                         var testdata={};
-                                                        testdata.province=$("#province").val();
-                                                        testdata.city=$("#city").val();
-                                                        testdata.area=$("#area").val();
-                                                        $.post($.URL.craneinspectreport.getUnitaddressByArea,testdata,getunitCallback,"json");
+                                                        if($("#area").val()!="请选择"&&$("#area").val()!="")
+                                                        {
+                                                            testdata.province=$("#province").val();
+                                                            testdata.city=$("#city").val();
+                                                            testdata.area=$("#area").val();
+                                                            $.post($.URL.craneinspectreport.getUnitaddressByArea,testdata,getunitCallback,"json");
+                                                        }
+
                                                         function getunitCallback(unitdata){
                                                             if(unitdata.code==200){
                                                                 var unitList=[];
+                                                                unitList .push({id:0,text:"请选择"}) ;
                                                                 for(var i=0;i<unitdata.data.length;i++)
                                                                 {
                                                                     var j={};
                                                                     j["text"]=unitdata.data[i].unitAddress;
-                                                                    j["id"]=i;
+                                                                    j["id"]=i+1;
                                                                     unitList.push(j);
                                                                 }
                                                                 $("#unitaddress").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
@@ -167,6 +183,8 @@
                                 })
                             }
                         }
+
+
                     }
                 })
             }
@@ -175,7 +193,9 @@
          定义起重机类型数据源，
          */
        var equdata=
-          [{id:1,text:"汽车起重机"},
+          [
+           {id:0,text:"请选择"},
+           {id:1,text:"汽车起重机"},
            {id:2,text:"履带起重机"},
            {id:3,text:"集装箱正面吊运起重机"},
            {id:4,text:"轮胎起重机"},
@@ -208,7 +228,9 @@
             }
         }*/
         var riskvaluedata=
-                [{id:1,text:"1"},
+                [
+                    {id:0,text:"请选择"},
+                    {id:1,text:"1"},
                     {id:2,text:"2"},
                     {id:3,text:"3"},
                     {id:4,text:"4"},
@@ -232,16 +254,33 @@
                提交页面的查询报表数据
         */
         $("#submitBtn").click(function(){
-            var data = {};
-            data.province = $("#province").val();
-            data.city = $("#city").val();
-            data.area = $("#area").val();
-            data.unitaddress = $("#unitaddress").val();
-            data.riskvalue=$("#riskValue").val();
-            data.equipmentvariety=$("#equipmentvariety").val();
-            $.post($.URL.report.showCraneReport,data,addResourceCallback,"json");
-            //location.href="/rs/report/showCraneReport"
-            $("#reportresult").load("rs/report/showCraneReport",data,addResourceCallback,"json");
+            $("#reportresult").html("");
+            if($("#province").val()!="请选择"&&$("#province").val()!="")
+            {
+                if($("#city").val()!="请选择"&&$("#city").val()!="")
+                    {
+                        var data = {};
+                        data.province = $("#province").val();
+                        data.city = $("#city").val();
+                        data.area = $("#area").val();
+                        data.unitaddress = $("#unitaddress").val();
+                        data.riskvalue=$("#riskValue").val();
+                        data.equipmentvariety=$("#equipmentvariety").val();
+                        $.post($.URL.report.showCraneReport,data,addResourceCallback,"json");
+                        //location.href="/rs/report/showCraneReport"
+                        $("#reportresult").load("rs/report/showCraneReport",data,addResourceCallback,"json") ;
+                    }
+
+            else
+                {
+                    $("#reportresult").load("rs/report/showProvinceRiskValue",{"province":$("#province").val()},addResourceCallback,"json") ;
+                }
+            }
+
+            else
+            {
+                $("#reportresult").load("rs/report/showChinaChart",data1,addResourceCallback,"json");
+            }
         });
     </script>
     <style type="text/css">
@@ -299,15 +338,16 @@
             </td>
         </tr>
     </table>
-
     <br />
-
 </form>
     </div>
 <div id="accordion1" class="l-accordion-panel">
     <div id="reportresult" style="margin-bottom: 50px"></div>
 </div>
-    <!--  数据统计代码 --></div>
+
+    <!--  数据统计代码 -->
+
+
 
 </body>
 </html>

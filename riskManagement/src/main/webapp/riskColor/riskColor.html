@@ -33,22 +33,9 @@
                     riskValues.push(b);
                   }
                   $("#riskValue").ligerComboBox({
-                      data:riskValues,
-                      valueFieldID:'riskValueSelect',
-                      onSelected:function(newValue){
-                         /* for(var j=0;j<listData.length;j++){
-                             if(listData[j].riskValue==newValue){
-                                 document.getElementById("riskColor").value= listData[j].riskColor;
-                                 $("#riskColor").css("color",listData[j].riskColor);
-                             }
-                         } */
-                         for(var j=0;j<data.data.length;j++){
-                             if(data.data[j].riskValue==newValue){
-                                 $("#riskColor").val(data.data[j].riskColor);
-                                 $("#riskColor").css("color",listData[j].riskColor);
-                             }
-                         }
-                      }
+                      data:[{ riskValue: '1', text: '1' },{ riskValue: '2', text: '2' },{ riskValue: '3', text: '3' }
+                          ,{ riskValue: '4', text: '4' },{ riskValue: '5', text: '5' },{ riskValue: '6', text: '6' },{ riskValue: '7', text: '7'} ],
+                      valueFieldID:'userSexSelect'
                   });
               }
 
@@ -61,12 +48,13 @@
             });
 
         });
+
             function setColorCallback(data){
                if(data.code==200){
                    $.ligerDialog.success("操作成功！");
                }
                else if(data.code==500){
-                   $.ligerDialog.error("操作失败！");
+                   $.ligerDialog.error(data.message);
                }
             }
     </script>
@@ -77,7 +65,7 @@
     </style>
 </head>
 <body style="padding:10px">
-   <form name="from" id="form" method="post" action="">
+   <form name="from" id="form" method="post" action="" onsubmit="checkForm()">
        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
            <tr>
                <td align="right" class="l-table-edit-td">风险值:</td>

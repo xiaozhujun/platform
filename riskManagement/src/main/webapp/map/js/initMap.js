@@ -2032,6 +2032,15 @@ $.extend({
         myDrawingManagerObject.addEventListener("overlaycomplete",function(e){
 
         });
-
+    },
+    dragAbleNavigate:function dragAbleNavigate(address){
+        var transit = new BMap.DrivingRoute(map, {
+            renderOptions: {
+                map: map,
+                panel: "rank",
+                enableDragging : true //起终点可进行拖拽
+            }
+        });
+        transit.search("汉口站",address);
     }
 });

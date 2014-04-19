@@ -15,8 +15,7 @@
         "report":
         {
             "showCraneReport" :"rs/report/showCraneReport",
-            "exportCraneReport":"rs/report/exportCraneReport",
-            "showChinaChart":"rs/report/showChinaChart"
+            "exportCraneReport":"rs/report/exportCraneReport"
         }  ,
         "craneinspectreport":
         {
@@ -26,15 +25,14 @@
             "getAreaInfo":"rs/craneinspectreport/getAreaInfo",
             "showRiskRank":"rs/craneinspectreport/showRiskRank",
             "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
-            "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
-            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"
-        },
-        "craneInspectReport":{
             "list":"rs/craneinspectreport/list",
             "upload" :"rs/craneinspectreport/upload",
             "addRepeat":"rs/craneinspectreport/addRepeat",
-            "delete":"rs/craneinspectreport/delete"
-
+            "delete":"rs/craneinspectreport/delete",
+            "update":"rs/craneinspectreport/update",
+            "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
+            "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
+            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"
         },
         "authority":{
             "add":"rs/authority/add"

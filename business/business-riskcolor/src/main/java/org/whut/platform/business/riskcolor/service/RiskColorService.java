@@ -22,4 +22,10 @@ public class RiskColorService {
   public int setColor(RiskColor riskColor){
       return riskColorMapper.setColor(riskColor);
   }
+    public int delete(RiskColor riskColor){
+        return riskColorMapper.delete(riskColor);
+    }
+    public int update(RiskColor riskColor){
+        return  riskColorMapper.update(riskColor);
+    }
 }

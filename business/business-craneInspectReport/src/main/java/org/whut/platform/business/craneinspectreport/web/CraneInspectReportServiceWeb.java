@@ -213,6 +213,16 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
+    @Path("/showRiskRankByValueRange")
+    @POST
+    public String showRiskRankByValueRange(@FormParam("value") String value,@FormParam("city") String city,@FormParam("area") String area){
+        String[] values= value.split(";");
+        float startValue = Float.parseFloat(values[0]);
+        float endValue=Float.parseFloat(values[1]);
+        List<CraneInspectReport> list = craneInspectReportService.showRiskRankByValueRange(startValue,endValue,city,area);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getOneUnitAddressInfo")

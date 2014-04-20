@@ -1,8 +1,10 @@
 package org.whut.platform.business.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.mapper.UserMapper;
+import org.whut.platform.business.user.security.MyUserDetail;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,4 +48,9 @@ public class UserService {
         }
         return null;
     }
+    public MyUserDetail getMyUserDetailFromSession(){
+        MyUserDetail myUserDetail= (MyUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return myUserDetail;
+    }
+
 }

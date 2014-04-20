@@ -75,7 +75,12 @@ transitional.dtd">
                         <input id="Slider4" type="slider" name="area" value="2;10" />
                     </div>
                     <script type="text/javascript" charset="utf-8">
-                        jQuery("#Slider4").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic", callback: function( value ){ console.dir( this ); } });
+                        jQuery("#Slider4").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic",
+                                                       callback: function( value ){
+                                                           console.dir( this );
+                                                           $.post($.URL.craneinspectreport.showRiskRankByValueRange, {"value":value,"city":city,"area":area},showRiskRankByValueRange,"json");
+                                                       }
+                                                     });
                     </script>
                 </span>
             </div>
@@ -151,6 +156,40 @@ transitional.dtd">
                          $(itemInfoId).append(itemInfo);
                 }
             }
+    }
+    function showRiskRankByValueRange(data){
+        if(data.code==200){
+            $("#rankTitle").html("");
+            $("#riskrankContent").html("");
+            /*var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+             $("#rankTitle").append(rankTitle); */
+            if(data.data[0]==undefined){
+                $("#riskrankContent").append("对不起,数据不存在!");
+            }else{
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                $("#rankTitle").append(rankTitle);
+                var j=1;
+                for(var i=0;i<data.data.length;i++){
+                    if(i>0){
+                        preValue=data.data[i-1].riskValue;
+                        if(data.data[i].riskValue==preValue)
+                            j=j;
+                        else
+                        {
+                            j++;
+                        }
+                    }
+                    var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                    $("#riskrankContent").append(rankContent);
+                }
+                for(i=0;i<data.data.length;i++){
+                    $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                }
+            }
+
+        }
     }
     $(document).ready(function(){
         $("#layout").ligerLayout({leftWidth:200});

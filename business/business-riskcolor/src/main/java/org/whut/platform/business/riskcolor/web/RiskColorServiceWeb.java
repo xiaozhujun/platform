@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.riskcolor.entity.RiskColor;
 import org.whut.platform.business.riskcolor.service.RiskColorService;
+import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
@@ -33,6 +34,9 @@ public class RiskColorServiceWeb {
      @Path("/setColor")
      @POST
      public String setColor(@FormParam("riskValue") float riskValue,@FormParam("riskColor") String riskColor){
+         if(riskValue>=1&&riskValue<=10&&riskColor!=null)
+         {
+
          RiskColor rc = new RiskColor();
          rc.setRiskValue(riskValue);
          rc.setRiskColor(riskColor);
@@ -42,6 +46,37 @@ public class RiskColorServiceWeb {
          }
          else {
              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-         }
+         } }
+         else
+             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
      }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/update")
+    @POST
+    public String update(@FormParam("jsonString") String jsonString){
+        RiskColor riskColor = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,RiskColor.class);
+        int updateId= riskColorService.update(riskColor);
+        if (updateId>0)
+        {
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/delete")
+    @POST
+    public String delete(@FormParam("jsonString") String jsonString){
+        RiskColor riskColor = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,RiskColor.class);
+
+        int successId= riskColorService.delete(riskColor);
+          if (successId>0)
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+           else
+              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+
+    }
 }

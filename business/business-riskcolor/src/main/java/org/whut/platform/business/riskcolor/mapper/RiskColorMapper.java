@@ -14,4 +14,5 @@ import java.util.List;
 public interface RiskColorMapper extends AbstractMapper<RiskColor>{
     public List<RiskColor> list();
     public int setColor(RiskColor riskColor);
+
 }

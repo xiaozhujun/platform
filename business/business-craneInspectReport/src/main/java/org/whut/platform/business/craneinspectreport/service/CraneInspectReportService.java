@@ -147,19 +147,18 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getRepeatList(){
         return listRepeat;
     }
-    /*    public void refreshRepeatList(){
-            listRepeat.clear();
-        }
-        public void refreshList(){
-            craneInspectReportList.clear();
-        }*/
     public int update(CraneInspectReport craneInspectReport){
         return mapper.update(craneInspectReport);
     }
     public int delete(CraneInspectReport craneInspectReport){
         return mapper.delete(craneInspectReport);
     }
-
+    public CraneInspectReport getCraneInspectReportByReportNumber(String reportNumber){
+        return mapper.getCraneInspectReportByReportNumber(reportNumber);
+    }
+    public void updateURL(String singlePicURL) {
+        mapper.updateURL(singlePicURL);
+    }
     public List<CraneInspectReport> getInfoByAddressId(Long id){
         return mapper.getInfoByAddressId(id);
     }
@@ -179,6 +178,9 @@ public class CraneInspectReportService {
      public List<CraneInspectReport> showRiskRank(String city,String area){
          return mapper.showRiskRank(city,area);
      }
+    public List<CraneInspectReport> showRiskRankByValueRange(float startValue,float endValue,String city,String area){
+        return mapper.showRiskRankByValueRange(startValue,endValue,city,area);
+    }
     public CraneInspectReport getOneUnitAddressInfo(String unitAddress){
         return mapper.getOneUnitAddressInfo(unitAddress);
     }
@@ -187,5 +189,11 @@ public class CraneInspectReportService {
     }
     public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(String maxLng,String maxLat,String minLng,String minLat){
         return mapper.getCraneInspectReportInfoFromCircle(maxLng,maxLat,minLng,minLat);
+    }
+    public float getAvgRiskValueByProvince(String province){
+        return mapper.getAvgRiskValueByProvince(province);
+    }
+    public float getAvgRiskValueByProvinceAndCity(String province,String city){
+        return mapper.getAvgRiskValueByProvinceAndCity(province,city);
     }
 }

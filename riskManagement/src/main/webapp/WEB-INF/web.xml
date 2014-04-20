@@ -97,5 +97,9 @@
         <url-pattern>/image</url-pattern>
     </servlet-mapping>
     <!-- Servlet Configuration ========================================== -->
+    <context-param>
+        <param-name>UPLOAD_IMAGE_PATH</param-name>
+        <param-value>/imageupload</param-value>
+    </context-param>
 </web-app>
         

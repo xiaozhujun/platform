@@ -78,7 +78,13 @@
         </set>
         WHERE  REPORTNUMBER=#{reportNumber};
     </update>
-
+    <update id="updateURL" parameterType="java.lang.String">
+        UPDATE craneinspectreport
+        <set>
+            <if test="singlePicURL!=null">SINGLEPICURL=#{singlePicURL}</if>
+        </set>
+        WHERE REPORTNUMBER=#{reportNumber};
+    </update>
     <select id="get" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
         <include refid="craneInspectReport_fields"/>
@@ -140,9 +146,15 @@
     </select>
     <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
-        *
+        <include refid="craneInspectReport_fields"/>
         FROM craneinspectreport
         where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
+    </select>
+    <select id="getCraneInspectReportByReportNumber" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM craneinspectreport
+        WHERE reportNumber=#{reportNumber}
     </select>
     <select id="getUnitaddressByArea" parameterType="map"   resultMap="craneInspectReportResultMap">
         select
@@ -178,6 +190,13 @@
          AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
          group by cr.unitAddress order by r.riskvalue desc
     </select>
+    <select id="showRiskRankByValueRange" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area} AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by cr.unitAddress order by r.riskvalue desc
+    </select>
     <select id="getOneUnitAddressInfo" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
            SELECT *
            FROM
@@ -205,5 +224,18 @@
         BETWEEN #{minLat}
         AND #{maxLat}
         GROUP BY unitAddress
+    </select>
+
+    <select id="getAvgRiskValueByProvince" parameterType="java.lang.String" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM provinceriskshow prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province}
+    </select>
+    <select id="getAvgRiskValueByProvinceAndCity" parameterType="map" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM provinceriskshow prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province} AND a.city=#{city}
     </select>
 </mapper>

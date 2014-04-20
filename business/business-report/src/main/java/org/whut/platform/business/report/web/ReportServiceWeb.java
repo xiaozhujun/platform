@@ -89,34 +89,28 @@ public class ReportServiceWeb {
         String whereUnitaddress="";
         String whereRiskvalue="";
         String subreport="";
-        province="湖北";
-        city="武汉市";
-        if(province.equals(""))
+        if (!province.equals("")&&!province.equals("请选择"))
         {
-            return showChinaChart();
+        subreport="citychart.jasper";
         }
-        else
-        {
-            subreport="citychart.jasper";
-        }
-        if(!city.equals(""))
+        if(!city.equals("")&&!city.equals("请选择"))
         {
             subreport="areachart.jasper";
         }
-        if(!(area.trim()).equals(""))
+        if(!(area.trim()).equals("")&&!area.equals("请选择"))
         {
             whereArea=" and area="+"\""+area+"\"";
             subreport="blankchart.jasper";
         }
-        if(!(unitaddress.trim()).equals(""))
+        if(!(unitaddress.trim()).equals("")&&!unitaddress.equals("请选择"))
         {
             whereUnitaddress=" and unitaddress="+"\""+unitaddress+"\"";
         }
-        if(!(equipmentvariety.trim()).equals(""))
+        if(!(equipmentvariety.trim()).equals("")&&!equipmentvariety.equals("请选择"))
         {
             whereCranevariety=" and equipmentvariety="+"\""+equipmentvariety+"\"";
         }
-        if(!riskvalue.equals(""))
+        if(!riskvalue.equals("")&&!riskvalue.equals("请选择"))
         {
             whereRiskvalue=" and riskvalue="+riskvalue;
         }
@@ -212,5 +206,20 @@ public class ReportServiceWeb {
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+    @Path("/showProvinceRiskValue")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    public String showChinaChart(@FormParam("province") String province){
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/getCityRiskValueByProvince.jasper");
+        System.out.print(reportTemplate);
+        Map parameter=new HashMap();
+        parameter.put("province",province);
+        System.out.print(province);
+        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
+/*       System.out.print(data+"..........");*/
+        return JsonResultUtils
+                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
 
 }

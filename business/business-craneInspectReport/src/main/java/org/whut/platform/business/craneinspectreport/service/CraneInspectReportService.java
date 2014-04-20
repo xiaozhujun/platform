@@ -193,4 +193,10 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(String maxLng,String maxLat,String minLng,String minLat){
         return mapper.getCraneInspectReportInfoFromCircle(maxLng,maxLat,minLng,minLat);
     }
+    public float getAvgRiskValueByProvince(String province){
+        return mapper.getAvgRiskValueByProvince(province);
+    }
+    public float getAvgRiskValueByProvinceAndCity(String province,String city){
+        return mapper.getAvgRiskValueByProvinceAndCity(province,city);
+    }
 }

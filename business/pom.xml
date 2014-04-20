@@ -18,6 +18,7 @@
         <module>business-map</module>
         <module>business-report</module>
         <module>business-riskcolor</module>
+        <module>business-datarule</module>
     </modules>
 
 

@@ -218,6 +218,7 @@
         AND #{maxLat}
         GROUP BY unitAddress
     </select>
+
     <select id="getAvgRiskValueByProvince" parameterType="java.lang.String" resultType="java.lang.Float">
         SELECT ROUND(AVG(prs.riskvalue),2)
         FROM provinceriskshow prs

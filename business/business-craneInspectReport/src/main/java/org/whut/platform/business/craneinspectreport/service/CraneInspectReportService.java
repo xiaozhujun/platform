@@ -147,12 +147,6 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getRepeatList(){
         return listRepeat;
     }
-    /*    public void refreshRepeatList(){
-            listRepeat.clear();
-        }
-        public void refreshList(){
-            craneInspectReportList.clear();
-        }*/
     public int update(CraneInspectReport craneInspectReport){
         return mapper.update(craneInspectReport);
     }

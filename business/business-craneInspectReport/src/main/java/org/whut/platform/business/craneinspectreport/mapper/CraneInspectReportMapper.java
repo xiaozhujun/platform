@@ -6,6 +6,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: ThinkPad

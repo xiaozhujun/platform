@@ -225,4 +225,17 @@
         AND #{maxLat}
         GROUP BY unitAddress
     </select>
+
+    <select id="getAvgRiskValueByProvince" parameterType="java.lang.String" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM provinceriskshow prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province}
+    </select>
+    <select id="getAvgRiskValueByProvinceAndCity" parameterType="map" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM provinceriskshow prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province} AND a.city=#{city}
+    </select>
 </mapper>

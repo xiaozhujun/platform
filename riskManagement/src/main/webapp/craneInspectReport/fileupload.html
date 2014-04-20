@@ -13,18 +13,22 @@
     <script src="js/ui/jquery.ui.menu.js"></script>
     <script src="js/ui/jquery.ui.autocomplete.js"></script>
     <script src="js/ui/jquery.ui.tooltip.js"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript" src="craneInspectReport/js/jquery-ui-1.8.14.custom.min.js"></script>
     <link href="craneInspectReport/css/ui-lightness/jquery-ui-1.8.14.custom.css" rel="stylesheet" type="text/css" />
     <link href="craneInspectReport/css/fileUploader.css" rel="stylesheet" type="text/css" />
     <script src="craneInspectReport/js/jquery.fileUploader.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#panel").ligerPanel({
+                title : '检验报告上传'
+            });
+        });
+    </script>
 </head>
 <body>
-<div class="fullMainContainer">
-</div>
-<div id="upload_dialog">
-    <div id="upload_title"><span class="title_font">Excel文件上传</span>
-        <span class="dialog_close">关闭</span>
-    </div>
-    <div id="main_container">
+<div style="width:100%;">
+    <div id="panel" style="float: left; width:432px;margin-left: 350px;margin-top: 10px">
         <form action="rs/craneinspectreport/upload" method="post" enctype="multipart/form-data">
             <input type="file" name="filename" class="fileUpload" multiple>
             <button  id="px-submit" type="submit" >上传</button>
@@ -37,5 +41,6 @@
         </script>
     </div>
 </div>
+<div id="maingrid" style="margin-top:270px"></div>
 </body>
 </html>

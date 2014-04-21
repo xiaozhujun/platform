@@ -12,7 +12,6 @@ import org.whut.platform.fundamental.util.tool.ToolUtil;
 
 import java.io.InputStream;
 import java.util.*;
-
 /**
  * Created with IntelliJ IDEA.
  * User: zhuzhenhua

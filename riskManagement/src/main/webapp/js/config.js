@@ -37,7 +37,6 @@
             "getProvinceAvgRiskValue":"rs/craneinspectreport/getProvinceAvgRiskValue",
             "getCityAvgRiskValueByProvince":"rs/craneinspectreport/getCityAvgRiskValueByProvince",
             "getAreaAvgRiskValueByProvinceAndCity":"rs/craneinspectreport/getAreaAvgRiskValueByProvinceAndCity"
-
         },
         "authority":{
             "add":"rs/authority/add"

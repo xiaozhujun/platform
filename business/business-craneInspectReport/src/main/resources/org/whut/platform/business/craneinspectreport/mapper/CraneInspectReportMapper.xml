@@ -122,7 +122,6 @@
             <if test="typePicURL!=null">AND TYPEPICURL=#{typePicURL}</if>
         </where>
     </select>
-
     <delete id="delete" parameterType="CraneInspectReport">
         DELETE FROM craneinspectreport
             <where>

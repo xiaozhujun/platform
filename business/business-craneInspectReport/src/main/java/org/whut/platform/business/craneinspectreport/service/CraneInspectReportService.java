@@ -196,4 +196,13 @@ public class CraneInspectReportService {
     public float getAvgRiskValueByProvinceAndCity(String province,String city){
         return mapper.getAvgRiskValueByProvinceAndCity(province,city);
     }
+    public List<Map<String,Float>> getProvinceAvgRiskValue(){
+        return  mapper.getProvinceAvgRiskValue();
+    }
+    public List<Map<String,Float>> getCityAvgRiskValueByProvince(String province){
+        return mapper.getCityAvgRiskValueByProvince(province);
+    }
+    public List<Map<String,Float>> getAreaAvgRiskValueByProvinceAndCity(String province,String city){
+        return mapper.getAreaAvgRiskValueByProvinceAndCity(province,city);
+    }
 }

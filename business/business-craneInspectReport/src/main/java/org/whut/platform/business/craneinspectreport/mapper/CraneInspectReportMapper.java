@@ -33,4 +33,8 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(@Param("maxLng") String maxLng,@Param("maxLat") String maxLat,@Param("minLng")String minLng,@Param("minLat") String minLat);
     public float getAvgRiskValueByProvince(@Param("province") String province);
     public float getAvgRiskValueByProvinceAndCity(@Param("province") String province,@Param("city") String city);
+    public List<Map<String,Float>> getProvinceAvgRiskValue();
+    public List<Map<String,Float>> getCityAvgRiskValueByProvince(@Param("province") String province);
+    public List<Map<String,Float>> getAreaAvgRiskValueByProvinceAndCity(@Param("province") String province,@Param("city") String city);
+
 }

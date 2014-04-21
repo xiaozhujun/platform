@@ -238,4 +238,22 @@
         INNER JOIN address a ON prs.addressid=a.id
         WHERE a.province=#{province} AND a.city=#{city}
     </select>
+    <select id="getProvinceAvgRiskValue" resultType="map">
+         SELECT a.province,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+         FROM provinceriskshow prs,address a
+         WHERE a.id=prs.addressid
+         group by a.province order by avgRiskValue desc
+    </select>
+    <select id="getCityAvgRiskValueByProvince" parameterType="java.lang.String" resultType="map">
+         SELECT a.city,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+         FROM provinceriskshow prs,address a
+         WHERE a.id=prs.addressid AND a.province=#{province}
+         group by a.city order by avgRiskValue desc
+    </select>
+    <select id="getAreaAvgRiskValueByProvinceAndCity" parameterType="map" resultType="map">
+        SELECT a.area,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+        FROM address a,provinceriskshow prs
+        where a.id=prs.addressid AND a.province=#{province} AND a.city=#{city}
+        GROUP BY a.area ORDER BY avgRiskValue DESC
+    </select>
 </mapper>

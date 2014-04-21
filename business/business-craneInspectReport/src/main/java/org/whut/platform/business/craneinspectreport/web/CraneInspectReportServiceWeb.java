@@ -333,11 +333,26 @@ public class CraneInspectReportServiceWeb {
         craneInspectReportService.update(craneInspectReport);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-/*    public static void main(String args[]){
-        String s="sfsf\\sdfsf/ssf\\sf";
-        //s=s.replaceAll("\\\\","/");
-        s=s.replace('\\','/');
-        System.out.println(s);
 
-    }*/
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getProvinceAvgRiskValue")
+    @GET
+    public String getProvinceAvgRiskValue(){
+        List<Map<String,Float>> list=craneInspectReportService.getProvinceAvgRiskValue();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCityAvgRiskValueByProvince")
+    @GET
+    public String getCityAvgRiskValueByProvince(@FormParam("province") String province){
+        List<Map<String,Float>> list=craneInspectReportService.getCityAvgRiskValueByProvince(province);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaAvgRiskValueByProvinceAndCity")
+    @GET
+    public String getAreaAvgRiskValueByProvinceAndCity(@FormParam("province") String province,@FormParam("city") String city){
+        List<Map<String,Float>> list=craneInspectReportService.getAreaAvgRiskValueByProvinceAndCity(province,city);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 }

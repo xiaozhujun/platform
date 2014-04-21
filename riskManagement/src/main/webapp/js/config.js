@@ -33,7 +33,11 @@
             "update":"rs/craneinspectreport/update",
             "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
             "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
-            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"
+            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle",
+            "getProvinceAvgRiskValue":"rs/craneinspectreport/getProvinceAvgRiskValue",
+            "getCityAvgRiskValueByProvince":"rs/craneinspectreport/getCityAvgRiskValueByProvince",
+            "getAreaAvgRiskValueByProvinceAndCity":"rs/craneinspectreport/getAreaAvgRiskValueByProvinceAndCity"
+
         },
         "authority":{
             "add":"rs/authority/add"

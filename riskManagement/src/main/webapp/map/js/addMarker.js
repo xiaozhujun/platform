@@ -255,7 +255,7 @@ $.extend({
                            $("#rightcontent").html("");
                            $("#righttitle").append(data.str);
                            for(var i=0;i<data.data.length;i++){
-                               var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                               var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='_itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                                $("#rightcontent").append(dataString);
                                var infoFontNum="infofont"+data.data[i].id;
                                var hideField="hideField"+data.data[i].id;
@@ -264,10 +264,11 @@ $.extend({
                                $(itemInfo).html("");
                                $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
                                $("#"+infoFontNum).click(function(){
-                                   if($(itemInfo).hasClass("itemInfo")){
-                                       $(itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
-                                   }else if($(itemInfo).hasClass("itemInfoHide")){
-                                       $(itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
+                                   var _itemInfo="#itemInfo"+this.id.substring(8,this.id.length);
+                                   if($(_itemInfo).hasClass("itemInfo")){
+                                       $(_itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
+                                   }else if($(_itemInfo).hasClass("itemInfoHide")){
+                                       $(_itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
                                    }
                                });
                            }
@@ -336,7 +337,7 @@ $.extend({
                    $("#rightcontent").html("");
                    $("#righttitle").append(data.str);
                    for(var i=0;i<data.data.length;i++){
-                       var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                       var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='_itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                        $("#rightcontent").append(dataString);
                        var infoFontNum="infofont"+data.data[i].id;
                        var hideField="hideField"+data.data[i].id;
@@ -345,10 +346,11 @@ $.extend({
                        $(itemInfo).html("");
                        $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
                        $("#"+infoFontNum).click(function(){
-                           if($(itemInfo).hasClass("itemInfo")){
-                               $(itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
-                           }else if($(itemInfo).hasClass("itemInfoHide")){
-                               $(itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
+                           var _itemInfo="#itemInfo"+this.id.substring(8,this.id.length);
+                           if($(_itemInfo).hasClass("itemInfo")){
+                               $(_itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
+                           }else if($(_itemInfo).hasClass("itemInfoHide")){
+                               $(_itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
                            }
                        });
                    }

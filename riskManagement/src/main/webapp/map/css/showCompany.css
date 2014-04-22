@@ -159,6 +159,7 @@ body{
     height: 80px;
     display: inline-block;
     float: left;
+    margin-left: 4px;
 }
 .info{
     width: 260px;
@@ -181,10 +182,16 @@ body{
     margin-top: 10px;
 }
 .itemfont{
-    margin-left: 14px;
+    margin-left: 6px;
     font-size: 15px;
     font-weight: bold;
     color:#888888;
+}
+._itemfont{
+    font-size: 15px;
+    font-weight: bold;
+    color:#888888;
+    margin-left: 50px;
 }
 .titleFont{
     margin-left: 4px;

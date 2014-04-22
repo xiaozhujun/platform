@@ -196,4 +196,11 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(String maxLng,String maxLat,String minLng,String minLat){
         return mapper.getCraneInspectReportInfoFromCircle(maxLng,maxLat,minLng,minLat);
     }
+    /*
+        新加入的，Sunhui
+    */
+    public List<CraneInspectReport> getEquipmentVarietyList()
+    {
+        return  mapper.getEquipmentVarietyList();
+    }
 }

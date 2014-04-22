@@ -137,12 +137,7 @@
        where addressId=#{addressId}
     </select>
     <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
-     SELECT
-     cr.*,r.riskValue
-     FROM craneinspectreport cr,riskvalue r
-     WHERE cr.reportnumber=r.reportnumber
-     AND cr.unitAddress=#{unitAddress}
-     GROUP BY cr.equipmentVariety
+  d
     </select>
     <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
@@ -224,5 +219,9 @@
         BETWEEN #{minLat}
         AND #{maxLat}
         GROUP BY unitAddress
+    </select>
+    <select id="getEquipmentVarietyList" resultMap="craneInspectReportResultMap">
+        SELECT DISTINCT(equipmentvariety)
+        FROM craneinspectreport
     </select>
 </mapper>

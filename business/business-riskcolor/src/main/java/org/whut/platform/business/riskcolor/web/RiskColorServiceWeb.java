@@ -77,6 +77,13 @@ public class RiskColorServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
            else
               return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-
+    }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/getRiskValueList")
+    @POST
+    public String getRiskValueList()
+    {
+        List<RiskColor> list=riskColorService.getRiskValueList();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

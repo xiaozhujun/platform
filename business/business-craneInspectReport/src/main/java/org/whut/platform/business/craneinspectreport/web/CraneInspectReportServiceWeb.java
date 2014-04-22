@@ -333,6 +333,14 @@ public class CraneInspectReportServiceWeb {
         craneInspectReportService.update(craneInspectReport);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getEquipmentVarietyList")
+    @POST
+    public String getEquipmentVarietyList()
+    {
+        List<CraneInspectReport> list=craneInspectReportService.getEquipmentVarietyList();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 /*    public static void main(String args[]){
         String s="sfsf\\sdfsf/ssf\\sf";
         //s=s.replaceAll("\\\\","/");

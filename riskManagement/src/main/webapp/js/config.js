@@ -33,7 +33,8 @@
             "update":"rs/craneinspectreport/update",
             "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
             "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
-            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle"
+            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle",
+            "getEquipmentVarietyList":"rs/craneinspectreport/getEquipmentVarietyList"
         },
         "authority":{
             "add":"rs/authority/add"
@@ -56,7 +57,8 @@
         },
         "riskColor":{
            "list":"rs/riskColor/list",
-            "setColor":"rs/riskColor/setColor"
+            "setColor":"rs/riskColor/setColor",
+            "getRiskValueList":"rs/riskColor/getRiskValueList"
         }
     }
 })(jQuery);

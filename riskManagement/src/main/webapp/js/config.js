@@ -60,6 +60,9 @@
         "riskColor":{
            "list":"rs/riskColor/list",
             "setColor":"rs/riskColor/setColor"
+        },
+        "dataRule":{
+            "add":"rs/dataRule/addDataRole"
         }
     }
 })(jQuery);

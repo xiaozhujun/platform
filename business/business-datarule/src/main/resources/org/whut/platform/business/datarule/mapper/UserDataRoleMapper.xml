@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.datarule.mapper.UserDataRoleMapper">
+    <sql id="user_drole_fields">
+		ID,USERID,DROLEID,USERNAME,DROLENAME
+	</sql>
+
+    <resultMap id="userDataRoleResultMap" type="UserDataRole">
+        <id property="id" column="ID" />
+        <result property="userId" column="USERID" />
+        <result property="dRoleId" column="DROLEID" />
+        <result property="userName" column="USERNAME"/>
+        <result property="dRoleName" column="DROLENAME"></result>
+    </resultMap>
+
+    <insert id="add" parameterType="UserDataRole" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        user_drole(
+        <include refid="user_drole_fields" />
+        )
+        VALUES (#{id}, #{userId}, #{dRoleId},#{userName},#{dRoleName});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM user_drole
+        <where>
+            <if test="name != null">NAME=#{name}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="UserDataRole">
+        UPDATE user_drole
+        <set>
+            <if test="userId != null">USERID=#{userId},</if>
+            <if test="dRoleId != null">DROLEID=#{dRoleId},</if>
+            <if test="userName != null">USERNAME=#{userName},</if>
+            <if test="dRoleName !=null">DROLENAME=#{dRoleName}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="UserDataRole">
+        DELETE FROM user_drole
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="UserDataRole" resultMap="userDataRoleResultMap">
+        SELECT
+        <include refid="user_drole_fields" />
+        FROM user_drole WHERE ID=#{id}
+    </select>
+</mapper>

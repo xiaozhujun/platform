@@ -6,6 +6,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: ThinkPad
@@ -35,4 +36,9 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     */
     public List<CraneInspectReport> getEquipmentVarietyList();
 
+    public float getAvgRiskValueByProvince(@Param("province") String province);
+    public float getAvgRiskValueByProvinceAndCity(@Param("province") String province,@Param("city") String city);
+    public List<Map<String,Float>> getProvinceAvgRiskValue();
+    public List<Map<String,Float>> getCityAvgRiskValueByProvince(@Param("province") String province);
+    public List<Map<String,Float>> getAreaAvgRiskValueByProvinceAndCity(@Param("province") String province,@Param("city") String city);
 }

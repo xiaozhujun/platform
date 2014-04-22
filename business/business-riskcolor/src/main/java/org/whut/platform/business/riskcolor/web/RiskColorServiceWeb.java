@@ -34,9 +34,9 @@ public class RiskColorServiceWeb {
      @Path("/setColor")
      @POST
      public String setColor(@FormParam("riskValue") float riskValue,@FormParam("riskColor") String riskColor){
-         if(riskValue>=1&&riskValue<=10&&riskColor!=null)
-         {
-
+         if(riskColor==null ||  riskColor.trim().equals("")){
+             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "风险颜色值不能为空!");
+         }
          RiskColor rc = new RiskColor();
          rc.setRiskValue(riskValue);
          rc.setRiskColor(riskColor);
@@ -46,9 +46,8 @@ public class RiskColorServiceWeb {
          }
          else {
              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-         } }
-         else
-             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+         }
+
      }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")

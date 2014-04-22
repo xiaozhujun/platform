@@ -1,9 +1,13 @@
 package org.whut.platform.business.craneinspectreport.web;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.service.CraneInspectReportService;
+import org.whut.platform.business.user.security.MyUserDetail;
+import org.whut.platform.business.user.security.MyUserDetailsService;
+import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.fileupload.FileInfo;
 import org.whut.platform.fundamental.fileupload.FileService;
@@ -19,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +44,8 @@ public class CraneInspectReportServiceWeb {
     private CraneInspectReportService craneInspectReportService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private UserService userService;
     private String singlePicURL="";
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MultipartRequestParser multipartRequestParser=new MultipartRequestParser();
@@ -347,5 +354,35 @@ public class CraneInspectReportServiceWeb {
         s=s.replace('\\','/');
         System.out.println(s);
 
-    }*/
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getProvinceAvgRiskValue")
+    @GET
+    public String getProvinceAvgRiskValue(){
+        List<Map<String,Float>> list=craneInspectReportService.getProvinceAvgRiskValue();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCityAvgRiskValueByProvince")
+    @POST
+    public String getCityAvgRiskValueByProvince(@FormParam("province") String province){
+        List<Map<String,Float>> list=craneInspectReportService.getCityAvgRiskValueByProvince(province);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaAvgRiskValueByProvinceAndCity")
+    @POST
+    public String getAreaAvgRiskValueByProvinceAndCity(@FormParam("province") String province,@FormParam("city") String city){
+        List<Map<String,Float>> list=craneInspectReportService.getAreaAvgRiskValueByProvinceAndCity(province,city);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getSession")
+    @GET
+    public String getSession(){
+        MyUserDetail myUserDetail=userService.getMyUserDetailFromSession() ;
+        System.out.print(myUserDetail.getUsername()+"用户名");
+        System.out.print(myUserDetail.getPassword()+"密码");
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
 }

@@ -12,7 +12,6 @@ import org.whut.platform.fundamental.util.tool.ToolUtil;
 
 import java.io.InputStream;
 import java.util.*;
-
 /**
  * Created with IntelliJ IDEA.
  * User: zhuzhenhua
@@ -113,6 +112,7 @@ public class CraneInspectReportService {
              craneInspectReport.setSpecification(excelMap.getContents().get(i).get(11));
              craneInspectReport.setpNumber(excelMap.getContents().get(i).get(12));
              craneInspectReport.setWorkLevel(excelMap.getContents().get(i).get(13));
+             craneInspectReport.setRatedLiftWeight(excelMap.getContents().get(i).get(14));
              Map map=getCoordinate(craneInspectReport.getUnitAddress());
              craneInspectReport.setLng(map.get("lng").toString());
              craneInspectReport.setLat(map.get("lat").toString());
@@ -147,12 +147,6 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getRepeatList(){
         return listRepeat;
     }
-    /*    public void refreshRepeatList(){
-            listRepeat.clear();
-        }
-        public void refreshList(){
-            craneInspectReportList.clear();
-        }*/
     public int update(CraneInspectReport craneInspectReport){
         return mapper.update(craneInspectReport);
     }
@@ -195,6 +189,25 @@ public class CraneInspectReportService {
     }
     public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(String maxLng,String maxLat,String minLng,String minLat){
         return mapper.getCraneInspectReportInfoFromCircle(maxLng,maxLat,minLng,minLat);
+    }
+    public float getAvgRiskValueByProvince(String province){
+        return mapper.getAvgRiskValueByProvince(province);
+    }
+    public float getAvgRiskValueByProvinceAndCity(String province,String city){
+        return mapper.getAvgRiskValueByProvinceAndCity(province,city);
+    }
+    public List<Map<String,Float>> getProvinceAvgRiskValue(){
+        return  mapper.getProvinceAvgRiskValue();
+    }
+    public List<Map<String,Float>> getCityAvgRiskValueByProvince(String province){
+        return mapper.getCityAvgRiskValueByProvince(province);
+    }
+    public List<Map<String,Float>> getAreaAvgRiskValueByProvinceAndCity(String province,String city){
+        return mapper.getAreaAvgRiskValueByProvinceAndCity(province,city);
+    }
+    public static void main(String args[]){
+        float a=Float.parseFloat("a");
+        System.out.println(a);
     }
     /*
         新加入的，Sunhui

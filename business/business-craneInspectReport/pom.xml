@@ -95,6 +95,11 @@
             <artifactId>fundamental-map</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

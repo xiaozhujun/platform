@@ -28,7 +28,6 @@
 
 .upload-data {
     padding: 5px;
-    width: 420px;
     margin-top: 5px;
     margin-bottom: 5px;
     position: relative;
@@ -97,7 +96,10 @@
 }
 
 .px-widget .ui-button {
-    height: 40px;
+    height: 30px;
+    color: #999999;
+    font-size: 12px;
+
 }
 #upload_dialog{
     border: 1px solid #999999;

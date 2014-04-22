@@ -35,6 +35,10 @@
             "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
             "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle",
             "getEquipmentVarietyList":"rs/craneinspectreport/getEquipmentVarietyList"
+            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle",
+            "getProvinceAvgRiskValue":"rs/craneinspectreport/getProvinceAvgRiskValue",
+            "getCityAvgRiskValueByProvince":"rs/craneinspectreport/getCityAvgRiskValueByProvince",
+            "getAreaAvgRiskValueByProvinceAndCity":"rs/craneinspectreport/getAreaAvgRiskValueByProvinceAndCity"
         },
         "authority":{
             "add":"rs/authority/add"
@@ -59,6 +63,10 @@
            "list":"rs/riskColor/list",
             "setColor":"rs/riskColor/setColor",
             "getRiskValueList":"rs/riskColor/getRiskValueList"
+            "setColor":"rs/riskColor/setColor"
+        },
+        "dataRule":{
+            "add":"rs/dataRule/addDataRole"
         }
     }
 })(jQuery);

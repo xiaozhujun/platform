@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper">
     <sql id="craneInspectReport_fields">
-		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT,SINGLEPICURL,TYPEPICURL
+		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT,SINGLEPICURL,TYPEPICURL,RATEDLIFTWEIGHT
 	</sql>
 
     <resultMap id="craneInspectReportResultMap" type="CraneInspectReport">
@@ -29,6 +29,7 @@
         <result property="singlePicURL" column="SINGLEPICURL"/>
         <result property="typePicURL" column="TYPEPICURL"/>
         <result property="riskValue" column="RISKVALUE"/>
+        <result property="ratedLiftWeight" column="RATEDLIFTWEIGHT"/>
     </resultMap>
 
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
@@ -37,7 +38,7 @@
         craneinspectreport(
         <include refid="craneInspectReport_fields" />
         )
-        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel},#{lng},#{lat},#{singlePicURL},#{typePicURL});
+        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel},#{lng},#{lat},#{singlePicURL},#{typePicURL},#{ratedLiftWeight});
         <selectKey resultType="long" keyProperty="id" order="AFTER">
             select
             LAST_INSERT_ID() as id
@@ -53,7 +54,7 @@
         <include refid="craneInspectReport_fields"/>)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.reportNumber},#{item.unitAddress},#{item.addressId},#{item.organizeCode},#{item.userPoint},#{item.safeManager},#{item.contactPhone},#{item.equipmentVariety},#{item.unitNumber},#{item.manufactureUnit},#{item.manufactureLicenseNumber},#{item.manufactureDate},#{item.specification},#{item.pNumber},#{item.workLevel},#{item.lng},#{item.lat},#{item.singlePicURL},#{item.typePicURL})
+            (#{item.id},#{item.reportNumber},#{item.unitAddress},#{item.addressId},#{item.organizeCode},#{item.userPoint},#{item.safeManager},#{item.contactPhone},#{item.equipmentVariety},#{item.unitNumber},#{item.manufactureUnit},#{item.manufactureLicenseNumber},#{item.manufactureDate},#{item.specification},#{item.pNumber},#{item.workLevel},#{item.lng},#{item.lat},#{item.singlePicURL},#{item.typePicURL},#{item.ratedLiftWeight})
         </foreach>
     </insert>
     <update id="update" parameterType="CraneInspectReport">
@@ -74,7 +75,8 @@
             <if test="pNumber!=null" >PNUMBER=#{pNumber},</if>
             <if test="workLevel!=null" >WORKLEVEL=#{workLevel},</if>
             <if test="singlePicURL!=null">SINGLEPICURL=#{singlePicURL},</if>
-            <if test="typePicURL!=null">TYPEPICURL=#{typePicURL}</if>
+            <if test="typePicURL!=null">TYPEPICURL=#{typePicURL},</if>
+            <if test="ratedLiftWeight!=null">RATEDLIFTWEIGHT=#{ratedLiftWeight}</if>
         </set>
         WHERE  REPORTNUMBER=#{reportNumber};
     </update>
@@ -120,9 +122,9 @@
             <if test="workLevel!=null">AND WORKLEVEL=#{workLevel}</if>
             <if test="singlePicURL!=null">AND SINGLEPICURL=#{singlePicURL} </if>
             <if test="typePicURL!=null">AND TYPEPICURL=#{typePicURL}</if>
+            <if test="ratedLiftWeight">AND RATEDLIFTWEIGHT=#{ratedLiftWeight}</if>
         </where>
     </select>
-
     <delete id="delete" parameterType="CraneInspectReport">
         DELETE FROM craneinspectreport
             <where>
@@ -137,7 +139,12 @@
        where addressId=#{addressId}
     </select>
     <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
-  d
+     SELECT
+     cr.*,r.riskValue
+     FROM craneinspectreport cr,riskvalue r
+     WHERE cr.reportnumber=r.reportnumber
+     AND cr.unitAddress=#{unitAddress}
+     GROUP BY cr.equipmentVariety
     </select>
     <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
@@ -223,5 +230,36 @@
     <select id="getEquipmentVarietyList" resultMap="craneInspectReportResultMap">
         SELECT DISTINCT(equipmentvariety)
         FROM craneinspectreport
+    </select>
+
+    <select id="getAvgRiskValueByProvince" parameterType="java.lang.String" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM provinceriskshow prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province}
+    </select>
+    <select id="getAvgRiskValueByProvinceAndCity" parameterType="map" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM provinceriskshow prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province} AND a.city=#{city}
+    </select>
+    <select id="getProvinceAvgRiskValue" resultType="map">
+         SELECT a.province,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+         FROM provinceriskshow prs,address a
+         WHERE a.id=prs.addressid
+         group by a.province order by avgRiskValue desc
+    </select>
+    <select id="getCityAvgRiskValueByProvince" parameterType="java.lang.String" resultType="map">
+         SELECT a.city,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+         FROM provinceriskshow prs,address a
+         WHERE a.id=prs.addressid AND a.province=#{province}
+         group by a.city order by avgRiskValue desc
+    </select>
+    <select id="getAreaAvgRiskValueByProvinceAndCity" parameterType="map" resultType="map">
+        SELECT a.area,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+        FROM address a,provinceriskshow prs
+        where a.id=prs.addressid AND a.province=#{province} AND a.city=#{city}
+        GROUP BY a.area ORDER BY avgRiskValue DESC
     </select>
 </mapper>

@@ -112,6 +112,7 @@ public class CraneInspectReportService {
              craneInspectReport.setSpecification(excelMap.getContents().get(i).get(11));
              craneInspectReport.setpNumber(excelMap.getContents().get(i).get(12));
              craneInspectReport.setWorkLevel(excelMap.getContents().get(i).get(13));
+             craneInspectReport.setRatedLiftWeight(excelMap.getContents().get(i).get(14));
              Map map=getCoordinate(craneInspectReport.getUnitAddress());
              craneInspectReport.setLng(map.get("lng").toString());
              craneInspectReport.setLat(map.get("lat").toString());
@@ -203,5 +204,16 @@ public class CraneInspectReportService {
     }
     public List<Map<String,Float>> getAreaAvgRiskValueByProvinceAndCity(String province,String city){
         return mapper.getAreaAvgRiskValueByProvinceAndCity(province,city);
+    }
+    public static void main(String args[]){
+        float a=Float.parseFloat("a");
+        System.out.println(a);
+    }
+    /*
+        新加入的，Sunhui
+    */
+    public List<CraneInspectReport> getEquipmentVarietyList()
+    {
+        return  mapper.getEquipmentVarietyList();
     }
 }

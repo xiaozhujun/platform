@@ -348,11 +348,6 @@ public class CraneInspectReportServiceWeb {
         List<CraneInspectReport> list=craneInspectReportService.getEquipmentVarietyList();
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-/*    public static void main(String args[]){
-        String s="sfsf\\sdfsf/ssf\\sf";
-        //s=s.replaceAll("\\\\","/");
-        s=s.replace('\\','/');
-        System.out.println(s);
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getProvinceAvgRiskValue")

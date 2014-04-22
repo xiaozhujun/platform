@@ -141,6 +141,7 @@ body{
 .rightitem{
     width:100%;
     height:auto;
+    cursor: pointer;
 }
 .righttop{
     width:100%;
@@ -180,7 +181,7 @@ body{
     margin-top: 10px;
 }
 .itemfont{
-    margin-left: 4px;
+    margin-left: 14px;
     font-size: 15px;
     font-weight: bold;
     color:#888888;

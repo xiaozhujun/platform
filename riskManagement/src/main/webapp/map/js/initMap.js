@@ -2044,15 +2044,37 @@ $.extend({
         var areaData= $.getAreaData();
         $.drawAreaBoundary(province,city,areaData,flag);
     },
-    initProvinceWithDataRule:function initProvinceWithDataRule(country,province,size,flag){
+    initProvinceWithDataRule:function initProvinceWithDataRule(country,size,flag){
         $.initMap(country,size);
         $.clearAllMarker;
-        var provinceArray=$.getProvinceData();
-        $.drawProvinceBoundaryWithDataRule(province,provinceArray,flag);
+        /*var provinceArray=$.getProvinceData();
+        $.drawProvinceBoundaryWithDataRule(province,provinceArray,flag);*/
+        var data ={code:"200",data:[{"province":"辽宁","color":"#FF3300"},{"province":"内蒙古自治区","color":"#33FF00"},{"province":"广西","color":"#FF0000"},
+            {"province":"湖北","color":"#FF3300"},{"province":"云南","color":"#FF3300"}
+        ] }
+        $.getProvinceWithRule(data,flag);
 },
     initCityWithDataRule:function initCityWithDataRule(province,size,flag){
         $.initMap(province,size);
         $.clearAllMarker;
+        /*根据省以及session查出这个人的city*/
+        var data ={code:"200",data:[{"city":"武汉市","color":"#FF0066"},{"city":"黄石市","color":"#33FF00"},{"city":"十堰市","color":"#FF0066"},
+            {"city":"鄂州市","color":"#FF0066"},{"city":"荆门市","color":"#33FF00"}
+        ] }
+        if(province=="湖北"){
+            $.getCityWithRule(province,data,flag);
+        }
+    },
+    initAreaWithDataRule:function initAreaWithDataRule(province,city,size,flag){
+        $.initMap(city,size);
+        $.clearAllMarker;
+        /*根据省和市以及session查出这个人的area*/
+        var data ={code:"200",data:[{"area":"江岸区","color":"#FF0066"},{"area":"江汉区","color":"#33FF00"},{"area":"硚口区","color":"#FF0066"},
+            {"area":"汉阳区","color":"#FF0066"}
+        ] }
+        if(province=="湖北"&&city=="武汉市"){
+            $.getAreaWithRule(province,city,data,flag);
+        }
     },
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);
@@ -2123,5 +2145,147 @@ $.extend({
             }
         });
         transit.search("汉口站",address);
+    },
+    drawProvinceBoundaryWithRule:function drawProvinceBoundaryWithRule(data,flag){
+        var bdary=new BMap.Boundary();
+        bdary.get(data.province,function(rs){
+            console.log(rs);
+            var maxNum=-1,maxPly;
+            var color=data.color;
+            var count=rs.boundaries.length;
+            for(var i=0;i<count;i++){
+                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,strokeColor:"#000000"});
+                map.addOverlay(ply);
+                if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                    ply.addEventListener("click",function(e){
+                        name=data.province;
+                        var latlng=e.point;
+                        var info=new BMap.InfoWindow(name+" "+latlng.lat+","+latlng.lng,{width:220});
+                        map.openInfoWindow(info,latlng);
+                        //高亮闪烁显示鼠标点击的省
+                        delay=0;
+                        for (flashTimes=0;flashTimes<3;flashTimes++){
+                            delay+=400;
+                            setTimeout(function(){
+                                ply.setFillColor("#FFFF00");
+                            },delay);
+
+                            delay+=400;
+                            setTimeout(function(){
+                                ply.setFillColor(color);
+                            },delay);
+                        }
+                        location ="cityRisk.jsp?province="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+                    });
+                }else if(flag==1){
+
+                }
+            }
+            if(maxPly){
+                map.setViewport(maxPly.getPoints());
+            }
+        });
+    },
+    drawCityBoundaryWithRule:function drawCityBoundaryWithRule(province,data,flag){
+        var bdary=new BMap.Boundary();
+        bdary.get(data.city,function(rs){
+            console.log(rs);
+            var maxNum=-1,maxPly;
+            var color=data.color;
+            var count=rs.boundaries.length;
+            for(var i=0;i<count;i++){
+                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,strokeColor:"#000000"});
+                map.addOverlay(ply);
+                if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                    ply.addEventListener("click",function(e){
+                        name=data.city;
+                        var latlng=e.point;
+                        var info=new BMap.InfoWindow(name+" "+latlng.lat+","+latlng.lng,{width:220});
+                        map.openInfoWindow(info,latlng);
+                        //高亮闪烁显示鼠标点击的省
+                        delay=0;
+                        for (flashTimes=0;flashTimes<3;flashTimes++){
+                            delay+=400;
+                            setTimeout(function(){
+                                ply.setFillColor("#FFFF00");
+                            },delay);
+
+                            delay+=400;
+                            setTimeout(function(){
+                                ply.setFillColor(color);
+                            },delay);
+                        }
+                        location="areaRisk.jsp?province="+province+"&city="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+                    });
+                }else if(flag==1){
+
+                }
+            }
+            if(maxPly){
+                map.setViewport(maxPly.getPoints());
+            }
+        });
+    },
+    drawAreaBoundaryWithRule:function drawAreaBoundaryWithRule(province,city,data,flag){
+        var bdary=new BMap.Boundary();
+        bdary.get(data.area,function(rs){
+            console.log(rs);
+            var maxNum=-1,maxPly;
+            var color=data.color;
+            var count=rs.boundaries.length;
+            for(var i=0;i<count;i++){
+                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,strokeColor:"#000000"});
+                map.addOverlay(ply);
+                if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                    ply.addEventListener("click",function(e){
+                        name=data.area;
+                        var latlng=e.point;
+                        var info=new BMap.InfoWindow(name+" "+latlng.lat+","+latlng.lng,{width:220});
+                        map.openInfoWindow(info,latlng);
+                        //高亮闪烁显示鼠标点击的省
+                        delay=0;
+                        for (flashTimes=0;flashTimes<3;flashTimes++){
+                            delay+=400;
+                            setTimeout(function(){
+                                ply.setFillColor("#FFFF00");
+                            },delay);
+
+                            delay+=400;
+                            setTimeout(function(){
+                                ply.setFillColor(color);
+                            },delay);
+                        }
+                        location="companyRisk.jsp?province="+province+"&city="+encodeURI(city)+"&area="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+                    });
+                }else if(flag==1){
+
+                }
+            }
+            if(maxPly){
+                map.setViewport(maxPly.getPoints());
+            }
+        });
+    },
+    getProvinceWithRule:function getProvinceWithRule(data,flag){
+        if(data.code==200){
+            for(i=0;i<data.data.length;i++){
+                $.drawProvinceBoundaryWithRule(data.data[i],flag);
+            }
+        }
+    },
+    getCityWithRule:function getCityWithRule(province,data,flag){
+        if(data.code==200){
+            for(i=0;i<data.data.length;i++){
+                $.drawCityBoundaryWithRule(province,data.data[i],flag);
+            }
+        }
+    },
+    getAreaWithRule:function getAreaWithRule(province,city,data,flag){
+         if(data.code==200){
+             for(i=0;i<data.data.length;i++){
+                 $.drawAreaBoundaryWithRule(province,city,data.data[i],flag);
+             }
+         }
     }
+
 });

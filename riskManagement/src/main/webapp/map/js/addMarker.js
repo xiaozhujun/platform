@@ -258,20 +258,18 @@ $.extend({
                                var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                                $("#rightcontent").append(dataString);
                                var infoFontNum="infofont"+data.data[i].id;
-                               var hideField="hideField"+(this.id).substring(8,(this.id).length);
+                               var hideField="hideField"+data.data[i].id;
                                var address_equipmentvariety=$("#"+hideField).text();
-                               var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
+                               var itemInfo="#itemInfo"+data.data[i].id;
                                $(itemInfo).html("");
                                $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                              /* $(itemInfo).toggle();
                                $("#"+infoFontNum).click(function(){
-                                   var hideField="hideField"+(this.id).substring(8,(this.id).length);
-                                   var address_equipmentvariety=$("#"+hideField).text();
-                                   var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
-                                   $(itemInfo).html("");
-                                   $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                                   $(itemInfo).toggle();
-                               });*/
+                                   if($(itemInfo).hasClass("itemInfo")){
+                                       $(itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
+                                   }else if($(itemInfo).hasClass("itemInfoHide")){
+                                       $(itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
+                                   }
+                               });
                            }
                        }
                    };
@@ -341,20 +339,18 @@ $.extend({
                        var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                        $("#rightcontent").append(dataString);
                        var infoFontNum="infofont"+data.data[i].id;
-                       var hideField="hideField"+(this.id).substring(8,(this.id).length);
+                       var hideField="hideField"+data.data[i].id;
                        var address_equipmentvariety=$("#"+hideField).text();
-                       var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
+                       var itemInfo="#itemInfo"+data.data[i].id;
                        $(itemInfo).html("");
                        $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                       /*$(itemInfo).toggle();
                        $("#"+infoFontNum).click(function(){
-                           var hideField="hideField"+(this.id).substring(8,(this.id).length);
-                           var address_equipmentvariety=$("#"+hideField).text();
-                           var itemInfo="#itemInfo"+(this.id).substring(8,(this.id).length);
-                           $(itemInfo).html("");
-                           $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                           $(itemInfo).toggle();
-                       });*/
+                           if($(itemInfo).hasClass("itemInfo")){
+                               $(itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
+                           }else if($(itemInfo).hasClass("itemInfoHide")){
+                               $(itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
+                           }
+                       });
                    }
                }
            }

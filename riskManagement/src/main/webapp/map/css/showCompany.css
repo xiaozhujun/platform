@@ -212,6 +212,15 @@ body{
     text-align: center;
 }
 .itemInfo{
+    /*display: none;*/
+    width: 400px;
+    height: auto;
+    /*position: absolute;*/
+    /* clear: both;*/
+    border: 1px solid #999999;
+    float: left;
+}
+.itemInfoHide{
     display: none;
     width: 400px;
     height: auto;

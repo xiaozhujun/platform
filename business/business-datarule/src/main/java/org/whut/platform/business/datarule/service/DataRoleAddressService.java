@@ -17,4 +17,5 @@ public class DataRoleAddressService {
     public void add(DataRoleAddress dataRoleAddress){
        dataRoleAddressMapper.add(dataRoleAddress);
     }
+
 }

@@ -121,49 +121,12 @@ transitional.dtd">
 <div style="display:none;">
 </div>
 <script type="text/javascript">
-    var province='<%=request.getParameter("province")%>';
-    var city='<%=URLDecoder.decode(request.getParameter("city"),"utf-8")%>';
-    var area='<%=URLDecoder.decode(request.getParameter("area"),"utf-8")%>';
-    var lat='<%=request.getParameter("lat")%>';
-    var lng='<%=request.getParameter("lng")%>';
-    function pnameCallback(data){
-        if(data.code==200){
-            //$("#rightshow").css("display","block");
-            $("#righttitle").html("");
-            $("#rightcontent").html("");
-            $("#righttitle").append(data.str);
-            for(var i=0;i<data.data.length;i++){
-                var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='_itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div><div class='cl'></div></div>"
-                $("#rightcontent").append(dataString);
-                var infoFontNum="infofont"+data.data[i].id;
-                var hideField="#hideField"+data.data[i].id;
-                var address_equipmentvariety=$(hideField).text();
-                var itemInfo="#itemInfo"+data.data[i].id;
-                $(itemInfo).html("");
-                $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                //$(itemInfo).toggle();
-                $("#"+infoFontNum).click(function(){
-                    var _itemInfo="#itemInfo"+this.id.substring(8,this.id.length);
-                    if($(_itemInfo).hasClass("itemInfo")){
-                        $(_itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
-                    }else if($(_itemInfo).hasClass("itemInfoHide")){
-                        $(_itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
-                    }
-                });
-            }
-        }
-    }
-    function getCraneInspectReportInfoByAddressAndEquipmentCallBack(data){
-            if(data.code==200){
-                var itemInfoId=data.str;
-                for(i=0;i<data.data.length;i++){
-                    var itemInfo="<div class='_info'><span><span class='_infoTitle'><span class='_titleFont'>起重机风险管理平台</span></span><span class='infoImg'><img src='image/qizhongji.jpg'></span><span class='infoMsg'><span class='msgItem'><span class='msgItemFont'>"+data.data[i].equipmentVariety+"</span></span><span class='msgItem'><span class='msgItemFont'>制造许可编号:"+data.data[i].manufactureLicenseNumber+"</span></span><span class='msgItem'><span class='msgItemFont'>组织机构代码:"+data.data[i].unitNumber+"</span></span><span class='msgItem'><span class='msgItemFont'>使用地点:"+data.data[i].userPoint+"</span></span><span class='msgItem'><span class='msgItemFont'>安全管理人员:"+data.data[i].safeManager+"</span></span><span class='msgItem'><span class='msgItemFont'>联系电话:"+data.data[i].contactPhone+"</span></span>" +
-                            "<span class='msgItem'><span class='msgItemFont'>制造单位:"+data.data[i].manufactureUnit+"</span></span><span class='msgItem'><span class='msgItemFont'>使用单位地址:"+data.data[i].unitAddress+"</span></span></span><span class='detailMsg'>查看完整内容</span></div>";
-                         $(itemInfoId).append(itemInfo);
-                }
-            }
-    }
-    function showRiskRankByValueRange(data){
+        var province='<%=request.getParameter("province")%>';
+        var city='<%=URLDecoder.decode(request.getParameter("city"),"utf-8")%>';
+        var area='<%=URLDecoder.decode(request.getParameter("area"),"utf-8")%>';
+        var lat='<%=request.getParameter("lat")%>';
+        var lng='<%=request.getParameter("lng")%>';
+        function showRiskRankByValueRange(data){
         if(data.code==200){
             $("#rankTitle").html("");
             $("#riskrankContent").html("");

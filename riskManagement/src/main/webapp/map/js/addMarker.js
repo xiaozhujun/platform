@@ -71,7 +71,7 @@ $.extend({
 //根据省市区来添加覆盖物以及查询相应的企业信息
     initAndAddMarker:function initAndAddMarker(city,area){
     $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
-    $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"area":area},showRiskRank,"json");
+    $.post($.URL.craneinspectreport.showRiskRank,{"city":city,"area":area}, $.showRiskRank,"json");
     var chaoyangMarker=new Array();
     function areaInfoCallback(data){
         if(data.code==200){
@@ -115,43 +115,12 @@ $.extend({
                 }
                 //创建和初始化地图函数：
                 $.addMarker(chaoyangMarker);//向地图中添加marker
-                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":chaoyangMarker[0].title},pnameCallback,"json");
+                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":chaoyangMarker[0].title}, $.getAreaInfoByUnitAddressCallback,"json");
+
             }
         }
     }
-        function showRiskRank(data){
-            if(data.code==200){
-                $("#rankTitle").html("");
-                $("#riskrankContent").html("");
-                /*var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
-                 $("#rankTitle").append(rankTitle); */
-                if(data.data[0]==undefined){
-                    $("#riskrankContent").append("对不起,数据不存在!");
-                }else{
-                    $("#rankTitle").html("");
-                    $("#riskrankContent").html("");
-                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
-                    $("#rankTitle").append(rankTitle);
-                    var j=1;
-                    for(var i=0;i<data.data.length;i++){
-                        if(i>0){
-                            preValue=data.data[i-1].riskValue;
-                            if(data.data[i].riskValue==preValue)
-                                j=j;
-                            else
-                            {
-                                j++;
-                            }
-                        }
-                        var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
-                        $("#riskrankContent").append(rankContent);
-                    }
-                    for(i=0;i<data.data.length;i++){
-                        $.rightTabMouseEvent("riskcontent"+data.data[i].id);
-                    }
-                }
-            }
-        }
+
 },
         mouseEvent:function mouseEvent(title,content,point,isOpen,icon,i){
             $.addOneMarker(title,content,point,isOpen,icon,i)
@@ -223,12 +192,12 @@ $.extend({
                    }
                    _marker.addEventListener("click",function(){
                        this.openInfoWindow(_iw);
-                       $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title},mapCallback,"json");
+                       $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title}, $.getAreaInfoByUnitAddressCallback,"json");
                    });
                    _marker.addEventListener("mouseover",function(){
                        this.openInfoWindow(_iw);
                        $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoverCallback,"json");
-                       $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title},mapCallback,"json");
+                       $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title}, $.getAreaInfoByUnitAddressCallback,"json");
                    });
                    _marker.addEventListener("mouseout",function(){
                        $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoutCallback,"json");
@@ -245,33 +214,6 @@ $.extend({
                            var riskcontentId="#riskcontent"+data.data[0].id;
                            $(riskcontentId).removeClass("mouseEvent").addClass("riskcontent");
 
-                       }
-                   };
-                   function  mapCallback(data){
-                       if(data.code==200){
-                           //$("#rightshow").css("display","block");
-                           $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
-                           $("#righttitle").html("");
-                           $("#rightcontent").html("");
-                           $("#righttitle").append(data.str);
-                           for(var i=0;i<data.data.length;i++){
-                               var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='_itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
-                               $("#rightcontent").append(dataString);
-                               var infoFontNum="infofont"+data.data[i].id;
-                               var hideField="hideField"+data.data[i].id;
-                               var address_equipmentvariety=$("#"+hideField).text();
-                               var itemInfo="#itemInfo"+data.data[i].id;
-                               $(itemInfo).html("");
-                               $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                               $("#"+infoFontNum).click(function(){
-                                   var _itemInfo="#itemInfo"+this.id.substring(8,this.id.length);
-                                   if($(_itemInfo).hasClass("itemInfo")){
-                                       $(_itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
-                                   }else if($(_itemInfo).hasClass("itemInfoHide")){
-                                       $(_itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
-                                   }
-                               });
-                           }
                        }
                    };
                    _iw.addEventListener("open",function(){
@@ -291,70 +233,112 @@ $.extend({
                })()
        },
        showUnitRiskRank:function showUnitRiskRank(unitAddress){
-           $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},showUnitRiskRankCallback,"json");
-           function showUnitRiskRankCallback(data){
-               if(data.code==200){
-                   $("#rankTitle").html("");
-                   $("#riskrankContent").html("");
-                   /*var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
-                    $("#rankTitle").append(rankTitle); */
-                   if(data.data[0]==undefined){
-                       $("#riskrankContent").append("对不起,数据不存在!");
-                   }else{
-                       $("#rankTitle").html("");
-                       $("riskrankContent").html("");
-                       var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
-                       $("#rankTitle").append(rankTitle);
-                       var j=1;
-                       for(var i=0;i<data.data.length;i++){
-                           if(i>0){
-                               preValue=data.data[i-1].riskValue;
-                               if(data.data[i].riskValue==preValue)
-                                   j=j;
-                               else
-                               {
-                                   j++;
-                               }
-
-                           }
-                           var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
-                           $("#riskrankContent").append(rankContent);
-                       }
-                       for(i=0;i<data.data.length;i++){
-                           $.rightTabMouseEvent("riskcontent"+data.data[i].id);
-                       }
-                   }
-               }
-           }
+           $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress}, $.showUnitRiskRankCallback,"json");
        },
        showRiskInfo:function showRiskInfo(unit){
-        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unit},mapCallback,"json");
-           function  mapCallback(data){
-               if(data.code==200){
-                   //$("#rightshow").css("display","block");
-                   $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
-                   $("#righttitle").html("");
-                   $("#rightcontent").html("");
-                   $("#righttitle").append(data.str);
-                   for(var i=0;i<data.data.length;i++){
-                       var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='_itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
-                       $("#rightcontent").append(dataString);
-                       var infoFontNum="infofont"+data.data[i].id;
-                       var hideField="hideField"+data.data[i].id;
-                       var address_equipmentvariety=$("#"+hideField).text();
-                       var itemInfo="#itemInfo"+data.data[i].id;
-                       $(itemInfo).html("");
-                       $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo},getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
-                       $("#"+infoFontNum).click(function(){
-                           var _itemInfo="#itemInfo"+this.id.substring(8,this.id.length);
-                           if($(_itemInfo).hasClass("itemInfo")){
-                               $(_itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
-                           }else if($(_itemInfo).hasClass("itemInfoHide")){
-                               $(_itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
-                           }
-                       });
-                   }
-               }
-           }
+        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unit}, $.getAreaInfoByUnitAddressCallback,"json");
+    },
+     rightShowInfoClick:function rightShowInfoClick(infoFontNum){
+         $("#"+infoFontNum).click(function(){
+             var _itemInfo="#itemInfo"+this.id.substring(8,this.id.length);
+             if($(_itemInfo).hasClass("itemInfo")){
+                 $(_itemInfo).removeClass("itemInfo").addClass("itemInfoHide");
+             }else if($(_itemInfo).hasClass("itemInfoHide")){
+                 $(_itemInfo).removeClass("itemInfoHide").addClass("itemInfo");
+             }
+         });
+     },
+    getAreaInfoByUnitAddressCallback:function getAreaInfoByUnitAddressCallback(data){
+      if(data.code==200){
+        $("#righttitle").html("");
+        $("#rightcontent").html("");
+        $("#righttitle").append(data.str);
+        for(var i=0;i<data.data.length;i++){
+            var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='_itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div><div class='cl'></div></div>"
+            $("#rightcontent").append(dataString);
+            var infoFontNum="infofont"+data.data[i].id;
+            var hideField="#hideField"+data.data[i].id;
+            var address_equipmentvariety=$(hideField).text();
+            var itemInfo="#itemInfo"+data.data[i].id;
+            $(itemInfo).html("");
+            $.post($.URL.craneinspectreport.getCraneInspectReportInfoByAddressAndEquipment,{"address_equipmentvariety":address_equipmentvariety,"itemInfoId":itemInfo}, $.getCraneInspectReportInfoByAddressAndEquipmentCallBack,"json");
+            $.rightShowInfoClick(infoFontNum);
+
+        }
     }
+},
+    getCraneInspectReportInfoByAddressAndEquipmentCallBack:function getCraneInspectReportInfoByAddressAndEquipmentCallBack(data){
+    if(data.code==200){
+        var itemInfoId=data.str;
+        for(i=0;i<data.data.length;i++){
+            var itemInfo="<div class='_info'><span><span class='_infoTitle'><span class='_titleFont'>起重机风险管理平台</span></span><span class='infoImg'><img src='image/qizhongji.jpg'></span><span class='infoMsg'><span class='msgItem'><span class='msgItemFont'>"+data.data[i].equipmentVariety+"</span></span><span class='msgItem'><span class='msgItemFont'>制造许可编号:"+data.data[i].manufactureLicenseNumber+"</span></span><span class='msgItem'><span class='msgItemFont'>组织机构代码:"+data.data[i].unitNumber+"</span></span><span class='msgItem'><span class='msgItemFont'>使用地点:"+data.data[i].userPoint+"</span></span><span class='msgItem'><span class='msgItemFont'>安全管理人员:"+data.data[i].safeManager+"</span></span><span class='msgItem'><span class='msgItemFont'>联系电话:"+data.data[i].contactPhone+"</span></span>" +
+                "<span class='msgItem'><span class='msgItemFont'>制造单位:"+data.data[i].manufactureUnit+"</span></span><span class='msgItem'><span class='msgItemFont'>使用单位地址:"+data.data[i].unitAddress+"</span></span></span><span class='detailMsg'>查看完整内容</span></div>";
+            $(itemInfoId).append(itemInfo);
+        }
+    }
+},
+    showUnitRiskRankCallback:function showUnitRiskRankCallback(data){
+    if(data.code==200){
+        $("#rankTitle").html("");
+        $("#riskrankContent").html("");
+        if(data.data[0]==undefined){
+            $("#riskrankContent").append("对不起,数据不存在!");
+        }else{
+            $("#rankTitle").html("");
+            $("riskrankContent").html("");
+            var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+            $("#rankTitle").append(rankTitle);
+            var j=1;
+            for(var i=0;i<data.data.length;i++){
+                if(i>0){
+                    preValue=data.data[i-1].riskValue;
+                    if(data.data[i].riskValue==preValue)
+                        j=j;
+                    else
+                    {
+                        j++;
+                    }
+
+                }
+                var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                $("#riskrankContent").append(rankContent);
+            }
+            for(i=0;i<data.data.length;i++){
+                $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+            }
+        }
+    }
+},
+    showRiskRank:function showRiskRank(data){
+    if(data.code==200){
+        $("#rankTitle").html("");
+        $("#riskrankContent").html("");
+        if(data.data[0]==undefined){
+            $("#riskrankContent").append("对不起,数据不存在!");
+        }else{
+            $("#rankTitle").html("");
+            $("#riskrankContent").html("");
+            var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+            $("#rankTitle").append(rankTitle);
+            var j=1;
+            for(var i=0;i<data.data.length;i++){
+                if(i>0){
+                    preValue=data.data[i-1].riskValue;
+                    if(data.data[i].riskValue==preValue)
+                        j=j;
+                    else
+                    {
+                        j++;
+                    }
+                }
+                var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                $("#riskrankContent").append(rankContent);
+            }
+            for(i=0;i<data.data.length;i++){
+                $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+            }
+        }
+    }
+}
+
 });

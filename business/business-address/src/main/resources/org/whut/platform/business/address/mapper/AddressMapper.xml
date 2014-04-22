@@ -86,6 +86,23 @@
             </if>
         </where>
     </select>
+    <select id="findIdByProvinceCity" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM address
+        <where>
+            <if test="province != null">
+                PROVINCE=#{province}
+            </if>
+            <if test="city != null">
+                and CITY=#{city}
+            </if>
+        </where>
+    </select>
+    <select id="findIdByProvince" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT id
+        FROM address
+        WHERE PROVINCE=#{province}
+    </select>
     <select id="findIdByCityArea" parameterType="map" resultType="java.lang.Long">
         SELECT
         id

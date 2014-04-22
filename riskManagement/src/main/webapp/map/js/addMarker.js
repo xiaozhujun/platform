@@ -255,7 +255,7 @@ $.extend({
                            $("#rightcontent").html("");
                            $("#righttitle").append(data.str);
                            for(var i=0;i<data.data.length;i++){
-                               var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                               var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                                $("#rightcontent").append(dataString);
                                var infoFontNum="infofont"+data.data[i].id;
                                $("#"+infoFontNum).click(function(){
@@ -332,7 +332,7 @@ $.extend({
                    $("#rightcontent").html("");
                    $("#righttitle").append(data.str);
                    for(var i=0;i<data.data.length;i++){
-                       var dataString="<div class='rightitem'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span><span class='infofont' id='infofont"+data.data[i].id+"'>详情</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
+                       var dataString="<div class='rightitem' id='infofont"+data.data[i].id+"'><div class='righttop'><span class='pic'><img src='image/qizhongji.jpg'></span><span class='info'><span class='itemfont'>"+data.data[i].equipmentVariety+"</span><span class='itemfont'>风险值:"+data.data[i].riskValue+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+data.data[i].unitAddress+","+data.data[i].equipmentVariety+"</span></div><div class='itemInfo' id='itemInfo"+data.data[i].id+"'></div></div>"
                        $("#rightcontent").append(dataString);
                        var infoFontNum="infofont"+data.data[i].id;
                        $("#"+infoFontNum).click(function(){

@@ -55,6 +55,7 @@ transitional.dtd">
 </script>
 <script type="text/javascript" src="map/js/initMap.js"></script>
 <script type="text/javascript">
+    /*先根据这个传过来的省以及session来查出其授权的市*/
     $.initCity(province,8,0);
 </script>
 </body>

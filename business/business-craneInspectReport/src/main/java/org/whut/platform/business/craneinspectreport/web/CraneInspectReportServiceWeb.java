@@ -350,14 +350,14 @@ public class CraneInspectReportServiceWeb {
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getCityAvgRiskValueByProvince")
-    @GET
+    @POST
     public String getCityAvgRiskValueByProvince(@FormParam("province") String province){
         List<Map<String,Float>> list=craneInspectReportService.getCityAvgRiskValueByProvince(province);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getAreaAvgRiskValueByProvinceAndCity")
-    @GET
+    @POST
     public String getAreaAvgRiskValueByProvinceAndCity(@FormParam("province") String province,@FormParam("city") String city){
         List<Map<String,Float>> list=craneInspectReportService.getAreaAvgRiskValueByProvinceAndCity(province,city);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);

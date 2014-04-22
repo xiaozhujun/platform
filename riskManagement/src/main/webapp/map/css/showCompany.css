@@ -76,7 +76,7 @@ body{
 }
 .searchShow{
     background-color: #F7F7F7;
-    width: 71%;
+    width: 100%;
     height: 40px;
     border-bottom: 1px solid #999999;
     z-index: 1;
@@ -141,6 +141,7 @@ body{
 .rightitem{
     width:100%;
     height:auto;
+    cursor: pointer;
 }
 .righttop{
     width:100%;
@@ -158,6 +159,7 @@ body{
     height: 80px;
     display: inline-block;
     float: left;
+    margin-left: 4px;
 }
 .info{
     width: 260px;
@@ -180,10 +182,16 @@ body{
     margin-top: 10px;
 }
 .itemfont{
-    margin-left: 4px;
+    margin-left: 6px;
     font-size: 15px;
     font-weight: bold;
     color:#888888;
+}
+._itemfont{
+    font-size: 15px;
+    font-weight: bold;
+    color:#888888;
+    margin-left: 50px;
 }
 .titleFont{
     margin-left: 4px;
@@ -211,6 +219,15 @@ body{
     text-align: center;
 }
 .itemInfo{
+    /*display: none;*/
+    width: 400px;
+    height: auto;
+    /*position: absolute;*/
+    /* clear: both;*/
+    border: 1px solid #999999;
+    float: left;
+}
+.itemInfoHide{
     display: none;
     width: 400px;
     height: auto;

@@ -40,14 +40,12 @@ $.extend({
         $.addMapControl();//向地图添加控件
     },
     provinceData:function provinceData(){
-        var provinceArray = [
-            "广西-#FF0000", "广东-#FF3300", "湖南-#FF0000", "贵州-#FF3300", "云南-#FF3300",
-            "福建-#FF0066", "江西-#FF3300", "浙江-#33FF00", "安徽-#FF0000", "湖北-#FF0066",
-            "河南-#33FF00", "江苏-#FF0000", "四川-#FF0000", "海南省-#FF3300", "山东-#FF0066", "辽宁-#FF3300",
-            "新疆-#FF0000", "西藏-#33FF00", "陕西-#FF0000", "河北-#33FF00", "黑龙江-#FF3300", "宁夏-#FF3300",
-            "内蒙古自治区-#33FF00", "青海-#FF3300", "甘肃-#33FF00", "山西-#FF0066", "吉林省-#33FF00",
-            "北京-#FBC5DC", "天津-#33FF00", "上海-#FF0000", "重庆市-#33FF00", "香港-#C8C1E3"
-        ];
+        var provinceArray ={liaonings:["辽宁-#FF3300"],neimenggus:["内蒙古自治区-#33FF00"],guangxis:["广西-#FF0000"],guangdongs:["广东-#FF3300"],hunans:["湖南-#FF0000"],
+            guizhous:["贵州-#FF3300"],yunnans:["云南-#FF3300"],fujians:["福建-#FF0066"],jiangxis:["江西-#FF3300"],zhejiangs:["浙江-#33FF00"],anhuis:["安徽-#FF0000"],hubeis:["湖北-#FF0066"],henans:["河南-#33FF00"],jiangsus:["江苏-#FF0000"],
+            sichuans:["四川-#FF0000"],hainans:["海南省-#FF3300"],shandongs:["山东-#FF0066"],xinjiangs:["辽宁-#FF3300"],xizangs:["西藏-#33FF00"],shanxis:["陕西-#FF0000"] ,hebeis:["河北-#33FF00"]
+            ,heilongjiangs:["黑龙江-#FF3300"], ningxias:["宁夏-#FF3300"],qinghais:["青海-#FF3300"],gansus:["甘肃-#33FF00"],shanxishengs:["山西-#FF0066"],jilins:["吉林省-#33FF00"],beijings:["北京-#FBC5DC"],tianjins:["天津-#33FF00"],shanghais:["上海-#FF0000"],chongqins:["重庆市-#33FF00"],
+            xianggangs:["香港-#C8C1E3"]
+        }
         return provinceArray;
     },
     getProvinceData:function getProvinceData(){
@@ -110,8 +108,78 @@ $.extend({
     getCityData:function getCityData(){
         return $.cityData();
     },
+    drawProvinceBoundaryWithDataRule:function drawProvinceBoundaryWithDataRule(province,provinceArray,flag){
+        if(province=="辽宁省"){
+            $.drawColor(null,null,provinceArray.liaonings,flag);
+        }else if(province=="内蒙古自治区"){
+            $.drawColor(null,null,provinceArray.neimenggus,flag);
+        }else if(province=="广西"){
+            $.drawColor(null,null,provinceArray.guangxis,flag);
+        }else if(province=="广东"){
+            $.drawColor(null,null,provinceArray.guangdongs,flag);
+        }else if(province=="湖南"){
+            $.drawColor(null,null,provinceArray.hunans,flag);
+        }else if(province=="贵州"){
+            $.drawColor(null,null,provinceArray.guizhous,flag);
+        }else if(province=="云南"){
+            $.drawColor(null,null,provinceArray.yunnans,flag);
+        }else if(province=="福建"){
+            $.drawColor(null,null,provinceArray.fujians,flag);
+        }else if(province=="江西"){
+            $.drawColor(null,null,provinceArray.jiangxis,flag);
+        }else if(province=="浙江"){
+            $.drawColor(null,null,provinceArray.zhejiangs,flag);
+        }else if(province=="安徽"){
+            $.drawColor(null,null,provinceArray.anhuis,flag);
+        }else if(province=="湖北"){
+            $.drawColor(null,null,provinceArray.hubeis,flag);
+        }else if(province=="河南"){
+            $.drawColor(null,null,provinceArray.henans,flag);
+        }else if(province=="江苏"){
+            $.drawColor(null,null,provinceArray.jiangsus,flag);
+        }else if(province=="四川"){
+            $.drawColor(null,null,provinceArray.sichuans,flag);
+        }else if(province=="海南省"){
+            $.drawColor(null,null,provinceArray.hainans,flag);
+        }else if(province=="山东"){
+            $.drawColor(null,null,provinceArray.shandongs,flag);
+        }else if(province=="辽宁"){
+            $.drawColor(null,null,provinceArray.liaonings,flag);
+        }else if(province=="新疆"){
+            $.drawColor(null,null,provinceArray.xinjiangs,flag);
+        }else if(province=="西藏"){
+            $.drawColor(null,null,provinceArray.xizangs,flag);
+        }else if(province=="陕西"){
+            $.drawColor(null,null,provinceArray.shanxis,flag);
+        }else if(province=="河北"){
+            $.drawColor(null,null,provinceArray.hebeis,flag);
+        }else if(province=="黑龙江"){
+            $.drawColor(null,null,provinceArray.heilongjiangs,flag);
+        }else if(province=="宁夏"){
+            $.drawColor(null,null,provinceArray.ningxias,flag);
+        }else if(province=="青海"){
+            $.drawColor(null,null,provinceArray.qinghais,flag);
+        }else if(province=="甘肃"){
+            $.drawColor(null,null,provinceArray.gansus,flag);
+        }else if(province=="山西"){
+            $.drawColor(null,null,provinceArray.shanxishengs,flag);
+        }else if(province=="吉林省"){
+            $.drawColor(null,null,provinceArray.jilins,flag);
+        }else if(province=="北京"){
+            $.drawColor(null,null,provinceArray.beijings,flag);
+        }else if(province=="天津"){
+            $.drawColor(null,null,provinceArray.tianjins,flag);
+        }else if(province=="上海"){
+            $.drawColor(null,null,provinceArray.shanghais,flag);
+        }else if(province=="重庆市"){
+            $.drawColor(null,null,provinceArray.chongqins,flag);
+        }else if(province=="香港"){
+            $.drawColor(null,null,provinceArray.xianggangs,flag);
+        }
+    },
     drawCityBoundary:function drawCityBoundary(province,cityArray,flag){
         if(province=="辽宁省"){
+            /*在数据库中查出所属于的city*/
             $.drawColor("辽宁省",null,cityArray.liaonings,flag);
         }else if(province=="内蒙古自治区"){
             $.drawColor("内蒙古自治区",null,cityArray.neimenggus,flag);
@@ -1890,8 +1958,11 @@ $.extend({
             for(var i=0;i<array.length;i++){
                 $.getBoundary(province,city,array[i],flag);
             }
+        }else if(province==null&&city==null){
+            for(var i=0;i<array.length;i++){
+                $.getBoundary(null,null,array[i],flag);
+            }
         }
-
 },
     getBoundary:function getBoundary(province,city,data,flag){
     if(province!=null&&city==null){
@@ -1972,6 +2043,16 @@ $.extend({
         $.clearAllMarker;
         var areaData= $.getAreaData();
         $.drawAreaBoundary(province,city,areaData,flag);
+    },
+    initProvinceWithDataRule:function initProvinceWithDataRule(country,province,size,flag){
+        $.initMap(country,size);
+        $.clearAllMarker;
+        var provinceArray=$.getProvinceData();
+        $.drawProvinceBoundaryWithDataRule(province,provinceArray,flag);
+},
+    initCityWithDataRule:function initCityWithDataRule(province,size,flag){
+        $.initMap(province,size);
+        $.clearAllMarker;
     },
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);

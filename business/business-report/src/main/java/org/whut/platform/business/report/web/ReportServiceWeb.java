@@ -126,7 +126,7 @@ public class ReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String exportCraneReport(@PathParam("data") String data)
     {
-        System.out.println(data+"data哈哈");
+
         /*data=excel,湖北,武汉市,江岸区,湖北省武汉市江岸区赵家条319号,4,6,汽车起重机,0,200*/
         String[] datalist=data.split(",");
         String type=datalist[0].split("=")[1];

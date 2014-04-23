@@ -3,7 +3,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
-import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import javax.ws.rs.*;
@@ -24,8 +23,6 @@ public class AddressServiceWeb {
     private static PlatformLogger logger = PlatformLogger.getLogger(AddressServiceWeb.class);
     @Autowired
     private AddressService addressService;
-    @Autowired
-    private UserService userService;
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("findByID/{id}")
@@ -127,29 +124,6 @@ public class AddressServiceWeb {
          List<Address> proviceList=addressService.getProvinceList();
          return JsonResultUtils.getObjectResultByStringAsDefault(proviceList,JsonResultUtils.Code.SUCCESS);
     }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/getProvinceWithDataRule")
-    public String getProvinceWithDataRule(){
-          String userName=userService.getMyUserDetailFromSession().getUsername();
-          List<Address> list=addressService.getProvinceWithDataRule(userName);
-          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
-    }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/getCityWithDataRule")
-    public String getCityWithDataRule(@FormParam("province") String province){
-        String userName=userService.getMyUserDetailFromSession().getUsername();
-        List<Address> list=addressService.getCityWithDataRule(province,userName);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
-    }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/getAreaWithDataRule")
-    public String getAreaWithDataRule(@FormParam("province") String province,@FormParam("city")String city){
-        String userName=userService.getMyUserDetailFromSession().getUsername();
-        List<Address> list=addressService.getAreaWithDataRule(province,city,userName);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
-    }
+
 
 }

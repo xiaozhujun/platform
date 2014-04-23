@@ -68,6 +68,12 @@
         "dataRule":{
             "add":"rs/dataRule/addDataRole",
             "list":"rs/dataRule/list"
+
+        },
+        "dataRuleAddress":{
+            "getProvinceAndColorWithDataRole":"rs/dataRuleAddress/getProvinceAndColorWithDataRole",
+            "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
+            "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole"
         }
     }
 })(jQuery);

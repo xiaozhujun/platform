@@ -2049,32 +2049,49 @@ $.extend({
         $.clearAllMarker;
         /*var provinceArray=$.getProvinceData();
         $.drawProvinceBoundaryWithDataRule(province,provinceArray,flag);*/
-        var data ={code:"200",data:[{"province":"辽宁","color":"#FF3300"},{"province":"内蒙古自治区","color":"#33FF00"},{"province":"广西","color":"#FF0000"},
+        $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceCallBack,"json");
+        function getProvinceCallBack(data){
+            $.getProvinceWithRule(data,flag);
+        }
+     /*   var data ={code:"200",data:[{"province":"辽宁","color":"#FF3300"},{"province":"内蒙古自治区","color":"#33FF00"},{"province":"广西","color":"#FF0000"},
             {"province":"湖北","color":"#FF3300"},{"province":"云南","color":"#FF3300"}
         ] }
-        $.getProvinceWithRule(data,flag);
+        $.getProvinceWithRule(data,flag);*/
 },
     initCityWithDataRule:function initCityWithDataRule(province,size,flag){
         $.initMap(province,size);
         $.clearAllMarker;
         /*根据省以及session查出这个人的city*/
-        var data ={code:"200",data:[{"city":"武汉市","color":"#FF0066"},{"city":"黄石市","color":"#33FF00"},{"city":"十堰市","color":"#FF0066"},
+        var jsonString={};
+        jsonString.province=province.val();
+        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,jsonString,getCityCallBack,"json");
+        function getCityCallBack(data){
+            $.getCityWithRule(province,data,flag);
+        }
+/*        var data ={code:"200",data:[{"city":"武汉市","color":"#FF0066"},{"city":"黄石市","color":"#33FF00"},{"city":"十堰市","color":"#FF0066"},
             {"city":"鄂州市","color":"#FF0066"},{"city":"荆门市","color":"#33FF00"}
         ] }
         if(province=="湖北"){
             $.getCityWithRule(province,data,flag);
-        }
+        }*/
     },
     initAreaWithDataRule:function initAreaWithDataRule(province,city,size,flag){
         $.initMap(city,size);
         $.clearAllMarker;
         /*根据省和市以及session查出这个人的area*/
-        var data ={code:"200",data:[{"area":"江岸区","color":"#FF0066"},{"area":"江汉区","color":"#33FF00"},{"area":"硚口区","color":"#FF0066"},
+        var jsonString={};
+        jsonString.province=province.val();
+        jsonString.city=city.val();
+        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,jsonString,getAreaCallBack,"json");
+        function getAreaCallBack(data){
+            $.getAreaWithRule(province,city,data,flag);
+        }
+/*        var data ={code:"200",data:[{"area":"江岸区","color":"#FF0066"},{"area":"江汉区","color":"#33FF00"},{"area":"硚口区","color":"#FF0066"},
             {"area":"汉阳区","color":"#FF0066"}
         ] }
         if(province=="湖北"&&city=="武汉市"){
             $.getAreaWithRule(province,city,data,flag);
-        }
+        }*/
     },
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);

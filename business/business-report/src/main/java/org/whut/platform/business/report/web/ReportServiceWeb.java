@@ -76,7 +76,7 @@ public class ReportServiceWeb {
     @Path("/showCraneReport")
     @POST
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    public String showCraneReport(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area,@FormParam("unitaddress") String unitaddress,@FormParam("riskvalue") String riskvalue,@FormParam("equipmentvariety") String equipmentvariety){
+    public String showCraneReport(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area,@FormParam("unitaddress") String unitaddress,@FormParam("riskvalueareaslider") String riskvalueareaslider,@FormParam("equipmentvariety") String equipmentvariety,@FormParam("minweight") String minweight,@FormParam("maxweight") String maxweight){
      /*
      这个例子主要是展示传入一个sql语句，显示html格式的报表
       */
@@ -88,19 +88,14 @@ public class ReportServiceWeb {
         String whereCranevariety="";
         String whereUnitaddress="";
         String whereRiskvalue="";
-        String subreport="";
-        if (!province.equals("")&&!province.equals("请选择"))
-        {
-        subreport="citychart.jasper";
-        }
-        if(!city.equals("")&&!city.equals("请选择"))
-        {
-            subreport="areachart.jasper";
-        }
+        String whereWeightLevel="";
+        String[] values= riskvalueareaslider.split(";");
+        float startValue = Float.parseFloat(values[0]);
+        float endValue=Float.parseFloat(values[1]);
+      /* subreport="areachart.jasper";*/
         if(!(area.trim()).equals("")&&!area.equals("请选择"))
         {
             whereArea=" and area="+"\""+area+"\"";
-            subreport="blankchart.jasper";
         }
         if(!(unitaddress.trim()).equals("")&&!unitaddress.equals("请选择"))
         {
@@ -110,20 +105,18 @@ public class ReportServiceWeb {
         {
             whereCranevariety=" and equipmentvariety="+"\""+equipmentvariety+"\"";
         }
-        if(!riskvalue.equals("")&&!riskvalue.equals("请选择"))
-        {
-            whereRiskvalue=" and riskvalue="+riskvalue;
-        }
+        whereWeightLevel=" and ratedliftweight>="+minweight+" and ratedliftweight<="+maxweight;
+        whereRiskvalue=" and riskvalue>="+startValue+" and riskvalue<="+endValue;
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
-        parameter.put("Subreport",subreport);
         parameter.put("Province",province);
         parameter.put("City",city);
         parameter.put("whereArea",whereArea);
         parameter.put("whereCranevariety",whereCranevariety);
         parameter.put("whereUnitaddress",whereUnitaddress);
         parameter.put("whereRiskvalue",whereRiskvalue);
+        parameter.put("whereWeightLevel",whereWeightLevel);
         platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -133,55 +126,49 @@ public class ReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String exportCraneReport(@PathParam("data") String data)
     {
+        System.out.println(data+"data哈哈");
+        /*data=excel,湖北,武汉市,江岸区,湖北省武汉市江岸区赵家条319号,4,6,汽车起重机,0,200*/
         String[] datalist=data.split(",");
         String type=datalist[0].split("=")[1];
         String province=datalist[1];
         String city=datalist[2];
         String area=datalist[3];
         String unitaddress=datalist[4];
-        String riskvalue=datalist[5];
-        String equipmentvariety=datalist[6];
+        String startvalue=datalist[5];
+        String endvalue=datalist[6];
+        String equipmentvariety=datalist[7];
+        String minweight=datalist[8];
+        String maxweight=datalist[9];
         String whereArea="";
         String whereCranevariety="";
         String whereUnitaddress="";
         String whereRiskvalue="";
-        String subreport="";
-        System.out.println("风险值"+riskvalue);
-        province="湖北";
-        city="武汉市";
-        if(province.equals(""))
-        {
-            return showChinaChart();
-        }
-        else
-        {
-            subreport="citychart.jasper";
-        }
-        if(!city.equals(""))
-        {
-            subreport="areachart.jasper";
-        }
-        if(!(area.trim()).equals(""))
+        String whereWeightLevel="";
+        if(!(area.trim()).equals("")&&!area.equals("请选择"))
         {
             whereArea=" and area="+"\""+area+"\"";
-            subreport="blankchart.jasper";
         }
-        if(!(unitaddress.trim()).equals(""))
+        if(!(unitaddress.trim()).equals("")&&!unitaddress.equals("请选择"))
         {
             whereUnitaddress=" and unitaddress="+"\""+unitaddress+"\"";
         }
-        if(!(equipmentvariety.trim()).equals(""))
+        if(!(equipmentvariety.trim()).equals("")&&!equipmentvariety.equals("请选择"))
         {
             whereCranevariety=" and equipmentvariety="+"\""+equipmentvariety+"\"";
         }
-        if(!(riskvalue.trim()).equals(""))
-        {
-            whereRiskvalue=" and riskvalue="+riskvalue;
-        }
+        whereWeightLevel=" and ratedliftweight>="+minweight+" and ratedliftweight<="+maxweight;
+        whereRiskvalue=" and riskvalue>="+startvalue+" and riskvalue<="+endvalue;
+        System.out.println(type+"type");
+        System.out.println(whereArea+"whereArea哈哈");
+        System.out.println(whereCranevariety+"whereCranevariety哈哈");
+        System.out.println(whereUnitaddress+"whereUnitaddress哈哈");
+        System.out.println(whereRiskvalue+"whereRiskvalue哈哈");
+        System.out.println(whereWeightLevel+"whereWeightLevel哈哈");
+        System.out.println(city+"city哈哈");
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
-        parameter.put("Subreport",subreport);
+        parameter.put("whereWeightLevel",whereWeightLevel);
         parameter.put("Province",province);
         parameter.put("City",city);
         parameter.put("whereArea",whereArea);
@@ -195,7 +182,7 @@ public class ReportServiceWeb {
     }
 
     @Path("/showChinaChart")
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String showChinaChart(){
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/chart/chinachart.jasper");
@@ -209,12 +196,12 @@ public class ReportServiceWeb {
     @Path("/showProvinceRiskValue")
     @POST
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    public String showChinaChart(@FormParam("province") String province){
+    public String showProvinceRiskValue(@FormParam("province") String province){
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/getCityRiskValueByProvince.jasper");
         System.out.print(reportTemplate);
         Map parameter=new HashMap();
         parameter.put("province",province);
-        System.out.print(province);
+        /*System.out.print(province);*/
         platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils

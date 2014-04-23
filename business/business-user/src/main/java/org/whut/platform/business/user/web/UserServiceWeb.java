@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.whut.platform.business.datarule.entity.UserDataRole;
+import org.whut.platform.business.datarule.service.DataRoleService;
+import org.whut.platform.business.datarule.service.UserDataRoleService;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
@@ -38,12 +41,15 @@ public class UserServiceWeb {
     private UserAuthorityService userAuthorityService;
     @Autowired
     private AuthorityService authorityService;
-
+    @Autowired
+    private DataRoleService dataRoleService;
+    @Autowired
+    private UserDataRoleService userDataRoleService;
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("password") String password,@FormParam("sex") String sex,@FormParam("role") String role){
-        if(name==null || password=="" || password.trim().equals("") || sex.trim().equals("") || role.trim().equals("")){
+    public String add(@FormParam("name") String name,@FormParam("password") String password,@FormParam("sex") String sex,@FormParam("role") String role,@FormParam("dataRole") String dataRole){
+        if(name==null ||name.trim().equals("")|| password==null|| password.trim().equals("") ||sex==null|| sex.trim().equals("")||role==null|| role.trim().equals("")||dataRole==null||dataRole.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long id;
@@ -70,6 +76,16 @@ public class UserServiceWeb {
                 userAuthority.setUserName(name);
                 userAuthority.setAuthorityName(roleArray[i]);
                 userAuthorityService.add(userAuthority);
+            }
+            String[] dataRoleArray = dataRole.split(";");
+            for(int i=0;i<dataRoleArray.length;i++){
+                long dRoleId = dataRoleService.getIdByName(dataRoleArray[i]);
+                UserDataRole userDataRole = new UserDataRole();
+                userDataRole.setUserId(userId);
+                userDataRole.setDRoleId(dRoleId);
+                userDataRole.setUserName(name);
+                userDataRole.setDRoleName(dataRoleArray[i]);
+                userDataRoleService.add(userDataRole);
             }
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }

@@ -3,6 +3,8 @@ package org.whut.platform.business.datarule.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.datarule.entity.DataRole;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -21,5 +23,9 @@ public class DataRoleService {
 
     public long getIdByName(String name){
         return  dataRoleMapper.getIdByName(name);
+    }
+
+    public List<DataRole> list(){
+        return dataRoleMapper.list();
     }
 }

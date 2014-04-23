@@ -158,13 +158,6 @@ public class ReportServiceWeb {
         }
         whereWeightLevel=" and ratedliftweight>="+minweight+" and ratedliftweight<="+maxweight;
         whereRiskvalue=" and riskvalue>="+startvalue+" and riskvalue<="+endvalue;
-        System.out.println(type+"type");
-        System.out.println(whereArea+"whereArea哈哈");
-        System.out.println(whereCranevariety+"whereCranevariety哈哈");
-        System.out.println(whereUnitaddress+"whereUnitaddress哈哈");
-        System.out.println(whereRiskvalue+"whereRiskvalue哈哈");
-        System.out.println(whereWeightLevel+"whereWeightLevel哈哈");
-        System.out.println(city+"city哈哈");
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));

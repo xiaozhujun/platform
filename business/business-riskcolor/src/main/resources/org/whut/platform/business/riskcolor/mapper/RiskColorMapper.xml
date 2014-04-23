@@ -75,4 +75,9 @@
         SET RISKCOLOR=#{riskColor}
         WHERE RISKVALUE = #{riskValue}
     </update>
+    <select id="getRiskValueList" resultMap="riskColorResultMap">
+        SELECT DISTINCT(riskvalue)
+        FROM riskcolor
+        ORDER BY riskvalue
+    </select>
 </mapper>

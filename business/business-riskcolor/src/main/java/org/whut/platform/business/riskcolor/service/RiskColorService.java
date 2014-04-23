@@ -28,4 +28,8 @@ public class RiskColorService {
     public int update(RiskColor riskColor){
         return  riskColorMapper.update(riskColor);
     }
+    public List<RiskColor> getRiskValueList()
+    {
+        return  riskColorMapper.getRiskValueList();
+    }
 }

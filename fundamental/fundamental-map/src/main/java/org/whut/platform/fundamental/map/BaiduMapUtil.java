@@ -99,11 +99,11 @@ public class BaiduMapUtil {
         return map;
     }
     public static void main(String[] args) throws IOException {
-        BaiduMapUtil baiduMapUtil = new BaiduMapUtil();
-       /* Map map=baiduMapUtil.getCoordinate("湖北省 武汉市 新洲区");
-        System.out.print(map.get("lng")+""+map.get("lat"));*/
-        Map map=baiduMapUtil.getAround(30.857224,114.587311,6621.525348039403);
-        System.out.print(map.get("maxLng")+","+map.get("maxLat")+","+map.get("minLng")+","+map.get("minLat"));
+       BaiduMapUtil baiduMapUtil = new BaiduMapUtil();
+       Map map=baiduMapUtil.getCoordinate("中国台湾");
+        System.out.print(map.get("lng")+","+map.get("lat"));
+       /* Map map=baiduMapUtil.getAround(30.857224,114.587311,6621.525348039403);
+        System.out.print(map.get("maxLng")+","+map.get("maxLat")+","+map.get("minLng")+","+map.get("minLat"));*/
     }
 }
 

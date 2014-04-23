@@ -209,4 +209,11 @@ public class CraneInspectReportService {
         float a=Float.parseFloat("a");
         System.out.println(a);
     }
+    /*
+        新加入的，Sunhui
+    */
+    public List<CraneInspectReport> getEquipmentVarietyList()
+    {
+        return  mapper.getEquipmentVarietyList();
+    }
 }

@@ -66,7 +66,8 @@
             "setColor":"rs/riskColor/setColor"
         },
         "dataRule":{
-            "add":"rs/dataRule/addDataRole"
+            "add":"rs/dataRule/addDataRole",
+            "list":"rs/dataRule/list"
         }
     }
 })(jQuery);

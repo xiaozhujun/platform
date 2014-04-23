@@ -31,7 +31,7 @@ public class DataRoleServiceWeb {
 
     @Autowired
     private org.whut.platform.business.datarule.service.DataRoleAddressService dataRoleAddressService;
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF8")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/addDataRole")
     public String addDataRole(@FormParam("dRoleName") String dRoleName,@FormParam("dRoleDescription") String dRoleDescription,@FormParam("dRoleStatus") String dRoleStatus,@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area){
@@ -77,5 +77,13 @@ public class DataRoleServiceWeb {
            dataRoleAddressService.add(dataRoleAddress);
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/list")
+    @GET
+    public String list(){
+       List<DataRole> list = dataRoleService.list();
+       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

@@ -1,6 +1,7 @@
 package org.whut.platform.business.datarule.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.platform.business.datarule.entity.UserDataRole;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,4 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserDataRoleService {
     @Autowired
     private org.whut.platform.business.datarule.mapper.UserDataRoleMapper userDataRoleMapper;
+
+    public void add(UserDataRole userDataRole){
+       userDataRoleMapper.add(userDataRole);
+    }
 }

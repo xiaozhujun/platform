@@ -64,4 +64,15 @@
          FROM drole
          WHERE name=#{name}
     </select>
+
+    <select id="list" resultMap="dataRoleResultMap">
+        SELECT
+        <include refid="data_role_fields"/>
+        FROM drole
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="status!=null">AND STATUS=#{status}</if>
+        </where>
+    </select>
 </mapper>

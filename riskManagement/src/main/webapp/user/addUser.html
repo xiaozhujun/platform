@@ -38,7 +38,19 @@
 
                 }
             }
-
+            $.get($.URL.dataRule.list,null,listDataRoleCallback,"json");
+            function listDataRoleCallback(data){
+                if(data.code==200){
+                    var dataGridColumns = [
+                        { header: 'ID', name: 'id', width: 20 },
+                        { header: '角色', name: 'name' },
+                        { header: '描述', name: 'description' },
+                        { header: '状态', name:'status'}
+                    ];
+                    $("#dataRole").ligerComboBox({ data: data.data, textField: 'name', columns: dataGridColumns, selectBoxWidth: 400, selectBoxHeight:400,isMultiSelect: true
+                    });
+                }
+            }
             $("#userSex").ligerComboBox({
                 data:[{"text":'男',"id":"0"},{"text":"女","id":"1"}],
                 valueFieldID:'userSexSelect'
@@ -49,6 +61,7 @@
                 data.password = $("#userPassword").val();
                 data.sex = $("#userSex").val();
                 data.role = $("#userRole").val();
+                data.dataRole =$("#dataRole").val();
                 $.post($.URL.user.add,data,addUserCallback,"json");
             });
         });
@@ -95,6 +108,12 @@
             <td align="right" class="l-table-edit-td">角色:</td>
             <td align="left" class="l-table-edit-td">
                 <input type="text" readonly="true" id="userRole">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">数据权限:</td>
+            <td align="left" class="l-table-edit-td">
+                <input type="text" readonly="true" id="dataRole">
             </td>
         </tr>
     </table>

@@ -2054,6 +2054,18 @@ $.extend({
         $.initMap(province,size);
         $.clearAllMarker;
     },
+
+    showCityRisk:function showCityRisk(province)
+    {
+        $.getCityAvgRiskValue(province);
+        $.initCity(province,8,0);
+    },
+
+    showAreaRisk:function showAreaRisk(province,city)
+    {
+        $.getAreaAvgRiskValue(province,city);
+        $.initArea(province,city,10,0);
+    },
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);
     $.initMap(area,size);

@@ -130,8 +130,8 @@ transitional.dtd">
         if(data.code==200){
             $("#rankTitle").html("");
             $("#riskrankContent").html("");
-            /*var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
-             $("#rankTitle").append(rankTitle); */
+            var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+             $("#rankTitle").append(rankTitle);
             if(data.data[0]==undefined){
                 $("#riskrankContent").append("对不起,数据不存在!");
             }else{
@@ -161,6 +161,7 @@ transitional.dtd">
         }
     }
     $(document).ready(function(){
+
         $("#layout").ligerLayout({leftWidth:200});
         $("#titleContainer").load("title.html");
         $.switchTab("riskRank","riskInfo","rightRank","rightshow");
@@ -176,7 +177,7 @@ transitional.dtd">
         $.showCompanyRisk(city,area,12);
         $.addressLinkAge("province","city","area","unit",province);
         $.mapLeftTab("searchTab","search","drawCircle","drawLine");
-        /*$.dragAbleNavigate(area);*/
+        $.dragAbleNavigate(area);
     });
 
 </script>

@@ -74,6 +74,12 @@
             "getProvinceAndColorWithDataRole":"rs/dataRuleAddress/getProvinceAndColorWithDataRole",
             "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
             "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole"
+        },
+        "userDataRole":{
+            "add":"rs/userDataRole/add",
+            "update":"rs/userDataRole/update",
+            "delete":"rs/userDataRole/delete",
+            "list":"rs/userDataRole/list"
         }
     }
 })(jQuery);

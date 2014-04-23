@@ -62,7 +62,7 @@
                 data.sex = $("#userSex").val();
                 data.role = $("#userRole").val();
                 data.dataRole =$("#dataRole").val();
-                $.post($.URL.user.add,data,addUserCallback,"json");
+                $.post($.URL.userDataRole.add,data,addUserCallback,"json");
             });
         });
         function addUserCallback(data){

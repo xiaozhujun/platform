@@ -34,6 +34,19 @@ public class AddressService {
           }
         return mapper.findIdByArea(province,city,area);
     }
+    public List<Long> findIdByProvinceCity(String province,String city){
+        if(province==null||province.trim().equals("")||city==null||city.trim().equals("")){
+            return null;
+        }
+        return mapper.findIdByProvinceCity(province,city);
+    }
+
+    public List<Long> findIdByProvince(String province){
+        if(province==null||province.trim().equals("")){
+            return null;
+        }
+        return mapper.findIdByProvince(province);
+    }
     public Long findIdByCityArea(String city,String area){
         if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return  null;
@@ -60,5 +73,13 @@ public class AddressService {
     public List<Address> getAreaByProvinceAndCity(String province,String city){
         return mapper.getAreaByProvinceAndCity(province,city);
     }
-
+    public List<Address> getProvinceWithDataRule(String userName){
+        return mapper.getProvinceWithDataRule(userName);
+    }
+    public List<Address>getCityWithDataRule(String province,String userName){
+         return mapper.getCityWithDataRule(province,userName);
+    }
+    public List<Address>getAreaWithDataRule(String province,String city,String userName){
+        return mapper.getAreaWithDataRule(province,city,userName);
+    }
 }

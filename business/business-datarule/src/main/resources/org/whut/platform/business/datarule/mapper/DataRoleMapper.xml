@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.datarule.mapper.DataRoleMapper">
+    <sql id="data_role_fields">
+		ID,NAME,DESCRIPTION,STATUS
+	</sql>
+
+    <resultMap id="dataRoleResultMap" type="DataRole">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="status" column="STATUS"/>
+    </resultMap>
+
+    <insert id="add" parameterType="DataRole" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        drole(
+        <include refid="data_role_fields" />
+        )
+        VALUES (#{id}, #{name}, #{description},#{status});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM drole
+        <where>
+            <if test="name != null">NAME=#{name}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="DataRole">
+        UPDATE drole
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            <if test="description != null">DESCRIPTION=#{description},</if>
+            <if test="status != null">STATUS=#{status}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="DataRole">
+        DELETE FROM drole
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="name != null">AND NAME=#{name}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="DataRole" resultMap="dataRoleResultMap">
+        SELECT
+        <include refid="data_role_fields" />
+        FROM drole WHERE ID=#{id}
+    </select>
+
+    <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+         SELECT id
+         FROM drole
+         WHERE name=#{name}
+    </select>
+
+    <select id="list" resultMap="dataRoleResultMap">
+        SELECT
+        <include refid="data_role_fields"/>
+        FROM drole
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="status!=null">AND STATUS=#{status}</if>
+        </where>
+    </select>
+</mapper>

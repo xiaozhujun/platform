@@ -52,6 +52,8 @@ public class CraneInspectReport {
 
     private Long      riskValue;                     //风险值
 
+    private String    ratedLiftWeight;                //额定起重量
+
     public long getId() {
         return id;
     }
@@ -218,5 +220,13 @@ public class CraneInspectReport {
 
     public void setRiskValue(Long riskValue) {
         this.riskValue = riskValue;
+    }
+
+    public String getRatedLiftWeight() {
+        return ratedLiftWeight;
+    }
+
+    public void setRatedLiftWeight(String ratedLiftWeight) {
+        this.ratedLiftWeight = ratedLiftWeight;
     }
 }

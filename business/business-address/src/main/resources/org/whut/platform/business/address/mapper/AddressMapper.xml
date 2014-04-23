@@ -86,6 +86,23 @@
             </if>
         </where>
     </select>
+    <select id="findIdByProvinceCity" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM address
+        <where>
+            <if test="province != null">
+                PROVINCE=#{province}
+            </if>
+            <if test="city != null">
+                and CITY=#{city}
+            </if>
+        </where>
+    </select>
+    <select id="findIdByProvince" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT id
+        FROM address
+        WHERE PROVINCE=#{province}
+    </select>
     <select id="findIdByCityArea" parameterType="map" resultType="java.lang.Long">
         SELECT
         id
@@ -127,5 +144,22 @@
         FROM address
         WHERE
         province=#{province} AND city=#{city}
+    </select>
+    <select id="getProvinceWithDataRule" parameterType="java.lang.String" resultMap="addressResultMap">
+        SELECT DISTINCT a.province
+        FROM user u,drole dr,user_drole udr,drole_address draddr,address a
+        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND u.name=#{userName}
+    </select>
+    <select id="getCityWithDataRule" parameterType="map" resultMap="addressResultMap">
+        SELECT DISTINCT a.city
+        FROM user u,drole dr,user_drole udr,drole_address draddr,address a
+        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id
+        AND a.province=#{province} AND  u.name=#{userName}
+    </select>
+    <select id="getAreaWithDataRule" parameterType="map" resultMap="addressResultMap">
+       SELECT DISTINCT a.id,a.area
+       FROM user u,drole dr,user_drole udr,drole_address draddr,address a
+       WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND a.province=#{province}
+       AND a.city=#{city}  AND u.name=#{userName}
     </select>
 </mapper>

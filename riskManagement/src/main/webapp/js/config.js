@@ -34,6 +34,8 @@
             "getOneUnitAddressInfo":"rs/craneinspectreport/getOneUnitAddressInfo",
             "getCraneInspectReportInfoById":"rs/craneinspectreport/getCraneInspectReportInfoById",
             "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle",
+            "getEquipmentVarietyList":"rs/craneinspectreport/getEquipmentVarietyList",
+            "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle",
             "getProvinceAvgRiskValue":"rs/craneinspectreport/getProvinceAvgRiskValue",
             "getCityAvgRiskValueByProvince":"rs/craneinspectreport/getCityAvgRiskValueByProvince",
             "getAreaAvgRiskValueByProvinceAndCity":"rs/craneinspectreport/getAreaAvgRiskValueByProvinceAndCity"
@@ -59,7 +61,25 @@
         },
         "riskColor":{
            "list":"rs/riskColor/list",
+            "setColor":"rs/riskColor/setColor",
+            "getRiskValueList":"rs/riskColor/getRiskValueList",
             "setColor":"rs/riskColor/setColor"
+        },
+        "dataRule":{
+            "add":"rs/dataRule/addDataRole",
+            "list":"rs/dataRule/list"
+
+        },
+        "dataRuleAddress":{
+            "getProvinceAndColorWithDataRole":"rs/dataRuleAddress/getProvinceAndColorWithDataRole",
+            "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
+            "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole"
+        },
+        "userDataRole":{
+            "add":"rs/userDataRole/add",
+            "update":"rs/userDataRole/update",
+            "delete":"rs/userDataRole/delete",
+            "list":"rs/userDataRole/list"
         }
     }
 })(jQuery);

@@ -3,6 +3,9 @@ package org.whut.platform.business.datarule.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.datarule.entity.DataRoleAddress;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -17,4 +20,14 @@ public class DataRoleAddressService {
     public void add(DataRoleAddress dataRoleAddress){
        dataRoleAddressMapper.add(dataRoleAddress);
     }
+    public List<Map<String,String>> getProvinceAndColorWithDataRole(String userName){
+        return dataRoleAddressMapper.getProvinceAndColorWithDataRole(userName);
+    }
+    public List<Map<String,String>> getCityAndColorWithDataRole(String province,String userName){
+        return dataRoleAddressMapper.getCityAndColorWithDataRole(province,userName);
+    }
+    public List<Map<String,String>> getAreaAndColorWithDataRole(String province,String city,String userName){
+        return dataRoleAddressMapper.getAreaAndColorWithDataRole(province,city,userName);
+    }
+
 }

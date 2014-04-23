@@ -160,7 +160,7 @@
     </select>
     <select id="getUnitaddressByArea" parameterType="map"   resultMap="craneInspectReportResultMap">
         select
-        distinct (unitaddress)
+        distinct (unitaddress),lng,lat
         from craneinspectreport
         where
         addressid=(

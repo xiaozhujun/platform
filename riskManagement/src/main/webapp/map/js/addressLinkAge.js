@@ -22,15 +22,17 @@ $.extend({
            $(areaOption).remove();
            $(unitOption).remove();
            var pro=$(pId).find('option:selected').text();
-           $.initCity(pro,8,1);
+           $.showCityRisk(pro);
            $.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
+//           $.post($.URL.craneinspectreport.getCityAvgRiskValueByProvince,{"province":pro}, $.showCityRank,"json");
        });
        $(cId).change(function(){
            $(areaOption).remove();
            $(unitOption).remove();
            var pro=$(pId).find('option:selected').text();
            var city=$(this).find('option:selected').text();
-           $.initArea(pro,city,10,1);
+           $.showAreaRisk(pro,city);
+//           $.initArea(pro,city,10,1);
            $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
        });
        $(aId).change(function(){

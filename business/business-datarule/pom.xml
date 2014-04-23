@@ -72,13 +72,21 @@
             <artifactId>fundamental-util</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>fundamental-logger</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>platform</groupId>
             <artifactId>business-address</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>

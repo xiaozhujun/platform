@@ -3,6 +3,8 @@ package org.whut.platform.business.datarule.mapper;
 import org.whut.platform.business.datarule.entity.DataRole;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -13,4 +15,5 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 public interface DataRoleMapper extends AbstractMapper<DataRole>{
     public long getIdByName(String name);
+    public List<DataRole> list();
 }

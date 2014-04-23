@@ -66,7 +66,20 @@
             "setColor":"rs/riskColor/setColor"
         },
         "dataRule":{
-            "add":"rs/dataRule/addDataRole"
+            "add":"rs/dataRule/addDataRole",
+            "list":"rs/dataRule/list"
+
+        },
+        "dataRuleAddress":{
+            "getProvinceAndColorWithDataRole":"rs/dataRuleAddress/getProvinceAndColorWithDataRole",
+            "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
+            "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole"
+        },
+        "userDataRole":{
+            "add":"rs/userDataRole/add",
+            "update":"rs/userDataRole/update",
+            "delete":"rs/userDataRole/delete",
+            "list":"rs/userDataRole/list"
         }
     }
 })(jQuery);

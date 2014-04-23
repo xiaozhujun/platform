@@ -15,7 +15,7 @@
     <script type="text/javascript">
 
         $(function(){
-            $.get($.URL.user.list,null,listCallback,"json");
+            $.get($.URL.userDataRole.list,null,listCallback,"json");
             $.get($.URL.authority.list,null,listAuthorityCallback,"json");
         });
         var roleData=[];
@@ -102,7 +102,7 @@
             manager.endEdit(rowid);
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
-            $.post($.URL.user.update,{"jsonString":jsonString},updateCallback,"json");
+            $.post($.URL.userDataRole.update,{"jsonString":jsonString},updateCallback,"json");
         }
 
         function updateCallback(data){
@@ -120,7 +120,7 @@
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
-                $.post($.URL.user.delete,{"jsonString":jsonString},deleteCallback,"json");
+                $.post($.URL.userDataRole.delete,{"jsonString":jsonString},deleteCallback,"json");
                 manager.deleteRow(rowid);
             }
         }

@@ -168,6 +168,14 @@ body{
     float: left;
     line-height: 80px;
 }
+.avgRiskValue
+{
+    height: 80px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    line-height: 80px;
+}
 .riskvalue{
     height: 80px;
     display: inline-block;
@@ -456,6 +464,24 @@ body{
     margin: 2px;
     cursor: pointer;
 }
+
+.city{
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    width: 240px;
+}
+
+.area
+{
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    width: 240px;
+}
+
 .unitaddress{
     float: left;
     margin-left: 6px;

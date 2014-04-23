@@ -73,5 +73,13 @@ public class AddressService {
     public List<Address> getAreaByProvinceAndCity(String province,String city){
         return mapper.getAreaByProvinceAndCity(province,city);
     }
-
+    public List<Address> getProvinceWithDataRule(String userName){
+        return mapper.getProvinceWithDataRule(userName);
+    }
+    public List<Address>getCityWithDataRule(String province,String userName){
+         return mapper.getCityWithDataRule(province,userName);
+    }
+    public List<Address>getAreaWithDataRule(String province,String city,String userName){
+        return mapper.getAreaWithDataRule(province,city,userName);
+    }
 }

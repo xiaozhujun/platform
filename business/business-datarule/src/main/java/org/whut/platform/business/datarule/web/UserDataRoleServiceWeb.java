@@ -1,6 +1,7 @@
 package org.whut.platform.business.datarule.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.whut.platform.business.datarule.entity.UserDataRole;
 import org.whut.platform.business.datarule.service.DataRoleService;
 import org.whut.platform.business.datarule.service.UserDataRoleService;
@@ -24,6 +25,8 @@ import java.util.List;
  * Time: 下午4:35
  * To change this template use File | Settings | File Templates.
  */
+@Component
+@Path("/userDataRole")
 public class UserDataRoleServiceWeb {
 
     private static PlatformLogger logger = PlatformLogger.getLogger(UserDataRoleServiceWeb.class);

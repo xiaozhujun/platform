@@ -68,6 +68,12 @@
         "dataRule":{
             "add":"rs/dataRule/addDataRole",
             "list":"rs/dataRule/list"
+        },
+        "userDataRole":{
+            "add":"rs/userDataRole/add",
+            "update":"rs/userDataRole/update",
+            "delete":"rs/userDataRole/delete",
+            "list":"rs/userDataRole/list"
         }
     }
 })(jQuery);

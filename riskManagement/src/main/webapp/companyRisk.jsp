@@ -53,6 +53,12 @@ transitional.dtd">
                 <span id='riskRank'>风险排名</span>
                 <span id="riskInfo">风险详情</span>
             </div>
+                <div id="input_search">
+                <span class="more"><input name="more" type="text" id="more" ltype="text" style="width:280px"/>
+                         </span>
+                      <span class="inputSearchBtn" id="queryBtn">查询
+                      </span>
+                </div>
             <div id="rightRank">
                 <div class="rankContent" id="rankContent">
                     <div id="rankTitle"></div>
@@ -60,8 +66,8 @@ transitional.dtd">
                 </div>
             </div>
             <div id="rightshow">
-                <div><div class='righttitle' id="righttitle"></div>
-                </div>
+               <%-- <div><div class='righttitle' id="righttitle"></div>
+                </div>--%>
                 <div id="rightcontent" class="rightcontent">
                 </div>
             </div>
@@ -104,10 +110,7 @@ transitional.dtd">
                             <option>---请选择单位----</option>
                          </select>
                          </span>
-                       <span><input name="more" type="text" id="more" ltype="text" style="width:300px"/>
-                         </span>
-                      <span><input type="button" value="查询" id="queryBtn" style="width:80px" class="l-button"/>
-                         </span>
+
                     </span>
             </div>
             <div id="container"></div>
@@ -150,7 +153,12 @@ transitional.dtd">
                             j++;
                         }
                     }
-                    var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                    var rankContent;
+                    if(i%2==0){
+                        rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                    }else{
+                        rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                    }
                     $("#riskrankContent").append(rankContent);
                 }
                 for(i=0;i<data.data.length;i++){
@@ -212,7 +220,12 @@ transitional.dtd">
                                 j++;
                             }
                         }
-                        var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        var rankContent;
+                        if(i%2==0){
+                            rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        }else{
+                            rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        }
                         $("#riskrankContent").append(rankContent);
                     }
                     var MarkerArray=new Array();

@@ -23,7 +23,7 @@ $.extend({
            $(areaOption).remove();
            $(unitOption).remove();
            var pro=$(pId).find('option:selected').text();
-           $.showCityRisk(pro);
+           $.showCityRisk(pro,1);
            $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro},getCityByProvinceCallback,"json");
            //$.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
 //           $.post($.URL.craneinspectreport.getCityAvgRiskValueByProvince,{"province":pro}, $.showCityRank,"json");
@@ -33,7 +33,7 @@ $.extend({
            $(unitOption).remove();
            var pro=$(pId).find('option:selected').text();
            var city=$(this).find('option:selected').text();
-           $.showAreaRisk(pro,city);
+           $.showAreaRisk(pro,city,1);
 //           $.initArea(pro,city,10,1);
           // $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
            $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
@@ -45,7 +45,7 @@ $.extend({
            var area=$(this).find('option:selected').text();
            $.showCompanyRisk(city,area,12);
            $.post($.URL.craneinspectreport.getUnitaddressByArea,{"province":pro,"city":city,"area":area},getUnitaddressByAreaCallback,"json");
-           $.dragAbleNavigate(area);
+           //$.dragAbleNavigate(area);
        });
        $(uId).change(function(){
            var pro=$(pId).find('option:selected').text();

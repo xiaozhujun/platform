@@ -40,7 +40,7 @@ transitional.dtd">
                     $("#rightmain").css("display","block");
                 }
             });
-            $.showAreaRisk(province,city);
+            $.showAreaRisk(province,city,0);
         });
     </script>
 

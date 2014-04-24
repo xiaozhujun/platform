@@ -59,4 +59,15 @@
         <include refid="user_drole_fields" />
         FROM user_drole WHERE ID=#{id}
     </select>
+
+    <select id="findDataRoleByUserName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT droleName
+        FROM user_drole
+        WHERE userName=#{userName}
+    </select>
+
+    <delete id="deleteByUserName" parameterType="java.lang.String">
+        DELETE FROM user_drole
+        WHERE USERNAME = #{userName}
+    </delete>
 </mapper>

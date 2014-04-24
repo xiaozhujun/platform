@@ -23,7 +23,7 @@
                     for(var i = 0;i<data.data.length;i++){
                         var d= {};
                         d["text"]=data.data[i].province;
-                        d["id"]=data.data[i].id;
+                        d["id"]=i+1;
                         myData.push(d);
                     }
                     $("#province").ligerComboBox({ isShowCheckBox:true, isMultiSelect:false,

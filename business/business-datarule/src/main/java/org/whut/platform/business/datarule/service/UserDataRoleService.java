@@ -3,6 +3,8 @@ package org.whut.platform.business.datarule.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.datarule.entity.UserDataRole;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -17,5 +19,13 @@ public class UserDataRoleService {
 
     public void add(UserDataRole userDataRole){
        userDataRoleMapper.add(userDataRole);
+    }
+
+    public List<String> findDataRoleByUserName(String userName){
+       return userDataRoleMapper.findDataRoleByUserName(userName);
+    }
+
+    public int deleteByUserName(String userName){
+        return userDataRoleMapper.deleteByUserName(userName);
     }
 }

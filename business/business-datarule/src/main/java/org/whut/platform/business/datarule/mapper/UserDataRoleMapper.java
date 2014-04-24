@@ -3,6 +3,8 @@ package org.whut.platform.business.datarule.mapper;
 import org.whut.platform.business.datarule.entity.UserDataRole;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -12,4 +14,6 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  */
 
 public interface UserDataRoleMapper extends AbstractMapper<UserDataRole>{
+    public List<String> findDataRoleByUserName(String userName);
+    public int deleteByUserName(String userName);
 }

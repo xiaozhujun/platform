@@ -60,21 +60,23 @@
     </select>
 
     <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
-        SELECT DISTINCT a.province,rc.riskcolor color
+        SELECT DISTINCT a.province,rc.riskcolor color,pr.riskvalue avgRiskValue
         FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,province_riskvalue pr
         WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND pr.province=a.province AND pr.riskvalue=rc.riskvalue AND u.name=#{userName}
+        ORDER BY avgRiskValue DESC
     </select>
     <select id="getCityAndColorWithDataRole" parameterType="map" resultType="map">
-        SELECT DISTINCT a.city,rc.riskcolor color
+        SELECT DISTINCT a.city,rc.riskcolor color,cr.riskvalue avgRiskValue
         FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,city_riskvalue cr
         WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND a.province=cr.province and a.city=cr.city AND cr.riskvalue=rc.riskvalue
         AND a.province=#{province} AND  u.name=#{userName}
-        GROUP BY a.city
+        GROUP BY a.city  ORDER BY avgRiskValue DESC
     </select>
     <select id="getAreaAndColorWithDataRole" parameterType="map" resultType="map">
-        SELECT DISTINCT a.area,rc.riskcolor color
-        FROM user u,drole dr,user_drole udr,drole_address draddr,address a,addressriskvalue arv,riskcolor rc
-        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND arv.addressid=a.id
-        AND rc.riskvalue=arv.riskvalue AND a.province=#{province} AND a.city=#{city}  AND u.name=#{userName}
+          SELECT DISTINCT a.area,rc.riskcolor color,arv.riskvalue avgRiskValue
+          FROM user u,drole dr,user_drole udr,drole_address draddr,address a,addressriskvalue arv,riskcolor rc
+          WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND arv.addressid=a.id
+          AND rc.riskvalue=arv.riskvalue AND a.province=#{province} AND a.city=#{city}  AND u.name=#{userName}
+          ORDER BY avgRiskValue DESC
     </select>
 </mapper>

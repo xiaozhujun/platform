@@ -2090,6 +2090,12 @@ $.extend({
         }*/
     },
 
+    showProvinceRisk:function showProvinceRisk()
+    {
+        $.getProvinceRiskValue();
+        $.initProvinceWithDataRule("中国",5,0);
+    },
+
     showCityRisk:function showCityRisk(province)
     {
         $.getCityAvgRiskValue(province);

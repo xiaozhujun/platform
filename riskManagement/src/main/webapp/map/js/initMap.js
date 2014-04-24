@@ -2062,9 +2062,8 @@ $.extend({
         $.initMap(province,size);
         $.clearAllMarker;
         /*根据省以及session查出这个人的city*/
-        var jsonString={};
-        jsonString.province=province.val();
-        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,jsonString,getCityCallBack,"json");
+        //var jsonString={};
+        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province},getCityCallBack,"json");
         function getCityCallBack(data){
             $.getCityWithRule(province,data,flag);
         }
@@ -2079,10 +2078,7 @@ $.extend({
         $.initMap(city,size);
         $.clearAllMarker;
         /*根据省和市以及session查出这个人的area*/
-        var jsonString={};
-        jsonString.province=province.val();
-        jsonString.city=city.val();
-        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,jsonString,getAreaCallBack,"json");
+        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province ,"city":city},getAreaCallBack,"json");
         function getAreaCallBack(data){
             $.getAreaWithRule(province,city,data,flag);
         }

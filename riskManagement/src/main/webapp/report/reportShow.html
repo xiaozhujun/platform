@@ -67,7 +67,6 @@
                 {
                     case 'upload':
                     {
-
                     }
                     default:
                             {
@@ -76,9 +75,15 @@
                                 var city = $("#city").val()==''?' ':$("#city").val();
                                 var area = $("#area").val()==''?' ': $("#area").val();
                                 var unitaddress = $("#unitaddress").val()==''?' ':$("#unitaddress").val();
-                                var riskvalue=$("#riskValue").val()==''?' ':$("#riskValue").val();
+                                var riskvalueareaslider=$("#riskvalueareaslider").val();
+                                var values=[];
+                                values= riskvalueareaslider.split(";");
+                                var startValue = values[0];
+                                var endValue=values[1];
                                 var equipmentvariety=$("#equipmentvariety").val()==''?' ':$("#equipmentvariety").val();
-                                var data=type+","+province+","+city+","+area+","+unitaddress+","+riskvalue+","+equipmentvariety;
+                                var minweight=$("#minweight").val()==''?'0':$("#minweight").val();
+                                var maxweight=$("#maxweight").val()==''?'1000':$("#maxweight").val();
+                                var data=type+","+province+","+city+","+area+","+unitaddress+","+startValue+","+endValue+","+equipmentvariety+","+minweight+","+maxweight;
                                 location.href="rs/report/exportCraneReport/data="+encodeURI(data);
                             }
                 }
@@ -252,19 +257,18 @@
        /*
             load页面的显示报表全部数据
        */
-       var data1={province:"",city:"",area:"",unitaddress:"",riskvalue:"",equipmentvariety:""};
 
-       function addResourceCallback(data1){
+       function loadReportCallback(data1){
            if(data1.code==200){
                $.ligerDialog.success('操作成功')
            }
        }
-        $("#reportresult").load("rs/report/showChinaChart",data1,addResourceCallback,"json");
+        $("#reportresult").load("rs/report/showChinaChart",null,loadReportCallback,"json");
        /*
                提交页面的查询报表数据
         */
         $("#submitBtn").click(function(){
-            $("#reportresult").html("");
+            $("#reportresult").html();
             if($("#province").val()!="请选择"&&$("#province").val()!="")
             {
                 if($("#city").val()!="请选择"&&$("#city").val()!="")
@@ -274,28 +278,45 @@
                         data.city = $("#city").val();
                         data.area = $("#area").val();
                         data.unitaddress = $("#unitaddress").val();
-                        data.riskvalue=$("#riskValue").val();
+                        data.riskvalueareaslider= $("#riskvalueareaslider").val();
                         data.equipmentvariety=$("#equipmentvariety").val();
-
-                        $.post($.URL.report.showCraneReport,data,addResourceCallback,"json");
+                        if($("#minweight").val()=="")
+                        {
+                            data.minweight=0 ;
+                        }
+                        else
+                        {
+                        data.minweight=$("#minweight").val() ;
+                        }
+                        if($("#maxweight").val()=="")
+                        {
+                            data.maxweight=1000;
+                        }
+                        else
+                        {
+                            data.maxweight=$("#maxweight").val() ;
+                        }
+                        $.post($.URL.report.showCraneReport,data,loadReportCallback,"json");
                         //location.href="/rs/report/showCraneReport"
-                        $("#reportresult").load("rs/report/showCraneReport",data,addResourceCallback,"json") ;
+                        $("#reportresult").load("rs/report/showCraneReport",data,loadReportCallback,"json") ;
                     }
-
             else
                 {
-                    $("#reportresult").load("rs/report/showProvinceRiskValue",{"province":$("#province").val()},addResourceCallback,"json") ;
+                    $("#reportresult").html();
+                    $("#reportresult").load("rs/report/showProvinceRiskValue",{"province":$("#province").val()},loadReportCallback,"json") ;
                 }
             }
 
             else
             {
-                $("#reportresult").load("rs/report/showChinaChart",data1,addResourceCallback,"json");
+                $("#reportresult").load("rs/report/showChinaChart",null,loadReportCallback,"json");
             }
         });
         <!--滑杆脚本-->
-        $("#riskValueAreaSlider").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic",
+        $("#riskvalueareaslider").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic",
             callback: function( value ){
+                var values= [];
+                values=value.split(";");
                 alert("滑竿"+value);
             }
         });
@@ -309,7 +330,8 @@
         .layout-slider{width: 500px}
         .weightArea{width: 80px}
         #accordion1{
-            overflow: auto;
+            overflow: scroll;
+            overflow-x: scroll;
             height: 95%;
             width: 100%;
             margin-bottom: 30px;
@@ -366,15 +388,15 @@
             </td>-->
               <td align="right" id="riskValueArea" class="l-table-edit-td">风险值区间:</td>
               <td align="left" class="layout-slider">
-                  <input id="riskValueAreaSlider" type="slider" name="riskValueArea" value="2;10" />
+                  <input id="riskvalueareaslider" type="slider" name="riskValueArea" value="1;9" />
               </td>
             <td align="right" id="weightArea" class="l-table-edit-td">起重区间:</td>
             <td align="left" class="weightArea">
-                <input id="minWeight" type="text"   />
+                <input id="minweight" type="text"   />
             </td>
             <td align="right"  >吨----></td>
             <td align="left" class="weightArea">
-                <input id="maxWeight" type="text"   />
+                <input id="maxweight" type="text"   />
             </td>
             <td align="right" >吨</td>
             <td>

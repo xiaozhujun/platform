@@ -95,9 +95,9 @@ transitional.dtd">
     });
 </script>
 
-<%--<script type="text/javascript">
+<%--&lt;%&ndash;<script type="text/javascript">
 
-    </script>
+    </script>--%>
 
 <script type="text/javascript" src="map/js/initMap.js"></script>
 <script type="text/javascript">

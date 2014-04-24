@@ -262,4 +262,12 @@
         where a.id=prs.addressid AND a.province=#{province} AND a.city=#{city}
         GROUP BY a.area ORDER BY avgRiskValue DESC
     </select>
+    <select id="fuzzyQuery"  parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+         FROM craneinspectreport cr,riskvalue r,address a
+         WHERE cr.reportnumber=r.reportnumber
+         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
+         AND (cr.unitaddress like #{require} or cr.equipmentvariety like #{require} or cr.ratedliftweight like #{require})
+         group by cr.unitAddress order by r.riskvalue desc
+    </select>
 </mapper>

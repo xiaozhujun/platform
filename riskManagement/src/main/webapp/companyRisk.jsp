@@ -7,6 +7,7 @@ transitional.dtd">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="js/jquery.json-2.4.min.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
@@ -103,10 +104,9 @@ transitional.dtd">
                             <option>---请选择单位----</option>
                          </select>
                          </span>
-                       <span><select id="more">
-                           <option>---更多筛选----</option>
-                           <option>目前没有数据</option>
-                       </select>
+                       <span><input name="more" type="text" id="more" ltype="text" style="width:300px"/>
+                         </span>
+                      <span><input type="button" value="查询" id="queryBtn" style="width:80px" class="l-button"/>
                          </span>
                     </span>
             </div>
@@ -180,6 +180,122 @@ transitional.dtd">
         $.dragAbleNavigate(area);
     });
 
+        $("#queryBtn").click(function(){
+            var data = {};
+            data.city = city;
+            data.area = area;
+            data.require = '%'+$("#more").val()+'%';
+            $.post($.URL.craneinspectreport.fuzzyQuery,data,showRiskRankByFuzzyQuery,"json");
+        });
+
+        function showRiskRankByFuzzyQuery(data){
+            if(data.code==200){
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                $("#rankTitle").append(rankTitle);
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                }else{
+                    $("#rankTitle").html("");
+                    $("#riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+                    var j=1;
+                    for(var i=0;i<data.data.length;i++){
+                        if(i>0){
+                            preValue=data.data[i-1].riskValue;
+                            if(data.data[i].riskValue==preValue)
+                                j=j;
+                            else
+                            {
+                                j++;
+                            }
+                        }
+                        var rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+j+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
+                        $("#riskrankContent").append(rankContent);
+                    }
+                    var MarkerArray=new Array();
+                    for(i=0;i<data.data.length;i++){
+                        var item={};
+                        item.title=data.data[i].unitAddress;
+                        item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue;
+                        item.point=data.data[i].lng+"|"+data.data[i].lat;
+                        item.isOpen=0;
+                        item.icon={};
+                        item.icon.w=23;
+                        item.icon.h=25;
+                        item.icon.t=21;
+                        item.icon.x=9;
+                        item.icon.lb=12;
+                        if(data.data[i].riskValue==1){
+                            item.icon.l=23;
+                        }
+                        if(data.data[i].riskValue==2){
+                            item.icon.l=0;
+                        }
+                        if(data.data[i].riskValue==3){
+                            item.icon.l=69;
+                        }
+                        if(data.data[i].riskValue==4){
+                            item.icon.l=115;
+                        }
+                        if(data.data[i].riskValue==5){
+                            item.icon.l=46;
+                        }
+                        if(data.data[i].riskValue==6){
+                            item.icon.l=46;
+                        };
+                        MarkerArray.push(item);
+                    }
+                    $.clearAllMarker();
+                    $.addMarker(MarkerArray);
+                }
+            }
+            rightTabMouseEvent:function rightTabMouseEvent(id){
+                var _id="#"+id;
+                $(_id).mouseover(function(){
+                    var cid=this.id.substring(11,this.id.length);
+                    $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
+                    var dataArray=new Array();
+                    function getCraneInspectReportInfoByIdCallback(data){
+                        if(data.code==200){
+                            for(i=0;i<1;i++){
+                                var title=data.data[0].unitAddress;
+                                var content=data.data[0].equipmentVariety+",风险值:"+data.data[0].riskValue;
+                                var point=data.data[0].lng+"|"+data.data[0].lat;
+                                isOpen=0;
+                                var icon={};
+                                icon.w=23;
+                                icon.h=25;
+                                icon.t=21;
+                                icon.x=9;
+                                icon.lb=12;
+                                if(data.data[0].riskValue==1){
+                                    icon.l=23;
+                                }
+                                if(data.data[0].riskValue==2){
+                                    icon.l=0;
+                                }
+                                if(data.data[0].riskValue==3){
+                                    icon.l=69;
+                                }
+                                if(data.data[0].riskValue==4){
+                                    icon.l=115;
+                                }
+                                if(data.data[0].riskValue==5){
+                                    icon.l=46;
+                                }
+                                if(data.data[0].riskValue==6){
+                                    icon.l=46;
+                                }
+                                ;     $.mouseEvent(title,content,point,isOpen,icon,i);
+                            }
+                        }
+                    }
+                });
+            }
+        }
 </script>
 </body>
 </html>

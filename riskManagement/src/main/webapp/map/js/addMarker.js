@@ -70,15 +70,15 @@ $.extend({
 },
 
     getProvinceRiskValue:function getProvinceRiskValue(){
-        $.get($.URL.craneinspectreport.getProvinceAvgRiskValue,null, $.showProvinceRank,"json");
+        $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null, $.showProvinceRank,"json");
     },
 
     getCityAvgRiskValue:function getCityAvgRiskValue(province,city){
-        $.post($.URL.craneinspectreport.getCityAvgRiskValueByProvince,{"province":province}, $.showCityRank,"json");
+        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province}, $.showCityRank,"json");
     },
 
     getAreaAvgRiskValue:function getAreaAvgRiskValue(province,city){
-        $.post($.URL.craneinspectreport.getAreaAvgRiskValueByProvinceAndCity,{"province":province,"city":city}, $.showAreaRank,"json");
+        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":city}, $.showAreaRank,"json");
     },
 
 //根据省市区来添加覆盖物以及查询相应的企业信息

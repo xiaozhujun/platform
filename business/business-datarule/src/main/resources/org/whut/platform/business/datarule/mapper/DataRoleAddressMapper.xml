@@ -67,8 +67,9 @@
     <select id="getCityAndColorWithDataRole" parameterType="map" resultType="map">
         SELECT DISTINCT a.city,rc.riskcolor color
         FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,city_riskvalue cr
-        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND a.province=cr.province AND cr.riskvalue=rc.riskvalue
+        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND a.province=cr.province and a.city=cr.city AND cr.riskvalue=rc.riskvalue
         AND a.province=#{province} AND  u.name=#{userName}
+        GROUP BY a.city
     </select>
     <select id="getAreaAndColorWithDataRole" parameterType="map" resultType="map">
         SELECT DISTINCT a.area,rc.riskcolor color

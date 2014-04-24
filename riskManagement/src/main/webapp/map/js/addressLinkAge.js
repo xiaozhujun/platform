@@ -7,7 +7,8 @@
  */
 $.extend({
    addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,provinceValue){
-       $.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
+       //$.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
+       $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceListCallback,"json");
        var pId="#"+provinceId;
        var cId="#"+cityId;
        var aId="#"+areaId;
@@ -23,7 +24,8 @@ $.extend({
            $(unitOption).remove();
            var pro=$(pId).find('option:selected').text();
            $.showCityRisk(pro);
-           $.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
+           $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro},getCityByProvinceCallback,"json");
+           //$.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
 //           $.post($.URL.craneinspectreport.getCityAvgRiskValueByProvince,{"province":pro}, $.showCityRank,"json");
        });
        $(cId).change(function(){
@@ -33,7 +35,8 @@ $.extend({
            var city=$(this).find('option:selected').text();
            $.showAreaRisk(pro,city);
 //           $.initArea(pro,city,10,1);
-           $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
+          // $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
+           $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
        });
        $(aId).change(function(){
            $(unitOption).remove();

@@ -17,6 +17,7 @@
         $(function(){
             $.get($.URL.userDataRole.list,null,listCallback,"json");
             $.get($.URL.authority.list,null,listAuthorityCallback,"json");
+            $.get($.URL.dataRule.list,null,listDataRoleCallback,"json");
         });
         var roleData=[];
         function listAuthorityCallback(data){
@@ -29,6 +30,12 @@
                 }
             }
         }
+        var dataRole;
+        function listDataRoleCallback(data){
+             if(data.code==200){
+                  dataRole=data.data;
+             }
+        }
         var gridData = {};
         function listCallback(data){
             if(data.code==200){
@@ -37,7 +44,12 @@
                 f_initGrid();
             }
         }
-
+        var dataGridColumns = [
+            { header: 'ID', name: 'id', width: 20 },
+            { header: '角色', name: 'name' },
+            { header: '描述', name: 'description' },
+            { header: '状态', name:'status'}
+        ];
         /*var typeData = [{ type: 'admin', text: 'admin' },{ type: 'user', text: 'user' },{ type: 'superAdmin', text: 'superAdmin' }]; */
         var sexData = [{ type: '男', text: '男' },{ type: '女', text: '女' }];
         var manager, g;
@@ -45,7 +57,7 @@
         {
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
+                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '用户名',name: 'name',
                         editor: { type: 'text'}
                     },
@@ -62,6 +74,14 @@
                         editor: { type: 'select', data: roleData, valueField: 'type',isMultiSelect:true,isShowCheckBox:true},
                         render:function(item){
                             return item.role;
+                        }
+
+                    },
+                    { display: '数据权限', name: 'dataRole', type: 'string',
+                        editor: { type: 'select', data: dataRole,columns:dataGridColumns, valueField: 'name',textField:'name', selectBoxWidth: 400, selectBoxHeight:400,
+                            isMultiSelect:true,isShowCheckBox:true},
+                        render:function(item){
+                            return item.dataRole;
                         }
 
                     },

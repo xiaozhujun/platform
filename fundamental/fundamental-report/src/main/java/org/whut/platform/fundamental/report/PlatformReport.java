@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +30,11 @@ public class PlatformReport {
          /*
          传入报表模板，一个map集合，还有导出报表的类型,导出报表
           */
-        public void getMapToExportReport(String reportTemplate,Map parameters,String type,HttpServletRequest request,HttpServletResponse response){
+        public void getMapToExportReport(String reportTemplate,Map parameters,String type,HttpServletRequest request,HttpServletResponse response,String reportName){
               try{
                   request.setCharacterEncoding("UTF-8");
                   response.setContentType("text/html;charset=UTF-8");
-                  exportReportByType(reportTemplate, type, parameters, request, response);
+                  exportReportByType(reportTemplate, type, parameters, request, response,reportName);
               }catch (Exception e){
                   e.printStackTrace();
               }
@@ -41,7 +42,7 @@ public class PlatformReport {
         /*
         传入模板，类型，map集合来根据map集合，输出不同类型的报表
          */
-        private void exportReportByType(String reportTemplate,String type,Map parameters,HttpServletRequest request,HttpServletResponse response){
+        private void exportReportByType(String reportTemplate,String type,Map parameters,HttpServletRequest request,HttpServletResponse response,String reportName){
             File reportFile=null;
             reportFile=new File(reportTemplate);
             try{
@@ -49,6 +50,7 @@ public class PlatformReport {
                 if(type.equals("html")){
                     PrintWriter out=response.getWriter();
                     response.setContentType("text/html");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".html\"");
                     JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, connection);
                     request.getSession().setAttribute(
                             ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE,jasperPrint
@@ -64,6 +66,7 @@ public class PlatformReport {
                 }else if(type.equals("pdf")){
                     byte[] bytes=JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, connection);
                     response.setContentType("application/pdf");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".pdf\"");
                     response.setContentLength(bytes.length);
                     ServletOutputStream outputStream=response.getOutputStream();
                     outputStream.write(bytes,0,bytes.length);
@@ -71,6 +74,7 @@ public class PlatformReport {
                     outputStream.close();
                 }else if(type.equals("excel")){
                     response.setContentType("application/vnd.ms-excel");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".excel\"");
                     JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport, parameters, connection);
                     ServletOutputStream outputStream=response.getOutputStream();
                     JRXlsExporter exporter=new JRXlsExporter();
@@ -84,6 +88,7 @@ public class PlatformReport {
                     outputStream.close();
                 }else if(type.equals("word")){
                     response.setContentType("application/msword;charset=utf-8");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".word\"");
                     JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport, parameters, connection);
                     ServletOutputStream outputStream=response.getOutputStream();
                     JRExporter exporter=new JRRtfExporter();

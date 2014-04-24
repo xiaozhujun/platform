@@ -7,6 +7,7 @@ package org.whut.platform.business.user.entity;
  * Time: 下午6:49
  * To change this template use File | Settings | File Templates.
  */
+
 public class SubUser {
         private long id;
         private String name;

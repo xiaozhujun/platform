@@ -2203,7 +2203,7 @@ $.extend({
             var color=data.color;
             var count=rs.boundaries.length;
             for(var i=0;i<count;i++){
-                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,strokeColor:"#000000"});
+                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
                     ply.addEventListener("click",function(e){
@@ -2243,7 +2243,7 @@ $.extend({
             var color=data.color;
             var count=rs.boundaries.length;
             for(var i=0;i<count;i++){
-                var ply=new BMap.Polygon(rs.boundaries[i],{opacity:0.2,strokeWeight:1,strokeOpacity:0.2,fillColor:color,strokeColor:"#000000"});
+                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
                     ply.addEventListener("click",function(e){
@@ -2283,7 +2283,7 @@ $.extend({
             var color=data.color;
             var count=rs.boundaries.length;
             for(var i=0;i<count;i++){
-                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,strokeColor:"#000000"});
+                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
                     ply.addEventListener("click",function(e){

@@ -74,7 +74,7 @@ public class PlatformReport {
                     outputStream.close();
                 }else if(type.equals("excel")){
                     response.setContentType("application/vnd.ms-excel");
-                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".excel\"");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".xls\"");
                     JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport, parameters, connection);
                     ServletOutputStream outputStream=response.getOutputStream();
                     JRXlsExporter exporter=new JRXlsExporter();
@@ -88,7 +88,7 @@ public class PlatformReport {
                     outputStream.close();
                 }else if(type.equals("word")){
                     response.setContentType("application/msword;charset=utf-8");
-                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".word\"");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(reportName, "UTF-8") + ".doc\"");
                     JasperPrint jasperPrint=JasperFillManager.fillReport(jasperReport, parameters, connection);
                     ServletOutputStream outputStream=response.getOutputStream();
                     JRExporter exporter=new JRRtfExporter();

@@ -40,7 +40,7 @@ public class ReportServiceWeb {
      String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportDemo.jasper");
      Map parameter=new HashMap();
      parameter.put("sql",sql);
-     platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
+     platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -70,7 +70,7 @@ public class ReportServiceWeb {
         Map parameter=new HashMap();
         parameter.put("sql",sql);
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportDemo.jasper");
-        platformReport.getMapToExportReport(reportTemplate,parameter,"excel",request,response);
+        platformReport.getMapToExportReport(reportTemplate,parameter,"excel",request,response,"test");
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
     @Path("/showCraneReport")
@@ -117,7 +117,7 @@ public class ReportServiceWeb {
         parameter.put("whereUnitaddress",whereUnitaddress);
         parameter.put("whereRiskvalue",whereRiskvalue);
         parameter.put("whereWeightLevel",whereWeightLevel);
-        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
+        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -168,7 +168,7 @@ public class ReportServiceWeb {
         parameter.put("whereCranevariety",whereCranevariety);
         parameter.put("whereUnitaddress",whereUnitaddress);
         parameter.put("whereRiskvalue",whereRiskvalue);
-        platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response);
+        platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response,"test");
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -181,7 +181,7 @@ public class ReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/chart/chinachart.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/chart")+"/"));
-        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
+        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -195,7 +195,7 @@ public class ReportServiceWeb {
         Map parameter=new HashMap();
         parameter.put("province",province);
         /*System.out.print(province);*/
-        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response);
+        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

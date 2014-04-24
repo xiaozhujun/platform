@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.whut.platform.business.datarule.entity.UserDataRole;
 import org.whut.platform.business.datarule.service.DataRoleService;
 import org.whut.platform.business.datarule.service.UserDataRoleService;
+import org.whut.platform.business.user.entity.SubUser;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.entity.UserAuthority;
 import org.whut.platform.business.user.service.AuthorityService;
@@ -16,6 +17,7 @@ import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -115,7 +117,32 @@ public class UserDataRoleServiceWeb {
     @GET
     public String list(){
         List<User> list = userService.list();
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+        List<SubUser> subUserList = new ArrayList<SubUser>();
+        for(User u:list){
+           SubUser subUser = new SubUser();
+           String userName = u.getName();
+           subUser.setId(u.getId());
+           subUser.setName(userName);
+           subUser.setPassword(u.getPassword());
+           subUser.setSex(u.getSex());
+           subUser.setRole(u.getRole());
+           List<String> dataRoleList = userDataRoleService.findDataRoleByUserName(userName);
+           String dataRoles="";
+           for(String s:dataRoleList){
+              dataRoles+=s;
+              dataRoles+=";";
+           }
+           String drs;
+           if(dataRoles.equals("")){
+              drs="";
+           }
+           else{
+               drs=dataRoles.substring(0,dataRoles.length()-1);
+           }
+           subUser.setDataRole(drs);
+           subUserList.add(subUser);
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(subUserList,JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -123,14 +150,15 @@ public class UserDataRoleServiceWeb {
     @POST
     public String update(@FormParam("jsonString") String jsonString){
         User user = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,User.class);
+        SubUser subUser = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubUser.class);
         String userName = user.getName();
-        int deleted = userAuthorityService.deleteByUserName(userName);
-        if(deleted>=0){
-            int  result = userService.update(user);
+        int userAuthorityDeleted = userAuthorityService.deleteByUserName(userName);
+        int userDataRoleDeleted = userDataRoleService.deleteByUserName(userName);
+        if(userAuthorityDeleted>=0&&userDataRoleDeleted>=0){
             long userId = userService.getIdByName(userName);
+            //更新用户角色表
             String role = user.getRole();
             String[] roleArray = role.split(";");
-            int total = 0;
             int length= roleArray.length;
             for(int i=0;i<length;i++){
                 UserAuthority userAuthority = new UserAuthority();
@@ -141,6 +169,21 @@ public class UserDataRoleServiceWeb {
                 userAuthority.setAuthorityName(roleArray[i]);
                 userAuthorityService.add(userAuthority);
             }
+            //更新用户数据权限表
+            String dataRole = subUser.getDataRole();
+            String[] dataRoleArray = dataRole.split(";");
+            int dLength  = dataRoleArray.length;
+            for(int j=0;j<dLength;j++){
+               UserDataRole userDataRole = new UserDataRole();
+               Long dataRoleId = dataRoleService.getIdByName(dataRoleArray[j]);
+               userDataRole.setUserId(userId);
+               userDataRole.setUserName(userName);
+               userDataRole.setDRoleId(dataRoleId);
+               userDataRole.setDRoleName(dataRoleArray[j]);
+               userDataRoleService.add(userDataRole);
+            }
+            //更新用户表
+            int  result = userService.update(user);
             if(result>0){
                 return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
             }
@@ -159,9 +202,13 @@ public class UserDataRoleServiceWeb {
     public String delete(@FormParam("jsonString") String jsonString){
         User user = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,User.class);
         String userName = user.getName();
-        int numDeleted = userAuthorityService.deleteByUserName(userName);
-        int result = userService.delete(user);
-        if((result>0)&&(numDeleted>=0)){
+        //删除用户角色表数据
+        int userAuthorityDeleted = userAuthorityService.deleteByUserName(userName);
+        //删除用户数据角色表数据
+        int userDataRoleDeleted = userDataRoleService.deleteByUserName(userName);
+        //删除用户表数据
+        int userDeleted = userService.delete(user);
+        if((userAuthorityDeleted>0)&&(userDataRoleDeleted>=0)&&(userDeleted>=0)){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else{

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerMenuBar.js" type="text/javascript"></script>
+<script type="text/javascript" src="report/js/addressLinkage.js"></script>
+<!--引入Jslider-->
+<link rel="stylesheet" href="jslider/css/jslider.css" type="text/css">
+<link rel="stylesheet" href="jslider/css/jslider.plastic.css" type="text/css">
+<script type="text/javascript" src="jslider/js/jshashtable-2.1_src.js"></script>
+<script type="text/javascript" src="jslider/js/jquery.numberformatter-1.2.3.js"></script>
+<script type="text/javascript" src="jslider/js/tmpl.js"></script>
+<script type="text/javascript" src="jslider/js/jquery.dependClass-0.1.js"></script>
+<script type="text/javascript" src="jslider/js/draggable-0.1.js"></script>
+<script type="text/javascript" src="jslider/js/jquery.slider.js"></script>
+
+<script type="text/javascript">
+/*
+ 导出报表
+ */
+$("#province").removeClass("l-text-field");
+$("#city").removeClass("l-text-field");
+$("#area").removeClass("l-text-field");
+$("#unitaddress").removeClass("l-text-field");
+$("#equipmentvariety").removeClass("l-text-field");
+var menu1 = { width: 100, items:
+        [
+            {
+                text: '导出', children:
+                    [
+                        { text: 'excel',id:'excel', click: itemclick },
+                        { text: 'word', id: 'word', click: itemclick },
+                        { text: 'pdf', id: 'pdf', click: itemclick }
+                    ]
+            }/*,
+         {
+         text:'上传',children:
+         [
+         {text:'上传模板',id:'upload',click:itemclick}
+         ]
+         }*/
+        ]
+};
+$(function ()
+{
+    //菜单条
+    $("#topmenu").ligerMenuBar({items: [
+        { text: '文件', menu:menu1}
+    ]
+    });
+});
+function exportReportCallback(data1){
+    if(data1.code==200){
+        $.ligerDialog.success('操作成功')
+    }
+}
+function itemclick(item)
+{
+    if(item.id)
+    {
+        switch(item.id)
+        {
+            case 'upload':
+            {
+            }
+            default:
+            {
+                var type=item.text;
+                var province = $("#province").val()==''?' ':$("#province").val();
+                var city = $("#city").val()==''?' ':$("#city").val();
+                var area = $("#area").val()==''?' ': $("#area").val();
+                var unitaddress = $("#unitaddress").val()==''?' ':$("#unitaddress").val();
+                var riskvalueareaslider=$("#riskvalueareaslider").val();
+                var values=[];
+                values= riskvalueareaslider.split(";");
+                var startValue = values[0];
+                var endValue=values[1];
+                var equipmentvariety=$("#equipmentvariety").val()==''?' ':$("#equipmentvariety").val();
+                var minweight=$("#minweight").val()==''?'0':$("#minweight").val();
+                var maxweight=$("#maxweight").val()==''?'1000':$("#maxweight").val();
+                var data=type+","+province+","+city+","+area+","+unitaddress+","+startValue+","+endValue+","+equipmentvariety+","+minweight+","+maxweight;
+                location.href="rs/report/exportCraneReport/data="+encodeURI(data);
+            }
+        }
+    }
+}
+
+/*
+ 定义起重机类型数据源，
+ */
+$.post($.URL.craneinspectreport.getEquipmentVarietyList,null,getEquipmentVarietyListCallback,"json");
+function getEquipmentVarietyListCallback(equdata)
+{
+    if(equdata.code==200)
+    {
+        var equVarietyList=[];
+        equVarietyList.push({id:0,text:"请选择"}) ;
+        for(i=0;i<equdata.data.length;i++)
+        {
+            var  j={};
+            j["text"]=equdata.data[i].equipmentVariety;
+            j["id"]=i+1;
+            equVarietyList.push(j);
+        }
+        $("#equipmentvariety").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
+            data: equVarietyList
+            , valueFieldID: 'equipmentvarietySelect' })
+    }
+}
+/*
+ load页面的显示报表全部数据
+ */
+function loadReportCallback(data1){
+    if(data1.code==200){
+        $.ligerDialog.success('操作成功')
+    }
+}
+$("#reportresult").load("rs/report/showChinaChart",null,loadReportCallback,"json");
+/*
+ 提交页面的查询报表数据
+ */
+$("#submitBtn").click(function(){
+    $("#reportresult").html();
+    if($("#province").val()!="请选择"&&$("#province").val()!="")
+    {
+        if($("#city").val()!="请选择"&&$("#city").val()!="")
+        {
+            var data = {};
+            data.province = $("#province").val();
+            data.city = $("#city").val();
+            data.area = $("#area").val();
+            data.unitaddress = $("#unitaddress").val();
+            data.riskvalueareaslider= $("#riskvalueareaslider").val();
+            data.equipmentvariety=$("#equipmentvariety").val();
+            if($("#minweight").val()=="")
+            {
+                data.minweight=0 ;
+            }
+            else
+            {
+                data.minweight=$("#minweight").val() ;
+            }
+            if($("#maxweight").val()=="")
+            {
+                data.maxweight=1000;
+            }
+            else
+            {
+                data.maxweight=$("#maxweight").val() ;
+            }
+            $.post($.URL.report.showCraneReport,data,loadReportCallback,"json");
+            //location.href="/rs/report/showCraneReport"
+            $("#reportresult").load("rs/report/showCraneReport",data,loadReportCallback,"json") ;
+        }
+        else
+        {
+            $("#reportresult").html();
+            $("#reportresult").load("rs/report/showProvinceRiskValue",{"province":$("#province").val()},loadReportCallback,"json") ;
+        }
+    }
+
+    else
+    {
+        $("#reportresult").load("rs/report/showChinaChart",null,loadReportCallback,"json");
+    }
+});
+<!--滑杆脚本-->
+$("#riskvalueareaslider").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic",
+    callback: function( value ){
+        var values= [];
+        values=value.split(";");
+        alert("滑竿"+value);
+    }
+});
+
+</script>
+<style type="text/css">
+    #riskvalueareaslider{
+        width: 500px;
+    }
+    #linkagearea{
+        height: 40px;
+        width: 100%;
+    }
+    #riskandliftweightsearch{
+        height: 40px;
+    }
+    .l_combobox
+    {
+        width: 150px;
+        margin-top: 3px;
+        display: inline-block;
+    }
+    #queryccondition
+    {
+        width: 100%;
+        height: 80px;
+    }
+    #risksearch{
+        width: 300px;
+        height: 36px;
+        float: left;
+        margin-left: 7px;
+    }
+    .riskarea{
+         float: left;
+         margin-left: 7px;
+    }
+    #riskvalueareaslider{width: 400px;}
+    #weightarea{
+        float: left;
+    }
+    #minweight{
+        width: 80px;
+    }
+    #maxweight{
+        width: 80px;
+    }
+</style>
+
+</head>
+<body>
+<div id="topmenu" class="l-menubar"/>
+<div id="queryccondition">
+        <div id="linkagearea" >
+                <span>省:</span>
+                <span id="provincesearch" class="l_combobox">
+                    <input type="text" readonly="true" id="province">
+                </span>
+                <span>市:</span>
+                <span id="citysearch" class="l_combobox">
+                    <input type="text" readonly="true" id="city">
+                </span>
+                <span>区域:</span>
+                <span id="areasearch" class="l_combobox">
+                    <input type="text" readonly="true" id="area">
+                </span>
+                <span>使用单位:</span>
+                <span id="unitaddresssearch" class="l_combobox">
+                    <input type="text" readonly="true" id="unitaddress">
+                </span>
+        </div>
+        <div id="riskandliftweightsearch" >
+            <span id="weightarea">
+            <span>起重机类型:</span>
+            <span id="equsearch" class="l_combobox">
+                    <input type="text" readonly="true" id="equipmentvariety">
+            </span>
+            <span>起重区间:</span>
+            <span id="minweightsearch">
+                <input id="minweight" type="text"   />
+            </span>
+            <span>T--></span>
+            <span id="maxweightsearch">
+                <input id="maxweight" type="text"   />
+            </span>
+            <span>T</span>
+            </span>
+            <span class='riskarea'>风险值区间:</span>
+            <span id="risksearch" >
+                <input id="riskvalueareaslider" type="slider" name="riskValueArea" value="1;9" />
+            </span>
+            <span>
+                <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+            </span>
+        </div>
+</div>
+<div id="accordion1" class="l-accordion-panel">
+    <div id="reportresult" style="margin-bottom: 50px"></div>
+</div>
+<!--  数据统计代码 -->
+</body>
+</html>

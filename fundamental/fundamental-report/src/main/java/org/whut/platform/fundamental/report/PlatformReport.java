@@ -57,7 +57,7 @@ public class PlatformReport {
                     JRHtmlExporter exporter=new JRHtmlExporter();
                     exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint);
                     exporter.setParameter(JRExporterParameter.OUTPUT_WRITER,out);
-                    exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,"image?image=");
+                    exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,"image?random="+Math.random()+"&image=");
                     exporter.exportReport();
                     out.flush();
                     out.close();

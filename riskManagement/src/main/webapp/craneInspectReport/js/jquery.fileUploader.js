@@ -426,6 +426,126 @@
                         }
                     })
                     .success(function(data) {
+                                var _data=JSON.parse(data);
+                                document.getElementById("maingrid").innerHTML="";
+
+                                if(_data.code==200){
+                                    alert("上传成功");
+                                }else if(_data.code==302){
+                                    var table1=document.createElement("table");
+                                    table1.border=1;
+                                    table1.width="150%";
+                                    table1.align="left";
+                                    table1.isScroll=true;
+                                    table1.draggable=true;
+                                    table1.overflowX="scroll";
+                                    table1.overflowY="scroll";
+                                    var caption= table1.createCaption();
+                                    caption.innerHTML="重复数据";
+                                    //表头
+                                    var tr=table1.insertRow(0);
+                                    var td=tr.insertCell(0);
+                                    td.innerHTML="报告书编号";
+
+                                    var td=tr.insertCell(1);
+                                    td.innerHTML="使用单位地址";
+
+                                    var td=tr.insertCell(2);
+                                    td.innerHTML="地址ID";
+                                    var td=tr.insertCell(3);
+                                    td.innerHTML="组织机构代码";
+                                    var td=tr.insertCell(4);
+                                    td.innerHTML="使用地点";
+                                    var td=tr.insertCell(5);
+                                    td.innerHTML="安全管理人员";
+                                    var td=tr.insertCell(6);
+                                    td.innerHTML="联系电话";
+                                    var td=tr.insertCell(7);
+                                    td.innerHTML="设备品种";
+                                    var td=tr.insertCell(8);
+                                    td.innerHTML="单位内部编号";
+                                    var td=tr.insertCell(9);
+                                    td.innerHTML="制造单位";
+                                    var td=tr.insertCell(10);
+                                    td.innerHTML="制造许可编号";
+                                    var td=tr.insertCell(11);
+                                    td.innerHTML="制造日期";
+                                    var td=tr.insertCell(12);
+                                    td.innerHTML="规格型号";
+                                    var td=tr.insertCell(13);
+                                    td.innerHTML="产品编号";
+                                    var td=tr.insertCell(14);
+                                    td.innerHTML="工作级别";
+                                    var td=tr.insertCell(15);
+                                    td.innerHTML="经度";
+                                    var td=tr.insertCell(16);
+                                    td.innerHTML="纬度";
+                                    var td=tr.insertCell(17);
+                                    td.innerHTML="单个起重机的图片路径";
+                                    var td=tr.insertCell(18);
+                                    td.innerHTML="每种类型起重器的图片路径";
+                                    var td=tr.insertCell(19);
+                                    td.innerHTML="风险值";
+                                    var td=tr.insertCell(20);
+                                    td.innerHTML="额定起重量";
+
+
+                                    for(var i=0;i<_data.data.length;i++){
+
+                                        var j=i+1;
+                                        var tr=table1.insertRow(j);
+                                        var td=tr.insertCell(0);
+                                        td.innerHTML=_data.data[i].reportNumber;
+
+                                        var td=tr.insertCell(1);
+                                        td.innerHTML=_data.data[i].unitAddress;
+
+                                        var td=tr.insertCell(2);
+                                        td.innerHTML=_data.data[i].addressId;
+                                        var td=tr.insertCell(3);
+                                        td.innerHTML=_data.data[i].organizeCode;
+                                        var td=tr.insertCell(4);
+                                        td.innerHTML=_data.data[i].userPoint;
+                                        var td=tr.insertCell(5);
+                                        td.innerHTML=_data.data[i].safeManager;
+                                        var td=tr.insertCell(6);
+                                        td.innerHTML=_data.data[i].contactPhone;
+                                        var td=tr.insertCell(7);
+                                        td.innerHTML=_data.data[i].equipmentVariety;
+                                        var td=tr.insertCell(8);
+                                        td.innerHTML=_data.data[i].unitNumber;
+                                        var td=tr.insertCell(9);
+                                        td.innerHTML=_data.data[i].manufactureUnit;
+                                        var td=tr.insertCell(10);
+                                        td.innerHTML=_data.data[i].manufactureLicenseNumber;
+                                        var td=tr.insertCell(11);
+                                        td.innerHTML=_data.data[i].manufactureDate;
+                                        var td=tr.insertCell(12);
+                                        td.innerHTML=_data.data[i].specification;
+                                        var td=tr.insertCell(13);
+                                        td.innerHTML=_data.data[i].pNumber;
+                                        var td=tr.insertCell(14);
+                                        td.innerHTML=_data.data[i].workLevel;
+                                        var td=tr.insertCell(15);
+                                        td.innerHTML=_data.data[i].lng;
+                                        var td=tr.insertCell(16);
+                                        td.innerHTML=_data.data[i].lat;
+                                        var td=tr.insertCell(17);
+                                        td.innerHTML=_data.data[i].singlePicURL;
+                                        var td=tr.insertCell(18);
+                                        td.innerHTML=_data.data[i].typePicURL;
+                                        var td=tr.insertCell(19);
+                                        td.innerHTML=_data.data[i].riskValue;
+                                        var td=tr.insertCell(20);
+                                        td.innerHTML=_data.data[i].ratedLiftWeight;
+
+                                    }
+                                    document.getElementById("maingrid").appendChild(table1);
+                                    if(window.confirm("是否覆盖重复数据？")){
+                                        $.post($.URL.craneinspectreport.addRepeat,null,null,"json");
+                                    }
+
+                                }
                         afterEachUpload($form.attr('id'), data );
                     })
                     .error(function(jqXHR, textStatus, errorThrown) {

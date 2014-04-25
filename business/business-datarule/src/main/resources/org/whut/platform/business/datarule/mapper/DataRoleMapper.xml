@@ -6,7 +6,6 @@
     <sql id="data_role_fields">
 		ID,NAME,DESCRIPTION,STATUS
 	</sql>
-
     <resultMap id="dataRoleResultMap" type="DataRole">
         <id property="id" column="ID" />
         <result property="name" column="NAME" />

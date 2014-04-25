@@ -5,7 +5,6 @@ import org.whut.platform.business.datarule.entity.DataRoleAddress;
 
 import java.util.List;
 import java.util.Map;
-
 /**
  * Created with IntelliJ IDEA.
  * User: John

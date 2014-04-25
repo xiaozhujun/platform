@@ -17,7 +17,6 @@
         $(function(){
             $.get($.URL.dataRule.listAddress,null,listCallback,"json");
         });
-
         var gridData = {};
         function listCallback(data){
             if(data.code==200){

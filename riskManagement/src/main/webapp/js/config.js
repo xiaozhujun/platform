@@ -84,7 +84,6 @@
             "update":"rs/userDataRole/update",
             "delete":"rs/userDataRole/delete",
             "list":"rs/userDataRole/list"
-
         }
     }
 })(jQuery);

@@ -1,5 +1,4 @@
 package org.whut.platform.business.datarule.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.datarule.entity.DataRole;
 

@@ -1,5 +1,4 @@
 package org.whut.platform.business.datarule.entity;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator

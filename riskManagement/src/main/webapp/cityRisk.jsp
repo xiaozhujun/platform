@@ -38,7 +38,7 @@ transitional.dtd">
                     $("#rightmain").css("display","block");
                 }
             });
-            $.showCityRisk(province);
+            $.showCityRisk(province,0);
         });
     </script>
 

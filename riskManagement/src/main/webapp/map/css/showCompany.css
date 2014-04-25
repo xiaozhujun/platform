@@ -575,7 +575,7 @@ body{
     width: 385px;
     z-index: 1;
     margin: 0px;
-    height: 40px;
+    height: 35px;
     background-color:#F7F7F7;
     border-bottom: 1px solid #999999;
 }
@@ -594,4 +594,7 @@ body{
     margin-left: 12px;
     margin-top: 10px;
     display: inline-block;
+}
+#alert{
+    color:red;
 }

@@ -17,7 +17,6 @@ $.extend({
        var areaOption="#"+areaId+"option:not(:first)";
        var unitOption="#"+unitId+"option:not(:first)";
        var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
-
        $(pId).change(function(){
            $("#alert").html("");
            $(cityOption).remove();

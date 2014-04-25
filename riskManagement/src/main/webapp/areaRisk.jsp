@@ -40,7 +40,7 @@ transitional.dtd">
                     $("#rightmain").css("display","block");
                 }
             });
-            $.showAreaRisk(province,city);
+            $.showAreaRisk(province,city,0);
         });
     </script>
 
@@ -64,7 +64,6 @@ transitional.dtd">
             </div>
             <div id="rightmain">
                 <div id="tab">
-                    <span id='riskRank'>风险排名</span>
                 </div>
                 <div id="rightRank">
                     <div class="rankContent" id="rankContent">
@@ -94,10 +93,6 @@ transitional.dtd">
         $("#titleContainer").load("title.html");
     });
 </script>
-
-<%--&lt;%&ndash;<script type="text/javascript">
-
-    </script>--%>
 
 <script type="text/javascript" src="map/js/initMap.js"></script>
 <script type="text/javascript">

@@ -38,7 +38,7 @@ transitional.dtd">
                     $("#rightmain").css("display","block");
                 }
             });
-            $.showCityRisk(province);
+            $.showCityRisk(province,0);
         });
     </script>
 
@@ -62,7 +62,6 @@ transitional.dtd">
                 </div>
                 <div id="rightmain">
                     <div id="tab">
-                        <span id='riskRank'>风险排名</span>
                     </div>
                     <div id="rightRank">
                         <div class="rankContent" id="rankContent">

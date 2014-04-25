@@ -209,6 +209,11 @@ public class CraneInspectReportService {
         float a=Float.parseFloat("a");
         System.out.println(a);
     }
+
+    public List<CraneInspectReport> fuzzyQuery(String city,String area,String require)
+    {
+        return mapper.fuzzyQuery(city,area,require);
+    }
     /*
         新加入的，Sunhui
     */

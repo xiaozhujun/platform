@@ -41,4 +41,5 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<Map<String,Float>> getProvinceAvgRiskValue();
     public List<Map<String,Float>> getCityAvgRiskValueByProvince(@Param("province") String province);
     public List<Map<String,Float>> getAreaAvgRiskValueByProvinceAndCity(@Param("province") String province,@Param("city") String city);
+    public List<CraneInspectReport> fuzzyQuery(@Param("city") String city,@Param("area") String area,@Param("require") String require);
 }

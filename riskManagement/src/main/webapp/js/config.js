@@ -38,7 +38,8 @@
             "getCraneInspectReportInfoFromCircle":"rs/craneinspectreport/getCraneInspectReportInfoFromCircle",
             "getProvinceAvgRiskValue":"rs/craneinspectreport/getProvinceAvgRiskValue",
             "getCityAvgRiskValueByProvince":"rs/craneinspectreport/getCityAvgRiskValueByProvince",
-            "getAreaAvgRiskValueByProvinceAndCity":"rs/craneinspectreport/getAreaAvgRiskValueByProvinceAndCity"
+            "getAreaAvgRiskValueByProvinceAndCity":"rs/craneinspectreport/getAreaAvgRiskValueByProvinceAndCity",
+            "fuzzyQuery":"rs/craneinspectreport/fuzzyQuery"
         },
         "authority":{
             "add":"rs/authority/add"

@@ -380,4 +380,12 @@ public class CraneInspectReportServiceWeb {
         System.out.print(myUserDetail.getPassword()+"密码");
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQuery")
+    @POST
+    public String fuzzyQuery(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQuery(city,area,require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 }

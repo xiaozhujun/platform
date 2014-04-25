@@ -30,4 +30,19 @@ public class DataRoleAddressService {
         return dataRoleAddressMapper.getAreaAndColorWithDataRole(province,city,userName);
     }
 
+    public List<Long>findAddressIdById(long id){
+        return dataRoleAddressMapper.findAddressIdById(id);
+    }
+    public List<DataRoleAddress>findByCondition(long id){
+        return dataRoleAddressMapper.findByCondition(id);
+    }
+
+   public int delete(DataRoleAddress dataRoleAddress){
+       return  dataRoleAddressMapper.delete(dataRoleAddress);
+   }
+
+    public void add(long dRoleId,long addressId,String name){
+        dataRoleAddressMapper.add(dRoleId,addressId,name);
+    }
+
 }

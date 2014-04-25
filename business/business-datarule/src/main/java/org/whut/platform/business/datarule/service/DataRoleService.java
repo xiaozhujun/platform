@@ -28,4 +28,17 @@ public class DataRoleService {
     public List<DataRole> list(){
         return dataRoleMapper.list();
     }
+
+    public DataRole get(long id){
+        return dataRoleMapper.get();
+    }
+
+    public int update(DataRole dataRole){
+        return dataRoleMapper.update(dataRole);
+    }
+
+    public int delete(DataRole dataRole){
+        return  dataRoleMapper.delete(dataRole);
+    }
+
 }

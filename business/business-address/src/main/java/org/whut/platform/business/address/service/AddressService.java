@@ -18,6 +18,18 @@ public class AddressService {
     @Autowired
     private AddressMapper mapper;
 
+    public String findProvinceById(long id){
+        return mapper.findProvinceById(id);
+    }
+
+    public String findCityById(long id){
+        return mapper.findCityById(id);
+    }
+
+    public String findAreaById(long id) {
+        return mapper.findAreaById(id) ;
+    }
+
     public Address findById(long id){
         return mapper.findById(id);
     }

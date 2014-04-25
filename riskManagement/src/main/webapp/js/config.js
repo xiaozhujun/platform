@@ -67,7 +67,11 @@
         },
         "dataRule":{
             "add":"rs/dataRule/addDataRole",
-            "list":"rs/dataRule/list"
+            "list":"rs/dataRule/list",
+            "listAddress":"rs/dataRule/listAddress",
+            "listProvince":"rs/dataRule/listProvince",
+            "delete":"rs/dataRule/delete",
+            "update":"rs/dataRule/update"
 
         },
         "dataRuleAddress":{
@@ -80,6 +84,7 @@
             "update":"rs/userDataRole/update",
             "delete":"rs/userDataRole/delete",
             "list":"rs/userDataRole/list"
+
         }
     }
 })(jQuery);

@@ -16,4 +16,7 @@ import java.util.List;
 public interface DataRoleMapper extends AbstractMapper<DataRole>{
     public long getIdByName(String name);
     public List<DataRole> list();
+    public DataRole get();
+    public int delete(DataRole dataRole);
+    public DataRole update(String name,String description,long status);
 }

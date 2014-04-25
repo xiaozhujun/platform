@@ -1,5 +1,4 @@
 package org.whut.platform.business.datarule.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.datarule.entity.DataRole;
 
@@ -28,4 +27,17 @@ public class DataRoleService {
     public List<DataRole> list(){
         return dataRoleMapper.list();
     }
+
+    public DataRole get(long id){
+        return dataRoleMapper.get();
+    }
+
+    public int update(DataRole dataRole){
+        return dataRoleMapper.update(dataRole);
+    }
+
+    public int delete(DataRole dataRole){
+        return  dataRoleMapper.delete(dataRole);
+    }
+
 }

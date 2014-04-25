@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -95,6 +96,7 @@ public class ReportServiceWeb {
       /* subreport="areachart.jasper";*/
         if(!(area.trim()).equals("")&&!area.equals("请选择"))
         {
+
             whereArea=" and area="+"\""+area+"\"";
         }
         if(!(unitaddress.trim()).equals("")&&!unitaddress.equals("请选择"))
@@ -168,7 +170,7 @@ public class ReportServiceWeb {
         parameter.put("whereCranevariety",whereCranevariety);
         parameter.put("whereUnitaddress",whereUnitaddress);
         parameter.put("whereRiskvalue",whereRiskvalue);
-        platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response,"test");
+        platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response, "report");
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

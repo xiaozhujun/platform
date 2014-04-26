@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 $.extend({
+    //根据一个json数组来在地图上添加marker
      addMarker:function addMarker(markerArr){
          for(var i=0;i<markerArr.length;i++){
              var json = markerArr[i];
@@ -18,6 +19,7 @@ $.extend({
     var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>"+json.content+"</div>");
     return iw;
 },
+    //创建一个InfoWindow
     createOneInfoWindow:function createOneInfoWindow(title,content){
         var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + title + "'>" + title + "</b><div class='iw_poi_content'>"+content+"</div>");
         return iw;
@@ -68,7 +70,7 @@ $.extend({
         }
     }
 },
-
+    //得到省的风险值
     getProvinceRiskValue:function getProvinceRiskValue(){
         $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null, $.showProvinceRank,"json");
     },

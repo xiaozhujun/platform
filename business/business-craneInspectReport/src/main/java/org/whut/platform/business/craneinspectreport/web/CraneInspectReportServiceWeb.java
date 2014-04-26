@@ -388,4 +388,39 @@ public class CraneInspectReportServiceWeb {
         List<CraneInspectReport> list=craneInspectReportService.fuzzyQuery(city,area,require);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByUnitAddress")
+    @POST
+    public String fuzzyQueryByUnitAddress(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByUnitAddress(city,area,require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByUserPoint")
+    @POST
+    public String fuzzyQueryByUserPoint(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByUserPoint(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryBySafeManager")
+    @POST
+    public String fuzzyQueryBySafeManager(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryBySafeManager(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByEquipmentVariety")
+    @POST
+    public String fuzzyQueryByEquipmentVariety(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByEquipmentVariety(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByManufactureUnit")
+    @POST
+    public String fuzzyQueryByManufactureUnit(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByManufactureUnit(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 }

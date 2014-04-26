@@ -73,18 +73,18 @@ transitional.dtd">
                                   <a id="s0">全站搜索</a>
                                   <div style="display:none;" id="pt2" class="part">
                                       <p>
-                                          <a id="s1">JS代码</a>
-                                          <a id="s2">PSD素材</a>
-                                          <a id="s3">矢量素材</a>
-                                          <a id="s4">图片素材</a>
-                                          <a id="s5">网页特效</a>
-                                          <a id="s6">字体素材</a>
-                                          <a id="s7">常用软件</a>
+                                          <a id="s1">单位地址</a>
+                                          <a id="s2">使用地点</a>
+                                          <a id="s3">管理人员</a>
+                                          <a id="s4">设备品种</a>
+                                          <a id="s5">制造单位</a>
+                                          <a id="s6">全站搜索</a>
+                     <%--                     <a id="s7">常用软件</a>
                                           <a id="s8">图标素材</a>
                                           <a id="s9">PNG图标</a>
                                           <a id="s10">GIF图标</a>
                                           <a id="s11">网页模板</a>
-                                          <a id="s12">QQ表情</a>
+                                          <a id="s12">QQ表情</a>--%>
                                       </p>
                                   </div>
                               </div>
@@ -228,7 +228,19 @@ transitional.dtd">
             data.city = city;
             data.area = area;
             data.require = '%'+$("#more").val()+'%';
-            $.post($.URL.craneinspectreport.fuzzyQuery,data,showRiskRankByFuzzyQuery,"json");
+            if($$("catid").value==5){
+                $.post($.URL.craneinspectreport.fuzzyQueryByUnitAddress,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==8){
+                $.post($.URL.craneinspectreport.fuzzyQueryByUserPoint,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==9){
+                $.post($.URL.craneinspectreport.fuzzyQueryBySafeManager,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==10){
+                $.post($.URL.craneinspectreport.fuzzyQueryByEquipmentVariety,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==12){
+                $.post($.URL.craneinspectreport.fuzzyQueryByManufactureUnit,data,showRiskRankByFuzzyQuery,"json");
+            }else{
+                $.post($.URL.craneinspectreport.fuzzyQuery,data,showRiskRankByFuzzyQuery,"json");
+            }
         });
 
         function showRiskRankByFuzzyQuery(data){

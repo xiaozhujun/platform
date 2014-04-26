@@ -267,7 +267,47 @@
          FROM craneinspectreport cr,riskvalue r,address a
          WHERE cr.reportnumber=r.reportnumber
          AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
-         AND (cr.reportnumber like #{require} or cr.unitaddress like #{require} or cr.organizecode like #{require} or cr.usepoint like #{require} or cr.safemanager like #{require} or cr.contactphone like #{require} or cr.equipmentvariety like #{require} or cr.unitnumber like #{require} or cr.manufactureunit like #{require} or cr.manufacturedate like #{require} or cr.worklevel like #{require} or cr.ratedliftweight like #{require})
-         group by cr.unitAddress order by r.riskvalue desc
+         AND (cr.unitaddress like #{require} or  cr.usepoint like #{require} or cr.safemanager like #{require} or cr.equipmentvariety like #{require}  or cr.manufactureunit like #{require})
+         order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByUnitAddress" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.unitaddress like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByUserPoint" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.usePoint like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryBySafeManager" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.safeManager like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByEquipmentVariety" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.equipmentVariety like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByManufactureUnit" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.manufactureUnit like  #{require}
+        order by r.riskvalue desc
     </select>
 </mapper>

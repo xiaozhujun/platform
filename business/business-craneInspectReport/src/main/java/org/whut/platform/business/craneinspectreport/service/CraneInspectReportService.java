@@ -231,4 +231,7 @@ public class CraneInspectReportService {
     {
         return  mapper.getEquipmentVarietyList();
     }
+    public List<CraneInspectReport> getAreaInfo(String city,String area){
+        return mapper.getAreaInfo(city,area);
+    }
 }

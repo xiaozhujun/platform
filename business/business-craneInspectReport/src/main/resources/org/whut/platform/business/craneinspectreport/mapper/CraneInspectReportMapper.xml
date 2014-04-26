@@ -310,4 +310,10 @@
         AND cr.manufactureUnit like  #{require}
         order by r.riskvalue desc
     </select>
+    <select id="getAreaInfo" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.*,r.riskvalue
+        FROM craneinspectreport cr,address a,riskvalue r
+        WHERE cr.reportnumber=r.reportnumber AND a.id=cr.addressId
+        AND a.city=#{city} AND a.area=#{area} GROUP BY cr.unitaddress
+    </select>
 </mapper>

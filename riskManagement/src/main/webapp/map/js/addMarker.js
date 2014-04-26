@@ -95,15 +95,15 @@ $.extend({
     function areaInfoCallback(data){
         if(data.code==200){
             $("#rightcontent").html("");
-            if(data.data[0][0]==undefined){
+            if(data.data[0]==undefined){
                 var error="<div class='errorInfo'>对不起,数据不存在!</div>";
                 $("#rightcontent").append(error);
             }else{
-                for(i=0;i<data.data[0].length;i++){
+                for(i=0;i<data.data.length;i++){
                     var item={};
-                    item.title=data.data[0][i].unitAddress;
-                    item.content=data.data[0][i].equipmentVariety+",风险值:"+data.data[1][i].riskValue;
-                    item.point=data.data[0][i].lng+"|"+data.data[0][i].lat;
+                    item.title=data.data[i].unitAddress;
+                    item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue;
+                    item.point=data.data[i].lng+"|"+data.data[i].lat;
                     item.isOpen=0;
                     /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
                     item.icon={};
@@ -112,22 +112,22 @@ $.extend({
                     item.icon.t=21;
                     item.icon.x=9;
                     item.icon.lb=12;
-                    if(data.data[1][i].riskValue==1){
+                    if(data.data[i].riskValue==1){
                         item.icon.l=23;
                     }
-                    if(data.data[1][i].riskValue==2){
+                    if(data.data[i].riskValue==2){
                         item.icon.l=0;
                     }
-                    if(data.data[1][i].riskValue==3){
+                    if(data.data[i].riskValue==3){
                         item.icon.l=69;
                     }
-                    if(data.data[1][i].riskValue==4){
+                    if(data.data[i].riskValue==4){
                         item.icon.l=115;
                     }
-                    if(data.data[1][i].riskValue==5){
+                    if(data.data[i].riskValue==5){
                         item.icon.l=46;
                     }
-                    if(data.data[1][i].riskValue==6){
+                    if(data.data[i].riskValue==6){
                         item.icon.l=46;
                     }
                     chaoyangMarker.push(item);

@@ -159,7 +159,7 @@ public class CraneInspectReportServiceWeb {
         if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        Long addressId=addressService.findIdByCityArea(city,area);
+      /*  Long addressId=addressService.findIdByCityArea(city,area);
         if(addressId==null){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
@@ -181,7 +181,9 @@ public class CraneInspectReportServiceWeb {
         }else{
         return JsonResultUtils.getObjectResultByStringAsDefault(resultList,JsonResultUtils.Code.SUCCESS);
         }
-        }
+        }*/
+         List<CraneInspectReport> list=craneInspectReportService.getAreaInfo(city,area);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST

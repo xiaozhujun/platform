@@ -399,7 +399,6 @@ $.extend({
         }
     },
     showAreaRankShow:function showAreaRankShow(data){
-
         if(data.code==200){
             $("#tab").hide("");
             $("#rankTitle").html("");

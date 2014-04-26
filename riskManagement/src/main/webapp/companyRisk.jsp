@@ -218,8 +218,11 @@ transitional.dtd">
             }
         });
         $.showCompanyRisk(city,area,12);
+        //省市区联动效果
         $.addressLinkAge("province","city","area","unit",province);
+        //地图左边的tab页
         $.mapLeftTab("searchTab","search","drawCircle","drawLine");
+        //地图导航
         $.dragAbleNavigate(area);
     });
 
@@ -312,6 +315,9 @@ transitional.dtd">
                     $.addMarker(MarkerArray);
                 }
             }
+            /*
+            右侧鼠标的mouseover以及mouseout事件
+             */
             rightTabMouseEvent:function rightTabMouseEvent(id){
                 var _id="#"+id;
                 $(_id).mouseover(function(){

@@ -77,7 +77,11 @@ $.extend({
         }
         $.initProvinceWithDataRule("中国",5,flag);
     },
-
+    /*
+     显示城市风险
+     @Param province 省
+     @Param flag标记 用来控制地图上画出的颜色区域的是否可点击
+     */
     showCityRisk:function showCityRisk(province,flag)
     {
         if(flag==0){
@@ -87,7 +91,12 @@ $.extend({
         }
         $.initCityWithDataRule(province,8,flag);
     },
-
+    /*
+     显示地区风险
+     @Param province 省
+     @Param city 城市
+     @Param flag标记 用来控制地图上画出的颜色区域的是否可点击
+     */
     showAreaRisk:function showAreaRisk(province,city,flag)
     {
         if(flag==0){
@@ -101,6 +110,10 @@ $.extend({
     $.initAndAddMarker(city,area);
     $.initMap(area,size);
 },
+    /*
+    画圆功能
+    利用DrawingManager类来实现
+     */
     drawCircle:function drawCircle(flag){
     var myDrawingManagerObject = new BMapLib.DrawingManager(map, {isOpen: flag,
         drawingType: BMAP_DRAWING_CIRCLE, enableDrawingTool: true,
@@ -163,6 +176,9 @@ $.extend({
 
         });
     },
+    /*
+    地图导航功能
+     */
     dragAbleNavigate:function dragAbleNavigate(address){
         var transit = new BMap.DrivingRoute(map, {
             renderOptions: {
@@ -173,6 +189,9 @@ $.extend({
         });
         transit.search("汉口站",address);
     },
+    /*
+    根据数据权限给省画出轮廓
+     */
     drawProvinceBoundaryWithRule:function drawProvinceBoundaryWithRule(data,flag){
         var bdary=new BMap.Boundary();
         bdary.get(data.province,function(rs){
@@ -213,6 +232,9 @@ $.extend({
             }
         });
     },
+    /*
+     根据数据权限给城市画出轮廓
+     */
     drawCityBoundaryWithRule:function drawCityBoundaryWithRule(province,data,flag){
         var bdary=new BMap.Boundary();
         bdary.get(data.city,function(rs){
@@ -253,6 +275,9 @@ $.extend({
             }
         });
     },
+    /*
+     根据数据权限给地区画出轮廓
+     */
     drawAreaBoundaryWithRule:function drawAreaBoundaryWithRule(province,city,data,flag){
         var bdary=new BMap.Boundary();
         bdary.get(data.area,function(rs){

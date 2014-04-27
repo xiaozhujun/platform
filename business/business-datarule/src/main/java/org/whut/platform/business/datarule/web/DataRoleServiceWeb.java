@@ -40,7 +40,7 @@ public class DataRoleServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/addDataRole")
-    public String addDataRole(@FormParam("dRoleName") String dRoleName,@FormParam("dRoleDescription") String dRoleDescription,@FormParam("dRoleStatus") String dRoleStatus,@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area){
+    public String addDataRole(@FormParam("dRoleName") String dRoleName,@FormParam("dRoleDescription") String dRoleDescription,@FormParam("dRoleStatus") String dRoleStatus,@FormParam("addressIds") String addressIds){
         /*if(dRoleName==null||dRoleName.trim().equals("")||dRoleDescription==null||dRoleDescription.trim().equals("")||dRoleStatus==null||dRoleStatus.equals("")){
                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         } */
@@ -61,16 +61,43 @@ public class DataRoleServiceWeb {
         dataRole.setStatus(Integer.parseInt(dRoleStatus));
         dataRoleService.add(dataRole);
         long dRoleId = dataRoleService.getIdByName(dRoleName);
-        List<Long> addressIdList = new ArrayList<Long>();
+        if(addressIds==null||addressIds.trim().equals("")){
+            return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"未选中区域！");
+        }
+        else{
+          addressIds =addressIds.substring(0,addressIds.length()-1);
+          String[] idArray = addressIds.split(",");
+          for(int i=0;i<idArray.length;i++){
+              System.out.println(">>>>>"+idArray[i]);
+              DataRoleAddress dataRoleAddress =new DataRoleAddress();
+              dataRoleAddress.setDRoleId(dRoleId);
+              dataRoleAddress.setDRoleName(dRoleName);
+              dataRoleAddress.setAddressId(Integer.parseInt(idArray[i]));
+              dataRoleAddressService.add(dataRoleAddress);
+          }
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        /*List<Long> addressIdList = new ArrayList<Long>();
         if(province!=null&&!province.trim().equals("")&&city!=null&&!city.trim().equals("")&&area!=null&&!area.trim().equals("")){
-            long addressId = addressService.findIdByArea(province,city,area);
-            addressIdList.add(addressId);
+            String[] areaArray = area.split(";");
+            for(int i=0;i<areaArray.length;i++){
+                long addressId = addressService.findIdByArea(province,city,areaArray[i]);
+                addressIdList.add(addressId);
+            }
         }
         else if(province!=null&&!province.trim().equals("")&&city!=null&&!city.trim().equals("")){
-            addressIdList = addressService.findIdByProvinceCity(province,city);
+            String[] cityArray = city.split(";");
+            for(int j=0;j<cityArray.length;j++){
+                List<Long> list = addressService.findIdByProvinceCity(province,cityArray[j]);
+                addressIdList.addAll(list);
+            }
         }
         else if(province!=null&&!province.trim().equals("")){
-            addressIdList = addressService.findIdByProvince(province);
+            String[] provinceArray = province.split(";");
+            for(int k=0;k<provinceArray.length;k++){
+               List<Long>  list = addressService.findIdByProvince(province);
+               addressIdList.addAll(list);
+            }
         }
         else{
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"未选中区域！");
@@ -82,7 +109,7 @@ public class DataRoleServiceWeb {
             dataRoleAddress.setAddressId(addressId);
            dataRoleAddressService.add(dataRoleAddress);
         }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);*/
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

@@ -1,109 +1,70 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head><title>
-</title>
+<head>
+    <title></title>
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script type="text/javascript">
+        var manager;
+        var cityData=[];
+        var areaData=[];
+        var province=[];
         $(function ()
         {
-            $.post($.URL.address.getProvinceList,null,listCallback,"json");
-            function listCallback(data){
+            $("#dRoleStatus").ligerComboBox({
+                data:[
+                    {"text":"0","id":"0"},
+                    {"text":"1","id":"1"}
+                ],
+                valueFieldID:'dRoleStatusSelect'
+            });
+            $.post($.URL.address.getProvinceList,null,listProvinceCallback,"json");
+            function listProvinceCallback(data){
                 if(data.code==200){
-                    var myData = [];
-                    myData.push({id:0,text:"请选择"}) ;
-                    for(var i = 0;i<data.data.length;i++){
-                        var d= {};
-                        d["text"]=data.data[i].province;
-                        d["id"]=i+1;
-                        myData.push(d);
+                    for(var i =0;i<data.data.length;i++){
+                        var unitProvince={};
+                        unitProvince.id=i+1;
+                        unitProvince.pid=0;
+                        unitProvince.text =data.data[i].province;
+                        unitProvince.type="省";
+                        unitProvince.children=[];
+                        province.push(unitProvince);
                     }
-                    $("#province").ligerComboBox({ isShowCheckBox:true, isMultiSelect:false,
-                        data:myData, valueFieldID: 'provinceSelect',
-
-                        onSelected:function(a,b)
+                    var tree = $("#tree1").ligerTree({
+                        data:province,
+                        onBeforeExpand: onBeforeExpand,
+                        idFieldName :'id',
+                        slide : false ,
+                        isLeaf : function(data)
                         {
-                            if($("#province").val()!="请选择"&&$("#province").val()!="")
-                            {
-                                $.post($.URL.address.getCityByProvince,{"province":b},getCityListCallback,"json");
-                            }
-                            function getCityListCallback(citydata){
-                                if(citydata.code==200){
-                                    var cityList=[];
-                                    cityList.push({id:0,text:"请选择"}) ;
-                                    for(var i=0;i<citydata.data.length;i++)
-                                    {
-                                        var j={};
-                                        j["text"]=citydata.data[i].city;
-                                        j["id"]=i+1;
-                                        cityList.push(j);
-                                    }
-                                    $("#city").ligerComboBox({
-                                        data:cityList,
-                                        isShowCheckBox:true,isMultiSelect:false,
-                                        /*
-                                         选择市后的联动效果
-                                         */
-                                        onSelected:function(m,n)
-                                        {
-                                            if($("#city").val()!="请选择"&&$("#city").val()!="")
-                                            {
-                                                $.post($.URL.address.getAreaByProvinceAndCity,{"province":$("#province").val(),"city":$("#city").val()},getAreaListCallback,"json");
-                                            }
-
-                                            function getAreaListCallback(areadata){
-                                                if(areadata.code==200){
-
-                                                    var areaList=[];
-                                                    areaList .push({id:0,text:"请选择"}) ;
-                                                    for(var i=0;i<areadata.data.length;i++)
-                                                    {
-                                                        var j={};
-                                                        j["text"]=areadata.data[i].area;
-                                                        j["id"]=i+1;
-                                                        areaList.push(j);
-                                                    }
-                                                    $("#area").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
-                                                        data:areaList, valueFieldID: 'areaSelect'
-                                                    });
-                                                }
-                                            };
-                                        }
-                                    });
-                                }
-                            }
+                            if (!data) return false;
+                            return data.type == "区";
                         }
                     });
-
-                    $("#dRoleStatus").ligerComboBox({
-                        data:[
-                            {"text":"0","id":"0"},
-                            {"text":"1","id":"1"}
-                        ],
-                        valueFieldID:'dRoleStatus'
-                    });
+                   manager = $("#tree1").ligerGetTreeManager();
+                   manager.collapseAll();
                 }
-            };
+            }
             $("#submitBtn").click(function(){
+                var notes = manager.getChecked();
+                var text = "";
+                for (var i = 0; i < notes.length; i++)
+                {
+                    if(!manager.hasChildren(notes[i].data)){
+                         text += notes[i].data.id + ",";
+                    }
+                }
                 var data = {};
                 data.dRoleName = $("#dRoleName").val();
                 data.dRoleDescription = $("#dRoleDescription").val();
                 data.dRoleStatus = $("#dRoleStatus").val();
-                data.province=$("#province").val();
-                data.city=$("#city").val();
-                data.area=$("#area").val();
+                data.addressIds = text;
                 $.post($.URL.dataRule.add,data,addCallback,"json");
             });
         });
-
         function addCallback(data){
             if(data.code==200){
                 $.ligerDialog.success('操作成功!');
@@ -112,56 +73,118 @@
                 $.ligerDialog.error(data.message);
             }
         }
+        function onBeforeExpand(note){
+           var children =manager.hasChildren(note.data);
+           if(note.data.children && note.data.children.length == 0){
+               if(note.data.type=="省"){
+                   var parentId = note.data.id;
+                   $.ajax({
+                       type : "post",
+                       url : "rs/address/getCityByProvince",
+                       data : {"province":note.data.text},
+                       async : false,
+                       dataType:"json",
+                       success : function(data){
+                             cityData=[];
+                           for(var i=0;i<data.data.length;i++){
+                                var c = {};
+                               c.id=i+1;
+                               c.pid= parentId;
+                               c.text =data.data[i].city;
+                               c.type="市";
+                               c.children=[];
+                               cityData.push(c);
+                           }
+                           manager.append(note.target,cityData);
+                           manager.collapseAll();
+                       }
+                   });
+               }
+               else if(note.data.type=="市"){
+                   var pid = note.data.pid;
+                   var pro;
+                   for(var p=0;p<province.length;p++){
+                       if(pid==province[p].id){
+                           pro=province[p].text;
+                       }
+                   }
+                   $.ajax({
+                       type : "post",
+                       url : "rs/address/getAreaByProvinceAndCity",
+                       data : {"province":pro,"city":note.data.text},
+                       async : false,
+                       dataType:"json",
+                       success : function(data){
+                           areaData=[];
+                           for(var i=0;i<data.data.length;i++){
+                               var c = {};
+                               c.id=data.data[i].id;
+                               c.text =data.data[i].area;
+                               c.type="区";
+                               areaData.push(c);
+                           }
+                           manager.append(note.target,areaData);
+                       }
+                   });
+               }
+
+           }
+        }
     </script>
     <style type="text/css">
+        .box
+        {
+            float: left;
+        }
+        .tree
+        {
+            width:330px;
+            height:300px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
         .l-table-edit {}
         .l-table-edit-td{ padding:4px;}
         .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
     </style>
-
 </head>
-
 <body style="padding:10px">
-
-<form name="form1" method="post" action="" id="form1">
+<div>
     <div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">角色名:</td>
+                <td align="left" class="l-table-edit-td"><input name="dRoleName" type="text" id="dRoleName" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">描述:</td>
+                <td align="left" class="l-table-edit-td"><input name="dRoleDescription" type="text" id="dRoleDescription" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">状态:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" readonly="true" id="dRoleStatus">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">地址:</td>
+                <td align="left" class="l-table-edit-td">
+                    <div class="box">
+                        <div class="tree">
+                            <ul style="width: 244px;" id="tree1"></ul>
+                        </div>
+                    </div>
+                </td>
+         </table>
+         <br/>
+         <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
     </div>
-    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
-        <tr>
-            <td align="right" class="l-table-edit-td">角色名:</td>
-            <td align="left" class="l-table-edit-td"><input name="dRoleName" type="text" id="dRoleName" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">描述:</td>
-            <td align="left" class="l-table-edit-td"><input name="dRoleDescription" type="text" id="dRoleDescription" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">状态:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="dRoleStatus">
-            </td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">地址:</td>
-            <td align="left" class="l-table-edit-td">
-               <tr>
-                <!-- <input type="text" readonly="true" id="addressProvince">-->
-                    <td align="right" class="l-table-edit-td">省：</td>
-                    <td align="left" class="l-table-edit-td"><input name="province" readonly="true" type="text" id="province" ltype="text"/></td>
-                    <td align="right" class="l-table-edit-td">市：</td>
-                    <td align="left" class="l-table-edit-td"><input name="city" readonly="true" ltype="text" type="text"  id="city"/></td>
-                    <td align="right" class="l-table-edit-td">区：</td>
-                    <td align="left" class="l-table-edit-td"><input name="area" readonly="true" ltype="text" type="text" id="area"/></td>
-               </tr>
-            </td>
-        </tr>
-    </table>
-    <br />
-    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
-</form>
+</div>
 <div style="display:none">
-    <!--  数据统计代码 --></div>
+
+</div>
 </body>
 </html>

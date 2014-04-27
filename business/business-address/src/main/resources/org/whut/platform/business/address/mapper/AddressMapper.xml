@@ -140,7 +140,7 @@
     </select>
     <select id="getAreaByProvinceAndCity" parameterType="map" resultMap="addressResultMap">
         SELECT
-        area
+        id ,area
         FROM address
         WHERE
         province=#{province} AND city=#{city}

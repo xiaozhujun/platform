@@ -39,7 +39,12 @@
             "getProvinceAvgRiskValue":"rs/craneinspectreport/getProvinceAvgRiskValue",
             "getCityAvgRiskValueByProvince":"rs/craneinspectreport/getCityAvgRiskValueByProvince",
             "getAreaAvgRiskValueByProvinceAndCity":"rs/craneinspectreport/getAreaAvgRiskValueByProvinceAndCity",
-            "fuzzyQuery":"rs/craneinspectreport/fuzzyQuery"
+            "fuzzyQuery":"rs/craneinspectreport/fuzzyQuery",
+            "fuzzyQueryByUnitAddress":"rs/craneinspectreport/fuzzyQueryByUnitAddress",
+            "fuzzyQueryByUserPoint":"rs/craneinspectreport/fuzzyQueryByUserPoint",
+            "fuzzyQueryBySafeManager":"rs/craneinspectreport/fuzzyQueryBySafeManager",
+            "fuzzyQueryByEquipmentVariety":"rs/craneinspectreport/fuzzyQueryByEquipmentVariety",
+            "fuzzyQueryByManufactureUnit":"rs/craneinspectreport/fuzzyQueryByManufactureUnit"
         },
         "authority":{
             "add":"rs/authority/add"

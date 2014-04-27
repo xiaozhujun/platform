@@ -52,7 +52,7 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.MULTIPART_FORM_DATA)
     @Path("/upload")
     @POST
-    public String upload(@Context HttpServletRequest request){
+    public String upload(@Context HttpServletRequest request){     //excel上传功能
         if (request == null) {
             return JsonResultUtils
                     .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
@@ -156,10 +156,11 @@ public class CraneInspectReportServiceWeb {
     @Path("/getAreaInfo")
     @POST
     public String getAreaInfo(@FormParam("city") String city,@FormParam("area") String area){
+        //根据市和区得到craneinpectreport的信息
         if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        Long addressId=addressService.findIdByCityArea(city,area);
+      /*  Long addressId=addressService.findIdByCityArea(city,area);
         if(addressId==null){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }else{
@@ -181,12 +182,15 @@ public class CraneInspectReportServiceWeb {
         }else{
         return JsonResultUtils.getObjectResultByStringAsDefault(resultList,JsonResultUtils.Code.SUCCESS);
         }
-        }
+        }*/
+         List<CraneInspectReport> list=craneInspectReportService.getAreaInfo(city,area);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAreaInfoByUnitAddress")
     public String  getAreaInfoByUnitAddress(@FormParam("name") String name){
+        //通过unitAddress得到区域信息
         if(name==null||name.trim().equals("")){
             return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
@@ -197,6 +201,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/getCraneInspectReportInfoByAddressAndEquipment")
     public String getCraneInspectReportInfoByAddressAndEquipment(@FormParam("address_equipmentvariety") String address_equipmentvariety,@FormParam("itemInfoId") String itemInfo){
+        //根据unitAddress以及设备种类得到craneinspectreport信息
         if(address_equipmentvariety==null||address_equipmentvariety.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
@@ -210,6 +215,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     public String getUnitaddressByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area)
     {
+        //根据省市区得到unitAddress(公司)
         List<CraneInspectReport> list=craneInspectReportService.getUnitaddressByArea(province,city,area);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
@@ -219,6 +225,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     public String showRiskRank(@FormParam("city") String city,@FormParam("area") String area)
     {
+        //根据城市以及地区得到风险
         List<CraneInspectReport> list=craneInspectReportService.showRiskRank(city,area);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
@@ -237,6 +244,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/getOneUnitAddressInfo")
     public String getOneUnitAddressInfo(@FormParam("unitAddress") String unitAddress){
+             //根据unitAddress得到一条craneinspectreport信息
             List<CraneInspectReport> list=new ArrayList<CraneInspectReport>();
             CraneInspectReport craneInspectReport=craneInspectReportService.getOneUnitAddressInfo(unitAddress);
             Long riskValue=craneInspectReportService.findReportNumberByUnitAddress(craneInspectReport.getUnitAddress());
@@ -273,6 +281,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/getLatLngByProvince")
     public String getLatLngByProvince(@FormParam("province") String province){
+        //根据省得到经纬度
         String latLng=null;
         try{
            Map map=baiduMapUtil.getCoordinate(province);
@@ -286,6 +295,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/getLatLngByCity")
     public String getLatLngByCity(@FormParam("province") String province,@FormParam("city") String city){
+        //根据省城市得到经纬度
         String latLng=null;
         try{
             String address=province+""+city;
@@ -300,6 +310,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/getLatLngByArea")
     public String getLatLngByArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area){
+        //根据省市区得到经纬度
         String latLng=null;
         try{
             String address=province+""+city+""+area;
@@ -314,6 +325,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/getCraneInspectReportInfoById")
     public String getCraneInspectReportInfoById(@FormParam("id") long id){
+        //通过id得到craneinpectreport信息
          List<CraneInspectReport> list=craneInspectReportService.getCraneInspectReportInfoById(id);
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
@@ -386,6 +398,41 @@ public class CraneInspectReportServiceWeb {
     @POST
     public String fuzzyQuery(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
         List<CraneInspectReport> list=craneInspectReportService.fuzzyQuery(city,area,require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByUnitAddress")
+    @POST
+    public String fuzzyQueryByUnitAddress(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByUnitAddress(city,area,require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByUserPoint")
+    @POST
+    public String fuzzyQueryByUserPoint(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByUserPoint(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryBySafeManager")
+    @POST
+    public String fuzzyQueryBySafeManager(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryBySafeManager(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByEquipmentVariety")
+    @POST
+    public String fuzzyQueryByEquipmentVariety(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByEquipmentVariety(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/fuzzyQueryByManufactureUnit")
+    @POST
+    public String fuzzyQueryByManufactureUnit(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByManufactureUnit(city, area, require);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

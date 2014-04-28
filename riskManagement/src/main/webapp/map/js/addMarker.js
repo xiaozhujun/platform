@@ -527,9 +527,23 @@ $.extend({
                         rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].province+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
+                    $.provinceClick("#riskcontent"+data.data[i].id);
                 }
             }
         }
+    },
+    provinceClick:function provinceClick(id){
+        var province=$(id).children(".rcontentItem").children(".unitFont").text();
+        $(id).click(function(){
+            location ="cityRisk.jsp?province="+encodeURI(province);
+        });
+
+    },
+    cityClick:function cityClick(province,id){
+        var city=$(id).children(".rcontentItem").children(".unitFont").text();
+        $(id).click(function(){
+            location="areaRisk.jsp?province="+province+"&city="+encodeURI(city)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+        });
     }
 
 });

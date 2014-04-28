@@ -189,6 +189,13 @@ $.extend({
                 }
             });
         },
+    rightTabMouseClickEvent:function rightTabMouseClickEvent(id){
+        var _id="#"+id;
+        var cid=this.id.substring(11,this.id.length);
+        $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
+
+
+    },
        addOneMarker:function addOneMarker(title,content,point,isOpen,icon,i){
                var p0 = point.split("|")[0];
                var p1 = point.split("|")[1];

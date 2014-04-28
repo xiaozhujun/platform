@@ -160,6 +160,7 @@ $.extend({
                        rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>" +"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].unitAddress+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskValue+"</span></span></div>"
                         $("#riskrankContent").append(rankContent);
                         $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                        $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
                     }
                 }
             }

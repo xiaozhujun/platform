@@ -1,4 +1,8 @@
 
+#topmenu
+{
+    width: 100%;
+}
 #riskvalueareaslider{
     width: 500px;
 }
@@ -23,7 +27,7 @@
     height: 80px;
 }
 #risksearch{
-    width: 410px;
+    width: 310px;
     height: 30px;
     float: left;
     margin-left: 24px;
@@ -70,4 +74,10 @@
     width: 300px;
     margin-top: 3px;
     display: inline-block;
+}
+
+#reportresult
+{
+    width: 100%;
+    height: 95%;
 }

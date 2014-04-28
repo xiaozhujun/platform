@@ -27,59 +27,12 @@ public class ReportServiceWeb {
     private PlatformReport platformReport=new PlatformReport();
     @Context HttpServletRequest request;
     @Context HttpServletResponse response;
-    @Path("/showUserReport")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    public String showUserAuthorityPowerReport(){
-     /*
-     这个例子主要是展示传入一个sql语句，显示html格式的报表
-      */
-     String sql=showUserSql();
-     /*
-     模板在项目riskmanagement下的repoprtTemplate文件夹下
-     */
-     String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportDemo.jasper");
-     Map parameter=new HashMap();
-     parameter.put("sql",sql);
-     platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
-        return JsonResultUtils
-                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-    }
-    public String showUserSql(){
-        /*
-        涉及user表，user_authority表，authority表，authority_power表，power表的多表联查
-         */
-        String sql="select u.name as uname,u.sex,au.name as rname,p.description " +
-                "from user u,user_authority ua,authority au,authority_power aup,power p " +
-                "where u.id=ua.userId and au.id=ua.authorityId and au.id=aup.authorityId and aup.powerId=p.id";
-        return sql;
-    }
-    public String showUserSqlWithName(String name){
-        String sql="select u.name as uname,u.sex,au.name as rname,p.description"+
-        " from user u,user_authority ua,authority au,authority_power aup,power p "+
-        "where u.id=ua.userId and au.id=ua.authorityId and au.id=aup.authorityId and aup.powerId=p.id and u.name='"+name+"'";
-        return sql;
-    }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/showUserWithName/{name}")
-    @GET
-    public String showUserWithName(@PathParam("name") String name){
-        System.out.print(name+".......bug.......");
-        if(name==null||name.trim().equals("")){
-        }
-        String sql=showUserSqlWithName(name);
-        Map parameter=new HashMap();
-        parameter.put("sql",sql);
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportDemo.jasper");
-        platformReport.getMapToExportReport(reportTemplate,parameter,"excel",request,response,"test");
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-    }
     @Path("/showCraneReport")
     @POST
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String showCraneReport(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area,@FormParam("unitaddress") String unitaddress,@FormParam("riskvalueareaslider") String riskvalueareaslider,@FormParam("equipmentvariety") String equipmentvariety,@FormParam("minweight") String minweight,@FormParam("maxweight") String maxweight){
      /*
-     这个例子主要是展示传入一个sql语句，显示html格式的报表
+     这个例子主要是显示html格式的报表
       */
 //        String sql=showCraneSql(province,city,area,unitaddress,equipmentvariety);
      /*
@@ -87,13 +40,25 @@ public class ReportServiceWeb {
      */
         String whereArea="";
         String whereCranevariety="";
-        String whereUnitaddress="";
+        String whereUnitAddress="";
         String whereRiskvalue="";
         String whereWeightLevel="";
+        String whereProvince="";
+        String whereCity="";
         String[] values= riskvalueareaslider.split(";");
         float startValue = Float.parseFloat(values[0]);
         float endValue=Float.parseFloat(values[1]);
-      /* subreport="areachart.jasper";*/
+
+        if(!(province.trim()).equals("")&&!province.equals("请选择"))
+        {
+
+            whereProvince=" and province="+"\""+province+"\"";
+        }
+        if(!(city.trim()).equals("")&&!city.equals("请选择"))
+        {
+
+            whereCity=" and city="+"\""+city+"\"";
+        }
         if(!(area.trim()).equals("")&&!area.equals("请选择"))
         {
 
@@ -101,7 +66,7 @@ public class ReportServiceWeb {
         }
         if(!(unitaddress.trim()).equals("")&&!unitaddress.equals("请选择"))
         {
-            whereUnitaddress=" and unitaddress="+"\""+unitaddress+"\"";
+            whereUnitAddress=" and unitaddress="+"\""+unitaddress+"\"";
         }
         if(!(equipmentvariety.trim()).equals("")&&!equipmentvariety.equals("请选择"))
         {
@@ -109,14 +74,15 @@ public class ReportServiceWeb {
         }
         whereWeightLevel=" and ratedliftweight>="+minweight+" and ratedliftweight<="+maxweight;
         whereRiskvalue=" and riskvalue>="+startValue+" and riskvalue<="+endValue;
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/detail/chinaReport.jasper");
         Map parameter=new HashMap();
-        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
-        parameter.put("Province",province);
-        parameter.put("City",city);
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/detail")+"/"));
+        System.out.println((request.getSession().getServletContext().getRealPath("/reportTemplate/detail")+"/")+"hahah");
+        parameter.put("whereProvince",whereProvince);
+        parameter.put("whereCity",whereCity);
         parameter.put("whereArea",whereArea);
         parameter.put("whereCranevariety",whereCranevariety);
-        parameter.put("whereUnitaddress",whereUnitaddress);
+        parameter.put("whereUnitAddress",whereUnitAddress);
         parameter.put("whereRiskvalue",whereRiskvalue);
         parameter.put("whereWeightLevel",whereWeightLevel);
         platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
@@ -128,7 +94,7 @@ public class ReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String exportCraneReport(@PathParam("data") String data)
     {
-
+         //根据传入的data打印不同格式的报表
         /*data=excel,湖北,武汉市,江岸区,湖北省武汉市江岸区赵家条319号,4,6,汽车起重机,0,200*/
         String[] datalist=data.split(",");
         String type=datalist[0].split("=")[1];
@@ -143,16 +109,28 @@ public class ReportServiceWeb {
         String maxweight=datalist[9];
         String whereArea="";
         String whereCranevariety="";
-        String whereUnitaddress="";
+        String whereUnitAddress="";
         String whereRiskvalue="";
         String whereWeightLevel="";
+        String  whereProvince="";
+        String whereCity="";
+        if(!(province.trim()).equals("")&&!province.equals("请选择"))
+        {
+
+            whereProvince=" and province="+"\""+province+"\"";
+        }
+        if(!(city.trim()).equals("")&&!city.equals("请选择"))
+        {
+
+            whereCity=" and city="+"\""+city+"\"";
+        }
         if(!(area.trim()).equals("")&&!area.equals("请选择"))
         {
             whereArea=" and area="+"\""+area+"\"";
         }
         if(!(unitaddress.trim()).equals("")&&!unitaddress.equals("请选择"))
         {
-            whereUnitaddress=" and unitaddress="+"\""+unitaddress+"\"";
+            whereUnitAddress=" and unitaddress="+"\""+unitaddress+"\"";
         }
         if(!(equipmentvariety.trim()).equals("")&&!equipmentvariety.equals("请选择"))
         {
@@ -160,15 +138,15 @@ public class ReportServiceWeb {
         }
         whereWeightLevel=" and ratedliftweight>="+minweight+" and ratedliftweight<="+maxweight;
         whereRiskvalue=" and riskvalue>="+startvalue+" and riskvalue<="+endvalue;
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reporttest.jasper");
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/detail/chinaReport.jasper");
         Map parameter=new HashMap();
-        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate")+"/"));
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/detail")+"/"));
         parameter.put("whereWeightLevel",whereWeightLevel);
-        parameter.put("Province",province);
-        parameter.put("City",city);
+        parameter.put("whereProvince",whereProvince);
+        parameter.put("whereCity",whereCity);
         parameter.put("whereArea",whereArea);
         parameter.put("whereCranevariety",whereCranevariety);
-        parameter.put("whereUnitaddress",whereUnitaddress);
+        parameter.put("whereUnitAddress",whereUnitAddress);
         parameter.put("whereRiskvalue",whereRiskvalue);
         platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response, "report");
 /*       System.out.print(data+"..........");*/
@@ -180,6 +158,7 @@ public class ReportServiceWeb {
     @GET
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String showChinaChart(){
+        //展示全国各地区风险图
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/chart/chinachart.jasper");
         Map parameter=new HashMap();
         parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/chart")+"/"));
@@ -192,6 +171,7 @@ public class ReportServiceWeb {
     @POST
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String showProvinceRiskValue(@FormParam("province") String province){
+        //展示某个省各个市的风险分布
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/getCityRiskValueByProvince.jasper");
         System.out.print(reportTemplate);
         Map parameter=new HashMap();

@@ -161,6 +161,7 @@ $.extend({
                         $("#riskrankContent").append(rankContent);
                         $.rightTabMouseEvent("riskcontent"+data.data[i].id);
                         $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
+
                     }
                 }
             }

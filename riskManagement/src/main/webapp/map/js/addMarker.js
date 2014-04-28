@@ -189,10 +189,14 @@ $.extend({
                 }
             });
         },
-    rightTabMouseClickEvent:function rightTabMouseClickEvent(id){
+      rightTabMouseClickEvent:function rightTabMouseClickEvent(id){
         var _id="#"+id;
-        var cid=this.id.substring(11,this.id.length);
-        $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
+        $(_id).click(function(){
+            $.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
+            var unitAddress=$("#"+this.id).children(".rcontentItem").children(".unitFont").text();
+            $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unitAddress}, $.getAreaInfoByUnitAddressCallback,"json");
+        });
+       // $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
 
 
     },
@@ -338,6 +342,7 @@ $.extend({
             }
             for(i=0;i<data.data.length;i++){
                 $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
             }
         }
     }
@@ -376,6 +381,7 @@ $.extend({
                     }
                     for(i=0;i<data.data.length;i++){
                         $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                        $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
                     }
                 }
             }
@@ -502,7 +508,6 @@ $.extend({
         }
     },
     showProvinceRankShow:function showProvinceRankShow(data){
-
         if(data.code==200){
             $("#tab").hide("");
             $("#rankTitle").html("");

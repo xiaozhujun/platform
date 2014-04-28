@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
-.search_box {float:left;width:380px;height:32px;background:#999999 url(../images/bg.png) no-repeat -297px -415px;padding-left:2px;display:inline;}
+.search_box {float:left;width:380px;height:32px;background:#3399FF url(../images/bg.png) no-repeat -297px -415px;padding-left:2px;display:inline;}
 .search {width:380px;margin:0px;line-height:34px;height:34px;}
 .search a {text-decoration:none;cursor:pointer;}
 .search input {float:left;}

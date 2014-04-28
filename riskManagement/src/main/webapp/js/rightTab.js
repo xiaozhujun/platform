@@ -11,11 +11,11 @@ $.extend({
         var iTab="#"+InfoTab;
         var rRank="#"+rightRank;
         var rShow="#"+rightShow;
-        $(rTab).css("background-color","#999999");
+        $(rTab).css("background-color","#3399FF");
         $(rTab).css("color","#ffffff");
         $(iTab).click(function(){
             $(rTab).css("background-color","#F7F7F7");
-            $(iTab).css("background-color","#999999");
+            $(iTab).css("background-color","#3399FF");
             $(iTab).css("color","#ffffff");
             $(rTab).css("color","#999999");
             //$("#rightshow").css("display","block");
@@ -25,7 +25,7 @@ $.extend({
                 $(rShow).css("display","block");}
         });
         $(rTab).click(function(){
-            $(rTab).css("background-color","#999999");
+            $(rTab).css("background-color","#3399FF");
             $(rTab).css("color","#ffffff");
             $(iTab).css("color","#999999");
             $(iTab).css("background-color","#F7F7F7");

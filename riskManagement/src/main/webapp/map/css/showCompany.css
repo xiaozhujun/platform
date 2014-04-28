@@ -16,10 +16,10 @@ body{
     background-color: #F7F7F7;
     width: 100%;
     height: 40px;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #3399FF;
 }
 .searchTab{
-    border: 1px solid #999999;
+    border: 1px solid #3399FF;
     float: left;
     margin-left: 10px;
     width: 80px;
@@ -30,11 +30,11 @@ body{
     line-height: 30px;
 }
 .searchTab:hover{
-    background-color: #999999;
+    background-color: #3399FF;
     color:#ffffff;
 }
 .lineTab{
-    border: 1px solid #999999;
+    border: 1px solid #3399FF;
     float: left;
     margin-left: 10px;
     width: 80px;
@@ -45,11 +45,11 @@ body{
     line-height: 30px;
 }
 .lineTab:hover{
-    background-color: #999999;
+    background-color: #3399FF;
     color:#ffffff;
 }
 .lineTabClick{
-    border: 1px solid #999999;
+    border: 1px solid #3399FF;
     float: left;
     margin-left: 10px;
     width: 80px;
@@ -58,13 +58,13 @@ body{
     cursor: pointer;
     text-align: center;
     line-height: 30px;
-    background-color: #999999;
+    background-color: #3399FF;
     color:#ffffff;
 }
 .searchTabClick{
-    background-color: #999999;
+    background-color: #3399FF;
     color:#ffffff;
-    border: 1px solid #999999;
+    border: 1px solid #3399FF;
     float: left;
     margin-left: 10px;
     width: 80px;
@@ -78,7 +78,7 @@ body{
     background-color: #F7F7F7;
     width: 100%;
     height: 40px;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #3399FF;
     z-index: 1;
     position: absolute;
 }
@@ -147,7 +147,7 @@ body{
     width:100%;
     height:80px;
     margin-top: 1px;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #3399FF;
 }
 .righttopClick{
     background-color: #D1E7F1;
@@ -155,7 +155,7 @@ body{
     width:100%;
     height:80px;
     margin-top: 1px;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #3399FF;
 }
 .righttop:HOVER{
     background-color: #D1E7F1;
@@ -336,22 +336,22 @@ body{
     width: 192px;
     text-align: center;
     cursor: pointer;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #3399FF;
     margin-top: 1px;
     height:35px;
     line-height: 35px;
     color:#666666;
 }
 #riskRank:hover{
-    background-color: #999999;
+    background-color: #3399FF;
     color:white
 }
 #riskInfo{
     width: 190px;
     float: left;
     cursor: pointer;
-    border-bottom: 1px solid #999999;
-    border-right: 1px solid #999999;
+    border-bottom: 1px solid #3399FF;
+    border-right: 1px solid #3399FF;
     margin-top: 1px;
     height: 35px;
     text-align: center;
@@ -359,11 +359,11 @@ body{
     color:#666666;
 }
 #riskInfo:hover{
-    background-color: #999999;
+    background-color: #3399FF;
     color:white
 }
 #riskttitle{
-    background-color: #999999;
+    background-color: #3399FF;
     width: 385px;
     height: 35px;
 }
@@ -480,7 +480,7 @@ body{
     background-color: #ffffff;
 }
 .riskcontentEven:hover{
-    background-color: #999999;
+    background-color: #3399FF;
     color: #ffffff;
 }
 .city{
@@ -546,7 +546,7 @@ body{
     border:1px solid #999999;
 }
 .riskcontent:hover{
-    background-color: #999999;
+    background-color: #3399FF;
     color: #ffffff;
     width: 385px;
     height: 40px;

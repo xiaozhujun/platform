@@ -5,7 +5,6 @@ import org.whut.platform.business.datarule.entity.DataRoleAddress;
 
 import java.util.List;
 import java.util.Map;
-
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -28,6 +27,21 @@ public class DataRoleAddressService {
     }
     public List<Map<String,String>> getAreaAndColorWithDataRole(String province,String city,String userName){
         return dataRoleAddressMapper.getAreaAndColorWithDataRole(province,city,userName);
+    }
+
+    public List<Long>findAddressIdById(long id){
+        return dataRoleAddressMapper.findAddressIdById(id);
+    }
+    public List<DataRoleAddress>findByCondition(long id){
+        return dataRoleAddressMapper.findByCondition(id);
+    }
+
+   public int delete(DataRoleAddress dataRoleAddress){
+       return  dataRoleAddressMapper.delete(dataRoleAddress);
+   }
+
+    public void add(long dRoleId,long addressId,String name){
+        dataRoleAddressMapper.add(dRoleId,addressId,name);
     }
 
 }

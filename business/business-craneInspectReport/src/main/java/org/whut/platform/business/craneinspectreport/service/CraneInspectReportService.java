@@ -205,14 +205,24 @@ public class CraneInspectReportService {
     public List<Map<String,Float>> getAreaAvgRiskValueByProvinceAndCity(String province,String city){
         return mapper.getAreaAvgRiskValueByProvinceAndCity(province,city);
     }
-    public static void main(String args[]){
-        float a=Float.parseFloat("a");
-        System.out.println(a);
-    }
-
     public List<CraneInspectReport> fuzzyQuery(String city,String area,String require)
     {
         return mapper.fuzzyQuery(city,area,require);
+    }
+    public List<CraneInspectReport> fuzzyQueryByUnitAddress(String city,String area,String require){
+        return mapper.fuzzyQueryByUnitAddress(city, area, require);
+    }
+    public List<CraneInspectReport> fuzzyQueryByUserPoint(String city,String area,String require){
+        return mapper.fuzzyQueryByUserPoint(city, area, require);
+    }
+    public List<CraneInspectReport> fuzzyQueryBySafeManager(String city,String area,String require){
+        return mapper.fuzzyQueryBySafeManager(city, area, require);
+    }
+    public List<CraneInspectReport> fuzzyQueryByEquipmentVariety(String city,String area,String require){
+        return mapper.fuzzyQueryByEquipmentVariety(city, area, require);
+    }
+    public List<CraneInspectReport> fuzzyQueryByManufactureUnit(String city,String area,String require){
+        return mapper.fuzzyQueryByManufactureUnit(city, area, require);
     }
     /*
         新加入的，Sunhui
@@ -220,5 +230,8 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getEquipmentVarietyList()
     {
         return  mapper.getEquipmentVarietyList();
+    }
+    public List<CraneInspectReport> getAreaInfo(String city,String area){
+        return mapper.getAreaInfo(city,area);
     }
 }

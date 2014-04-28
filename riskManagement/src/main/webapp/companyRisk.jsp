@@ -32,6 +32,9 @@ transitional.dtd">
     <script type="text/javascript" src="jslider/js/draggable-0.1.js"></script>
     <script type="text/javascript" src="jslider/js/jquery.slider.js"></script>
     <script type="text/javascript" src="map/js/mapLeftTab.js"></script>
+    <%--<script src="search/js/jquery-1.8.2.min.js"></script>--%>
+    <script src="search/js/common.js"></script>
+    <link href="search/css/style.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
         #layout{  width:100%; margin:40px;  height:400px;
@@ -54,10 +57,42 @@ transitional.dtd">
                 <span id="riskInfo">风险详情</span>
             </div>
                 <div id="input_search">
-                <span class="more"><input name="more" type="text" id="more" ltype="text" style="width:280px"/>
+              <%-- <span class="more"><input name="more" type="text" id="more" ltype="text" style="width:280px"/>
                          </span>
                       <span class="inputSearchBtn" id="queryBtn">查询
-                      </span>
+                      </span>--%>
+                  <%--<div id="search_box">
+                      <input type="text" id="more" value="Search" class="swap_value" />
+                      <input type="image" src="search/btn_search_box.gif" width="27" height="24" id="queryBtn" alt="Search" title="Search" />
+                  </div>--%>
+                  <div class="search_box">
+                      <span class="left l_bg"></span>
+                      <span class="right r_bg"></span>
+                      <div class="search">
+                              <div id="pt1" class="select">
+                                  <a id="s0">全站搜索</a>
+                                  <div style="display:none;" id="pt2" class="part">
+                                      <p>
+                                          <a id="s1">单位地址</a>
+                                          <a id="s2">使用地点</a>
+                                          <a id="s3">管理人员</a>
+                                          <a id="s4">设备品种</a>
+                                          <a id="s5">制造单位</a>
+                                          <a id="s6">全站搜索</a>
+                     <%--                     <a id="s7">常用软件</a>
+                                          <a id="s8">图标素材</a>
+                                          <a id="s9">PNG图标</a>
+                                          <a id="s10">GIF图标</a>
+                                          <a id="s11">网页模板</a>
+                                          <a id="s12">QQ表情</a>--%>
+                                      </p>
+                                  </div>
+                              </div>
+                              <input id="catid" name="catid" type="hidden" value="7">
+                              <input id="more" class="enter" name="infos" onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
+                              <input class="sb" name="Input" type="submit" id="queryBtn"  value="">
+                      </div>
+                  </div>
                 </div>
             <div id="rightRank">
                 <div class="rankContent" id="rankContent">
@@ -106,11 +141,11 @@ transitional.dtd">
                             <option><%=URLDecoder.decode(request.getParameter("area"),"utf-8")%></option>
                         </select>
                          </span>
-                        <span><select id="unit">
+                        <%--<span><select id="unit">
                             <option>---请选择单位----</option>
                          </select>
-                         </span>
-
+                         </span>--%>
+                       <span id="alert"></span>
                     </span>
             </div>
             <div id="container"></div>
@@ -183,8 +218,11 @@ transitional.dtd">
             }
         });
         $.showCompanyRisk(city,area,12);
+        //省市区联动效果
         $.addressLinkAge("province","city","area","unit",province);
+        //地图左边的tab页
         $.mapLeftTab("searchTab","search","drawCircle","drawLine");
+        //地图导航
         $.dragAbleNavigate(area);
     });
 
@@ -193,7 +231,19 @@ transitional.dtd">
             data.city = city;
             data.area = area;
             data.require = '%'+$("#more").val()+'%';
-            $.post($.URL.craneinspectreport.fuzzyQuery,data,showRiskRankByFuzzyQuery,"json");
+            if($$("catid").value==5){
+                $.post($.URL.craneinspectreport.fuzzyQueryByUnitAddress,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==8){
+                $.post($.URL.craneinspectreport.fuzzyQueryByUserPoint,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==9){
+                $.post($.URL.craneinspectreport.fuzzyQueryBySafeManager,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==10){
+                $.post($.URL.craneinspectreport.fuzzyQueryByEquipmentVariety,data,showRiskRankByFuzzyQuery,"json");
+            }else if($$("catid").value==12){
+                $.post($.URL.craneinspectreport.fuzzyQueryByManufactureUnit,data,showRiskRankByFuzzyQuery,"json");
+            }else{
+                $.post($.URL.craneinspectreport.fuzzyQuery,data,showRiskRankByFuzzyQuery,"json");
+            }
         });
 
         function showRiskRankByFuzzyQuery(data){
@@ -265,6 +315,9 @@ transitional.dtd">
                     $.addMarker(MarkerArray);
                 }
             }
+            /*
+            右侧鼠标的mouseover以及mouseout事件
+             */
             rightTabMouseEvent:function rightTabMouseEvent(id){
                 var _id="#"+id;
                 $(_id).mouseover(function(){

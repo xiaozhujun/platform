@@ -140,7 +140,7 @@
     </select>
     <select id="getAreaByProvinceAndCity" parameterType="map" resultMap="addressResultMap">
         SELECT
-        area
+        id ,area
         FROM address
         WHERE
         province=#{province} AND city=#{city}
@@ -161,5 +161,26 @@
        FROM user u,drole dr,user_drole udr,drole_address draddr,address a
        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND a.province=#{province}
        AND a.city=#{city}  AND u.name=#{userName}
+    </select>
+
+    <select id="findProvinceById"  parameterType="long" resultType="java.lang.String">
+        Select
+        province
+        from   address
+        where id=#{id}
+    </select>
+
+    <select id="findCityById"  parameterType="long" resultType="java.lang.String">
+        Select
+        city
+        from   address
+        where id=#{id}
+    </select>
+
+    <select id="findAreaById"  parameterType="long" resultType="java.lang.String">
+        Select
+        area
+        from   address
+        where id=#{id}
     </select>
 </mapper>

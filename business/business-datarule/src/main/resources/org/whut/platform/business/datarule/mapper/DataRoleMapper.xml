@@ -6,7 +6,6 @@
     <sql id="data_role_fields">
 		ID,NAME,DESCRIPTION,STATUS
 	</sql>
-
     <resultMap id="dataRoleResultMap" type="DataRole">
         <id property="id" column="ID" />
         <result property="name" column="NAME" />
@@ -53,7 +52,7 @@
         </where>
     </delete>
 
-    <select id="get" parameterType="DataRole" resultMap="dataRoleResultMap">
+    <select id="get" parameterType="java.lang.Long" resultMap="dataRoleResultMap">
         SELECT
         <include refid="data_role_fields" />
         FROM drole WHERE ID=#{id}

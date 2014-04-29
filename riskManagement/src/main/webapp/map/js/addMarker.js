@@ -189,6 +189,17 @@ $.extend({
                 }
             });
         },
+      rightTabMouseClickEvent:function rightTabMouseClickEvent(id){
+        var _id="#"+id;
+        $(_id).click(function(){
+            $.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
+            var unitAddress=$("#"+this.id).children(".rcontentItem").children(".unitFont").text();
+            $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unitAddress}, $.getAreaInfoByUnitAddressCallback,"json");
+        });
+       // $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
+
+
+    },
        addOneMarker:function addOneMarker(title,content,point,isOpen,icon,i){
                var p0 = point.split("|")[0];
                var p1 = point.split("|")[1];
@@ -213,6 +224,7 @@ $.extend({
                    }
                    _marker.addEventListener("click",function(){
                        this.openInfoWindow(_iw);
+                       $.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
                        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title}, $.getAreaInfoByUnitAddressCallback,"json");
                    });
                    _marker.addEventListener("mouseover",function(){
@@ -331,6 +343,7 @@ $.extend({
             }
             for(i=0;i<data.data.length;i++){
                 $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
             }
         }
     }
@@ -369,6 +382,7 @@ $.extend({
                     }
                     for(i=0;i<data.data.length;i++){
                         $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                        $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
                     }
                 }
             }
@@ -394,6 +408,8 @@ $.extend({
                         rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
+                    $.areaClick(data.str,"#riskcontent"+data.data[i].id,1);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -418,6 +434,8 @@ $.extend({
                         rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
+                    $.areaClick(data.str,"#riskcontent"+data.data[i].id,0);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -437,11 +455,13 @@ $.extend({
                 for(var i=0;i<data.data.length;i++){
                     var rankContent;
                     if(i%2==0){
-                        rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
+                        rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }else{
                         rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
+                    $.cityClick(data.str,"#riskcontent"+data.data[i].id,1);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -466,6 +486,8 @@ $.extend({
                         rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
+                    $.cityClick(data.str,"#riskcontent"+data.data[i].id,0);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -490,12 +512,14 @@ $.extend({
                         rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].province+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
+                    $.provinceClick("#riskcontent"+data.data[i].id,1);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
+
                 }
             }
         }
     },
     showProvinceRankShow:function showProvinceRankShow(data){
-
         if(data.code==200){
             $("#tab").hide("");
             $("#rankTitle").html("");
@@ -515,9 +539,43 @@ $.extend({
                         rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].province+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
+                    $.provinceClick("#riskcontent"+data.data[i].id,0);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
-    }
+    },
+    provinceClick:function provinceClick(id,flag){
+        var province=$(id).children(".rcontentItem").children(".unitFont").text();
+        $(id).click(function(){
+            if(flag==0){
+                location ="cityRisk.jsp?province="+encodeURI(province);
+            }else if(flag==1){
+                $.showCityRisk(province,1);
+            }
 
+        });
+
+    },
+    cityClick:function cityClick(province,id,flag){
+        var city=$(id).children(".rcontentItem").children(".unitFont").text();
+        $(id).click(function(){
+            if(flag==0){
+                location="areaRisk.jsp?province="+province+"&city="+encodeURI(city);
+            }else if(flag==1){
+                $.showAreaRisk(province,city,1);
+            }
+        });
+    },
+    areaClick:function areaClick(province_city,id,flag){
+        var str=province_city.split(",");
+        var area=$(id).children(".rcontentItem").children(".unitFont").text();
+        $(id).click(function(){
+             if(flag==0){
+                 location="companyRisk.jsp?province="+str[0]+"&city="+encodeURI(str[1])+"&area="+encodeURI(area);
+             }else if(flag==1){
+                 $.showCompanyRisk(str[1],area,12);
+             }
+        });
+    }
 });

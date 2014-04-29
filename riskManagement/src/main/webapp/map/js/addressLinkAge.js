@@ -19,9 +19,11 @@ $.extend({
        var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
        $(pId).change(function(){
            $("#alert").html("");
-           $(cityOption).remove();
+        /*   $(cityOption).remove();
            $(areaOption).remove();
-           $(unitOption).remove();
+           $(unitOption).remove();*/
+           $(cId).html("<option>---请选择---</option>");
+           $(aId).html("<option>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            if(pro=="0"){
                $("#alert").html("请选择省份");
@@ -34,8 +36,9 @@ $.extend({
        });
        $(cId).change(function(){
            $("#alert").html("");
-           $(areaOption).remove();
-           $(unitOption).remove();
+          /* $(areaOption).remove();
+           $(unitOption).remove();*/
+           $(aId).html("<option>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            var city=$(this).find('option:selected').val();
            if(pro!="0"&&city=="0"){

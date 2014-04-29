@@ -11,27 +11,26 @@ $.extend({
         var iTab="#"+InfoTab;
         var rRank="#"+rightRank;
         var rShow="#"+rightShow;
-        $(rTab).css("background-color","#999999");
-        $(rTab).css("color","#ffffff");
         $(iTab).click(function(){
-            $(rTab).css("background-color","#F7F7F7");
-            $(iTab).css("background-color","#999999");
-            $(iTab).css("color","#ffffff");
-            $(rTab).css("color","#999999");
-            //$("#rightshow").css("display","block");
-            $(rRank).animate({left:"400px"},rightCallback);
-            $(rShow).animate({left:""});
-            function  rightCallback(){
-                $(rShow).css("display","block");}
+            $.iTabClick(rTab,iTab,rRank,rShow);
         });
         $(rTab).click(function(){
-            $(rTab).css("background-color","#999999");
-            $(rTab).css("color","#ffffff");
-            $(iTab).css("color","#999999");
-            $(iTab).css("background-color","#F7F7F7");
-            $(rRank).css("display","block");
-            $(rRank).animate({left:""});
-            $(rShow).animate({left:"400px"});
+            $.rTabClick(rTab,iTab,rRank,rShow);
         });
+    },
+    iTabClick:function iTabClick(rTab,iTab,rRank,rShow){
+        $(rTab).removeClass("riskRankClick").addClass("riskRank");
+        $(iTab).removeClass("riskInfo").addClass("riskInfoClick");
+        $(rRank).animate({left:"400px"},rightCallback);
+        $(rShow).animate({left:""});
+        function  rightCallback(){
+            $(rShow).css("display","block");}
+    },
+    rTabClick:function rTabClick(rTab,iTab,rRank,rShow){
+        $(rTab).removeClass("riskRank").addClass("riskRankClick");
+        $(iTab).removeClass("riskInfoClick").addClass("riskInfo");
+        $(rRank).css("display","block");
+        $(rRank).animate({left:""});
+        $(rShow).animate({left:"400px"});
     }
 });

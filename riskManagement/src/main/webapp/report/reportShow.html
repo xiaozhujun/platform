@@ -30,7 +30,6 @@
         /*
          导出报表
          */
-
         var menu1 = { width: 100, items:
                 [
                     {
@@ -92,8 +91,13 @@
                 }
             }
         }
-
-
+     <!--滑杆脚本-->
+        $("#riskvalueareaslider").slider({ width:400,from: 1, to: 6, scale: [1, '|', 2, '|', 3, '|', 4, '|', 5, '|', 6], limits: false, step: 0.5, dimension: '', skin: "plastic",
+            callback: function( value ){
+                var values= [];
+                values=value.split(";");
+            }
+        });
         /*
          load页面的显示报表全部数据
          */
@@ -102,16 +106,21 @@
                 $.ligerDialog.success('操作成功')
             }
         }
-        $("#reportresult").load("rs/report/showChinaChart",null,loadReportCallback,"json");
+        var loaddata = {};
+        loaddata.province = "";
+        loaddata.city = "";
+        loaddata.area = "";
+        loaddata.unitaddress = "";
+        loaddata.riskvalueareaslider= $("#riskvalueareaslider").val();
+        loaddata.equipmentvariety="";
+        loaddata.minweight=0 ;
+        loaddata.maxweight=1000;
+        $("#reportresult").load("rs/report/showCraneReport",loaddata,loadReportCallback,"json");
         /*
          提交页面的查询报表数据
          */
         $("#submitBtn").click(function(){
             $("#reportresult").html();
-            if($("#province").val()!="请选择"&&$("#province").val()!="")
-            {
-                if($("#city").val()!="请选择"&&$("#city").val()!="")
-                {
                     var data = {};
                     data.province = $("#province").val();
                     data.city = $("#city").val();
@@ -138,33 +147,12 @@
                     $.post($.URL.report.showCraneReport,data,loadReportCallback,"json");
                     //location.href="/rs/report/showCraneReport"
                     $("#reportresult").load("rs/report/showCraneReport",data,loadReportCallback,"json") ;
-                }
-                else
-                {
-                    $("#reportresult").html();
-                    $("#reportresult").load("rs/report/showProvinceRiskValue",{"province":$("#province").val()},loadReportCallback,"json") ;
-                }
-            }
 
-            else
-            {
-                $("#reportresult").load("rs/report/showChinaChart",null,loadReportCallback,"json");
-            }
         });
-        <!--滑杆脚本-->
-        $("#riskvalueareaslider").slider({ width:400,from: 1, to: 6, scale: [1, '|', 2, '|', 3, '|', 4, '|', 5, '|', 6], limits: false, step: 0.5, dimension: '', skin: "plastic",
-            callback: function( value ){
-                var values= [];
-                values=value.split(";");
-            }
-        });
-
     </script>
-
-
 </head>
 <body>
-<div id="topmenu" class="l-menubar"/>
+<div id="topmenu" />
 <div id="queryccondition">
     <div id="linkagearea" >
             <span id= "pcauarea">
@@ -217,8 +205,8 @@
             </span>
     </div>
 </div>
-<div id="accordion1" class="l-accordion-panel">
-    <div id="reportresult" style="margin-bottom: 50px"></div>
+<div id="reportresultshow">
+    <div id="reportresult" ></div>
 </div>
 <!--  数据统计代码 -->
 </body>

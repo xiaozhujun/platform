@@ -5,7 +5,7 @@
  * Time: 下午23:51
  * To change this template use File | Settings | File Templates.
  */
-$("#unitaddress").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false, width:350,
+$("#unitaddress").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false, width:400,
     data:null, valueFieldID: 'unitaddressSelect' })
 $("#area").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
     data:null, valueFieldID: 'areaSelect',
@@ -14,6 +14,7 @@ $("#area").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
      */
     onSelected:function(m,n)
     {
+
         var testdata={};
         if($("#area").val()!="请选择"&&$("#area").val()!="")
         {
@@ -68,6 +69,7 @@ $("#city").ligerComboBox({
             }}
     }
 })
+
 $("#province").ligerComboBox({
     data: null,
     isShowCheckBox:true,isMultiSelect:false,
@@ -138,6 +140,7 @@ function getEquipmentVarietyListCallback(equdata)
 {
     if(equdata.code==200)
     {
+
         var equVarietyList=[];
         equVarietyList.push({id:0,text:"请选择"}) ;
         for(i=0;i<equdata.data.length;i++)
@@ -151,10 +154,11 @@ function getEquipmentVarietyListCallback(equdata)
     }
 }
 $("#equipmentvariety").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,
-    data: null  ,width:250
+    data: null  ,width:255
     , valueFieldID: 'equipmentvarietySelect' })
 $("#province").removeClass("l-text-field");
 $("#city").removeClass("l-text-field");
 $("#area").removeClass("l-text-field");
 $("#unitaddress").removeClass("l-text-field");
 $("#equipmentvariety").removeClass("l-text-field");
+

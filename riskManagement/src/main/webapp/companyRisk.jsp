@@ -53,8 +53,8 @@ transitional.dtd">
             </div>
             <div id="rightmain">
             <div id="tab">
-                <span id='riskRank'>风险排名</span>
-                <span id="riskInfo">风险详情</span>
+                <span id='riskRank' class="riskRankClick">风险排名</span>
+                <span id="riskInfo" class="riskInfo">风险详情</span>
             </div>
                 <div id="input_search">
               <%-- <span class="more"><input name="more" type="text" id="more" ltype="text" style="width:280px"/>
@@ -129,15 +129,15 @@ transitional.dtd">
             <div id="search" class="searchShow">
                   <span id="titleSearch">
                     <span class="searchItem" id="provinceSearch">
-                     <select id="province">
+                     <select id="province" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
                          <option><%=request.getParameter("province")%></option>
                      </select>
                     </span>
-                       <span id="citySearch"><select id="city">
+                       <span id="citySearch"><select id="city" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
                            <option><%=URLDecoder.decode(request.getParameter("city"), "utf-8")%></option>
                        </select>
                        </span>
-                        <span id="areaSearch"><select id="area">
+                        <span id="areaSearch"><select id="area" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
                             <option><%=URLDecoder.decode(request.getParameter("area"),"utf-8")%></option>
                         </select>
                          </span>
@@ -198,6 +198,8 @@ transitional.dtd">
                 }
                 for(i=0;i<data.data.length;i++){
                     $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+                    $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
+
                 }
             }
 

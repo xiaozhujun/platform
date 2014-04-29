@@ -544,7 +544,7 @@ $.extend({
             if(flag==0){
                 location ="cityRisk.jsp?province="+encodeURI(province);
             }else if(flag==1){
-
+                $.showCityRisk(province,1);
             }
 
         });
@@ -556,7 +556,7 @@ $.extend({
             if(flag==0){
                 location="areaRisk.jsp?province="+province+"&city="+encodeURI(city);
             }else if(flag==1){
-
+                $.showAreaRisk(province,city,1);
             }
         });
     },
@@ -565,9 +565,9 @@ $.extend({
         var area=$(id).children(".rcontentItem").children(".unitFont").text();
         $(id).click(function(){
              if(flag==0){
-                 location="companyRisk.jsp?province="+str[0]+"&city="+encodeURI(str[1])+"&area="+encodeURI(name);
+                 location="companyRisk.jsp?province="+str[0]+"&city="+encodeURI(str[1])+"&area="+encodeURI(area);
              }else if(flag==1){
-
+                 $.showCompanyRisk(str[1],area,12);
              }
         });
     }

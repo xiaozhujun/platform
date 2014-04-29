@@ -316,13 +316,13 @@
         WHERE cr.reportnumber=r.reportnumber AND a.id=cr.addressId
         AND a.city=#{city} AND a.area=#{area} GROUP BY cr.unitaddress
     </select>
-    <select id="getProvinceRiskRankFormRiskRange" parameterType="map" resultMap="map">
+    <select id="getProvinceRiskRankFormRiskRange" parameterType="map" resultType="map">
         SELECT
         pr.province,pr.riskvalue
         FROM province_riskvalue pr
         WHERE pr.riskvalue BETWEEN #{startValue} AND #{endValue}
     </select>
-    <select id="getCityRiskRankFormRiskRange" parameterType="map" resultMap="map">
+    <select id="getCityRiskRankFormRiskRange" parameterType="map" resultType="map">
         SELECT
         cr.city,cr.riskvalue
         FROM city_riskvalue cr

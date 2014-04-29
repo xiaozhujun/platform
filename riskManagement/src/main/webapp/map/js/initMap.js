@@ -349,5 +349,45 @@ $.extend({
                 $("#"+id).removeClass("riskcontentEven").addClass("riskcontentEvenClick");
             }
         });
+    },
+    addMarkerArray:function addMarkerArray(data){
+        var riskRankArray=new Array();
+        for(i=0;i<data.data.length;i++){
+            $.rightTabMouseEvent("riskcontent"+data.data[i].id);
+            $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
+            var item={};
+            item.title=data.data[i].unitAddress;
+            item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue;
+            item.point=data.data[i].lng+"|"+data.data[i].lat;
+            item.isOpen=0;
+            /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
+            item.icon={};
+            item.icon.w=23;
+            item.icon.h=25;
+            item.icon.t=21;
+            item.icon.x=9;
+            item.icon.lb=12;
+            if(data.data[i].riskValue==1){
+                item.icon.l=23;
+            }
+            if(data.data[i].riskValue==2){
+                item.icon.l=0;
+            }
+            if(data.data[i].riskValue==3){
+                item.icon.l=69;
+            }
+            if(data.data[i].riskValue==4){
+                item.icon.l=115;
+            }
+            if(data.data[i].riskValue==5){
+                item.icon.l=46;
+            }
+            if(data.data[i].riskValue==6){
+                item.icon.l=46;
+            }
+            riskRankArray.push(item);
+        }
+        $.clearAllMarker();
+        $.addMarker(riskRankArray);//向地图中添加marker
     }
 });

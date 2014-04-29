@@ -172,16 +172,105 @@ public class ReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     public String showProvinceRiskValue(@FormParam("province") String province){
         //展示某个省各个市的风险分布
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/getCityRiskValueByProvince.jasper");
-        System.out.print(reportTemplate);
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis/getCityRiskValueByProvince.jasper");
         Map parameter=new HashMap();
         parameter.put("province",province);
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis")+"/"));
         /*System.out.print(province);*/
         platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
 /*       System.out.print(data+"..........");*/
         return JsonResultUtils
                 .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-
+    @Path("/showCityRiskValueByProvince")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    public String showCityRiskValueByProvince(@FormParam("province") String province,@FormParam("city") String city){
+        //展示某个市各个区域的风险分布
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis/getAreaRiskValueByProvinceAndCity.jasper");
+        System.out.print(reportTemplate);
+        Map parameter=new HashMap();
+        parameter.put("province",province);
+        parameter.put("city",city);
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis")+"/"));
+        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
+        return JsonResultUtils
+                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Path("/showAreaRiskValueByProvinceCityArea")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    public String showAreaRiskValueByProvinceCityArea(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area){
+        //展示某个区域各个单位的风险分布
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis/getUnitaddressRiskValueByProvinceCityArea.jasper");
+        Map parameter=new HashMap();
+        parameter.put("province",province);
+        parameter.put("city",city);
+        parameter.put("area",area);
+        parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis")+"/"));
+        /*System.out.print(province);*/
+        platformReport.getMapToExportReport(reportTemplate,parameter,"html",request,response,"test");
+/*       System.out.print(data+"..........");*/
+        return JsonResultUtils
+                .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Path("/exportChartReport/{data}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    public String exportChartReport(@PathParam("data") String data)
+    {
+        //根据传入的data打印不同格式的报表
+        /*data=excel,湖北,武汉市,江岸区,湖北省武汉市江岸区赵家条319号,4,6,汽车起重机,0,200*/
+        String[] datalist=data.split(",");
+        String type=datalist[0].split("=")[1];
+        String province=datalist[1];
+        String city=datalist[2];
+        String area=datalist[3];
+        Map parameter=new HashMap();
+        if(!(province.trim()).equals("")&&!province.equals("请选择"))
+        {
+            if(!(city.trim()).equals("")&&!city.equals("请选择"))
+            {
+                if(!(area.trim()).equals("")&&!area.equals("请选择"))
+                {
+                    String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis/getUnitaddressRiskValueByProvinceCityArea.jasper");
+                    parameter.put("province",province);
+                    parameter.put("city",city);
+                    parameter.put("area",area);
+                    parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis")+"/"));
+                    platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response,"test");
+                    return JsonResultUtils
+                            .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+                }
+                else
+                {
+                    String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis/getAreaRiskValueByProvinceAndCity.jasper");
+                    parameter.put("province",province);
+                    parameter.put("city",city);
+                    parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis")+"/"));
+                    platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response,"test");
+                    return JsonResultUtils
+                            .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+                }
+            }
+            else
+            {
+                String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis/getCityRiskValueByProvince.jasper");
+                parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/reportAnalysis")+"/"));
+                parameter.put("province",province);
+                platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response,"test");
+                return JsonResultUtils
+                        .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            }
+        }
+        else
+        {
+            String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/chart/chinachart.jasper");
+            parameter.put("SUBREPORT_DIR",(request.getSession().getServletContext().getRealPath("/reportTemplate/chart")+"/"));
+            platformReport.getMapToExportReport(reportTemplate,parameter,type,request,response,"test");
+            return JsonResultUtils
+                    .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+    }
 
 }

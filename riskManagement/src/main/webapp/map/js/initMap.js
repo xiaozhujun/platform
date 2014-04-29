@@ -161,7 +161,7 @@ $.extend({
                         $("#riskrankContent").append(rankContent);
                         $.rightTabMouseEvent("riskcontent"+data.data[i].id);
                         $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
-
+                        $.riskContentClick("riskcontent"+data.data[i].id);
                     }
                 }
             }
@@ -340,6 +340,14 @@ $.extend({
                  $.drawAreaBoundaryWithRule(province,city,data.data[i],flag);
              }
          }
+    },
+    riskContentClick:function  riskContentClick(id){
+        $("#"+id).click(function(){
+            if($("#"+id).hasClass("riskcontent")){
+                $("#"+id).removeClass("riskcontent").addClass("riskcontentClick");
+            }else if($("#"+id).hasClass("riskcontentEven")){
+                $("#"+id).removeClass("riskcontentEven").addClass("riskcontentEvenClick");
+            }
+        });
     }
-
 });

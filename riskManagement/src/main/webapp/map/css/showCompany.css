@@ -34,7 +34,7 @@ body{
     color:#ffffff;
 }
 .lineTab{
-    border: 1px solid #3399FF;
+    border: 1px solid #0095E2;
     float: left;
     margin-left: 10px;
     width: 80px;
@@ -45,11 +45,11 @@ body{
     line-height: 30px;
 }
 .lineTab:hover{
-    background-color: #3399FF;
+    background-color: #0095E2;
     color:#ffffff;
 }
 .lineTabClick{
-    border: 1px solid #3399FF;
+    border: 1px solid #0095E2;
     float: left;
     margin-left: 10px;
     width: 80px;
@@ -58,13 +58,13 @@ body{
     cursor: pointer;
     text-align: center;
     line-height: 30px;
-    background-color: #3399FF;
+    background-color: #0095E2;
     color:#ffffff;
 }
 .searchTabClick{
-    background-color: #3399FF;
+    background-color: #0095E2;
     color:#ffffff;
-    border: 1px solid #3399FF;
+    border: 1px solid #0095E2;
     float: left;
     margin-left: 10px;
     width: 80px;
@@ -336,7 +336,7 @@ body{
     width: 192px;
     text-align: center;
     cursor: pointer;
-    border-bottom: 1px solid #72C2FF;
+    border-bottom: 1px solid #0095E2;
     margin-top: 1px;
     height:35px;
     line-height: 35px;
@@ -348,23 +348,23 @@ body{
     width: 192px;
     text-align: center;
     cursor: pointer;
-    border-bottom: 1px solid #3399FF;
+    border-bottom: 1px solid #0095E2;
     margin-top: 1px;
     height:35px;
     line-height: 35px;
-    background-color:#3399FF;
+    background-color:#0095E2;
     color: #ffffff;
 }
 .riskRank:hover{
-    background-color: #3399FF;
+    background-color: #0095E2;
     color:white
 }
 .riskInfo{
     width: 190px;
     float: left;
     cursor: pointer;
-    border-bottom: 1px solid #72C2FF;
-    border-right: 1px solid #72C2FF;
+    border-bottom: 1px solid #0095E2;
+    border-right: 1px solid #0095E2;
     margin-top: 1px;
     height: 35px;
     text-align: center;
@@ -381,7 +381,7 @@ body{
     height: 35px;
     text-align: center;
     line-height: 35px;
-    background-color:#3399FF;
+    background-color:#0095E2;
     color: #ffffff;
 }
 .riskInfo:hover{
@@ -389,7 +389,7 @@ body{
     color:white
 }
 #riskttitle{
-    background-color: #72C2FF;
+    background-color: #3399FF;
     width: 385px;
     height: 35px;
 }
@@ -498,12 +498,28 @@ body{
     cursor: pointer;
     background-color:#EFEFEF;
 }
+.riskcontentClick{
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+    background-color:#72C2FF;
+    color:#ffffff;
+}
 .riskcontentEven{
     width: 385px;
     height: 40px;
     margin: 2px;
     cursor: pointer;
     background-color: #ffffff;
+}
+.riskcontentEvenClick{
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+    background-color: #72C2FF;
+    color: #ffffff;
 }
 .riskcontentEven:hover{
     background-color: #72C2FF;

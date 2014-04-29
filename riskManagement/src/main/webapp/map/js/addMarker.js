@@ -409,6 +409,7 @@ $.extend({
                     }
                     $("#riskrankContent").append(rankContent);
                     $.areaClick(data.str,"#riskcontent"+data.data[i].id,1);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -434,6 +435,7 @@ $.extend({
                     }
                     $("#riskrankContent").append(rankContent);
                     $.areaClick(data.str,"#riskcontent"+data.data[i].id,0);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -459,6 +461,7 @@ $.extend({
                     }
                     $("#riskrankContent").append(rankContent);
                     $.cityClick(data.str,"#riskcontent"+data.data[i].id,1);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -484,6 +487,7 @@ $.extend({
                     }
                     $("#riskrankContent").append(rankContent);
                     $.cityClick(data.str,"#riskcontent"+data.data[i].id,0);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -509,6 +513,7 @@ $.extend({
                     }
                     $("#riskrankContent").append(rankContent);
                     $.provinceClick("#riskcontent"+data.data[i].id,1);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
 
                 }
             }
@@ -535,6 +540,7 @@ $.extend({
                     }
                     $("#riskrankContent").append(rankContent);
                     $.provinceClick("#riskcontent"+data.data[i].id,0);
+                    $.riskContentClick("riskcontent"+data.data[i].id);
                 }
             }
         }
@@ -572,5 +578,4 @@ $.extend({
              }
         });
     }
-
 });

@@ -56,6 +56,7 @@ public class DataRoleAddressServiceWeb {
     public String getAreaAndColorWithDataRole(@FormParam("province") String province,@FormParam("city")String city){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         List<Map<String,String>> list=dataRoleAddressService.getAreaAndColorWithDataRole(province,city,userName);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+        String province_city=province+","+city;
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
 }

@@ -193,7 +193,7 @@
          group by cr.unitAddress order by r.riskvalue desc
     </select>
     <select id="showRiskRankByValueRange" parameterType="map" resultMap="craneInspectReportResultMap">
-        SELECT cr.id,cr.unitAddress,r.riskvalue
+        SELECT cr.*,r.riskvalue
         FROM craneinspectreport cr,riskvalue r,address a
         WHERE cr.reportnumber=r.reportnumber
         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area} AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
@@ -315,5 +315,17 @@
         FROM craneinspectreport cr,address a,riskvalue r
         WHERE cr.reportnumber=r.reportnumber AND a.id=cr.addressId
         AND a.city=#{city} AND a.area=#{area} GROUP BY cr.unitaddress
+    </select>
+    <select id="getProvinceRiskRankFormRiskRange" parameterType="map" resultMap="map">
+        SELECT
+        pr.province,pr.riskvalue
+        FROM province_riskvalue pr
+        WHERE pr.riskvalue BETWEEN #{startValue} AND #{endValue}
+    </select>
+    <select id="getCityRiskRankFormRiskRange" parameterType="map" resultMap="map">
+        SELECT
+        cr.city,cr.riskvalue
+        FROM city_riskvalue cr
+        WHERE cr.riskvalue BETWEEN #{startValue} AND #{endValue}  AND cr.province=#{province}
     </select>
 </mapper>

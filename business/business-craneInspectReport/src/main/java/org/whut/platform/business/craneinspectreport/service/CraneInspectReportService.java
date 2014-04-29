@@ -234,4 +234,10 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> getAreaInfo(String city,String area){
         return mapper.getAreaInfo(city,area);
     }
+    public List<Map<String,Float>> getProvinceRiskRankFormRiskRange(float startValue,float endValue){
+          return mapper.getProvinceRiskRankFormRiskRange(startValue,endValue);
+    }
+    public List<Map<String,Float>>getCityRiskRankFormRiskRange(float startValue,float endValue,String province){
+          return mapper.getCityRiskRankFormRiskRange(startValue,endValue,province);
+    }
 }

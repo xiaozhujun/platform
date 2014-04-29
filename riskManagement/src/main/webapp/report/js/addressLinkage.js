@@ -5,7 +5,6 @@
  * Time: 下午23:51
  * To change this template use File | Settings | File Templates.
  */
-var s="sb";
 $("#unitaddress").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false, width:400,
     data:null, valueFieldID: 'unitaddressSelect' })
 $("#area").ligerComboBox({ isShowCheckBox:true,isMultiSelect:false,

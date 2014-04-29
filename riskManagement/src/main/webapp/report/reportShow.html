@@ -30,7 +30,6 @@
         /*
          导出报表
          */
-
         var menu1 = { width: 100, items:
                 [
                     {
@@ -92,8 +91,7 @@
                 }
             }
         }
-
-        <!--滑杆脚本-->
+     <!--滑杆脚本-->
         $("#riskvalueareaslider").slider({ width:400,from: 1, to: 6, scale: [1, '|', 2, '|', 3, '|', 4, '|', 5, '|', 6], limits: false, step: 0.5, dimension: '', skin: "plastic",
             callback: function( value ){
                 var values= [];
@@ -117,7 +115,6 @@
         loaddata.equipmentvariety="";
         loaddata.minweight=0 ;
         loaddata.maxweight=1000;
-
         $("#reportresult").load("rs/report/showCraneReport",loaddata,loadReportCallback,"json");
         /*
          提交页面的查询报表数据
@@ -152,11 +149,7 @@
                     $("#reportresult").load("rs/report/showCraneReport",data,loadReportCallback,"json") ;
 
         });
-
-
     </script>
-
-
 </head>
 <body>
 <div id="topmenu" />

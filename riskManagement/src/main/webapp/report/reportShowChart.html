@@ -28,7 +28,7 @@
 
 <script type="text/javascript">
 /*
- 导出报表
+ 导出报表 ,图表类只提供PDF
  */
 
 var menu1 = { width: 100, items:
@@ -36,17 +36,9 @@ var menu1 = { width: 100, items:
             {
                 text: '导出', children:
                     [
-                        { text: 'excel',id:'excel', click: itemclick },
-                        { text: 'word', id: 'word', click: itemclick },
                         { text: 'pdf', id: 'pdf', click: itemclick }
                     ]
-            }/*,
-         {
-         text:'上传',children:
-         [
-         {text:'上传模板',id:'upload',click:itemclick}
-         ]
-         }*/
+            }
         ]
 };
 $(function ()
@@ -77,17 +69,8 @@ function itemclick(item)
                 var province = $("#province").val()==''?' ':$("#province").val();
                 var city = $("#city").val()==''?' ':$("#city").val();
                 var area = $("#area").val()==''?' ': $("#area").val();
-                var unitaddress = $("#unitaddress").val()==''?' ':$("#unitaddress").val();
-                var riskvalueareaslider=$("#riskvalueareaslider").val();
-                var values=[];
-                values= riskvalueareaslider.split(";");
-                var startValue = values[0];
-                var endValue=values[1];
-                var equipmentvariety=$("#equipmentvariety").val()==''?' ':$("#equipmentvariety").val();
-                var minweight=$("#minweight").val()==''?'0':$("#minweight").val();
-                var maxweight=$("#maxweight").val()==''?'1000':$("#maxweight").val();
-                var data=type+","+province+","+city+","+area+","+unitaddress+","+startValue+","+endValue+","+equipmentvariety+","+minweight+","+maxweight;
-                location.href="rs/report/exportCraneReport/data="+encodeURI(data);
+                var data=type+","+province+","+city+","+area;
+                location.href="rs/report/exportChartReport/data="+encodeURI(data);
             }
         }
     }
@@ -95,7 +78,7 @@ function itemclick(item)
 
 
 /*
- load页面的显示报表全部数据
+ load页面的显示报表全国数据
  */
 function loadReportCallback(data1){
     if(data1.code==200){
@@ -112,53 +95,26 @@ $("#submitBtn").click(function(){
     {
         if($("#city").val()!="请选择"&&$("#city").val()!="")
         {
-            var data = {};
-            data.province = $("#province").val();
-            data.city = $("#city").val();
-            data.area = $("#area").val();
-            data.unitaddress = $("#unitaddress").val();
-            data.riskvalueareaslider= $("#riskvalueareaslider").val();
-            data.equipmentvariety=$("#equipmentvariety").val();
-            if($("#minweight").val()=="")
-            {
-                data.minweight=0 ;
-            }
+           if($("#area").val()!="请选择"&&$("#area").val()!="")
+           {
+               $("#reportresult").load("rs/report/showAreaRiskValueByProvinceCityArea",{"province":$("#province").val(),"city":$("#city").val(),"area":$("#area").val()}
+                       ,loadReportCallback,"json") ;
+           }
             else
-            {
-                data.minweight=$("#minweight").val() ;
-            }
-            if($("#maxweight").val()=="")
-            {
-                data.maxweight=1000;
-            }
-            else
-            {
-                data.maxweight=$("#maxweight").val() ;
-            }
-            $.post($.URL.report.showCraneReport,data,loadReportCallback,"json");
-            //location.href="/rs/report/showCraneReport"
-            $("#reportresult").load("rs/report/showCraneReport",data,loadReportCallback,"json") ;
+           {
+               $("#reportresult").load("rs/report/showCityRiskValueByProvince",{"province":$("#province").val(),"city":$("#city").val()},loadReportCallback,"json") ;
+           }
         }
         else
         {
-            $("#reportresult").html();
             $("#reportresult").load("rs/report/showProvinceRiskValue",{"province":$("#province").val()},loadReportCallback,"json") ;
         }
     }
-
     else
     {
         $("#reportresult").load("rs/report/showChinaChart",null,loadReportCallback,"json");
     }
 });
-<!--滑杆脚本-->
-$("#riskvalueareaslider").slider({ width:400,from: 1, to: 6, scale: [1, '|', 2, '|', 3, '|', 4, '|', 5, '|', 6], limits: false, step: 0.5, dimension: '', skin: "plastic",
-    callback: function( value ){
-        var values= [];
-        values=value.split(";");
-    }
-});
-
 </script>
 
 
@@ -180,45 +136,14 @@ $("#riskvalueareaslider").slider({ width:400,from: 1, to: 6, scale: [1, '|', 2, 
                 <span id="areasearch" class="l_combobox">
                     <input type="text" readonly="true" id="area">
                 </span>
-                <span>使用单位:</span>
-                <span id="unitaddresssearch" class="l_combobox">
-                    <input type="text" readonly="true" id="unitaddress">
                 </span>
-                </span>
-        </div>
-        <div id="riskandliftweightsearch" >
-            <span id="weightarea">
-              <span id="equvariety">
-            <span>起重机类型:</span>
-            <span id="equsearch" class="l_combobox">
-                    <input type="text" readonly="true" id="equipmentvariety">
-            </span>
-             </span>
-            <span id="maxandmin">
-            <span>起重区间:</span>
-            <span id="minweightsearch">
-                <input id="minweight" type="text"   />
-            </span>
-            <span>T--></span>
-            <span id="maxweightsearch">
-                <input id="maxweight" type="text"   />
-            </span>
-            <span>T</span>
-            </span>
-            </span>
-            <span id=  "risksliderarea">
-            <span class='riskarea'>风险值区间:</span>
-            <span id="risksearch" >
-                <input id="riskvalueareaslider" type="slider" name="riskValueArea" value="1;6" />
-            </span>
-             </span>
-            <span>
+              <span>
                 <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
             </span>
         </div>
 </div>
-<div id="accordion1" class="l-accordion-panel">
-    <div id="reportresult" style="margin-bottom: 50px"></div>
+<div id="reportresultshow" >
+    <div id="reportresult" ></div>
 </div>
 <!--  数据统计代码 -->
 </body>

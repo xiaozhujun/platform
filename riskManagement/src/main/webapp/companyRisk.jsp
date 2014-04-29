@@ -89,7 +89,7 @@ transitional.dtd">
                                   </div>
                               </div>
                               <input id="catid" name="catid" type="hidden" value="7">
-                              <input id="more" class="enter" name="infos" onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
+                              <input id="more" class="enter" name="infos"   onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
                               <input class="sb" name="Input" type="submit" id="queryBtn"  value="">
                       </div>
                   </div>
@@ -342,7 +342,13 @@ transitional.dtd">
         //地图导航
         $.dragAbleNavigate(area);
     });
-
+      document.onkeydown=function(e){
+          var theEvent=window.event||e;
+          var code=theEvent.keyCode||theEvent.which;
+          if(code==13){
+              $("#queryBtn").click();
+          }
+      }
         $("#queryBtn").click(function(){
             var data = {};
             data.city = city;

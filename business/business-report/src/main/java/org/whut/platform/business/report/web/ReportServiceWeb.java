@@ -33,9 +33,6 @@ public class ReportServiceWeb {
     public String showCraneReport(@FormParam("province") String province,@FormParam("city") String city,@FormParam("area") String area,@FormParam("unitaddress") String unitaddress,@FormParam("riskvalueareaslider") String riskvalueareaslider,@FormParam("equipmentvariety") String equipmentvariety,@FormParam("minweight") String minweight,@FormParam("maxweight") String maxweight){
      /*
      这个例子主要是显示html格式的报表
-      */
-//        String sql=showCraneSql(province,city,area,unitaddress,equipmentvariety);
-     /*
      模板在项目riskmanagement下的repoprtTemplate文件夹下
      */
         String whereArea="";
@@ -220,7 +217,7 @@ public class ReportServiceWeb {
     public String exportChartReport(@PathParam("data") String data)
     {
         //根据传入的data打印不同格式的报表
-        /*data=excel,湖北,武汉市,江岸区,湖北省武汉市江岸区赵家条319号,4,6,汽车起重机,0,200*/
+        /*data=pdf,湖北,武汉市,江岸区*/
         String[] datalist=data.split(",");
         String type=datalist[0].split("=")[1];
         String province=datalist[1];

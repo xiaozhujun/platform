@@ -125,8 +125,12 @@ transitional.dtd">
                                                            var areavalue=$("#area").val();
                                                            if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"){
                                                                // 只查省的风险值
-                                                               $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue},showProvinceRankByValueRange,"json");
+                                                               $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue},showCityRankByValueRange,"json");
                                                            }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"){
+                                                               // 只查省的风险值
+                                                               $.post($.URL.craneinspectreport.getAreaRiskRankFormRiskRange,{"value":value,"province":provincevalue,"city":cityvalue},showAreaRankByValueRange,"json");
+                                                           }
+                                                           else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"){
                                                                //查省市区
                                                                $.post($.URL.craneinspectreport.showRiskRankByValueRange, {"value":value,"city":cityvalue,"area":areavalue},showRiskRankByValueRange,"json");
                                                            }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"){
@@ -255,6 +259,67 @@ transitional.dtd">
 
                   }
         }
+        function showCityRankByValueRange(data){
+            if(data.code==200){
+                $("#tab").show("");
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                    $.initMap(data.str,8);
+                }else{
+                    $("#rankTitle").html("");
+                    $("#riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>城市</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+                    for(var i=0;i<data.data.length;i++){
+                        var rankContent;
+                        if(i%2==0){
+                            rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }else{
+                            rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }
+                        $("#riskrankContent").append(rankContent);
+                        $.cityClick(data.str,"#riskcontent"+data.data[i].id,1);
+                        $.riskContentClick("riskcontent"+data.data[i].id);
+                        /*$.initCityWithDataRule(data.str,8,1);*/
+                        $.initMap(data.str,8);
+                        $.drawCityBoundaryWithRule(data.str,data.data[i],1);
+                    }
+                }
+            }
+        }
+        function showAreaRankByValueRange(data){
+            if(data.code==200){
+                $("#tab").show("");
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                    var arr=data.str.split(",");
+                    $.initMap(arr[1],10);
+                }else{
+                    $("#rankTitle").html("");
+                    $("#riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>城市</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+                    for(var i=0;i<data.data.length;i++){
+                        var rankContent;
+                        if(i%2==0){
+                            rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }else{
+                            rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }
+                        $("#riskrankContent").append(rankContent);
+                        $.areaClick(data.str,"#riskcontent"+data.data[i].id,1);
+                        $.riskContentClick("riskcontent"+data.data[i].id);
+                        var arr=data.str.split(",");
+                        $.initMap(arr[1],10);
+                        $.drawAreaBoundaryWithRule(arr[0],arr[1],data.data[i],1);
+                    }
+                }
+            }
+        }
     $(document).ready(function(){
 
         $("#layout").ligerLayout({leftWidth:200});
@@ -271,7 +336,7 @@ transitional.dtd">
         });
         $.showCompanyRisk(city,area,12);
         //省市区联动效果
-        $.addressLinkAge("province","city","area","unit",province);
+        $.addressLinkAge("province","city","area","unit",province,city,area);
         //地图左边的tab页
         $.mapLeftTab("searchTab","search","drawCircle","drawLine");
         //地图导航

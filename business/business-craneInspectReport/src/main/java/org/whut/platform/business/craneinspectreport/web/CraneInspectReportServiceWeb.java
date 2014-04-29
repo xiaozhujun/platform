@@ -230,7 +230,7 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/showRiskRankByValueRange")
     @POST
     public String showRiskRankByValueRange(@FormParam("value") String value,@FormParam("city") String city,@FormParam("area") String area){
@@ -428,7 +428,7 @@ public class CraneInspectReportServiceWeb {
         List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByEquipmentVariety(city, area, require);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getProvinceRiskRankFormRiskRange")
     @POST
     public String getProvinceRiskRankFormRiskRange(@FormParam("value") String value){
@@ -438,7 +438,7 @@ public class CraneInspectReportServiceWeb {
         List<Map<String,Float>> list = craneInspectReportService.getProvinceRiskRankFormRiskRange(startValue,endValue);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getCityRiskRankFormRiskRange")
     @POST
     public String getCityRiskRankFormRiskRange(@FormParam("value") String value,@FormParam("province") String province){
@@ -446,7 +446,19 @@ public class CraneInspectReportServiceWeb {
         float startValue = Float.parseFloat(values[0]);
         float endValue=Float.parseFloat(values[1]);
         List<Map<String,Float>> list = craneInspectReportService.getCityRiskRankFormRiskRange(startValue,endValue,province);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaRiskRankFormRiskRange")
+    @POST
+    public String getAreaRiskRankFormRiskRange(@FormParam("value") String value,@FormParam("province") String province,@FormParam("city")String city){
+        String[] values= value.split(";");
+        float startValue = Float.parseFloat(values[0]);
+        float endValue=Float.parseFloat(values[1]);
+        String province_city=province+","+city;
+        List<Map<String,Float>> list = craneInspectReportService.getAreaRiskRankFormRiskRange(startValue,endValue,province,city);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
+    }
+
 
 }

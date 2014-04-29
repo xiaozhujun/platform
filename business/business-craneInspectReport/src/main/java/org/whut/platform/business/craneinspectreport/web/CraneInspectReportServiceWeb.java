@@ -429,7 +429,7 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
-    @Path("/showRiskRankByValueRange")
+    @Path("/getProvinceRiskRankFormRiskRange")
     @POST
     public String getProvinceRiskRankFormRiskRange(@FormParam("value") String value){
         String[] values= value.split(";");
@@ -439,7 +439,7 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
-    @Path("/showRiskRankByValueRange")
+    @Path("/getCityRiskRankFormRiskRange")
     @POST
     public String getCityRiskRankFormRiskRange(@FormParam("value") String value,@FormParam("province") String province){
         String[] values= value.split(";");

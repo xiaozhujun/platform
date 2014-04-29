@@ -428,11 +428,25 @@ public class CraneInspectReportServiceWeb {
         List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByEquipmentVariety(city, area, require);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/fuzzyQueryByManufactureUnit")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
+    @Path("/getProvinceRiskRankFormRiskRange")
     @POST
-    public String fuzzyQueryByManufactureUnit(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
-        List<CraneInspectReport> list=craneInspectReportService.fuzzyQueryByManufactureUnit(city, area, require);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    public String getProvinceRiskRankFormRiskRange(@FormParam("value") String value){
+        String[] values= value.split(";");
+        float startValue = Float.parseFloat(values[0]);
+        float endValue=Float.parseFloat(values[1]);
+        List<Map<String,Float>> list = craneInspectReportService.getProvinceRiskRankFormRiskRange(startValue,endValue);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF")
+    @Path("/getCityRiskRankFormRiskRange")
+    @POST
+    public String getCityRiskRankFormRiskRange(@FormParam("value") String value,@FormParam("province") String province){
+        String[] values= value.split(";");
+        float startValue = Float.parseFloat(values[0]);
+        float endValue=Float.parseFloat(values[1]);
+        List<Map<String,Float>> list = craneInspectReportService.getCityRiskRankFormRiskRange(startValue,endValue,province);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
 }

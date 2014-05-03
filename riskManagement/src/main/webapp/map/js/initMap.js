@@ -47,6 +47,11 @@ $.extend({
         $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceCallBack,"json");
         function getProvinceCallBack(data){
             $.getProvinceWithRule(data,flag);
+            if(flag==0){
+            $.showProvinceRankShow(data);
+            }else if(flag==1){
+            $.showProvinceRank(data);
+            }
         }
 },
     initCityWithDataRule:function initCityWithDataRule(province,size,flag){
@@ -57,6 +62,11 @@ $.extend({
         $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province},getCityCallBack,"json");
         function getCityCallBack(data){
             $.getCityWithRule(province,data,flag);
+            if(flag==0){
+            $.showCityRankShow(data);
+            }else if(flag==1){
+            $.showCityRank(data);
+            }
         }
     },
     initAreaWithDataRule:function initAreaWithDataRule(province,city,size,flag){
@@ -66,15 +76,15 @@ $.extend({
         $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province ,"city":city},getAreaCallBack,"json");
         function getAreaCallBack(data){
             $.getAreaWithRule(province,city,data,flag);
+            if(flag==0){
+                $.showAreaRankShow(data);
+            }else if(flag==1){
+                $.showAreaRank(data);
+            }
         }
     },
     showProvinceRisk:function showProvinceRisk(flag)
     {
-        if(flag==0){
-          $.getProvinceRiskValueShow();
-        }else if(flag==1){
-          $.getProvinceRiskValue();
-        }
         $.initProvinceWithDataRule("中国",5,flag);
     },
     /*
@@ -84,11 +94,6 @@ $.extend({
      */
     showCityRisk:function showCityRisk(province,flag)
     {
-        if(flag==0){
-            $.getCityAvgRiskValueShow(province);
-        }else if(flag==1){
-            $.getCityAvgRiskValue(province);
-        }
         $.initCityWithDataRule(province,8,flag);
     },
     /*
@@ -99,11 +104,6 @@ $.extend({
      */
     showAreaRisk:function showAreaRisk(province,city,flag)
     {
-        if(flag==0){
-            $.getAreaAvgRiskValueShow(province,city);
-        }else if(flag==1){
-            $.getAreaAvgRiskValue(province,city);
-        }
         $.initAreaWithDataRule(province,city,10,flag);
     },
     showCompanyRisk:function showCompanyRisk(city,area,size){

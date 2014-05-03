@@ -65,6 +65,12 @@
         FROM drole_address WHERE droleId=#{id}
     </select>
 
+    <select id="findByDataRoleName" parameterType="java.lang.String" resultMap="dataRoleAddressResultMap">
+        SELECT
+        <include refid="drole_address_fields" />
+        FROM drole_address WHERE droleName=#{name}
+    </select>
+
     <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
         SELECT DISTINCT pr.id,a.province,rc.riskcolor color,pr.riskvalue avgRiskValue
         FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,province_riskvalue pr
@@ -88,5 +94,9 @@
     <select id="findAddressIdById" parameterType="java.lang.Long"  resultType="java.lang.Long">
         Select addressId
         from   drole_address where droleId=#{id}
+    </select>
+    <select id="getAddressIdBydRoleName" parameterType="java.lang.String"  resultType="java.lang.Long">
+        Select addressId
+        from   drole_address where droleName=#{dRoleName}
     </select>
 </mapper>

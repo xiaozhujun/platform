@@ -59,4 +59,11 @@ public class DataRoleAddressServiceWeb {
         String province_city=province+","+city;
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getAddressIdBydRoleName")
+    public String getAddressIdBydRoleName(@FormParam("dRoleName") String dRoleName){
+        List<Long> list=dataRoleAddressService.getAddressIdBydRoleName(dRoleName);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 }

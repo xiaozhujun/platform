@@ -182,7 +182,7 @@ public class DataRoleServiceWeb {
         DataRole dataRole = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,DataRole.class);
         try {
             dataRoleService.update(dataRole);
-            List<DataRoleAddress> dataRoleAddressesList=dataRoleAddressService.findByCondition(subDataRole.getId());
+            List<DataRoleAddress> dataRoleAddressesList=dataRoleAddressService.findByCondition(dataRole.getId());
             for(DataRoleAddress a:dataRoleAddressesList){
                 dataRoleAddressService.delete(a);
             }
@@ -230,6 +230,40 @@ public class DataRoleServiceWeb {
                         dataRoleAddressService.add(dataRoleAddress);
                     }
                 }
+            }
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "修改成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "修改失败!");
+        }
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/updateDataRole")
+    @POST
+    public String updateDataRole(@FormParam("dRoleName") String dRoleName,@FormParam("dRoleDescription") String dRoleDescription,@FormParam("dRoleStatus") String dRoleStatus,@FormParam("addressIds") String addressIds){
+        try {
+            DataRole dataRole =new DataRole();
+            dataRole.setName(dRoleName);
+            dataRole.setDescription(dRoleDescription);
+            dataRole.setStatus(Integer.parseInt(dRoleStatus));
+            dataRoleService.updateByName(dataRole);
+            Long dRoleId = dataRoleService.getIdByName(dRoleName);
+            List<DataRoleAddress> dataRoleAddressesList=dataRoleAddressService.findByDataRoleName(dataRole.getName());
+            for(DataRoleAddress a:dataRoleAddressesList){
+                dataRoleAddressService.delete(a);
+            }
+            addressIds =addressIds.substring(0,addressIds.length()-1);
+            String[] idArray = addressIds.split(",");
+            for(int i=0;i<idArray.length;i++){
+                System.out.println(">>>>>"+idArray[i]);
+                DataRoleAddress dataRoleAddress =new DataRoleAddress();
+                dataRoleAddress.setDRoleId(dRoleId);
+                dataRoleAddress.setDRoleName(dRoleName);
+                dataRoleAddress.setAddressId(Integer.parseInt(idArray[i]));
+                dataRoleAddressService.add(dataRoleAddress);
             }
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "修改成功!");
         }

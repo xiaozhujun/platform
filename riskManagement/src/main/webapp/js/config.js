@@ -78,13 +78,13 @@
             "listAddress":"rs/dataRule/listAddress",
             "listProvince":"rs/dataRule/listProvince",
             "delete":"rs/dataRule/delete",
-            "update":"rs/dataRule/update"
-
+            "update":"rs/dataRule/updateDataRole"
         },
         "dataRuleAddress":{
             "getProvinceAndColorWithDataRole":"rs/dataRuleAddress/getProvinceAndColorWithDataRole",
             "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
-            "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole"
+            "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole",
+            "getAddressesIdBydRoleName":"rs/dataRuleAddress/getAddressIdBydRoleName"
         },
         "userDataRole":{
             "add":"rs/userDataRole/add",

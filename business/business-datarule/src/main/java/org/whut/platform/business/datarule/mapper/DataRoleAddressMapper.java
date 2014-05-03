@@ -22,6 +22,8 @@ public interface DataRoleAddressMapper extends AbstractMapper<DataRoleAddress>{
 
     public List<Long>findAddressIdById(long id);
     public List<DataRoleAddress>findByCondition(long id);
+    public List<DataRoleAddress> findByDataRoleName(String name);
     public int delete(DataRoleAddress dataRoleAddress);
     public void add(long dRoleId,long addressId,String name);
+    public List<Long> getAddressIdBydRoleName(String dRoleName);
 }

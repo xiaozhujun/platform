@@ -36,8 +36,10 @@ public class DataRoleService {
         return dataRoleMapper.update(dataRole);
     }
 
+    public int updateByName(DataRole dataRole){
+        return dataRoleMapper.updateByName(dataRole);
+    }
     public int delete(DataRole dataRole){
         return  dataRoleMapper.delete(dataRole);
     }
-
 }

@@ -19,4 +19,5 @@ public interface DataRoleMapper extends AbstractMapper<DataRole>{
     public DataRole get();
     public int delete(DataRole dataRole);
     public DataRole update(String name,String description,long status);
+    public int updateByName(DataRole dataRole);
 }

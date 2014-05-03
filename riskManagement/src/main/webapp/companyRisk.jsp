@@ -32,6 +32,7 @@ transitional.dtd">
     <script type="text/javascript" src="jslider/js/draggable-0.1.js"></script>
     <script type="text/javascript" src="jslider/js/jquery.slider.js"></script>
     <script type="text/javascript" src="map/js/mapLeftTab.js"></script>
+    <script type="text/javascript" src="map/js/rightHidePanel.js"></script>
     <%--<script src="search/js/jquery-1.8.2.min.js"></script>--%>
     <script src="search/js/common.js"></script>
     <link href="search/css/style.css" rel="stylesheet" type="text/css" />
@@ -287,15 +288,7 @@ transitional.dtd">
         $("#layout").ligerLayout({leftWidth:200});
         $("#titleContainer").load("title.html");
         $.switchTab("riskRank","riskInfo","rightRank","rightshow");
-        $("#panelarrow2").click(function(){
-            if($("#rightmain").css("display")!='none'){
-                $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -8px -20px rgba(0, 0, 0, 0)").parent().css("right","0");
-                $("#rightmain").css("display","none");
-            }else{
-                $("#panelimg2").css("background","url('map/images/sprites.png') no-repeat scroll -2px -20px  rgba(0, 0, 0, 0)").parent().css("right","384px");
-                $("#rightmain").css("display","block");
-            }
-        });
+        $.rightHidePanel("panelarrow2","panelimg2","rightmain");
         $.showCompanyRisk(city,area,12);
         //省市区联动效果
         $.addressLinkAge("province","city","area","unit",province,city,area);

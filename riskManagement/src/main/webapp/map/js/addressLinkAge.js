@@ -6,9 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 $.extend({
-   addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,provinceValue){
+   addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,provinceValue,cityValue,areaValue){
        //$.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
        $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceListCallback,"json");
+       $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":provinceValue}, initCityByProvinceCallback,"json");
+       $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":provinceValue,"city":cityValue}, initAreaByProvinceAndCityCallback,"json");
        var pId="#"+provinceId;
        var cId="#"+cityId;
        var aId="#"+areaId;
@@ -17,13 +19,15 @@ $.extend({
        var areaOption="#"+areaId+"option:not(:first)";
        var unitOption="#"+unitId+"option:not(:first)";
        var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
+       var citySelectedValue=cId+" option[value='"+cityValue+"']";
+       var areaSelectedValue=aId+" option[value='"+areaValue+"']";
        $(pId).change(function(){
            $("#alert").html("");
         /*   $(cityOption).remove();
            $(areaOption).remove();
            $(unitOption).remove();*/
-           $(cId).html("<option>---请选择---</option>");
-           $(aId).html("<option>---请选择---</option>");
+           $(cId).html("<option value='0'>---请选择---</option>");
+           $(aId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            if(pro=="0"){
                $("#alert").html("请选择省份");
@@ -38,7 +42,7 @@ $.extend({
            $("#alert").html("");
           /* $(areaOption).remove();
            $(unitOption).remove();*/
-           $(aId).html("<option>---请选择---</option>");
+           $(aId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            var city=$(this).find('option:selected').val();
            if(pro!="0"&&city=="0"){
@@ -95,6 +99,17 @@ $.extend({
                    $(cId).html(citySearch);
                }
            }
+       function initCityByProvinceCallback(data){
+           if(data.code==200){
+               $(cId).html("");
+               var citySearch="<option value='0'>---请选择---</option>";
+               for(i=0;i<data.data.length;i++){
+                   citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
+               }
+               $(cId).html(citySearch);
+               $(citySelectedValue).attr("selected",true);
+           }
+       }
            function getAreaByProvinceAndCityCallback(data){
                if(data.code==200){
                    $(aId).html("");
@@ -105,6 +120,17 @@ $.extend({
                    $(aId).html(areaSearch);
                }
            }
+         function initAreaByProvinceAndCityCallback(data){
+             if(data.code==200){
+                 $(aId).html("");
+                 var areaSearch="<option value='0'>---请选择---</option>";
+                 for(i=0;i<data.data.length;i++){
+                     areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
+                 }
+                 $(aId).html(areaSearch);
+                 $(areaSelectedValue).attr("selected",true);
+             }
+         }
        function getUnitaddressByAreaCallback(data){
            if(data.code==200){
                $(uId).html("");

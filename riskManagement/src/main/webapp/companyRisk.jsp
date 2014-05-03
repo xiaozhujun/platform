@@ -89,7 +89,7 @@ transitional.dtd">
                                   </div>
                               </div>
                               <input id="catid" name="catid" type="hidden" value="7">
-                              <input id="more" class="enter" name="infos" onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
+                              <input id="more" class="enter" name="infos"   onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
                               <input class="sb" name="Input" type="submit" id="queryBtn"  value="">
                       </div>
                   </div>
@@ -125,8 +125,12 @@ transitional.dtd">
                                                            var areavalue=$("#area").val();
                                                            if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"){
                                                                // 只查省的风险值
-                                                               $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue},showProvinceRankByValueRange,"json");
+                                                               $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue},showCityRankByValueRange,"json");
                                                            }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"){
+                                                               // 只查省的风险值
+                                                               $.post($.URL.craneinspectreport.getAreaRiskRankFormRiskRange,{"value":value,"province":provincevalue,"city":cityvalue},showAreaRankByValueRange,"json");
+                                                           }
+                                                           else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"){
                                                                //查省市区
                                                                $.post($.URL.craneinspectreport.showRiskRankByValueRange, {"value":value,"city":cityvalue,"area":areavalue},showRiskRankByValueRange,"json");
                                                            }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"){
@@ -208,52 +212,75 @@ transitional.dtd">
                     }
                     $("#riskrankContent").append(rankContent);
                 }
-                var riskRankArray=new Array();
-                for(i=0;i<data.data.length;i++){
-                    $.rightTabMouseEvent("riskcontent"+data.data[i].id);
-                    $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
-                    var item={};
-                    item.title=data.data[i].unitAddress;
-                    item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue;
-                    item.point=data.data[i].lng+"|"+data.data[i].lat;
-                    item.isOpen=0;
-                    /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
-                    item.icon={};
-                    item.icon.w=23;
-                    item.icon.h=25;
-                    item.icon.t=21;
-                    item.icon.x=9;
-                    item.icon.lb=12;
-                    if(data.data[i].riskValue==1){
-                        item.icon.l=23;
-                    }
-                    if(data.data[i].riskValue==2){
-                        item.icon.l=0;
-                    }
-                    if(data.data[i].riskValue==3){
-                        item.icon.l=69;
-                    }
-                    if(data.data[i].riskValue==4){
-                        item.icon.l=115;
-                    }
-                    if(data.data[i].riskValue==5){
-                        item.icon.l=46;
-                    }
-                    if(data.data[i].riskValue==6){
-                        item.icon.l=46;
-                    }
-                    riskRankArray.push(item);
-                }
-                $.clearAllMarker();
-                $.addMarker(riskRankArray);//向地图中添加marker
+                $.addMarkerArray(data);
             }
-
         }
     }
         function showProvinceRankByValueRange(data){
                   if(data.code==200){
 
                   }
+        }
+        function showCityRankByValueRange(data){
+            if(data.code==200){
+                $("#tab").show("");
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                    $.initMap(data.str,8);
+                }else{
+                    $("#rankTitle").html("");
+                    $("#riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>城市</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+                    for(var i=0;i<data.data.length;i++){
+                        var rankContent;
+                        if(i%2==0){
+                            rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }else{
+                            rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].city+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }
+                        $("#riskrankContent").append(rankContent);
+                        $.cityClick(data.str,"#riskcontent"+data.data[i].id,1);
+                        $.riskContentClick("riskcontent"+data.data[i].id);
+                        /*$.initCityWithDataRule(data.str,8,1);*/
+                        $.initMap(data.str,8);
+                        $.drawCityBoundaryWithRule(data.str,data.data[i],1);
+                    }
+                }
+            }
+        }
+        function showAreaRankByValueRange(data){
+            if(data.code==200){
+                $("#tab").show("");
+                $("#rankTitle").html("");
+                $("#riskrankContent").html("");
+                if(data.data[0]==undefined){
+                    $("#riskrankContent").append("对不起,数据不存在!");
+                    var arr=data.str.split(",");
+                    $.initMap(arr[1],10);
+                }else{
+                    $("#rankTitle").html("");
+                    $("#riskrankContent").html("");
+                    var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>城市</span><span class='rtitleriskItem'>风险值</span></div>";
+                    $("#rankTitle").append(rankTitle);
+                    for(var i=0;i<data.data.length;i++){
+                        var rankContent;
+                        if(i%2==0){
+                            rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }else{
+                            rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].riskvalue+"</span></span></div>"
+                        }
+                        $("#riskrankContent").append(rankContent);
+                        $.areaClick(data.str,"#riskcontent"+data.data[i].id,1);
+                        $.riskContentClick("riskcontent"+data.data[i].id);
+                        var arr=data.str.split(",");
+                        $.initMap(arr[1],10);
+                        $.drawAreaBoundaryWithRule(arr[0],arr[1],data.data[i],1);
+                    }
+                }
+            }
         }
     $(document).ready(function(){
 
@@ -271,18 +298,25 @@ transitional.dtd">
         });
         $.showCompanyRisk(city,area,12);
         //省市区联动效果
-        $.addressLinkAge("province","city","area","unit",province);
+        $.addressLinkAge("province","city","area","unit",province,city,area);
         //地图左边的tab页
         $.mapLeftTab("searchTab","search","drawCircle","drawLine");
         //地图导航
         $.dragAbleNavigate(area);
     });
-
+      document.onkeydown=function(e){
+          var theEvent=window.event||e;
+          var code=theEvent.keyCode||theEvent.which;
+          if(code==13){
+              $("#queryBtn").click();
+          }
+      }
         $("#queryBtn").click(function(){
             var data = {};
-            data.city = city;
-            data.area = area;
+            data.city = $("#city").val();
+            data.area = $("#area").val();
             data.require = '%'+$("#more").val()+'%';
+            if($("#more"))
             if($$("catid").value==5){
                 $.post($.URL.craneinspectreport.fuzzyQueryByUnitAddress,data,showRiskRankByFuzzyQuery,"json");
             }else if($$("catid").value==8){
@@ -297,7 +331,6 @@ transitional.dtd">
                 $.post($.URL.craneinspectreport.fuzzyQuery,data,showRiskRankByFuzzyQuery,"json");
             }
         });
-
         function showRiskRankByFuzzyQuery(data){
             if(data.code==200){
                 $("#rankTitle").html("");
@@ -305,7 +338,8 @@ transitional.dtd">
                 var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
                 $("#rankTitle").append(rankTitle);
                 if(data.data[0]==undefined){
-                    $("#riskrankContent").append("对不起,数据不存在!");
+                    $("#riskrankContent").append("对不起,你现在所在区域为"+$("#area").val());
+                    $.clearAllMarker();
                 }else{
                     $("#rankTitle").html("");
                     $("#riskrankContent").html("");
@@ -330,41 +364,7 @@ transitional.dtd">
                         }
                         $("#riskrankContent").append(rankContent);
                     }
-                    var MarkerArray=new Array();
-                    for(i=0;i<data.data.length;i++){
-                        var item={};
-                        item.title=data.data[i].unitAddress;
-                        item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue;
-                        item.point=data.data[i].lng+"|"+data.data[i].lat;
-                        item.isOpen=0;
-                        item.icon={};
-                        item.icon.w=23;
-                        item.icon.h=25;
-                        item.icon.t=21;
-                        item.icon.x=9;
-                        item.icon.lb=12;
-                        if(data.data[i].riskValue==1){
-                            item.icon.l=23;
-                        }
-                        if(data.data[i].riskValue==2){
-                            item.icon.l=0;
-                        }
-                        if(data.data[i].riskValue==3){
-                            item.icon.l=69;
-                        }
-                        if(data.data[i].riskValue==4){
-                            item.icon.l=115;
-                        }
-                        if(data.data[i].riskValue==5){
-                            item.icon.l=46;
-                        }
-                        if(data.data[i].riskValue==6){
-                            item.icon.l=46;
-                        };
-                        MarkerArray.push(item);
-                    }
-                    $.clearAllMarker();
-                    $.addMarker(MarkerArray);
+                    $.addMarkerArray(data);
                 }
             }
             /*

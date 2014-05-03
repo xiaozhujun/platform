@@ -45,7 +45,8 @@
             "fuzzyQueryBySafeManager":"rs/craneinspectreport/fuzzyQueryBySafeManager",
             "fuzzyQueryByEquipmentVariety":"rs/craneinspectreport/fuzzyQueryByEquipmentVariety",
             "fuzzyQueryByManufactureUnit":"rs/craneinspectreport/fuzzyQueryByManufactureUnit",
-            "getCityRiskRankFormRiskRange":"rs/craneinspectreport/getCityRiskRankFormRiskRange"
+            "getCityRiskRankFormRiskRange":"rs/craneinspectreport/getCityRiskRankFormRiskRange",
+            "getAreaRiskRankFormRiskRange":"rs/craneinspectreport/getAreaRiskRankFormRiskRange"
         },
         "authority":{
             "add":"rs/authority/add"

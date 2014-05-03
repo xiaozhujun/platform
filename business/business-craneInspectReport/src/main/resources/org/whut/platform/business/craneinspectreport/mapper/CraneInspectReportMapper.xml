@@ -324,8 +324,14 @@
     </select>
     <select id="getCityRiskRankFormRiskRange" parameterType="map" resultType="map">
         SELECT
-        cr.city,cr.riskvalue
-        FROM city_riskvalue cr
-        WHERE cr.riskvalue BETWEEN #{startValue} AND #{endValue}  AND cr.province=#{province}
+        cr.id,cr.city,cr.riskvalue,r.riskcolor as color
+        FROM city_riskvalue cr,riskcolor r
+        WHERE cr.riskvalue BETWEEN #{startValue} AND #{endValue}  AND cr.riskvalue=r.riskvalue AND cr.province=#{province}  ORDER BY cr.riskvalue DESC
+    </select>
+    <select id="getAreaRiskRankFormRiskRange" parameterType="map" resultType="map">
+        SELECT
+        a.id,a.area,ar.riskvalue,r.riskcolor as color
+        FROM addressriskvalue ar,address a,riskcolor r
+        WHERE ar.riskvalue BETWEEN #{startValue} AND #{endValue}  AND ar.addressId=a.id AND r.riskvalue=ar.riskvalue AND a.province=#{province} AND a.city=#{city} ORDER BY ar.riskvalue DESC
     </select>
 </mapper>

@@ -5,4 +5,7 @@
     <bean id="riskmanagement" class="platform.fundamental.datasource.DbcpFactoryBean">
         <property name="dbname" value="riskmanagement"></property>
     </bean>
+    <bean id="inspectmanagement" class="platform.fundamental.datasource.DbcpFactoryBean">
+        <property name="dbname" value="inspectmanagement"></property>
+    </bean>
 </beans>

@@ -17,13 +17,8 @@
                     $("#mainContainer").load(url);
                 }
             });
-
-
-
-            //$("#fileUploadLi").trigger("click");
             $("#addUserMenu").parent().parent().trigger("click");
             $("#addUserMenu").trigger("click");
-            //$("div:contains(数据查询)").parent().trigger("click");
         });
 
     </script>
@@ -36,6 +31,72 @@
 <body style="padding:10px">
 
 <div id="accordion">
+    <div title="点检结果管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="员工类型管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="员工管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="设备类型管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="设备管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="点检区域管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="标签管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="点检选值管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="点检表管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="点检项管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="配置管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
     <div title="用户管理" style="padding:10px">
         <ul>
             <li id="addUserMenu" url="user/addUser.html">添加用户</li>
@@ -52,32 +113,6 @@
         <ul>
             <li url="user/addPower.html">添加资源</li>
             <li url="user/listPower.html">资源列表</li>
-        </ul>
-    </div>
-    <div id="dataDiv" title="数据管理" style="padding:10px">
-        <ul>
-            <li id="fileUploadLi" url="craneInspectReport/fileupload.html">上传检验报告</li>
-            <li id="reportShowLi" url="report/reportShow.html">风险明细</li>
-            <li id="reportShowChartLi" url="report/reportShowChart.html">风险统计</li>
-        </ul>
-    </div>
-<!--    <div id="dataDiv-update" title="数据维护" style="padding:10px">
-        <ul>
-            <li id="fileDownloadLi" url="craneInspectReport/filedownload.html">上传报告</li>
-           &lt;!&ndash; <li id="multiPicUploadLi" url="craneInspectReport/multiPicUpload.html">上传图片</li>&ndash;&gt;
-            <li id="craneInspectReportLi" url="craneInspectReport/craneInspectReportList.html">信息维护</li>
-        </ul>
-    </div>-->
-    <div id="riskColorDiv" title="风险标识" style="padding:10px">
-        <ul>
-            <li id="riskColorLi" url="riskColor/riskColor.html">标识分配</li>
-            <li id="riskColorLi1" url="riskColor/listColor.html">标识列表</li>
-        </ul>
-    </div>
-    <div id="dataRoleDiv" title="数据权限" style="padding:10px">
-        <ul>
-            <li id="addDataRoleLi" url="dataRule/addDataRole.html">添加权限</li>
-            <li id="listDataRoleLi" url="dataRule/listDataRole.html">权限列表</li>
         </ul>
     </div>
 <div style="display:none;">

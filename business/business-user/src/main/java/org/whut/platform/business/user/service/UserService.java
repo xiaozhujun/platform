@@ -52,5 +52,4 @@ public class UserService {
         MyUserDetail myUserDetail= (MyUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return myUserDetail;
     }
-
 }

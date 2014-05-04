@@ -39,7 +39,8 @@ public class DataRoleAddressServiceWeb {
     @Path("/getProvinceAndColorWithDataRole")
     public String getProvinceAndColorWithDataRole(){
         String userName=userService.getMyUserDetailFromSession().getUsername();
-        List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userName);
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -47,7 +48,8 @@ public class DataRoleAddressServiceWeb {
     @Path("/getCityAndColorWithDataRole")
     public String getCityAndColorWithDataRole(@FormParam("province") String province){
         String userName=userService.getMyUserDetailFromSession().getUsername();
-        List<Map<String,String>> list=dataRoleAddressService.getCityAndColorWithDataRole(province,userName);
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> list=dataRoleAddressService.getCityAndColorWithDataRole(province,userId);
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -55,7 +57,8 @@ public class DataRoleAddressServiceWeb {
     @Path("/getAreaAndColorWithDataRole")
     public String getAreaAndColorWithDataRole(@FormParam("province") String province,@FormParam("city")String city){
         String userName=userService.getMyUserDetailFromSession().getUsername();
-        List<Map<String,String>> list=dataRoleAddressService.getAreaAndColorWithDataRole(province,city,userName);
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> list=dataRoleAddressService.getAreaAndColorWithDataRole(province,city,userId);
         String province_city=province+","+city;
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }

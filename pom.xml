@@ -12,6 +12,7 @@
         <module>fundamental</module>
         <module>business</module>
         <module>riskManagement</module>
+        <module>inspectManagement</module>
         <!--<module>auth</module>-->
     </modules>
 

@@ -224,6 +224,38 @@ public class CraneInspectReportService {
     public List<CraneInspectReport> fuzzyQueryByManufactureUnit(String city,String area,String require){
         return mapper.fuzzyQueryByManufactureUnit(city, area, require);
     }
+    public List<String> getCraneInfoByFuzzyUnitAddress(String city,String area,String require){
+        List<String> list=mapper.getCraneInfoByFuzzyUnitAddress(city, area, require);
+        return list;
+    }
+    public List<String> getCraneInfoByFuzzyUsePoint(String city,String area,String require){
+        List<String> list=mapper.getCraneInfoByFuzzyUsePoint(city, area, require);
+        return list;
+    }
+    public List<String> getCraneInfoByFuzzySafeManager(String city,String area,String require){
+        List<String> list=mapper.getCraneInfoByFuzzySafeManager(city, area, require);
+        return list;
+    }
+    public List<String> getCraneInfoByFuzzyEquipmentVariety(String city,String area,String require){
+        List<String> list=mapper.getCraneInfoByFuzzyEquipmentVariety(city, area, require);
+        return list;
+    }
+    public List<String> getCraneInfoByFuzzyManufactureunit(String city,String area,String require){
+        List<String> list=mapper.getCraneInfoByFuzzyManufactureunit(city, area, require);
+        return list;
+    }
+    public List<String> getCraneInfoByFuzzyQuery(String city,String area,String require){
+        List<String> list=mapper.getCraneInfoByFuzzyUnitAddress(city, area, require);
+        List<String> list1=mapper.getCraneInfoByFuzzyUsePoint(city, area, require);
+        List<String> list2=mapper.getCraneInfoByFuzzySafeManager(city, area, require);
+        List<String> list3=mapper.getCraneInfoByFuzzyEquipmentVariety(city, area, require);
+        List<String> list4=mapper.getCraneInfoByFuzzyManufactureunit(city, area, require);
+        list.addAll(list1);
+        list.addAll(list2);
+        list.addAll(list3);
+        list.addAll(list4);
+        return list;
+    }
     /*
         新加入的，Sunhui
     */
@@ -243,5 +275,4 @@ public class CraneInspectReportService {
     public List<Map<String,Float>>getAreaRiskRankFormRiskRange(float startValue,float endValue,String province,String city){
         return mapper.getAreaRiskRankFormRiskRange(startValue,endValue,province,city);
     }
-
 }

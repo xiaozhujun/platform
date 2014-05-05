@@ -334,4 +334,31 @@
         FROM addressriskvalue ar,address a,riskcolor r
         WHERE ar.riskvalue BETWEEN #{startValue} AND #{endValue}  AND ar.addressId=a.id AND r.riskvalue=ar.riskvalue AND a.province=#{province} AND a.city=#{city} ORDER BY ar.riskvalue DESC
     </select>
+
+    <select id="getCraneInfoByFuzzyUnitAddress" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.unitaddress
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.unitaddress LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzyUsePoint" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.usepoint
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.usepoint LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzySafeManager" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.safemanager
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.safemanager LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzyEquipmentVariety" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.equipmentvariety
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.equipmentvariety LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzyManufactureunit" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.manufactureunit
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.manufactureunit LIKE #{require}
+    </select>
+
 </mapper>

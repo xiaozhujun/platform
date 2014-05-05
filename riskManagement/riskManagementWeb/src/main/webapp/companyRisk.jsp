@@ -35,6 +35,7 @@ transitional.dtd">
     <script type="text/javascript" src="map/js/rightHidePanel.js"></script>
     <%--<script src="search/js/jquery-1.8.2.min.js"></script>--%>
     <script src="search/js/common.js"></script>
+    <script src="search/js/autoComplete.js" type="text/javascript"></script>
     <link href="search/css/style.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
@@ -90,8 +91,11 @@ transitional.dtd">
                                   </div>
                               </div>
                               <input id="catid" name="catid" type="hidden" value="7">
-                              <input id="more" class="enter" name="infos"   onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
+                              <input id="more"  class="enter"  type="text" name="wd" autocomplete="off" onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
                               <input class="sb" name="Input" type="submit" id="queryBtn"  value="">
+                          <div  style="width: 350px">
+                              <div id="auto" class="auto"> </div>
+                          </div>
                       </div>
                   </div>
                 </div>

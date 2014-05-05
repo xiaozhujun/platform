@@ -46,7 +46,14 @@
             "fuzzyQueryByEquipmentVariety":"rs/craneinspectreport/fuzzyQueryByEquipmentVariety",
             "fuzzyQueryByManufactureUnit":"rs/craneinspectreport/fuzzyQueryByManufactureUnit",
             "getCityRiskRankFormRiskRange":"rs/craneinspectreport/getCityRiskRankFormRiskRange",
-            "getAreaRiskRankFormRiskRange":"rs/craneinspectreport/getAreaRiskRankFormRiskRange"
+            "getAreaRiskRankFormRiskRange":"rs/craneinspectreport/getAreaRiskRankFormRiskRange"  ,
+
+            "getCraneInfoByFuzzyUnitAddress": "rs/craneinspectreport/getCraneInfoByFuzzyUnitAddress" ,
+            "getCraneInfoByFuzzyManufactureUnit" :"rs/craneinspectreport/getCraneInfoByFuzzyManufactureUnit",
+            "getCraneInfoByFuzzyUsePoint":"rs/craneinspectreport/getCraneInfoByFuzzyUsePoint",
+            "getCraneInfoByFuzzySafeManager":"rs/craneinspectreport/getCraneInfoByFuzzySafeManager",
+            "getCraneInfoByFuzzyEquipmentVariety":"rs/craneinspectreport/getCraneInfoByFuzzyEquipmentVariety",
+            "getCraneInfoByFuzzyQuery":'rs/craneinspectreport/getCraneInfoByFuzzyQuery'
         },
         "authority":{
             "add":"rs/authority/add"

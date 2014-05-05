@@ -52,4 +52,11 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<Map<String,Float>>getCityRiskRankFormRiskRange(@Param("startValue") float startValue,@Param("endValue")float endValue,@Param("province")String province);
     public List<Map<String,Float>>getAreaRiskRankFormRiskRange(@Param("startValue") float startValue,@Param("endValue")float endValue,@Param("province")String province,@Param("city")String city);
 
+    public List<String> getCraneInfoByFuzzyUnitAddress(@Param("city") String city,@Param("area") String area,@Param("require") String require);
+    public List<String> getCraneInfoByFuzzyUsePoint(@Param("city") String city,@Param("area") String area,@Param("require") String require);
+    public List<String> getCraneInfoByFuzzySafeManager(@Param("city") String city,@Param("area") String area,@Param("require") String require);
+    public List<String> getCraneInfoByFuzzyEquipmentVariety(@Param("city") String city,@Param("area") String area,@Param("require") String require);
+    public List<String> getCraneInfoByFuzzyManufactureunit(@Param("city") String city,@Param("area") String area,@Param("require") String require);
+
+
 }

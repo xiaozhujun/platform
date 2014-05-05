@@ -455,5 +455,47 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCraneInfoByFuzzyUnitAddress")
+    @POST
+    public String getCraneInfoByFuzzyUnitAddress(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<String> list=craneInspectReportService.getCraneInfoByFuzzyUnitAddress(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCraneInfoByFuzzyUsePoint")
+    @POST
+    public String getCraneInfoByFuzzyUsePoint(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<String> list=craneInspectReportService.getCraneInfoByFuzzyUsePoint(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCraneInfoByFuzzySafeManager")
+    @POST
+    public String getCraneInfoByFuzzySafeManager(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<String> list=craneInspectReportService.getCraneInfoByFuzzySafeManager(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCraneInfoByFuzzyEquipmentVariety")
+    @POST
+    public String getCraneInfoByFuzzyEquipmentVariety(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<String> list=craneInspectReportService.getCraneInfoByFuzzyEquipmentVariety(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCraneInfoByFuzzyManufactureUnit")
+    @POST
+    public String getCraneInfoByFuzzyManufactureUnit(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<String> list=craneInspectReportService.getCraneInfoByFuzzyManufactureunit(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCraneInfoByFuzzyQuery")
+    @POST
+    public String getCraneInfoByFuzzyQuery(@FormParam("city") String city,@FormParam("area") String area,@FormParam("require") String require){
+        List<String> list=craneInspectReportService.getCraneInfoByFuzzyQuery(city, area, require);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 
 }

@@ -67,7 +67,11 @@ function FillUrls() {
 
 
                     var newDivNode = $("<div>").attr("id", i);    //设置每个节点的id值
-                    newDivNode.attr("style", "font:14px/25px arial;height:25px;padding:0 8px;cursor: pointer;background-color:white;width:320px");
+                    if(i==Info.length-1){
+                        newDivNode.attr("style", "font:14px/25px arial;height:25px;padding:0 9px;cursor: pointer;background-color:white;width:230px;height:45px;border-color:#0095E2;border-style:solid;border-width:0 1px 1px 1px");
+                    }else{
+                        newDivNode.attr("style", "font:14px/25px arial;height:25px;padding:0 9px;cursor: pointer;background-color:white;width:230px;height:45px;border-color:#0095E2;border-style:solid;border-width:0 1px 0px 1px");
+                    }
                     newDivNode.html(wordNode).appendTo(autoNode);  //追加到弹出框
                     //鼠标移入高亮，移开不高亮
                     newDivNode.mouseover(function () {
@@ -76,7 +80,7 @@ function FillUrls() {
                         }
                         //记录新的高亮节点索引
                         highlightindex = $(this).attr("id");
-                        $(this).css("background-color", "#ebebeb");
+                        $(this).css("background-color", "#72C2FF");
                     });
                     newDivNode.mouseout(function () {
                         $(this).css("background-color", "white");
@@ -146,7 +150,7 @@ $(function () {
                     highlightindex = autoNodes.length - 1;
                 }
                 //让现在高亮的内容变成红色
-                autoNodes.eq(highlightindex).css("background-color", "#ebebeb");
+                autoNodes.eq(highlightindex).css("background-color", "#72C2FF");
 
                 //取出当前选中的项 赋值到输入框内
                 var comText = autoNodes.eq(highlightindex).text();
@@ -164,7 +168,7 @@ $(function () {
                     highlightindex = 0;
                 }
                 //让现在高亮的内容变成红色
-                autoNodes.eq(highlightindex).css("background-color", "#ebebeb");
+                autoNodes.eq(highlightindex).css("background-color", "#72C2FF");
                 var comText = autoNodes.eq(highlightindex).text();
                 $("#more").val(comText);
             }

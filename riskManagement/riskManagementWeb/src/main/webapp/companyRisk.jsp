@@ -81,7 +81,7 @@ transitional.dtd">
                                           <a id="s4">设备品种</a>
                                           <a id="s5">制造单位</a>
                                           <a id="s6">全站搜索</a>
-                     <%--                     <a id="s7">常用软件</a>
+                     <%--                 <a id="s7">常用软件</a>
                                           <a id="s8">图标素材</a>
                                           <a id="s9">PNG图标</a>
                                           <a id="s10">GIF图标</a>
@@ -94,7 +94,7 @@ transitional.dtd">
                               <input id="more"  class="enter"  type="text" name="wd" autocomplete="off" onFocus="if(this.value=='请输入关键字…'){this.value='';}else{this.select();}this.style.color='black';"  value="请输入关键字…">
                               <input class="sb" name="Input" type="submit" id="queryBtn"  value="">
                           <div  style="width: 350px">
-                              <div id="auto" class="auto"> </div>
+                              <div id="auto" class="auto" > </div>
                           </div>
                       </div>
                   </div>
@@ -306,8 +306,13 @@ transitional.dtd">
           var code=theEvent.keyCode||theEvent.which;
           if(code==13){
               $("#queryBtn").click();
+              document.getElementById("more").focus();
+              document.getElementById("more").blur();
           }
       }
+        $("#auto").click(function(){
+            $("#queryBtn").click();
+        })
         $("#queryBtn").click(function(){
             var data = {};
             data.city = $("#city").val();

@@ -299,7 +299,7 @@ transitional.dtd">
         //地图左边的tab页
         $.mapLeftTab("searchTab","search","drawCircle","drawLine");
         //地图导航
-        $.dragAbleNavigate(area);
+       // $.dragAbleNavigate(area);
     });
       document.onkeydown=function(e){
           var theEvent=window.event||e;

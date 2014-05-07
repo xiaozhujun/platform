@@ -27,6 +27,7 @@
     <script type="text/javascript" src="jslider/js/jquery.dependClass-0.1.js"></script>
     <script type="text/javascript" src="jslider/js/draggable-0.1.js"></script>
     <script type="text/javascript" src="jslider/js/jquery.slider.js"></script>
+    <script type="text/javascript" src="map/js/slider.js"></script>
     <script type="text/javascript" src="map/js/mapLeftTab.js"></script>
     <script type="text/javascript" src="map/js/rightHidePanel.js"></script>
     <script src="search/js/common.js"></script>
@@ -101,27 +102,7 @@
                         <input id="Slider4" type="slider" name="area" value="2;10" />
                     </div>
                     <script type="text/javascript" charset="utf-8">
-                        jQuery("#Slider4").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic",
-                            callback: function( value ){
-                                console.dir( this );
-                                var provincevalue=$("#province").val();
-                                var cityvalue=$("#city").val();
-                                var areavalue=$("#area").val();
-                                if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"){
-                                    // 只查省的风险值
-                                    $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue},showCityRankByValueRange,"json");
-                                }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"){
-                                    // 只查省的风险值
-                                    $.post($.URL.craneinspectreport.getAreaRiskRankFormRiskRange,{"value":value,"province":provincevalue,"city":cityvalue},showAreaRankByValueRange,"json");
-                                }
-                                else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"){
-                                    //查省市区
-                                    $.post($.URL.craneinspectreport.showRiskRankByValueRange, {"value":value,"city":cityvalue,"area":areavalue},showRiskRankByValueRange,"json");
-                                }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"){
-                                    $.post($.URL.craneinspectreport.showRiskRankByValueRange, {"value":value,"city":city,"area":area},showRiskRankByValueRange,"json");
-                                }
-                            }
-                        });
+                        $.mySlider();
                     </script>
                 </span>
                 </div>
@@ -155,9 +136,7 @@
             </div>
         </div>
     </div>
-    <!--<div position="right"></div>-->
     <div id="titleContainer" position="top"></div>
-    <!--<div position="bottom"></div>-->
 </div>
 <div style="display:none;">
 </div>

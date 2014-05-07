@@ -21,6 +21,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -155,31 +156,16 @@ public class CraneInspectReportServiceWeb {
         if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-      /*  Long addressId=addressService.findIdByCityArea(city,area);
-        if(addressId==null){
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-        }else{
-        List<List<CraneInspectReport>> resultList=new ArrayList<List<CraneInspectReport>>();
-        List<CraneInspectReport> list=craneInspectReportService.getInfoByAddressId(addressId);
-        List<CraneInspectReport> riskValueList=new ArrayList<CraneInspectReport>();
-        Iterator it=list.iterator();
-        while(it.hasNext()){
-            CraneInspectReport craneInspectReport=(CraneInspectReport)it.next();
-            CraneInspectReport craneReport=new CraneInspectReport();
-            Long riskValue=craneInspectReportService.findReportNumberByUnitAddress(craneInspectReport.getUnitAddress());
-            craneReport.setRiskValue(riskValue);
-            riskValueList.add(craneReport);
-        }
-         resultList.add(list);
-         resultList.add(riskValueList);
-        if(resultList==null){
-          return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
-        }else{
-        return JsonResultUtils.getObjectResultByStringAsDefault(resultList,JsonResultUtils.Code.SUCCESS);
-        }
-        }*/
+         List<CraneInspectReport> resultList=new ArrayList<CraneInspectReport>();
          List<CraneInspectReport> list=craneInspectReportService.getAreaInfo(city,area);
-         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+         for(CraneInspectReport craneInspectReport:list){
+             CraneInspectReport craneInspectObject=new CraneInspectReport();
+             craneInspectObject=craneInspectReportService.transferCraneInspectReportObject(craneInspectObject,craneInspectReport);
+             long craneNumber=craneInspectReportService.getCraneNumberByUnitAddress(craneInspectReport.getUnitAddress());
+             craneInspectObject.setCraneNumber(craneNumber);
+             resultList.add(craneInspectObject);
+         }
+         return JsonResultUtils.getObjectResultByStringAsDefault(resultList,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -222,6 +208,7 @@ public class CraneInspectReportServiceWeb {
     {
         //根据城市以及地区得到风险
         List<CraneInspectReport> list=craneInspectReportService.showRiskRank(city,area);
+
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
     }

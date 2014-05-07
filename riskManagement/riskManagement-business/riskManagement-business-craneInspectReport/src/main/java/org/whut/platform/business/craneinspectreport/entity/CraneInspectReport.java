@@ -54,6 +54,8 @@ public class CraneInspectReport {
 
     private String    ratedLiftWeight;                //额定起重量
 
+    private long      craneNumber;                    //起重机台数
+
     public long getId() {
         return id;
     }
@@ -228,5 +230,13 @@ public class CraneInspectReport {
 
     public void setRatedLiftWeight(String ratedLiftWeight) {
         this.ratedLiftWeight = ratedLiftWeight;
+    }
+
+    public long getCraneNumber() {
+        return craneNumber;
+    }
+
+    public void setCraneNumber(long craneNumber) {
+        this.craneNumber = craneNumber;
     }
 }

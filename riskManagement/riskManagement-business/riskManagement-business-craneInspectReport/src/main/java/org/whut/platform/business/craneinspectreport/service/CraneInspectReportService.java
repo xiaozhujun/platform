@@ -275,4 +275,32 @@ public class CraneInspectReportService {
     public List<Map<String,Float>>getAreaRiskRankFormRiskRange(float startValue,float endValue,String province,String city){
         return mapper.getAreaRiskRankFormRiskRange(startValue,endValue,province,city);
     }
+    public long getCraneNumberByUnitAddress(String unitAddress){
+        return mapper.getCraneNumberByUnitAddress(unitAddress);
+    }
+    public CraneInspectReport transferCraneInspectReportObject(CraneInspectReport object1,CraneInspectReport object2){
+        object1.setId(object2.getId());
+        object1.setReportNumber(object2.getReportNumber());
+        object1.setUnitAddress(object2.getUnitAddress());
+        object1.setAddressId(object2.getAddressId());
+        object1.setOrganizeCode(object2.getOrganizeCode());
+        object1.setUserPoint(object2.getUserPoint());
+        object1.setSafeManager(object2.getSafeManager());
+        object1.setContactPhone(object2.getContactPhone());
+        object1.setEquipmentVariety(object2.getEquipmentVariety());
+        object1.setUnitNumber(object2.getUnitNumber());
+        object1.setManufactureUnit(object2.getManufactureUnit());
+        object1.setManufactureLicenseNumber(object2.getManufactureLicenseNumber());
+        object1.setManufactureDate(object2.getManufactureDate());
+        object1.setSpecification(object2.getSpecification());
+        object1.setpNumber(object2.getpNumber());
+        object1.setWorkLevel(object2.getWorkLevel());
+        object1.setRatedLiftWeight(object2.getRatedLiftWeight());
+        object1.setSinglePicURL(object2.getSinglePicURL());
+        object1.setTypePicURL(object2.getTypePicURL());
+        object1.setRiskValue(object2.getRiskValue());
+        object1.setLat(object2.getLat());
+        object1.setLng(object2.getLng());
+        return object1;
+    }
 }

@@ -30,6 +30,7 @@
         <result property="typePicURL" column="TYPEPICURL"/>
         <result property="riskValue" column="RISKVALUE"/>
         <result property="ratedLiftWeight" column="RATEDLIFTWEIGHT"/>
+        <result property="craneNumber" column="CRANENUMBER"/>
     </resultMap>
 
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
@@ -360,5 +361,11 @@
         FROM craneinspectreport cr,address a
         WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.manufactureunit LIKE #{require}
     </select>
-
+    <select id="getCraneNumberByUnitAddress" parameterType="java.lang.String" resultType="java.lang.Long">
+         SELECT
+         count(*)
+         FROM craneinspectreport cr
+         WHERE cr.unitAddress=#{unitAddress}
+         GROUP BY cr.unitAddress
+    </select>
 </mapper>

@@ -115,4 +115,12 @@
         and a.province=#{province} and a.city=#{city}
         group by a.province,a.city
     </select>
+    <select id="getCraneNumberByArea" parameterType="map" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province} and a.city=#{city} and a.area=#{area}
+        group by a.province,a.city,a.area
+    </select>
 </mapper>

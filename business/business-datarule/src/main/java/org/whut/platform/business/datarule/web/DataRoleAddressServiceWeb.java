@@ -83,8 +83,19 @@ public class DataRoleAddressServiceWeb {
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
         List<Map<String,String>> list=dataRoleAddressService.getAreaAndColorWithDataRole(province,city,userId);
+        List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
+        for(Map<String,String>map:list){
+            Map<String,String> map1=new HashMap<String, String>();
+            map1=dataRoleAddressService.transferAreaMap(map1,map);
+            Long craneNumber=dataRoleAddressService.getCraneNumberByArea(province,city,map.get("area"));
+            if(craneNumber==null){
+            map1.put("craneNumber","0");
+            }
+            map1.put("craneNumber",String.valueOf(craneNumber));
+            resultList.add(map1);
+        }
         String province_city=province+","+city;
-        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(resultList,200,province_city);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST

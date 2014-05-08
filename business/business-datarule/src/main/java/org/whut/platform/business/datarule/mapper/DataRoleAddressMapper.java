@@ -29,4 +29,5 @@ public interface DataRoleAddressMapper extends AbstractMapper<DataRoleAddress>{
 
     public Long getCraneNumberByProvince(String province);
     public Long getCraneNumberByCity(@Param("province")String province,@Param("city")String city);
+    public Long getCraneNumberByArea(@Param("province")String province,@Param("city")String city,@Param("area")String area);
 }

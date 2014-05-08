@@ -77,4 +77,7 @@ public class DataRoleAddressService {
     public Long getCraneNumberByCity(String province,String city){
         return dataRoleAddressMapper.getCraneNumberByCity(province,city);
     }
+    public Long getCraneNumberByArea(String province,String city,String area){
+        return dataRoleAddressMapper.getCraneNumberByArea(province,city,area);
+    }
 }

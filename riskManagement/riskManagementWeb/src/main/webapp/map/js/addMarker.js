@@ -379,14 +379,24 @@ $.extend({
             }else{
                 $("#rankTitle").html("");
                 $("#riskrankContent").html("");
-                var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>区域</span><span class='rtitleriskItem'>风险值</span></div>";
+                var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>区域</span><span class='rtitleriskItem'>设备数</span></div>";
                 $("#rankTitle").append(rankTitle);
                 for(var i=0;i<data.data.length;i++){
                     var rankContent;
                     if(i%2==0){
-                        rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
+                        if(data.data[i].craneNumber=="null"){
+                            data.data[i].craneNumber="0";
+                        }else{
+
+                        }
+                        rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].craneNumber+"</span></span></div>"
                     }else{
-                        rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].avgRiskValue+"</span></span></div>"
+                        if(data.data[i].craneNumber=="null"){
+                            data.data[i].craneNumber="0";
+                        }else{
+
+                        }
+                        rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].area+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].craneNumber+"</span></span></div>"
                     }
                     $("#riskrankContent").append(rankContent);
                     $.areaClick(data.str,"#riskcontent"+data.data[i].id,1);

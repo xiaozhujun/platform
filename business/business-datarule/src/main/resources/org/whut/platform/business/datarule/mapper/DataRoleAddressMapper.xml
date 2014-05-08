@@ -99,4 +99,20 @@
         Select addressId
         from   drole_address where droleName=#{dRoleName}
     </select>
+    <select id="getCraneNumberByProvince" parameterType="java.lang.String" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province}
+        group by a.province
+    </select>
+    <select id="getCraneNumberByCity" parameterType="map" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province} and a.city=#{city}
+        group by a.province,a.city
+    </select>
 </mapper>

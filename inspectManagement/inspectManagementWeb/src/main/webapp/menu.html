@@ -17,8 +17,8 @@
                     $("#mainContainer").load(url);
                 }
             });
-            $("#addUserMenu").parent().parent().trigger("click");
-            $("#addUserMenu").trigger("click");
+            $("#inspectResult").parent().parent().trigger("click");
+            $("#inspectResult").trigger("click");
         });
 
     </script>
@@ -32,6 +32,18 @@
 
 <div id="accordion">
     <div title="点检结果管理" style="padding:10px">
+        <ul>
+            <li id="inspectResult" url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="报表管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="部门管理" style="padding:10px">
         <ul>
             <li url="**/add.html">添加</li>
             <li url="**/list.html">列表</li>
@@ -95,30 +107,6 @@
         <ul>
             <li url="**/add.html">添加</li>
             <li url="**/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="企业管理" style="padding:10px">
-        <ul>
-            <li url="**/add.html">添加</li>
-            <li url="**/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="用户管理" style="padding:10px">
-        <ul>
-            <li id="addUserMenu" url="user/addUser.html">添加用户</li>
-            <li url="user/listUser.html">用户列表</li>
-        </ul>
-    </div>
-    <div title="角色管理" style="padding:10px">
-        <ul>
-            <li url="user/addAuthority.html">添加角色</li>
-            <li url="user/listAuthority.html">角色列表</li>
-        </ul>
-    </div>
-    <div title="资源管理" style="padding:10px">
-        <ul>
-            <li url="user/addPower.html">添加资源</li>
-            <li url="user/listPower.html">资源列表</li>
         </ul>
     </div>
 <div style="display:none;">

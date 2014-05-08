@@ -23,7 +23,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>riskManagementWeb/src/main/webapp/WEB-INF/lib</outputDirectory>
+                            <outputDirectory>src/main/webapp/WEB-INF/lib</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

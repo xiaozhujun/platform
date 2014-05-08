@@ -58,5 +58,6 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<String> getCraneInfoByFuzzyEquipmentVariety(@Param("city") String city,@Param("area") String area,@Param("require") String require);
     public List<String> getCraneInfoByFuzzyManufactureunit(@Param("city") String city,@Param("area") String area,@Param("require") String require);
 
+    public long getCraneNumberByUnitAddress(String unitAddress);
 
 }

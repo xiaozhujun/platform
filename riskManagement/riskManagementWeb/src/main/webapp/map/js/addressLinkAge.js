@@ -9,8 +9,8 @@ $.extend({
    addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,provinceValue,cityValue,areaValue){
        //$.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
        $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceListCallback,"json");
-       $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":provinceValue}, initCityByProvinceCallback,"json");
-       $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":provinceValue,"city":cityValue}, initAreaByProvinceAndCityCallback,"json");
+       //$.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":provinceValue}, initCityByProvinceCallback,"json");
+      // $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":provinceValue,"city":cityValue}, initAreaByProvinceAndCityCallback,"json");
        var pId="#"+provinceId;
        var cId="#"+cityId;
        var aId="#"+areaId;
@@ -18,9 +18,9 @@ $.extend({
        var cityOption="#"+cityId+"option:not(:first)";
        var areaOption="#"+areaId+"option:not(:first)";
        var unitOption="#"+unitId+"option:not(:first)";
-       var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
-       var citySelectedValue=cId+" option[value='"+cityValue+"']";
-       var areaSelectedValue=aId+" option[value='"+areaValue+"']";
+       //var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
+   /*    var citySelectedValue=cId+" option[value='"+cityValue+"']";
+       var areaSelectedValue=aId+" option[value='"+areaValue+"']";*/
        $(pId).change(function(){
            $("#alert").html("");
         /*   $(cityOption).remove();
@@ -30,7 +30,7 @@ $.extend({
            $(aId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            if(pro=="0"){
-               $("#alert").html("请选择省份");
+               $.showProvinceRisk(1);
            }else{
                $.showCityRisk(pro,1);
                $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
@@ -86,7 +86,7 @@ $.extend({
                    pSearch+="<option value='"+data.data[i].province+"'>"+data.data[i].province+"</option>";
                }
                $(pId).html(pSearch);
-               $(provinceSelectedValue).attr("selected",true);
+               //$(provinceSelectedValue).attr("selected",true);
            }
        }
            function getCityByProvinceCallback(data){
@@ -107,7 +107,7 @@ $.extend({
                    citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
                }
                $(cId).html(citySearch);
-               $(citySelectedValue).attr("selected",true);
+               //$(citySelectedValue).attr("selected",true);
            }
        }
            function getAreaByProvinceAndCityCallback(data){
@@ -128,7 +128,7 @@ $.extend({
                      areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
                  }
                  $(aId).html(areaSearch);
-                 $(areaSelectedValue).attr("selected",true);
+                 //$(areaSelectedValue).attr("selected",true);
              }
          }
        function getUnitaddressByAreaCallback(data){

@@ -85,7 +85,7 @@ $.extend({
                     for(i=0;i<data.data.length;i++){
                         var item={};
                         item.title=data.data[i].unitAddress;
-                        item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue+",设备数:"+data.data[i].craneNumber;
+                        item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue;
                         item.point=data.data[i].lng+"|"+data.data[i].lat;
                         item.isOpen=0;
                         /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
@@ -163,8 +163,8 @@ $.extend({
                         }
                         if(data.data[0].riskValue==6){
                             icon.l=46;
-                        }
-                        ; $.mouseEvent(title,content,point,isOpen,icon,i);
+                        };
+                        $.mouseEvent(title,content,point,isOpen,icon,i);
                     }
                 }
             }

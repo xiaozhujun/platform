@@ -14,6 +14,7 @@
     <modules>
         <module>inspectManagement-business</module>
         <module>inspectManagementWeb</module>
+        <module>inspectAdminWeb</module>
     </modules>
 
 

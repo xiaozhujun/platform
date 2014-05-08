@@ -303,4 +303,10 @@ public class CraneInspectReportService {
         object1.setLng(object2.getLng());
         return object1;
     }
+    public List<String>getUseTimeList(){
+        return mapper.getUseTimeList();
+    }
+    public List<CraneInspectReport>getCraneInfoByEquipmentVariety(String province,String city,String area,String equipmentVariety){
+        return mapper.getCraneInfoByEquipmentVariety(province,city,area,equipmentVariety);
+    }
 }

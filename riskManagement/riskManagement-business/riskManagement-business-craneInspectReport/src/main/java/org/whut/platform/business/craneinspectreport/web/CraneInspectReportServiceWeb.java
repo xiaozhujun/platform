@@ -156,16 +156,8 @@ public class CraneInspectReportServiceWeb {
         if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-         List<CraneInspectReport> resultList=new ArrayList<CraneInspectReport>();
          List<CraneInspectReport> list=craneInspectReportService.getAreaInfo(city,area);
-         for(CraneInspectReport craneInspectReport:list){
-             CraneInspectReport craneInspectObject=new CraneInspectReport();
-             craneInspectObject=craneInspectReportService.transferCraneInspectReportObject(craneInspectObject,craneInspectReport);
-             long craneNumber=craneInspectReportService.getCraneNumberByUnitAddress(craneInspectReport.getUnitAddress());
-             craneInspectObject.setCraneNumber(craneNumber);
-             resultList.add(craneInspectObject);
-         }
-         return JsonResultUtils.getObjectResultByStringAsDefault(resultList,JsonResultUtils.Code.SUCCESS);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -484,5 +476,18 @@ public class CraneInspectReportServiceWeb {
         List<String> list=craneInspectReportService.getCraneInfoByFuzzyQuery(city, area, require);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getUseTimeList")
+    public String getUseTimeList(){
+        List<String> list=craneInspectReportService.getUseTimeList();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCraneInfoByEquipmentVariety")
+    public String getCraneInfoByEquipmentVariety(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("equipVariety")String equipVariety){
+         List<CraneInspectReport> list=craneInspectReportService.getCraneInfoByEquipmentVariety(province,city,area,equipVariety);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 }

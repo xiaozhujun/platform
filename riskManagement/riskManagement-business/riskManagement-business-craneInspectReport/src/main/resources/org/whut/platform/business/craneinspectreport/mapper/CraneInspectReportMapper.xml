@@ -312,7 +312,7 @@
         order by r.riskvalue desc
     </select>
     <select id="getAreaInfo" parameterType="map" resultMap="craneInspectReportResultMap">
-        SELECT cr.*,r.riskvalue
+        SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
         FROM craneinspectreport cr,address a,riskvalue r
         WHERE cr.reportnumber=r.reportnumber AND a.id=cr.addressId
         AND a.city=#{city} AND a.area=#{area} GROUP BY cr.unitaddress
@@ -367,5 +367,16 @@
          FROM craneinspectreport cr
          WHERE cr.unitAddress=#{unitAddress}
          GROUP BY cr.unitAddress
+    </select>
+    <select id="getUseTimeList" resultType="java.lang.String">
+        SELECT DATEDIFF(NOW(),cr.manufacturedate) as useTime
+        FROM craneinspectreport cr
+    </select>
+    <select id="getCraneInfoByEquipmentVariety" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
+        FROM craneinspectreport cr,address a,riskvalue r
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber
+        AND a.province=#{province} AND a.city=#{city} AND a.area=#{area} AND cr.equipmentvariety=#{equipmentVariety}
+        GROUP BY cr.unitaddress
     </select>
 </mapper>

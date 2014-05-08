@@ -49,4 +49,32 @@ public class DataRoleAddressService {
     public List<Long> getAddressIdBydRoleName(String dRoleName){
         return dataRoleAddressMapper.getAddressIdBydRoleName(dRoleName);
     }
+
+    public Map<String,String> transferProvinceMap(Map<String,String> map1,Map<String,String> map2){
+        map1.put("id",map2.get("id"));
+        map1.put("province",map2.get("province"));
+        map1.put("color",map2.get("color"));
+        map1.put("avgRiskValue",map2.get("avgRiskValue"));
+        return map1;
+    }
+    public Map<String,String> transferCityMap(Map<String,String> map1,Map<String,String> map2){
+        map1.put("id",map2.get("id"));
+        map1.put("city",map2.get("city"));
+        map1.put("color",map2.get("color"));
+        map1.put("avgRiskValue",map2.get("avgRiskValue"));
+        return map1;
+    }
+    public Map<String,String> transferAreaMap(Map<String,String> map1,Map<String,String> map2){
+        map1.put("id",map2.get("id"));
+        map1.put("area",map2.get("area"));
+        map1.put("color",map2.get("color"));
+        map1.put("avgRiskValue",map2.get("avgRiskValue"));
+        return map1;
+    }
+    public Long getCraneNumberByProvince(String province){
+        return dataRoleAddressMapper.getCraneNumberByProvince(province);
+    }
+    public Long getCraneNumberByCity(String province,String city){
+        return dataRoleAddressMapper.getCraneNumberByCity(province,city);
+    }
 }

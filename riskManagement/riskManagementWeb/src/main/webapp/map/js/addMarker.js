@@ -32,40 +32,10 @@ $.extend({
     getCompanyInfoByUnitAddress:function getCompanyInfoByUnitAddress(unitAddress){
         $.clearAllMarker();
         $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},getOneUnitAddressInfoCallback,"json");
-        var unitAddressMarker=new Array();
         function getOneUnitAddressInfoCallback(data){
+            var unitAddressMarker=new Array();
             if(data.code==200){
-                var item={};
-                item.title=data.data[0].unitAddress;
-                item.content=data.data[0].equipmentVariety+",风险值:"+data.data[0].riskValue;
-                item.point=data.data[0].lng+"|"+data.data[0].lat;
-                item.isOpen=0;
-                /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
-                item.icon={};
-                item.icon.w=23;
-                item.icon.h=25;
-                item.icon.t=21;
-                item.icon.x=9;
-                item.icon.lb=12;
-                if(data.data[0].riskValue==1){
-                    item.icon.l=23;
-                }
-                if(data.data[0].riskValue==2){
-                    item.icon.l=0;
-                }
-                if(data.data[0].riskValue==3){
-                    item.icon.l=69;
-                }
-                if(data.data[0].riskValue==4){
-                    item.icon.l=115;
-                }
-                if(data.data[0].riskValue==5){
-                    item.icon.l=46;
-                }
-                if(data.data[0].riskValue==6){
-                    item.icon.l=46;
-                }
-                unitAddressMarker.push(item);
+                unitAddressMarker= $.getOneMarkerValue(unitAddressMarker,data.data[0]);
                 $.addMarker(unitAddressMarker);
             }
         }
@@ -74,7 +44,6 @@ $.extend({
     initAndAddMarker:function initAndAddMarker(city,area){
         $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
         $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area}, $.showRiskRank,"json");
-        var chaoyangMarker=new Array();
         function areaInfoCallback(data){
             if(data.code==200){
                 $("#rightcontent").html("");
@@ -82,39 +51,7 @@ $.extend({
                     var error="<div class='errorInfo'>对不起,数据不存在!</div>";
                     $("#rightcontent").append(error);
                 }else{
-                    for(i=0;i<data.data.length;i++){
-                        var item={};
-                        item.title=data.data[i].unitAddress;
-                        item.content=data.data[i].equipmentVariety+",风险值:"+data.data[i].riskValue;
-                        item.point=data.data[i].lng+"|"+data.data[i].lat;
-                        item.isOpen=0;
-                        /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
-                        item.icon={};
-                        item.icon.w=23;
-                        item.icon.h=25;
-                        item.icon.t=21;
-                        item.icon.x=9;
-                        item.icon.lb=12;
-                        if(data.data[i].riskValue==1){
-                            item.icon.l=23;
-                        }
-                        if(data.data[i].riskValue==2){
-                            item.icon.l=0;
-                        }
-                        if(data.data[i].riskValue==3){
-                            item.icon.l=69;
-                        }
-                        if(data.data[i].riskValue==4){
-                            item.icon.l=115;
-                        }
-                        if(data.data[i].riskValue==5){
-                            item.icon.l=46;
-                        }
-                        if(data.data[i].riskValue==6){
-                            item.icon.l=46;
-                        }
-                        chaoyangMarker.push(item);
-                    }
+                    var chaoyangMarker= $.getMarkerArray(data);
                     //创建和初始化地图函数：
                     $.addMarker(chaoyangMarker);//向地图中添加marker
                     $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":chaoyangMarker[0].title}, $.getAreaInfoByUnitAddressCallback,"json");
@@ -596,5 +533,45 @@ $.extend({
                 $.showCompanyRisk(str[1],area,12);
             }
         });
+    },
+    getMarkerArray:function getMarkerArray(data){
+        var chaoyangMarker=new Array();
+        for(i=0;i<data.data.length;i++){
+            $.getOneMarkerValue(chaoyangMarker,data.data[i]);
+        }
+        return chaoyangMarker;
+    },
+    getOneMarkerValue:function getOneMarkerValue(array,arrayValue){
+        var item={};
+        item.title=arrayValue.unitAddress;
+        item.content=arrayValue.equipmentVariety+",风险值:"+arrayValue.riskValue;
+        item.point=arrayValue.lng+"|"+arrayValue.lat;
+        item.isOpen=0;
+        /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
+        item.icon={};
+        item.icon.w=23;
+        item.icon.h=25;
+        item.icon.t=21;
+        item.icon.x=9;
+        item.icon.lb=12;
+        if(arrayValue.riskValue==1){
+            item.icon.l=23;
+        }
+        if(arrayValue.riskValue==2){
+            item.icon.l=0;
+        }
+        if(arrayValue.riskValue==3){
+            item.icon.l=69;
+        }
+        if(arrayValue.riskValue==4){
+            item.icon.l=115;
+        }
+        if(arrayValue.riskValue==5){
+            item.icon.l=46;
+        }
+        if(arrayValue.riskValue==6){
+            item.icon.l=46;
+        }
+        array.push(item);
     }
 });

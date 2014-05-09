@@ -141,7 +141,7 @@
     </select>
     <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
      SELECT
-     cr.*,r.riskValue
+     cr.*,r.riskValue,count(cr.reportnumber) as craneNumber
      FROM craneinspectreport cr,riskvalue r
      WHERE cr.reportnumber=r.reportnumber
      AND cr.unitAddress=#{unitAddress}
@@ -149,9 +149,9 @@
     </select>
     <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT
-        <include refid="craneInspectReport_fields"/>
-        FROM craneinspectreport
-        where unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
+        cr.*,r.riskvalue
+        FROM craneinspectreport cr,riskvalue r
+        where cr.reportnumber=r.reportnumber AND unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
     </select>
     <select id="getCraneInspectReportByReportNumber" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
         SELECT
@@ -372,7 +372,7 @@
          GROUP BY cr.unitAddress
     </select>
     <select id="getUseTimeList" resultType="java.lang.String">
-        SELECT DATEDIFF(NOW(),cr.manufacturedate) as useTime
+        SELECT round(DATEDIFF(NOW(),cr.manufacturedate)/365) as useTime
         FROM craneinspectreport cr
     </select>
     <select id="getCraneInfoByEquipmentVariety" parameterType="map" resultMap="craneInspectReportResultMap">

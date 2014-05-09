@@ -17,10 +17,22 @@ import java.util.Map;
  */
 public class ToolUtil {
     public Date transferStringToDate(String str){
-         Date d=null;
+        Date d=null;
+        String date=null;
+        if(str.length()>8){
+        try{
+            String[] tempDate=str.split("/");
+            String year=tempDate[2];
+            String month=tempDate[1];
+            String day=tempDate[0];
+            date=year+"/"+month+"/"+day;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        }
         try{
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
-         d=sdf.parse(str);
+         d=sdf.parse(date);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -94,8 +106,7 @@ public class ToolUtil {
     }
      public static void main(String[] args){
          ToolUtil toolUtil=new ToolUtil();
-        /* System.out.print(toolUtil.parseAddress("湖北省武汉市汉阳区建港一路特1号"));*/
-         System.out.println(toolUtil.transferStringToDate("2010/7/1"));
-     }
+         System.out.print(toolUtil.parseAddress("湖北省武汉市汉阳区建港一路特1号"));
 
+     }
 }

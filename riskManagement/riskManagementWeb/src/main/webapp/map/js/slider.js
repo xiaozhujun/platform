@@ -6,16 +6,20 @@
  * To change this template use File | Settings | File Templates.
  */
 $.extend({
-  mySlider:function mySlider(provinceId,cityId,areaId){
+  mySlider:function mySlider(provinceId,cityId,areaId,equipVarietyId,useTimeId){
       jQuery("#Slider4").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic",
           callback: function( value ){
               console.dir( this );
               var province="#"+provinceId;
               var city="#"+cityId;
               var area="#"+areaId;
+              var equipVariety="#"+equipVarietyId;
+              var useTime="#"+useTimeId;
               var provincevalue=$(province).val();
               var cityvalue=$(city).val();
               var areavalue=$(area).val();
+              var equipVarietyvalue=$(equipVariety).val();
+              var useTimevalue=$(useTime).val();
               if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"){
                   // 只查省的风险值
                   $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue}, $.showCityRankByValueRange,"json");
@@ -39,7 +43,7 @@ $.extend({
             $("#riskrankContent").html("");
             if(data.data[0]==undefined){
                 $("#riskrankContent").append("对不起,数据不存在!");
-                $.initMap(data.str,8);
+                $.initMap("中国",5);
             }else{
                 $("#rankTitle").html("");
                 $("#riskrankContent").html("");
@@ -134,6 +138,8 @@ $.extend({
             $.clearAllMarker();
         }else{
             $.loadUnitRiskRankValue(data);
+            var arr= $.getMarkerArray(data);
+            $.addMarker(arr);
         }
     }
 }

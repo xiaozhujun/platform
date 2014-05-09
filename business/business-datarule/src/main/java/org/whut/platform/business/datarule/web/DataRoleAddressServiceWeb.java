@@ -42,6 +42,26 @@ public class DataRoleAddressServiceWeb {
     public String getProvinceAndColorWithDataRole(){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
+        //List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
+        List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
+       /* for(Map<String,String>map:list){
+            Map<String,String> map1=new HashMap<String, String>();
+            map1=dataRoleAddressService.transferProvinceMap(map1,map);
+            Long craneNumber=dataRoleAddressService.getCraneNumberByProvince(map.get("province"));
+            if(craneNumber==null){
+            map1.put("craneNumber","0");
+            }
+            map1.put("craneNumber",String.valueOf(craneNumber));
+            resultList.add(map1);
+        }*/
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getProvinceInfoByProvinceEquipmentVariety")
+    public String getProvinceInfoByProvinceEquipmentVariety(@FormParam("equipmentVariety")String equipmentVariety){
+        String userName=userService.getMyUserDetailFromSession().getUsername();
+        long userId=userService.getIdByName(userName);
         List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
         List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
         for(Map<String,String>map:list){
@@ -49,7 +69,7 @@ public class DataRoleAddressServiceWeb {
             map1=dataRoleAddressService.transferProvinceMap(map1,map);
             Long craneNumber=dataRoleAddressService.getCraneNumberByProvince(map.get("province"));
             if(craneNumber==null){
-            map1.put("craneNumber","0");
+                map1.put("craneNumber","0");
             }
             map1.put("craneNumber",String.valueOf(craneNumber));
             resultList.add(map1);

@@ -424,6 +424,13 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCityInfoByProvinceEquipmentVariety")
+    @POST
+    public String getCityInfoByProvinceEquipmentVariety(@FormParam("province") String province,@FormParam("equipmentVariety")String equipmentVariety){
+        List<Map<String,Float>> list = craneInspectReportService.getCityInfoByProvinceEquipmentVariety(province,equipmentVariety);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getAreaRiskRankFormRiskRange")
     @POST
     public String getAreaRiskRankFormRiskRange(@FormParam("value") String value,@FormParam("province") String province,@FormParam("city")String city){
@@ -434,7 +441,14 @@ public class CraneInspectReportServiceWeb {
         List<Map<String,Float>> list = craneInspectReportService.getAreaRiskRankFormRiskRange(startValue,endValue,province,city);
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaInfoByProvinceEquipmentVariety")
+    @POST
+    public String getAreaInfoByProvinceEquipmentVariety(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety){
+        String province_city=province+","+city;
+        List<Map<String,Float>> list = craneInspectReportService.getAreaInfoByProvinceEquipmentVariety(province,city,equipmentVariety);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
+    }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getCraneInfoByFuzzyUnitAddress")
     @POST
@@ -491,4 +505,5 @@ public class CraneInspectReportServiceWeb {
          List<CraneInspectReport> list=craneInspectReportService.getCraneInfoByEquipmentVariety(province,city,area,equipVariety);
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+
 }

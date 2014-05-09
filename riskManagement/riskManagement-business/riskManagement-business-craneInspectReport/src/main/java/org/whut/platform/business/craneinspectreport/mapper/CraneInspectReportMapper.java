@@ -61,4 +61,6 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public long getCraneNumberByUnitAddress(String unitAddress);
     public List<String>getUseTimeList();
     public List<CraneInspectReport>getCraneInfoByEquipmentVariety(@Param("province")String province,@Param("city")String city,@Param("area")String area,@Param("equipmentVariety")String equipmentVariety);
+    public List<Map<String,Float>> getCityInfoByProvinceEquipmentVariety(@Param("province")String province,@Param("equipmentVariety")String equipmentVariety);
+    public  List<Map<String,Float>>getAreaInfoByProvinceEquipmentVariety(@Param("province")String province,@Param("city")String city,@Param("equipmentVariety")String equipmentVariety);
 }

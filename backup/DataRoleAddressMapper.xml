@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.datarule.mapper.DataRoleAddressMapper">
+    <sql id="drole_address_fields">
+		ID,DROLEID,ADDRESSID,DROLENAME
+	</sql>
+
+    <resultMap id="dataRoleAddressResultMap" type="DataRoleAddress">
+        <id property="id" column="ID" />
+        <result property="dRoleId" column="DROLEID" />
+        <result property="addressId" column="ADDRESSID" />
+        <result property="dRoleName" column="DROLENAME"/>
+    </resultMap>
+
+    <insert id="add" parameterType="DataRoleAddress" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        drole_address(
+        <include refid="drole_address_fields" />
+        )
+        VALUES (#{id}, #{dRoleId}, #{addressId},#{dRoleName});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM drole_address
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="DataRoleAddress">
+        UPDATE drole_address
+        <set>
+            <if test="dRoleId != null">DROLEID=#{dRoleId},</if>
+            <if test="addressId != null">ADDRESSID=#{addressId},</if>
+            <if test="dRoleName != null">DROLENAME=#{dRoleName}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="DataRoleAddress">
+        DELETE FROM drole_address
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="dRoleId != null">AND DROLEID=#{dRoleId}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="DataRoleAddress" resultMap="dataRoleAddressResultMap">
+        SELECT
+        <include refid="drole_address_fields" />
+        FROM drole_address WHERE ID=#{id}
+    </select>
+
+    <select id="findByCondition" parameterType="java.lang.Long" resultMap="dataRoleAddressResultMap">
+        SELECT
+        <include refid="drole_address_fields" />
+        FROM drole_address WHERE droleId=#{id}
+    </select>
+
+    <select id="findByDataRoleName" parameterType="java.lang.String" resultMap="dataRoleAddressResultMap">
+        SELECT
+        <include refid="drole_address_fields" />
+        FROM drole_address WHERE droleName=#{name}
+    </select>
+
+    <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
+        SELECT DISTINCT pr.id,a.province,rc.riskcolor color,pr.riskvalue avgRiskValue
+        FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,province_riskvalue pr
+        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND pr.province=a.province AND pr.riskvalue=rc.riskvalue AND u.id=#{userId}
+        ORDER BY avgRiskValue DESC
+    </select>
+    <select id="getCityAndColorWithDataRole" parameterType="map" resultType="map">
+        SELECT DISTINCT cr.id,a.city,rc.riskcolor color,cr.riskvalue avgRiskValue
+        FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,city_riskvalue cr
+        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND a.province=cr.province and a.city=cr.city AND cr.riskvalue=rc.riskvalue
+        AND a.province=#{province} AND  u.id=#{userId}
+        GROUP BY a.city  ORDER BY avgRiskValue DESC
+    </select>
+    <select id="getAreaAndColorWithDataRole" parameterType="map" resultType="map">
+          SELECT DISTINCT arv.id,a.area,rc.riskcolor color,arv.riskvalue avgRiskValue
+          FROM user u,drole dr,user_drole udr,drole_address draddr,address a,addressriskvalue arv,riskcolor rc
+          WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND arv.addressid=a.id
+          AND rc.riskvalue=arv.riskvalue AND a.province=#{province} AND a.city=#{city}  AND u.id=#{userId}
+          ORDER BY avgRiskValue DESC
+    </select>
+    <select id="findAddressIdById" parameterType="java.lang.Long"  resultType="java.lang.Long">
+        Select addressId
+        from   drole_address where droleId=#{id}
+    </select>
+    <select id="getAddressIdBydRoleName" parameterType="java.lang.String"  resultType="java.lang.Long">
+        Select addressId
+        from   drole_address where droleName=#{dRoleName}
+    </select>
+    <select id="getCraneNumberByProvince" parameterType="java.lang.String" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province}
+        group by a.province
+    </select>
+    <select id="getCraneNumberByCity" parameterType="map" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province} and a.city=#{city}
+        group by a.province,a.city
+    </select>
+    <select id="getCraneNumberByArea" parameterType="map" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province} and a.city=#{city} and a.area=#{area}
+        group by a.province,a.city,a.area
+    </select>
+</mapper>

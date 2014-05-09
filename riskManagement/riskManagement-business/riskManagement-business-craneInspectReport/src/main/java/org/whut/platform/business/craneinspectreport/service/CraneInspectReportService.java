@@ -309,4 +309,11 @@ public class CraneInspectReportService {
     public List<CraneInspectReport>getCraneInfoByEquipmentVariety(String province,String city,String area,String equipmentVariety){
         return mapper.getCraneInfoByEquipmentVariety(province,city,area,equipmentVariety);
     }
+    public List<Map<String,Float>> getCityInfoByProvinceEquipmentVariety(String province,String equipmentVariety){
+         return mapper.getCityInfoByProvinceEquipmentVariety(province,equipmentVariety);
+    }
+    public  List<Map<String,Float>>getAreaInfoByProvinceEquipmentVariety(String province,String city,String equipmentVariety){
+          return mapper.getAreaInfoByProvinceEquipmentVariety(province,city,equipmentVariety);
+    }
+
 }

@@ -382,4 +382,18 @@
         AND a.province=#{province} AND a.city=#{city} AND a.area=#{area} AND cr.equipmentvariety=#{equipmentVariety}
         GROUP BY cr.unitaddress
     </select>
+    <select id="getCityInfoByProvinceEquipmentVariety" parameterType="map" resultType="map">
+        SELECT a.id,a.city,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.province=#{province}  AND cr.equipmentvariety=#{equipmentVariety}
+        GROUP BY a.city
+    </select>
+    <select id="getAreaInfoByProvinceEquipmentVariety" parameterType="map" resultType="map">
+         SELECT a.id,a.area,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.province=#{province} AND a.city=#{city} AND cr.equipmentvariety=#{equipmentVariety}
+        GROUP BY a.area
+    </select>
 </mapper>

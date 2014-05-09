@@ -80,4 +80,7 @@ public class DataRoleAddressService {
     public Long getCraneNumberByArea(String province,String city,String area){
         return dataRoleAddressMapper.getCraneNumberByArea(province,city,area);
     }
+    public   List<Map<String,String>> getProvinceInfoWithDataRuleByEquipmentVariety(long userId,String equipmentVariety){
+        return dataRoleAddressMapper.getProvinceInfoWithDataRuleByEquipmentVariety(userId,equipmentVariety);
+    }
 }

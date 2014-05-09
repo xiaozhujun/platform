@@ -106,7 +106,7 @@ public class ToolUtil {
     }
      public static void main(String[] args){
          ToolUtil toolUtil=new ToolUtil();
-         System.out.println(toolUtil.parseAddress("湖北省武汉市汉阳区建港一路特1号"));
-         System.out.println(toolUtil.transferStringToDate("/"));
+         System.out.print(toolUtil.parseAddress("湖北省武汉市汉阳区建港一路特1号"));
+
      }
 }

@@ -6,21 +6,23 @@
  * To change this template use File | Settings | File Templates.
  */
 $.extend({
-   addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,provinceValue,cityValue,areaValue){
+   addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,equipVarietyId,useTimeId,provinceValue,cityValue,areaValue){
        //$.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
        $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceListCallback,"json");
-       $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":provinceValue}, initCityByProvinceCallback,"json");
-       $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":provinceValue,"city":cityValue}, initAreaByProvinceAndCityCallback,"json");
+       //$.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":provinceValue}, initCityByProvinceCallback,"json");
+      // $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":provinceValue,"city":cityValue}, initAreaByProvinceAndCityCallback,"json");
        var pId="#"+provinceId;
        var cId="#"+cityId;
        var aId="#"+areaId;
        var uId="#"+unitId;
+       var equipVarietyId="#"+equipVarietyId;
+       var useTimeId="#"+useTimeId;
        var cityOption="#"+cityId+"option:not(:first)";
        var areaOption="#"+areaId+"option:not(:first)";
        var unitOption="#"+unitId+"option:not(:first)";
-       var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
-       var citySelectedValue=cId+" option[value='"+cityValue+"']";
-       var areaSelectedValue=aId+" option[value='"+areaValue+"']";
+       //var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
+   /*    var citySelectedValue=cId+" option[value='"+cityValue+"']";
+       var areaSelectedValue=aId+" option[value='"+areaValue+"']";*/
        $(pId).change(function(){
            $("#alert").html("");
         /*   $(cityOption).remove();
@@ -28,9 +30,11 @@ $.extend({
            $(unitOption).remove();*/
            $(cId).html("<option value='0'>---请选择---</option>");
            $(aId).html("<option value='0'>---请选择---</option>");
+           $(equipVarietyId).html("<option value='0'>---请选择---</option>");
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            if(pro=="0"){
-               $("#alert").html("请选择省份");
+               $.showProvinceRisk(1);
            }else{
                $.showCityRisk(pro,1);
                $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
@@ -43,6 +47,8 @@ $.extend({
           /* $(areaOption).remove();
            $(unitOption).remove();*/
            $(aId).html("<option value='0'>---请选择---</option>");
+           $(equipVarietyId).html("<option value='0'>---请选择---</option>");
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            var city=$(this).find('option:selected').val();
            if(pro!="0"&&city=="0"){
@@ -56,6 +62,8 @@ $.extend({
        });
        $(aId).change(function(){
            $("#alert").html("");
+           $(equipVarietyId).html("<option value='0'>---请选择---</option>");
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
            $(unitOption).remove();
            var pro=$(pId).find('option:selected').val();
            var city=$(cId).find('option:selected').val();
@@ -65,6 +73,8 @@ $.extend({
             }else{
                 $.showCompanyRisk(city,area,12);
                 $.post($.URL.craneinspectreport.getUnitaddressByArea,{"province":pro,"city":city,"area":area}, getUnitaddressByAreaCallback,"json");
+                $.post($.URL.craneinspectreport.getEquipmentVarietyList,null,getEquipmentVarietyCallback,"json");
+                $.post($.URL.craneinspectreport.getUseTimeList,null,getUseTimeListCallback,"json");
             }
            //$.dragAbleNavigate(area);
        });
@@ -77,6 +87,14 @@ $.extend({
            $.showUnitRiskRank(unit);
            $.showRiskInfo(unit);
        });
+       $(equipVarietyId).change(function(){
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
+           var pro=$(pId).find('option:selected').text();
+           var city=$(cId).find('option:selected').text();
+           var area=$(aId).find('option:selected').text();
+           var equipVariety=$(equipVarietyId).find('option:selected').text();
+           $.post($.URL.craneinspectreport.getCraneInfoByEquipmentVariety,{"province":pro,"city":city,"area":area,"equipVariety":equipVariety},getCraneInfoByEquipmentVarietyCallback,"json");
+       });
        //联动回调
        function getProvinceListCallback(data){
            if(data.code==200){
@@ -86,7 +104,7 @@ $.extend({
                    pSearch+="<option value='"+data.data[i].province+"'>"+data.data[i].province+"</option>";
                }
                $(pId).html(pSearch);
-               $(provinceSelectedValue).attr("selected",true);
+               //$(provinceSelectedValue).attr("selected",true);
            }
        }
            function getCityByProvinceCallback(data){
@@ -107,7 +125,7 @@ $.extend({
                    citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
                }
                $(cId).html(citySearch);
-               $(citySelectedValue).attr("selected",true);
+               //$(citySelectedValue).attr("selected",true);
            }
        }
            function getAreaByProvinceAndCityCallback(data){
@@ -128,7 +146,7 @@ $.extend({
                      areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
                  }
                  $(aId).html(areaSearch);
-                 $(areaSelectedValue).attr("selected",true);
+                 //$(areaSelectedValue).attr("selected",true);
              }
          }
        function getUnitaddressByAreaCallback(data){
@@ -144,6 +162,38 @@ $.extend({
                }
                $(uId).html(unitSearch);
            }
+       }
+       function getEquipmentVarietyCallback(data){
+           if(data.code==200){
+               $(equipVarietyId).html("");
+               var equipVarietySearch="<option value='0'>---请选择---</option>";
+               if(data.data[0]==undefined){
+                   equipVarietySearch+="<option>对不起,数据不存在!</option>"
+               }else{
+                   for(i=0;i<data.data.length;i++){
+                       equipVarietySearch+="<option value='"+data.data[i].equipmentVariety+"'>"+data.data[i].equipmentVariety+"</option>";
+                   }
+               }
+               $(equipVarietyId).html(equipVarietySearch);
+           }
+       }
+       function getUseTimeListCallback(data){
+           if(data.code==200){
+               $(useTimeId).html("");
+               var useTimeSearch="<option value='0'>---请选择---</option>";
+               if(data.data[0]==undefined){
+                   useTimeSearch+="<option>对不起,数据不存在!</option>"
+               }else{
+                   for(i=0;i<data.data.length;i++){
+                       useTimeSearch+="<option value='"+data.data[i]+"'>"+data.data[i]+"</option>";
+                   }
+               }
+               $(useTimeId).html(useTimeSearch);
+           }
+       }
+       function getCraneInfoByEquipmentVarietyCallback(data){
+           $.showRiskRank(data);
+           $.addMarkerArray(data);
        }
    }
 });

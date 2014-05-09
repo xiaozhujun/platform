@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+    </style>
+    <script src="lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerAccordion.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function ()
+        {
+            $("#accordion").ligerAccordion();
+            $("#accordion li").click(function(){
+                var url = $(this).attr("url");
+                if((typeof url)!="undefined"){
+                    $("#mainContainer").load(url);
+                }
+            });
+            $("#addUserMenu").parent().parent().trigger("click");
+            $("#addUserMenu").trigger("click");
+        });
+
+    </script>
+    <style type="text/css">
+        body{ padding:20px; margin:0;}
+        #accordion{ width:100%;height:100%;overflow:hidden;}
+        #accordion li{cursor: pointer;}
+    </style>
+</head>
+<body style="padding:10px">
+
+<div id="accordion">
+    <div title="企业管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="用户管理" style="padding:10px">
+        <ul>
+            <li id="addUserMenu" url="user/addUser.html">添加用户</li>
+            <li url="user/listUser.html">用户列表</li>
+        </ul>
+    </div>
+    <div title="角色管理" style="padding:10px">
+        <ul>
+            <li url="user/addAuthority.html">添加角色</li>
+            <li url="user/listAuthority.html">角色列表</li>
+        </ul>
+    </div>
+    <div title="权限管理" style="padding:10px">
+        <ul>
+            <li url="user/addPower.html">添加资源</li>
+            <li url="user/listPower.html">资源列表</li>
+        </ul>
+    </div>
+    <div title="菜单管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+    <div title="角色菜单管理" style="padding:10px">
+        <ul>
+            <li url="**/add.html">添加</li>
+            <li url="**/list.html">列表</li>
+        </ul>
+    </div>
+<div style="display:none;">
+
+</div>
+</div>
+</body>
+</html>

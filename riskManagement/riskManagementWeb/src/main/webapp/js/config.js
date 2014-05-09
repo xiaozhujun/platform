@@ -53,7 +53,10 @@
             "getCraneInfoByFuzzyUsePoint":"rs/craneinspectreport/getCraneInfoByFuzzyUsePoint",
             "getCraneInfoByFuzzySafeManager":"rs/craneinspectreport/getCraneInfoByFuzzySafeManager",
             "getCraneInfoByFuzzyEquipmentVariety":"rs/craneinspectreport/getCraneInfoByFuzzyEquipmentVariety",
-            "getCraneInfoByFuzzyQuery":'rs/craneinspectreport/getCraneInfoByFuzzyQuery'
+            "getCraneInfoByFuzzyQuery":'rs/craneinspectreport/getCraneInfoByFuzzyQuery',
+            "getUseTimeList":'rs/craneinspectreport/getUseTimeList',
+            "getCraneInfoByEquipmentVariety":'rs/craneinspectreport/getCraneInfoByEquipmentVariety',
+            "getProvinceRiskRankFormRiskRange":'rs/craneinspectreport/getProvinceRiskRankFormRiskRange'
         },
         "authority":{
             "add":"rs/authority/add"

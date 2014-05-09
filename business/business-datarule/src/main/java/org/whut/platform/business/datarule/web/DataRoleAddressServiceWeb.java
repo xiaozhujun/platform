@@ -14,6 +14,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +42,19 @@ public class DataRoleAddressServiceWeb {
     public String getProvinceAndColorWithDataRole(){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
+        List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
         List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+        for(Map<String,String>map:list){
+            Map<String,String> map1=new HashMap<String, String>();
+            map1=dataRoleAddressService.transferProvinceMap(map1,map);
+            Long craneNumber=dataRoleAddressService.getCraneNumberByProvince(map.get("province"));
+            if(craneNumber==null){
+            map1.put("craneNumber","0");
+            }
+            map1.put("craneNumber",String.valueOf(craneNumber));
+            resultList.add(map1);
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(resultList, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -50,7 +63,18 @@ public class DataRoleAddressServiceWeb {
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
         List<Map<String,String>> list=dataRoleAddressService.getCityAndColorWithDataRole(province,userId);
-        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
+        List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
+        for(Map<String,String>map:list){
+            Map<String,String>map1=new HashMap<String, String>();
+            map1=dataRoleAddressService.transferCityMap(map1,map);
+            Long craneNumber=dataRoleAddressService.getCraneNumberByCity(province,map.get("city"));
+            if(craneNumber==null){
+            map1.put("craneNumber","0");
+            }
+            map1.put("craneNumber",String.valueOf(craneNumber));
+            resultList.add(map1);
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(resultList,200,province);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -59,8 +83,19 @@ public class DataRoleAddressServiceWeb {
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
         List<Map<String,String>> list=dataRoleAddressService.getAreaAndColorWithDataRole(province,city,userId);
+        List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
+        for(Map<String,String>map:list){
+            Map<String,String> map1=new HashMap<String, String>();
+            map1=dataRoleAddressService.transferAreaMap(map1,map);
+            Long craneNumber=dataRoleAddressService.getCraneNumberByArea(province,city,map.get("area"));
+            if(craneNumber==null){
+            map1.put("craneNumber","0");
+            }
+            map1.put("craneNumber",String.valueOf(craneNumber));
+            resultList.add(map1);
+        }
         String province_city=province+","+city;
-        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(resultList,200,province_city);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST

@@ -42,6 +42,7 @@ public class CraneInspectReportServiceWeb {
     private AddressService addressService;
     @Autowired
     private UserService userService;
+
     private String singlePicURL="";
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MultipartRequestParser multipartRequestParser=new MultipartRequestParser();

@@ -194,7 +194,7 @@
          group by cr.unitAddress order by r.riskvalue desc
     </select>
     <select id="showRiskRankByValueRange" parameterType="map" resultMap="craneInspectReportResultMap">
-        SELECT cr.*,r.riskvalue
+        SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
         FROM craneinspectreport cr,riskvalue r,address a
         WHERE cr.reportnumber=r.reportnumber
         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area} AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
@@ -318,22 +318,25 @@
         AND a.city=#{city} AND a.area=#{area} GROUP BY cr.unitaddress
     </select>
     <select id="getProvinceRiskRankFormRiskRange" parameterType="map" resultType="map">
-        SELECT
-        pr.province,pr.riskvalue
-        FROM province_riskvalue pr
-        WHERE pr.riskvalue BETWEEN #{startValue} AND #{endValue}
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
+        WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.id=cr.addressId AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by a.province  order by r.riskvalue desc
     </select>
     <select id="getCityRiskRankFormRiskRange" parameterType="map" resultType="map">
-        SELECT
-        cr.id,cr.city,cr.riskvalue,r.riskcolor as color
-        FROM city_riskvalue cr,riskcolor r
-        WHERE cr.riskvalue BETWEEN #{startValue} AND #{endValue}  AND cr.riskvalue=r.riskvalue AND cr.province=#{province}  ORDER BY cr.riskvalue DESC
+        SELECT a.id,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
+        WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.id=cr.addressId AND a.province=#{province}  AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by a.city  order by r.riskvalue desc
     </select>
     <select id="getAreaRiskRankFormRiskRange" parameterType="map" resultType="map">
-        SELECT
-        a.id,a.area,ar.riskvalue,r.riskcolor as color
-        FROM addressriskvalue ar,address a,riskcolor r
-        WHERE ar.riskvalue BETWEEN #{startValue} AND #{endValue}  AND ar.addressId=a.id AND r.riskvalue=ar.riskvalue AND a.province=#{province} AND a.city=#{city} ORDER BY ar.riskvalue DESC
+       SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
+        WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.id=cr.addressId AND a.province=#{province} AND a.city=#{city} AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by a.area  order by r.riskvalue desc
     </select>
 
     <select id="getCraneInfoByFuzzyUnitAddress" parameterType="map" resultType="java.lang.String">

@@ -30,6 +30,8 @@ $.extend({
            $(unitOption).remove();*/
            $(cId).html("<option value='0'>---请选择---</option>");
            $(aId).html("<option value='0'>---请选择---</option>");
+           $(equipVarietyId).html("<option value='0'>---请选择---</option>");
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            if(pro=="0"){
                $.showProvinceRisk(1);
@@ -45,6 +47,8 @@ $.extend({
           /* $(areaOption).remove();
            $(unitOption).remove();*/
            $(aId).html("<option value='0'>---请选择---</option>");
+           $(equipVarietyId).html("<option value='0'>---请选择---</option>");
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').val();
            var city=$(this).find('option:selected').val();
            if(pro!="0"&&city=="0"){
@@ -58,6 +62,8 @@ $.extend({
        });
        $(aId).change(function(){
            $("#alert").html("");
+           $(equipVarietyId).html("<option value='0'>---请选择---</option>");
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
            $(unitOption).remove();
            var pro=$(pId).find('option:selected').val();
            var city=$(cId).find('option:selected').val();
@@ -82,6 +88,7 @@ $.extend({
            $.showRiskInfo(unit);
        });
        $(equipVarietyId).change(function(){
+           $(useTimeId).html("<option value='0'>---请选择---</option>");
            var pro=$(pId).find('option:selected').text();
            var city=$(cId).find('option:selected').text();
            var area=$(aId).find('option:selected').text();

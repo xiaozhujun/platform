@@ -20,18 +20,42 @@ $.extend({
               var areavalue=$(area).val();
               var equipVarietyvalue=$(equipVariety).val();
               var useTimevalue=$(useTime).val();
-              if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"){
-                  // 只查省的风险值
-                  $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue}, $.showCityRankByValueRange,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"){
-                  // 只查省的风险值
-                  $.post($.URL.craneinspectreport.getAreaRiskRankFormRiskRange,{"value":value,"province":provincevalue,"city":cityvalue}, $.showAreaRankByValueRange,"json");
-              }
-              else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"){
-                  //查省市区
-                  $.post($.URL.craneinspectreport.showRiskRankByValueRange, {"value":value,"city":cityvalue,"area":areavalue}, $.showRiskRankByValueRange,"json");
-              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"){
+              if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  //全国的+风险区间
                   $.post($.URL.craneinspectreport.getProvinceRiskRankFormRiskRange, {"value":value}, $.showProvinceRiskRankFormRiskRange,"json");
+              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
+                  //全国的+类型+区间
+              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  //全国的+年限+区间
+              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  //全国的+年限+区间+类型
+              }else if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  // 省+风险区间
+                  $.post($.URL.craneinspectreport.getCityRiskRankFormRiskRange,{"value":value,"province":provincevalue}, $.showCityRankByValueRange,"json");
+              }else if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
+                   //省+类型+区间
+              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue!="0"){
+                  //省+年限+区间
+              }else if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue!="0"){
+                  //省+类型+使用年限+风险区间
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  // 省市+风险区间
+                  $.post($.URL.craneinspectreport.getAreaRiskRankFormRiskRange,{"value":value,"province":provincevalue,"city":cityvalue}, $.showAreaRankByValueRange,"json");
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
+                  //省市+类型+风险区间
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue!="0"){
+                  //省市+年限+风险区间
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue!="0"){
+                   //省市+类型+年限+风险区间
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  //查省市区+风险区间
+                  $.post($.URL.craneinspectreport.showRiskRankByValueRange, {"value":value,"city":cityvalue,"area":areavalue}, $.showRiskRankByValueRange,"json");
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
+                  //省市区+类型+风险区间
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue=="0"&&useTimevalue!="0"){
+                  //省市区+年限+风险区间
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue!="0"&&useTimevalue!="0"){
+                  //省市区+年限+类型+风险区间
               }
           }
       });

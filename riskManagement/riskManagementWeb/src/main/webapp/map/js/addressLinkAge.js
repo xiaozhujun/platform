@@ -24,56 +24,21 @@ $.extend({
        var unitOption="#"+unitId+"option:not(:first)";
        var equipVarietyFirst=eId+" option[value='0']";
        var useTimeFirst=usId+" option[value='0']";
-       //var provinceSelectedValue=pId+" option[value='"+provinceValue+"']";
-   /*    var citySelectedValue=cId+" option[value='"+cityValue+"']";
-       var areaSelectedValue=aId+" option[value='"+areaValue+"']";*/
        $(pId).change(function(){
            $("#alert").html("");
-        /*   $(cityOption).remove();
-           $(areaOption).remove();
-           $(unitOption).remove();*/
            $(cId).html("<option value='0'>---请选择---</option>");
            $(aId).html("<option value='0'>---请选择---</option>");
-           var pro=$(pId).find('option:selected').val();
-           if(pro=="0"){
-               $.showProvinceRisk(1);
-           }else{
-               $.showCityRisk(pro,1);
-               $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
-           }
-           //$.post($.URL.address.getCityByProvince,{"province":pro},getCityByProvinceCallback,"json");
-//           $.post($.URL.craneinspectreport.getCityAvgRiskValueByProvince,{"province":pro}, $.showCityRank,"json");
-       });
+           conditionSearch(pId,cId,aId,eId,usId)
+         });
        $(cId).change(function(){
            $("#alert").html("");
-          /* $(areaOption).remove();
-           $(unitOption).remove();*/
            $(aId).html("<option value='0'>---请选择---</option>");
-           var pro=$(pId).find('option:selected').val();
-           var city=$(this).find('option:selected').val();
-           if(pro!="0"&&city=="0"){
-               $("#alert").html("请选择城市");
-           }else{
-               $.showAreaRisk(pro,city,1);
-//           $.initArea(pro,city,10,1);
-               // $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city},getAreaByProvinceAndCityCallback,"json");
-               $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city}, getAreaByProvinceAndCityCallback,"json");
-           }
+           conditionSearch(pId,cId,aId,eId,usId)
        });
        $(aId).change(function(){
            $("#alert").html("");
            $(unitOption).remove();
-           var pro=$(pId).find('option:selected').val();
-           var city=$(cId).find('option:selected').val();
-           var area=$(this).find('option:selected').val();
-            if(pro!="0"&&city!="0"&&area=="0"){
-                $("#alert").html("请选择地区");
-            }else{
-                $.showCompanyRisk(city,area,12);
-                $.post($.URL.craneinspectreport.getUnitaddressByArea,{"province":pro,"city":city,"area":area}, getUnitaddressByAreaCallback,"json");
-
-            }
-           //$.dragAbleNavigate(area);
+           conditionSearch(pId,cId,aId,eId,usId)
        });
        $(uId).change(function(){
            var pro=$(pId).find('option:selected').text();
@@ -85,41 +50,72 @@ $.extend({
            $.showRiskInfo(unit);
        });
        $(eId).change(function(){
-           var pro=$(pId).find('option:selected').val();
-           var city=$(cId).find('option:selected').val();
-           var area=$(aId).find('option:selected').val();
-           var equipVariety=$(eId).find('option:selected').val();
-           if(pro=="0"&&city=="0"&&area=="0"){
-               //在全国范围内筛选某个起重机类型的信息
-               $.post($.URL.dataRuleAddress.getProvinceInfoByProvinceEquipmentVariety,{"equipmentVariety":equipVariety},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
-           }else if(pro!="0"&&city=="0"&&area=="0"){
-               //在省范围内筛选
-               $.post($.URL.craneinspectreport.getCityInfoByProvinceEquipmentVariety,{"province":pro,"equipmentVariety":equipVariety},getCityInfoByProvinceEquipmentVarietyCallback,"json");
-           }else if(pro!="0"&&city!="0"&&area=="0"){
-               //在市范围内筛选
-               $.post($.URL.craneinspectreport.getAreaInfoByProvinceEquipmentVariety,{"province":pro,"city":city,"equipmentVariety":equipVariety},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
-           }else if(pro!="0"&&city!="0"&&area!="0"){
-               $.post($.URL.craneinspectreport.getCraneInfoByEquipmentVariety,{"province":pro,"city":city,"area":area,"equipVariety":equipVariety},getCraneInfoByEquipmentVarietyCallback,"json");
-           }
+           conditionSearch(pId,cId,aId,eId,usId)
        });
        $(usId).change(function(){
+           conditionSearch(pId,cId,aId,eId,usId)
+       });
+       function conditionSearch(pId,cId,aId,eId,usId){
            var pro=$(pId).find('option:selected').val();
            var city=$(cId).find('option:selected').val();
            var area=$(aId).find('option:selected').val();
            var equipVariety=$(eId).find('option:selected').val();
            var useTime=$(usId).find('option:selected').val();
-           if(pro=="0"&&city=="0"&&area=="0"&&equipVariety=="0"){
-               //在全国范围内筛选某个起重机类型的信息
-           }else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety=="0"){
-               //在省范围内筛选
-           }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety=="0"){
-               //在市范围内筛选
-           }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety=="0"){
-
-           }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety!="0"){
-
+           if(pro=="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime=="0"){
+                 //全国范围
+                 $.showProvinceRisk(1);
+           }else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime=="0"){
+               //省
+               $.showCityRisk(pro,1);
+               $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
+           }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety=="0"&&useTime=="0"){
+               //省市
+               $.showAreaRisk(pro,city,1);
+               $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city}, getAreaByProvinceAndCityCallback,"json");
+           }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety=="0"&&useTime=="0"){
+               //省市区
+               $.showCompanyRisk(city,area,12);
            }
-       });
+           else if(pro=="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime=="0"){
+               //1.在全国范围内设备类型筛选
+               $.post($.URL.dataRuleAddress.getProvinceInfoByProvinceEquipmentVariety,{"equipmentVariety":equipVariety},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
+           }else if(pro=="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime!="0"){
+               //2.在全国范围内使用年限筛选
+               $.post($.URL.dataRuleAddress.getProvinceInfoByProvinceUseTime,{"useTime":useTime},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
+           }else if(pro=="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime!="0"){
+               //3.在全国范围内类型+使用年限
+               $.post($.URL.dataRuleAddress.getProvinceInfoByProvinceEquipmentVarietyAndUseTime,{"equipmentVariety":equipVariety,"useTime":useTime},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
+           }
+           else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime=="0"){
+               //4.在省+设备类型
+               $.post($.URL.craneinspectreport.getCityInfoByProvinceEquipmentVariety,{"province":pro,"equipmentVariety":equipVariety},getCityInfoByProvinceEquipmentVarietyCallback,"json");
+           }else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime!="0"){
+               //5.在省+使用年限
+               $.post($.URL.craneinspectreport.getCityInfoByProvinceUseTime,{"province":pro,"useTime":useTime},getCityInfoByProvinceEquipmentVarietyCallback,"json");
+           }else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime!="0"){
+               //6.省+类型+年限
+               $.post($.URL.craneinspectreport.getCityInfoByProvinceEquipmentAndUseTime,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime},getCityInfoByProvinceEquipmentVarietyCallback,"json");
+           }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety!="0"&&useTime=="0"){
+               //7.省市+设备类型
+               $.post($.URL.craneinspectreport.getAreaInfoByProvinceEquipmentVariety,{"province":pro,"city":city,"equipmentVariety":equipVariety},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
+           }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety=="0"&&useTime!="0"){
+               //8.省市+使用年限
+               $.post($.URL.craneinspectreport.getAreaInfoByProvinceUseTime,{"province":pro,"city":city,"useTime":useTime},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
+           }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety!="0"&&useTime!="0"){
+               //9.省市+使用年限+设备类型
+               $.post($.URL.craneinspectreport.getAreaInfoByEquipmentVarietyUseTime,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":useTime},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
+           }
+           else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety!="0"&&useTime=="0"){
+               //10.省市区+设备类型
+               $.post($.URL.craneinspectreport.getCraneInfoByEquipmentVariety,{"province":pro,"city":city,"area":area,"equipVariety":equipVariety},getCraneInfoByEquipmentVarietyCallback,"json");
+           }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety=="0"&&useTime!="0"){
+               //11.省市区+使用年限
+               $.post($.URL.craneinspectreport.getCraneInfoByUseTime,{"province":pro,"city":city,"area":area,"useTime":useTime},getCraneInfoByEquipmentVarietyCallback,"json");
+           }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety!="0"&&useTime!="0"){
+               //12.省市区+使用年限+设备类型
+               $.post($.URL.craneinspectreport.getCraneInfoByEquipmentVarietyUseTime,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":useTime},getCraneInfoByEquipmentVarietyCallback,"json");
+           }
+       }
        //联动回调
        function getProvinceListCallback(data){
            if(data.code==200){

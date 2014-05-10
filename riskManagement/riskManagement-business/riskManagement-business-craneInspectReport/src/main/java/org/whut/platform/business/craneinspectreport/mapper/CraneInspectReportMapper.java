@@ -61,6 +61,12 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public long getCraneNumberByUnitAddress(String unitAddress);
     public List<String>getUseTimeList();
     public List<CraneInspectReport>getCraneInfoByEquipmentVariety(@Param("province")String province,@Param("city")String city,@Param("area")String area,@Param("equipmentVariety")String equipmentVariety);
+    public List<CraneInspectReport>getCraneInfoByUseTime(@Param("province")String province,@Param("city")String city,@Param("area")String area,@Param("useTime")String useTime);
+    public List<CraneInspectReport>getCraneInfoByEquipmentVarietyUseTime(@Param("province")String province,@Param("city")String city,@Param("area")String area,@Param("equipmentVariety")String equipmentVariety,@Param("useTime")String useTime);
     public List<Map<String,Float>> getCityInfoByProvinceEquipmentVariety(@Param("province")String province,@Param("equipmentVariety")String equipmentVariety);
+    public List<Map<String,Float>> getCityInfoByProvinceUseTime(@Param("province")String province,@Param("useTime")String useTime);
+    public List<Map<String,Float>> getCityInfoByProvinceEquipmentAndUseTime(@Param("province")String province,@Param("equipmentVariety")String equipmentVariety,@Param("useTime")String useTime);
     public  List<Map<String,Float>>getAreaInfoByProvinceEquipmentVariety(@Param("province")String province,@Param("city")String city,@Param("equipmentVariety")String equipmentVariety);
+    public  List<Map<String,Float>>getAreaInfoByProvinceUseTime(@Param("province")String province,@Param("city")String city,@Param("useTime")String useTime);
+    public  List<Map<String,Float>>getAreaInfoByEquipmentVarietyUseTime(@Param("province")String province,@Param("city")String city,@Param("equipmentVariety")String equipmentVariety,@Param("useTime")String useTime);
 }

@@ -42,18 +42,7 @@ public class DataRoleAddressServiceWeb {
     public String getProvinceAndColorWithDataRole(){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
-        //List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
         List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
-       /* for(Map<String,String>map:list){
-            Map<String,String> map1=new HashMap<String, String>();
-            map1=dataRoleAddressService.transferProvinceMap(map1,map);
-            Long craneNumber=dataRoleAddressService.getCraneNumberByProvince(map.get("province"));
-            if(craneNumber==null){
-            map1.put("craneNumber","0");
-            }
-            map1.put("craneNumber",String.valueOf(craneNumber));
-            resultList.add(map1);
-        }*/
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -62,19 +51,26 @@ public class DataRoleAddressServiceWeb {
     public String getProvinceInfoByProvinceEquipmentVariety(@FormParam("equipmentVariety")String equipmentVariety){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
-        List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
-        List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
-        for(Map<String,String>map:list){
-            Map<String,String> map1=new HashMap<String, String>();
-            map1=dataRoleAddressService.transferProvinceMap(map1,map);
-            Long craneNumber=dataRoleAddressService.getCraneNumberByProvince(map.get("province"));
-            if(craneNumber==null){
-                map1.put("craneNumber","0");
-            }
-            map1.put("craneNumber",String.valueOf(craneNumber));
-            resultList.add(map1);
-        }
-        return JsonResultUtils.getObjectResultByStringAsDefault(resultList, JsonResultUtils.Code.SUCCESS);
+        List<Map<String,String>> list=dataRoleAddressService.getProvinceInfoWithDataRuleByEquipmentVariety(userId,equipmentVariety);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getProvinceInfoByProvinceUseTime")
+    public String getProvinceInfoByProvinceUseTime(@FormParam("useTime")String useTime){
+        String userName=userService.getMyUserDetailFromSession().getUsername();
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> list=dataRoleAddressService.getProvinceInfoByProvinceUseTime(userId,useTime);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getProvinceInfoByProvinceEquipmentVarietyAndUseTime")
+    public String getProvinceInfoByProvinceEquipmentVarietyAndUseTime(@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime){
+        String userName=userService.getMyUserDetailFromSession().getUsername();
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> list=dataRoleAddressService.getProvinceInfoByProvinceEquipmentVarietyAndUseTime(userId,equipmentVariety,useTime);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST

@@ -309,11 +309,31 @@ public class CraneInspectReportService {
     public List<CraneInspectReport>getCraneInfoByEquipmentVariety(String province,String city,String area,String equipmentVariety){
         return mapper.getCraneInfoByEquipmentVariety(province,city,area,equipmentVariety);
     }
+    public List<CraneInspectReport>getCraneInfoByUseTime(String province,String city,String area,String useTime){
+        return mapper.getCraneInfoByUseTime(province,city,area,useTime);
+    }
+    public List<CraneInspectReport>getCraneInfoByEquipmentVarietyUseTime(String province,String city,String area,String equipmentVariety,String useTime){
+        return mapper.getCraneInfoByEquipmentVarietyUseTime(province,city,area,equipmentVariety,useTime);
+    }
     public List<Map<String,Float>> getCityInfoByProvinceEquipmentVariety(String province,String equipmentVariety){
          return mapper.getCityInfoByProvinceEquipmentVariety(province,equipmentVariety);
     }
+    public List<Map<String,Float>> getCityInfoByProvinceUseTime(String province,String useTime){
+        return mapper.getCityInfoByProvinceUseTime(province,useTime);
+    }
+    public List<Map<String,Float>> getCityInfoByProvinceEquipmentAndUseTime(String province,String equipmentVariety,String useTime){
+        return mapper.getCityInfoByProvinceEquipmentAndUseTime(province,equipmentVariety,useTime);
+    }
+
     public  List<Map<String,Float>>getAreaInfoByProvinceEquipmentVariety(String province,String city,String equipmentVariety){
           return mapper.getAreaInfoByProvinceEquipmentVariety(province,city,equipmentVariety);
     }
+    public  List<Map<String,Float>>getAreaInfoByProvinceUseTime(String province,String city,String useTime){
+        return mapper.getAreaInfoByProvinceUseTime(province,city,useTime);
+    }
+    public  List<Map<String,Float>>getAreaInfoByEquipmentVarietyUseTime(String province,String city,String equipmentVariety,String useTime){
+        return mapper.getAreaInfoByEquipmentVarietyUseTime(province,city,equipmentVariety,useTime);
+    }
+
 
 }

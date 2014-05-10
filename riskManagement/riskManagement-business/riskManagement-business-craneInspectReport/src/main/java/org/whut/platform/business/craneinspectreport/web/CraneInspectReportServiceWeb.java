@@ -431,6 +431,21 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCityInfoByProvinceUseTime")
+    @POST
+    public String getCityInfoByProvinceUseTime(@FormParam("province") String province,@FormParam("useTime")String useTime){
+        List<Map<String,Float>> list = craneInspectReportService.getCityInfoByProvinceUseTime(province,useTime);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCityInfoByProvinceEquipmentAndUseTime")
+    @POST
+    public String getCityInfoByProvinceEquipmentAndUseTime(@FormParam("province") String province,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime){
+        List<Map<String,Float>> list = craneInspectReportService.getCityInfoByProvinceEquipmentAndUseTime(province,equipmentVariety,useTime);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getAreaRiskRankFormRiskRange")
     @POST
     public String getAreaRiskRankFormRiskRange(@FormParam("value") String value,@FormParam("province") String province,@FormParam("city")String city){
@@ -441,12 +456,29 @@ public class CraneInspectReportServiceWeb {
         List<Map<String,Float>> list = craneInspectReportService.getAreaRiskRankFormRiskRange(startValue,endValue,province,city);
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getAreaInfoByProvinceEquipmentVariety")
     @POST
     public String getAreaInfoByProvinceEquipmentVariety(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety){
         String province_city=province+","+city;
         List<Map<String,Float>> list = craneInspectReportService.getAreaInfoByProvinceEquipmentVariety(province,city,equipmentVariety);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaInfoByProvinceUseTime")
+    @POST
+    public String getAreaInfoByProvinceUseTime(@FormParam("province") String province,@FormParam("city")String city,@FormParam("useTime")String useTime){
+        String province_city=province+","+city;
+        List<Map<String,Float>> list = craneInspectReportService.getAreaInfoByProvinceUseTime(province,city,useTime);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaInfoByEquipmentVarietyUseTime")
+    @POST
+    public String getAreaInfoByEquipmentVarietyUseTime(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime){
+        String province_city=province+","+city;
+        List<Map<String,Float>> list = craneInspectReportService.getAreaInfoByEquipmentVarietyUseTime(province,city,equipmentVariety,useTime);
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -505,5 +537,20 @@ public class CraneInspectReportServiceWeb {
          List<CraneInspectReport> list=craneInspectReportService.getCraneInfoByEquipmentVariety(province,city,area,equipVariety);
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCraneInfoByUseTime")
+    public String getCraneInfoByUseTime(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("useTime")String useTime){
+        List<CraneInspectReport> list=craneInspectReportService.getCraneInfoByUseTime(province,city,area,useTime);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCraneInfoByEquipmentVarietyUseTime")
+    public String  getCraneInfoByEquipmentVarietyUseTime(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("equipmentVariety") String equipmentVariety,@FormParam("useTime")String useTime){
+        List<CraneInspectReport> list=craneInspectReportService.getCraneInfoByEquipmentVarietyUseTime(province,city,area,equipmentVariety,useTime);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+
 
 }

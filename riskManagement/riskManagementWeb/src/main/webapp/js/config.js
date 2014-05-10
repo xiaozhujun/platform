@@ -58,7 +58,13 @@
             "getCraneInfoByEquipmentVariety":'rs/craneinspectreport/getCraneInfoByEquipmentVariety',
             "getProvinceRiskRankFormRiskRange":'rs/craneinspectreport/getProvinceRiskRankFormRiskRange',
             "getCityInfoByProvinceEquipmentVariety":'rs/craneinspectreport/getCityInfoByProvinceEquipmentVariety',
-            "getAreaInfoByProvinceEquipmentVariety":'rs/craneinspectreport/getAreaInfoByProvinceEquipmentVariety'
+            "getAreaInfoByProvinceEquipmentVariety":'rs/craneinspectreport/getAreaInfoByProvinceEquipmentVariety',
+            "getCityInfoByProvinceUseTime":'rs/craneinspectreport/getCityInfoByProvinceUseTime',
+            "getAreaInfoByProvinceUseTime":'rs/craneinspectreport/getAreaInfoByProvinceUseTime',
+             "getCraneInfoByUseTime":'rs/craneinspectreport/getCraneInfoByUseTime',
+            "getCraneInfoByEquipmentVarietyUseTime":'rs/craneinspectreport/getCraneInfoByEquipmentVarietyUseTime',
+            "getCityInfoByProvinceEquipmentAndUseTime":'rs/craneinspectreport/getCityInfoByProvinceEquipmentAndUseTime',
+            "getAreaInfoByEquipmentVarietyUseTime":'rs/craneinspectreport/getAreaInfoByEquipmentVarietyUseTime'
         },
         "authority":{
             "add":"rs/authority/add"
@@ -98,7 +104,11 @@
             "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
             "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole",
             "getAddressesIdBydRoleName":"rs/dataRuleAddress/getAddressIdBydRoleName",
-            "getProvinceInfoByProvinceEquipmentVariety":"rs/dataRuleAddress/getProvinceInfoByProvinceEquipmentVariety"
+            "getProvinceInfoByProvinceEquipmentVariety":"rs/dataRuleAddress/getProvinceInfoByProvinceEquipmentVariety",
+            "getProvinceInfoByProvinceUseTime":"rs/dataRuleAddress/getProvinceInfoByProvinceUseTime",
+            "getProvinceInfoByProvinceEquipmentVarietyAndUseTime":"rs/dataRuleAddress/getProvinceInfoByProvinceEquipmentVarietyAndUseTime"
+
+
         },
         "userDataRole":{
             "add":"rs/userDataRole/add",

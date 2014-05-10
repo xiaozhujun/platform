@@ -437,16 +437,8 @@ $.extend({
         for(var i=0;i<data.data.length;i++){
             var rankContent;
             if(i%2==0){
-                if(data.data[i].craneNumber="null"){
-                    data.data[i].craneNumber="0";
-                }else{
-                }
                 rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].province+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].craneNumber+"</span></span></div>"
             }else{
-                if(data.data[i].craneNumber=="null"){
-                    data.data[i].craneNumber="0";
-                }else{
-                }
                 rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].province+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].craneNumber+"</span></span></div>"
             }
             $("#riskrankContent").append(rankContent);

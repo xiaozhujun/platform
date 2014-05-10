@@ -72,24 +72,46 @@
     </select>
 
     <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
-        SELECT DISTINCT pr.id,a.province,rc.riskcolor color,pr.riskvalue avgRiskValue
-        FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,province_riskvalue pr
-        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND pr.province=a.province AND pr.riskvalue=rc.riskvalue AND u.id=#{userId}
-        ORDER BY avgRiskValue DESC
+          SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+          WHERE u.id=#{userId} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+          AND a.id=cr.addressId
+          GROUP BY a.province order by avgRiskValue desc
+    </select>
+    <select id="getProvinceInfoWithDataRuleByEquipmentVariety" parameterType="map" resultType="map">
+          SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+          WHERE u.id=#{userId} and cr.equipmentvariety=#{equipmentVariety} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+          AND a.id=cr.addressId
+          GROUP BY a.province order by avgRiskValue desc
+    </select>
+    <select id="getProvinceInfoByProvinceUseTime" parameterType="map" resultType="map">
+          SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+          WHERE u.id=#{userId} and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+          AND a.id=cr.addressId
+          GROUP BY a.province order by avgRiskValue desc
+    </select>
+    <select id="getProvinceInfoByProvinceEquipmentVarietyAndUseTime" parameterType="map" resultType="map">
+         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+          WHERE u.id=#{userId} and cr.equipmentvariety=#{equipmentVariety} and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+          AND a.id=cr.addressId
+          GROUP BY a.province order by avgRiskValue desc
     </select>
     <select id="getCityAndColorWithDataRole" parameterType="map" resultType="map">
-        SELECT DISTINCT cr.id,a.city,rc.riskcolor color,cr.riskvalue avgRiskValue
-        FROM user u,drole dr,user_drole udr,drole_address draddr,address a,riskcolor rc,city_riskvalue cr
-        WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND a.province=cr.province and a.city=cr.city AND cr.riskvalue=rc.riskvalue
-        AND a.province=#{province} AND  u.id=#{userId}
-        GROUP BY a.city  ORDER BY avgRiskValue DESC
+        SELECT a.id,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+        WHERE u.id=#{userId} and a.province=#{province} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+        AND a.id=cr.addressId
+        GROUP BY a.city order by avgRiskValue desc
     </select>
     <select id="getAreaAndColorWithDataRole" parameterType="map" resultType="map">
-          SELECT DISTINCT arv.id,a.area,rc.riskcolor color,arv.riskvalue avgRiskValue
-          FROM user u,drole dr,user_drole udr,drole_address draddr,address a,addressriskvalue arv,riskcolor rc
-          WHERE u.id=udr.userId AND udr.droleId=dr.id AND dr.id=draddr.droleId AND draddr.addressId=a.id AND arv.addressid=a.id
-          AND rc.riskvalue=arv.riskvalue AND a.province=#{province} AND a.city=#{city}  AND u.id=#{userId}
-          ORDER BY avgRiskValue DESC
+         SELECT a.id,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+        WHERE u.id=#{userId} and a.province=#{province} and a.city=#{city} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+        AND a.id=cr.addressId
+        GROUP BY a.area order by avgRiskValue desc
     </select>
     <select id="findAddressIdById" parameterType="java.lang.Long"  resultType="java.lang.Long">
         Select addressId

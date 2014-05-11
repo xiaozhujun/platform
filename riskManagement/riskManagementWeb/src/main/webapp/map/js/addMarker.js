@@ -269,18 +269,6 @@ $.extend({
             }
         }
     },
-    showAreaRankShow:function showAreaRankShow(data){
-        if(data.code==200){
-            $("#tab").hide("");
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadAreaRiskRankValue(data);
-            }
-        }
-    },
     showCityRank:function showCityRank(data){
         if(data.code==200){
             $("#tab").show("");
@@ -293,33 +281,9 @@ $.extend({
             }
         }
     },
-    showCityRankShow:function showCityRankShow(data){
-        if(data.code==200){
-            $("#tab").hide("");
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadCityRiskRankValue(data);
-            }
-        }
-    },
     showProvinceRank:function showProvinceRank(data){
         if(data.code==200){
             $("#tab").show("");
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadProvinceRiskRankValue(data);
-            }
-        }
-    },
-    showProvinceRankShow:function showProvinceRankShow(data){
-        if(data.code==200){
-            $("#tab").hide("");
             $("#rankTitle").html("");
             $("#riskrankContent").html("");
             if(data.data[0]==undefined){

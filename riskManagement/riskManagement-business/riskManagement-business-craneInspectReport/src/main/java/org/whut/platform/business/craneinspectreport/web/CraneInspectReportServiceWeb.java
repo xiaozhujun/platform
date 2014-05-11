@@ -428,7 +428,7 @@ public class CraneInspectReportServiceWeb {
     @POST
     public String getCityInfoByCondition(@FormParam("province") String province,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
         List<Map<String,Float>> list=new ArrayList<Map<String, Float>>();
-        if(value=="0"&&value.equals("0")){
+        if(value.equals("0")){
             list= craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,useTime,0f,0f);
         }else{
             String[] values= value.split(";");
@@ -456,7 +456,7 @@ public class CraneInspectReportServiceWeb {
     public String getAreaInfoByCondition(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
         String province_city=province+","+city;
         List<Map<String,Float>> list =new ArrayList<Map<String, Float>>();
-        if(value=="0"&&value.equals("0")){
+        if(value.equals("0")){
             list=craneInspectReportService.getAreaInfoByCondition(province, city, equipmentVariety, useTime,0f,0f);
         }else{
             String[] values= value.split(";");
@@ -520,7 +520,7 @@ public class CraneInspectReportServiceWeb {
     @Path("/getCraneInfoByCondition")
     public String getCraneInfoByCondition(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("equipmentVariety")String equipVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
          List<CraneInspectReport> list=new ArrayList<CraneInspectReport>();
-         if(value=="0"&&value.equals("0")){
+         if(value.equals("0")){
              list=craneInspectReportService.getCraneInfoByCondition(province,city,area,equipVariety,useTime,0f,0f);
          }else{
              String[] values= value.split(";");

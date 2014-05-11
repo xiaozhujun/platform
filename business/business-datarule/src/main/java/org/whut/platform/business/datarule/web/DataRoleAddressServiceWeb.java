@@ -57,7 +57,7 @@ public class DataRoleAddressServiceWeb {
             useTime=null;
         }*/
         List<Map<String,String>> list=new ArrayList<Map<String, String>>();
-        if(value=="0"&&value.equals("0")){
+        if(value.equals("0")){
         list=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,useTime,0f,0f);
         }else{
         String[] values= value.split(";");

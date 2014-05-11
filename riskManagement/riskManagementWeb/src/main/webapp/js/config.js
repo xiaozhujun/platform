@@ -55,16 +55,10 @@
             "getCraneInfoByFuzzyEquipmentVariety":"rs/craneinspectreport/getCraneInfoByFuzzyEquipmentVariety",
             "getCraneInfoByFuzzyQuery":'rs/craneinspectreport/getCraneInfoByFuzzyQuery',
             "getUseTimeList":'rs/craneinspectreport/getUseTimeList',
-            "getCraneInfoByEquipmentVariety":'rs/craneinspectreport/getCraneInfoByEquipmentVariety',
+            "getCraneInfoByCondition":'rs/craneinspectreport/getCraneInfoByCondition',
             "getProvinceRiskRankFormRiskRange":'rs/craneinspectreport/getProvinceRiskRankFormRiskRange',
-            "getCityInfoByProvinceEquipmentVariety":'rs/craneinspectreport/getCityInfoByProvinceEquipmentVariety',
-            "getAreaInfoByProvinceEquipmentVariety":'rs/craneinspectreport/getAreaInfoByProvinceEquipmentVariety',
-            "getCityInfoByProvinceUseTime":'rs/craneinspectreport/getCityInfoByProvinceUseTime',
-            "getAreaInfoByProvinceUseTime":'rs/craneinspectreport/getAreaInfoByProvinceUseTime',
-             "getCraneInfoByUseTime":'rs/craneinspectreport/getCraneInfoByUseTime',
-            "getCraneInfoByEquipmentVarietyUseTime":'rs/craneinspectreport/getCraneInfoByEquipmentVarietyUseTime',
-            "getCityInfoByProvinceEquipmentAndUseTime":'rs/craneinspectreport/getCityInfoByProvinceEquipmentAndUseTime',
-            "getAreaInfoByEquipmentVarietyUseTime":'rs/craneinspectreport/getAreaInfoByEquipmentVarietyUseTime'
+            "getCityInfoByCondition":'rs/craneinspectreport/getCityInfoByCondition',
+            "getAreaInfoByCondition":'rs/craneinspectreport/getAreaInfoByCondition'
         },
         "authority":{
             "add":"rs/authority/add"
@@ -104,11 +98,7 @@
             "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
             "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole",
             "getAddressesIdBydRoleName":"rs/dataRuleAddress/getAddressIdBydRoleName",
-            "getProvinceInfoByProvinceEquipmentVariety":"rs/dataRuleAddress/getProvinceInfoByProvinceEquipmentVariety",
-            "getProvinceInfoByProvinceUseTime":"rs/dataRuleAddress/getProvinceInfoByProvinceUseTime",
-            "getProvinceInfoByProvinceEquipmentVarietyAndUseTime":"rs/dataRuleAddress/getProvinceInfoByProvinceEquipmentVarietyAndUseTime"
-
-
+            "getProvinceInfoWithDataRuleByCondition":"rs/dataRuleAddress/getProvinceInfoWithDataRuleByCondition"
         },
         "userDataRole":{
             "add":"rs/userDataRole/add",

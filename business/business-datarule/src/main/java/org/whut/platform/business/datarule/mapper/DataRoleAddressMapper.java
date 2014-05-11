@@ -30,7 +30,5 @@ public interface DataRoleAddressMapper extends AbstractMapper<DataRoleAddress>{
     public Long getCraneNumberByProvince(String province);
     public Long getCraneNumberByCity(@Param("province")String province,@Param("city")String city);
     public Long getCraneNumberByArea(@Param("province")String province,@Param("city")String city,@Param("area")String area);
-    public List<Map<String,String>> getProvinceInfoWithDataRuleByEquipmentVariety(@Param("userId")long userId,@Param("equipmentVariety")String equipmentVariety);
-    public List<Map<String,String>> getProvinceInfoByProvinceUseTime(@Param("userId")long userId,@Param("useTime")String useTime);
-    public   List<Map<String,String>> getProvinceInfoByProvinceEquipmentVarietyAndUseTime(@Param("userId")long userId,@Param("equipmentVariety")String equipmentVariety,@Param("useTime")String useTime);
+    public List<Map<String,String>> getProvinceInfoWithDataRuleByCondition(@Param("userId")long userId,@Param("equipmentVariety")String equipmentVariety,@Param("useTime")String useTime);
 }

@@ -78,42 +78,42 @@ $.extend({
            }
            else if(pro=="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime=="0"){
                //1.在全国范围内设备类型筛选
-               $.post($.URL.dataRuleAddress.getProvinceInfoByProvinceEquipmentVariety,{"equipmentVariety":equipVariety},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVariety,"useTime":""},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
            }else if(pro=="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime!="0"){
                //2.在全国范围内使用年限筛选
-               $.post($.URL.dataRuleAddress.getProvinceInfoByProvinceUseTime,{"useTime":useTime},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":"","useTime":useTime},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
            }else if(pro=="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime!="0"){
                //3.在全国范围内类型+使用年限
-               $.post($.URL.dataRuleAddress.getProvinceInfoByProvinceEquipmentVarietyAndUseTime,{"equipmentVariety":equipVariety,"useTime":useTime},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVariety,"useTime":useTime},getProvinceInfoByProvinceEquipmentVarietyCallback,"json");
            }
            else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime=="0"){
                //4.在省+设备类型
-               $.post($.URL.craneinspectreport.getCityInfoByProvinceEquipmentVariety,{"province":pro,"equipmentVariety":equipVariety},getCityInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":pro,"equipmentVariety":equipVariety,"useTime":""},getCityInfoByProvinceEquipmentVarietyCallback,"json");
            }else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime!="0"){
                //5.在省+使用年限
-               $.post($.URL.craneinspectreport.getCityInfoByProvinceUseTime,{"province":pro,"useTime":useTime},getCityInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime},getCityInfoByProvinceEquipmentVarietyCallback,"json");
            }else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety!="0"&&useTime!="0"){
                //6.省+类型+年限
-               $.post($.URL.craneinspectreport.getCityInfoByProvinceEquipmentAndUseTime,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime},getCityInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime},getCityInfoByProvinceEquipmentVarietyCallback,"json");
            }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety!="0"&&useTime=="0"){
                //7.省市+设备类型
-               $.post($.URL.craneinspectreport.getAreaInfoByProvinceEquipmentVariety,{"province":pro,"city":city,"equipmentVariety":equipVariety},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":""},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
            }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety=="0"&&useTime!="0"){
                //8.省市+使用年限
-               $.post($.URL.craneinspectreport.getAreaInfoByProvinceUseTime,{"province":pro,"city":city,"useTime":useTime},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":pro,"city":city,"equipmentVariety":"","useTime":useTime},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
            }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety!="0"&&useTime!="0"){
                //9.省市+使用年限+设备类型
-               $.post($.URL.craneinspectreport.getAreaInfoByEquipmentVarietyUseTime,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":useTime},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":useTime},getAreaInfoByProvinceEquipmentVarietyCallback,"json");
            }
            else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety!="0"&&useTime=="0"){
                //10.省市区+设备类型
-               $.post($.URL.craneinspectreport.getCraneInfoByEquipmentVariety,{"province":pro,"city":city,"area":area,"equipVariety":equipVariety},getCraneInfoByEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":""},getCraneInfoByEquipmentVarietyCallback,"json");
            }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety=="0"&&useTime!="0"){
                //11.省市区+使用年限
-               $.post($.URL.craneinspectreport.getCraneInfoByUseTime,{"province":pro,"city":city,"area":area,"useTime":useTime},getCraneInfoByEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":pro,"city":city,"area":area,"equipmentVariety":"","useTime":useTime},getCraneInfoByEquipmentVarietyCallback,"json");
            }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety!="0"&&useTime!="0"){
                //12.省市区+使用年限+设备类型
-               $.post($.URL.craneinspectreport.getCraneInfoByEquipmentVarietyUseTime,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":useTime},getCraneInfoByEquipmentVarietyCallback,"json");
+               $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":useTime},getCraneInfoByEquipmentVarietyCallback,"json");
            }
        }
        //联动回调

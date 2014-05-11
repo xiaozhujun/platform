@@ -78,24 +78,20 @@
           AND a.id=cr.addressId
           GROUP BY a.province order by avgRiskValue desc
     </select>
-    <select id="getProvinceInfoWithDataRuleByEquipmentVariety" parameterType="map" resultType="map">
+    <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
           SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
           FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
-          WHERE u.id=#{userId} and cr.equipmentvariety=#{equipmentVariety} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
-          AND a.id=cr.addressId
-          GROUP BY a.province order by avgRiskValue desc
-    </select>
-    <select id="getProvinceInfoByProvinceUseTime" parameterType="map" resultType="map">
-          SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
-          WHERE u.id=#{userId} and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
-          AND a.id=cr.addressId
-          GROUP BY a.province order by avgRiskValue desc
-    </select>
-    <select id="getProvinceInfoByProvinceEquipmentVarietyAndUseTime" parameterType="map" resultType="map">
-         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
-          WHERE u.id=#{userId} and cr.equipmentvariety=#{equipmentVariety} and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+          WHERE
+          <if test="userId!=null">
+              u.id=#{userId}
+          </if>
+          <if test="equipmentVariety!=''">
+              and cr.equipmentvariety=#{equipmentVariety}
+          </if>
+           <if test="useTime!=''">
+               and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+           </if>
+          AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
           AND a.id=cr.addressId
           GROUP BY a.province order by avgRiskValue desc
     </select>

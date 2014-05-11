@@ -29,17 +29,17 @@ $.extend({
            $("#alert").html("");
            $(cId).html("<option value='0'>---请选择---</option>");
            $(aId).html("<option value='0'>---请选择---</option>");
-           conditionSearch(pId,cId,aId,eId,usId,slideId);
+           $.conditionSearch(pId,cId,aId,eId,usId,slideId);
          });
        $(cId).change(function(){
            $("#alert").html("");
            $(aId).html("<option value='0'>---请选择---</option>");
-           conditionSearch(pId,cId,aId,eId,usId,slideId)
+           $.conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
        $(aId).change(function(){
            $("#alert").html("");
            $(unitOption).remove();
-           conditionSearch(pId,cId,aId,eId,usId,slideId)
+           $.conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
        $(uId).change(function(){
            var pro=$(pId).find('option:selected').text();
@@ -51,41 +51,11 @@ $.extend({
            $.showRiskInfo(unit);
        });
        $(eId).change(function(){
-           conditionSearch(pId,cId,aId,eId,usId,slideId)
+           $.conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
        $(usId).change(function(){
-           conditionSearch(pId,cId,aId,eId,usId,slideId)
+           $.conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
-       function conditionSearch(pId,cId,aId,eId,usId,slideId){
-           var pro=$(pId).find('option:selected').val();
-           var city=$(cId).find('option:selected').val();
-           var area=$(aId).find('option:selected').val();
-           var equipVariety=$(eId).find('option:selected').val();
-           var useTime=$(usId).find('option:selected').val();
-           var slide=$(slideId).val();
-          if(pro=="0"&&city=="0"&&area=="0"){
-               //1.在全国范围内设备类型筛选
-               $.initMap("中国",5);
-               $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getProvinceInfoWithDataRuleByConditionCallback,"json");
-           }
-           else if(pro!="0"&&city=="0"&&area=="0"){
-               //4.在省+设备类型
-               $.initMap(pro,8);
-               $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
-               $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getCityInfoByConditionCallback,"json");
-
-           }else if(pro!="0"&&city!="0"&&area=="0"){
-               //7.省市+设备类型
-               $.initMap(city,10);
-               $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city}, getAreaByProvinceAndCityCallback,"json");
-               $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getAreaInfoByConditionCallback,"json");
-           }
-           else if(pro!="0"&&city!="0"&&area!="0"){
-               //10.省市区+设备类型
-               $.initMap(area,12);
-               $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getCraneInfoByConditionCallback,"json");
-           }
-       }
        //联动回调
        function getProvinceListCallback(data){
            if(data.code==200){
@@ -98,16 +68,6 @@ $.extend({
                //$(provinceSelectedValue).attr("selected",true);
            }
        }
-           function getCityByProvinceCallback(data){
-               if(data.code==200){
-                   $(cId).html("");
-                   var citySearch="<option value='0'>---请选择---</option>";
-                   for(i=0;i<data.data.length;i++){
-                       citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
-                   }
-                   $(cId).html(citySearch);
-               }
-           }
        function initCityByProvinceCallback(data){
            if(data.code==200){
                $(cId).html("");
@@ -119,16 +79,6 @@ $.extend({
                //$(citySelectedValue).attr("selected",true);
            }
        }
-           function getAreaByProvinceAndCityCallback(data){
-               if(data.code==200){
-                   $(aId).html("");
-                   var areaSearch="<option value='0'>---请选择---</option>";
-                   for(i=0;i<data.data.length;i++){
-                       areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
-                   }
-                   $(aId).html(areaSearch);
-               }
-           }
          function initAreaByProvinceAndCityCallback(data){
              if(data.code==200){
                  $(aId).html("");
@@ -182,25 +132,6 @@ $.extend({
                $(usId).html(useTimeSearch);
            }
        }
-       function getCraneInfoByConditionCallback(data){
-           $.showRiskRank(data);
-           $.addMarkerArray(data);
-       }
-       function getCityInfoByConditionCallback(data){
-           $.initMap(data.str,8)
-           $.getCityWithRule(data.str,data,1);
-           $.showCityRank(data);
-       }
-       function getAreaInfoByConditionCallback(data){
-           var str=data.str.split(",");
-           $.initMap(str[1],10);
-           $.getAreaWithRule(str[0],str[1],data,1);
-           $.showAreaRank(data);
-       }
-       function getProvinceInfoWithDataRuleByConditionCallback(data){
-           $.initMap("中国",5);
-           $.getProvinceWithRule(data);
-           $.showProvinceRank(data);
-       }
+
    }
 });

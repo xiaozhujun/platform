@@ -48,7 +48,6 @@ $.extend({
         function getProvinceCallBack(data){
             $.getProvinceWithRule(data,flag);
             if(flag==0){
-            $.showProvinceRankShow(data);
             }else if(flag==1){
             $.showProvinceRank(data);
             }
@@ -59,7 +58,8 @@ $.extend({
         $.clearAllMarker;
         /*根据省以及session查出这个人的city*/
         //var jsonString={};
-        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province},getCityCallBack,"json");
+        $.conditionSearch("#province","#city","#area","#equipVariety","#useTime","#Slider4");
+       /* $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province},getCityCallBack,"json");
         function getCityCallBack(data){
             $.getCityWithRule(province,data,flag);
             if(flag==0){
@@ -67,13 +67,14 @@ $.extend({
             }else if(flag==1){
             $.showCityRank(data);
             }
-        }
+        }*/
     },
     initAreaWithDataRule:function initAreaWithDataRule(province,city,size,flag){
         $.initMap(city,size);
         $.clearAllMarker;
         /*根据省和市以及session查出这个人的area*/
-        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province ,"city":city},getAreaCallBack,"json");
+        $.conditionSearch("#province","#city","#area","#equipVariety","#useTime","#Slider4");
+       /* $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province ,"city":city},getAreaCallBack,"json");
         function getAreaCallBack(data){
             $.getAreaWithRule(province,city,data,flag);
             if(flag==0){
@@ -81,7 +82,7 @@ $.extend({
             }else if(flag==1){
                 $.showAreaRank(data);
             }
-        }
+        }*/
     },
     showProvinceRisk:function showProvinceRisk(flag)
     {
@@ -109,6 +110,7 @@ $.extend({
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);
     $.initMap(area,size);
+
 },
     /*
     画圆功能

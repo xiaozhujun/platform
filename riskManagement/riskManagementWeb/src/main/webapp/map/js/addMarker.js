@@ -43,7 +43,8 @@ $.extend({
     },
 //根据省市区来添加覆盖物以及查询相应的企业信息
     initAndAddMarker:function initAndAddMarker(city,area){
-        $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
+        $.conditionSearch("#province","#city","#area","#equipVariety","#useTime","#Slider4");
+        /*$.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
         $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area}, $.showUnitRiskRankCallback,"json");
         function areaInfoCallback(data){
             if(data.code==200){
@@ -59,7 +60,7 @@ $.extend({
 
                 }
             }
-        }
+        }*/
 
     },
     //鼠标点上去之后添加相应的标记
@@ -287,11 +288,21 @@ $.extend({
             if(flag==0){
                 location ="cityRisk.jsp?province="+encodeURI(province);
             }else if(flag==1){
+                $("#province option[value='"+province+"']").attr("selected",true);
+                $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province}, getCityByProvinceCallback,"json");
                 $.showCityRisk(province,1);
             }
-
         });
-
+        function getCityByProvinceCallback(data){
+            if(data.code==200){
+                $("#city").html("");
+                var citySearch="<option value='0'>---请选择---</option>";
+                for(i=0;i<data.data.length;i++){
+                    citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
+                }
+                $("#city").html(citySearch);
+            }
+        }
     },
     cityClick:function cityClick(province,id,flag){
         var city=$(id).children(".rcontentItem").children(".unitFont").text();
@@ -299,9 +310,21 @@ $.extend({
             if(flag==0){
                 location="areaRisk.jsp?province="+province+"&city="+encodeURI(city);
             }else if(flag==1){
+                $("#city option[value='"+city+"']").attr("selected",true);
+                $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":city}, getAreaByProvinceAndCityCallback,"json");
                 $.showAreaRisk(province,city,1);
             }
         });
+        function getAreaByProvinceAndCityCallback(data){
+            if(data.code==200){
+                $("#area").html("");
+                var areaSearch="<option value='0'>---请选择---</option>";
+                for(i=0;i<data.data.length;i++){
+                    areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
+                }
+                $("#area").html(areaSearch);
+            }
+        }
     },
     areaClick:function areaClick(province_city,id,flag){
         var str=province_city.split(",");
@@ -310,6 +333,7 @@ $.extend({
             if(flag==0){
                 location="companyRisk.jsp?province="+str[0]+"&city="+encodeURI(str[1])+"&area="+encodeURI(area);
             }else if(flag==1){
+                $("#area option[value='"+area+"']").attr("selected",true);
                 $.showCompanyRisk(str[1],area,12);
             }
         });

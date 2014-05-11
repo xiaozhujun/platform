@@ -388,11 +388,17 @@
         <if test="area!=null">
             AND a.area=#{area}
         </if>
-        <if test="equipmentVariety!=''">
+        <if test="equipmentVariety!='0'">
             AND cr.equipmentvariety=#{equipmentVariety}
         </if>
-        <if test="useTime!=''">
+        <if test="useTime!='0'">
             AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
         </if>
         GROUP BY cr.unitaddress
     </select>
@@ -403,11 +409,17 @@
         <if test="province!=null">
             AND a.province=#{province}
         </if>
-        <if test="equipmentVariety!=''">
+        <if test="equipmentVariety!='0'">
             AND cr.equipmentvariety=#{equipmentVariety}
         </if>
-        <if test="useTime!=''">
+        <if test="useTime!='0'">
             AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
         </if>
         GROUP BY a.city
     </select>
@@ -421,11 +433,17 @@
         <if test="city!=null">
             AND a.city=#{city}
         </if>
-        <if test="equipmentVariety!=''">
+        <if test="equipmentVariety!='0'">
             AND cr.equipmentvariety=#{equipmentVariety}
         </if>
-        <if test="useTime!=''">
+        <if test="useTime!='0'">
             AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
         </if>
         GROUP BY a.area
     </select>

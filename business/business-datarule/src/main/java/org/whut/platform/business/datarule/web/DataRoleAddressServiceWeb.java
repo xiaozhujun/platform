@@ -48,7 +48,7 @@ public class DataRoleAddressServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getProvinceInfoWithDataRuleByCondition")
-    public String getProvinceInfoWithDataRuleByCondition(@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime){
+    public String getProvinceInfoWithDataRuleByCondition(@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
         /*if (equipmentVariety.trim().equals("")){
@@ -56,7 +56,15 @@ public class DataRoleAddressServiceWeb {
         }else if(useTime.trim().equals("")){
             useTime=null;
         }*/
-        List<Map<String,String>> list=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,useTime);
+        List<Map<String,String>> list=new ArrayList<Map<String, String>>();
+        if(value=="0"&&value.equals("0")){
+        list=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,useTime,0f,0f);
+        }else{
+        String[] values= value.split(";");
+        float startValue = Float.parseFloat(values[0]);
+        float endValue=Float.parseFloat(values[1]);
+        list=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,useTime,startValue,endValue);
+        }
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

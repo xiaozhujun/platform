@@ -85,11 +85,17 @@
           <if test="userId!=null">
               u.id=#{userId}
           </if>
-          <if test="equipmentVariety!=''">
+          <if test="equipmentVariety!='0'">
               and cr.equipmentvariety=#{equipmentVariety}
           </if>
-           <if test="useTime!=''">
+           <if test="useTime!='0'">
                and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+           </if>
+           <if test="startValue!=0f">
+               AND r.riskvalue BETWEEN #{startValue}
+           </if>
+           <if test="endValue!=0f">
+               AND #{endValue}
            </if>
           AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
           AND a.id=cr.addressId

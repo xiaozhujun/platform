@@ -426,8 +426,16 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getCityInfoByCondition")
     @POST
-    public String getCityInfoByCondition(@FormParam("province") String province,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime){
-        List<Map<String,Float>> list = craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,useTime);
+    public String getCityInfoByCondition(@FormParam("province") String province,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
+        List<Map<String,Float>> list=new ArrayList<Map<String, Float>>();
+        if(value=="0"&&value.equals("0")){
+            list= craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,useTime,0f,0f);
+        }else{
+            String[] values= value.split(";");
+            float startValue = Float.parseFloat(values[0]);
+            float endValue=Float.parseFloat(values[1]);
+            list= craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,useTime,startValue,endValue);
+        }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -445,9 +453,17 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getAreaInfoByCondition")
     @POST
-    public String getAreaInfoByCondition(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime){
+    public String getAreaInfoByCondition(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
         String province_city=province+","+city;
-        List<Map<String,Float>> list = craneInspectReportService.getAreaInfoByCondition(province,city,equipmentVariety,useTime);
+        List<Map<String,Float>> list =new ArrayList<Map<String, Float>>();
+        if(value=="0"&&value.equals("0")){
+            list=craneInspectReportService.getAreaInfoByCondition(province, city, equipmentVariety, useTime,0f,0f);
+        }else{
+            String[] values= value.split(";");
+            float startValue = Float.parseFloat(values[0]);
+            float endValue=Float.parseFloat(values[1]);
+            list=craneInspectReportService.getAreaInfoByCondition(province, city, equipmentVariety, useTime,startValue,endValue);
+        }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -502,8 +518,16 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getCraneInfoByCondition")
-    public String getCraneInfoByCondition(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("equipmentVariety")String equipVariety,@FormParam("useTime")String useTime){
-         List<CraneInspectReport> list=craneInspectReportService.getCraneInfoByCondition(province,city,area,equipVariety,useTime);
+    public String getCraneInfoByCondition(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("equipmentVariety")String equipVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
+         List<CraneInspectReport> list=new ArrayList<CraneInspectReport>();
+         if(value=="0"&&value.equals("0")){
+             list=craneInspectReportService.getCraneInfoByCondition(province,city,area,equipVariety,useTime,0f,0f);
+         }else{
+             String[] values= value.split(";");
+             float startValue = Float.parseFloat(values[0]);
+             float endValue=Float.parseFloat(values[1]);
+             list=craneInspectReportService.getCraneInfoByCondition(province, city, area, equipVariety, useTime,startValue,endValue);
+         }
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

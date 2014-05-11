@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 $.extend({
-   addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,equipVarietyId,useTimeId,provinceValue,cityValue,areaValue){
+   addressLinkAge:function addressLinkAge(provinceId,cityId,areaId,unitId,equipVarietyId,useTimeId,Slider4Id,provinceValue,cityValue,areaValue){
        //$.post($.URL.address.getProvinceList,null,getProvinceListCallback,"json");
        $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceListCallback,"json");
        //$.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":provinceValue}, initCityByProvinceCallback,"json");
@@ -19,6 +19,7 @@ $.extend({
        var uId="#"+unitId;
        var eId="#"+equipVarietyId;
        var usId="#"+useTimeId;
+       var slideId="#"+Slider4Id;
        var cityOption="#"+cityId+"option:not(:first)";
        var areaOption="#"+areaId+"option:not(:first)";
        var unitOption="#"+unitId+"option:not(:first)";
@@ -28,17 +29,17 @@ $.extend({
            $("#alert").html("");
            $(cId).html("<option value='0'>---请选择---</option>");
            $(aId).html("<option value='0'>---请选择---</option>");
-           conditionSearch(pId,cId,aId,eId,usId)
+           conditionSearch(pId,cId,aId,eId,usId,slideId);
          });
        $(cId).change(function(){
            $("#alert").html("");
            $(aId).html("<option value='0'>---请选择---</option>");
-           conditionSearch(pId,cId,aId,eId,usId)
+           conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
        $(aId).change(function(){
            $("#alert").html("");
            $(unitOption).remove();
-           conditionSearch(pId,cId,aId,eId,usId)
+           conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
        $(uId).change(function(){
            var pro=$(pId).find('option:selected').text();
@@ -50,46 +51,39 @@ $.extend({
            $.showRiskInfo(unit);
        });
        $(eId).change(function(){
-           conditionSearch(pId,cId,aId,eId,usId)
+           conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
        $(usId).change(function(){
-           conditionSearch(pId,cId,aId,eId,usId)
+           conditionSearch(pId,cId,aId,eId,usId,slideId)
        });
-       function conditionSearch(pId,cId,aId,eId,usId){
+       function conditionSearch(pId,cId,aId,eId,usId,slideId){
            var pro=$(pId).find('option:selected').val();
            var city=$(cId).find('option:selected').val();
            var area=$(aId).find('option:selected').val();
            var equipVariety=$(eId).find('option:selected').val();
            var useTime=$(usId).find('option:selected').val();
-           if(pro=="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime=="0"){
-                 //全国范围
-                 $.showProvinceRisk(1);
-           }else if(pro!="0"&&city=="0"&&area=="0"&&equipVariety=="0"&&useTime=="0"){
-               //省
-               $.showCityRisk(pro,1);
-               $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
-           }else if(pro!="0"&&city!="0"&&area=="0"&&equipVariety=="0"&&useTime=="0"){
-               //省市
-               $.showAreaRisk(pro,city,1);
-               $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city}, getAreaByProvinceAndCityCallback,"json");
-           }else if(pro!="0"&&city!="0"&&area!="0"&&equipVariety=="0"&&useTime=="0"){
-               //省市区
-               $.showCompanyRisk(city,area,12);
-           }
-           else if(pro=="0"&&city=="0"&&area=="0"){
+           var slide=$(slideId).val();
+          if(pro=="0"&&city=="0"&&area=="0"){
                //1.在全国范围内设备类型筛选
-               $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVariety,"useTime":useTime,"value":"0"},getProvinceInfoWithDataRuleByConditionCallback,"json");
+               $.initMap("中国",5);
+               $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getProvinceInfoWithDataRuleByConditionCallback,"json");
            }
            else if(pro!="0"&&city=="0"&&area=="0"){
                //4.在省+设备类型
-               $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime,"value":"0"},getCityInfoByConditionCallback,"json");
+               $.initMap(pro,8);
+               $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
+               $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getCityInfoByConditionCallback,"json");
+
            }else if(pro!="0"&&city!="0"&&area=="0"){
                //7.省市+设备类型
-               $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":useTime,"value":"0"},getAreaInfoByConditionCallback,"json");
+               $.initMap(city,10);
+               $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city}, getAreaByProvinceAndCityCallback,"json");
+               $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getAreaInfoByConditionCallback,"json");
            }
            else if(pro!="0"&&city!="0"&&area!="0"){
                //10.省市区+设备类型
-               $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":useTime,"value":"0"},getCraneInfoByConditionCallback,"json");
+               $.initMap(area,12);
+               $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getCraneInfoByConditionCallback,"json");
            }
        }
        //联动回调

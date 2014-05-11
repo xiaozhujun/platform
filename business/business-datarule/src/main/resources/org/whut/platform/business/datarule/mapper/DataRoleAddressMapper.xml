@@ -85,10 +85,10 @@
           <if test="userId!=null">
               u.id=#{userId}
           </if>
-          <if test="equipmentVariety!='0'">
+       <if test='equipmentVariety!="0"'>
               and cr.equipmentvariety=#{equipmentVariety}
           </if>
-           <if test="useTime!='0'">
+         <if test='useTime!="0"'>
                and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
            </if>
            <if test="startValue!=0f">

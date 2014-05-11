@@ -20,54 +20,18 @@ $.extend({
               var areavalue=$(area).val();
               var equipVarietyvalue=$(equipVariety).val();
               var useTimevalue=$(useTime).val();
-              if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+              if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"){
                   //全国的+风险区间
-                  $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":"","useTime":"","value":value}, getProvinceInfoWithDataRuleByConditionCallback,"json");
-                  //$.post($.URL.craneinspectreport.getProvinceRiskRankFormRiskRange, {"value":value}, $.showProvinceRiskRankFormRiskRange,"json");
-              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
-                  //全国的+类型+区间
-                  $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVarietyvalue,"useTime":"","value":value}, getProvinceInfoWithDataRuleByConditionCallback,"json");
-              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
-                  //全国的+年限+区间
-                  $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":"","useTime":useTimevalue,"value":value}, getProvinceInfoWithDataRuleByConditionCallback,"json");
-              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
-                  //全国的+年限+区间+类型
                   $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVarietyvalue,"useTime":useTimevalue,"value":value}, getProvinceInfoWithDataRuleByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  //$.post($.URL.craneinspectreport.getProvinceRiskRankFormRiskRange, {"value":value}, $.showProvinceRiskRankFormRiskRange,"json");
+              }else if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"){
                   // 省+风险区间
-                  $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":provincevalue,"equipmentVariety":"","useTime":"","value":value}, getCityInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
-                   //省+类型+区间
-                  $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":provincevalue,"equipmentVariety":equipVarietyvalue,"useTime":"","value":value}, getCityInfoByConditionCallback,"json");
-              }else if(provincevalue=="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue!="0"){
-                  //省+年限+区间
-                  $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":provincevalue,"equipmentVariety":"","useTime":useTimevalue,"value":value}, getCityInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue=="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue!="0"){
-                  //省+类型+使用年限+风险区间
-                  $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":provincevalue,"equipmentVariety":equipVarietyvalue,"useTime":useTimevalue,"value":value},getCityInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+                  $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":provincevalue,"equipmentVariety":equipVarietyvalue,"useTime":useTimevalue,"value":value}, getCityInfoByConditionCallback,"json");
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"){
                   // 省市+风险区间
-                  $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":provincevalue,"city":cityvalue,"equipmentVariety":"","useTime":"","value":value},getAreaInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
-                  //省市+类型+风险区间
-                  $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":provincevalue,"city":cityvalue,"equipmentVariety":equipVarietyvalue,"useTime":"","value":value},getAreaInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue=="0"&&useTimevalue!="0"){
-                  //省市+年限+风险区间
-                  $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":provincevalue,"city":cityvalue,"equipmentVariety":"","useTime":useTimevalue,"value":value},getAreaInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue=="0"&&equipVarietyvalue!="0"&&useTimevalue!="0"){
-                   //省市+类型+年限+风险区间
                   $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":provincevalue,"city":cityvalue,"equipmentVariety":equipVarietyvalue,"useTime":useTimevalue,"value":value},getAreaInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue=="0"&&useTimevalue=="0"){
+              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"){
                   //查省市区+风险区间
-                  $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":provincevalue,"city":cityvalue,"area":area,"equipmentVariety":"","useTime":"","value":value},getCraneInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue!="0"&&useTimevalue=="0"){
-                  //省市区+类型+风险区间
-                  $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":provincevalue,"city":cityvalue,"area":area,"equipmentVariety":equipVarietyvalue,"useTime":"","value":value},getCraneInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue=="0"&&useTimevalue!="0"){
-                  //省市区+年限+风险区间
-                  $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":provincevalue,"city":cityvalue,"area":area,"equipmentVariety":"","useTime":useTimevalue,"value":value},getCraneInfoByConditionCallback,"json");
-              }else if(provincevalue!="0"&&cityvalue!="0"&&areavalue!="0"&&equipVarietyvalue!="0"&&useTimevalue!="0"){
-                  //省市区+年限+类型+风险区间
                   $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":provincevalue,"city":cityvalue,"area":area,"equipmentVariety":equipVarietyvalue,"useTime":useTimevalue,"value":value},getCraneInfoByConditionCallback,"json");
               }
               function getProvinceInfoWithDataRuleByConditionCallback(data){

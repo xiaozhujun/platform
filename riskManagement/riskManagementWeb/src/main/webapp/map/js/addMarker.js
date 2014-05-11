@@ -28,7 +28,8 @@ $.extend({
     createIcon:function createIcon(json){
         var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
         return icon;
-    }, //根据单位来添加覆盖物以及查询相应的信息
+    },
+    //根据单位来添加覆盖物以及查询相应的信息
     getCompanyInfoByUnitAddress:function getCompanyInfoByUnitAddress(unitAddress){
         $.clearAllMarker();
         $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},getOneUnitAddressInfoCallback,"json");
@@ -43,7 +44,7 @@ $.extend({
 //根据省市区来添加覆盖物以及查询相应的企业信息
     initAndAddMarker:function initAndAddMarker(city,area){
         $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
-        $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area}, $.showRiskRank,"json");
+        $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area}, $.showUnitRiskRankCallback,"json");
         function areaInfoCallback(data){
             if(data.code==200){
                 $("#rightcontent").html("");
@@ -54,7 +55,7 @@ $.extend({
                     var chaoyangMarker= $.getMarkerArray(data);
                     //创建和初始化地图函数：
                     $.addMarker(chaoyangMarker);//向地图中添加marker
-                    $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":chaoyangMarker[0].title}, $.getAreaInfoByUnitAddressCallback,"json");
+                    $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":chaoyangMarker[0].title}, $.getAreaInfoByUnitAddressCallback,"json");
 
                 }
             }
@@ -112,11 +113,9 @@ $.extend({
         $(_id).click(function(){
             $.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
             var unitAddress=$("#"+this.id).children(".rcontentItem").children(".unitFont").text();
-            $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unitAddress}, $.getAreaInfoByUnitAddressCallback,"json");
+            $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":unitAddress}, $.getAreaInfoByUnitAddressCallback,"json");
         });
         // $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
-
-
     },
     addOneMarker:function addOneMarker(title,content,point,isOpen,icon,i){
         var p0 = point.split("|")[0];
@@ -143,12 +142,12 @@ $.extend({
             _marker.addEventListener("click",function(){
                 this.openInfoWindow(_iw);
                 $.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
-                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title}, $.getAreaInfoByUnitAddressCallback,"json");
+                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":title}, $.getAreaInfoByUnitAddressCallback,"json");
             });
             _marker.addEventListener("mouseover",function(){
                 this.openInfoWindow(_iw);
                 $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoverCallback,"json");
-                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title}, $.getAreaInfoByUnitAddressCallback,"json");
+                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":title}, $.getAreaInfoByUnitAddressCallback,"json");
             });
             _marker.addEventListener("mouseout",function(){
                 $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoutCallback,"json");
@@ -187,7 +186,7 @@ $.extend({
         $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress}, $.showUnitRiskRankCallback,"json");
     },
     showRiskInfo:function showRiskInfo(unit){
-        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unit}, $.getAreaInfoByUnitAddressCallback,"json");
+        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":unit}, $.getAreaInfoByUnitAddressCallback,"json");
     },
     rightShowInfoClick:function rightShowInfoClick(infoFontNum){
         $("#"+infoFontNum).click(function(){
@@ -235,17 +234,6 @@ $.extend({
     },
     showUnitRiskRankCallback:function showUnitRiskRankCallback(data){
         if(data.code==200){
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadUnitRiskRankValue(data);
-            }
-        }
-    },
-    showRiskRank:function showRiskRank(data){
-        if(data.code==200){
             $("#tab").show("");
             $("#rankTitle").html("");
             $("#riskrankContent").html("");
@@ -256,7 +244,6 @@ $.extend({
             }
         }
     },
-
     showAreaRank:function showAreaRank(data){
         if(data.code==200){
             $("#tab").show("");

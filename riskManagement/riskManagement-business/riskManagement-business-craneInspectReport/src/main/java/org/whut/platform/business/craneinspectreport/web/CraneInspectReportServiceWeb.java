@@ -163,13 +163,13 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAreaInfoByUnitAddress")
-    public String  getAreaInfoByUnitAddress(@FormParam("name") String name){
+    public String  getAreaInfoByUnitAddress(@FormParam("unitAddress") String unitAddress){
         //通过unitAddress得到区域信息
-        if(name==null||name.trim().equals("")){
+        if(unitAddress==null||unitAddress.trim().equals("")){
             return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        List<CraneInspectReport> list=craneInspectReportService.getInfoByUnitAddress(name);
-        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,name);
+        List<CraneInspectReport> list=craneInspectReportService.getInfoByUnitAddress(unitAddress);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,unitAddress);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST

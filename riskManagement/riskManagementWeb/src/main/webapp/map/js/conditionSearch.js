@@ -36,7 +36,7 @@ $.extend({
             $.post($.URL.craneinspectreport.getCraneInfoByCondition,{"province":pro,"city":city,"area":area,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getCraneInfoByConditionCallback,"json");
         }
         function getCraneInfoByConditionCallback(data){
-            $.showRiskRank(data);
+            $.showUnitRiskRankCallback(data);
             $.addMarkerArray(data);
         }
         function getCityInfoByConditionCallback(data){

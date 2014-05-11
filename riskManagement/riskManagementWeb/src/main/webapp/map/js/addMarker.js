@@ -402,8 +402,10 @@ $.extend({
             $.cityClick(data.str,"#riskcontent"+data.data[i].id,1);
             $.riskContentClick("riskcontent"+data.data[i].id);
         }
+        $.switchToRiskRankTab();
     },
     loadProvinceRiskRankValue:function loadProvinceRiskRankValue(data){
+        $.switchToRiskRankTab();
         $("#rankTitle").html("");
         $("#riskrankContent").html("");
         var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>省名</span><span class='rtitleriskItem'>设备数</span></div>";
@@ -418,8 +420,8 @@ $.extend({
             $("#riskrankContent").append(rankContent);
             $.provinceClick("#riskcontent"+data.data[i].id,1);
             $.riskContentClick("riskcontent"+data.data[i].id);
-
         }
+        $.switchToRiskRankTab();
     },
     loadAreaRiskRankValue:function loadAreaRiskRankValue(data){
         $("#rankTitle").html("");
@@ -447,6 +449,7 @@ $.extend({
             $.areaClick(data.str,"#riskcontent"+data.data[i].id,1);
             $.riskContentClick("riskcontent"+data.data[i].id);
         }
+        $.switchToRiskRankTab();
     },
     loadUnitRiskRankValue:function loadUnitRiskRankValue(data){
         $("#rankTitle").html("");
@@ -476,5 +479,6 @@ $.extend({
             $.rightTabMouseEvent("riskcontent"+data.data[i].id);
             $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
         }
+        $.switchToRiskRankTab();
     }
 });

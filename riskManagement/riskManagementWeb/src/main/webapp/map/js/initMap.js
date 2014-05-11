@@ -391,5 +391,8 @@ $.extend({
         }
         $.clearAllMarker();
         $.addMarker(riskRankArray);//向地图中添加marker
+    },
+    switchToRiskRankTab:function switchToRiskRankTab(){
+        $.rTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
     }
 });

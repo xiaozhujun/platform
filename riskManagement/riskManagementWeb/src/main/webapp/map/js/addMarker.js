@@ -62,6 +62,7 @@ $.extend({
         }
 
     },
+    //鼠标点上去之后添加相应的标记
     mouseEvent:function mouseEvent(title,content,point,isOpen,icon,i){
         $.addOneMarker(title,content,point,isOpen,icon,i)
     },

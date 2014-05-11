@@ -286,7 +286,6 @@ $.extend({
         var province=$(id).children(".rcontentItem").children(".unitFont").text();
         $(id).click(function(){
             if(flag==0){
-                location ="cityRisk.jsp?province="+encodeURI(province);
             }else if(flag==1){
                 $("#province option[value='"+province+"']").attr("selected",true);
                 $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province}, getCityByProvinceCallback,"json");
@@ -308,7 +307,6 @@ $.extend({
         var city=$(id).children(".rcontentItem").children(".unitFont").text();
         $(id).click(function(){
             if(flag==0){
-                location="areaRisk.jsp?province="+province+"&city="+encodeURI(city);
             }else if(flag==1){
                 $("#city option[value='"+city+"']").attr("selected",true);
                 $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":city}, getAreaByProvinceAndCityCallback,"json");

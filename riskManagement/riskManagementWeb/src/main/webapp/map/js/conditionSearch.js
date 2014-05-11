@@ -16,9 +16,9 @@ $.extend({
         if(pro=="0"&&city=="0"&&area=="0"){
             //1.在全国范围内设备类型筛选
             $.initMap("中国",5);
+            $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceListCallback,"json");
             $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getProvinceInfoWithDataRuleByConditionCallback,"json");
-        }
-        else if(pro!="0"&&city=="0"&&area=="0"){
+        }else if(pro!="0"&&city=="0"&&area=="0"){
             //4.在省+设备类型
             $.initMap(pro,8);
             $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
@@ -73,6 +73,17 @@ $.extend({
                     areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
                 }
                 $(aId).html(areaSearch);
+            }
+        }
+        function getProvinceListCallback(data){
+            if(data.code==200){
+                $("#province").html("");
+                var pSearch="<option value='0'>---请选择---</option>";
+                for(i=0;i<data.data.length;i++){
+                    pSearch+="<option value='"+data.data[i].province+"'>"+data.data[i].province+"</option>";
+                }
+                $("#province").html(pSearch);
+                //$(provinceSelectedValue).attr("selected",true);
             }
         }
     }

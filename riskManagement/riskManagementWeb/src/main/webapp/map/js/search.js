@@ -51,7 +51,7 @@ $.extend({
               var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>企业</span><span class='rtitleriskItem'>风险值</span></div>";
               $("#rankTitle").append(rankTitle);
               if(data.data[0]==undefined){
-                  $("#riskrankContent").append("对不起,你现在所在区域为"+$("#area").val());
+                  $("#riskrankContent").append("对不起,"+$("#area").val()+"没有您要查找的数据!");
                   $.clearAllMarker();
               }else{
                   $("#rankTitle").html("");

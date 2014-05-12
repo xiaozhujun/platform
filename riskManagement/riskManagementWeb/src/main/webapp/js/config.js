@@ -98,7 +98,8 @@
             "getCityAndColorWithDataRole":"rs/dataRuleAddress/getCityAndColorWithDataRole",
             "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole",
             "getAddressesIdBydRoleName":"rs/dataRuleAddress/getAddressIdBydRoleName",
-            "getProvinceInfoWithDataRuleByCondition":"rs/dataRuleAddress/getProvinceInfoWithDataRuleByCondition"
+            "getProvinceInfoWithDataRuleByCondition":"rs/dataRuleAddress/getProvinceInfoWithDataRuleByCondition",
+            "getProvinceListWithDataRole":"rs/dataRuleAddress/getProvinceListWithDataRole"
         },
         "userDataRole":{
             "add":"rs/userDataRole/add",

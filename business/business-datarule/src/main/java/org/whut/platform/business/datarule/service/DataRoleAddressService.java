@@ -1,6 +1,7 @@
 package org.whut.platform.business.datarule.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.datarule.entity.DataRoleAddress;
 
 import java.util.List;
@@ -82,5 +83,8 @@ public class DataRoleAddressService {
     }
     public   List<Map<String,String>> getProvinceInfoWithDataRuleByCondition(long userId,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
         return dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,sTime,eTime,startValue,endValue);
+    }
+    public List<Map<String,String>>getProvinceListWithDataRole(long userId){
+           return dataRoleAddressMapper.getProvinceListWithDataRole(userId);
     }
 }

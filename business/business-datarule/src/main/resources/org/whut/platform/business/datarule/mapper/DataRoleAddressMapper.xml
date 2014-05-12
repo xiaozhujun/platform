@@ -150,4 +150,10 @@
         and a.province=#{province} and a.city=#{city} and a.area=#{area}
         group by a.province,a.city,a.area
     </select>
+    <select id="getProvinceListWithDataRole" parameterType="java.lang.Long" resultType="map">
+        select a.province
+        from user u,drole dr,user_drole udr,drole_address daddr,address a
+        where u.id=udr.userId and udr.droleId=dr.id and daddr.droleId=dr.id and daddr.addressId=a.id
+        and u.id=#{userId} group by province
+    </select>
 </mapper>

@@ -391,8 +391,11 @@
        <if test='equipmentVariety!="0"'>
             AND cr.equipmentvariety=#{equipmentVariety}
         </if>
-      <if test='useTime!="0"'>
-            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+      <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            AND  #{eTime}
         </if>
         <if test="startValue!=0f">
             AND r.riskvalue BETWEEN #{startValue}
@@ -412,8 +415,11 @@
         <if test='equipmentVariety!="0"'>
             AND cr.equipmentvariety=#{equipmentVariety}
         </if>
-        <if test='useTime!="0"'>
-            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
         </if>
         <if test="startValue!=0f">
             AND r.riskvalue BETWEEN #{startValue}
@@ -436,8 +442,11 @@
         <if test='equipmentVariety!="0"'>
             AND cr.equipmentvariety=#{equipmentVariety}
         </if>
-        <if test='useTime!="0"'>
-            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)=#{useTime}
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+           and #{eTime}
         </if>
         <if test="startValue!=0f">
             AND r.riskvalue BETWEEN #{startValue}

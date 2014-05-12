@@ -16,18 +16,18 @@ $.extend({
         if(pro=="0"&&city=="0"&&area=="0"){
             //1.在全国范围内设备类型筛选
             $.initMap("中国",5);
-            $.post($.URL.dataRuleAddress.getProvinceAndColorWithDataRole,null,getProvinceListCallback,"json");
+            $.post($.URL.dataRuleAddress.getProvinceListWithDataRole,null,getProvinceListCallback,"json");
             $.post($.URL.dataRuleAddress.getProvinceInfoWithDataRuleByCondition,{"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getProvinceInfoWithDataRuleByConditionCallback,"json");
         }else if(pro!="0"&&city=="0"&&area=="0"){
             //4.在省+设备类型
             $.initMap(pro,8);
-            $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":pro}, getCityByProvinceCallback,"json");
+            $.post($.URL.address.getCityByProvince,{"province":pro}, getCityByProvinceCallback,"json");
             $.post($.URL.craneinspectreport.getCityInfoByCondition,{"province":pro,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getCityInfoByConditionCallback,"json");
 
         }else if(pro!="0"&&city!="0"&&area=="0"){
             //7.省市+设备类型
             $.initMap(city,10);
-            $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":pro,"city":city}, getAreaByProvinceAndCityCallback,"json");
+            $.post($.URL.address.getAreaByProvinceAndCity,{"province":pro,"city":city}, getAreaByProvinceAndCityCallback,"json");
             $.post($.URL.craneinspectreport.getAreaInfoByCondition,{"province":pro,"city":city,"equipmentVariety":equipVariety,"useTime":useTime,"value":slide},getAreaInfoByConditionCallback,"json");
         }
         else if(pro!="0"&&city!="0"&&area!="0"){
@@ -52,7 +52,7 @@ $.extend({
         }
         function getProvinceInfoWithDataRuleByConditionCallback(data){
             $.initMap("中国",5);
-            $.getProvinceWithRule(data);
+            $.getProvinceWithRule(data,1);
             $.showProvinceRank(data);
         }
         function getCityByProvinceCallback(data){

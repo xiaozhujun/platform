@@ -403,7 +403,7 @@
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
-        GROUP BY cr.unitaddress
+        GROUP BY cr.unitaddress  ORDER BY  craneNumber desc
     </select>
     <select id="getCityInfoByCondition" parameterType="map" resultType="map">
         SELECT a.id,a.city,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
@@ -427,7 +427,7 @@
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
-        GROUP BY a.city
+        GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
     <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
          SELECT a.id,a.area,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
@@ -454,6 +454,6 @@
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
-        GROUP BY a.area
+        GROUP BY a.area  ORDER BY  craneNumber desc
     </select>
 </mapper>

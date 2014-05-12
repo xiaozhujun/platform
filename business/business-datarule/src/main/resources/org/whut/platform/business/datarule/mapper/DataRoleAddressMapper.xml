@@ -76,7 +76,7 @@
           FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
           WHERE u.id=#{userId} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
           AND a.id=cr.addressId
-          GROUP BY a.province order by avgRiskValue desc
+          GROUP BY a.province order by craneNumber desc
     </select>
     <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
           SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
@@ -102,7 +102,7 @@
            </if>
           AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
           AND a.id=cr.addressId
-          GROUP BY a.province order by avgRiskValue desc
+          GROUP BY a.province order by craneNumber desc
     </select>
     <select id="getCityAndColorWithDataRole" parameterType="map" resultType="map">
         SELECT a.id,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color

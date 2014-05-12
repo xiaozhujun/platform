@@ -15,7 +15,6 @@
         <module>business-user</module>
         <module>business-address</module>
         <module>business-datarule</module>
-        <module>business-menu</module>
         <module>business-appuser</module>
         <module>business-app</module>
     </modules>

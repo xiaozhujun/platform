@@ -3,22 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>platform</artifactId>
+        <artifactId>business</artifactId>
         <groupId>platform</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>business</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>business-user</module>
-        <module>business-address</module>
-        <module>business-datarule</module>
-        <module>business-menu</module>
-        <module>business-appuser</module>
-        <module>business-app</module>
-    </modules>
+    <artifactId>business-app</artifactId>
 
 
 </project>

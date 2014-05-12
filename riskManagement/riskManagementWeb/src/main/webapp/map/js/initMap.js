@@ -207,6 +207,7 @@ $.extend({
                 var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                }else if(flag==1){
                     ply.addEventListener("click",function(e){
                         name=data.province;
                         var latlng=e.point;
@@ -225,10 +226,9 @@ $.extend({
                                 ply.setFillColor(color);
                             },delay);
                         }
-                        location ="cityRisk.jsp?province="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
-                    });
-                }else if(flag==1){
-
+                        $("#province option[value='"+data.province+"']").attr("selected",true);
+                        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");
+                        $.showCityRisk(data.province,1);                    });
                 }
             }
             if(maxPly){
@@ -250,6 +250,7 @@ $.extend({
                 var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                }else if(flag==1){
                     ply.addEventListener("click",function(e){
                         name=data.city;
                         var latlng=e.point;
@@ -268,10 +269,9 @@ $.extend({
                                 ply.setFillColor(color);
                             },delay);
                         }
-                        location="areaRisk.jsp?province="+province+"&city="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
-                    });
-                }else if(flag==1){
-
+                        $("#city option[value='"+data.city+"']").attr("selected",true);
+                        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":data.city}, $.getAreaByProvinceAndCityCallback,"json");
+                        $.showAreaRisk(province,data.city,1);                    });
                 }
             }
             if(maxPly){
@@ -293,6 +293,7 @@ $.extend({
                 var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                }else if(flag==1){
                     ply.addEventListener("click",function(e){
                         name=data.area;
                         var latlng=e.point;
@@ -311,10 +312,9 @@ $.extend({
                                 ply.setFillColor(color);
                             },delay);
                         }
-                        location="companyRisk.jsp?province="+province+"&city="+encodeURI(city)+"&area="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+                        $("#area option[value='"+data.area+"']").attr("selected",true);
+                        $.showCompanyRisk(city,data.area,12);
                     });
-                }else if(flag==1){
-
                 }
             }
             if(maxPly){

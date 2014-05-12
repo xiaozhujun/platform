@@ -288,20 +288,11 @@ $.extend({
             if(flag==0){
             }else if(flag==1){
                 $("#province option[value='"+province+"']").attr("selected",true);
-                $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province}, getCityByProvinceCallback,"json");
+                $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province}, $.getCityByProvinceCallback,"json");
                 $.showCityRisk(province,1);
             }
         });
-        function getCityByProvinceCallback(data){
-            if(data.code==200){
-                $("#city").html("");
-                var citySearch="<option value='0'>---请选择---</option>";
-                for(i=0;i<data.data.length;i++){
-                    citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
-                }
-                $("#city").html(citySearch);
-            }
-        }
+
     },
     cityClick:function cityClick(province,id,flag){
         var city=$(id).children(".rcontentItem").children(".unitFont").text();
@@ -309,20 +300,11 @@ $.extend({
             if(flag==0){
             }else if(flag==1){
                 $("#city option[value='"+city+"']").attr("selected",true);
-                $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":city}, getAreaByProvinceAndCityCallback,"json");
+                $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":city}, $.getAreaByProvinceAndCityCallback,"json");
                 $.showAreaRisk(province,city,1);
             }
         });
-        function getAreaByProvinceAndCityCallback(data){
-            if(data.code==200){
-                $("#area").html("");
-                var areaSearch="<option value='0'>---请选择---</option>";
-                for(i=0;i<data.data.length;i++){
-                    areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
-                }
-                $("#area").html(areaSearch);
-            }
-        }
+
     },
     areaClick:function areaClick(province_city,id,flag){
         var str=province_city.split(",");
@@ -480,5 +462,25 @@ $.extend({
             $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
         }
         $.switchToRiskRankTab();
+    },
+    getCityByProvinceCallback:function getCityByProvinceCallback(data){
+    if(data.code==200){
+        $("#city").html("");
+        var citySearch="<option value='0'>---请选择---</option>";
+        for(i=0;i<data.data.length;i++){
+            citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
+        }
+        $("#city").html(citySearch);
     }
+},
+    getAreaByProvinceAndCityCallback:function getAreaByProvinceAndCityCallback(data){
+    if(data.code==200){
+        $("#area").html("");
+        var areaSearch="<option value='0'>---请选择---</option>";
+        for(i=0;i<data.data.length;i++){
+            areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
+        }
+        $("#area").html(areaSearch);
+    }
+}
 });

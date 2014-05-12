@@ -306,13 +306,13 @@ public class CraneInspectReportService {
     public List<String>getUseTimeList(){
         return mapper.getUseTimeList();
     }
-    public List<CraneInspectReport>getCraneInfoByCondition(String province,String city,String area,String equipmentVariety,String useTime,float startValue,float endValue){
-        return mapper.getCraneInfoByCondition(province,city,area,equipmentVariety,useTime,startValue,endValue);
+    public List<CraneInspectReport>getCraneInfoByCondition(String province,String city,String area,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
+        return mapper.getCraneInfoByCondition(province,city,area,equipmentVariety,sTime,eTime,startValue,endValue);
     }
-    public List<Map<String,Float>> getCityInfoByCondition(String province,String equipmentVariety,String useTime,float startValue,float endValue){
-         return mapper.getCityInfoByCondition(province,equipmentVariety,useTime,startValue,endValue);
+    public List<Map<String,Float>> getCityInfoByCondition(String province,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
+         return mapper.getCityInfoByCondition(province,equipmentVariety,sTime,eTime,startValue,endValue);
     }
-    public  List<Map<String,Float>>getAreaInfoByCondition(String province,String city,String equipmentVariety,String useTime,float startValue,float endValue){
-          return mapper.getAreaInfoByCondition(province,city,equipmentVariety,useTime,startValue,endValue);
+    public  List<Map<String,Float>>getAreaInfoByCondition(String province,String city,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
+          return mapper.getAreaInfoByCondition(province,city,equipmentVariety,sTime,eTime,startValue,endValue);
     }
 }

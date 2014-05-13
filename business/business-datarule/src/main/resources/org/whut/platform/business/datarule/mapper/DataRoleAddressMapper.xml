@@ -154,6 +154,6 @@
         select a.province
         from user u,drole dr,user_drole udr,drole_address daddr,address a
         where u.id=udr.userId and udr.droleId=dr.id and daddr.droleId=dr.id and daddr.addressId=a.id
-        and u.id=#{userId} group by province
+        and u.id=#{userId} group by province order by a.id asc
     </select>
 </mapper>

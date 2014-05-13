@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporttest_riskvalue" language="groovy" pageWidth="1532" pageHeight="842" columnWidth="1532" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="435"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Unitaddress" class="java.lang.String"/>
+	<parameter name="whereCranevariety" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="whereRiskvalue" class="java.lang.String"/>
+	<parameter name="whereWeightLevel" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select DISTINCT(riskvalue.riskvalue) from craneinspectreport  LEFT JOIN riskvalue ON craneinspectreport.reportnumber=riskvalue.reportnumber where unitaddress=$P{Unitaddress} $P!{whereCranevariety} $P!{whereRiskvalue} $P!{whereWeightLevel}]]>
+	</queryString>
+	<field name="riskvalue" class="java.lang.Float"/>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="50" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{riskvalue}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="50" y="0" width="1482" height="20"/>
+				<subreportParameter name="whereWeightLevel">
+					<subreportParameterExpression><![CDATA[$P{whereWeightLevel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="whereCranevariety">
+					<subreportParameterExpression><![CDATA[$P{whereCranevariety}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Riskvalue">
+					<subreportParameterExpression><![CDATA[$F{riskvalue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Unitaddress">
+					<subreportParameterExpression><![CDATA[$P{Unitaddress}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "reporttest_cranevariety.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

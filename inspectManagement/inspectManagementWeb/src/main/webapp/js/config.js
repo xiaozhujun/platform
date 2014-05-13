@@ -24,6 +24,16 @@
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
+        },
+        "inspectTable":{
+            "add":"rs/inspectTable/add",
+            "getList":"rs/inspectTable/getList",
+            "delete":"rs/inspectTable/delete",
+            "update":"rs/inspectTable/update"
+        },
+        "inspectItem":{
+            "add":"rs/inspectItem/add",
+            "list":"rs/inspectItem/list"
         }
     }
 })(jQuery);

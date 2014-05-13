@@ -31,12 +31,13 @@
     <script type="text/javascript" src="map/js/mapLeftTab.js"></script>
     <script type="text/javascript" src="map/js/rightHidePanel.js"></script>
     <script type="text/javascript" src="map/js/search.js"></script>
+    <script type="text/javascript" src="map/js/conditionSearch.js"></script>
     <script src="search/js/common.js"></script>
     <script src="search/js/autoComplete.js" type="text/javascript"></script>
     <link href="search/css/style.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
-        #layout{  width:100%; margin:40px;  height:600px;
+        #layout{  width:100%; margin:40px;  height:100%;
             margin:0; padding:0;}
         h4{ margin:20px;}
     </style>
@@ -100,7 +101,7 @@
                     <span class='lineTab' id="drawCircle">画圈</span>
                 <span class="slider">
                     <div class="layout-slider">
-                        <input id="Slider4" type="slider" name="area" value="2;10" />
+                        <input id="Slider4" type="slider" name="area" value="1;10" />
                     </div>
                     <script type="text/javascript" charset="utf-8">
                         $.mySlider("province","city","area","equipVariety","useTime");
@@ -110,24 +111,32 @@
                 <div id="search" class="searchShow">
                   <span id="titleSearch">
                     <span class="searchItem" id="provinceSearch">
-                     <select id="province" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
+                     <select id="province">
                          <option value="0">---请选择---</option>
                      </select>
                     </span>
-                       <span id="citySearch"><select id="city" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
+                       <span id="citySearch"><select id="city">
                            <option value="0">---请选择---</option>
                        </select>
                        </span>
-                        <span id="areaSearch"><select id="area" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
+                        <span id="areaSearch"><select id="area">
                             <option value="0">---请选择---</option>
                         </select>
                          </span>
-                        <span id="equipVarietySearch"><select id="equipVariety" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
+                        <span id="equipVarietySearch"><select id="equipVariety">
                           <option value="0">---请选择---</option>
                         </select>
                          </span>
-                      <span id="useTimeSearch"><select id="useTime" onmousedown="this.sindex=this.selectedIndex; this.selectedIndex=-1;" onmousemove="if(this.sindex) this.selectedIndex=this.sindex;" onchange="this.sindex=this.selectedIndex;">
+                      <span id="useTimeSearch"><select id="useTime">
                           <option value="0">---请选择---</option>
+                          <option value="0;5">0—5</option>
+                          <option value="5;10">5—10</option>
+                          <option value="10;15">10—15</option>
+                          <option value="15;20">15—20</option>
+                          <option value="20;25">20—25</option>
+                          <option value="25;30">25—30</option>
+                          <option value="30;35">30—35</option>
+                          <option value="35;40">35—40</option>
                       </select>年
                          </span>
                        <span id="alert"></span>
@@ -154,7 +163,7 @@ $(document).ready(function(){
     $.rightHidePanel("panelarrow2","panelimg2","rightmain");
     $.showProvinceRisk(1);
     //省市区联动效果
-    $.addressLinkAge("province","city","area","unit","equipVariety","useTime",null,null,null);
+    $.addressLinkAge("province","city","area","unit","equipVariety","useTime","Slider4",null,null,null);
     //地图左边的tab页
     $.mapLeftTab("searchTab","search","drawCircle","drawLine");
     //地图导航

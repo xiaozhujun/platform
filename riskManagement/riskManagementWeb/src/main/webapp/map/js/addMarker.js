@@ -28,7 +28,8 @@ $.extend({
     createIcon:function createIcon(json){
         var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
         return icon;
-    }, //根据单位来添加覆盖物以及查询相应的信息
+    },
+    //根据单位来添加覆盖物以及查询相应的信息
     getCompanyInfoByUnitAddress:function getCompanyInfoByUnitAddress(unitAddress){
         $.clearAllMarker();
         $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress},getOneUnitAddressInfoCallback,"json");
@@ -42,8 +43,9 @@ $.extend({
     },
 //根据省市区来添加覆盖物以及查询相应的企业信息
     initAndAddMarker:function initAndAddMarker(city,area){
-        $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
-        $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area}, $.showRiskRank,"json");
+        $.conditionSearch("#province","#city","#area","#equipVariety","#useTime","#Slider4");
+        /*$.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area},areaInfoCallback,"json");
+        $.post($.URL.craneinspectreport.getAreaInfo,{"city":city,"area":area}, $.showUnitRiskRankCallback,"json");
         function areaInfoCallback(data){
             if(data.code==200){
                 $("#rightcontent").html("");
@@ -54,13 +56,14 @@ $.extend({
                     var chaoyangMarker= $.getMarkerArray(data);
                     //创建和初始化地图函数：
                     $.addMarker(chaoyangMarker);//向地图中添加marker
-                    $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":chaoyangMarker[0].title}, $.getAreaInfoByUnitAddressCallback,"json");
+                    $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":chaoyangMarker[0].title}, $.getAreaInfoByUnitAddressCallback,"json");
 
                 }
             }
-        }
+        }*/
 
     },
+    //鼠标点上去之后添加相应的标记
     mouseEvent:function mouseEvent(title,content,point,isOpen,icon,i){
         $.addOneMarker(title,content,point,isOpen,icon,i)
     },
@@ -112,11 +115,9 @@ $.extend({
         $(_id).click(function(){
             $.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
             var unitAddress=$("#"+this.id).children(".rcontentItem").children(".unitFont").text();
-            $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unitAddress}, $.getAreaInfoByUnitAddressCallback,"json");
+            $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":unitAddress}, $.getAreaInfoByUnitAddressCallback,"json");
         });
         // $.post($.URL.craneinspectreport.getCraneInspectReportInfoById,{"id":cid},getCraneInspectReportInfoByIdCallback,"json");
-
-
     },
     addOneMarker:function addOneMarker(title,content,point,isOpen,icon,i){
         var p0 = point.split("|")[0];
@@ -143,12 +144,12 @@ $.extend({
             _marker.addEventListener("click",function(){
                 this.openInfoWindow(_iw);
                 $.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
-                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title}, $.getAreaInfoByUnitAddressCallback,"json");
+                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":title}, $.getAreaInfoByUnitAddressCallback,"json");
             });
             _marker.addEventListener("mouseover",function(){
                 this.openInfoWindow(_iw);
                 $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoverCallback,"json");
-                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":title}, $.getAreaInfoByUnitAddressCallback,"json");
+                $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":title}, $.getAreaInfoByUnitAddressCallback,"json");
             });
             _marker.addEventListener("mouseout",function(){
                 $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoutCallback,"json");
@@ -187,7 +188,7 @@ $.extend({
         $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":unitAddress}, $.showUnitRiskRankCallback,"json");
     },
     showRiskInfo:function showRiskInfo(unit){
-        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"name":unit}, $.getAreaInfoByUnitAddressCallback,"json");
+        $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":unit}, $.getAreaInfoByUnitAddressCallback,"json");
     },
     rightShowInfoClick:function rightShowInfoClick(infoFontNum){
         $("#"+infoFontNum).click(function(){
@@ -235,17 +236,6 @@ $.extend({
     },
     showUnitRiskRankCallback:function showUnitRiskRankCallback(data){
         if(data.code==200){
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadUnitRiskRankValue(data);
-            }
-        }
-    },
-    showRiskRank:function showRiskRank(data){
-        if(data.code==200){
             $("#tab").show("");
             $("#rankTitle").html("");
             $("#riskrankContent").html("");
@@ -256,22 +246,9 @@ $.extend({
             }
         }
     },
-
     showAreaRank:function showAreaRank(data){
         if(data.code==200){
             $("#tab").show("");
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadAreaRiskRankValue(data);
-            }
-        }
-    },
-    showAreaRankShow:function showAreaRankShow(data){
-        if(data.code==200){
-            $("#tab").hide("");
             $("#rankTitle").html("");
             $("#riskrankContent").html("");
             if(data.data[0]==undefined){
@@ -293,33 +270,9 @@ $.extend({
             }
         }
     },
-    showCityRankShow:function showCityRankShow(data){
-        if(data.code==200){
-            $("#tab").hide("");
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadCityRiskRankValue(data);
-            }
-        }
-    },
     showProvinceRank:function showProvinceRank(data){
         if(data.code==200){
             $("#tab").show("");
-            $("#rankTitle").html("");
-            $("#riskrankContent").html("");
-            if(data.data[0]==undefined){
-                $("#riskrankContent").append("对不起,数据不存在!");
-            }else{
-                $.loadProvinceRiskRankValue(data);
-            }
-        }
-    },
-    showProvinceRankShow:function showProvinceRankShow(data){
-        if(data.code==200){
-            $("#tab").hide("");
             $("#rankTitle").html("");
             $("#riskrankContent").html("");
             if(data.data[0]==undefined){
@@ -333,11 +286,11 @@ $.extend({
         var province=$(id).children(".rcontentItem").children(".unitFont").text();
         $(id).click(function(){
             if(flag==0){
-                location ="cityRisk.jsp?province="+encodeURI(province);
             }else if(flag==1){
+                $("#province option[value='"+province+"']").attr("selected",true);
+                $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province}, $.getCityByProvinceCallback,"json");
                 $.showCityRisk(province,1);
             }
-
         });
 
     },
@@ -345,11 +298,13 @@ $.extend({
         var city=$(id).children(".rcontentItem").children(".unitFont").text();
         $(id).click(function(){
             if(flag==0){
-                location="areaRisk.jsp?province="+province+"&city="+encodeURI(city);
             }else if(flag==1){
+                $("#city option[value='"+city+"']").attr("selected",true);
+                $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":city}, $.getAreaByProvinceAndCityCallback,"json");
                 $.showAreaRisk(province,city,1);
             }
         });
+
     },
     areaClick:function areaClick(province_city,id,flag){
         var str=province_city.split(",");
@@ -358,6 +313,7 @@ $.extend({
             if(flag==0){
                 location="companyRisk.jsp?province="+str[0]+"&city="+encodeURI(str[1])+"&area="+encodeURI(area);
             }else if(flag==1){
+                $("#area option[value='"+area+"']").attr("selected",true);
                 $.showCompanyRisk(str[1],area,12);
             }
         });
@@ -428,8 +384,10 @@ $.extend({
             $.cityClick(data.str,"#riskcontent"+data.data[i].id,1);
             $.riskContentClick("riskcontent"+data.data[i].id);
         }
+        $.switchToRiskRankTab();
     },
     loadProvinceRiskRankValue:function loadProvinceRiskRankValue(data){
+        $.switchToRiskRankTab();
         $("#rankTitle").html("");
         $("#riskrankContent").html("");
         var rankTitle="<div id='riskttitle'><span class='rtitlerank'>风险排名</span><span class='rtitleItem'>省名</span><span class='rtitleriskItem'>设备数</span></div>";
@@ -437,23 +395,15 @@ $.extend({
         for(var i=0;i<data.data.length;i++){
             var rankContent;
             if(i%2==0){
-                if(data.data[i].craneNumber="null"){
-                    data.data[i].craneNumber="0";
-                }else{
-                }
                 rankContent="<div class='riskcontentEven' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].province+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].craneNumber+"</span></span></div>"
             }else{
-                if(data.data[i].craneNumber=="null"){
-                    data.data[i].craneNumber="0";
-                }else{
-                }
                 rankContent="<div class='riskcontent' id='riskcontent"+data.data[i].id+"'>"+"<span class='rrank'>"+(i+1)+"</span>" +"<span class='rcontentItem'><span class='unitFont'>"+data.data[i].province+"</span></span>" +"<span class='riskItem'><span class='riskFont'>"+data.data[i].craneNumber+"</span></span></div>"
             }
             $("#riskrankContent").append(rankContent);
             $.provinceClick("#riskcontent"+data.data[i].id,1);
             $.riskContentClick("riskcontent"+data.data[i].id);
-
         }
+        $.switchToRiskRankTab();
     },
     loadAreaRiskRankValue:function loadAreaRiskRankValue(data){
         $("#rankTitle").html("");
@@ -481,6 +431,7 @@ $.extend({
             $.areaClick(data.str,"#riskcontent"+data.data[i].id,1);
             $.riskContentClick("riskcontent"+data.data[i].id);
         }
+        $.switchToRiskRankTab();
     },
     loadUnitRiskRankValue:function loadUnitRiskRankValue(data){
         $("#rankTitle").html("");
@@ -510,5 +461,26 @@ $.extend({
             $.rightTabMouseEvent("riskcontent"+data.data[i].id);
             $.rightTabMouseClickEvent("riskcontent"+data.data[i].id);
         }
+        $.switchToRiskRankTab();
+    },
+    getCityByProvinceCallback:function getCityByProvinceCallback(data){
+    if(data.code==200){
+        $("#city").html("");
+        var citySearch="<option value='0'>---请选择---</option>";
+        for(i=0;i<data.data.length;i++){
+            citySearch+="<option value='"+data.data[i].city+"'>"+data.data[i].city+"</option>";
+        }
+        $("#city").html(citySearch);
     }
+},
+    getAreaByProvinceAndCityCallback:function getAreaByProvinceAndCityCallback(data){
+    if(data.code==200){
+        $("#area").html("");
+        var areaSearch="<option value='0'>---请选择---</option>";
+        for(i=0;i<data.data.length;i++){
+            areaSearch+="<option value='"+data.data[i].area+"'>"+data.data[i].area+"</option>";
+        }
+        $("#area").html(areaSearch);
+    }
+}
 });

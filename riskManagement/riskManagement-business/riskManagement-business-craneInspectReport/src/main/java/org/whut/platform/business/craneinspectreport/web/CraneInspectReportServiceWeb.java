@@ -163,13 +163,13 @@ public class CraneInspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAreaInfoByUnitAddress")
-    public String  getAreaInfoByUnitAddress(@FormParam("name") String name){
+    public String  getAreaInfoByUnitAddress(@FormParam("unitAddress") String unitAddress){
         //通过unitAddress得到区域信息
-        if(name==null||name.trim().equals("")){
+        if(unitAddress==null||unitAddress.trim().equals("")){
             return  JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        List<CraneInspectReport> list=craneInspectReportService.getInfoByUnitAddress(name);
-        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,name);
+        List<CraneInspectReport> list=craneInspectReportService.getInfoByUnitAddress(unitAddress);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,unitAddress);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -424,10 +424,27 @@ public class CraneInspectReportServiceWeb {
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getCityInfoByProvinceEquipmentVariety")
+    @Path("/getCityInfoByCondition")
     @POST
-    public String getCityInfoByProvinceEquipmentVariety(@FormParam("province") String province,@FormParam("equipmentVariety")String equipmentVariety){
-        List<Map<String,Float>> list = craneInspectReportService.getCityInfoByProvinceEquipmentVariety(province,equipmentVariety);
+    public String getCityInfoByCondition(@FormParam("province") String province,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
+        List<Map<String,Float>> list=new ArrayList<Map<String, Float>>();
+        if(value.equals("0")&&useTime.equals("0")){
+            list= craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,"0","0",0f,0f);
+        }else if(!value.equals("0")&&useTime.equals("0")){
+            String[] values= value.split(";");
+            float startValue = Float.parseFloat(values[0]);
+            float endValue=Float.parseFloat(values[1]);
+            list= craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,"0","0",startValue,endValue);
+        }else if(value.equals("0")&&!useTime.equals("0")){
+            String[] useTimes=useTime.split(";");
+            list= craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,useTimes[0],useTimes[1],0f,0f);
+        }else if(!value.equals("0")&&!useTime.equals("0")){
+            String[] values= value.split(";");
+            float startValue = Float.parseFloat(values[0]);
+            float endValue=Float.parseFloat(values[1]);
+            String[] useTimes=useTime.split(";");
+            list= craneInspectReportService.getCityInfoByCondition(province,equipmentVariety,useTimes[0],useTimes[1],startValue,endValue);
+        }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -441,12 +458,30 @@ public class CraneInspectReportServiceWeb {
         List<Map<String,Float>> list = craneInspectReportService.getAreaRiskRankFormRiskRange(startValue,endValue,province,city);
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getAreaInfoByProvinceEquipmentVariety")
+    @Path("/getAreaInfoByCondition")
     @POST
-    public String getAreaInfoByProvinceEquipmentVariety(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety){
+    public String getAreaInfoByCondition(@FormParam("province") String province,@FormParam("city")String city,@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
         String province_city=province+","+city;
-        List<Map<String,Float>> list = craneInspectReportService.getAreaInfoByProvinceEquipmentVariety(province,city,equipmentVariety);
+        List<Map<String,Float>> list =new ArrayList<Map<String, Float>>();
+        if(value.equals("0")&&useTime.equals("0")){
+            list=craneInspectReportService.getAreaInfoByCondition(province, city, equipmentVariety, "0","0",0f,0f);
+        }else if(!value.equals("0")&&useTime.equals("0")){
+            String[] values= value.split(";");
+            float startValue = Float.parseFloat(values[0]);
+            float endValue=Float.parseFloat(values[1]);
+            list=craneInspectReportService.getAreaInfoByCondition(province, city, equipmentVariety, "0","0",startValue,endValue);
+        }else if(value.equals("0")&&!useTime.equals("0")){
+            String[] useTimes=useTime.split(";");
+            list=craneInspectReportService.getAreaInfoByCondition(province, city, equipmentVariety, useTimes[0],useTimes[1],0f,0f);
+        }else if(!value.equals("0")&&!useTime.equals("0")){
+            String[] values= value.split(";");
+            float startValue = Float.parseFloat(values[0]);
+            float endValue=Float.parseFloat(values[1]);
+            String[] useTimes=useTime.split(";");
+            list=craneInspectReportService.getAreaInfoByCondition(province, city, equipmentVariety, useTimes[0],useTimes[1],startValue,endValue);
+        }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,province_city);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -500,10 +535,26 @@ public class CraneInspectReportServiceWeb {
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
-    @Path("/getCraneInfoByEquipmentVariety")
-    public String getCraneInfoByEquipmentVariety(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("equipVariety")String equipVariety){
-         List<CraneInspectReport> list=craneInspectReportService.getCraneInfoByEquipmentVariety(province,city,area,equipVariety);
+    @Path("/getCraneInfoByCondition")
+    public String getCraneInfoByCondition(@FormParam("province")String province,@FormParam("city")String city,@FormParam("area")String area,@FormParam("equipmentVariety")String equipVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
+         List<CraneInspectReport> list=new ArrayList<CraneInspectReport>();
+         if(value.equals("0")&&useTime.equals("0")){
+             list=craneInspectReportService.getCraneInfoByCondition(province,city,area,equipVariety,"0","0",0f,0f);
+         }else if(!value.equals("0")&&useTime.equals("0")){
+             String[] values= value.split(";");
+             float startValue = Float.parseFloat(values[0]);
+             float endValue=Float.parseFloat(values[1]);
+             list=craneInspectReportService.getCraneInfoByCondition(province, city, area, equipVariety,"0","0",startValue,endValue);
+         }else if(value.equals("0")&&!useTime.equals("0")){
+             String[] useTimes=useTime.split(";");
+             list=craneInspectReportService.getCraneInfoByCondition(province, city, area, equipVariety,useTimes[0],useTimes[1],0f,0f);
+         }else if(!value.equals("0")&&!useTime.equals("0")){
+             String[] values= value.split(";");
+             float startValue = Float.parseFloat(values[0]);
+             float endValue=Float.parseFloat(values[1]);
+             String[] useTimes=useTime.split(";");
+             list=craneInspectReportService.getCraneInfoByCondition(province, city, area, equipVariety,useTimes[0],useTimes[1],startValue,endValue);
+         }
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-
 }

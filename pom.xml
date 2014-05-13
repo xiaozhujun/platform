@@ -13,6 +13,7 @@
         <module>business</module>
         <module>riskManagement</module>
         <module>inspectManagement</module>
+        <module>realtimeMonitor</module>
         <!--<module>auth</module>-->
     </modules>
 

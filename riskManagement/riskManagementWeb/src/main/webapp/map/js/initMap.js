@@ -48,7 +48,6 @@ $.extend({
         function getProvinceCallBack(data){
             $.getProvinceWithRule(data,flag);
             if(flag==0){
-            $.showProvinceRankShow(data);
             }else if(flag==1){
             $.showProvinceRank(data);
             }
@@ -59,7 +58,8 @@ $.extend({
         $.clearAllMarker;
         /*根据省以及session查出这个人的city*/
         //var jsonString={};
-        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province},getCityCallBack,"json");
+        $.conditionSearch("#province","#city","#area","#equipVariety","#useTime","#Slider4");
+       /* $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":province},getCityCallBack,"json");
         function getCityCallBack(data){
             $.getCityWithRule(province,data,flag);
             if(flag==0){
@@ -67,13 +67,14 @@ $.extend({
             }else if(flag==1){
             $.showCityRank(data);
             }
-        }
+        }*/
     },
     initAreaWithDataRule:function initAreaWithDataRule(province,city,size,flag){
         $.initMap(city,size);
         $.clearAllMarker;
         /*根据省和市以及session查出这个人的area*/
-        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province ,"city":city},getAreaCallBack,"json");
+        $.conditionSearch("#province","#city","#area","#equipVariety","#useTime","#Slider4");
+       /* $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province ,"city":city},getAreaCallBack,"json");
         function getAreaCallBack(data){
             $.getAreaWithRule(province,city,data,flag);
             if(flag==0){
@@ -81,7 +82,7 @@ $.extend({
             }else if(flag==1){
                 $.showAreaRank(data);
             }
-        }
+        }*/
     },
     showProvinceRisk:function showProvinceRisk(flag)
     {
@@ -109,6 +110,7 @@ $.extend({
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);
     $.initMap(area,size);
+
 },
     /*
     画圆功能
@@ -205,6 +207,7 @@ $.extend({
                 var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                }else if(flag==1){
                     ply.addEventListener("click",function(e){
                         name=data.province;
                         var latlng=e.point;
@@ -223,10 +226,9 @@ $.extend({
                                 ply.setFillColor(color);
                             },delay);
                         }
-                        location ="cityRisk.jsp?province="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
-                    });
-                }else if(flag==1){
-
+                        $("#province option[value='"+data.province+"']").attr("selected",true);
+                        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");
+                        $.showCityRisk(data.province,1);                    });
                 }
             }
             if(maxPly){
@@ -248,6 +250,7 @@ $.extend({
                 var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                }else if(flag==1){
                     ply.addEventListener("click",function(e){
                         name=data.city;
                         var latlng=e.point;
@@ -266,10 +269,9 @@ $.extend({
                                 ply.setFillColor(color);
                             },delay);
                         }
-                        location="areaRisk.jsp?province="+province+"&city="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
-                    });
-                }else if(flag==1){
-
+                        $("#city option[value='"+data.city+"']").attr("selected",true);
+                        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":data.city}, $.getAreaByProvinceAndCityCallback,"json");
+                        $.showAreaRisk(province,data.city,1);                    });
                 }
             }
             if(maxPly){
@@ -291,6 +293,7 @@ $.extend({
                 var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
                 map.addOverlay(ply);
                 if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                }else if(flag==1){
                     ply.addEventListener("click",function(e){
                         name=data.area;
                         var latlng=e.point;
@@ -309,10 +312,9 @@ $.extend({
                                 ply.setFillColor(color);
                             },delay);
                         }
-                        location="companyRisk.jsp?province="+province+"&city="+encodeURI(city)+"&area="+encodeURI(name)+"&lat="+encodeURI(latlng.lat)+"&lng="+encodeURI(latlng.lng);
+                        $("#area option[value='"+data.area+"']").attr("selected",true);
+                        $.showCompanyRisk(city,data.area,12);
                     });
-                }else if(flag==1){
-
                 }
             }
             if(maxPly){
@@ -389,5 +391,8 @@ $.extend({
         }
         $.clearAllMarker();
         $.addMarker(riskRankArray);//向地图中添加marker
+    },
+    switchToRiskRankTab:function switchToRiskRankTab(){
+        $.rTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
     }
 });

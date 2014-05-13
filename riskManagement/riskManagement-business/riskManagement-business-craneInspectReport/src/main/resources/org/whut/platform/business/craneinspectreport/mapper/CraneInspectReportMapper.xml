@@ -373,27 +373,87 @@
     </select>
     <select id="getUseTimeList" resultType="java.lang.String">
         SELECT round(DATEDIFF(NOW(),cr.manufacturedate)/365) as useTime
-        FROM craneinspectreport cr
+        FROM craneinspectreport cr GROUP BY useTime order by useTime asc
     </select>
-    <select id="getCraneInfoByEquipmentVariety" parameterType="map" resultMap="craneInspectReportResultMap">
+    <select id="getCraneInfoByCondition" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
         FROM craneinspectreport cr,address a,riskvalue r
         WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber
-        AND a.province=#{province} AND a.city=#{city} AND a.area=#{area} AND cr.equipmentvariety=#{equipmentVariety}
-        GROUP BY cr.unitaddress
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test="city!=null">
+            AND a.city=#{city}
+        </if>
+        <if test="area!=null">
+            AND a.area=#{area}
+        </if>
+       <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+      <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            AND  #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY cr.unitaddress  ORDER BY  craneNumber desc
     </select>
-    <select id="getCityInfoByProvinceEquipmentVariety" parameterType="map" resultType="map">
+    <select id="getCityInfoByCondition" parameterType="map" resultType="map">
         SELECT a.id,a.city,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
         WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
-        AND a.province=#{province}  AND cr.equipmentvariety=#{equipmentVariety}
-        GROUP BY a.city
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
-    <select id="getAreaInfoByProvinceEquipmentVariety" parameterType="map" resultType="map">
+    <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
          SELECT a.id,a.area,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
         WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
-        AND a.province=#{province} AND a.city=#{city} AND cr.equipmentvariety=#{equipmentVariety}
-        GROUP BY a.area
+         <if test="province!=null">
+             AND a.province=#{province}
+         </if>
+        <if test="city!=null">
+            AND a.city=#{city}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+           and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.area  ORDER BY  craneNumber desc
     </select>
 </mapper>

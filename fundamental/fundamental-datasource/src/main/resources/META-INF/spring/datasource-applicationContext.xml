@@ -8,4 +8,8 @@
     <bean id="inspectmanagement" class="platform.fundamental.datasource.DbcpFactoryBean">
         <property name="dbname" value="inspectmanagement"></property>
     </bean>
+    <bean id="realtimemonitor" class="platform.fundamental.datasource.DbcpFactoryBean">
+        <property name="dbname" value="realtimemonitor"></property>
+    </bean>
+
 </beans>

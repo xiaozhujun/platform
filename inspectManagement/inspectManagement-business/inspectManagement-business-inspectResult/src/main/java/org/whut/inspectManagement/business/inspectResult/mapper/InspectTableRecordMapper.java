@@ -10,5 +10,6 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  * Time: 下午2:08
  * To change this template use File | Settings | File Templates.
  */
+
 public interface InspectTableRecordMapper extends AbstractMapper<InspectTableRecord> {
 }

@@ -7,6 +7,7 @@ package org.whut.inspectManagement.business.inspectResult.entity;
  * Time: 上午9:47
  * To change this template use File | Settings | File Templates.
  */
+
 public class InspectItemRecord {
     private long id;
     private long inspectTableId;

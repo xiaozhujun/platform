@@ -8,6 +8,7 @@ import java.util.Date;
  * Time: 上午10:17
  * To change this template use File | Settings | File Templates.
  */
+
 public class InspectTableRecord {
     private long id;
     private long inspectTableId;

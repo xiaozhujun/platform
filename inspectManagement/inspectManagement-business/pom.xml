@@ -10,6 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>inspectManagement-business</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>inspectManagement-business-inspectResult</module>
+    </modules>
 
 
 </project>

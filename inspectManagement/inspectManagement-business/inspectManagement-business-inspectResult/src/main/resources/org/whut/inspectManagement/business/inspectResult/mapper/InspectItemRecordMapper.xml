@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecordMapper">
+    <sql id="inspectItemRecord_fields">
+		ID,INSPECTTABLEID,INSPECTTAGID,INSPECTITEMID,INSPECTCHOICEID,INSPECTCHOICEVALUE,INSPECTTABLERECORDID,USERID,DEVICEID,APPID,NOTE
+	</sql>
+
+    <resultMap id="inspectItemRecordResultMap" type="InspectItemRecord">
+        <id property="id" column="ID" />
+        <result property="inspectTableId" column="INSPECTTABLEID" />
+        <result property="inspectTagId" column="INSPECTTAGID" />
+        <result property="inspectItemId" column="INSPECTITEMID"/>
+        <result property="inspectChoiceId" column="INSPECTCHOICEID"/>
+        <result property="inspectChoiceValue" column="INSPECTCHOICEVALUE"/>
+        <result property="inspectTableRecordId" column="INSPECTTABLERECORDID"/>
+        <result property="userId" column="USERID"/>
+        <result property="deviceId" column="DEVICEID"/>
+        <result property="appId" column="APPID"/>
+        <result property="note" column="NOTE"/>
+    </resultMap>
+
+    <insert id="add" parameterType="InspectItemRecord"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        inspectitemrecord(
+        <include refid="inspectItemRecord_fields" />
+        )
+        VALUES (#{id}, #{inspectTableId}, #{inspectTagId},#{inspectItemId},#{inspectChoiceId},#{inspectChoiceValue},#{inspectTableRecordId},#{userId},#{deviceId},#{appId},#{note});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM inspectitemrecord
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </select>
+
+
+    <update id="update" parameterType="InspectItemRecord">
+        UPDATE inpectitemrecord
+        <set>
+            <if test="inspectTableId != null">INSPECTTABLEID=#{inspectTableId},</if>
+            <if test="inspectTagId != null">INSPECTTAGID=#{inspectTagId},</if>
+            <if test="inspectItemId != null">INSPECTITEMID=#{inspectItemId},</if>
+            <if test="inspectChoiceId !=null">INSPECTCHOICEID=#{inspectChoiceId},</if>
+            <if test="inspectChoiceValue !=null">INSPECTCHOICEVALUE=#{inspectChoiceValue},</if>
+            <if test="inspeceTableRecordId !=null">INSPECTTABLERECORDID=#{inspectTableRecordId},</if>
+            <if test="userId !=null">USERID=#{userId},</if>
+            <if test="deviceId !=null">DEVICEID=#{deviceId},</if>
+            <if test="appId !=null">APPID=#{appId},</if>
+            <if test="note !=null">NOTE=#{note}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="InspectItemRecord">
+        DELETE FROM inspectitemrecord
+        <where>
+            <if test="id != null">ID=#{id}</if>
+
+            <if test="inspectTableId != null"> AND INSPECTTABLEID=#{inspectTableId}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="InspectItemRecord" resultMap="inspectItemRecordResultMap">
+        SELECT
+        <include refid="inspectItemRecord_fields" />
+        FROM inspectitemrecord WHERE ID=#{id}
+    </select>
+</mapper>

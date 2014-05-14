@@ -187,7 +187,7 @@
      AND cr.unitAddress=#{unitAddress}
     </select>
     <select id="showRiskRank" parameterType="map" resultMap="craneInspectReportResultMap">
-         SELECT cr.id,cr.unitAddress,r.riskvalue
+         SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentVariety
          FROM craneinspectreport cr,riskvalue r,address a
          WHERE cr.reportnumber=r.reportnumber
          AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}

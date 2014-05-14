@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporttest_area" language="groovy" pageWidth="1100" pageHeight="802" whenNoDataType="NoDataSection" columnWidth="1100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Province" class="java.lang.String"/>
+	<parameter name="City" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="whereArea" class="java.lang.String"/>
+	<parameter name="whereUnitAddress" class="java.lang.String"/>
+	<parameter name="whereCranevariety" class="java.lang.String"/>
+	<parameter name="whereRiskvalue" class="java.lang.String"/>
+	<parameter name="whereWeightLevel" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select distinct(area) from address,craneinspectreport,riskvalue where province=$P{Province} and city=$P{City}
+ and address.id=craneinspectreport.addressid
+and craneinspectreport.reportnumber=riskvalue.reportnumber
+ $P!{whereArea} $P!{whereCranevariety} $P!{whereUnitAddress} $P!{whereRiskvalue} $P!{whereWeightLevel}]]>
+	</queryString>
+	<field name="area" class="java.lang.String"/>
+	<variable name="count" class="java.lang.String"/>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="50" height="20" isRemoveLineWhenBlank="true"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{area}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="50" y="0" width="1050" height="20"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="whereWeightLevel">
+					<subreportParameterExpression><![CDATA[$P{whereWeightLevel}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="whereCranevariety">
+					<subreportParameterExpression><![CDATA[$P{whereCranevariety}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="whereRiskvalue">
+					<subreportParameterExpression><![CDATA[$P{whereRiskvalue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Location">
+					<subreportParameterExpression><![CDATA[$P{Province}+'省'+$P{City}+$F{area}+'%']]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="whereUnitAddress">
+					<subreportParameterExpression><![CDATA[$P{whereUnitAddress}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"reporttest_unitaddress.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

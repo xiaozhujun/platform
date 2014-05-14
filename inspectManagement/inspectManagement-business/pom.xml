@@ -13,11 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>inspectManagement-business-inspectTable</module>
-    </modules>
-
-    <artifactId>inspectManagement-business</artifactId>
-    <packaging>pom</packaging>
-    <modules>
         <module>inspectManagement-business-inspectResult</module>
     </modules>
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper">
+    <sql id="inspectTable_fields">
+          ID,NAME,DESCRIPTION,CREATETIME,APPID
+    </sql>
+    <resultMap id="inspectTableResultMap" type="inspectTable">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="createtime" column="CREATETIME" />
+        <result property="description" column="DESCRIPTION"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="inspectTable"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        inspecttable(
+        <include refid="inspectTable_fields" />
+        )
+        VALUES (#{id}, #{name}, #{description},#{createtime},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getList"  resultMap="inspectTableResultMap">
+        SELECT *
+        FROM inspecttable
+    </select>
+
+    <update id="update" parameterType="inspectTable">
+        UPDATE inspecttable
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            <if test="description != null">DESCRIPTION=#{description},</if>
+            <if test="appId != null">APPID=#{appId},</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="User">
+        DELETE FROM  inspecttable
+        <where>
+            <if test="id != null">ID=#{id}</if>
+
+            <if test="name != null"> AND NAME=#{name}</if>
+        </where>
+    </delete>
+
+    <select id="findByCondition" parameterType="map" resultMap="inspectTableResultMap">
+        SELECT
+        <include refid="inspectTable_fields"/>
+        FROM inspecttable
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </where>
+    </select>
+    <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT
+        id
+        FROM inspecttable
+        WHERE name=#{name}
+    </select>
+</mapper>

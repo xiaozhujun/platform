@@ -18,7 +18,7 @@
                 data:[{"text":"false","id":0},{"text":"true","id":1}],
                 valueFieldID:'isInputSelect'
             })
-            $.post($.URL.inspectTable.list,null,listCallBack,"json");
+            $.post($.URL.inspectTable.getList,null,listCallBack,"json");
             function listCallBack(data){
                 if(data.code==200){
                     alert("in");
@@ -32,6 +32,8 @@
 
                     $("#inspectTableId").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,
                         data:myData,
+                        valueField:'id',
+                        textField:'text',
                         valueFieldID:'inspectTableIdSelect'
                     })
                 }
@@ -39,9 +41,21 @@
             $("#submitBtn").click(function(){
                 var data={};
                 data.name=$("#name").val;
-                data.description=$("description").val;
-                data
+                data.description=$("#description").val;
+                data.inspectTable=$("#inspectTableId").val();
+                data.inspectArea=$("#area").val() ;
+                data.number=$("#number").val();
+                data.isinput=$("#isIput").val();
+                data.inspectChoice=$("#inspectChoice").val();
+                $.post($.URL.inspectItem.add,data,addCallBack,"json")
             })
+            function addCallBack(data){
+                if(data.code==200){
+                    alert("操作成功")
+                }
+                else
+                alert("操作失败")
+            }
         })
 
     </script>
@@ -61,7 +75,13 @@
         <tr>
             <td align="right" class="l-table-edit-td">点检项:</td>
             <td align="left" class="l-table-edit-td">
-                <input name="name" type="text" id="name" ltype="text" /></td>
+                <input name="name" type="text" id="name" type="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">描述:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="description" type="text" id="description" type="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>
@@ -73,13 +93,13 @@
         <tr>
             <td align="right" class="l-table-edit-td">所属区域:</td>
             <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="userRole">
+                <input type="text"  id="area">
             </td>
         </tr>
         <tr>
             <td align="right" class="l-table-edit-td">编号:</td>
             <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="number">
+                <input type="text"  id="number">
             </td>
         </tr>
         <tr>
@@ -91,7 +111,7 @@
         <tr>
             <td align="right" class="1-table-edit-td">点检选值:</td>
             <td align="left" class="1-table-edit-td">
-                <input type="text" readonly="true" id="inspectChoice">
+                <input type="text"  id="inspectChoice">
             </td>
         </tr>
     </table>

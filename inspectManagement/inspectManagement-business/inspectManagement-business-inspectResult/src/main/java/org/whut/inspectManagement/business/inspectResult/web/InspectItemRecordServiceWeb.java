@@ -7,6 +7,5 @@ package org.whut.inspectManagement.business.inspectResult.web;
  * Time: 下午2:11
  * To change this template use File | Settings | File Templates.
  */
-
 public class InspectItemRecordServiceWeb {
 }

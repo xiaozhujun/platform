@@ -10,6 +10,5 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  * Time: 上午10:17
  * To change this template use File | Settings | File Templates.
  */
-
 public interface InspectItemRecordMapper extends AbstractMapper<InspectItemRecord>{
 }

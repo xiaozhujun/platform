@@ -68,6 +68,7 @@
             <if test="inspectTableId != null"> AND INSPECTTABLEID=#{inspectTableId}</if>
         </where>
     </delete>
+
     <select id="get" parameterType="InspectItemRecord" resultMap="inspectItemRecordResultMap">
         SELECT
         <include refid="inspectItemRecord_fields" />

@@ -1,7 +1,6 @@
 package org.whut.inspectManagement.business.inspectTable.entity;
 
 import java.util.Date;
-
 /**
  * Created with IntelliJ IDEA.
  * User: choumiaoer

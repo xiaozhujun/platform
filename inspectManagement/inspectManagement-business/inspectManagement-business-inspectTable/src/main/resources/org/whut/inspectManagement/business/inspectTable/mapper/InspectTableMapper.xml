@@ -13,7 +13,6 @@
         <result property="description" column="DESCRIPTION"/>
         <result property="appId" column="APPID"/>
     </resultMap>
-
     <insert id="add" parameterType="inspectTable"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO

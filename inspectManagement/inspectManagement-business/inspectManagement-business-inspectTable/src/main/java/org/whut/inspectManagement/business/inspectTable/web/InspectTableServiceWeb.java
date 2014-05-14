@@ -12,7 +12,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: choumiaoer

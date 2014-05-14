@@ -6,7 +6,6 @@ import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper
 
 import java.util.HashMap;
 import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: choumiaoer

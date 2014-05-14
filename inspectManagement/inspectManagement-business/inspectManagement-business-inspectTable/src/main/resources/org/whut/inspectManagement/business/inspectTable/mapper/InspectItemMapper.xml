@@ -15,7 +15,6 @@
         <result property="inspectAreaId" column="INSPECTAREAID"/>
         <result property="number" column="NUMBER"/>
     </resultMap>
-
     <insert id="add" parameterType="inspectItem"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO

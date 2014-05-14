@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.inspectResult.mapper.InspectTableRecordMapper">
+    <sql id="inspectTableRecord_fields">
+		ID,INSPECTTABLEID,USERID,CREATETIME,EXCEPTIONCOUNT,APPID
+	</sql>
+
+    <resultMap id="inspectTableRecordResultMap" type="InspectTableRecord">
+        <id property="id" column="ID" />
+        <result property="inspectTableId" column="INSPECTTABLEID" />
+        <result property="userId" column="USERID" />
+        <result property="createTime" column="CREATETIME"/>
+        <result property="exceptionCount" column="EXCEPTIONCOUNT"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="InspectTableRecord"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        inspecttablerecord(
+        <include refid="inspectTableRecord_fields" />
+        )
+        VALUES (#{id}, #{inspectTableId}, #{userId},#{createTime},#{exceptionCount},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM inspecttablerecord
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </select>
+
+
+    <update id="update" parameterType="InspectTableRecord">
+        UPDATE inpecttablerecord
+        <set>
+            <if test="inspectTableId != null">INSPECTTABLEID=#{inspectTableId},</if>
+            <if test="userId != null">USERID=#{userId},</if>
+            <if test="createTime != null">CREATETIME=#{createTime},</if>
+            <if test="exceptionCount !=null">EXCEPTIONCOUNT=#{exceptionCount},</if>
+            <if test="appId !=null">APPID=#{appId}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="InspectTableRecord">
+        DELETE FROM inspecttablerecord
+        <where>
+            <if test="id != null">ID=#{id}</if>
+
+            <if test="inspectTableId != null"> AND INSPECTTABLEID=#{inspectTableId}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="InspectTableRecord" resultMap="inspectTableRecordResultMap">
+        SELECT
+        <include refid="inspectTableRecord_fields" />
+        FROM inspecttablerecord WHERE ID=#{id}
+    </select>
+</mapper>

@@ -84,6 +84,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-Department</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
     </dependencies>
 

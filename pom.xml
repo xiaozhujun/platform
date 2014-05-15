@@ -40,6 +40,7 @@
         <commons.compress.version>1.4.1</commons.compress.version>
         <mongo.driver.version>2.11.3</mongo.driver.version>
         <jedis.version>2.1.0</jedis.version>
+        <logback.ext.version>0.1.1</logback.ext.version>
     </properties>
 
     <dependencyManagement>
@@ -134,6 +135,11 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.logback-extensions</groupId>
+                <artifactId>logback-ext-spring</artifactId>
+                <version>${logback.ext.version}</version>
             </dependency>
             <!-- logback-classic是log4j的一个 改良版本,他完整的实现了slf4j的api -->
             <dependency>

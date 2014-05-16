@@ -8,4 +8,5 @@ package org.whut.platform.business.riskmodel.mapper;
  * To change this template use File | Settings | File Templates.
  */
 public class RiskModelMapper {
+
 }

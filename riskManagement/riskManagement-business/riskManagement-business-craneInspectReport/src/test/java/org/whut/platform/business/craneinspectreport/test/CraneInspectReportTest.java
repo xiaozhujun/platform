@@ -1,9 +1,15 @@
 package org.whut.platform.business.craneinspectreport.test;
 
+import com.mongodb.DB;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
+import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,15 +52,26 @@ public class CraneInspectReportTest {
                }
            }
     }
+    public void getJsonDocument(){
+        MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
+       /* DBObject d=mongoConnector.getDBObjectByReportNumber("71795760-0#2013-QZD0024");
+        System.out.println(d.get("unitaddress"));*/
+       /* List<String> d=mongoConnector.getOneColumn("reportnumber");
+        for(String s:d){
+            System.out.println(s);
+        }*/
+    }
     public static void main(String[] args){
         /*CraneInspectReportTest craneInspectReportTest=new CraneInspectReportTest();
       *//*  System.out.print(craneInspectReportTest.getDocumentJson("E://门座式起重机.xls"));*//*
         craneInspectReportTest.parseExcel("E://门座式起重机.xls");*/
-        String s="Role_User"+"v";
+      /*  String s="Role_User"+"v";
         String[] str=s.split(";");
         for(int i=0;i<str.length;i++){
             System.out.print(str[i]);
-        }
+        }*/
+        CraneInspectReportTest test=new CraneInspectReportTest();
+        test.getJsonDocument();
 
     }
 }

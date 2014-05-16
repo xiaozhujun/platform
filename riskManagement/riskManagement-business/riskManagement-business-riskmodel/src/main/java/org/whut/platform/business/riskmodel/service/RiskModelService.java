@@ -8,4 +8,7 @@ package org.whut.platform.business.riskmodel.service;
  * To change this template use File | Settings | File Templates.
  */
 public class RiskModelService {
+
+
+
 }

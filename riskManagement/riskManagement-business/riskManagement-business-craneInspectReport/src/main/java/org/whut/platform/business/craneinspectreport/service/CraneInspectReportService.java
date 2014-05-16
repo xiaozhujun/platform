@@ -392,7 +392,7 @@ public class CraneInspectReportService {
         craneInspectReport.setCarSpeed((Float)d.get(WeightFactor.carSpeed));
         return craneInspectReport;
     }
-    public void batchInsertToRiskValue(List<Map<String,String>> mapList){
-        mapper.batchInsertToRiskValue(mapList);
+    public void InsertToRiskValue(String reportnumber,String riskvalue){
+        mapper.insertToRiskValue(reportnumber, riskvalue);
     }
 }

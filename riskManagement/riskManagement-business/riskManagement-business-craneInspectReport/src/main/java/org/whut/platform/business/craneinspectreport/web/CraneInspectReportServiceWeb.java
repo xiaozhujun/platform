@@ -581,7 +581,9 @@ public class CraneInspectReportServiceWeb {
             m.put("riskvalue",String.valueOf(riskValue));
             mapList.add(m);
         }
-        craneInspectReportService.batchInsertToRiskValue(mapList);
+        for(Map<String,String>m:mapList){
+            craneInspectReportService.InsertToRiskValue(m.get("reportnumber"),m.get("riskvalue"));
+        }
         return JsonResultUtils.getObjectResultByStringAsDefault(null,JsonResultUtils.Code.SUCCESS);
     }
     public Float calculateRisk(String className,CraneInspectReport craneInspectReport,String craneType){

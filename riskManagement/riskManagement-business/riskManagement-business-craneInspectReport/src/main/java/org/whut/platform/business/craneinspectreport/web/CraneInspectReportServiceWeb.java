@@ -558,13 +558,18 @@ public class CraneInspectReportServiceWeb {
          }
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/calculateRiskValue")
     public String calculateRiskValue(@FormParam("reportId") String reportId){
         //计算风险值，传过来的是uploaded_reportId,通过这些reportId找到对应的起重机，
         // 将相应的信息分装到craneInspectReport对象中，然后根据equipmentVariety
         //来查找craneTypeId，从而找到相应的riskModelId,然后找到className,动态的
         //选择class类来进行计算
+        String[] str=reportId.split(",");
+        for(int i=0;i<str.length;i++){
         String className=null;
-        List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(reportId));
+        List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(str[i]));
         List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
         List<Map<String,String>>mapList=new ArrayList<Map<String, String>>();
         for(CraneInspectReport craneInspectReport:craneList){
@@ -575,7 +580,7 @@ public class CraneInspectReportServiceWeb {
                craneInspectReportList.add(craneReport);
         }
         for(CraneInspectReport cr:craneInspectReportList){
-            Float riskValue=calculateRisk(className,cr,reportId);
+            Float riskValue=calculateRisk(className,cr,str[i]);
             Map<String,String> m=new HashMap<String,String>();
             m.put("reportnumber",cr.getReportNumber());
             m.put("riskvalue",String.valueOf(riskValue));
@@ -584,7 +589,8 @@ public class CraneInspectReportServiceWeb {
         for(Map<String,String>m:mapList){
             craneInspectReportService.InsertToRiskValue(m.get("reportnumber"),m.get("riskvalue"));
         }
-        return JsonResultUtils.getObjectResultByStringAsDefault(null,JsonResultUtils.Code.SUCCESS);
+    }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
     public Float calculateRisk(String className,CraneInspectReport craneInspectReport,String craneType){
          Float riskValue=0f;

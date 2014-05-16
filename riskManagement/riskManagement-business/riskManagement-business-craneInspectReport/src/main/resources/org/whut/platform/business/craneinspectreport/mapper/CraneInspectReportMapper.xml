@@ -465,7 +465,7 @@
     <select id="getClassNameByEquipmentVariety" parameterType="java.lang.String" resultType="java.lang.String">
           select
           m.className
-          from craneinepctreport_cranetype crtype,cranetype type,riskModel m
+          from craneinspectreport_cranetype crtype,cranetype type,riskModel m
           where crtype.craneTypeId=type.id and
           type.riskModelId=m.id and crtype.equipmentVariety=#{equipmentVariety}
     </select>

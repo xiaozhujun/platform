@@ -66,13 +66,18 @@
             });
         }
         function itemclick(item){
-             alert("hh");
+             var s="";
              var rows= g.getCheckedRows();
             $(rows).each(function(){
-               alert(this.id);
+               s+=this.id+",";
             });
+            $.post($.URL.craneinspectreport.calculateRiskValue,{"reportId":s},calculateRiskValueCallback,"json");
         }
-
+        function calculateRiskValueCallback(data){
+            if(data.code==200){
+                alert("计算完成!");
+            }
+        }
     </script>
 </head>
 <body  style="padding:10px">

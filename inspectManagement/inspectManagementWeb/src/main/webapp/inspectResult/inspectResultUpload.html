@@ -2,30 +2,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>File Upload</title>
+    <style>
+        body { padding: 30px }
+        form { display: block; margin: 20px auto; background: #eee; border-radius: 10px; padding: 15px }
+
+        .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+        .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+        .percent { position:absolute; display:inline-block; top:3px; left:48%; }
+    </style>
     <script type="text/javascript" src="inspectResult/js/jquery.form.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var options = {
-                target:   '#output',   // target element(s) to be updated with server response
-                beforeSubmit:  beforeSubmit,  // pre-submit callback
-                success:       afterSuccess,  // post-submit callback
-                resetForm: true        // reset the form after successful submit
-            };
+    <!--    <script type="text/javascript">
+            $(document).ready(function() {
+                var options = {
+                    target:   '#output',   // target element(s) to be updated with server response
+                    beforeSubmit:  beforeSubmit,  // pre-submit callback
+                    success:       afterSuccess,  // post-submit callback
+                    resetForm: true        // reset the form after successful submit
+                };
 
-            $('#uploadForm').submit(function() {
-                $(this).ajaxSubmit(options);
-                // always return false to prevent standard browser submit and page navigation
-                return false;
+                $('#uploadForm').submit(function() {
+                    $(this).ajaxSubmit(options);
+                    // always return false to prevent standard browser submit and page navigation
+                    return false;
+                });
             });
-        });
-        function beforeSubmit(){
-            alert("开始上传..")
-        }
+            function beforeSubmit(){
+                alert("开始上传..")
+            }
 
-        function afterSuccess(){
-            alert("上传成功！")
-        }
-    </script>
+            function afterSuccess(){
+                alert("上传成功！")
+             }
+        </script>-->
 </head>
 <body>
 <div style="width:100%;">
@@ -34,15 +42,45 @@
             <input type="file" id = "uploadFile" name="filename" class="fileUpload" multiple>
             <button  id="px-submit" type="submit">上传</button>
             <button id="px-clear" type="reset" >取消</button>
-            <div class="progress"
-                 style="width: 400px; float: left; margin-left: 10px; margin-top: 5px;height: 28px">
-                <div class="bar"></div>
-                <div class="percent"></div>
-            </div>
         </form>
-        <div id="output"></div>
+
+        <div class="progress">
+            <div class="bar"></div >
+            <div class="percent">0%</div >
+        </div>
+
+        <div id="status"></div>
     </div>
 </div>
 <div id="mainGrid" style="width:150%;margin-top:270px"></div>
+<script>
+    $(function(){
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+        $('#uploadForm').ajaxForm({
+            beforeSend: function() {
+                status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+                //console.log(percentVal, position, total);
+            },
+            success: function() {
+                var percentVal = '100%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            complete: function(xhr) {
+                status.html(xhr.responseText);
+            }
+        });
+    });
+</script>
 </body>
 </html>

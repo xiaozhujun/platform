@@ -123,7 +123,7 @@ public class UserDataRoleServiceWeb {
            String userName = u.getName();
            subUser.setId(u.getId());
            subUser.setName(userName);
-           subUser.setPassword(u.getPassword());
+           //subUser.setPassword(u.getPassword());
            subUser.setSex(u.getSex());
            subUser.setRole(u.getRole());
            List<String> dataRoleList = userDataRoleService.findDataRoleByUserName(userName);

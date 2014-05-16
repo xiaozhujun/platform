@@ -32,7 +32,9 @@ public class ToolUtil {
         }
         try{
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
-         d=sdf.parse(date);
+            if(date!=null){
+            d=sdf.parse(date);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

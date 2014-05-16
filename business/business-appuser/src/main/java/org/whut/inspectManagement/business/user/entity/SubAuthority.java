@@ -1,40 +1,26 @@
-package org.whut.inspectManagement.business.app.entity;
-
-import java.util.Date;
+package org.whut.inspectManagement.business.user.entity;
 
 /**
  * Created with IntelliJ IDEA.
- * User: sunhui
- * Date: 14-5-12
- * Time: 上午9:29
+ * User: John
+ * Date: 14-3-30
+ * Time: 下午8:00
  * To change this template use File | Settings | File Templates.
  */
-public class App {
-
-    private Long id;
+public class SubAuthority{
+    private long id;
     private String name;
     private String description;
-    private String status;
-    private Date createtime;
+    private int status;
+    private String resource;
 
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public void setId(long id){
         this.id = id;
     }
 
-
-
+    public long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -52,16 +38,19 @@ public class App {
         this.description = description;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
+    public void setResource(String resource){
+        this.resource= resource;
+    }
 
-
-
+    public String getResource(){
+        return resource;
+    }
 }
-

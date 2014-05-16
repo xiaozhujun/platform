@@ -90,6 +90,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-employeeRole</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
     </dependencies>
 

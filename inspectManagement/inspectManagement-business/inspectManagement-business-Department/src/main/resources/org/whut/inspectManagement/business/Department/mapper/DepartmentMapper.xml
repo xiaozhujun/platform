@@ -36,7 +36,7 @@
         where ID=#{id};
     </update>
 
-    <delete id="delete" parameterType="User">
+    <delete id="delete" parameterType="Department">
         DELETE FROM department
         <where>
             <if test="id != null">ID=#{id}</if>
@@ -45,7 +45,7 @@
         </where>
     </delete>
 
-    <select id="findByCondition" parameterType="department" resultMap="departmentResultMapper">
+    <select id="findByCondition" parameterType="map" resultMap="departmentResultMapper">
         SELECT
         <include refid="department_fields"/>
         FROM department

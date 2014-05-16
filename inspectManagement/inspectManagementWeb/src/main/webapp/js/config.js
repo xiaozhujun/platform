@@ -42,6 +42,12 @@
             "list":"rs/department/list",
             "update":"rs/department/update",
             "delete":"rs/department/delete"
+        },
+        "employeeRole":{
+            "add":"rs/employeeRole/add",
+            "update":"rs/employeeRole/update",
+            "delete":"rs/employeeRole/delete",
+            "list":"rs/employeeRole/list"
         }
     }
 })(jQuery);

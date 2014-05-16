@@ -4,6 +4,7 @@ import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper;
+import org.whut.platform.business.craneinspectreport.riskcalculate.CalculateTools;
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
@@ -31,7 +32,7 @@ public class CraneInspectReportService {
     private List<CraneInspectReport> listRepeat=new ArrayList<CraneInspectReport>();
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
-
+    private CalculateTools calculateTools=new CalculateTools();
     public void upload(InputStream inputStream,String fileName){
       String documentJson=getMongoStringFromRequest(inputStream,fileName);
       mongoConnector.insertDocument(documentJson);
@@ -314,5 +315,51 @@ public class CraneInspectReportService {
     }
     public  List<Map<String,Float>>getAreaInfoByCondition(String province,String city,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
           return mapper.getAreaInfoByCondition(province,city,equipmentVariety,sTime,eTime,startValue,endValue);
+    }
+    public List<CraneInspectReport> getCraneListByUploadReportId(long reportId){
+        return  mapper.getCraneListByUploadReportId(reportId);
+    }
+    public String getClassNameByEquipmentVariety(String equipmentVariety){
+        return mapper.getClassNameByEquipmentVariety(equipmentVariety);
+    }
+    //根据某一大类来查出所有的小类
+    //一点击按钮之后，应该先根据数据库中的值来将每一项的最大值算出来，存到数据库中
+    public List<Long> getCraneTypeByCraneInspectReportInfo(){
+        return mapper.getCraneTypeByCraneInspectReportInfo();
+    }
+    public List<String>getEquipmentVarietyByCraneType(long craneTypeId){
+        return mapper.getEquipmentVarietyByCraneType(craneTypeId);
+    }
+    //求最大值的也应该动态生成
+    public String insertToCraneInspectReportMaxValueCollection(){
+        List<Long> craneTypeIdList=getCraneTypeByCraneInspectReportInfo();
+        //documentJson={maxValue:[{"typeId":"1","maxusetime":"maxusetime",...},{"typeId":"2","maxusetime":"maxusetime",...}]}
+           String documentJson="{maxValue:[";
+        for(Long typeId:craneTypeIdList){
+            List<String> equipmentVariety=getEquipmentVarietyByCraneType(typeId);
+            documentJson+="{typeId:"+typeId;
+            String maxUseTime=null;
+            String maxRatedLiftWeight=null;
+            String maxSpan=null;
+            String maxLiftHeight=null;
+            String maxLiftSpeed=null;
+            String maxRunSpeed=null;
+            String maxCartSpeed=null;
+            String maxCarSpeed=null;
+            String maxLiftMoment=null;
+            for(String equipment:equipmentVariety){
+             maxUseTime=String.valueOf(calculateTools.getMaxUseTime(equipment));
+             maxRatedLiftWeight=String.valueOf(calculateTools.getMaxRatedLiftWeight(equipment));
+             maxSpan=String.valueOf(calculateTools.getMaxSpan(equipment));
+             maxLiftHeight=String.valueOf(calculateTools.getMaxLiftHeight(equipment));
+             maxLiftSpeed=String.valueOf(calculateTools.getMaxLiftSpeed(equipment));
+             maxRunSpeed=String.valueOf(calculateTools.getMaxRunSpeed(equipment));
+             maxCartSpeed=String.valueOf(calculateTools.getMaxCartSpeed(equipment));
+             maxCarSpeed=String.valueOf(calculateTools.getMaxCarSpeed(equipment));
+             maxLiftMoment=String.valueOf(calculateTools.getMaxLiftMoment(equipment));
+            }
+            documentJson+="maxUseTime:'"+maxUseTime+"',maxRatedLiftWeight:'"+maxRatedLiftWeight+"',maxSpan:'"+maxSpan+"',maxLiftHeight:'"+maxLiftHeight+"',maxLiftSpeed:'"+maxLiftSpeed+"',maxRunSpeed:'"+maxRunSpeed+"',maxCartSpeed:'"+maxCartSpeed+"',maxCarSpeed:'"+maxCarSpeed+"',maxLiftMoment:'"+maxLiftMoment+"'},";
+        }
+        return documentJson+"]}";
     }
 }

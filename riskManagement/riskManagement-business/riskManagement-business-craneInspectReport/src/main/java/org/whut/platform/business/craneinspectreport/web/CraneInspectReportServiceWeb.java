@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
+import org.whut.platform.business.craneinspectreport.riskcalculate.ICalculateRisk;
 import org.whut.platform.business.craneinspectreport.service.CraneInspectReportService;
 import org.whut.platform.business.user.security.MyUserDetail;
 import org.whut.platform.business.user.service.UserService;
@@ -21,7 +22,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -556,5 +556,33 @@ public class CraneInspectReportServiceWeb {
              list=craneInspectReportService.getCraneInfoByCondition(province, city, area, equipVariety,useTimes[0],useTimes[1],startValue,endValue);
          }
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    public String calculateRiskValue(@FormParam("reportId") String reportId){
+        //计算风险值，传过来的是uploaded_reportId,通过这些reportId找到对应的起重机，
+        // 将相应的信息分装到craneInspectReport对象中，然后根据equipmentVariety
+        //来查找craneTypeId，从而找到相应的riskModelId,然后找到className,动态的
+        //选择class类来进行计算
+        List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(reportId));
+        for(CraneInspectReport craneInspectReport:craneList){
+               String className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
+               //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
+        }
+
+
+
+
+        return JsonResultUtils.getObjectResultByStringAsDefault(null,JsonResultUtils.Code.SUCCESS);
+
+    }
+    public Float calculateRisk(String className,CraneInspectReport craneInspectReport){
+         Float riskValue=0f;
+         try{
+         Class c=Class.forName(className);
+         ICalculateRisk iCalculateRisk=(ICalculateRisk)c.newInstance();
+         riskValue=iCalculateRisk.calculateRisk(craneInspectReport);
+         }catch (Exception e){
+             e.printStackTrace();
+         }
+        return riskValue;
     }
 }

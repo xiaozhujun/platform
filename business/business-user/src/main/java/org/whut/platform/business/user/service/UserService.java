@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.mapper.UserMapper;
+import org.whut.platform.business.user.security.MD5Encoder;
 import org.whut.platform.business.user.security.MyUserDetail;
 
 import java.util.HashMap;
@@ -21,6 +22,9 @@ public class UserService {
     private UserMapper userMapper;
 
     public void add(User user){
+        if(user.getPassword()!=null && !user.getPassword().equals("")){
+            user.setPassword(MD5Encoder.GetMD5Code(user.getPassword()));
+        }
         userMapper.add(user);
     }
 
@@ -28,6 +32,9 @@ public class UserService {
         return userMapper.getIdByName(name);
     }
     public int update(User user){
+        if(user.getPassword()!=null && !user.getPassword().equals("")){
+            user.setPassword(MD5Encoder.GetMD5Code(user.getPassword()));
+        }
         return userMapper.update(user);
     }
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>File Upload</title>
+    <script type="text/javascript" src="inspectResult/js/jquery.form.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var options = {
+                target:   '#output',   // target element(s) to be updated with server response
+                beforeSubmit:  beforeSubmit,  // pre-submit callback
+                success:       afterSuccess,  // post-submit callback
+                resetForm: true        // reset the form after successful submit
+            };
+
+            $('#uploadForm').submit(function() {
+                $(this).ajaxSubmit(options);
+                // always return false to prevent standard browser submit and page navigation
+                return false;
+            });
+        });
+        function beforeSubmit(){
+            alert("开始上传..")
+        }
+
+        function afterSuccess(){
+            alert("上传成功！")
+        }
+    </script>
+</head>
+<body>
+<div style="width:100%;">
+    <div id="panel" style="float: left; width:432px;margin-left: 350px;margin-top: 10px">
+        <form action="rs/inspectResult/upload" method="post" enctype="multipart/form-data" id="uploadForm">
+            <input type="file" id = "uploadFile" name="filename" class="fileUpload" multiple>
+            <button  id="px-submit" type="submit">上传</button>
+            <button id="px-clear" type="reset" >取消</button>
+            <div class="progress"
+                 style="width: 400px; float: left; margin-left: 10px; margin-top: 5px;height: 28px">
+                <div class="bar"></div>
+                <div class="percent"></div>
+            </div>
+        </form>
+        <div id="output"></div>
+    </div>
+</div>
+<div id="mainGrid" style="width:150%;margin-top:270px"></div>
+</body>
+</html>

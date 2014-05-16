@@ -10,5 +10,5 @@ import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
  * To change this template use File | Settings | File Templates.
  */
 public interface ICalculateRisk {
-    public Float calculateRisk(CraneInspectReport craneInspectReport);
+    public Float calculateRisk(CraneInspectReport craneInspectReport,String craneType);
 }

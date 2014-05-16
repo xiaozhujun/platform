@@ -1,10 +1,12 @@
 package org.whut.platform.business.craneinspectreport.service;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper;
 import org.whut.platform.business.craneinspectreport.riskcalculate.CalculateTools;
+import org.whut.platform.business.craneinspectreport.riskcalculate.WeightFactor;
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
@@ -331,35 +333,66 @@ public class CraneInspectReportService {
         return mapper.getEquipmentVarietyByCraneType(craneTypeId);
     }
     //求最大值的也应该动态生成
-    public String insertToCraneInspectReportMaxValueCollection(){
+    public String getCraneInspectReportMaxValue(){
         List<Long> craneTypeIdList=getCraneTypeByCraneInspectReportInfo();
         //documentJson={maxValue:[{"typeId":"1","maxusetime":"maxusetime",...},{"typeId":"2","maxusetime":"maxusetime",...}]}
-           String documentJson="{maxValue:[";
+        String documentJson="{maxValue:[";
+        int i=0;
         for(Long typeId:craneTypeIdList){
             List<String> equipmentVariety=getEquipmentVarietyByCraneType(typeId);
-            documentJson+="{typeId:"+typeId;
+            documentJson+="{typeId:'"+typeId+"',";
             String maxUseTime=null;
             String maxRatedLiftWeight=null;
             String maxSpan=null;
+            String maxRange=null;
             String maxLiftHeight=null;
             String maxLiftSpeed=null;
             String maxRunSpeed=null;
             String maxCartSpeed=null;
             String maxCarSpeed=null;
             String maxLiftMoment=null;
-            for(String equipment:equipmentVariety){
-             maxUseTime=String.valueOf(calculateTools.getMaxUseTime(equipment));
-             maxRatedLiftWeight=String.valueOf(calculateTools.getMaxRatedLiftWeight(equipment));
-             maxSpan=String.valueOf(calculateTools.getMaxSpan(equipment));
-             maxLiftHeight=String.valueOf(calculateTools.getMaxLiftHeight(equipment));
-             maxLiftSpeed=String.valueOf(calculateTools.getMaxLiftSpeed(equipment));
-             maxRunSpeed=String.valueOf(calculateTools.getMaxRunSpeed(equipment));
-             maxCartSpeed=String.valueOf(calculateTools.getMaxCartSpeed(equipment));
-             maxCarSpeed=String.valueOf(calculateTools.getMaxCarSpeed(equipment));
-             maxLiftMoment=String.valueOf(calculateTools.getMaxLiftMoment(equipment));
+            maxUseTime=String.valueOf(calculateTools.getMaxUseTime(equipmentVariety));
+            maxRatedLiftWeight=String.valueOf(calculateTools.getMaxRatedLiftWeight(equipmentVariety));
+            maxSpan=String.valueOf(calculateTools.getMaxSpan(equipmentVariety));
+            maxRange=String.valueOf(calculateTools.getMaxRange(equipmentVariety));
+            maxLiftHeight=String.valueOf(calculateTools.getMaxLiftHeight(equipmentVariety));
+            maxLiftSpeed=String.valueOf(calculateTools.getMaxLiftSpeed(equipmentVariety));
+            maxRunSpeed=String.valueOf(calculateTools.getMaxRunSpeed(equipmentVariety));
+            maxCartSpeed=String.valueOf(calculateTools.getMaxCartSpeed(equipmentVariety));
+            maxCarSpeed=String.valueOf(calculateTools.getMaxCarSpeed(equipmentVariety));
+            maxLiftMoment=String.valueOf(calculateTools.getMaxLiftMoment(equipmentVariety));
+            if(i<craneTypeIdList.size()-1){
+                documentJson+="maxUseTime:'"+maxUseTime+"',maxRatedLiftWeight:'"+maxRatedLiftWeight+"',maxSpan:'"+maxSpan+"',maxRange:'"+maxRange+"',maxLiftHeight:'"+maxLiftHeight+"',maxLiftSpeed:'"+maxLiftSpeed+"',maxRunSpeed:'"+maxRunSpeed+"',maxCartSpeed:'"+maxCartSpeed+"',maxCarSpeed:'"+maxCarSpeed+"',maxLiftMoment:'"+maxLiftMoment+"'},";
             }
-            documentJson+="maxUseTime:'"+maxUseTime+"',maxRatedLiftWeight:'"+maxRatedLiftWeight+"',maxSpan:'"+maxSpan+"',maxLiftHeight:'"+maxLiftHeight+"',maxLiftSpeed:'"+maxLiftSpeed+"',maxRunSpeed:'"+maxRunSpeed+"',maxCartSpeed:'"+maxCartSpeed+"',maxCarSpeed:'"+maxCarSpeed+"',maxLiftMoment:'"+maxLiftMoment+"'},";
+            if(i==craneTypeIdList.size()-1){
+                documentJson+="maxUseTime:'"+maxUseTime+"',maxRatedLiftWeight:'"+maxRatedLiftWeight+"',maxSpan:'"+maxSpan+"',maxRange:'"+maxRange+"',maxLiftHeight:'"+maxLiftHeight+"',maxLiftSpeed:'"+maxLiftSpeed+"',maxRunSpeed:'"+maxRunSpeed+"',maxCartSpeed:'"+maxCartSpeed+"',maxCarSpeed:'"+maxCarSpeed+"',maxLiftMoment:'"+maxLiftMoment+"'}";
+            }
+            i++;
         }
         return documentJson+"]}";
+    }
+    public void insertToCraneInspectReportMaxValueCollection(){
+        MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
+        mongo.insertDocument(getCraneInspectReportMaxValue());
+    }
+    public CraneInspectReport getCraneInfoFromMongoByReportNumber(String reportNumber){
+        DBObject d=mongoConnector.getDBObjectByReportNumber(reportNumber);
+        CraneInspectReport craneInspectReport=new CraneInspectReport();
+        craneInspectReport.setReportNumber(reportNumber);
+        craneInspectReport.setRatedLiftWeight((String)d.get(WeightFactor.ratedLiftWeight));
+        craneInspectReport.setWorkLevel((String)d.get(WeightFactor.workLevel));
+        craneInspectReport.setConclusion((String)d.get(WeightFactor.conclusion));
+        craneInspectReport.setMaxLiftMoment((Float)d.get(WeightFactor.maxLiftMoment));
+        craneInspectReport.setLiftHeight((Float)d.get(WeightFactor.liftHeight));
+        craneInspectReport.setLiftSpeed((Float)d.get(WeightFactor.liftSpeed));
+        craneInspectReport.setRunSpeed((Float)d.get(WeightFactor.runSpeed));
+        craneInspectReport.setRange((Float)d.get(WeightFactor.range));
+        craneInspectReport.setSpan((Float)d.get(WeightFactor.span));
+        craneInspectReport.setCartSpeed((Float)d.get(WeightFactor.cartSpeed));
+        craneInspectReport.setCarSpeed((Float)d.get(WeightFactor.carSpeed));
+        return craneInspectReport;
+    }
+    public void InsertToRiskValue(String reportnumber,String riskvalue){
+        mapper.insertToRiskValue(reportnumber, riskvalue);
     }
 }

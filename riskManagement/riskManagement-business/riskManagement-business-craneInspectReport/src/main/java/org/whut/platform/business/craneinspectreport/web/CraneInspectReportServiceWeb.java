@@ -22,6 +22,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -562,27 +563,43 @@ public class CraneInspectReportServiceWeb {
         // 将相应的信息分装到craneInspectReport对象中，然后根据equipmentVariety
         //来查找craneTypeId，从而找到相应的riskModelId,然后找到className,动态的
         //选择class类来进行计算
+        String className=null;
         List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(reportId));
+        List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
+        List<Map<String,String>>mapList=new ArrayList<Map<String, String>>();
         for(CraneInspectReport craneInspectReport:craneList){
-               String className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
+               //根据reportnumber从mongodb中拿出数据封装到craneinspectreport中
+               className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
                //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
+               CraneInspectReport craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber());
+               craneInspectReportList.add(craneReport);
         }
-
-
-
-
+        for(CraneInspectReport cr:craneInspectReportList){
+            Float riskValue=calculateRisk(className,cr,reportId);
+            Map<String,String> m=new HashMap<String,String>();
+            m.put("reportnumber",cr.getReportNumber());
+            m.put("riskvalue",String.valueOf(riskValue));
+            mapList.add(m);
+        }
+        for(Map<String,String>m:mapList){
+            craneInspectReportService.InsertToRiskValue(m.get("reportnumber"),m.get("riskvalue"));
+        }
         return JsonResultUtils.getObjectResultByStringAsDefault(null,JsonResultUtils.Code.SUCCESS);
-
     }
-    public Float calculateRisk(String className,CraneInspectReport craneInspectReport){
+    public Float calculateRisk(String className,CraneInspectReport craneInspectReport,String craneType){
          Float riskValue=0f;
          try{
          Class c=Class.forName(className);
          ICalculateRisk iCalculateRisk=(ICalculateRisk)c.newInstance();
-         riskValue=iCalculateRisk.calculateRisk(craneInspectReport);
+         riskValue=iCalculateRisk.calculateRisk(craneInspectReport,craneType);
          }catch (Exception e){
              e.printStackTrace();
          }
         return riskValue;
+    }
+    //初始化数据
+    public String initData(){
+        craneInspectReportService.insertToCraneInspectReportMaxValueCollection();
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

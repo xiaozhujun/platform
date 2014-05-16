@@ -602,4 +602,11 @@ public class CraneInspectReportServiceWeb {
         craneInspectReportService.insertToCraneInspectReportMaxValueCollection();
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/listUploadedReport")
+    public String listUploadedReport(){
+        List<Map<String,String>> list=craneInspectReportService.listUploadedReport();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 }

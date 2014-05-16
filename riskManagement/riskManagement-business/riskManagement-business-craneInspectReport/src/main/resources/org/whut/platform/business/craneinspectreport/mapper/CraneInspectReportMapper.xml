@@ -493,4 +493,10 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+    <select id="listUploadedReport" resultType="map">
+        select
+        *
+        from
+        uploadedreport
+    </select>
 </mapper>

@@ -33,7 +33,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"
                           proxy-target-class="false" />
 
-    <context:component-scan base-package="org.whut.platform.business"></context:component-scan>
+    <context:component-scan base-package="org.whut.platform.business,org.whut.inspectManagement.business"></context:component-scan>
     <context:annotation-config />
     <!-- <tx:annotation-driven /> <context:annotation-config /> -->
 

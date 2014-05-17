@@ -70,6 +70,7 @@ public class DepartmentServiceWeb {
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
+    /*添加saas化*/
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
     @POST

@@ -63,4 +63,12 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<CraneInspectReport>getCraneInfoByCondition(@Param("province")String province,@Param("city")String city,@Param("area")String area,@Param("equipmentVariety")String equipmentVariety,@Param("sTime")String sTime,@Param("eTime")String eTime,@Param("startValue") float startValue,@Param("endValue")float endValue);
     public List<Map<String,Float>> getCityInfoByCondition(@Param("province")String province,@Param("equipmentVariety")String equipmentVariety,@Param("sTime")String sTime,@Param("eTime")String eTime,@Param("startValue") float startValue,@Param("endValue")float endValue);
     public  List<Map<String,Float>>getAreaInfoByCondition(@Param("province")String province,@Param("city")String city,@Param("equipmentVariety")String equipmentVariety,@Param("sTime")String sTime,@Param("eTime")String eTime,@Param("startValue") float startValue,@Param("endValue")float endValue);
+
+    public List<CraneInspectReport>getCraneListByUploadReportId(@Param("reportId")long reportId);
+    public String getClassNameByEquipmentVariety(@Param("equipmentVariety")String equipmentVariety);
+
+    public List<Long>getCraneTypeByCraneInspectReportInfo();
+    public List<String>getEquipmentVarietyByCraneType(long craneType);
+    public void insertToRiskValue(@Param("reportnumber")String reportnumber,@Param("riskvalue")String riskvalue);
+    public List<Map<String,String>>listUploadedReport();
 }

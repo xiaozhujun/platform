@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
+import org.whut.platform.business.craneinspectreport.riskcalculate.ICalculateRisk;
 import org.whut.platform.business.craneinspectreport.service.CraneInspectReportService;
 import org.whut.platform.business.user.security.MyUserDetail;
 import org.whut.platform.business.user.service.UserService;
@@ -21,7 +22,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -556,5 +557,66 @@ public class CraneInspectReportServiceWeb {
              list=craneInspectReportService.getCraneInfoByCondition(province, city, area, equipVariety,useTimes[0],useTimes[1],startValue,endValue);
          }
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/calculateRiskValue")
+    public String calculateRiskValue(@FormParam("reportId") String reportId){
+        //计算风险值，传过来的是uploaded_reportId,通过这些reportId找到对应的起重机，
+        // 将相应的信息分装到craneInspectReport对象中，然后根据equipmentVariety
+        //来查找craneTypeId，从而找到相应的riskModelId,然后找到className,动态的
+        //选择class类来进行计算
+        String[] str=reportId.split(",");
+        for(int i=0;i<str.length;i++){
+        String className=null;
+        List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(str[i]));
+        List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
+        List<Map<String,String>>mapList=new ArrayList<Map<String, String>>();
+        for(CraneInspectReport craneInspectReport:craneList){
+               //根据reportnumber从mongodb中拿出数据封装到craneinspectreport中
+               className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
+               //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
+               CraneInspectReport craneReport=new CraneInspectReport();
+               craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber());
+               craneInspectReportList.add(craneReport);
+        }
+        for(CraneInspectReport cr:craneInspectReportList){
+            Float r=calculateRisk(className,cr,str[i]);
+            int riskValue=Math.round(r);
+            Map<String,String> m=new HashMap<String,String>();
+            if(cr!=null){
+                m.put("reportnumber",cr.getReportNumber());
+                m.put("riskvalue",String.valueOf(riskValue));
+                mapList.add(m);
+            }
+        }
+        for(Map<String,String>m:mapList){
+            craneInspectReportService.InsertToRiskValue(m.get("reportnumber"),m.get("riskvalue"));
+        }
+    }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    public Float calculateRisk(String className,CraneInspectReport craneInspectReport,String craneType){
+         Float riskValue=0f;
+         try{
+         Class c=Class.forName(className);
+         ICalculateRisk iCalculateRisk=(ICalculateRisk)c.newInstance();
+         riskValue=iCalculateRisk.calculateRisk(craneInspectReport,craneType);
+         }catch (Exception e){
+             e.printStackTrace();
+         }
+        return riskValue;
+    }
+    //初始化数据
+    public String initData(){
+        craneInspectReportService.insertToCraneInspectReportMaxValueCollection();
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/listUploadedReport")
+    public String listUploadedReport(){
+        List<Map<String,String>> list=craneInspectReportService.listUploadedReport();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

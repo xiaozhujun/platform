@@ -48,6 +48,12 @@
             "list":"rs/device/list",
             "update":"rs/device/update",
             "delete":"rs/device/delete"
+        },
+        "employeeRole":{
+            "add":"rs/employeeRole/add",
+            "update":"rs/employeeRole/update",
+            "delete":"rs/employeeRole/delete",
+            "list":"rs/employeeRole/list"
         }
     }
 })(jQuery);

@@ -8,6 +8,7 @@ import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -95,5 +96,52 @@ public class MongoConnector {
         DBObject dbObject = getDocument(objectID);
         ArrayList data = (ArrayList)dbObject.get("data");
         return data;
+    }
+    //根据reportNumber来提取某一条记录
+    public DBObject  getDBObjectByReportNumber(String reportNuumber){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        while (dbCursor.hasNext()){
+            List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+           for(DBObject dd:d){
+               if(dd.get("reportnumber").equals(reportNuumber)){
+                   return dd;
+               };
+           }
+        }
+        return null;
+    }
+    //取根据每一类来找出某一列的值，用来算最大值
+    public List<String> getOneColumnByEquipmentVariety(String column,List<String> equipmentVariety){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        List<String> list=new ArrayList<String>();
+        while (dbCursor.hasNext()){
+               List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+               for(String equipment:equipmentVariety){
+               for(DBObject dd:d){
+                   if(dd.get("equipmentvariety").equals(equipment)){
+                       list.add((String)dd.get(column));
+                   }
+               }
+               }
+        }
+        return list;
+    }
+    public DBObject getMaxValueByCraneType(String craneTypeId){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        while (dbCursor.hasNext()){
+            List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("maxValue");
+            for(DBObject dd:d){
+                if(dd.get("typeId").equals(craneTypeId)){
+                    return dd;
+                };
+            }
+        }
+        return null;
     }
 }

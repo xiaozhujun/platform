@@ -1,11 +1,55 @@
 package org.whut.inspectManagement.business.user.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.whut.inspectManagement.business.user.entity.User;
+import org.whut.inspectManagement.business.user.mapper.UserMapper;
+import org.whut.inspectManagement.business.user.security.MyUserDetail;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
- * User: sunhui
- * Date: 14-5-12
- * Time: 上午9:41
+ * User: xiaozhujun
+ * Date: 14-1-26
+ * Time: 上午11:39
  * To change this template use File | Settings | File Templates.
  */
 public class UserService {
+    @Autowired
+    private UserMapper userMapper;
+
+    public void add(User user){
+        userMapper.add(user);
+    }
+
+    public long getIdByName(String name){
+        return userMapper.getIdByName(name);
+    }
+    public int update(User user){
+        return userMapper.update(user);
+    }
+
+    public int delete(User user){
+        return userMapper.delete(user);
+    }
+
+    public List<User> list(){
+        return userMapper.findByCondition(new HashMap<String, Object>());
+    }
+    public User findByName(String name){
+        if(name==null || name.trim().equals("")){
+            return null;
+        }
+        List<User> list = userMapper.findByName(name);
+        if(list.size()>=1){
+            return list.get(0);
+        }
+        return null;
+    }
+    public MyUserDetail getMyUserDetailFromSession(){
+        MyUserDetail myUserDetail= (MyUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return myUserDetail;
+    }
 }

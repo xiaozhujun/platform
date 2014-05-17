@@ -456,4 +456,47 @@
         </if>
         GROUP BY a.area  ORDER BY  craneNumber desc
     </select>
+    <select id="getCraneListByUploadReportId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+         select *
+         from
+         craneinspectreport
+         where uploadedreportId=#{reportId}
+    </select>
+    <select id="getClassNameByEquipmentVariety" parameterType="java.lang.String" resultType="java.lang.String">
+          select
+          m.className
+          from craneinspectreport_cranetype crtype,cranetype type,riskModel m
+          where crtype.craneTypeId=type.id and
+          type.riskModelId=m.id and crtype.equipmentVariety=#{equipmentVariety}
+    </select>
+    <select id="getCraneTypeByCraneInspectReportInfo" resultType="java.lang.Long">
+          select ctype.craneTypeId
+          from craneinspectreport cr,craneinspectreport_cranetype ctype
+          where cr.equipmentVariety=ctype.equipmentVariety
+          group by ctype.craneTypeId
+    </select>
+    <select id="getEquipmentVarietyByCraneType" parameterType="java.lang.Long" resultType="java.lang.String">
+           select cr.equipmentVariety
+            from craneinspectreport cr,craneinspectreport_cranetype ctype
+            where cr.equipmentVariety=ctype.equipmentVariety and ctype.craneTypeId=#{craneType}
+            group by cr.equipmentVariety
+    </select>
+    <insert id="insertToRiskValue" parameterType="map"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        riskvalue(
+        reportnumber,riskvalue
+        )
+        VALUES (#{reportnumber}, #{riskvalue});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="listUploadedReport" resultType="map">
+        select
+        *
+        from
+        uploadedreport
+    </select>
 </mapper>

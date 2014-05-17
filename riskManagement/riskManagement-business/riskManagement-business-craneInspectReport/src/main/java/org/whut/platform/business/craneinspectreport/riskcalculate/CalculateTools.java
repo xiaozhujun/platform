@@ -37,6 +37,14 @@ public class CalculateTools {
         }
         return list;
     }
+    public long getUseTime(String str){
+        long useTime=0;
+        if(str!=null){
+        Date manufacturedate=toolUtil.transferStringToDate(str);
+        useTime=DateDiff(manufacturedate);
+        }
+        return useTime;
+    }
     public  Float getWorkLevel(String workLevel){     //获取工作级别
         Float f=null;
         for(int i=1;i<=8;i++){
@@ -176,7 +184,7 @@ public class CalculateTools {
     }
     public  static void main(String[] args){
            CalculateTools tools=new CalculateTools();
-           //System.out.println(tools.filter("10","^[+-]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][+-]?[0-9]+)?$"));
-           System.out.println(tools.getConclusion("合格"));
+           System.out.println(tools.filter(null,"^[+-]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][+-]?[0-9]+)?$"));
+           //System.out.println(tools.getConclusion("合格"));
     }
 }

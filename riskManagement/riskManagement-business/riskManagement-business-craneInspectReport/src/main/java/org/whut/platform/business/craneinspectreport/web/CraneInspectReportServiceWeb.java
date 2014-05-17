@@ -576,15 +576,18 @@ public class CraneInspectReportServiceWeb {
                //根据reportnumber从mongodb中拿出数据封装到craneinspectreport中
                className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
                //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
-               CraneInspectReport craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber());
+               CraneInspectReport craneReport=new CraneInspectReport();
+               craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber());
                craneInspectReportList.add(craneReport);
         }
         for(CraneInspectReport cr:craneInspectReportList){
             Float riskValue=calculateRisk(className,cr,str[i]);
             Map<String,String> m=new HashMap<String,String>();
-            m.put("reportnumber",cr.getReportNumber());
-            m.put("riskvalue",String.valueOf(riskValue));
-            mapList.add(m);
+            if(cr!=null){
+                m.put("reportnumber",cr.getReportNumber());
+                m.put("riskvalue",String.valueOf(riskValue));
+                mapList.add(m);
+            }
         }
         for(Map<String,String>m:mapList){
             craneInspectReportService.InsertToRiskValue(m.get("reportnumber"),m.get("riskvalue"));

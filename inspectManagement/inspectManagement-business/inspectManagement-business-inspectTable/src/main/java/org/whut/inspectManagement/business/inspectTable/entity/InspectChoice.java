@@ -4,7 +4,7 @@ package org.whut.inspectManagement.business.inspectTable.entity;
  * Created with IntelliJ IDEA.
  * User: choumiaoer
  * Date: 14-5-17
- * Time: 下午8:45
+ * Time: 下午9:08
  * To change this template use File | Settings | File Templates.
  */
 public class InspectChoice {

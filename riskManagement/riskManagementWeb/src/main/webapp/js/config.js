@@ -58,7 +58,9 @@
             "getCraneInfoByCondition":'rs/craneinspectreport/getCraneInfoByCondition',
             "getProvinceRiskRankFormRiskRange":'rs/craneinspectreport/getProvinceRiskRankFormRiskRange',
             "getCityInfoByCondition":'rs/craneinspectreport/getCityInfoByCondition',
-            "getAreaInfoByCondition":'rs/craneinspectreport/getAreaInfoByCondition'
+            "getAreaInfoByCondition":'rs/craneinspectreport/getAreaInfoByCondition',
+            "listUploadedReport":'rs/craneinspectreport/listUploadedReport',
+            "calculateRiskValue":'rs/craneinspectreport/calculateRiskValue'
         },
         "authority":{
             "add":"rs/authority/add"

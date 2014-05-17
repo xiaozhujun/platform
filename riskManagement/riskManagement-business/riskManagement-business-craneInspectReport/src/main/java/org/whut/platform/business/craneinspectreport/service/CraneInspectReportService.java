@@ -1,9 +1,12 @@
 package org.whut.platform.business.craneinspectreport.service;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper;
+import org.whut.platform.business.craneinspectreport.riskcalculate.CalculateTools;
+import org.whut.platform.business.craneinspectreport.riskcalculate.WeightFactor;
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
@@ -31,7 +34,7 @@ public class CraneInspectReportService {
     private List<CraneInspectReport> listRepeat=new ArrayList<CraneInspectReport>();
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
-
+    private CalculateTools calculateTools=new CalculateTools();
     public void upload(InputStream inputStream,String fileName){
       String documentJson=getMongoStringFromRequest(inputStream,fileName);
       mongoConnector.insertDocument(documentJson);
@@ -315,4 +318,155 @@ public class CraneInspectReportService {
     public  List<Map<String,Float>>getAreaInfoByCondition(String province,String city,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
           return mapper.getAreaInfoByCondition(province,city,equipmentVariety,sTime,eTime,startValue,endValue);
     }
+    public List<CraneInspectReport> getCraneListByUploadReportId(long reportId){
+        return  mapper.getCraneListByUploadReportId(reportId);
+    }
+    public String getClassNameByEquipmentVariety(String equipmentVariety){
+        return mapper.getClassNameByEquipmentVariety(equipmentVariety);
+    }
+    //根据某一大类来查出所有的小类
+    //一点击按钮之后，应该先根据数据库中的值来将每一项的最大值算出来，存到数据库中
+    public List<Long> getCraneTypeByCraneInspectReportInfo(){
+        return mapper.getCraneTypeByCraneInspectReportInfo();
+    }
+    public List<String>getEquipmentVarietyByCraneType(long craneTypeId){
+        return mapper.getEquipmentVarietyByCraneType(craneTypeId);
+    }
+    //求最大值的也应该动态生成
+    public String getCraneInspectReportMaxValue(){
+        List<Long> craneTypeIdList=getCraneTypeByCraneInspectReportInfo();
+        //documentJson={maxValue:[{"typeId":"1","maxusetime":"maxusetime",...},{"typeId":"2","maxusetime":"maxusetime",...}]}
+        String documentJson="{maxValue:[";
+        int i=0;
+        for(Long typeId:craneTypeIdList){
+            List<String> equipmentVariety=getEquipmentVarietyByCraneType(typeId);
+            documentJson+="{typeId:'"+typeId+"',";
+            String maxUseTime=null;
+            String maxRatedLiftWeight=null;
+            String maxSpan=null;
+            String maxRange=null;
+            String maxLiftHeight=null;
+            String maxLiftSpeed=null;
+            String maxRunSpeed=null;
+            String maxCartSpeed=null;
+            String maxCarSpeed=null;
+            String maxLiftMoment=null;
+            maxUseTime=String.valueOf(calculateTools.getMaxUseTime(equipmentVariety));
+            maxRatedLiftWeight=String.valueOf(calculateTools.getMaxRatedLiftWeight(equipmentVariety));
+            maxSpan=String.valueOf(calculateTools.getMaxSpan(equipmentVariety));
+            maxRange=String.valueOf(calculateTools.getMaxRange(equipmentVariety));
+            maxLiftHeight=String.valueOf(calculateTools.getMaxLiftHeight(equipmentVariety));
+            maxLiftSpeed=String.valueOf(calculateTools.getMaxLiftSpeed(equipmentVariety));
+            maxRunSpeed=String.valueOf(calculateTools.getMaxRunSpeed(equipmentVariety));
+            maxCartSpeed=String.valueOf(calculateTools.getMaxCartSpeed(equipmentVariety));
+            maxCarSpeed=String.valueOf(calculateTools.getMaxCarSpeed(equipmentVariety));
+            maxLiftMoment=String.valueOf(calculateTools.getMaxLiftMoment(equipmentVariety));
+            if(i<craneTypeIdList.size()-1){
+                documentJson+="maxUseTime:'"+maxUseTime+"',maxRatedLiftWeight:'"+maxRatedLiftWeight+"',maxSpan:'"+maxSpan+"',maxRange:'"+maxRange+"',maxLiftHeight:'"+maxLiftHeight+"',maxLiftSpeed:'"+maxLiftSpeed+"',maxRunSpeed:'"+maxRunSpeed+"',maxCartSpeed:'"+maxCartSpeed+"',maxCarSpeed:'"+maxCarSpeed+"',maxLiftMoment:'"+maxLiftMoment+"'},";
+            }
+            if(i==craneTypeIdList.size()-1){
+                documentJson+="maxUseTime:'"+maxUseTime+"',maxRatedLiftWeight:'"+maxRatedLiftWeight+"',maxSpan:'"+maxSpan+"',maxRange:'"+maxRange+"',maxLiftHeight:'"+maxLiftHeight+"',maxLiftSpeed:'"+maxLiftSpeed+"',maxRunSpeed:'"+maxRunSpeed+"',maxCartSpeed:'"+maxCartSpeed+"',maxCarSpeed:'"+maxCarSpeed+"',maxLiftMoment:'"+maxLiftMoment+"'}";
+            }
+            i++;
+        }
+        return documentJson+"]}";
+    }
+    public void insertToCraneInspectReportMaxValueCollection(){
+        MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
+        mongo.insertDocument(getCraneInspectReportMaxValue());
+    }
+    public CraneInspectReport getCraneInfoFromMongoByReportNumber(String reportNumber){
+        DBObject d=mongoConnector.getDBObjectByReportNumber(reportNumber);
+        if(d!=null){
+        craneInspectReport=new CraneInspectReport();
+        if(reportNumber!=null){
+            craneInspectReport.setReportNumber(reportNumber);
+        }
+        if((String)d.get(WeightFactor.manufacturedate)!=null){
+            long useTime=calculateTools.getUseTime((String)d.get(WeightFactor.manufacturedate));
+            craneInspectReport.setUseTime(useTime);
+        }
+        if((String)d.get(WeightFactor.ratedLiftWeight)!=null&&filter((String)d.get(WeightFactor.ratedLiftWeight))){
+            craneInspectReport.setRatedLiftWeight((String)d.get(WeightFactor.ratedLiftWeight));
+        }
+        else if((String)d.get(WeightFactor.ratedLiftWeight)==null||((String)d.get(WeightFactor.ratedLiftWeight)).equals("/")){
+            craneInspectReport.setRatedLiftWeight("0");
+        }
+        if((String)d.get(WeightFactor.workLevel)!=null){
+            craneInspectReport.setWorkLevel((String)d.get(WeightFactor.workLevel));
+        }else if((String)d.get(WeightFactor.workLevel)==null||((String)d.get(WeightFactor.workLevel)).equals("/")){
+            craneInspectReport.setWorkLevel("A1");
+        }
+        if((String)d.get(WeightFactor.conclusion)!=null){
+            craneInspectReport.setConclusion((String)d.get(WeightFactor.conclusion));
+        }else if((String)d.get(WeightFactor.conclusion)==null||((String)d.get(WeightFactor.conclusion)).equals("/")){
+            craneInspectReport.setConclusion("不合格");
+        }
+        if(filter((String)d.get(WeightFactor.maxLiftMoment))){
+        craneInspectReport.setMaxLiftMoment(Float.parseFloat((String)d.get(WeightFactor.maxLiftMoment)));
+        }
+        else if((String)d.get(WeightFactor.maxLiftMoment)==null||((String)d.get(WeightFactor.maxLiftMoment)).equals("/")){
+        craneInspectReport.setMaxLiftMoment(0f);
+        }
+        if(filter((String)d.get(WeightFactor.liftHeight))){
+        craneInspectReport.setLiftHeight(Float.parseFloat((String)d.get(WeightFactor.liftHeight)));
+        }
+        else if((String)d.get(WeightFactor.liftHeight)==null||((String)d.get(WeightFactor.liftHeight)).equals("/")){
+        craneInspectReport.setLiftHeight(0f);
+        }
+        if(filter((String)d.get(WeightFactor.liftSpeed))){
+        craneInspectReport.setLiftSpeed(Float.parseFloat((String)d.get(WeightFactor.liftSpeed)));
+        }
+        else if((String)d.get(WeightFactor.liftSpeed)==null||((String)d.get(WeightFactor.liftSpeed)).equals("/")){
+            craneInspectReport.setLiftSpeed(0f);
+        }
+        if(filter((String)d.get(WeightFactor.runSpeed))){
+            craneInspectReport.setRunSpeed(Float.parseFloat((String)d.get(WeightFactor.runSpeed)));
+        }
+        else if((String)d.get(WeightFactor.runSpeed)==null||((String)d.get(WeightFactor.runSpeed)).equals("/")){
+            craneInspectReport.setRunSpeed(0f);
+        }
+        if(filter((String)d.get(WeightFactor.range))){
+            craneInspectReport.setRange(Float.parseFloat((String)d.get(WeightFactor.range)));
+        }
+        else if((String)d.get(WeightFactor.range)==null||((String)d.get(WeightFactor.range)).equals("/")){
+            craneInspectReport.setRange(0f);
+        }
+        if(filter((String)d.get(WeightFactor.span))){
+            craneInspectReport.setSpan(Float.parseFloat((String)d.get(WeightFactor.span)));
+        }
+        else if((String)d.get(WeightFactor.span)==null||((String)d.get(WeightFactor.span)).equals("/")){
+            craneInspectReport.setSpan(0f);
+        }
+        if(filter((String)d.get(WeightFactor.cartSpeed))){
+            craneInspectReport.setCartSpeed(Float.parseFloat((String)d.get(WeightFactor.cartSpeed)));
+        }
+        if((String)d.get(WeightFactor.cartSpeed)==null||((String)d.get(WeightFactor.cartSpeed)).equals("/")){
+            craneInspectReport.setCartSpeed(0f);
+        }
+        if(filter((String)d.get(WeightFactor.carSpeed))){
+            craneInspectReport.setCarSpeed(Float.parseFloat((String)d.get(WeightFactor.carSpeed)));
+        }
+        if((String)d.get(WeightFactor.carSpeed)==null||((String)d.get(WeightFactor.carSpeed)).equals("/")){
+            craneInspectReport.setCarSpeed(0f);
+        }
+        }else{
+
+        }
+        return craneInspectReport;
+    }
+    public void InsertToRiskValue(String reportnumber,String riskvalue){
+        mapper.insertToRiskValue(reportnumber, riskvalue);
+    }
+    public List<Map<String,String>>listUploadedReport(){
+        return mapper.listUploadedReport();
+    }
+    public boolean filter(String condition){
+         boolean f=false;
+         if(calculateTools.filter(condition,"^[+-]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][+-]?[0-9]+)?$")){
+             f=true;
+         }
+        return f;
+    }
+
 }

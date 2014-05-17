@@ -37,6 +37,24 @@
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete"
         },
+        "department":{
+            "add":"rs/department/add",
+            "list":"rs/department/list",
+            "update":"rs/department/update",
+            "delete":"rs/department/delete"
+        },
+        "device":{
+            "add":"rs/device/add" ,
+            "list":"rs/device/list",
+            "update":"rs/device/update",
+            "delete":"rs/device/delete"
+        },
+        "employeeRole":{
+            "add":"rs/employeeRole/add",
+            "update":"rs/employeeRole/update",
+            "delete":"rs/employeeRole/delete",
+            "list":"rs/employeeRole/list"
+        },
         "inspectChoice":{
             "add":"rs/inspectChoice/add",
             "getList":"rs/inspectChoice/getList",

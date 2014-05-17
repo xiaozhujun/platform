@@ -24,6 +24,12 @@
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
+        }  ,
+        "app" :{
+            "add" :"rs/app/add" ,
+            "list":"rs/app/list",
+            "update":"rs/app/update",
+            "delete":"rs/app/delete"
         }
     }
 })(jQuery);

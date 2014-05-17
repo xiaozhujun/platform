@@ -17,7 +17,8 @@
                     $("#mainContainer").load(url);
                 }
             });
-
+            $("#addUserMenu").parent().parent().trigger("click");
+            $("#addUserMenu").trigger("click");
         });
 
     </script>
@@ -32,40 +33,40 @@
 <div id="accordion">
     <div title="企业管理" style="padding:10px">
         <ul>
-            <li url="app/**.html">添加企业</li>
-            <li url="app/**.html">企业列表</li>
+            <li url="app/addApp.html">添加</li>
+            <li url="app/listApp.html">列表</li>
         </ul>
     </div>
     <div title="用户管理" style="padding:10px">
         <ul>
-            <li  url="user/**.html">添加用户</li>
-            <li  url="user/**.html">用户列表</li>
+            <li id="addUserMenu" url="appuser/addUser.html">添加用户</li>
+            <li url="appuser/listUser.html">用户列表</li>
+            <li url="appuser/unlockUser.html">解锁用户</li>
+
         </ul>
     </div>
     <div title="角色管理" style="padding:10px">
         <ul>
-            <li url="user/**.html">添加角色</li>
-            <li url="user/**.html">角色列表</li>
+            <li url="appuser/addAuthority.html">添加角色</li>
+            <li url="appuser/listAuthority.html">角色列表</li>
         </ul>
     </div>
     <div title="权限管理" style="padding:10px">
         <ul>
-            <li url="user/**.html">添加资源</li>
-            <li url="user/**.html">资源列表</li>
+            <li url="appuser/addPower.html">添加资源</li>
+            <li url="appuser/listPower.html">资源列表</li>
         </ul>
-
-
     </div>
     <div title="菜单管理" style="padding:10px">
         <ul>
-            <li url="menu/**.html">添加</li>
-            <li url="menu/**.html">列表</li>
+            <li url="menu/add.html">添加</li>
+            <li url="menu/list.html">列表</li>
         </ul>
     </div>
     <div title="角色菜单管理" style="padding:10px">
         <ul>
-            <li url="**/**.html">添加</li>
-            <li url="**/**.html">列表</li>
+            <li url="authorityMenu/add.html">添加</li>
+            <li url="authorityMenu/list.html">列表</li>
         </ul>
     </div>
 <div style="display:none;">

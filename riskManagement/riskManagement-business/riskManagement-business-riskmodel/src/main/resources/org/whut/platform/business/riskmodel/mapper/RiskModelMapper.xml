@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.riskmodel.mapper.RiskModelMapper">
+    <sql id="risk_model_fields">
+		ID,NAME,CLASSNAME,DESCRIPTION
+	</sql>
+
+    <resultMap id="riskModelResultMap" type="RiskModel">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="className" column="CLASSNAME" />
+        <result property="description" column="DESCRIPTION"/>
+    </resultMap>
+
+    <insert id="add" parameterType="RiskModel"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        riskmodel(
+        <include refid="risk_model_fields" />
+        )
+        VALUES (#{id}, #{name}, #{className},#{description});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM riskmodel
+        <where>
+            <if test="name != null">name=#{name}</if>
+        </where>
+    </select>
+
+
+    <update id="update" parameterType="RiskModel">
+        UPDATE riskmodel
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            <if test="className != null">CLASSNAME=#{className},</if>
+            <if test="description != null">DESCRIPTION=#{description}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="RiskModel">
+        DELETE FROM riskmodel
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="name != null">AND NAME=#{name}</if>
+            <if test="className != null">AND CLASSNAME=#{className}</if>
+            <if test="description != null">AND DESCRIPTION=#{description}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="RiskModel" resultMap="riskModelResultMap">
+        SELECT
+        <include refid="risk_model_fields" />
+        FROM riskmodel WHERE ID=#{id}
+    </select>
+
+    <select id="list" resultMap="riskMoldelResultMap">
+        SELECT
+        <include refid="risk_model_fields"/>
+        FROM riskmodel
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="name != null">AND NAME=#{name}</if>
+            <if test="className != null">AND CLASSNAME=#{className}</if>
+            <if test="description != null">AND DESCRIPTION=#{description}</if>
+        </where>
+        ORDER BY name
+    </select>
+</mapper>

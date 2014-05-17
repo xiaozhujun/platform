@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.user.mapper.AuthorityPowerMapper">
+    <sql id="authority_power_fields">
+		ID,POWERID,AUTHORITYID,AUTHORITYNAME,POWERRESOURCE
+	</sql>
+
+    <resultMap id="authorityPowerResultMap" type="AuthorityPower">
+        <id property="id" column="ID" />
+        <result property="powerId" column="POWERID" />
+        <result property="authorityId" column="AUTHORITYID" />
+        <result property="powerResource" column="POWERRESOURCE" />
+        <result property="authorityName" column="AUTHORITYNAME" />
+    </resultMap>
+
+    <insert id="add" parameterType="AuthorityPower" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        authority_power(
+        <include refid="authority_power_fields" />
+        )
+        VALUES (#{id}, #{powerId}, #{authorityId},#{authorityName},#{powerResource});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="UserAuthority">
+        UPDATE authority_power
+        <set>
+            <if test="id != null">ID=#{id},</if>
+            <if test="powerId != null">USERID=#{powerId},</if>
+            <if test="authorityId != null">AUTHORITYID=#{authorityId}</if>
+            <if test="powerResource != null">POWERRESOURCE=#{powerResource},</if>
+            <if test="authorityName != null">AUTHORITYNAME=#{authorityName}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="deleteByAuthorityName" parameterType="java.lang.String">
+        DELETE FROM authority_power
+        WHERE AUTHORITYNAME = #{authorityName};
+    </delete>
+
+    <select id="get" parameterType="UserAuthority" resultMap="authorityPowerResultMap">
+        SELECT
+        <include refid="authority_power_fields" />
+        FROM authority_power WHERE ID=#{id};
+    </select>
+
+    <select id="getAuthorityPowerList" resultMap="authorityPowerResultMap">
+        SELECT
+        <include refid="authority_power_fields" />
+        FROM authority_power
+    </select>
+
+    <select id="getResourcesByAuthorityName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT powerResource
+        FROM  authority_power
+        WHERE authorityName=#{name}
+    </select>
+
+    <delete id="deleteByPowerResource" parameterType="java.lang.String">
+        DELETE FROM authority_power
+        WHERE POWERRESOURCE=#{powerResource}
+    </delete>
+</mapper>

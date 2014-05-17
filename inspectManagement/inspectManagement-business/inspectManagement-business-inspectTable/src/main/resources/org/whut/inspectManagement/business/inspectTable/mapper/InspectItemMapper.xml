@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper">
-    <sql id="inspectItem_fields">
+    <!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper">
+        <sql id="inspectItem_fields">
           ID,NAME,DESCRIPTION,CREATETIME,INSPECTTABLEID,INSPECTAREAID,NUMBER,ISINPUT
     </sql>
-    <resultMap id="inspectTableResultMap" type="inspectItem">
+    <resultMap id="inspectItemResultMap" type="inspectItem">
         <id property="id" column="ID" />
         <result property="name" column="NAME" />
         <result property="description" column="DESCRIPTION"/>
-        <result property="creattime" column="CREATETIME" />
+        <result property="createtime" column="CREATETIME" />
         <result property="inspectTableId" column="INSPECTTABLEID"/>
         <result property="inspectAreaId" column="INSPECTAREAID"/>
         <result property="number" column="NUMBER"/>
+        <result property="isInput" column="ISINPUT"/>
     </resultMap>
     <insert id="add" parameterType="inspectItem"  keyProperty="id"
             useGeneratedKeys="true">
@@ -27,7 +28,7 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-    <select id="findByCondition" parameterType="map" resultMap="inspectTableResultMap">
+    <select id="findByCondition" parameterType="map" resultMap="inspectItemResultMap">
         SELECT
         <include refid="inspectItem_fields"/>
         FROM inspectitem
@@ -62,4 +63,17 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
+    <insert id="addList" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        inspectitem(
+        <include refid="inspectItem_fields"/>)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.name},#{item.description},#{item.createtime},#{item.inspectTableId},#{item.inspectAreaId},#{item.number},#{item.isInput})
+        </foreach>
+    </insert>
 </mapper>

@@ -36,6 +36,12 @@
             "list":"rs/inspectItem/list",
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete"
+        },
+        "inspectChoice":{
+            "add":"rs/inspectChoice/add",
+            "getList":"rs/inspectChoice/getList",
+            "update":"rs/inspectChoice/update" ,
+            "delete":"rs/inspectChoice/delete"
         }
     }
 })(jQuery);

@@ -17,8 +17,8 @@ public class InspectItemService {
     @Autowired
     private InspectItemMapper inspectItemMapper;
 
-    public void add(InspectItem inspectItem){
-        inspectItemMapper.add(inspectItem);
+    public void addList(List<InspectItem> inspectItemList){
+        inspectItemMapper.addList(inspectItemList);
     }
     public int delete(InspectItem inspectItem){
         return inspectItemMapper.delete(inspectItem);

@@ -19,9 +19,9 @@
                 valueFieldID:'isInputSelect'
             })
             $.post($.URL.inspectTable.getList,null,listCallBack,"json");
+            $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
             function listCallBack(data){
                 if(data.code==200){
-                    alert("in");
                     var myData=[];
                     $.each(data.data,function(index,content){
                         var j={};
@@ -37,15 +37,33 @@
                     })
                 }
             }
+            function choiceListCallBack(data){
+                if(data.code==200){
+                    var myData=[];
+                    $.each(data.data,function(index,content){
+                        var j={};
+                        j["text"]=content.choiceValue;
+                        j["id"]=content.id;
+                        myData.push(j);
+                    });
+                    $("#inspectChoiceId").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,
+                        data:myData,
+                        valueField:'id',
+                        textField:'text',
+                        valueFieldID:'inspectChoiceIdSelect'
+                    })
+                }
+            }
             $("#submitBtn").click(function(){
                 var data={};
-                data.name=$("#name").val;
-                data.description=$("#description").val;
-                data.inspectTable=$("#inspectTableId").val();
-                data.inspectArea=$("#area").val() ;
+                data.name=$("#name").val();
+                data.description=$("#description").val();
+                data.inspectTableId=$("#inspectTableIdSelect").val();
+                data.inspectAreaId=$("#area").val() ;
                 data.number=$("#number").val();
-                data.isinput=$("#isIput").val();
-                data.inspectChoice=$("#inspectChoice").val();
+                data.isinput=$("#isInputSelect").val();
+                data.inspectChoiceId=$("#inspectChoiceIdSelect").val();
+
                 $.post($.URL.inspectItem.add,data,addCallBack,"json")
             })
             function addCallBack(data){
@@ -72,23 +90,24 @@
     </div>
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
-            <td align="right" class="l-table-edit-td">点检项:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="name" type="text" id="name" type="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">描述:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="description" type="text" id="description" type="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
             <td align="right" class="l-table-edit-td">所属点检表:</td>
             <td align="left" class="l-table-edit-td">
                 <input name="inspectTableId" type="text" id="inspectTableId" ltype="text" /></td>
             <td align="left"></td>
         </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">点检项:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="name" type="text" id="name" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">描述:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="description" type="text" id="description"  /></td>
+            <td align="left"></td>
+        </tr>
+
         <tr>
             <td align="right" class="l-table-edit-td">所属区域:</td>
             <td align="left" class="l-table-edit-td">
@@ -110,7 +129,7 @@
         <tr>
             <td align="right" class="1-table-edit-td">点检选值:</td>
             <td align="left" class="1-table-edit-td">
-                <input type="text"  id="inspectChoice">
+                <input type="text"  id="inspectChoiceId">
             </td>
         </tr>
     </table>

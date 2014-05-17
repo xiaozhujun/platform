@@ -2,9 +2,9 @@ package org.whut.inspectManagement.business.inspectTable.entity;
 
 /**
  * Created with IntelliJ IDEA.
- * User: xjie
- * Date: 14-5-15
- * Time: 下午2:08
+ * User: choumiaoer
+ * Date: 14-5-17
+ * Time: 下午8:47
  * To change this template use File | Settings | File Templates.
  */
 public class InspectItem_choice {

@@ -581,7 +581,8 @@ public class CraneInspectReportServiceWeb {
                craneInspectReportList.add(craneReport);
         }
         for(CraneInspectReport cr:craneInspectReportList){
-            Float riskValue=calculateRisk(className,cr,str[i]);
+            Float r=calculateRisk(className,cr,str[i]);
+            int riskValue=Math.round(r);
             Map<String,String> m=new HashMap<String,String>();
             if(cr!=null){
                 m.put("reportnumber",cr.getReportNumber());

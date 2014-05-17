@@ -42,6 +42,12 @@
             "list":"rs/department/list",
             "update":"rs/department/update",
             "delete":"rs/department/delete"
+        },
+        "device":{
+            "add":"rs/device/add" ,
+            "list":"rs/device/list",
+            "update":"rs/device/update",
+            "delete":"rs/device/delete"
         }
     }
 })(jQuery);

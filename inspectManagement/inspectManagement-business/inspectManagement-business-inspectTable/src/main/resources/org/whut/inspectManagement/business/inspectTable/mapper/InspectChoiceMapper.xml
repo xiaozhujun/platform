@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapper" >
+<mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapper">
     <sql id="InspectChoice_fields">
           ID,CHOICEVALUE,APPID
     </sql>
     <resultMap id="InspectChoiceResultMap" type="InspectChoice">
-        <id property="id" column="ID" />        
+        <id property="id" column="ID" />
         <result property="choiceValue" column="CHOICEVALUE"/>
         <result property="appId" column="APPID"/>
     </resultMap>
@@ -39,7 +39,7 @@
     </delete>
     <insert id="addList" parameterType="java.util.List" useGeneratedKeys="true">
         <selectKey resultType="long" keyProperty="id" order="AFTER">
-            select
+            SELECT
             LAST_INSERT_ID() as id
         </selectKey>
         INSERT INTO
@@ -52,6 +52,7 @@
     </insert>
     <select id="getList" resultMap="InspectChoiceResultMap">
         SELECT *
-         FROM inspectchoice
+        FROM inspectchoice
     </select>
+
 </mapper>

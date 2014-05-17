@@ -9,7 +9,6 @@
         /*
         *ligerui定义
         */
-        $("#appDescription").ligerTextBox({width:500});
         $("#appName").ligerTextBox({width:500});
         $("#submitBtn").ligerButton({
         });
@@ -30,7 +29,8 @@
         }
     </script>
     <style type="text/css">
-
+         #appDescription{width: 500px;height: 100px;display: block;}
+        #description{margin-top: 8px;}
     </style>
 
 </head>
@@ -43,9 +43,9 @@
             </span>
         </div>
         <div id="appDescriptionArea">
-            <span>描述:</span>
+            <span id="description">描述:</span>
             <span class="inputarea">
-                <input   id="appDescription" />
+                <textarea   id="appDescription"  />
             </span>
         </div>
         <div>

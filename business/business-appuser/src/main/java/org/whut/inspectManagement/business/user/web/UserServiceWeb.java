@@ -32,7 +32,7 @@ public class UserServiceWeb {
 
     private static PlatformLogger logger = PlatformLogger.getLogger(UserServiceWeb.class);
 
-    final String STATUS="1";
+    final String STATUS="启用";
     @Autowired
     private UserService userService;
     @Autowired

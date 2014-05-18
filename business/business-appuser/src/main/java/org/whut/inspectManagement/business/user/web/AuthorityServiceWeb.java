@@ -60,7 +60,7 @@ public class AuthorityServiceWeb {
             Authority authority = new Authority();
             authority.setName(name);
             authority.setDescription(description);
-            authority.setStatus(Integer.parseInt(status));
+            authority.setStatus(status);
             authorityService.add(authority);
             long currentAuthorityId = authorityService.getIdByName(name);
             String[] resourceArray = resource.split(";");
@@ -90,7 +90,7 @@ public class AuthorityServiceWeb {
         long authorityId= subAuthority.getId();
         String authorityName = subAuthority.getName();
         String authorityDescription = subAuthority.getDescription();
-        int  authorityStatus = subAuthority.getStatus();
+        String  authorityStatus = subAuthority.getStatus();
         String resource = subAuthority.getResource();
         Authority authority = new Authority();
         authority.setId(authorityId);

@@ -11,7 +11,7 @@ public class SubAuthority{
     private long id;
     private String name;
     private String description;
-    private int status;
+    private String status;
     private String resource;
 
     public void setId(long id){
@@ -38,11 +38,11 @@ public class SubAuthority{
         this.description = description;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

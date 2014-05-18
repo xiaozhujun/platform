@@ -14,18 +14,12 @@ public class SubUser {
         private String password;
         private String sex;
         private String role;
-        private  String dataRole;
+
         private String status;
         private long appId;
         private String appName;
 
-        public String getDataRole() {
-            return dataRole;
-        }
 
-        public void setDataRole(String dataRole) {
-            this.dataRole = dataRole;
-        }
 
 
 

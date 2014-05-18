@@ -11,7 +11,7 @@ public class Authority {
     private long id;
     private String name;
     private String description;
-    private int status;
+    private String status;
 
     public long getId() {
         return id;
@@ -36,11 +36,11 @@ public class Authority {
         this.description = description;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

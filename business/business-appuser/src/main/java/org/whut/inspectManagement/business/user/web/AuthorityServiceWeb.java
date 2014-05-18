@@ -21,7 +21,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-@Path("/authority")
+@Path("/appauthority")
 public class AuthorityServiceWeb {
 
     private static PlatformLogger logger = PlatformLogger.getLogger(AuthorityServiceWeb.class);

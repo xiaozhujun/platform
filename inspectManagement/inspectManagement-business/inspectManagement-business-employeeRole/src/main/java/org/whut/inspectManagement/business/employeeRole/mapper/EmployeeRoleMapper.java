@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.employeeRole.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.employeeRole.entity.EmployeeRole;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -15,4 +16,6 @@ import java.util.Map;
  */
 public interface EmployeeRoleMapper extends AbstractMapper{
     public List<EmployeeRole> findByCondition(Map<String,Object> map);
+
+    public long getIdByName(@Param("name") String name,@Param("appId") long appId);
 }

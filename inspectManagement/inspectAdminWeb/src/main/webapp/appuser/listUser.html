@@ -16,9 +16,9 @@
 
         $(function(){
 
-            $.get($.URL.authority.list,null,listAuthorityCallback,"json");
+            $.get($.URL.appauthority.list,null,listAuthorityCallback,"json");
             $.get($.URL.app.list,null,listappCallback,"json");
-            $.get($.URL.user.list,null,listuserCallback,"json");
+            $.get($.URL.appuser.list,null,listuserCallback,"json");
 
         });
         var gridData = {};
@@ -129,7 +129,7 @@
             manager.endEdit(rowid);
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
-            $.post($.URL.user.update,{"jsonString":jsonString},updateCallback,"json");
+            $.post($.URL.appuser.update,{"jsonString":jsonString},updateCallback,"json");
         }
 
         function updateCallback(data){
@@ -147,7 +147,7 @@
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
-               $.post($.URL.user.delete,{"jsonString":jsonString},deleteCallback,"json");
+               $.post($.URL.appuser.delete,{"jsonString":jsonString},deleteCallback,"json");
                 manager.deleteRow(rowid);
             }
         }

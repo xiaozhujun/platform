@@ -27,7 +27,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-@Path("/user")
+@Path("/appuser")
 public class UserServiceWeb {
 
     private static PlatformLogger logger = PlatformLogger.getLogger(UserServiceWeb.class);

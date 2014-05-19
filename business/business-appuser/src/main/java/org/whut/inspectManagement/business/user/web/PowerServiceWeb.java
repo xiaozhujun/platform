@@ -20,7 +20,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-@Path("/power")
+@Path("/apppower")
 public class PowerServiceWeb {
 
     @Autowired

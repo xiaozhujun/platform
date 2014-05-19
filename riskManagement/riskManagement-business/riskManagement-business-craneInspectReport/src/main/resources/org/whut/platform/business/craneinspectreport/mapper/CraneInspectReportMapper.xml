@@ -481,17 +481,17 @@
             where cr.equipmentVariety=ctype.equipmentVariety and ctype.craneTypeId=#{craneType}
             group by cr.equipmentVariety
     </select>
-    <insert id="insertToRiskValue" parameterType="map"  keyProperty="id"
-            useGeneratedKeys="true">
-        INSERT INTO
-        riskvalue(
-        reportnumber,riskvalue
-        )
-        VALUES (#{reportnumber}, #{riskvalue});
-        <selectKey resultType="long" keyProperty="id">
+    <insert id="batchInsertToRiskValue" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
             select
             LAST_INSERT_ID() as id
         </selectKey>
+        INSERT INTO
+        riskvalue(reportnumber,riskvalue)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.reportNumber},#{item.riskvalue})
+        </foreach>
     </insert>
     <select id="listUploadedReport" resultType="map">
         select

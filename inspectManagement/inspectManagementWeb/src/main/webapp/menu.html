@@ -17,8 +17,6 @@
                     $("#mainContainer").load(url);
                 }
             });
-            $("#inspectResult").parent().parent().trigger("click");
-            $("#inspectResult").trigger("click");
         });
 
     </script>
@@ -30,87 +28,48 @@
 </head>
 <body style="padding:10px">
 <div id="accordion">
-    <div title="点检结果管理" style="padding:10px">
-        <ul>
-            <li id="inspectResultLi" url="inspectResult/inspectResultUpload.html">点检结果上传</li>
-            <li url="**/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="报表管理" style="padding:10px">
-        <ul>
-            <li url="**/add.html">添加</li>
-            <li url="**/list.html">列表</li>
-        </ul>
-    </div>
     <div title="部门管理" style="padding:10px">
         <ul>
-            <li url="department/add.html">添加</li>
-            <li url="department/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="员工类型管理" style="padding:10px">
-        <ul>
-            <li url="employeeRole/add.html">添加</li>
-            <li url="employeeRole/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="员工管理" style="padding:10px">
-        <ul>
-            <li url="**/add.html">添加</li>
-            <li url="**/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="设备类型管理" style="padding:10px">
-        <ul>
-            <li url="**/add.html">添加</li>
-            <li url="**/list.html">列表</li>
+            <li url="department/add.html">添加部门</li>
+            <li url="department/list.html">部门列表</li>
+            <li url="employeeRole/add.html">添加员工类型</li>
+            <li url="employeeRole/list.html">员工类型列表</li>
+            <li url="**/add.html">添加员工</li>
+            <li url="**/list.html">员工列表</li>
         </ul>
     </div>
     <div title="设备管理" style="padding:10px">
         <ul>
-            <li url="device/addDevice.html">添加</li>
-            <li url="device/listDevice.html">列表</li>
-        </ul>
-    </div>
-    <div title="点检区域管理" style="padding:10px">
-        <ul>
-            <li url="**/add.html">添加</li>
-            <li url="**/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="标签管理" style="padding:10px">
-        <ul>
-            <li url="**/add.html">添加</li>
-            <li url="**/list.html">列表</li>
-        </ul>
-    </div>
-    <div title="点检选值管理" style="padding:10px">
-        <ul>
-            <li url="InspectTable/addInspectChoice.html">添加</li>
-            <li url="InspectTable/inspectChoiceList.html">列表</li>
+            <li url="device/addDeviceType.html">添加设备类型</li>
+            <li url="device/listDeviceType.html">设备类型列表</li>
+            <li url="device/addInspectArea.html">添加设备区域</li>
+            <li url="device/listInspectArea.html">设备类型区域列表</li>
+            <li url="device/addDevice.html">添加设备</li>
+            <li url="device/listDevice.html">设备列表</li>
+            <li url="device/addInspectTag.html">添加设备标签</li>
+            <li url="device/listInspectTag.html">设备标签列表</li>
         </ul>
     </div>
     <div title="点检表管理" style="padding:10px">
         <ul>
-            <li url="InspectTable/addInspectTable.html">添加</li>
-            <li url="InspectTable/inspectTableList.html">列表</li>
+            <li url="InspectTable/addInspectTable.html">添加点检表</li>
+            <li url="InspectTable/inspectTableList.html">点检表列表</li>
+            <li url="InspectTable/addInspectItem.html">添加点检项</li>
+            <li url="InspectTable/inspectItemList.html">点检项列表</li>
+            <li url="InspectTable/addInspectChoice.html">点检选值添加</li>
+            <li url="InspectTable/inspectChoiceList.html">点检选值列表</li>
         </ul>
     </div>
-    <div title="点检项管理" style="padding:10px">
+    <div title="数据管理" style="padding:10px" >
         <ul>
-            <li url="InspectTable/addInspectItem.html">添加</li>
-            <li url="InspectTable/inspectItemList.html">列表</li>
+            <li  url="inspectResult/inspectResultUpload.html">点检结果上传</li>
+            <li  url="**/list.html">点检结果列表</li>
+            <li url="**/add.html">添加配置</li>
+            <li url="**/list.html">配置列表</li>
+            <li url="**/add.html">报表统计</li>
+            <li url="**/list.html">报表详情</li>
         </ul>
     </div>
-    <div title="配置管理" style="padding:10px">
-        <ul>
-            <li url="**/add.html">添加</li>
-            <li url="**/list.html">列表</li>
-        </ul>
-    </div>
-<div style="display:none;">
-
-</div>
 </div>
 </body>
 </html>

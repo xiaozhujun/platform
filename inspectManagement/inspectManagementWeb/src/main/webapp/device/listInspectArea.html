@@ -17,7 +17,7 @@
         $(function(){
 
             $.get($.URL.deviceType.list,null,listDeviceTypeCallBack,"json");
-            $.get($.URL.device.list,null,listCallBack,"json");
+            $.get($.URL.inspectArea.list,null,listCallBack,"json");
 
         }) ;
         var gridData={};
@@ -53,29 +53,27 @@
 
                 columns:[
                     {display:'主键',name:'id',width:50,type:'int',frozen:true} ,
-                    {display:'设备名',name:'name',
+                    {display:'点检区域名',name:'name',
                         editor:{type:'text'}
                     } ,
+                    {display:'区域描述',name:'description',
+                        editor:{type:'text'}
+                    } ,
+                    {display:'创建时间',name:'createtime'
 
-                    {display:'设备编号',name:'number',
+                    },
+                    {display:'区域编号',name:'number',
                         editor:{type:'text'}
                     },
-
-                    {display:'设备描述',name:'description',
-                        editor:{type:'text'}
-                    } ,
-
-                    {display:'appId',name:'appId',
-                        editor:{type:'text'}
-                    }  ,
-
                     { display: '设备类型ID', name: 'deviceTypeId', type: 'int',
                         editor: { type: 'select', data: myData, valueField: 'type'},
                         render:function(item){
                             return item.deviceTypeId;
                         }
                     },
-
+                    {display:'appId',name:'appId',
+                        editor:{type:'text'}
+                    }  ,
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {
                         var h="";
@@ -111,7 +109,7 @@
             manager.endEdit(rowid);
             var row=manager.getRow(rowid);
             var jsonString= $.toJSON(row);
-            $.post($.URL.device.update,{"jsonString":jsonString},updateCallBack,"json");
+            $.post($.URL.inspectArea.update,{"jsonString":jsonString},updateCallBack,"json");
         }
         function updateCallBack(data){
             if(data.code==200){
@@ -126,7 +124,7 @@
             {
                 var row=manager.getRow(rowid);
                 var jsonString= $.toJSON(row);
-                $.post($.URL.device.delete,{"jsonString":jsonString},deleteCallBack,"json");
+                $.post($.URL.inspectArea.delete,{"jsonString":jsonString},deleteCallBack,"json");
                 manager.deleteRow(rowid);
             }
         }

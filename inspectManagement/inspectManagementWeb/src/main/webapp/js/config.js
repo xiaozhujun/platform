@@ -6,21 +6,18 @@
             "delete":"rs/power/delete",
             "list":"rs/power/list"
         },
-        "authority":{
-            "add":"rs/authority/add"
-        },
         "user":{
-            "add":"rs/user/add",
-            "update":"rs/user/update",
-            "delete":"rs/user/delete",
-            "list":"rs/user/list",
-            "getId":"rs/user/getIdByName"
+            "add":"rs/appuser/add",
+            "update":"rs/appuser/update",
+            "delete":"rs/appuser/delete",
+            "list":"rs/appuser/list",
+            "getId":"rs/appuser/getIdByName"
         },
         "authority":{
-             "add":"rs/authority/add",
-             "update":"rs/authority/update",
-             "delete":"rs/authority/delete",
-            "list":"rs/authority/list"
+             "add":"rs/appauthority/add",
+             "update":"rs/appauthority/update",
+             "delete":"rs/appauthority/delete",
+            "list":"rs/appauthority/list"
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
@@ -48,6 +45,24 @@
             "list":"rs/device/list",
             "update":"rs/device/update",
             "delete":"rs/device/delete"
+        },
+        "deviceType":{
+            "add":"rs/deviceType/add",
+            "update":"rs/deviceType/update",
+            "delete":"rs/deviceType/delete" ,
+            "list":"rs/deviceType/list"
+        }  ,
+        "inspectArea":{
+            "add":"rs/inspectArea/add",
+            "update":"rs/inspectArea/update",
+            "delete":"rs/inspectArea/delete",
+            "list":"rs/inspectArea/list"
+        },
+        "inspectTag":{
+            "add":"rs/inspectTag/add",
+            "update":"rs/inspectTag/update",
+            "delete":"rs/inspectTag/delete",
+            "list":"rs/inspectTag/list"
         },
         "employeeRole":{
             "add":"rs/employeeRole/add",

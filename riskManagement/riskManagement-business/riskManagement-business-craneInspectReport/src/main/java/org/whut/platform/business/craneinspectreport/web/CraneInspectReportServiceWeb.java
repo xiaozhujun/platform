@@ -572,6 +572,7 @@ public class CraneInspectReportServiceWeb {
         List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(str[i]));
         List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
         List<Map<String,String>>mapList=new ArrayList<Map<String, String>>();
+        craneInspectReportService.getDbArrayListFromMongo();
         for(CraneInspectReport craneInspectReport:craneList){
                //根据reportnumber从mongodb中拿出数据封装到craneinspectreport中
                className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
@@ -585,14 +586,13 @@ public class CraneInspectReportServiceWeb {
             int riskValue=Math.round(r);
             Map<String,String> m=new HashMap<String,String>();
             if(cr!=null){
-                m.put("reportnumber",cr.getReportNumber());
+                m.put("reportNumber",cr.getReportNumber());
                 m.put("riskvalue",String.valueOf(riskValue));
                 mapList.add(m);
             }
         }
-        for(Map<String,String>m:mapList){
-            craneInspectReportService.InsertToRiskValue(m.get("reportnumber"),m.get("riskvalue"));
-        }
+            //批量插入riskValue
+            craneInspectReportService.InsertToRiskValue(mapList);
     }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -607,8 +607,11 @@ public class CraneInspectReportServiceWeb {
          }
         return riskValue;
     }
-    //初始化数据
-    public String initData(){
+    //计算最大值
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/calculateMaxValue")
+    public String calculateMaxValue(){
         craneInspectReportService.insertToCraneInspectReportMaxValueCollection();
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

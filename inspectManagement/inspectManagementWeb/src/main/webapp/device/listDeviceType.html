@@ -15,67 +15,37 @@
     <script type="text/javascript">
 
         $(function(){
-
-            $.get($.URL.deviceType.list,null,listDeviceTypeCallBack,"json");
-            $.get($.URL.device.list,null,listCallBack,"json");
-
+            $.get($.URL.deviceType.list,null,listCallBack,"json");
         }) ;
         var gridData={};
         function listCallBack(data){
             if(data.code==200)
             {
+
                 gridData.Rows=data.data;
                 gridData.Total=data.data.length;
                 /*     $("#maingrid").ligerGrid({data:gridData});*/
                 f_initGrid();
             }
         }
-        var myData=[];
-        function listDeviceTypeCallBack(data){
-            if(data.code==200){
-
-                $.each(data.data,function(index,content){
-                    var j={};
-                    j["text"]=content.id;
-                    j["type"]=content.id;
-                    myData.push(j);
-
-                })
-            }
-        }
         var manager,g;
         function f_initGrid(){
             g = manager = $("#maingrid").ligerGrid( {
 
-                enabledEdit:true,clickToEdit:false,isScroll:false,
-                data: gridData,
-                width:'100%',
-
                 columns:[
                     {display:'主键',name:'id',width:50,type:'int',frozen:true} ,
-                    {display:'设备名',name:'name',
+                    {display:'设备类型名',name:'name',
                         editor:{type:'text'}
                     } ,
-
-                    {display:'设备编号',name:'number',
+                    {display:'类型编号',name:'number',
+                        editor:{type:'text'}
+                    } ,
+                    {display:'类型描述',name:'description',
                         editor:{type:'text'}
                     },
-
-                    {display:'设备描述',name:'description',
-                        editor:{type:'text'}
-                    } ,
-
                     {display:'appId',name:'appId',
                         editor:{type:'text'}
-                    }  ,
-
-                    { display: '设备类型ID', name: 'deviceTypeId', type: 'int',
-                        editor: { type: 'select', data: myData, valueField: 'type'},
-                        render:function(item){
-                            return item.deviceTypeId;
-                        }
                     },
-
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {
                         var h="";
@@ -95,8 +65,11 @@
                 onSelectRow:function(rowdata,rowindex)
                 {
                     $("#txtrowindex").val(rowindex);
-                }
+                },
 
+                enabledEdit:true,clickToEdit:false,isScroll:false,
+                data: gridData,
+                width:'100%'
             }) ;
 
 
@@ -111,7 +84,7 @@
             manager.endEdit(rowid);
             var row=manager.getRow(rowid);
             var jsonString= $.toJSON(row);
-            $.post($.URL.device.update,{"jsonString":jsonString},updateCallBack,"json");
+            $.post($.URL.deviceType.update,{"jsonString":jsonString},updateCallBack,"json");
         }
         function updateCallBack(data){
             if(data.code==200){
@@ -126,7 +99,7 @@
             {
                 var row=manager.getRow(rowid);
                 var jsonString= $.toJSON(row);
-                $.post($.URL.device.delete,{"jsonString":jsonString},deleteCallBack,"json");
+                $.post($.URL.deviceType.delete,{"jsonString":jsonString},deleteCallBack,"json");
                 manager.deleteRow(rowid);
             }
         }
@@ -144,12 +117,14 @@
         {
             manager.addEditRow();
         }
-
     </script>
 </head>
 <body  style="padding:10px">
 <div class="l-clear"></div>
-<div id="maingrid" style="margin-top:20px"></div>
+<div id="maingrid" style="margin-top:20px"></div> <br />
 
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
 </body>
 </html>

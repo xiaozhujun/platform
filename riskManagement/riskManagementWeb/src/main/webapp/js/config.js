@@ -60,7 +60,8 @@
             "getCityInfoByCondition":'rs/craneinspectreport/getCityInfoByCondition',
             "getAreaInfoByCondition":'rs/craneinspectreport/getAreaInfoByCondition',
             "listUploadedReport":'rs/craneinspectreport/listUploadedReport',
-            "calculateRiskValue":'rs/craneinspectreport/calculateRiskValue'
+            "calculateRiskValue":'rs/craneinspectreport/calculateRiskValue',
+            "calculateMaxValue":'rs/craneinspectreport/calculateMaxValue'
         },
         "authority":{
             "add":"rs/authority/add"

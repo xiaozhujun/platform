@@ -35,6 +35,10 @@ public class CraneInspectReportService {
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
     private CalculateTools calculateTools=new CalculateTools();
+    private static List<List<DBObject>> dbObjectList=new ArrayList<List<DBObject>>();
+    public void getDbArrayListFromMongo(){
+        dbObjectList= mongoConnector.getDbArrayListFromMongo();
+    }
     public void upload(InputStream inputStream,String fileName){
       String documentJson=getMongoStringFromRequest(inputStream,fileName);
       mongoConnector.insertDocument(documentJson);
@@ -351,6 +355,8 @@ public class CraneInspectReportService {
             String maxCartSpeed=null;
             String maxCarSpeed=null;
             String maxLiftMoment=null;
+            //计算之前先初始化数据
+            calculateTools.getDbArrayListFromMongo();
             maxUseTime=String.valueOf(calculateTools.getMaxUseTime(equipmentVariety));
             maxRatedLiftWeight=String.valueOf(calculateTools.getMaxRatedLiftWeight(equipmentVariety));
             maxSpan=String.valueOf(calculateTools.getMaxSpan(equipmentVariety));
@@ -375,8 +381,18 @@ public class CraneInspectReportService {
         MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
         mongo.insertDocument(getCraneInspectReportMaxValue());
     }
+    public DBObject getDBObjectByReportNumber(String reportNumber){
+        for(List<DBObject> dd:dbObjectList){
+            for(DBObject ddd:dd){
+                if(ddd.get("reportnumber").equals(reportNumber)){
+                    return ddd;
+                }
+            }
+        }
+        return null;
+    }
     public CraneInspectReport getCraneInfoFromMongoByReportNumber(String reportNumber){
-        DBObject d=mongoConnector.getDBObjectByReportNumber(reportNumber);
+        DBObject d=getDBObjectByReportNumber(reportNumber);
         if(d!=null){
         craneInspectReport=new CraneInspectReport();
         if(reportNumber!=null){

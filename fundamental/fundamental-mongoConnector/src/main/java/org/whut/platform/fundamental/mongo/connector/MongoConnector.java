@@ -44,9 +44,6 @@ public class MongoConnector {
     public static DB getDB(String dbName){
         return mongo.getDB(dbName);
     }
-
-
-
     //传感器数据舒服构造函数
     public MongoConnector(String dbName, String collectionName){
         this.dbName = dbName;
@@ -143,5 +140,31 @@ public class MongoConnector {
             }
         }
         return null;
+    }
+    public List<DBObject> getDbArrayListFromMongo1(){
+        //从mongo中拿出所有的记录
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
+        List<DBObject> d=new ArrayList<DBObject>();
+        while (dbCursor.hasNext()){
+             d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+             dd.add(d);
+        }
+        return d;
+    }
+    public List<List<DBObject>> getDbArrayListFromMongo(){
+        //从mongo中拿出所有的记录
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
+        List<DBObject> d=new ArrayList<DBObject>();
+        while (dbCursor.hasNext()){
+            d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+            dd.add(d);
+        }
+        return dd;
     }
 }

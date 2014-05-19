@@ -15,7 +15,9 @@
     <script type="text/javascript">
         $(function(){
             $("#isInput").ligerComboBox({
-                data:[{"text":"false","id":0},{"text":"true","id":1}],
+                data:[{"text":"否","id":"0"},{"text":"是","id":"1"}],
+                valueField:'id',
+                textField:'text',
                 valueFieldID:'isInputSelect'
             })
             $.post($.URL.inspectTable.getList,null,listCallBack,"json");
@@ -61,17 +63,18 @@
                 data.inspectTableId=$("#inspectTableIdSelect").val();
                 data.inspectAreaId=$("#area").val() ;
                 data.number=$("#number").val();
-                data.isinput=$("#isInputSelect").val();
+                data.isInput=$("#isInputSelect").val();
                 data.inspectChoiceId=$("#inspectChoiceIdSelect").val();
 
                 $.post($.URL.inspectItem.add,data,addCallBack,"json")
             })
             function addCallBack(data){
                 if(data.code==200){
-                    alert("操作成功")
+                    $.ligerDialog.success("修改成功");
                 }
-                else
-                alert("操作失败")
+                else{
+                    $.ligerDialog.error("操作失败");
+                }
             }
         })
 

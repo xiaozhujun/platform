@@ -21,6 +21,7 @@
         function listCallback(data){
             if(data.code==200){
                 gridData.Rows = data.data;
+
                 gridData.Total = data.data.length;
                 f_initGrid();
             }
@@ -37,7 +38,7 @@
                     { display: '描述',name: 'description',
                         editor: { type: 'text'}
                     },
-                    { display: '创建时间',name: 'createtime'},
+                    { display: '创建时间',name: 'createtime',width:100},
                     { display: '点检表ID',name: 'inspectTableId',type:'int',
                         editor: { type: 'text'}
                     },
@@ -47,7 +48,7 @@
                     { display: '编号',name: 'number',type:'string',
                         editor: { type: 'text'}
                     },
-                    { display: '是否输入',name: 'isIput',type:'string',
+                    { display: '是否输入',name: 'input',type:'int',
                         editor: { type: 'text'}
                     },
                     { display: 'appId', name: 'appId', type: 'long',

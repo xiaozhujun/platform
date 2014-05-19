@@ -42,14 +42,15 @@ public class InspectItemServiceWeb {
         Date date=new Date();
         String[] inspectTableArray=inspectTableId.split(";");
         List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
-        InspectItem inspectItem=new InspectItem();
-        inspectItem.setName(name);
-        inspectItem.setDescription(description);
-        inspectItem.setCreatetime(date);
-        inspectItem.setInspectAreaId(inspectAreaId);
-        inspectItem.setNumber(number);
-        inspectItem.setInput(isInput);
+
         for(int i=0;i<inspectTableArray.length;i++){
+            InspectItem inspectItem=new InspectItem();
+            inspectItem.setName(name);
+            inspectItem.setDescription(description);
+            inspectItem.setCreatetime(date);
+            inspectItem.setInspectAreaId(inspectAreaId);
+            inspectItem.setNumber(number);
+            inspectItem.setInput(isInput);
         inspectItem.setInspectTableId(Integer.parseInt(inspectTableArray[i]));
         inspectItemList.add(inspectItem);
         }

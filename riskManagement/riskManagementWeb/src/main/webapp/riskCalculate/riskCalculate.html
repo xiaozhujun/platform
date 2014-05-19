@@ -15,7 +15,7 @@
     <script src="lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerMenuBar.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var menu1 = { width: 100, items:
+        var menu1 = { width: 120, items:
                 [
                     {
                         text: '风险计算', children:
@@ -90,8 +90,12 @@
                     $(rows).each(function(){
                        s+=this.id+",";
                     });
-                    $.ligerDialog.waitting('正在努力计算中,请稍候...');
-                    $.post($.URL.craneinspectreport.calculateRiskValue,{"reportId":s},calculateRiskValueCallback,"json");
+                    if(s!=""){
+                        $.post($.URL.craneinspectreport.calculateRiskValue,{"reportId":s},calculateRiskValueCallback,"json");
+                        $.ligerDialog.waitting('正在努力计算中,请稍候...');
+                    }else if(s==""){
+                        $.ligerDialog.alert("请选择计算报告!");
+                    }
                 }
             }
         }
@@ -106,7 +110,7 @@
 <body  style="padding:10px">
 <div class="l-clear"></div>
 <div id="topmenu" />
-<div id="maingrid" style="margin-top:20px"></div> <br />
+<div id="maingrid" style="margin-top:1px"></div> <br />
 
 <div style="display:none;">
     <!-- g data total ttt -->

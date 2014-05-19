@@ -31,9 +31,9 @@
             data.authorityid=$('Authority').val();
             data.status = $("#Status").val();
             data.description = $("#Description").val();
-            $.post($.URL.employeeRole.add,data,addDepartmentCallback,"json");
+            $.post($.URL.employeeRole.add,data,addemployeeRoleCallback,"json");
         });
-        function addDepartmentCallback(data){
+        function addemployeeRoleCallback(data){
             if(data.code==200){
                 $.ligerDialog.success('操作成功');
             }

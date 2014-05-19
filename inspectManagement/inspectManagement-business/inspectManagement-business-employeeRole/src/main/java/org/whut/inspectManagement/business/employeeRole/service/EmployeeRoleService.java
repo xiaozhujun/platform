@@ -37,4 +37,9 @@ public class EmployeeRoleService {
     {
         return employeeRoleMapper.findByCondition(new HashMap<String, Object>());
     }
+
+    public long getIdByName(String name,long appId)
+    {
+        return employeeRoleMapper.getIdByName(name,appId);
+    }
 }

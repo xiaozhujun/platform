@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.employeeRole.entity.EmployeeRole;
 import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleService;
+import org.whut.inspectManagement.business.user.service.AuthorityService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -30,20 +31,41 @@ public class EmployeeRoleServiceWeb {
 
     @Autowired
     private EmployeeRoleService employeeRoleService;
+    @Autowired
+    private AuthorityService authorityService;
 
     @Produces( MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authorityid") long authorityid,@FormParam("appid") long appid)
+    public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authority") String authority,@FormParam("appid") String appid)
     {
+        if(name==null||name.trim().equals("")||authority==null)
+        {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
+        }
+        long id;
+        try
+        {
+            id=employeeRoleService.getIdByName(name,Long.parseLong(appid));
+        }
+        catch (Exception e)
+        {
+            id=0;
+        }
+        if(id==0)
+        {
         EmployeeRole employeeRole=new EmployeeRole();
-        employeeRole.setAppId(appid);
+        long authorityid = authorityService.getIdByName(authority);
+        employeeRole.setAppId(Long.parseLong(appid));
         employeeRole.setDescription(description);
         employeeRole.setStatus(status);
         employeeRole.setAuthorityId(authorityid);
         employeeRole.setName(name);
         employeeRoleService.add(employeeRole);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"员工角色名已存在！");
     }
 
     @Produces( MediaType.APPLICATION_JSON +";charset=UTF-8")

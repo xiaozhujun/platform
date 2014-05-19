@@ -35,14 +35,13 @@ public class InspectItemServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("inspectTableId") String inspectTableId,
-    @FormParam("inspectAreaId") long inspectAreaId,@FormParam("number") String number,@FormParam("isInput") int isInput){
+    @FormParam("inspectAreaId") long inspectAreaId,@FormParam("number") String number,@FormParam("isInput") int isInput,@FormParam("inspectChoiceId") String inspectChoiceId){
         if(name==null||inspectAreaId==0||inspectTableId.equals("")||number==null||name.equals("")||inspectTableId.equals("null")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         Date date=new Date();
         String[] inspectTableArray=inspectTableId.split(";");
         List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
-
         for(int i=0;i<inspectTableArray.length;i++){
             InspectItem inspectItem=new InspectItem();
             inspectItem.setName(name);
@@ -51,8 +50,8 @@ public class InspectItemServiceWeb {
             inspectItem.setInspectAreaId(inspectAreaId);
             inspectItem.setNumber(number);
             inspectItem.setInput(isInput);
-        inspectItem.setInspectTableId(Integer.parseInt(inspectTableArray[i]));
-        inspectItemList.add(inspectItem);
+            inspectItem.setInspectTableId(Integer.parseInt(inspectTableArray[i]));
+            inspectItemList.add(inspectItem);
         }
         inspectItemService.addList(inspectItemList);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");

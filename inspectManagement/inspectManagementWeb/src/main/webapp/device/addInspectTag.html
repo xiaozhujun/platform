@@ -16,9 +16,9 @@
 
         $(function()
         {
-
-            $.get($.URL.deviceType.list,null,listCallBack,"json");
-            function listCallBack(data){
+            $.get($.URL.device.list,null,listDeviceCallBack,"json");
+            $.get($.URL.inspectArea.list,null,listInspectAreaCallBack,"json");
+            function listDeviceCallBack(data){
                 if(data.code==200){
                     var myData=[];
                     $.each(data.data,function(index,content){
@@ -28,22 +28,41 @@
                         myData.push(j);
 
                     })
-                    $("#deviceTypeId").ligerComboBox({
+                    $("#deviceId").ligerComboBox({
                         data:myData,
-                        valueFieldID:'deviceTypeIdSelect'
+                        valueFieldID:'deviceIdSelect'
                     });
                 }
 
             }
+
+            function listInspectAreaCallBack(data){
+                if(data.code==200){
+                    var mData=[];
+                    $.each(data.data,function(index,content){
+                        var j={};
+                        j["text"]=content.id;
+                        j["id"]=content.id;
+                        mData.push(j);
+
+                    })
+                    $("#inspectAreaId").ligerComboBox({
+                        data:mData,
+                        valueFieldID:'inspectAreaIdSelect'
+                    });
+                }
+
+            }
+
             $("#submitBtn").click(function(){
                 var data={};
-                data.name=$("#deviceName").val();
-                data.number=$("#deviceNumber").val();
-                data.description=$("#deviceDescription").val();
-                data.appId=$("#deviceAppId").val();
-                data.deviceTypeId=$("#deviceTypeId").val();
-
-                $.post($.URL.device.add,data,addCallBack,"json");
+                data.name=$("#inspectTagName").val();
+                data.description=$("#inspectTagDescription").val();
+                data.number=$("#inspectTagNumber").val();
+                data.inspectAreaId=$("#inspectAreaId").val();
+                data.deviceId=$("#deviceId").val();
+                data.appId=$("#inspectTagAppId").val();
+                $.post($.URL.inspectTag.add,data,addCallBack,"json");
             })
             function addCallBack(data){
                 if(data.code==200){
@@ -74,37 +93,41 @@
     </div>
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
-            <td align="right" class="l-table-edit-td">设备名:</td>
+            <td align="right" class="l-table-edit-td">标签名:</td>
             <td align="left" class="l-table-edit-td">
-                <input name="deviceName" type="text" id="deviceName" ltype="text" /></td>
+                <input name="inspectTagName" type="text" id="inspectTagName" ltype="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">设备编号:</td>
+            <td align="right" class="l-table-edit-td">标签描述:</td>
             <td align="left" class="l-table-edit-td">
-                <input type="text"  id="deviceNumber">
+                <textarea id="inspectTagDescription" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
+            </td><td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">标签编号:</td>
+            <td align="left" class="l-table-edit-td">
+                <input type="text"  id="inspectTagNumber">
             </td>
         </tr>
-        <td align="right" class="l-table-edit-td">设备描述:</td>
-        <td align="left" class="l-table-edit-td">
-            <textarea id="deviceDescription" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
-        </td><td align="left"></td>
+        <tr>
+            <td align="right" class="l-table-edit-td">点检区域ID:</td>
+            <td align="left" class="l-table-edit-td">
+                <input type="text" readonly="true" id="inspectAreaId">
+            </td>
         </tr>
-
+        <tr>
+            <td align="right" class="l-table-edit-td">设备ID:</td>
+            <td align="left" class="l-table-edit-td">
+                <input type="text" id="deviceId">
+            </td>
+        </tr>
         <tr>
             <td align="right" class="l-table-edit-td">appId:</td>
             <td align="left" class="l-table-edit-td">
-                <input type="text"  id="deviceAppId">
+                <input type="text"  id="inspectTagAppId">
             </td>
         </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">设备类型ID:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="deviceTypeId">
-            </td>
-        </tr>
-
     </table>
     <br />
     <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />

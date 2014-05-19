@@ -71,10 +71,12 @@
             $(rows).each(function(){
                s+=this.id+",";
             });
+            $.ligerDialog.waitting('正在努力计算中,请稍候...');
             $.post($.URL.craneinspectreport.calculateRiskValue,{"reportId":s},calculateRiskValueCallback,"json");
         }
         function calculateRiskValueCallback(data){
             if(data.code==200){
+                $.ligerDialog.closeWaitting();
                 $.ligerDialog.success("计算完成!");
             }
         }

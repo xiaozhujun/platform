@@ -455,8 +455,8 @@ public class CraneInspectReportService {
         }
         return craneInspectReport;
     }
-    public void InsertToRiskValue(String reportnumber,String riskvalue){
-        mapper.insertToRiskValue(reportnumber, riskvalue);
+    public void InsertToRiskValue(List<Map<String,String>> list){
+        mapper.batchInsertToRiskValue(list);
     }
     public List<Map<String,String>>listUploadedReport(){
         return mapper.listUploadedReport();

@@ -23,7 +23,7 @@ public class CalculateTools {
         return getMaxT(getUseTime(equipmentVariety));
     }
     public List<Long> getUseTime(List<String> equipmentVariety){      //获取使用年限
-        List<String> manufactureList=mongoConnector.getOneColumnByEquipmentVariety("manufacturedate",equipmentVariety);
+        List<String> manufactureList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.manufacturedate,equipmentVariety);
         long usetime=0;
         List<Long> list=new ArrayList<Long>();
         for(String str:manufactureList){
@@ -57,58 +57,58 @@ public class CalculateTools {
     }
     public Float getConclusion(String conclusion){      //获取检验结果
         Float f=null;
-        if(conclusion.equals("合格")){
+        if(conclusion.equals(WeightFactor.qualified)){
             f=0f;
-        }else if(conclusion.equals("复检合格")){
+        }else if(conclusion.equals(WeightFactor.reInspectQualified)){
             f=10f;
-        }else if(conclusion.equals("不合格")){
+        }else if(conclusion.equals(WeightFactor.unqualified)){
             f=100f;
         }
         return f;
     }
     public Float getMaxRatedLiftWeight(List<String> equipmentVariety){    //获取最大的额定起重量
-        List<String> ratedLiftWeightList=mongoConnector.getOneColumnByEquipmentVariety("ratedliftweight",equipmentVariety);
+        List<String> ratedLiftWeightList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.ratedLiftWeight,equipmentVariety);
         List<Float> lf=transferListType(ratedLiftWeightList);
         return getMax(lf);
     }
     public Float getMaxSpan(List<String> equipmentVariety){           //获取最大的跨度
-        List<String> spanList=mongoConnector.getOneColumnByEquipmentVariety("span",equipmentVariety);
+        List<String> spanList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.span,equipmentVariety);
         List<Float> lf=transferListType(spanList);
         return getMax(lf);
     }
     public Float getMaxRange(List<String> equipmentVariety){
-        List<String> rangeList=mongoConnector.getOneColumnByEquipmentVariety("range",equipmentVariety);
+        List<String> rangeList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.range,equipmentVariety);
         List<Float> lf=transferListType(rangeList);
         return getMax(lf);
     }
     public Float getMaxLiftHeight(List<String> equipmentVariety){         //获取最大的起升高度
-        List<String> liftHeightList=mongoConnector.getOneColumnByEquipmentVariety("liftheight",equipmentVariety);
+        List<String> liftHeightList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.liftHeight,equipmentVariety);
         List<Float> lf=transferListType(liftHeightList);
         return getMax(lf);
     }
     public Float getMaxLiftSpeed(List<String> equipmentVariety){       //获取最大的起升速度
-        List<String> liftSpeedList=mongoConnector.getOneColumnByEquipmentVariety("liftspeed",equipmentVariety);
+        List<String> liftSpeedList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.liftSpeed,equipmentVariety);
         List<Float> lf=transferListType(liftSpeedList);
         return getMax(lf);
     }
     public Float getMaxRunSpeed(List<String> equipmentVariety){       //获取最大的运行速度
-        List<String> runSpeedList=mongoConnector.getOneColumnByEquipmentVariety("runspeed",equipmentVariety);
+        List<String> runSpeedList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.runSpeed,equipmentVariety);
         List<Float> lf=transferListType(runSpeedList);
         return getMax(lf);
     }
     public Float getMaxCartSpeed(List<String> equipmentVariety){       //获取最大的大车运行速度
-        List<String> cartspeedList=mongoConnector.getOneColumnByEquipmentVariety("cartspeed",equipmentVariety);
+        List<String> cartspeedList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.cartSpeed,equipmentVariety);
         List<Float> lf=transferListType(cartspeedList);
         return getMax(lf);
 
     }
     public Float getMaxCarSpeed(List<String> equipmentVariety){          //获取最大的小车运行速度
-        List<String> carspeedList=mongoConnector.getOneColumnByEquipmentVariety("carspeed",equipmentVariety);
+        List<String> carspeedList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.carSpeed,equipmentVariety);
         List<Float> lf=transferListType(carspeedList);
         return getMax(lf);
     }
     public Float getMaxLiftMoment(List<String> equipmentVariety){         //获取最大起重力矩
-        List<String>liftmomentList=mongoConnector.getOneColumnByEquipmentVariety("maxliftmoment",equipmentVariety);
+        List<String>liftmomentList=mongoConnector.getOneColumnByEquipmentVariety(WeightFactor.maxLiftMoment,equipmentVariety);
         List<Float> lf=transferListType(liftmomentList);
         return getMax(lf);
     }
@@ -185,6 +185,5 @@ public class CalculateTools {
     public  static void main(String[] args){
            CalculateTools tools=new CalculateTools();
            System.out.println(tools.filter(null,"^[+-]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][+-]?[0-9]+)?$"));
-           //System.out.println(tools.getConclusion("合格"));
     }
 }

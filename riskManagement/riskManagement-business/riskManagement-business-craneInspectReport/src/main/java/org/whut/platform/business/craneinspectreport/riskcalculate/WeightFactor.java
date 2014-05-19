@@ -49,4 +49,7 @@ public class WeightFactor {
     public static final String carSpeed="carspeed";
     public static final String conclusion="conclusion";
     public static final String workLevel="worklevel";
+    public static final String qualified="合格";
+    public static final String unqualified="不合格";
+    public static final String reInspectQualified="复检合格";
 }

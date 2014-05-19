@@ -7,10 +7,7 @@ import org.whut.inspectManagement.business.device.service.DeviceService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.awt.*;
 import java.util.*;
@@ -78,7 +75,7 @@ public class DeviceServiceWeb {
 
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
-    @POST
+    @GET
     public String list(){
         java.util.List<Device> list=deviceService.list();
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);

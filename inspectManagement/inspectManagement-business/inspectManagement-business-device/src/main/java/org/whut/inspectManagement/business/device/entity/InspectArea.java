@@ -1,23 +1,22 @@
-package org.whut.inspectManagement.business.inspectTable.entity;
+package org.whut.inspectManagement.business.device.entity;
+
 
 import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
- * User: choumiaoer
- * Date: 14-5-11
- * Time: 上午10:41
+ * User: Administrator
+ * Date: 14-5-16
+ * Time: 下午12:51
  * To change this template use File | Settings | File Templates.
  */
-public class InspectItem {
+public class InspectArea {
     private long id;
     private String name;
     private String description;
     private Date createtime;
-    private long inspectTableId;
-    private long inspectAreaId;
-    private String number;
-    private int isInput;
-
+    private long number;
+    private long deviceTypeId;
     private long appId;
 
     public long getId() {
@@ -52,36 +51,20 @@ public class InspectItem {
         this.createtime = createtime;
     }
 
-    public long getInspectTableId() {
-        return inspectTableId;
-    }
-
-    public void setInspectTableId(long inspectTableId) {
-        this.inspectTableId = inspectTableId;
-    }
-
-    public long getInspectAreaId() {
-        return inspectAreaId;
-    }
-
-    public void setInspectAreaId(long inspectAreaId) {
-        this.inspectAreaId = inspectAreaId;
-    }
-
-    public String getNumber() {
+    public long getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(long number) {
         this.number = number;
     }
 
-    public int getInput() {
-        return isInput;
+    public long getDeviceTypeId() {
+        return deviceTypeId;
     }
 
-    public void setInput(int input) {
-        isInput = input;
+    public void setDeviceTypeId(long deviceTypeId) {
+        this.deviceTypeId = deviceTypeId;
     }
 
     public long getAppId() {

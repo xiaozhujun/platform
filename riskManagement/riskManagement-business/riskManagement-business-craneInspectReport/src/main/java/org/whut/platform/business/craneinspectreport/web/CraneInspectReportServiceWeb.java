@@ -585,14 +585,12 @@ public class CraneInspectReportServiceWeb {
             int riskValue=Math.round(r);
             Map<String,String> m=new HashMap<String,String>();
             if(cr!=null){
-                m.put("reportnumber",cr.getReportNumber());
+                m.put("reportNumber",cr.getReportNumber());
                 m.put("riskvalue",String.valueOf(riskValue));
                 mapList.add(m);
             }
         }
-        for(Map<String,String>m:mapList){
-            craneInspectReportService.InsertToRiskValue(m.get("reportnumber"),m.get("riskvalue"));
-        }
+            craneInspectReportService.InsertToRiskValue(mapList);
     }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

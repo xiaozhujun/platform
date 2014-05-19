@@ -46,6 +46,24 @@
             "update":"rs/device/update",
             "delete":"rs/device/delete"
         },
+        "deviceType":{
+            "add":"rs/deviceType/add",
+            "update":"rs/deviceType/update",
+            "delete":"rs/deviceType/delete" ,
+            "list":"rs/deviceType/list"
+        }  ,
+        "inspectArea":{
+            "add":"rs/inspectArea/add",
+            "update":"rs/inspectArea/update",
+            "delete":"rs/inspectArea/delete",
+            "list":"rs/inspectArea/list"
+        },
+        "inspectTag":{
+            "add":"rs/inspectTag/add",
+            "update":"rs/inspectTag/update",
+            "delete":"rs/inspectTag/delete",
+            "list":"rs/inspectTag/list"
+        },
         "employeeRole":{
             "add":"rs/employeeRole/add",
             "update":"rs/employeeRole/update",

@@ -10,6 +10,8 @@ import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+import java.text.*;
 import java.util.Date;
 import java.util.List;
 /**
@@ -28,9 +30,9 @@ public class InspectTableServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("inspectTableName") String name,@FormParam("description") String description,@FormParam("appId") long appId){
+    public String add(@FormParam("inspectTableName") String name,@FormParam("description") String description){
 
-        if(name==null||appId==0||name.equals("")){
+        if(name==null||name.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
         Date date=new Date();
@@ -38,7 +40,6 @@ public class InspectTableServiceWeb {
         inspectTable.setName(name);
         inspectTable.setCreatetime(date);
         inspectTable.setDescription(description);
-        inspectTable.setAppId(appId);
         inspectTableService.add(inspectTable);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

@@ -22,7 +22,7 @@
        inspectitem(
         <include refid="inspectItem_fields" />
         )
-        VALUES (#{id}, #{name},#{description}, #{creattime},#{inspectTableId},#{inspectAreaId},#{number});
+        VALUES (#{id}, #{name},#{description}, #{createtime},#{inspectTableId},#{inspectAreaId},#{number});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id

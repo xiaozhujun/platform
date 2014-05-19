@@ -23,7 +23,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-@Path("employeeRole")
+@Path("/employeeRole")
 public class EmployeeRoleServiceWeb {
 
     private static PlatformLogger logger = PlatformLogger.getLogger(EmployeeRoleServiceWeb.class);
@@ -31,7 +31,7 @@ public class EmployeeRoleServiceWeb {
     @Autowired
     private EmployeeRoleService employeeRoleService;
 
-    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces( MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authorityid") long authorityid,@FormParam("appid") long appid)
@@ -46,7 +46,7 @@ public class EmployeeRoleServiceWeb {
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
-    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces( MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString)
@@ -66,7 +66,7 @@ public class EmployeeRoleServiceWeb {
         }
     }
 
-    @Produces(MediaType.APPLICATION_JSON+":charset=UTF-8")
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString") String jsonString)
@@ -79,7 +79,7 @@ public class EmployeeRoleServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
     }
 
-    @Produces(MediaType.APPLICATION_JSON+":charset=UTF-8")
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
     @POST
     public String list()

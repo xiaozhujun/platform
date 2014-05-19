@@ -76,7 +76,7 @@ public class InspectItem {
         this.number = number;
     }
 
-    public int isInput() {
+    public int getInput() {
         return isInput;
     }
 

@@ -14,4 +14,5 @@ import java.util.Map;
  */
 public interface InspectItemMapper extends AbstractMapper<InspectItem> {
     public List<InspectItem> findByCondition(Map<String,Object> map);
+    public void addList(List<InspectItem> inspectItemList);
 }

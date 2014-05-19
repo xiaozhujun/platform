@@ -15,8 +15,8 @@
     <script type="text/javascript">
 
         $(function(){
-            $.get($.URL.authority.list,null,listCallback,"json");
-            $.get($.URL.power.list,null,listPowerCallback,"json");
+            $.get($.URL.appauthority.list,null,listCallback,"json");
+            $.get($.URL.apppower.list,null,listPowerCallback,"json");
         });
 
         var gridData = {};
@@ -47,14 +47,14 @@
 
         }
 
-        var typeData = [{ type: '0', text: '0' },{ type: '1', text: '1' }];
+        var typeData = [{ type: '封禁', text: '封禁' },{ type: '启用', text: '启用' }];
 
         var manager, g;
         function f_initGrid()
         {
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
+                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '角色名',name: 'name',
                         editor: { type: 'text'}
                     },
@@ -112,7 +112,7 @@
             manager.endEdit(rowid);
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
-            $.post($.URL.authority.update,{"jsonString":jsonString},updateCallback,"json");
+            $.post($.URL.appauthority.update,{"jsonString":jsonString},updateCallback,"json");
         }
 
         function updateCallback(data){
@@ -127,7 +127,7 @@
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
-                $.post($.URL.authority.delete,{"jsonString":jsonString},deleteCallback,"json");
+                $.post($.URL.appauthority.delete,{"jsonString":jsonString},deleteCallback,"json");
                 manager.deleteRow(rowid);
             }
         }

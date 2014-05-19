@@ -87,6 +87,17 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-appuser</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-app</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
     </dependencies>
 

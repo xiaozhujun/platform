@@ -15,7 +15,7 @@
     <script type="text/javascript">
 
         $(function(){
-            $.get($.URL.power.list,null,listCallback,"json");
+            $.get($.URL.apppower.list,null,listCallback,"json");
         });
 
         var gridData = {};
@@ -34,7 +34,7 @@
         {
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
+                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '资源', name: 'resource',
                         editor: { type: 'text' }
                     },
@@ -82,11 +82,11 @@
         }
         function endEdit(rowid)
         {
-
+            manager.endEdit(rowid);
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
-            $.post($.URL.power.update,{"jsonString":jsonString},updateCallback,"json");
-            manager.endEdit(rowid);
+            $.post($.URL.apppower.update,{"jsonString":jsonString},updateCallback,"json");
+
         }
 
         function updateCallback(data){
@@ -102,7 +102,7 @@
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
 
-                $.post($.URL.power.delete,{"jsonString":jsonString},deleteCallback,"json");
+                $.post($.URL.apppower.delete,{"jsonString":jsonString},deleteCallback,"json");
 
 
 

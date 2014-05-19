@@ -43,11 +43,41 @@
             "update":"rs/department/update",
             "delete":"rs/department/delete"
         },
+        "device":{
+            "add":"rs/device/add" ,
+            "list":"rs/device/list",
+            "update":"rs/device/update",
+            "delete":"rs/device/delete"
+        },
+        "deviceType":{
+            "add":"rs/deviceType/add",
+            "update":"rs/deviceType/update",
+            "delete":"rs/deviceType/delete" ,
+            "list":"rs/deviceType/list"
+        }  ,
+        "inspectArea":{
+            "add":"rs/inspectArea/add",
+            "update":"rs/inspectArea/update",
+            "delete":"rs/inspectArea/delete",
+            "list":"rs/inspectArea/list"
+        },
+        "inspectTag":{
+            "add":"rs/inspectTag/add",
+            "update":"rs/inspectTag/update",
+            "delete":"rs/inspectTag/delete",
+            "list":"rs/inspectTag/list"
+        },
         "employeeRole":{
             "add":"rs/employeeRole/add",
             "update":"rs/employeeRole/update",
             "delete":"rs/employeeRole/delete",
             "list":"rs/employeeRole/list"
+        },
+        "inspectChoice":{
+            "add":"rs/inspectChoice/add",
+            "getList":"rs/inspectChoice/getList",
+            "update":"rs/inspectChoice/update" ,
+            "delete":"rs/inspectChoice/delete"
         }
     }
 })(jQuery);

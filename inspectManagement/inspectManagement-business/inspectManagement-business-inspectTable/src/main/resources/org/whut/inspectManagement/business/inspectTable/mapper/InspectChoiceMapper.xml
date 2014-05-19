@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapper">
+    <sql id="InspectChoice_fields">
+          ID,CHOICEVALUE,APPID
+    </sql>
+    <resultMap id="InspectChoiceResultMap" type="InspectChoice">
+        <id property="id" column="ID" />
+        <result property="choiceValue" column="CHOICEVALUE"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="InspectChoice"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        inspectchoice(
+        <include refid="InspectChoice_fields" />
+        )
+        VALUES (#{id}, #{choiceValue},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="update" parameterType="InspectChoice">
+        UPDATE inspectchoice
+        <set>
+            <if test="choiceValue!=null">CHOICEVALUE=#{choiceValue},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <delete id="delete" parameterType="InspectChoice">
+        DELETE FROM inspectchoice
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+    <insert id="addList" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        inspectchoice(
+        <include refid="InspectChoice_fields"/>)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.choiceValue},#{item.appId})
+        </foreach>
+    </insert>
+    <select id="getList" resultMap="InspectChoiceResultMap">
+        SELECT *
+        FROM inspectchoice
+    </select>
+
+</mapper>

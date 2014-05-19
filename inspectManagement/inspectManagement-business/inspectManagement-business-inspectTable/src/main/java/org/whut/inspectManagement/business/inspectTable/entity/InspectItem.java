@@ -17,6 +17,7 @@ public class InspectItem {
     private long inspectAreaId;
     private String number;
     private int isInput;
+
     private long appId;
 
     public long getId() {
@@ -75,7 +76,7 @@ public class InspectItem {
         this.number = number;
     }
 
-    public int isInput() {
+    public int getInput() {
         return isInput;
     }
 

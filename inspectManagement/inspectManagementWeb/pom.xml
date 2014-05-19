@@ -54,12 +54,12 @@
         </dependency>
         <dependency>
             <groupId>platform</groupId>
-            <artifactId>business-user</artifactId>
+            <artifactId>business-appuser</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>platform</groupId>
-            <artifactId>business-datarule</artifactId>
+            <artifactId>business-app</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -89,6 +89,13 @@
             <artifactId>inspectManagement-business-Department</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-device</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>inspectManagement</groupId>

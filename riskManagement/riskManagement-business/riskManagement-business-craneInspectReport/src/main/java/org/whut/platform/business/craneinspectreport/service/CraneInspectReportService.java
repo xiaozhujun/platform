@@ -471,8 +471,9 @@ public class CraneInspectReportService {
         }
         return craneInspectReport;
     }
-    public void InsertToRiskValue(List<Map<String,String>> list){
+    public boolean InsertToRiskValue(List<Map<String,String>> list){
         mapper.batchInsertToRiskValue(list);
+        return true;
     }
     public List<Map<String,String>>listUploadedReport(){
         return mapper.listUploadedReport();
@@ -484,5 +485,7 @@ public class CraneInspectReportService {
          }
         return f;
     }
-
+    public void updateUploadedReportByReportId(long reportId,String status){
+        mapper.updateUploadedReportByReportId(reportId,status);
+    }
 }

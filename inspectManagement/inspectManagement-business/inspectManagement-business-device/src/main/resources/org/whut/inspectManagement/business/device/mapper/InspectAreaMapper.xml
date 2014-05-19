@@ -1,0 +1,63 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.device.mapper.InspectAreaMapper">
+    <sql id="inspectArea_fields">
+       ID,NAME,DESCRIPTION,CREATETIME,NUMBER,DEVICETYPEID,APPID
+    </sql>
+    <resultMap id="inspectAreaResultMap" type="InspectArea">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createtime" column="CREATETIME" />
+        <result property="number" column="NUMBER"/>
+        <result property="deviceTypeId" column="DEVICETYPEID"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="InspectArea"  keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        inspectarea(
+        <include refid="inspectArea_fields"/>
+        )
+        VALUES (#{id},#{name},#{description},#{createtime},#{number},#{deviceTypeId},#{appId});
+        <selectKey  resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="findByCondition" parameterType="map" resultMap="inspectAreaResultMap">
+        select
+        <include refid="inspectArea_fields"/>
+        from inspectarea
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
+            <if test="number!=null">AND NUMBER=#{number}</if>
+            <if test="deviceTypeId!=null">AND DEVICETYPEID=#{deviceTypeId}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="InspectArea">
+        UPDATE inspectarea
+        <set>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
+            <if test="number!=null">AND NUMBER=#{number}</if>
+            <if test="deviceTypeId!=null">AND DEVICETYPEID=#{deviceTypeId}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="InspectArea">
+        DELETE FROM inspectarea
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+</mapper>

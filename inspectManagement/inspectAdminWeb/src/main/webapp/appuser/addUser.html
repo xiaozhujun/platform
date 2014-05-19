@@ -16,7 +16,7 @@
 
         $(function ()
         {
-            $.get($.URL.authority.list,null,listCallback,"json");
+            $.get($.URL.appauthority.list,null,listCallback,"json");
             function listCallback(data){
                 if(data.code==200){
                     var myData = [];
@@ -69,7 +69,7 @@
                 /*data.status = $("#userStatus").val();*/
                 data.appName = $("#userApp").val();
 
-                $.post($.URL.user.add,data,addUserCallback,"json");
+                $.post($.URL.appuser.add,data,addUserCallback,"json");
             });
         });
         function addUserCallback(data){

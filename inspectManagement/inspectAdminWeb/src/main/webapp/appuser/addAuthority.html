@@ -15,7 +15,7 @@
     <script type="text/javascript">
         $(function ()
         {
-            $.get($.URL.power.list,null,listCallback,"json");
+            $.get($.URL.apppower.list,null,listCallback,"json");
             function listCallback(data){
                 if(data.code==200){
                     var myData = [];
@@ -45,7 +45,7 @@
                 data.description = $("#authorityDescription").val();
                 data.status = $("#authorityStatus").val();
                 data.resource=$("#authorityPower").val();
-                $.post($.URL.authority.add,data,addAuthorityCallback,"json");
+                $.post($.URL.appauthority.add,data,addAuthorityCallback,"json");
             });
         });
 

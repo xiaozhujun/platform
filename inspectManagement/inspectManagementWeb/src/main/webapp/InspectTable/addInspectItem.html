@@ -3,6 +3,8 @@
 <head>
     <title></title>
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/core/inject.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -12,6 +14,7 @@
     <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
             $("#isInput").ligerComboBox({
@@ -20,8 +23,8 @@
                 textField:'text',
                 valueFieldID:'isInputSelect'
             })
+            liger.get("isInput").setValue("0");
             $.post($.URL.inspectTable.getList,null,listCallBack,"json");
-            $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
             function listCallBack(data){
                 if(data.code==200){
                     var myData=[];
@@ -33,12 +36,14 @@
                     });
                     $("#inspectTableId").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,
                         data:myData,
+                        width:200,
                         valueField:'id',
                         textField:'text',
                         valueFieldID:'inspectTableIdSelect'
                     })
                 }
             }
+            $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
             function choiceListCallBack(data){
                 if(data.code==200){
                     var myData=[];
@@ -48,14 +53,17 @@
                         j["id"]=content.id;
                         myData.push(j);
                     });
-                    $("#inspectChoiceId").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,
+                    $("#inspectChoiceId").ligerListBox({isShowCheckBox:true,isMultiSelect:true,
                         data:myData,
+                        width:120,
                         valueField:'id',
                         textField:'text',
                         valueFieldID:'inspectChoiceIdSelect'
-                    })
+                    });
+                    liger.get("inspectChoiceId").setValue("1;2;3");
                 }
             }
+            $("#submitBtn").ligerButton({});
             $("#submitBtn").click(function(){
                 var data={};
                 data.name=$("#name").val();
@@ -65,7 +73,6 @@
                 data.number=$("#number").val();
                 data.isInput=$("#isInputSelect").val();
                 data.inspectChoiceId=$("#inspectChoiceIdSelect").val();
-
                 $.post($.URL.inspectItem.add,data,addCallBack,"json")
             })
             function addCallBack(data){
@@ -77,69 +84,65 @@
                 }
             }
         })
-
     </script>
     <style type="text/css">
-        .l-table-edit {}
-        .l-table-edit-td{ padding:4px;}
-        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-div {height: 30px}
+        .l-span-edit { margin-left: 10px;  width: 70px;}
+        .l-edit{width: 60px; margin-left: 12px;}
+        .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;}
+        .l-edit-com{width: 60px; margin-left: 10px; float: left;}
+
     </style>
 </head>
 
 <body style="padding:10px">
-
-<form name="form1" method="post" action="" id="form1">
-    <div>
+    <div></div>
+    <div class="l-div">
+        <span class="l-span-edit-com">所属点检表:</span>
+            <span class="l-edit-com">
+                <input name="inspectTableId"  type="text" id="inspectTableId" />
+            </span>
     </div>
-    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
-        <tr>
-            <td align="right" class="l-table-edit-td">所属点检表:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="inspectTableId" type="text" id="inspectTableId" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">点检项:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="name" type="text" id="name" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">描述:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="description" type="text" id="description"  /></td>
-            <td align="left"></td>
-        </tr>
-
-        <tr>
-            <td align="right" class="l-table-edit-td">所属区域:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text"  id="area">
-            </td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">编号:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text"  id="number">
-            </td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">是否输入:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="isInput">
-            </td>
-        </tr>
-        <tr>
-            <td align="right" class="1-table-edit-td">点检选值:</td>
-            <td align="left" class="1-table-edit-td">
-                <input type="text"  id="inspectChoiceId">
-            </td>
-        </tr>
-    </table>
+   <div class="l-div">
+        <span class="l-span-edit-com">所属区域 ：</span>
+            <span class="l-edit-com">
+                <input name="area" type="text" id="area" />
+            </span>
+    </div>
+      <div class="l-div">
+         <span class="l-span-edit">点检项名称:</span>
+             <span class="l-edit">
+                 <input name="name" type="text" id="name" />
+             </span>
+     </div>
+     <div class="l-div">
+         <span class="l-span-edit">点检项编号:</span>
+             <span class="l-edit">
+                 <input name="number" type="text" id="number" />
+             </span>
+     </div>
+     <div class="l-div">
+         <span class="l-span-edit-com">是否输入 ：</span>
+             <span class="l-edit-com">
+                 <input name="isInput" type="text" id="isInput" />
+             </span>
+     </div>
+     <div class="l-div">
+         <span class="l-span-edit-com">点检选值 ：</span>
+         <span id="inspectChoiceId" class="l-edit-com"></span>
+     </div>
+    <br/><br/><br/><br/><br/>
+    <div class="l-div">
+        <span class="l-span-edit-com">描    述 ：</span>
+            <span class="l-edit-com">
+                <textarea   id="description"  />
+            </span>
+    </div>
     <br/>
-    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
-</form>
-<div style="display:none">
-    <!--  数据统计代码 --></div>
+    <div style="margin-top: 20px">
+        <input id="submitBtn" value="提交"/>
+    </div>
+    <div style="display:none">
+        <!--  数据统计代码 --></div>
 </body>
 </html>

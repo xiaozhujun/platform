@@ -499,4 +499,9 @@
         from
         uploadedreport
     </select>
+    <update id="updateUploadedReportByReportId" parameterType="map">
+        update uploadedreport
+        set status=#{status}
+        where id=#{reportId}
+    </update>
 </mapper>

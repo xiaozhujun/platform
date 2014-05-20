@@ -592,7 +592,10 @@ public class CraneInspectReportServiceWeb {
             }
         }
             //批量插入riskValue
-            craneInspectReportService.InsertToRiskValue(mapList);
+            if(craneInspectReportService.InsertToRiskValue(mapList)){
+                //更新
+              craneInspectReportService.updateUploadedReportByReportId(Long.parseLong(str[i]),"已计算");
+            };
     }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

@@ -37,4 +37,9 @@ public class AuthorityService {
      public long getIdByName(String name){
          return mapper.getIdByName(name);
      }
+
+    public String getNameById(long id)
+    {
+        return mapper.getNameById(id);
+    }
 }

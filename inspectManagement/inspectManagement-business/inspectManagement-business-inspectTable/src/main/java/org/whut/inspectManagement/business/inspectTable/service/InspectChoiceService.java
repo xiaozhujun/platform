@@ -24,11 +24,12 @@ public class InspectChoiceService {
          inspectChoiceMapper.add(inspectChoice);
     }
     public int delete(InspectChoice inspectChoice){
-     int result=inspectChoiceMapper.delete(inspectChoice);
-        return result;
+        return inspectChoiceMapper.delete(inspectChoice);
     }
     public int update(InspectChoice inspectChoice){
-        int result=inspectChoiceMapper.update(inspectChoice);
-        return result;
+        return inspectChoiceMapper.update(inspectChoice);
+    }
+    public long getIdByChoiceValue(String choiceValue){
+        return inspectChoiceMapper.getIdByChoiceValue(choiceValue);
     }
 }

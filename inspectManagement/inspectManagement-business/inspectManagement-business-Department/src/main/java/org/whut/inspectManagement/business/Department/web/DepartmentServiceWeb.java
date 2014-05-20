@@ -36,6 +36,21 @@ public class DepartmentServiceWeb {
     @POST
     public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("status") String status,@FormParam("appid") long appid)
     {
+        if(name==null||name.trim().equals(""))
+        {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数错误");
+        }
+        long id;
+        try
+        {
+            id=departmentService.getIdByName(name,appid);
+        }
+        catch (Exception e)
+        {
+            id=0;
+        }
+        if(id==0)
+        {
         Department department=new Department();
         department.setName(name);
         department.setStatus(status);
@@ -45,6 +60,9 @@ public class DepartmentServiceWeb {
         department.setCreatetime(now);
         departmentService.add(department);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该部门！");
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")

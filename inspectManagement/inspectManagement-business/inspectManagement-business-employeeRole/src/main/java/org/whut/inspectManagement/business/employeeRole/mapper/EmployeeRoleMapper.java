@@ -18,4 +18,6 @@ public interface EmployeeRoleMapper extends AbstractMapper{
     public List<EmployeeRole> findByCondition(Map<String,Object> map);
 
     public long getIdByName(@Param("name") String name,@Param("appId") long appId);
+
+    public EmployeeRole getById(long id);
 }

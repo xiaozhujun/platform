@@ -67,4 +67,11 @@
          </where>
     </select>
 
+    <select id="getById" parameterType="java.lang.Long" resultMap="employeeRoleResultMapper">
+         select
+        <include refid="employeeRole_fields"/>
+        FROM employeerole
+        where ID=#{id}
+    </select>
+
 </mapper>

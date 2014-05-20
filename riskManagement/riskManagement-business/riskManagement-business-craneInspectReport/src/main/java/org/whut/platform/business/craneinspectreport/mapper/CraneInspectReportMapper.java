@@ -3,6 +3,7 @@ import org.apache.ibatis.annotations.Param;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -74,4 +75,7 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public void updateUploadedReportByReportId(@Param("reportId")long reportId,@Param("status")String status);
     public Map<String,String>validateReportIsCalculated(long reportId);
     public void updateRiskValueByChooseReport(@Param("reportNumber")String reportNumber,@Param("riskvalue")String riskvalue);
+    public void insertToUploadedReport(@Param("name")String name,@Param("uploadtime")Date time,@Param("userId")long userId,@Param("userName")String userName,@Param("path")String path,@Param("status")String status);
+    public long findIdFromUploadedReportByName(@Param("reportName") String reportName);
+    public Long getCraneTypeIdByCraneEquipment(@Param("equipmentVariety")String equipmentVariety);
 }

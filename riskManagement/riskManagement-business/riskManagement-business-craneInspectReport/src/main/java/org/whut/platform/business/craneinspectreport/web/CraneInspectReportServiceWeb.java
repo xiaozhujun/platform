@@ -580,11 +580,13 @@ public class CraneInspectReportServiceWeb {
                className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
                //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
                CraneInspectReport craneReport=new CraneInspectReport();
-               craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber());
+               craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber(),craneInspectReport.getEquipmentVariety());
                craneInspectReportList.add(craneReport);
         }
         for(CraneInspectReport cr:craneInspectReportList){
-            Float r=calculateRisk(className,cr,str[i]);
+            Long craneTypeId=craneInspectReportService.getCraneTypeIdByCraneEquipment(cr.getEquipmentVariety());
+            if(craneTypeId!=null){
+            Float r=calculateRisk(className,cr,String.valueOf(craneTypeId));
             int riskValue=Math.round(r);
             Map<String,String> m=new HashMap<String,String>();
             if(cr!=null){
@@ -593,6 +595,7 @@ public class CraneInspectReportServiceWeb {
                 mapList.add(m);
                 mList.add(m);
             }
+        }
         }
             Map<String,String> uploadReport=craneInspectReportService.validateReportIsCalculated(Long.parseLong(str[i]));
             if(uploadReport.get("status").equals("未计算")){

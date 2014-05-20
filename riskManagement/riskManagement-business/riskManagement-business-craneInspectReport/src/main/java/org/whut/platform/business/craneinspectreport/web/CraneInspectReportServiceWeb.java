@@ -654,7 +654,9 @@ public class CraneInspectReportServiceWeb {
               }
           }
           //批量更新
-         craneInspectReportService.updateRiskValueByChooseReport(updateRiskValueList);
+        for(Map<String,String> m:updateRiskValueList){
+            craneInspectReportService.updateRiskValueByChooseReport(m.get("reportNumber"),m.get("riskvalue"));
+        }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
     public String getRiskValueByReportNumber(String reportNumber){

@@ -491,7 +491,7 @@ public class CraneInspectReportService {
     public Map<String,String> validateReportIsCalculated(long reportId){
         return mapper.validateReportIsCalculated(reportId);
     }
-    public void updateRiskValueByChooseReport(List<Map<String,String>> list){
-        mapper.updateRiskValueByChooseReport(list);
+    public void updateRiskValueByChooseReport(String reportNumber,String riskvalue){
+        mapper.updateRiskValueByChooseReport(reportNumber,riskvalue);
     }
 }

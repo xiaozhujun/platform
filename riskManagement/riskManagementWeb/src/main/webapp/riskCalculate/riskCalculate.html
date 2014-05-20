@@ -93,25 +93,7 @@
                     });
                     if(s!=""){
                         $.post($.URL.craneinspectreport.calculateRiskValue,{"reportId":s},calculateRiskValueCallback,"json");
-                        $.ligerDialog.open({
-                            target: $("#repeatReportgrid"),
-                            title: '以下报告已计算',
-                            width: 510,
-                            isResize: true,
-                            modal: true,
-                            buttons: [{ text: '覆盖', onclick: function (i, d) {
-                                var r="";
-                                var rows= greport.getCheckedRows();
-                                $(rows).each(function(){
-                                    r+=this.id+",";
-                                });
-                                $.post($.URL.craneinspectreport.updateRiskValueByChooseReport,{"reportId":r},updateRiskValueByChooseReportCallback,"json");
-                            }
-                            }, { text: '关闭', onclick: function (i, d) {
 
-                            }
-                            }]
-                        });
                         $.ligerDialog.waitting('正在努力计算中,请稍候...');
                     }else if(s==""){
                         $.ligerDialog.alert("请选择计算报告!");
@@ -139,11 +121,40 @@
                     repeatData.Rows = data.data;
                     repeatData.Total = data.data.length;
                     f_reportGrid();
+                    openDialog();
                 }
             }
         }
+        function openDialog(){
+            $.ligerDialog.open({
+                target: $("#repeatReportgrid"),
+                title: '以下报告已计算',
+                width: 510,
+                isResize: true,
+                modal: true,
+                buttons: [{ text: '覆盖', onclick: function (i, d) {
+                    var r="";
+                    var rows= greport.getCheckedRows();
+                    $(rows).each(function(){
+                        r+=this.id+",";
+                    });
+                    $.post($.URL.craneinspectreport.updateRiskValueByChooseReport,{"reportId":r},updateRiskValueByChooseReportCallback,"json");
+                    $.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").remove();
+                    $.ligerDialog.waitting('正在努力更新中,请稍候...');
+                }
+                }, { text: '关闭', onclick: function (i, d) {
+                    $.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").remove();
+                }
+                }]
+            });
+        }
         function updateRiskValueByChooseReportCallback(data){
-
+              if(data.code==200){
+                  $.ligerDialog.closeWaitting();
+                  $.ligerDialog.success("更新完成!");
+              }
         }
         var reportManager, greport;
         function f_reportGrid()

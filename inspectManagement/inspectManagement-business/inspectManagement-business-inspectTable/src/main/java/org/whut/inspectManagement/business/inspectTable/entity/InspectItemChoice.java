@@ -8,40 +8,40 @@ package org.whut.inspectManagement.business.inspectTable.entity;
  * To change this template use File | Settings | File Templates.
  */
 public class InspectItemChoice {
-    private int id;
-    private int inspectItemId;
-    private int inspectChoiceId;
-    private int appId;
+    private long id;
+    private long inspectItemId;
+    private long inspectChoiceId;
+    private long appId;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getInspectItemId() {
+    public long getInspectItemId() {
         return inspectItemId;
     }
 
-    public void setInspectItemId(int inspectItemId) {
+    public void setInspectItemId(long inspectItemId) {
         this.inspectItemId = inspectItemId;
     }
 
-    public int getInspectChoiceId() {
+    public long getInspectChoiceId() {
         return inspectChoiceId;
     }
 
-    public void setInspectChoiceId(int inspectChoiceId) {
+    public void setInspectChoiceId(long inspectChoiceId) {
         this.inspectChoiceId = inspectChoiceId;
     }
 
-    public int getAppId() {
+    public long getAppId() {
         return appId;
     }
 
-    public void setAppId(int appId) {
+    public void setAppId(long appId) {
         this.appId = appId;
     }
 }

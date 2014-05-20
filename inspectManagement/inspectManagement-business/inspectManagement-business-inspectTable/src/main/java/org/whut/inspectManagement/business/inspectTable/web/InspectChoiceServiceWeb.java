@@ -67,4 +67,5 @@ public class InspectChoiceServiceWeb {
         inspectChoiceService.delete(inspectChoice);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+
 }

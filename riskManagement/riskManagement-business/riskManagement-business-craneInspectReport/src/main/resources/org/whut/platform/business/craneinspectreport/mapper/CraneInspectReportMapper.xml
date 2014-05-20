@@ -504,4 +504,18 @@
         set status=#{status}
         where id=#{reportId}
     </update>
+    <select id="validateReportIsCalculated" parameterType="java.lang.Long" resultType="map">
+        SELECT *
+        FROM uploadedreport WHERE
+        id=#{reportId}
+    </select>
+    <update id="updateRiskValueByChooseReport" parameterType="java.util.List" >
+        <foreach collection="list" item="item"  index="index" separator=";">
+            update  riskvalue
+            <set>
+            riskvalue=#{item.riskvalue}
+            </set>
+            where reportNumber=#{item.reportNumber});
+        </foreach>
+    </update>
 </mapper>

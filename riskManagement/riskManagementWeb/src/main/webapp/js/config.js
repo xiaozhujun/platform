@@ -61,7 +61,8 @@
             "getAreaInfoByCondition":'rs/craneinspectreport/getAreaInfoByCondition',
             "listUploadedReport":'rs/craneinspectreport/listUploadedReport',
             "calculateRiskValue":'rs/craneinspectreport/calculateRiskValue',
-            "calculateMaxValue":'rs/craneinspectreport/calculateMaxValue'
+            "calculateMaxValue":'rs/craneinspectreport/calculateMaxValue',
+            "updateRiskValueByChooseReport":'rs/craneinspectreport/updateRiskValueByChooseReport'
         },
         "authority":{
             "add":"rs/authority/add"

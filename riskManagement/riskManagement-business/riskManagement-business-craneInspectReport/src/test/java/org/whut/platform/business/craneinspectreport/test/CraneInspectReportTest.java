@@ -24,6 +24,7 @@ public class CraneInspectReportTest {
     private JxlExportImportUtils jxlExportImportUtils;
     private ExcelMap excelMap=new ExcelMap();
     private CalculateTools calculateTools=new CalculateTools();
+    private static List<List<DBObject>> dbObjectList=new ArrayList<List<DBObject>>();
     public String getDocumentJson(String path){
         File f=new File(path);
         excelMap=jxlExportImportUtils.analysisExcel(f);
@@ -159,7 +160,13 @@ public class CraneInspectReportTest {
        /* CraneInspectReportTest test=new CraneInspectReportTest();
         //test.insertToCraneInspectReportMaxValueCollection();
         System.out.println(test.getCraneInspectReportMaxValue());*/
-        MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
-        System.out.println(mongoConnector.getMaxValueByCraneType("1").get("maxRatedLiftWeight"));
+       /* MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
+        System.out.println(mongoConnector.getMaxValueByCraneType("1").get("maxRatedLiftWeight"));*/
+        dbObjectList=new MongoConnector("craneInspectReportDB","craneInspectReportCollection").getDbArrayListFromMongo();
+        for(List<DBObject> d:dbObjectList){
+            for(DBObject dd:d){
+               System.out.println(dd);
+            }
+        }
     }
 }

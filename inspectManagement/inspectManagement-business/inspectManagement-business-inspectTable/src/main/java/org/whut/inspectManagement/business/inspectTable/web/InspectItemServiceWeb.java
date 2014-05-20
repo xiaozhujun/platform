@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
 
+import org.whut.inspectManagement.business.inspectTable.entity.InspectItemChoice;
+import org.whut.inspectManagement.business.inspectTable.service.InspectChoiceService;
+import org.whut.inspectManagement.business.inspectTable.service.InspectItemChoiceService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectItemService;
 
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -30,19 +33,21 @@ public class InspectItemServiceWeb {
 
     @Autowired
     InspectItemService inspectItemService;
-
+    @Autowired
+    InspectItemChoiceService inspectItemChoiceService;
+    @Autowired
+    InspectChoiceService inspectChoiceService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("inspectTableId") String inspectTableId,
-    @FormParam("inspectAreaId") long inspectAreaId,@FormParam("number") String number,@FormParam("isInput") int isInput){
+    @FormParam("inspectAreaId") long inspectAreaId,@FormParam("number") String number,@FormParam("isInput") int isInput,@FormParam("inspectChoiceId") String inspectChoiceId){
         if(name==null||inspectAreaId==0||inspectTableId.equals("")||number==null||name.equals("")||inspectTableId.equals("null")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         Date date=new Date();
         String[] inspectTableArray=inspectTableId.split(";");
         List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
-
         for(int i=0;i<inspectTableArray.length;i++){
             InspectItem inspectItem=new InspectItem();
             inspectItem.setName(name);
@@ -51,10 +56,21 @@ public class InspectItemServiceWeb {
             inspectItem.setInspectAreaId(inspectAreaId);
             inspectItem.setNumber(number);
             inspectItem.setInput(isInput);
-        inspectItem.setInspectTableId(Integer.parseInt(inspectTableArray[i]));
-        inspectItemList.add(inspectItem);
+            inspectItem.setInspectTableId(Integer.parseInt(inspectTableArray[i]));
+            inspectItemList.add(inspectItem);
         }
         inspectItemService.addList(inspectItemList);
+        String [] inspectItemChoiceList=inspectChoiceId.split(";");
+        List<InspectItemChoice> inspectItemChoices=new ArrayList<InspectItemChoice>();
+        if (isInput==0){
+            for(String choice:inspectItemChoiceList){
+                InspectItemChoice inspectItemChoice=new InspectItemChoice();
+                inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemByNameAndNumber(name,number));
+                inspectItemChoice.setInspectChoiceId(Integer.parseInt(choice));
+                inspectItemChoices.add(inspectItemChoice);
+            }
+            inspectItemChoiceService.addList(inspectItemChoices);
+        }
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
     }
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")

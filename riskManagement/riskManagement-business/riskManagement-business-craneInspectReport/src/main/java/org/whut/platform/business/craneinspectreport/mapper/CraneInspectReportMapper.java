@@ -71,4 +71,5 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<String>getEquipmentVarietyByCraneType(long craneType);
     public void batchInsertToRiskValue(List<Map<String,String>> list);
     public List<Map<String,String>>listUploadedReport();
+    public void updateUploadedReportByReportId(@Param("reportId")long reportId,@Param("status")String status);
 }

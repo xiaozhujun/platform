@@ -13,5 +13,6 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface InspectChoiceMapper extends AbstractMapper<InspectChoice> {
-        public List<InspectChoice> getList();
+    public long getIdByChoiceValue(String choiceValue);
+    public List<InspectChoice> getList();
 }

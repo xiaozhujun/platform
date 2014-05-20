@@ -17,8 +17,7 @@ import java.util.List;
 public class InspectItemService {
     @Autowired
     private InspectItemMapper inspectItemMapper;
-    @Autowired
-    private InspectItemChoiceMapper inspectItemChoiceMapper;
+
 
     public void addList(List<InspectItem> inspectItemList){
         inspectItemMapper.addList(inspectItemList);
@@ -32,4 +31,8 @@ public class InspectItemService {
     public List<InspectItem> list(){
         return inspectItemMapper.findByCondition(new HashMap<String, Object>());
     }
+    public long getInspectItemByNameAndNumber(String name,String number){
+        return inspectItemMapper.getInspectItemByNameAndNumber(name,number);
+    }
+
 }

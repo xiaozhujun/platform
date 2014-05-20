@@ -49,7 +49,7 @@
         <include refid="InspectItemChoice_fields"/>)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.inspectItemId},#{item.appId})
+            (#{item.id},#{item.inspectItemId},#{item.inspectChoiceId},#{item.appId})
         </foreach>
     </insert>
 </mapper>

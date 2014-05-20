@@ -76,4 +76,9 @@
             (#{item.id},#{item.name},#{item.description},#{item.createtime},#{item.inspectTableId},#{item.inspectAreaId},#{item.number},#{item.isInput})
         </foreach>
     </insert>
+    <select id="getInspectItemByNameAndNumber" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM inspectitem
+        WHERE name=#{name} AND number=#{number}
+    </select>
 </mapper>

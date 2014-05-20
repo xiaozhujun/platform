@@ -7,7 +7,7 @@ package org.whut.inspectManagement.business.inspectTable.entity;
  * Time: 下午9:10
  * To change this template use File | Settings | File Templates.
  */
-public class InspectItem_choice {
+public class InspectItemChoice {
     private int id;
     private int inspectItemId;
     private int inspectChoiceId;

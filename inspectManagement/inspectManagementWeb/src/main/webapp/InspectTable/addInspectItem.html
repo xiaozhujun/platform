@@ -43,6 +43,24 @@
                     })
                 }
             }
+            $.get($.URL.inspectArea.list,null,areaCallBack,"json");
+            function areaCallBack(data){
+                if(data.code==200){
+                    var myData=[];
+                    $.each(data.data,function(index,content){
+                        var j={};
+                        j["text"]=content.name;
+                        j["id"]=content.id;
+                        myData.push(j);
+                    })
+                    $("#area").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                        data:myData,width:200,
+                        valueField:'id',
+                        textField:'text',
+                        valueFieldID:'areaSelect'
+                    })
+                }
+            }
             $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
             function choiceListCallBack(data){
                 if(data.code==200){
@@ -60,7 +78,9 @@
                         textField:'text',
                         valueFieldID:'inspectChoiceIdSelect'
                     });
-                    liger.get("inspectChoiceId").setValue("1;2;3");
+                    alert(typeof 'id');
+                    alert('id');
+                    liger.get("inspectChoiceId").setValue('id');
                 }
             }
             $("#submitBtn").ligerButton({});
@@ -69,7 +89,7 @@
                 data.name=$("#name").val();
                 data.description=$("#description").val();
                 data.inspectTableId=$("#inspectTableIdSelect").val();
-                data.inspectAreaId=$("#area").val() ;
+                data.inspectAreaId=$("#areaSelect").val() ;
                 data.number=$("#number").val();
                 data.isInput=$("#isInputSelect").val();
                 data.inspectChoiceId=$("#inspectChoiceIdSelect").val();
@@ -77,10 +97,10 @@
             })
             function addCallBack(data){
                 if(data.code==200){
-                    $.ligerDialog.success("修改成功");
+                    $.ligerDialog.success("添加成功");
                 }
                 else{
-                    $.ligerDialog.error("操作失败");
+                    $.ligerDialog.error(data.message);
                 }
             }
         })
@@ -98,6 +118,18 @@
 <body style="padding:10px">
     <div></div>
     <div class="l-div">
+        <span class="l-span-edit">点检项名称:</span>
+             <span class="l-edit">
+                 <input name="name" type="text" id="name" />
+             </span>
+    </div>
+    <div class="l-div">
+        <span class="l-span-edit">点检项编号:</span>
+             <span class="l-edit">
+                 <input name="number" type="text" id="number" />
+             </span>
+    </div>
+    <div class="l-div">
         <span class="l-span-edit-com">所属点检表:</span>
             <span class="l-edit-com">
                 <input name="inspectTableId"  type="text" id="inspectTableId" />
@@ -109,18 +141,6 @@
                 <input name="area" type="text" id="area" />
             </span>
     </div>
-      <div class="l-div">
-         <span class="l-span-edit">点检项名称:</span>
-             <span class="l-edit">
-                 <input name="name" type="text" id="name" />
-             </span>
-     </div>
-     <div class="l-div">
-         <span class="l-span-edit">点检项编号:</span>
-             <span class="l-edit">
-                 <input name="number" type="text" id="number" />
-             </span>
-     </div>
      <div class="l-div">
          <span class="l-span-edit-com">是否输入 ：</span>
              <span class="l-edit-com">

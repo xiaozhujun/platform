@@ -33,23 +33,13 @@
                 }
             }
         });
-        $("#Status").ligerComboBox({
-            data:[{"text":'启用',"id":"0"},{"text":"禁用","id":"1"}],
-            valueFieldID:'StatusSelect'
-        });
-
-        <!--用户还没完成，不能提供接口获得用户权限，因此用伪数据测试-->
-       /* $("#Authority").ligerComboBox({
-            data:[{"text":'0',"id":"0"},{"text":'1',"id":'0'}],
-            valueFieldID:'AuthoritySelect'
-        });*/
 
         $("#submitBtn").click(function(){
             var data = {};
             data.name = $("#Name").val();
             data.appid ='1';
             data.authority=$("#Authority").val();
-            data.status = $("#Status").val();
+            data.status = "启用";
             data.description = $("#Description").val();
             $.post($.URL.employeeRole.add,data,addemployeeRoleCallback,"json");
         });
@@ -84,18 +74,12 @@
         </tr>
 
         <tr>
-            <td align="right" class="l-table-edit-td">状态:</td>
-            <td align="left" class="l-table-edit-td"><input name="Status" type="text" id="Status" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-
-        <tr>
             <td align="right" class="l-table-edit-td">用户权限:</td>
             <td align="left" class="l-table-edit-td"><input name="Authority" type="text" id="Authority" ltype="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">说明:</td>
+            <td align="right" class="l-table-edit-td">备注:</td>
             <td align="left" class="l-table-edit-td"><input name="Description" type="text" id="Description" ltype="text" /></td>
             <td align="left"></td>
         </tr>

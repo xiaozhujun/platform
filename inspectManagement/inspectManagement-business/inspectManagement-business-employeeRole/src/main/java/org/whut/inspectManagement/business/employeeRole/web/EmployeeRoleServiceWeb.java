@@ -3,6 +3,7 @@ package org.whut.inspectManagement.business.employeeRole.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.employeeRole.entity.EmployeeRole;
+import org.whut.inspectManagement.business.employeeRole.entity.SubEmployeeRole;
 import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleService;
 import org.whut.inspectManagement.business.user.service.AuthorityService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
@@ -14,6 +15,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,10 +75,15 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String update(@FormParam("jsonString") String jsonString)
     {
-        EmployeeRole employeeRole = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,EmployeeRole.class);
-        if(employeeRole.getName()==null||employeeRole.getAppId()==0||employeeRole.getName().equals("")||employeeRole.getStatus()==null){
+        SubEmployeeRole subEmployeeRole = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubEmployeeRole.class);
+        if(subEmployeeRole.getName()==null||subEmployeeRole.getAppId()==0||subEmployeeRole.getName().equals("")||subEmployeeRole.getStatus()==null){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
+        EmployeeRole employeeRole= employeeRoleService.getById(subEmployeeRole.getId());
+        employeeRole.setAuthorityId(authorityService.getIdByName(subEmployeeRole.getAuthority()));
+        employeeRole.setName(subEmployeeRole.getName());
+        employeeRole.setStatus(subEmployeeRole.getStatus());
+        employeeRole.setDescription(subEmployeeRole.getDescription());
        int result= employeeRoleService.update(employeeRole);
         if(result>0)
         {
@@ -106,7 +113,20 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String list()
     {
-        List<EmployeeRole> list=employeeRoleService.list();
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+        List<EmployeeRole> employeeRolelist=employeeRoleService.list();
+        List<SubEmployeeRole> subEmployeeRoleList=new ArrayList<SubEmployeeRole>();
+        for(EmployeeRole e:employeeRolelist)
+        {
+           SubEmployeeRole subEmployeeRole=new SubEmployeeRole();
+           subEmployeeRole.setName(e.getName());
+            subEmployeeRole.setStatus(e.getStatus());
+            subEmployeeRole.setDescription(e.getDescription());
+            subEmployeeRole.setId(e.getId());
+            subEmployeeRole.setAppId(e.getAppId());
+            String authority=authorityService.getNameById(e.getAuthorityId());
+            subEmployeeRole.setAuthority(authority);
+            subEmployeeRoleList.add(subEmployeeRole);
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(subEmployeeRoleList,JsonResultUtils.Code.SUCCESS);
     }
 }

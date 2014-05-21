@@ -35,4 +35,9 @@ public class DepartmentService {
     public List<Department> list(){
         return departmentMapper.findByCondition(new HashMap<String, Object>());
     }
+
+    public long getIdByName(String name,long appId)
+    {
+        return departmentMapper.getIdByName(name,appId);
+    }
 }

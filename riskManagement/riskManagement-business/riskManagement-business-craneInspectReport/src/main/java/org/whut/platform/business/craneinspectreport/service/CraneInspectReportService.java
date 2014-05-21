@@ -7,6 +7,9 @@ import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper;
 import org.whut.platform.business.craneinspectreport.riskcalculate.CalculateTools;
 import org.whut.platform.business.craneinspectreport.riskcalculate.WeightFactor;
+import org.whut.platform.business.user.entity.User;
+import org.whut.platform.business.user.security.MyUserDetail;
+import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
@@ -27,6 +30,8 @@ public class CraneInspectReportService {
     private CraneInspectReportMapper mapper;
     @Autowired
     private  AddressService addressService;
+    @Autowired
+    private UserService userService;
     private  ExcelMap excelMap=new ExcelMap();
     private JxlExportImportUtils jxlExportImportUtils;
     private CraneInspectReport craneInspectReport;
@@ -50,6 +55,8 @@ public class CraneInspectReportService {
              List<List<String>> listContents=new ArrayList<List<String>>();
              List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
              listRepeat.clear();
+             insertToUploadedReport(fileName);
+             long reportId=findIdFromUploadedReportByName(fileName);
              for(int i=0;i<excelMap.getContents().size();i++){
                  Address address=new Address();
                  address=getAddressFromExcel(excelMap,i);
@@ -60,7 +67,7 @@ public class CraneInspectReportService {
                      if(addressId==null){
                          //addressId查不到
                      }else{
-                         craneInspectReport=transferExcelMapToCraneInspectReportObject(excelMap,i,addressId);
+                         craneInspectReport=transferExcelMapToCraneInspectReportObject(excelMap,i,addressId,reportId);
                          String s=craneInspectReport.getReportNumber();
                          String  reportNumber=mapper.getReportNumber(s);
                          if(reportNumber==null){
@@ -101,7 +108,7 @@ public class CraneInspectReportService {
         return documentJson;
     }
     //将execl的中数据转化成CraneInspectReport对象
-    public CraneInspectReport transferExcelMapToCraneInspectReportObject(ExcelMap excelMap,int i,Long addressId){
+    public CraneInspectReport transferExcelMapToCraneInspectReportObject(ExcelMap excelMap,int i,Long addressId,Long reportId){
              Date d=toolUtil.transferStringToDate(excelMap.getContents().get(i).get(10));
              craneInspectReport=new CraneInspectReport();
              craneInspectReport.setReportNumber(excelMap.getContents().get(i).get(0));
@@ -123,6 +130,7 @@ public class CraneInspectReportService {
              Map map=getCoordinate(craneInspectReport.getUnitAddress());
              craneInspectReport.setLng(map.get("lng").toString());
              craneInspectReport.setLat(map.get("lat").toString());
+             craneInspectReport.setUploadedReportId(reportId);
              return craneInspectReport;
     }
     //从execl中获取地址信息
@@ -379,6 +387,8 @@ public class CraneInspectReportService {
     }
     public void insertToCraneInspectReportMaxValueCollection(){
         MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
+        //在插入之前先删除表
+        mongo.dropCollection();
         mongo.insertDocument(getCraneInspectReportMaxValue());
     }
     public DBObject getDBObjectByReportNumber(String reportNumber){
@@ -391,12 +401,15 @@ public class CraneInspectReportService {
         }
         return null;
     }
-    public CraneInspectReport getCraneInfoFromMongoByReportNumber(String reportNumber){
+    public CraneInspectReport getCraneInfoFromMongoByReportNumber(String reportNumber,String equipmentVariety){
         DBObject d=getDBObjectByReportNumber(reportNumber);
         if(d!=null){
         craneInspectReport=new CraneInspectReport();
         if(reportNumber!=null){
             craneInspectReport.setReportNumber(reportNumber);
+        }
+        if(equipmentVariety!=null){
+            craneInspectReport.setEquipmentVariety(equipmentVariety);
         }
         if((String)d.get(WeightFactor.manufacturedate)!=null){
             long useTime=calculateTools.getUseTime((String)d.get(WeightFactor.manufacturedate));
@@ -471,8 +484,9 @@ public class CraneInspectReportService {
         }
         return craneInspectReport;
     }
-    public void InsertToRiskValue(List<Map<String,String>> list){
+    public boolean InsertToRiskValue(List<Map<String,String>> list){
         mapper.batchInsertToRiskValue(list);
+        return true;
     }
     public List<Map<String,String>>listUploadedReport(){
         return mapper.listUploadedReport();
@@ -484,5 +498,32 @@ public class CraneInspectReportService {
          }
         return f;
     }
-
+    public void updateUploadedReportByReportId(long reportId,String status){
+        mapper.updateUploadedReportByReportId(reportId,status);
+    }
+    public Map<String,String> validateReportIsCalculated(long reportId){
+        return mapper.validateReportIsCalculated(reportId);
+    }
+    public void updateRiskValueByChooseReport(String reportNumber,String riskvalue){
+        mapper.updateRiskValueByChooseReport(reportNumber,riskvalue);
+    }
+    public void insertToUploadedReport(String reportName){
+        Date d=new Date();
+        MyUserDetail myUserDetail=userService.getMyUserDetailFromSession();
+        String userName=myUserDetail.getUsername();
+        User user=userService.findByName(userName);
+        //去重复
+        Map<String,String> map=mapper.validateUploadedReport(reportName);
+        if(map==null){
+        mapper.insertToUploadedReport(reportName,d,user.getId(),userName,"","未计算");
+        }else{
+        mapper.updateUploadedReport(reportName,d,user.getId(),userName,"","未计算",Long.parseLong(map.get("id")));
+        }
+    }
+    public long findIdFromUploadedReportByName(String reportName){
+        return mapper.findIdFromUploadedReportByName(reportName);
+    }
+    public Long getCraneTypeIdByCraneEquipment(String equipmentVariety){
+        return mapper.getCraneTypeIdByCraneEquipment(equipmentVariety);
+    }
 }

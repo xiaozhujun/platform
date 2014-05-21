@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper">
     <sql id="craneInspectReport_fields">
-		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT,SINGLEPICURL,TYPEPICURL,RATEDLIFTWEIGHT
+		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT,SINGLEPICURL,TYPEPICURL,RATEDLIFTWEIGHT,UPLOADEDREPORTID
 	</sql>
 
     <resultMap id="craneInspectReportResultMap" type="CraneInspectReport">
@@ -31,6 +31,7 @@
         <result property="riskValue" column="RISKVALUE"/>
         <result property="ratedLiftWeight" column="RATEDLIFTWEIGHT"/>
         <result property="craneNumber" column="CRANENUMBER"/>
+        <result property="uploadedReportId" column="UPLOADEDREPORTID"/>
     </resultMap>
 
     <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
@@ -55,7 +56,7 @@
         <include refid="craneInspectReport_fields"/>)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.reportNumber},#{item.unitAddress},#{item.addressId},#{item.organizeCode},#{item.userPoint},#{item.safeManager},#{item.contactPhone},#{item.equipmentVariety},#{item.unitNumber},#{item.manufactureUnit},#{item.manufactureLicenseNumber},#{item.manufactureDate},#{item.specification},#{item.pNumber},#{item.workLevel},#{item.lng},#{item.lat},#{item.singlePicURL},#{item.typePicURL},#{item.ratedLiftWeight})
+            (#{item.id},#{item.reportNumber},#{item.unitAddress},#{item.addressId},#{item.organizeCode},#{item.userPoint},#{item.safeManager},#{item.contactPhone},#{item.equipmentVariety},#{item.unitNumber},#{item.manufactureUnit},#{item.manufactureLicenseNumber},#{item.manufactureDate},#{item.specification},#{item.pNumber},#{item.workLevel},#{item.lng},#{item.lat},#{item.singlePicURL},#{item.typePicURL},#{item.ratedLiftWeight},#{item.uploadedReportId})
         </foreach>
     </insert>
     <update id="update" parameterType="CraneInspectReport">
@@ -498,5 +499,55 @@
         *
         from
         uploadedreport
+    </select>
+    <update id="updateUploadedReportByReportId" parameterType="map">
+        update uploadedreport
+        set status=#{status}
+        where id=#{reportId}
+    </update>
+    <select id="validateReportIsCalculated" parameterType="java.lang.Long" resultType="map">
+        SELECT *
+        FROM uploadedreport WHERE
+        id=#{reportId}
+    </select>
+    <update id="updateRiskValueByChooseReport" parameterType="map" >
+            update  riskvalue
+            set
+            riskvalue=#{riskvalue}
+            where reportNumber=#{reportNumber}
+    </update>
+    <insert id="insertToUploadedReport" parameterType="map" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        uploadedreport(
+        name,uploadtime,userId,userName,path,status
+        )
+        VALUES (#{name}, #{uploadtime},#{userId},#{userName},#{path},#{status});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="updateUploadedReport" parameterType="map">
+        UPDATE
+        uploadedreport set name=#{name},
+        uploadtime=#{uploadtime},userId=#{userId},userName=#{userName},path=#{path},status=#{status}
+        WHERE id=#{reportId}
+    </update>
+    <select id="findIdFromUploadedReportByName" parameterType="java.lang.String" resultType="java.lang.Long">
+          SELECT id
+          FROM uploadedreport
+          WHERE  name=#{reportName}
+    </select>
+    <select id="getCraneTypeIdByCraneEquipment" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT
+        craneTypeId
+        FROM craneinspectreport_cranetype
+        WHERE equipmentVariety=#{equipmentVariety}
+    </select>
+    <select id="validateUploadedReport" parameterType="java.lang.String" resultType="map">
+        SELECT *
+        FROM  uploadedreport
+        WHERE  name=#{reportName}
     </select>
 </mapper>

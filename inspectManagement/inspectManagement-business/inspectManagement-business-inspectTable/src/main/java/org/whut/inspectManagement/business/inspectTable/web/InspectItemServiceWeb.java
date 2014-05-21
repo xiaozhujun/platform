@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
 
+import org.whut.inspectManagement.business.inspectTable.entity.InspectItemChoice;
+import org.whut.inspectManagement.business.inspectTable.service.InspectChoiceService;
+import org.whut.inspectManagement.business.inspectTable.service.InspectItemChoiceService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectItemService;
 
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -30,7 +33,10 @@ public class InspectItemServiceWeb {
 
     @Autowired
     InspectItemService inspectItemService;
-
+    @Autowired
+    InspectItemChoiceService inspectItemChoiceService;
+    @Autowired
+    InspectChoiceService inspectChoiceService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
@@ -54,6 +60,20 @@ public class InspectItemServiceWeb {
             inspectItemList.add(inspectItem);
         }
         inspectItemService.addList(inspectItemList);
+        if(inspectChoiceId!=""||inspectChoiceId.equals("")){
+        }else {
+            String [] inspectItemChoiceList=inspectChoiceId.split(";");
+            List<InspectItemChoice> inspectItemChoices=new ArrayList<InspectItemChoice>();
+            if (isInput==0){
+                for(String choice:inspectItemChoiceList){
+                    InspectItemChoice inspectItemChoice=new InspectItemChoice();
+                    inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemByNameAndNumber(name,number));
+                    inspectItemChoice.setInspectChoiceId(Integer.parseInt(choice));
+                    inspectItemChoices.add(inspectItemChoice);
+                }
+                inspectItemChoiceService.addList(inspectItemChoices);
+            }
+        }
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
     }
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")

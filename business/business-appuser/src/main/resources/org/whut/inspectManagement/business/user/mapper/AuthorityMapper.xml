@@ -72,6 +72,11 @@
         FROM authority WHERE ID=#{id}
     </select>
 
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT name
+        FROM authority WHERE ID=#{id}
+    </select>
+
     <select id="findByName" parameterType="java.lang.String" resultMap="authorityResultMap">
         SELECT
         <include refid="authority_fields" />

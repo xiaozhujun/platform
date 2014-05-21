@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.Department.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.Department.entity.Department;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -16,4 +17,6 @@ import java.util.Map;
 public interface DepartmentMapper extends AbstractMapper<Department> {
     public  long getIdByName(String name);
     public List<Department> findByCondition(Map<String,Object> map);
+
+    public long getIdByName(@Param("name") String name,@Param("appId") long appId);
 }

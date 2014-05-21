@@ -64,6 +64,12 @@
             "delete":"rs/inspectTag/delete",
             "list":"rs/inspectTag/list"
         },
+        "employee":{
+            "add":"rs/employee/add",
+            "update":"rs/employee/update",
+            "delete":"rs/employee/delete",
+            "list":"rs/employee/list"
+        },
         "employeeRole":{
             "add":"rs/employeeRole/add",
             "update":"rs/employeeRole/update",

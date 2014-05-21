@@ -45,6 +45,12 @@
         </where>
     </delete>
 
+    <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+       SELECT
+         id
+         FROM department WHERE NAME=#{name}
+    </select>
+
     <select id="findByCondition" parameterType="map" resultMap="departmentResultMapper">
         SELECT
         <include refid="department_fields"/>

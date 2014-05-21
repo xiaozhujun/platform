@@ -36,9 +36,13 @@
         var gridData = {};
         function listUploadedReportCallback(data){
             if(data.code==200){
-                gridData.Rows = data.data;
-                gridData.Total = data.data.length;
-                f_initGrid();
+                if(data.data[0]==undefined){
+                    $.ligerDialog.alert("抱歉,数据不存在!");
+                }else{
+                    gridData.Rows = data.data;
+                    gridData.Total = data.data.length;
+                    f_initGrid();
+                }
             }
         }
         var dataGridColumns = [

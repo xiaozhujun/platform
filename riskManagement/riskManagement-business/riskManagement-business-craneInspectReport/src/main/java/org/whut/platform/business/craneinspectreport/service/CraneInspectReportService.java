@@ -41,12 +41,10 @@ public class CraneInspectReportService {
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
     private CalculateTools calculateTools=new CalculateTools();
     private static List<List<DBObject>> dbObjectList=new ArrayList<List<DBObject>>();
-    private List<Map<String,String>> uploadedReportList=new ArrayList<Map<String, String>>();
     public void getDbArrayListFromMongo(){
         dbObjectList= mongoConnector.getDbArrayListFromMongo();
     }
     public void upload(InputStream inputStream,String fileName){
-
       String documentJson=getMongoStringFromRequest(inputStream,fileName);
       mongoConnector.insertDocument(documentJson);
     }
@@ -512,7 +510,13 @@ public class CraneInspectReportService {
         MyUserDetail myUserDetail=userService.getMyUserDetailFromSession();
         String userName=myUserDetail.getUsername();
         User user=userService.findByName(userName);
+        //去重复
+        Map<String,String> map=mapper.validateUploadedReport(reportName);
+        if(map==null){
         mapper.insertToUploadedReport(reportName,d,user.getId(),userName,"","未计算");
+        }else{
+        mapper.updateUploadedReport(reportName,d,user.getId(),userName,"","未计算",Long.parseLong(map.get("id")));
+        }
     }
     public long findIdFromUploadedReportByName(String reportName){
         return mapper.findIdFromUploadedReportByName(reportName);

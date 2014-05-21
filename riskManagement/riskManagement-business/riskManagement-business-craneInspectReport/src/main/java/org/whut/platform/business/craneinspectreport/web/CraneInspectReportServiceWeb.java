@@ -65,6 +65,7 @@ public class CraneInspectReportServiceWeb {
             if(fileInfo.getName()==null){
                 //文件名为空
             }else{
+
                 craneInspectReportService.upload(fileInfo.getInputStream(),fileInfo.getName());
             }
         } catch (Exception e) {

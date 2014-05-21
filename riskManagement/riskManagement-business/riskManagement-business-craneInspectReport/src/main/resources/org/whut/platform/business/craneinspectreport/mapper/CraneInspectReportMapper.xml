@@ -528,6 +528,12 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+    <update id="updateUploadedReport" parameterType="map">
+        UPDATE
+        uploadedreport set name=#{name},
+        uploadtime=#{uploadtime},userId=#{userId},userName=#{userName},path=#{path},status=#{status}
+        WHERE id=#{reportId}
+    </update>
     <select id="findIdFromUploadedReportByName" parameterType="java.lang.String" resultType="java.lang.Long">
           SELECT id
           FROM uploadedreport
@@ -538,5 +544,10 @@
         craneTypeId
         FROM craneinspectreport_cranetype
         WHERE equipmentVariety=#{equipmentVariety}
+    </select>
+    <select id="validateUploadedReport" parameterType="java.lang.String" resultType="map">
+        SELECT *
+        FROM  uploadedreport
+        WHERE  name=#{reportName}
     </select>
 </mapper>

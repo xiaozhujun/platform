@@ -387,6 +387,8 @@ public class CraneInspectReportService {
     }
     public void insertToCraneInspectReportMaxValueCollection(){
         MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
+        //在插入之前先删除表
+        mongo.dropCollection();
         mongo.insertDocument(getCraneInspectReportMaxValue());
     }
     public DBObject getDBObjectByReportNumber(String reportNumber){

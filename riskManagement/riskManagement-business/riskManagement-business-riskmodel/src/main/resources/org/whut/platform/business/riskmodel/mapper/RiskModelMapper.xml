@@ -62,7 +62,7 @@
         FROM riskmodel WHERE ID=#{id}
     </select>
 
-    <select id="list" resultMap="riskMoldelResultMap">
+    <select id="list" resultMap="riskModelResultMap">
         SELECT
         <include refid="risk_model_fields"/>
         FROM riskmodel

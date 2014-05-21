@@ -16,6 +16,7 @@
 
         $(function(){
             $.get($.URL.riskModel.list,null,listCallback,"json");
+            $.post($.URL.riskModel.getClassNameFromPackage,null,getClassNameFromPackageCallback,"json");
         });
 
         var gridData = {};
@@ -26,9 +27,17 @@
                 f_initGrid();
             }
         }
-
-        var typeData = [{ type: 'menu', text: 'menu' },{ type: 'resource', text: 'resource' },{ type: 'service', text: 'service' }];
-        var sexData=[{Sex:1,text:'男'},{Sex:2,text:'女'}];
+        var classNameData=[];
+        function getClassNameFromPackageCallback(data){
+            if(data.code==200){
+            for(i=0;i<data.data.length;i++){
+                var className={};
+                className.type=data.data[i].name;
+                className.text=data.data[i].name;
+                classNameData.push(className);
+            }
+            }
+        }
         var manager, g;
         function f_initGrid()
         {
@@ -38,10 +47,10 @@
                     { display: '模型', name: 'name',
                         editor: { type: 'text' }
                     },
-                    { display: '计算公式', width: 50, name: 'type', type: 'string',
-                        editor: { type: 'select', data: typeData, valueField: 'type' },
+                    { display: '计算公式', width: 540, name:'className', type: 'string',
+                        editor: { type: 'select', data: classNameData, valueField: 'type' },
                         render:function(item){
-                            return item.type;
+                            return item.className;
                         }
 
                     },
@@ -82,11 +91,11 @@
         }
         function endEdit(rowid)
         {
-
+            manager.endEdit(rowid);
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
             $.post($.URL.riskModel.update,{"jsonString":jsonString},updateCallback,"json");
-            manager.endEdit(rowid);
+
         }
 
         function updateCallback(data){

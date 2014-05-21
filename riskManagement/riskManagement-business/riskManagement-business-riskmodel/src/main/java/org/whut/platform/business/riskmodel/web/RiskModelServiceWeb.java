@@ -1,4 +1,6 @@
 package org.whut.platform.business.riskmodel.web;
+import com.google.common.io.Files;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -6,10 +8,15 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.riskmodel.entity.RiskModel;
 import org.whut.platform.business.riskmodel.service.RiskModelService;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -78,6 +85,28 @@ public class RiskModelServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
     }
-
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getClassNameFromPackage")
+    public String getClassNameFromPackage(){
+        List<Map<String,String>> list=new ArrayList<Map<String, String>>();
+        List<String>clist=findClassFromPackage();
+        for(String cl:clist){
+            Map<String,String>map=new HashMap<String, String>();
+            map.put("name",cl);
+            list.add(map);
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    public List<String> findClassFromPackage(){
+          String packageName= FundamentalConfigProvider.get("calculateClassPackage");
+          String classNameString=FundamentalConfigProvider.get("className");
+          String[] classNameArr=classNameString.split(",");
+          List<String> list=new ArrayList<String>();
+          for(int i=0;i<classNameArr.length;i++){
+             String className=packageName+"."+classNameArr[i];
+             list.add(className);
+          }
+        return list;
+    }
 }

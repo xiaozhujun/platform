@@ -15,4 +15,5 @@ import java.util.Map;
  */
 public interface InspectTagMapper extends AbstractMapper<InspectTag> {
     public List<InspectTag> findByCondition(Map<String,Object> map);
+    public Long FindByDNumberAndAreaId(long deviceNumber,long areaId);
 }

@@ -15,4 +15,5 @@ import java.util.Map;
  */
 public interface DeviceMapper extends AbstractMapper<Device> {
     public List<Device> findByCondition(Map<String,Object> map);
+    public Long getIdByNumber(long number);
 }

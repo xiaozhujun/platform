@@ -32,4 +32,12 @@ public class InspectAreaService {
     public List<InspectArea> list(){
         return inspectAreaMapper.findByCondition(new HashMap<String, Object>());
     }
+
+    public long findIdByName(String name){
+        return inspectAreaMapper.findIdByName(name);
+    }
+
+    public long getTypeIdByAreaId(long id){
+        return inspectAreaMapper.getTypeIdByAreaId(id);
+    }
 }

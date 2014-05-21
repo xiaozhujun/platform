@@ -15,4 +15,6 @@ import java.util.Map;
  */
 public interface InspectAreaMapper extends AbstractMapper<InspectArea> {
     public List<InspectArea> findByCondition(Map<String,Object> map);
+    public Long findIdByName(String name);
+    public Long getTypeIdByAreaId(long id);
 }

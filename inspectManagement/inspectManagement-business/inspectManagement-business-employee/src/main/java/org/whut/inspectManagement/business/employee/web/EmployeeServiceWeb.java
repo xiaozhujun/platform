@@ -82,7 +82,7 @@ public class EmployeeServiceWeb {
                 userAuthority.setAppId(appId);
                 userAuthorityService.add(userAuthority);
 
-                long departmentId = departmentService.getIdByName(departmentName);
+                long departmentId = departmentService.getIdByName(departmentName,appId);
                 employee.setName(name);
                 employee.setPassword(password);
                 employee.setSex(sex);

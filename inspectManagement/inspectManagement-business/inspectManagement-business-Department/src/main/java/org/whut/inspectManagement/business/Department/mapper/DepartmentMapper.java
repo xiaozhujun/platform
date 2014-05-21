@@ -15,7 +15,6 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface DepartmentMapper extends AbstractMapper<Department> {
-    public  long getIdByName(String name);
     public List<Department> findByCondition(Map<String,Object> map);
 
     public long getIdByName(@Param("name") String name,@Param("appId") long appId);

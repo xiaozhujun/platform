@@ -102,11 +102,6 @@
             <artifactId>inspectManagement-business-Department</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>business-appuser</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
 
 
     </dependencies>

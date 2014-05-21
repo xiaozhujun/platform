@@ -81,4 +81,10 @@
         FROM inspectitem
         WHERE name=#{name} AND number=#{number}
     </select>
+    <select id="getInspectItemByInspectTableId" parameterType="java.lang.Long" resultMap="inspectItemResultMap">
+        SELECT
+        <include refid="inspectItem_fields"/>
+        FROM inspectitem
+        WHERE inspectTableId=#{inspectTableId}
+    </select>
 </mapper>

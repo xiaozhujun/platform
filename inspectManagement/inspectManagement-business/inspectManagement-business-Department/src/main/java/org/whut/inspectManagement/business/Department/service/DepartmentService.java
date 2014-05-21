@@ -30,7 +30,6 @@ public class DepartmentService {
     public void update(Department department){
         departmentMapper.update(department);
     }
-    public long getIdByName(String name){ return departmentMapper.getIdByName(name);}
 
     public List<Department> list(){
         return departmentMapper.findByCondition(new HashMap<String, Object>());

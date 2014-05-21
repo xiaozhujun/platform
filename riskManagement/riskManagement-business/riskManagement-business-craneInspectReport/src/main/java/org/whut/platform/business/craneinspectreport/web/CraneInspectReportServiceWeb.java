@@ -569,11 +569,11 @@ public class CraneInspectReportServiceWeb {
         //选择class类来进行计算
         String[] str=reportId.split(",");
         List<Map<String,String>>calculatedReportList=new ArrayList<Map<String, String>>();
-        List<Map<String,String>>mapList=new ArrayList<Map<String, String>>();
         for(int i=0;i<str.length;i++){
         String className=null;
         List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(str[i]));
         List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
+        List<Map<String,String>>mapList=new ArrayList<Map<String, String>>();
         craneInspectReportService.getDbArrayListFromMongo();
         for(CraneInspectReport craneInspectReport:craneList){
                //根据reportnumber从mongodb中拿出数据封装到craneinspectreport中

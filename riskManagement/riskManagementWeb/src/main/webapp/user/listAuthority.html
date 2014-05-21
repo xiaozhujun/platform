@@ -31,12 +31,7 @@
         var resourceData = [];
         function listPowerCallback(data){
             if(data.code==200){
-                /*for(var i=0;i<data.data.length;i++){
-                 var rs = {};
-                 rs.type =data.data[i].resource;
-                 rs.text=data.data[i].description;
-                 resourceData.push(rs);
-                 } */
+
                 $.each(data.data,function(index,content){
                     var rs={};
                     rs["type"]=content.resource;

@@ -3,6 +3,7 @@ package org.whut.inspectManagement.business.device.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.device.entity.InspectTag;
+import org.whut.inspectManagement.business.device.service.InspectAreaService;
 import org.whut.inspectManagement.business.device.service.InspectTagService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -24,6 +25,8 @@ import java.util.List;
 public class InspectTagServiceWeb {
     @Autowired
     InspectTagService  inspectTagService;
+    @Autowired
+    InspectAreaService inspectAreaService;
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
@@ -78,6 +81,15 @@ public class InspectTagServiceWeb {
         else {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
+    }
+
+
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/getId")
+    @POST
+    public  long getId(@FormParam("number") long number,@FormParam("name") String name){
+        long id= inspectAreaService.findIdByName(name);
+        return inspectTagService.FindByDNumberAndAreaId(number,id);
     }
 
 }

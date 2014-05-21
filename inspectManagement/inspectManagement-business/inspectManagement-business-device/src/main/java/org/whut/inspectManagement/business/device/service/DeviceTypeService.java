@@ -29,4 +29,7 @@ public class DeviceTypeService {
     public List<DeviceType> list(){
         return deviceTypeMapper.findByCondition(new HashMap<String, Object>());
     }
+    public String getNameById(long id){
+        return deviceTypeMapper.getNameById(id);
+    }
 }

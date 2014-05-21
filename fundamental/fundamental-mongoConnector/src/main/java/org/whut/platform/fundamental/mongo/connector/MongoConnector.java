@@ -167,4 +167,9 @@ public class MongoConnector {
         }
         return dd;
     }
+    public void dropCollection(){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        collection.drop();
+    }
 }

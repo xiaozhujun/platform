@@ -78,7 +78,9 @@
                         textField:'text',
                         valueFieldID:'inspectChoiceIdSelect'
                     });
-                    liger.get("inspectChoiceId").setValue("1;2;3");
+                    alert(typeof 'id');
+                    alert('id');
+                    liger.get("inspectChoiceId").setValue('id');
                 }
             }
             $("#submitBtn").ligerButton({});
@@ -95,10 +97,10 @@
             })
             function addCallBack(data){
                 if(data.code==200){
-                    $.ligerDialog.success("修改成功");
+                    $.ligerDialog.success("添加成功");
                 }
                 else{
-                    $.ligerDialog.error("操作失败");
+                    $.ligerDialog.error(data.message);
                 }
             }
         })

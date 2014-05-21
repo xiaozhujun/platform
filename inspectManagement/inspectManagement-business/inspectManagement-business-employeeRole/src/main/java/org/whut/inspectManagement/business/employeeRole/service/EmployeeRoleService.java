@@ -42,4 +42,8 @@ public class EmployeeRoleService {
     {
         return employeeRoleMapper.getIdByName(name,appId);
     }
+
+    public EmployeeRole getById(long id){
+        return employeeRoleMapper.getById(id);
+    }
 }

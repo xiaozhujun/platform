@@ -62,7 +62,11 @@
             <artifactId>business-appuser</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-menu</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>

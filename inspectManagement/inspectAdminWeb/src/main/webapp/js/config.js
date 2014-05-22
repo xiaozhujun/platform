@@ -30,6 +30,12 @@
             "list":"rs/app/list",
             "update":"rs/app/update",
             "delete":"rs/app/delete"
+        },
+        "menu" :{
+            "add" :"rs/menu/add" ,
+            /*"list":"rs/menu/list",*/
+            "update":"rs/menu/update",
+            "delete":"rs/menu/delete"
         }
     }
 })(jQuery);

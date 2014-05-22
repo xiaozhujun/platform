@@ -46,8 +46,8 @@ public class EmployeeServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name, @FormParam("password") String password, @FormParam("sex") String sex, @FormParam("departmentName") String departmentName, @FormParam("status") String status, @FormParam("employeeRoleName") String employeeRoleName, @FormParam("appName") String appName, @FormParam("role") String role) {
-        if (name == null || name.trim().equals("") || password == null || password.trim().equals("") || sex == null || sex.trim().equals("") || role == null || role.trim().equals("") || appName == null || appName.trim().equals("")) {
+    public String add(@FormParam("name") String name, @FormParam("password") String password, @FormParam("sex") String sex, @FormParam("departmentName") String departmentName, @FormParam("status") String status, @FormParam("employeeRoleName") String employeeRoleName, @FormParam("appId") long appId, @FormParam("role") String role) {
+        if (name == null || name.trim().equals("") || password == null || password.trim().equals("") || sex == null || sex.trim().equals("") || role == null || role.trim().equals("") ) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
         long id;
@@ -60,7 +60,7 @@ public class EmployeeServiceWeb {
             User user = new User();
             Employee employee = new Employee();
 
-            long appId = appService.getIdByName(appName);
+
             user.setName(name);
             user.setPassword(password);
             user.setSex(sex);

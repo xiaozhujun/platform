@@ -81,12 +81,12 @@ public class DeviceServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 
-    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
-    @Path("/getId")
-    @GET
-    public Long  getId(@FormParam("number") long number){
-       return deviceService.getIdByNumber(number);
-    }
+  //  @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+   // @Path("/getId")
+   // @GET
+   // public long getId(@FormParam("number") long number){
+    //   return deviceService.getIdByNumber(number);
+   // }
 
 
 }

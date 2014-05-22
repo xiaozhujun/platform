@@ -59,10 +59,7 @@
 
                     }
                 }
-            $("#employeeStatus").ligerComboBox({
-                data:[{"text":'启用',"id":"0"},{"text":"禁用","id":"1"}],
-                valueFieldID:'employeeStatusSelect'
-            });
+
             $("#employeeSex").ligerComboBox({
                 data:[{"text":'男',"id":"0"},{"text":"女","id":"1"}],
                 valueFieldID:'employeeSexSelect'
@@ -73,9 +70,9 @@
                 data.password = $("#employeePassword").val();
                 data.sex = $("#employeeSex").val();
                 data.employeeRoleName = $("#employeeRoleName").val();
-                data.status=$("employeeStatus").val();
+                data.status='启用'
                 data.departmentName =$("#departmentName").val();
-                data.appName=$("#appName").val();
+                data.appId='1';
                 data.role=$("#Role").val();;
                 $.post($.URL.employee.add,data,addEmployeeCallback,"json");
 
@@ -133,11 +130,7 @@
             <td align="left" class="l-table-edit-td"><input name="Role" type="text" id="Role" ltype="text" /></td>
             <td align="left"></td>
         </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">appName:</td>
-            <td align="left" class="l-table-edit-td"><input name="appName" type="text" id="appName" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
+
         <tr>
             <td align="right" class="l-table-edit-td">部门:</td>
             <td align="left" class="l-table-edit-td"><input name="departmentName" type="text" id="departmentName" ltype="text" /></td>
@@ -145,9 +138,7 @@
         </tr>
         <tr>
             <td align="right" class="l-table-edit-td">状态:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="employeeStatus">
-            </td>
+
         </tr>
     </table>
     <br />

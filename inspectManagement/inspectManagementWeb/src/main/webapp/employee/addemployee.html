@@ -35,31 +35,19 @@
             $.post($.URL.employeeRole.list,null,listEmployeeRoleCallback,"json");
             function listEmployeeRoleCallback(data){
                 if(data.code==200){
-                    var dataGridColumns = [
-                        { header: '角色', name: 'name' , width:20 }
-                    ];
-                    $("#employeeRoleName").ligerComboBox({ data: data.data, textField: 'name', columns: dataGridColumns, selectBoxWidth: 400, selectBoxHeight:400,isMultiSelect: true
+                    var myData = [];
+                    $.each(data.data,function(index,content){
+                        var j={};
+                        j["text"]=content.name;
+                        j["id"]=content.id;
+                        myData.push(j);
+                    });
+                    $("#employeeRoleName").ligerComboBox({ isShowCheckBox:true,isMultiSelect:true,
+                        data:myData,
+                        valueFieldID: 'employeeRoleName'
                     });
                 }
             }
-            $.get($.URL.authority.list,null,listAuthorityCallback,"json");
-            function listAuthorityCallback(data){
-                    if(data.code==200){
-                        var myData = [];
-                        $.each(data.data,function(index,content){
-                            var j={};
-                            j["text"]=content.name;
-                            j["id"]=content.id;
-                            myData.push(j);
-                        });
-                        $("#Role").ligerComboBox({
-                            data:myData,
-                            valueFieldID: 'RoleSelect'
-                        });
-
-                    }
-                }
-
             $("#employeeSex").ligerComboBox({
                 data:[{"text":'男',"id":"0"},{"text":"女","id":"1"}],
                 valueFieldID:'employeeSexSelect'
@@ -70,9 +58,10 @@
                 data.password = $("#employeePassword").val();
                 data.sex = $("#employeeSex").val();
                 data.employeeRoleName = $("#employeeRoleName").val();
-                data.status='启用'
+                data.status="启用";
                 data.departmentName =$("#departmentName").val();
-                data.appId='1';
+                /*需要添加获取当前用户的appId*/
+                data.appId="1";
                 data.role=$("#Role").val();;
                 $.post($.URL.employee.add,data,addEmployeeCallback,"json");
 
@@ -126,19 +115,9 @@
             <td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">用户权限:</td>
-            <td align="left" class="l-table-edit-td"><input name="Role" type="text" id="Role" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-
-        <tr>
             <td align="right" class="l-table-edit-td">部门:</td>
             <td align="left" class="l-table-edit-td"><input name="departmentName" type="text" id="departmentName" ltype="text" /></td>
             <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">状态:</td>
-
         </tr>
     </table>
     <br />

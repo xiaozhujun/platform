@@ -15,6 +15,22 @@
     <script type="text/javascript">
         $(function ()
         {
+            $.post($.URL.riskModel.getClassNameFromPackage,null,getClassNameFromPackageCallback,"json");
+            var classNameData=[];
+            function getClassNameFromPackageCallback(data){
+                if(data.code==200){
+                    for(i=0;i<data.data.length;i++){
+                        var className={};
+                        className['text']=data.data[i].name;
+                        className['id']=data.data[i].name;
+                        classNameData.push(className);
+                    }
+                    $("#className").ligerComboBox({
+                        data:classNameData,
+                        valueFieldID:'className'
+                    });
+                }
+            }
             $("#submitBtn").click(function(){
                 var data = {};
                 data.name = $("#modelName").val();
@@ -55,7 +71,7 @@
         <tr>
             <td align="right" class="l-table-edit-td">计算公式:</td>
             <td align="left" class="l-table-edit-td">
-                <input name="className" type="text" id="className" ltype="text" />
+                <input name="className" type="text" id="className" ltype="text"/>
             </td>
         </tr>
         <tr>

@@ -19,4 +19,5 @@ public interface InspectItemMapper extends AbstractMapper<InspectItem> {
     public void addList(List<InspectItem> inspectItemList);
     public long findIdByCondition(InspectItem inspectItem);
     public long getInspectItemByNameAndNumber(@Param("name") String name,@Param("number") String number);
+    public List<InspectItem> getInspectItemByInspectTableId(long inspectTableId);
 }

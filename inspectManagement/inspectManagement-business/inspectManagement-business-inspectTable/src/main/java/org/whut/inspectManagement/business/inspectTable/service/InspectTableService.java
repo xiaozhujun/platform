@@ -32,4 +32,7 @@ public class InspectTableService {
     public long getIdByName(String name){
         return inspectTableMapper.getIdByName(name);
     }
+    public String getNameById(long id){
+        return inspectTableMapper.getNameById(id);
+    }
 }

@@ -15,4 +15,6 @@ import java.util.Map;
 public interface InspectChoiceMapper extends AbstractMapper<InspectChoice> {
     public long getIdByChoiceValue(String choiceValue);
     public List<InspectChoice> getList();
+    public List<String> getChoiceValueById(Long id);
 }
+

@@ -34,5 +34,10 @@ public class InspectItemService {
     public long getInspectItemByNameAndNumber(String name,String number){
         return inspectItemMapper.getInspectItemByNameAndNumber(name,number);
     }
-
+      public  long getIdByNameAndTableId(String name,long inspectTableId){
+          return inspectItemMapper.getIdByNameAndTableId(name,inspectTableId);
+      }
+    public long findIdByCondition(InspectItem inspectItem){
+        return inspectItemMapper.findIdByCondition(inspectItem);
+    }
 }

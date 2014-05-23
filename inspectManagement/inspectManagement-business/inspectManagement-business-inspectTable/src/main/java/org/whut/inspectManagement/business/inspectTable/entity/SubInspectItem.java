@@ -3,22 +3,21 @@ package org.whut.inspectManagement.business.inspectTable.entity;
 import java.util.Date;
 /**
  * Created with IntelliJ IDEA.
- * User: choumiaoer
- * Date: 14-5-11
- * Time: 上午10:41
+ * User: xjie
+ * Date: 14-5-21
+ * Time: 下午9:12
  * To change this template use File | Settings | File Templates.
  */
-public class InspectItem {
+public class SubInspectItem {
     private long id;
     private String name;
     private String description;
     private Date createtime;
-    private long inspectTableId;
     private long inspectAreaId;
     private String number;
-    private int isInput;
-
-    private long appId;
+    private String inspectTableName;
+    private String isInputName;
+    private String choiceValue;
 
     public long getId() {
         return id;
@@ -52,13 +51,6 @@ public class InspectItem {
         this.createtime = createtime;
     }
 
-    public long getInspectTableId() {
-        return inspectTableId;
-    }
-
-    public void setInspectTableId(long inspectTableId) {
-        this.inspectTableId = inspectTableId;
-    }
 
     public long getInspectAreaId() {
         return inspectAreaId;
@@ -76,21 +68,28 @@ public class InspectItem {
         this.number = number;
     }
 
-    public int getInput() {
-        return isInput;
+
+    public String getInspectTableName() {
+        return inspectTableName;
     }
 
-    public void setInput(int input) {
-        isInput = input;
+    public void setInspectTableName(String inspectTableName) {
+        this.inspectTableName = inspectTableName;
     }
 
-
-
-    public long getAppId() {
-        return appId;
+    public String getInputName() {
+        return isInputName;
     }
 
-    public void setAppId(long appId) {
-        this.appId = appId;
+    public void setInputName(String inputName) {
+        isInputName = inputName;
+    }
+
+    public String getChoiceValue() {
+        return choiceValue;
+    }
+
+    public void setChoiceValue(String choiceValue) {
+        this.choiceValue = choiceValue;
     }
 }

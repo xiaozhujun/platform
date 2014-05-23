@@ -32,4 +32,7 @@ public class InspectChoiceService {
     public long getIdByChoiceValue(String choiceValue){
         return inspectChoiceMapper.getIdByChoiceValue(choiceValue);
     }
+    public List<String> getChoiceValueById(long id){
+        return inspectChoiceMapper.getChoiceValueById(id);
+    }
 }

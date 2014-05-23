@@ -52,4 +52,9 @@
             (#{item.id},#{item.inspectItemId},#{item.inspectChoiceId},#{item.appId})
         </foreach>
     </insert>
+      <select id="getChoiceIdByItemId" parameterType="java.lang.Long" resultType="java.lang.Long">
+          select inspectchoiceid
+          from inspectitem_choice
+          where inspectitemid=#{inspectItemId}
+      </select>
 </mapper>

@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/json2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerMenuBar.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var menu1 = { width: 120, items:
+                [
+                    {
+                        text: '风险计算', children:
+                            [
+                                { text: '计算最大风险',id:'maxRisk', click: itemclick },
+                                { text: '计算风险值', id: 'risk', click: itemclick }
+                            ]
+                    }]
+        };
+        $(function(){
+            $("#topmenu").ligerMenuBar({items: [
+                { text: '计算', menu:menu1 }
+            ]
+            });
+            $.post($.URL.craneinspectreport.listUploadedReport,null,listUploadedReportCallback,"json");
+
+        });
+        var gridData = {};
+        function listUploadedReportCallback(data){
+            if(data.code==200){
+                if(data.data[0]==undefined){
+                    $.ligerDialog.alert("抱歉,数据不存在!");
+                }else{
+                    gridData.Rows = data.data;
+                    gridData.Total = data.data.length;
+                    f_initGrid();
+                }
+            }
+        }
+        var dataGridColumns = [
+            { header: 'ID', name: 'id', width: 20 },
+            { header: '角色', name: 'name' },
+            { header: '描述', name: 'description' },
+            { header: '状态', name:'status'}
+        ];
+        var manager, g;
+        function f_initGrid()
+        {
+            g = manager = $("#maingrid").ligerGrid({
+                checkbox:true,
+                columns: [
+                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+                    { display: '上传人员',name: 'userName',
+                        editor: { type: 'text'}
+                    },
+                    { display: '上传文件',name: 'name',
+                        editor: { type: 'text'}
+                    },
+                    { display: '上传时间',name: 'uploadtime',type:'date'
+
+                    },
+                    { display: '是否计算', name: 'status', type: 'string'
+
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: gridData,
+                width: '100%'
+            });
+        }
+        function itemclick(item){
+            if(item.id)
+            {
+                switch(item.id)
+                {
+                    case 'maxRisk':
+                        $.ligerDialog.waitting('正在努力计算中,请稍候...');
+                        $.post($.URL.craneinspectreport.calculateMaxValue,null,calculateMaxRiskValueCallback,"json");
+                        break;
+                    case 'risk':
+                     var s="";
+                     var rows= g.getCheckedRows();
+                    $(rows).each(function(){
+                       s+=this.id+",";
+                    });
+                    if(s!=""){
+                        $.post($.URL.craneinspectreport.calculateRiskValue,{"reportId":s},calculateRiskValueCallback,"json");
+
+                        $.ligerDialog.waitting('正在努力计算中,请稍候...');
+                    }else if(s==""){
+                        $.ligerDialog.alert("请选择计算报告!");
+                    }
+                }
+            }
+        }
+        function calculateMaxRiskValueCallback(data){
+            if(data.code==200){
+                    $.ligerDialog.closeWaitting();
+                    $.ligerDialog.success("计算完成!");
+            }
+        }
+        var repeatData={}
+        function calculateRiskValueCallback(data){
+            if(data.code==200){
+                $("#hiddenField").html("");
+                if(data.data[0]==undefined){
+                    $.ligerDialog.closeWaitting();
+                    $.ligerDialog.success("计算完成!");
+                    $.post($.URL.craneinspectreport.listUploadedReport,null,listUploadedReportCallback,"json");
+                }else{
+                    //出现重复的数据
+                    $.ligerDialog.closeWaitting();
+                    repeatData.Rows = data.data;
+                    repeatData.Total = data.data.length;
+                    f_reportGrid();
+                    openDialog();
+                }
+            }
+        }
+        function openDialog(){
+            $.ligerDialog.open({
+                target: $("#repeatReportgrid"),
+                title: '以下报告已计算',
+                width: 510,
+                isResize: true,
+                modal: true,
+                buttons: [{ text: '覆盖', onclick: function (i, d) {
+                    var r="";
+                    var rows= greport.getCheckedRows();
+                    $(rows).each(function(){
+                        r+=this.id+",";
+                    });
+                    $.post($.URL.craneinspectreport.updateRiskValueByChooseReport,{"reportId":r},updateRiskValueByChooseReportCallback,"json");
+                    $.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").remove();
+                    $.ligerDialog.waitting('正在努力更新中,请稍候...');
+                }
+                }, { text: '关闭', onclick: function (i, d) {
+                    $.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").remove();
+                }
+                }]
+            });
+        }
+        function updateRiskValueByChooseReportCallback(data){
+              if(data.code==200){
+                  $.ligerDialog.closeWaitting();
+                  $.ligerDialog.success("更新完成!");
+              }
+        }
+        var reportManager, greport;
+        function f_reportGrid()
+        {
+            greport = reportManager = $("#repeatReportgrid").ligerGrid({
+                checkbox:true,
+                columns: [
+                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+                    { display: '上传文件',name: 'name',width:400,
+                        editor: { type: 'text'}
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: repeatData,
+                width: '100%'
+            });
+        }
+
+    </script>
+</head>
+<body  style="padding:10px">
+<div class="l-clear"></div>
+<div id="topmenu" />
+<div id="maingrid" style="margin-top:1px"></div> <br />
+<div id="report" style="margin-top: 100px">
+<div id="repeatReportgrid" style="display: block">
+</div>
+
+</div>
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
+</body>
+</html>

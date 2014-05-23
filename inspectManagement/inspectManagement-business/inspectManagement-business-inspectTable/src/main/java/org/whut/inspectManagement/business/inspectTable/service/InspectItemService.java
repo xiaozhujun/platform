@@ -2,6 +2,7 @@ package org.whut.inspectManagement.business.inspectTable.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
+import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper;
 
 import java.util.HashMap;
@@ -17,8 +18,9 @@ public class InspectItemService {
     @Autowired
     private InspectItemMapper inspectItemMapper;
 
-    public void add(InspectItem inspectItem){
-        inspectItemMapper.add(inspectItem);
+
+    public void addList(List<InspectItem> inspectItemList){
+        inspectItemMapper.addList(inspectItemList);
     }
     public int delete(InspectItem inspectItem){
         return inspectItemMapper.delete(inspectItem);
@@ -28,5 +30,12 @@ public class InspectItemService {
     }
     public List<InspectItem> list(){
         return inspectItemMapper.findByCondition(new HashMap<String, Object>());
+    }
+    public long getInspectItemByNameAndNumber(String name,String number){
+        return inspectItemMapper.getInspectItemByNameAndNumber(name,number);
+    }
+
+    public long findIdByCondition(InspectItem inspectItem){
+        return inspectItemMapper.findIdByCondition(inspectItem);
     }
 }

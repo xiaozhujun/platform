@@ -54,14 +54,20 @@
         </dependency>
         <dependency>
             <groupId>platform</groupId>
-            <artifactId>business-user</artifactId>
+            <artifactId>business-app</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>platform</groupId>
-            <artifactId>business-datarule</artifactId>
+            <artifactId>business-appuser</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-menu</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>

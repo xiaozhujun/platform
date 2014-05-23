@@ -16,7 +16,7 @@
 
     <!-- 配置过滤器 -->
     <beans:bean id="myFilter"
-                class="org.whut.platform.business.user.security.MySecurityInterceptorFilter">
+                class="org.whut.inspectManagement.business.user.security.MySecurityInterceptorFilter">
         <!-- 用户拥有的权限 -->
         <beans:property name="authenticationManager" ref="authenticationManager" />
         <!-- 用户是否拥有所请求资源的权限 -->
@@ -26,11 +26,11 @@
     </beans:bean>
 
     <beans:bean id="myAccessDecisionManager"
-                class="org.whut.platform.business.user.security.MyAccessDecisionManager">
+                class="org.whut.inspectManagement.business.user.security.MyAccessDecisionManager">
     </beans:bean>
     <!-- 系统运行时加载 系统要拦截的资源   与用户请求时要过滤的资源 -->
     <beans:bean id="mySecurityMetadataSource"
-                class="org.whut.platform.business.user.security.MySecurityMetadataSource"
+                class="org.whut.inspectManagement.business.user.security.MySecurityMetadataSource"
             >
     </beans:bean>
 
@@ -51,7 +51,7 @@
                 <!--config for web www.cseicms.com test -->
                 <beans:property name="service" value="http://localhost:8080/inspectManagementWeb/j_spring_cas_security_check"></beans:property>
                 <!--config for android test -->
-                <!--<beans:property name="service" value="http://www.cseicms.com/inspectPlatform/j_spring_cas_security_check"></beans:property>-->
+                <!--<beans:property name="service" value="http://www.cseicms.com/inspectinspectManagement/j_spring_cas_security_check"></beans:property>-->
     	        <beans:property name="sendRenew" value="false"></beans:property>
     	    </beans:bean>
 
@@ -87,7 +87,7 @@
     	        <beans:property name="key" value="cas"></beans:property>
     	    </beans:bean>
 
-            <beans:bean id="myUserDeatailsService" class="org.whut.platform.business.user.security.MyUserDetailsService"/>
+            <beans:bean id="myUserDeatailsService" class="org.whut.inspectManagement.business.user.security.MyUserDetailsService"/>
 
 
 

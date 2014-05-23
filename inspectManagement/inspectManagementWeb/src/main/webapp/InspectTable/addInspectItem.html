@@ -3,6 +3,8 @@
 <head>
     <title></title>
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/core/inject.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -12,112 +14,197 @@
     <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(function(){
-            $("#isInput").ligerComboBox({
-                data:[{"text":"false","id":0},{"text":"true","id":1}],
-                valueFieldID:'isInputSelect'
-            })
-            $.post($.URL.inspectTable.getList,null,listCallBack,"json");
-            function listCallBack(data){
-                if(data.code==200){
-                    alert("in");
-                    var myData=[];
-                    $.each(data.data,function(index,content){
-                        var j={};
-                        j["text"]=content.name;
-                        j["id"]=content.id;
-                        myData.push(j);
-                    });
-                    $("#inspectTableId").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,
-                        data:myData,
-                        valueField:'id',
-                        textField:'text',
-                        valueFieldID:'inspectTableIdSelect'
-                    })
-                }
+        $.post($.URL.inspectTable.getList,null,listCallBack,"json");
+        function listCallBack(data){
+            if(data.code==200){
+                var myData=[];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    myData.push(j);
+                });
+                $("#inspectTableId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                    data:myData,
+                    width:200,
+                    valueField:'id',
+                    textField:'text',
+                    valueFieldID:'inspectTableIdSelect'
+                })
             }
-            $("#submitBtn").click(function(){
-                var data={};
-                data.name=$("#name").val;
-                data.description=$("#description").val;
-                data.inspectTable=$("#inspectTableId").val();
-                data.inspectArea=$("#area").val() ;
-                data.number=$("#number").val();
-                data.isinput=$("#isIput").val();
-                data.inspectChoice=$("#inspectChoice").val();
-                $.post($.URL.inspectItem.add,data,addCallBack,"json")
-            })
-            function addCallBack(data){
-                if(data.code==200){
-                    alert("操作成功")
-                }
-                else
-                alert("操作失败")
+        }
+        $.get($.URL.inspectArea.list,null,areaCallBack,"json");
+        function areaCallBack(data){
+            if(data.code==200){
+                var myData=[];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    myData.push(j);
+                })
+                $("#area").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                    data:myData,width:200,
+                    valueField:'id',
+                    textField:'text',
+                    valueFieldID:'areaSelect'
+                })
             }
-        })
+        }
+        var initData={ Rows: [{ "__status": null, "ID": 1, "name": "", "number": "", "isInput": 1,"choiceValue":"正常;异常;无"}]}
 
+        var isInputData = [{ id: 0, text: '是' }, { id: 1, text: '否'}];
+        var choicesData=[];
+
+        $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
+        function  choiceListCallBack(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var ch={};
+                    ch['type']=content.id;
+                    ch['text']=content.choiceValue;
+                    choicesData.push(ch);
+                })
+            }
+        }
+        $(f_initGrid);
+        var manager, g;
+        function f_initGrid()
+        {
+            g =  manager = $("#maingrid").ligerGrid({
+                columns: [
+                    { display: '主键', name: 'ID', width: 100, type: 'int',frozen:true },
+                    { display: '名称', name: 'name',width:300,
+                        editor: { type: 'text' }
+                    },
+                    { display: '编号', name: 'number', width: 250, type: 'text', editor: { type: 'text'} },
+
+                    { display: '是否输入', width: 100, name: 'isInput',type:'int',
+                        editor: { type: 'select', data: isInputData, valueColumnName: 'id' },
+                        render: function (item)
+                        {
+                            if (parseInt(item.isInput) == 0) return '是';
+                            return '否';
+                        }
+                    },
+                    { display: '点检选值', name: 'choiceValue', type:'string',
+                        editor: { type: 'select', data: choicesData,valueField:'type',textField:'text'
+                        ,isMultiSelect:true,isShowCheckBox:true},
+                        render: function (item){
+                            return item.choiceValue;
+                        }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
+                data:initData
+            });
+
+            window.dialog = $.ligerDialog.open({
+                isResize: true,
+                isHidden: true,
+                target: $("<div id='message' class='message'></div>"),
+                buttons: [
+                    { text: '关闭', onclick: function (i, d) { d.hide(); } }
+                ]
+            });
+            dialog.hide();
+            window.alert = function (message) {
+                $("#message").html(message.toString());
+                dialog.show();
+            }
+        }
+
+        function deleteRow()
+        {
+            manager.deleteSelectedRow();
+        }
+        var newrowid = 100;
+        function addNewRow()
+        {
+            var row = manager.getSelectedRow();
+            //参数1:rowdata(非必填)
+            //参数2:插入的位置 Row Data
+            //参数3:之前或者之后(非必填)
+            manager.addRow({
+                DepartmentID: 3,
+                DepartmentName: '销售部',
+                RealName: "分为" + newrowid,
+                ID: newrowid++,
+                Sex : 1,
+                Age : 25,
+                IncomeDay: new Date(1306108800000),
+                Phone : "2343434",
+                Address: "wwrere4"
+            }, row, document.getElementById("chkbefore").checked);
+        }
+        function getRows() {
+            var data = manager.rows;
+            alert(JSON.stringify(data));
+        }
+        function getData()
+        {
+            var data = manager.getData();
+            alert(JSON.stringify(data));
+        }
+        function getUpdate()
+        {
+            var data = manager.getUpdated();
+            alert(JSON.stringify(data));
+        }
+        function getDelete()
+        {
+            var data = manager.getDeleted();
+            alert(JSON.stringify(data));
+        }
+        function getAdd()
+        {
+            var data = manager.getAdded();
+            alert(JSON.stringify(data));
+        }
+        $("#delete").ligerButton({});
+        $("#add").ligerButton({});
+        $("#submitBtn").ligerButton({});
     </script>
     <style type="text/css">
-        .l-table-edit {}
-        .l-table-edit-td{ padding:4px;}
-        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-div {height: 30px;margin-top: 10px}
+        .l-span-edit { margin-left: 10px;  width: 70px;}
+        .l-edit{width: 60px; margin-left: 12px;}
+        .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
+        .l-edit-com{width: 60px; margin-left: 10px; float: left;}
     </style>
 </head>
-
 <body style="padding:10px">
-
-<form name="form1" method="post" action="" id="form1">
-    <div>
+    <div class="l-div">
+        <span class="l-span-edit-com">所属点检表:</span>
+            <span class="l-edit-com">
+                <input name="inspectTableId"  type="text" id="inspectTableId" />
+            </span>
+        <span style="margin-left: 160px;  width: 70px;float: left;margin-top: 2px">所属区域 ：</span>
+            <span style="width: 60px; margin-left: 10px; float: left;">
+                <input name="area" type="text" id="area" />
+            </span>
+        <span>
+            <div id="add" style="width:100px;float: left;margin-left: 200px" onclick="addNewRow()">添加</div>
+            <div id="delete" style="width:100px; float: left;margin-left: 40px" onclick="deleteRow()">删除</div>
+            <div id="submitBtn" style="width: 100px;float: left;margin-left: 40px">提交</div>
+        </span>
     </div>
-    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
-        <tr>
-            <td align="right" class="l-table-edit-td">点检项:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="name" type="text" id="name" type="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">描述:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="description" type="text" id="description" type="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">所属点检表:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="inspectTableId" type="text" id="inspectTableId" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">所属区域:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text"  id="area">
-            </td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">编号:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text"  id="number">
-            </td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">是否输入:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="isInput">
-            </td>
-        </tr>
-        <tr>
-            <td align="right" class="1-table-edit-td">点检选值:</td>
-            <td align="left" class="1-table-edit-td">
-                <input type="text"  id="inspectChoice">
-            </td>
-        </tr>
-    </table>
-    <br/>
-    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
-</form>
-<div style="display:none">
-    <!--  数据统计代码 --></div>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:5px"></div> <br />
+    <br />
+
+    <div style="display:none;">
+        <!-- g data total ttt -->
+    </div>
+
+    <div style="display:none">
+        <!--  数据统计代码 --></div>
 </body>
 </html>

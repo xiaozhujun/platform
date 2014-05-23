@@ -36,16 +36,15 @@
         where ID=#{id};
     </update>
 
-    <delete id="delete" parameterType="User">
+    <delete id="delete" parameterType="Department">
         DELETE FROM department
         <where>
             <if test="id != null">ID=#{id}</if>
-
             <if test="name != null"> AND NAME=#{name}</if>
         </where>
     </delete>
 
-    <select id="findByCondition" parameterType="department" resultMap="departmentResultMapper">
+    <select id="findByCondition" parameterType="map" resultMap="departmentResultMapper">
         SELECT
         <include refid="department_fields"/>
         FROM department
@@ -56,4 +55,11 @@
             <if test="appId!=null">AND APPID=#{appId}</if>
         </where>
     </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from department
+        where NAME=#{name} and APPID=#{appId}
+    </select>
+
 </mapper>

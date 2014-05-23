@@ -8,10 +8,7 @@ import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +33,21 @@ public class DepartmentServiceWeb {
     @POST
     public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("status") String status,@FormParam("appid") long appid)
     {
+        if(name==null||name.trim().equals(""))
+        {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数错误");
+        }
+        long id;
+        try
+        {
+            id=departmentService.getIdByName(name,appid);
+        }
+        catch (Exception e)
+        {
+            id=0;
+        }
+        if(id==0)
+        {
         Department department=new Department();
         department.setName(name);
         department.setStatus(status);
@@ -45,6 +57,9 @@ public class DepartmentServiceWeb {
         department.setCreatetime(now);
         departmentService.add(department);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该部门！");
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -70,6 +85,7 @@ public class DepartmentServiceWeb {
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
+  /*添加saas化*/
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
     @POST
@@ -77,4 +93,5 @@ public class DepartmentServiceWeb {
         List<Department> list=departmentService.list();
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
 }

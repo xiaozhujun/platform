@@ -56,6 +56,28 @@ public class CraneInspectReport {
 
     private long      craneNumber;                    //起重机台数
 
+    private long       useTime;                       //使用年限
+
+    private String      conclusion;                     //结论
+
+    private Float      span;                            //跨度
+
+    private Float      range;                           //幅度
+
+    private Float      liftHeight;                      //起升高度
+
+    private Float      liftSpeed;                       //起升速度
+
+    private Float      runSpeed;                        //运行速度
+
+    private Float      cartSpeed;                       //大车运行速度
+
+    private Float      carSpeed;                         //小车运行速度
+
+    private Float      maxLiftMoment;                    //最大起重力矩
+
+    private long      uploadedReportId;
+
     public long getId() {
         return id;
     }
@@ -238,5 +260,93 @@ public class CraneInspectReport {
 
     public void setCraneNumber(long craneNumber) {
         this.craneNumber = craneNumber;
+    }
+
+    public long getUseTime() {
+        return useTime;
+    }
+
+    public void setUseTime(long useTime) {
+        this.useTime = useTime;
+    }
+
+    public String getConclusion() {
+        return conclusion;
+    }
+
+    public void setConclusion(String conclusion) {
+        this.conclusion = conclusion;
+    }
+
+    public Float getSpan() {
+        return span;
+    }
+
+    public void setSpan(Float span) {
+        this.span = span;
+    }
+
+    public Float getRange() {
+        return range;
+    }
+
+    public void setRange(Float range) {
+        this.range = range;
+    }
+
+    public Float getLiftHeight() {
+        return liftHeight;
+    }
+
+    public void setLiftHeight(Float liftHeight) {
+        this.liftHeight = liftHeight;
+    }
+
+    public Float getLiftSpeed() {
+        return liftSpeed;
+    }
+
+    public void setLiftSpeed(Float liftSpeed) {
+        this.liftSpeed = liftSpeed;
+    }
+
+    public Float getRunSpeed() {
+        return runSpeed;
+    }
+
+    public void setRunSpeed(Float runSpeed) {
+        this.runSpeed = runSpeed;
+    }
+
+    public Float getCartSpeed() {
+        return cartSpeed;
+    }
+
+    public void setCartSpeed(Float cartSpeed) {
+        this.cartSpeed = cartSpeed;
+    }
+
+    public Float getCarSpeed() {
+        return carSpeed;
+    }
+
+    public void setCarSpeed(Float carSpeed) {
+        this.carSpeed = carSpeed;
+    }
+
+    public Float getMaxLiftMoment() {
+        return maxLiftMoment;
+    }
+
+    public void setMaxLiftMoment(Float maxLiftMoment) {
+        this.maxLiftMoment = maxLiftMoment;
+    }
+
+    public long getUploadedReportId() {
+        return uploadedReportId;
+    }
+
+    public void setUploadedReportId(long uploadedReportId) {
+        this.uploadedReportId = uploadedReportId;
     }
 }

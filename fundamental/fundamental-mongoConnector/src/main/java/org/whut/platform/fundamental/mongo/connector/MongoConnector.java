@@ -97,6 +97,84 @@ public class MongoConnector {
         ArrayList data = (ArrayList)dbObject.get("data");
         return data;
     }
+    //根据reportNumber来提取某一条记录
+    public DBObject  getDBObjectByReportNumber(String reportNuumber){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        while (dbCursor.hasNext()){
+            List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+           for(DBObject dd:d){
+               if(dd.get("reportnumber").equals(reportNuumber)){
+                   return dd;
+               };
+           }
+        }
+        return null;
+    }
+    //取根据每一类来找出某一列的值，用来算最大值
+    public List<String> getOneColumnByEquipmentVariety(String column,List<String> equipmentVariety){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        List<String> list=new ArrayList<String>();
+        while (dbCursor.hasNext()){
+               List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+               for(String equipment:equipmentVariety){
+               for(DBObject dd:d){
+                   if(dd.get("equipmentvariety").equals(equipment)){
+                       list.add((String)dd.get(column));
+                   }
+               }
+               }
+        }
+        return list;
+    }
+    public DBObject getMaxValueByCraneType(String craneTypeId){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        while (dbCursor.hasNext()){
+            List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("maxValue");
+            for(DBObject dd:d){
+                if(dd.get("typeId").equals(craneTypeId)){
+                    return dd;
+                };
+            }
+        }
+        return null;
+    }
+    public List<DBObject> getDbArrayListFromMongo1(){
+        //从mongo中拿出所有的记录
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
+        List<DBObject> d=new ArrayList<DBObject>();
+        while (dbCursor.hasNext()){
+             d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+             dd.add(d);
+        }
+        return d;
+    }
+    public List<List<DBObject>> getDbArrayListFromMongo(){
+        //从mongo中拿出所有的记录
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
+        List<DBObject> d=new ArrayList<DBObject>();
+        while (dbCursor.hasNext()){
+            d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+            dd.add(d);
+        }
+        return dd;
+    }
+    public void dropCollection(){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        collection.drop();
+    }
 
     //根据查询条件返回文档数组
     public List<DBObject> getDocumentList(BasicDBObject query){

@@ -1,29 +1,41 @@
 (function($){
     $.URL = {
-        "power":{
-            "add":"rs/power/add",
-            "update":"rs/power/update",
-            "delete":"rs/power/delete",
-            "list":"rs/power/list"
+        "apppower":{
+            "add":"rs/apppower/add",
+            "update":"rs/apppower/update",
+            "delete":"rs/apppower/delete",
+            "list":"rs/apppower/list"
         },
-        "authority":{
-            "add":"rs/authority/add"
+       /* "appauthority":{
+            "add":"rs/appauthority/add"
+        },*/
+        "appuser":{
+            "add":"rs/appuser/add",
+            "update":"rs/appuser/update",
+            "delete":"rs/appuser/delete",
+            "list":"rs/appuser/list",
+            "getId":"rs/appuser/getIdByName"
         },
-        "user":{
-            "add":"rs/user/add",
-            "update":"rs/user/update",
-            "delete":"rs/user/delete",
-            "list":"rs/user/list",
-            "getId":"rs/user/getIdByName"
+        "appauthority":{
+             "add":"rs/appauthority/add",
+             "update":"rs/appauthority/update",
+             "delete":"rs/appauthority/delete",
+            "list":"rs/appauthority/list"
         },
-        "authority":{
-             "add":"rs/authority/add",
-             "update":"rs/authority/update",
-             "delete":"rs/authority/delete",
-            "list":"rs/authority/list"
+        "appuserappauthority":{
+              "add":"rs/appuserappauthority/add"
+        }  ,
+        "app" :{
+            "add" :"rs/app/add" ,
+            "list":"rs/app/list",
+            "update":"rs/app/update",
+            "delete":"rs/app/delete"
         },
-        "userAuthority":{
-              "add":"rs/userAuthority/add"
+        "menu" :{
+            "add" :"rs/menu/add" ,
+            /*"list":"rs/menu/list",*/
+            "update":"rs/menu/update",
+            "delete":"rs/menu/delete"
         }
     }
 })(jQuery);

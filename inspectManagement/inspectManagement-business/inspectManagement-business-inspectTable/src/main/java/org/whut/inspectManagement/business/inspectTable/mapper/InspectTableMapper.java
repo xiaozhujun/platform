@@ -16,5 +16,6 @@ public interface InspectTableMapper extends AbstractMapper<InspectTable>{
     public List<InspectTable> findByCondition(Map<String,Object> map);
     public List<InspectTable> getList();
     public long getIdByName(String name);
+    public String getNameById(long id);
 
 }

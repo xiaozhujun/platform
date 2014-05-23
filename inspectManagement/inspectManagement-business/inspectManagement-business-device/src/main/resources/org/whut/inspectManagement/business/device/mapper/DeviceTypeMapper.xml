@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.device.mapper.DeviceTypeMapper">
+    <sql id="deviceType_fields">
+         ID,NAME,NUMBER,DESCRIPTION,APPID
+     </sql>
+    <resultMap id="deviceTypeResultMap" type="DeviceType">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="number" column="NUMBER"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="DeviceType"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        devicetype(
+        <include refid="deviceType_fields" />
+        )
+        VALUES (#{id}, #{name}, #{number},#{description},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getNameById"  parameterType="java.lang.Long" resultType="java.lang.String">
+        select name
+        from devicetype
+        where id=#{id};
+    </select>
+
+    <select id="findByCondition" parameterType="map" resultMap="deviceTypeResultMap">
+        SELECT
+        <include refid="deviceType_fields"/>
+        FROM devicetype
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="number!=null">AND NUMBER=#{number}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </where>
+    </select>
+    <update id="update" parameterType="DeviceType">
+        UPDATE devicetype
+        <set>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="number!=null">AND NUMBER=#{number}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="DeviceType">
+        DELETE FROM devicetype
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+
+</mapper>

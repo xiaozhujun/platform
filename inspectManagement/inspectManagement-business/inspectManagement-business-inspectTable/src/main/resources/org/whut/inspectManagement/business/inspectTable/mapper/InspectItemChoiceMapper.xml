@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectItemChoiceMapper">
+    <sql id="InspectItemChoice_fields">
+          ID,INSPECTITEMID,INSPECTCHOICEID,APPID
+    </sql>
+    <resultMap id="inspectItemChoiceResultMap" type="InspectItemChoice">
+        <id property="id" column="ID" />
+        <result property="inspectItemId" column="INSPECTITEMID"/>
+        <result property="inspectChoiceId" column="INSPECTCHOICEID"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="InspectItemChoice"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        inspectitem_choice(
+        <include refid="InspectItemChoice_fields" />
+        )
+        VALUES (#{id}, #{inspectItemId},#{inspectChoiceId},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="update" parameterType="InspectItemChoice">
+        UPDATE inspectitem_choice
+        <set>
+            <if test="inspectItemId!=null">INSPECTITEMID=#{inspectItemId},</if>
+            <if test="inspectChoicId!=null">INSPECTCHOICID=#{inspectChoiceId},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <delete id="delete" parameterType="InspectItemChoice">
+        DELETE FROM inspectitem_choice
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+    <insert id="addList" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        inspectitem_choice(
+        <include refid="InspectItemChoice_fields"/>)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.inspectItemId},#{item.inspectChoiceId},#{item.appId})
+        </foreach>
+    </insert>
+     <select id="getChoiceIdByItemId" parameterType="java.lang.Long" resultType="java.lang.Long">
+          select inspectchoiceid
+          from inspectitem_choice
+          where inspectitemid=#{inspectItemId}
+     </select>
+    <select id="getChoicesByItemId" parameterType="java.lang.Long" resultType="java.lang.String">
+          select i.choiceValue
+          from inspectitem_choice as ic,inspectchoice as i
+          where ic.inspectitemid=#{itemId} and ic.inspectChoiceId = i.id
+      </select>
+</mapper>

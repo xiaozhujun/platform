@@ -1,0 +1,76 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.device.mapper.InspectTagMapper">
+    <sql id="inspectTag_fields">
+       ID,NAME,DESCRIPTION,CREATETIME,NUMBER,INSPECTAREAID,DEVICEID,APPID
+    </sql>
+    <resultMap id="inspectTagResultMap" type="InspectTag">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createtime" column="CREATETIME" />
+        <result property="number" column="NUMBER"/>
+        <result property="inspectAreaId" column="INSPECTAREAID"/>
+        <result property="deviceId" column="DEVICEID"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="InspectTag"  keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        inspecttag(
+        <include refid="inspectTag_fields"/>
+        )
+        VALUES (#{id},#{name},#{description},#{createtime},#{number},#{inspectAreaId},#{deviceId},#{appId});
+        <selectKey  resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="FindByDNumberAndAreaId"   parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+        id
+        from inspecttag
+        <where>
+            <if test="number!=null"> NUMBER=#{number}</if>
+            <if test="inspectAreaId!=null">AND INSPECTAREAID=#{inspectAreaId}</if>
+        </where>
+    </select>
+
+    <select id="findByCondition" parameterType="map" resultMap="inspectTagResultMap">
+        select
+        <include refid="inspectTag_fields"/>
+        from inspecttag
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
+            <if test="number!=null">AND NUMBER=#{number}</if>
+            <if test="inspectAreaId!=null">AND INSPECTAREAID=#{inspectAreaId}</if>
+            <if test="deviceId!=null">AND DEVICEID=#{deviceId}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="InspectTag">
+        UPDATE inspecttag
+        <set>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
+            <if test="number!=null">AND NUMBER=#{number}</if>
+            <if test="inspectAreaId!=null">AND INSPECTAREAID=#{inspectAreaId}</if>
+            <if test="deviceId!=null">AND DEVICEID=#{deviceId}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="InspectTag">
+        DELETE FROM inspecttag
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+</mapper>

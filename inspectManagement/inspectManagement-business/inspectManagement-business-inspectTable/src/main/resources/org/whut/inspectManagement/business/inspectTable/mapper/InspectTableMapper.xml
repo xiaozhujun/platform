@@ -67,4 +67,11 @@
         FROM inspecttable
         WHERE name=#{name}
     </select>
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select
+        name
+        from  inspecttable
+        where id=#{id}
+
+    </select>
 </mapper>

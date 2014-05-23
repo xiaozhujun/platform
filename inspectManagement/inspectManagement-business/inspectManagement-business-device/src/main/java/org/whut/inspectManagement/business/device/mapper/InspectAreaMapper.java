@@ -17,4 +17,6 @@ public interface InspectAreaMapper extends AbstractMapper<InspectArea> {
     public List<InspectArea> findByCondition(Map<String,Object> map);
     public Long findIdByName(String name);
     public Long getTypeIdByAreaId(long id);
+    public String getAreaById(long id);
+    public String getDeviceTypeByAreaId(long inspectAreaId);
 }

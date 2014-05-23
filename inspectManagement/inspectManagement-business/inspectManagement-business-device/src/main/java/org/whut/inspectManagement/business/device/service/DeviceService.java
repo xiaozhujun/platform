@@ -34,7 +34,7 @@ public class DeviceService {
     public void delete(Device device){
         deviceMapper.delete(device);
     }
-    public Long getIdByNumber(long number) {
+    public long getIdByNumber(long number) {
         return deviceMapper.getIdByNumber(number);
     }
 

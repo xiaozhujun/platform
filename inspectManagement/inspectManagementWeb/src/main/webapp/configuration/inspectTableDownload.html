@@ -55,8 +55,7 @@
         function download(rowid)
         {
             var row = manager.getRow(rowid);
-            var jsonString  = $.toJSON(row);
-            alert("下载！")
+            window.location.href='rs/configuration/downloadInspectTable/'+row.id;
         }
     </script>
 </head>

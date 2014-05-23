@@ -59,5 +59,9 @@
         FROM inspectchoice
         WHERE choiceValue=#{choiceValue}
     </select>
-
+     <select id="getChoiceValueById" parameterType="java.lang.Long" resultType="java.lang.String">
+         SELECT choicevalue
+         FROM inspectchoice
+         WHERE id=#{id}
+     </select>
 </mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.menu.mapper.MenuMapper">
+    <sql id="app_fields">
+		ID,NAME,LEVEL,URL,PARENTNAME
+	</sql>
+
+    <resultMap id="appResultMap" type="Menu">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="level" column="LEVEL" />
+        <result property="url" column="URL"/>
+        <result property="parentname" column="PARENTNAME"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Menu"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        app(
+        <include refid="app_fields" />
+        )
+        VALUES (#{id}, #{name}, #{level},#{url},#{parentname});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Menu">
+        UPDATE app
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            <if test="level != null">LEVEL=#{level},</if>
+            <if test="url != null">URL=#{url},</if>
+            <if test="parentname != null">PARENTNAME=#{parentname},</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="Menu">
+        DELETE FROM menu
+        <where>
+            <if test="id != null">ID=#{id}</if>
+
+            <if test="name != null"> AND NAME=#{name}</if>
+        </where>
+    </delete>
+
+</mapper>

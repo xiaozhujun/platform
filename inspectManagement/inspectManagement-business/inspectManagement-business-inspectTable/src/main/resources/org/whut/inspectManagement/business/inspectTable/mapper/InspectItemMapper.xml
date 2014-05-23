@@ -96,9 +96,10 @@
         FROM inspectitem
         WHERE name=#{name} AND number=#{number}
     </select>
-    <select id="getIdByNameAndTableId" parameterType="map" resultType="java.lang.Long">
-        SELECT id
+    <select id="getInspectItemByInspectTableId" parameterType="java.lang.Long" resultMap="inspectItemResultMap">
+        SELECT
+        <include refid="inspectItem_fields"/>
         FROM inspectitem
-        WHERE name=#{name} AND inspecttableid=#{inspectTableId}
-     </select>
+        WHERE inspectTableId=#{inspectTableId}
+    </select>
 </mapper>

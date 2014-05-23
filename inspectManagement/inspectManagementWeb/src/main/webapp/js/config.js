@@ -44,13 +44,15 @@
             "add":"rs/device/add" ,
             "list":"rs/device/list",
             "update":"rs/device/update",
-            "delete":"rs/device/delete"
+            "delete":"rs/device/delete",
+            "getId":"rs/device/getId"
         },
         "deviceType":{
             "add":"rs/deviceType/add",
             "update":"rs/deviceType/update",
             "delete":"rs/deviceType/delete" ,
-            "list":"rs/deviceType/list"
+            "list":"rs/deviceType/list",
+            "getName":"rs/deviceType/getName"
         }  ,
         "inspectArea":{
             "add":"rs/inspectArea/add",
@@ -62,7 +64,14 @@
             "add":"rs/inspectTag/add",
             "update":"rs/inspectTag/update",
             "delete":"rs/inspectTag/delete",
-            "list":"rs/inspectTag/list"
+            "list":"rs/inspectTag/list",
+            "getId":"rs/inspectTag/getId"
+        },
+        "employee":{
+            "add":"rs/employee/add",
+            "update":"rs/employee/update",
+            "delete":"rs/employee/delete",
+            "list":"rs/employee/list"
         },
         "employeeRole":{
             "add":"rs/employeeRole/add",

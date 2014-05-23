@@ -47,6 +47,7 @@ public class CraneInspectReportServiceWeb {
     private String singlePicURL="";
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MultipartRequestParser multipartRequestParser=new MultipartRequestParser();
+    private static List<Map<String,String>> mList=new ArrayList<Map<String, String>>();
     @Produces(MediaType.MULTIPART_FORM_DATA)
     @Path("/upload")
     @POST
@@ -64,6 +65,7 @@ public class CraneInspectReportServiceWeb {
             if(fileInfo.getName()==null){
                 //文件名为空
             }else{
+
                 craneInspectReportService.upload(fileInfo.getInputStream(),fileInfo.getName());
             }
         } catch (Exception e) {
@@ -567,6 +569,7 @@ public class CraneInspectReportServiceWeb {
         //来查找craneTypeId，从而找到相应的riskModelId,然后找到className,动态的
         //选择class类来进行计算
         String[] str=reportId.split(",");
+        List<Map<String,String>>calculatedReportList=new ArrayList<Map<String, String>>();
         for(int i=0;i<str.length;i++){
         String className=null;
         List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(str[i]));
@@ -578,26 +581,37 @@ public class CraneInspectReportServiceWeb {
                className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
                //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
                CraneInspectReport craneReport=new CraneInspectReport();
-               craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber());
+               craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber(),craneInspectReport.getEquipmentVariety());
                craneInspectReportList.add(craneReport);
         }
         for(CraneInspectReport cr:craneInspectReportList){
-            Float r=calculateRisk(className,cr,str[i]);
+            Long craneTypeId=craneInspectReportService.getCraneTypeIdByCraneEquipment(cr.getEquipmentVariety());
+            if(craneTypeId!=null){
+            Float r=calculateRisk(className,cr,String.valueOf(craneTypeId));
             int riskValue=Math.round(r);
             Map<String,String> m=new HashMap<String,String>();
             if(cr!=null){
                 m.put("reportNumber",cr.getReportNumber());
                 m.put("riskvalue",String.valueOf(riskValue));
                 mapList.add(m);
+                mList.add(m);
             }
         }
+        }
+            Map<String,String> uploadReport=craneInspectReportService.validateReportIsCalculated(Long.parseLong(str[i]));
+            if(uploadReport.get("status").equals("未计算")){
             //批量插入riskValue
             if(craneInspectReportService.InsertToRiskValue(mapList)){
                 //更新
               craneInspectReportService.updateUploadedReportByReportId(Long.parseLong(str[i]),"已计算");
             };
+        }else{
+            //将重复的记录保存到list中
+            calculatedReportList.add(uploadReport);
+        }
     }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        //向前台带的信息为report的信息以及计算的mapList
+        return JsonResultUtils.getObjectResultByStringAsDefault(calculatedReportList,JsonResultUtils.Code.SUCCESS);
     }
     public Float calculateRisk(String className,CraneInspectReport craneInspectReport,String craneType){
          Float riskValue=0f;
@@ -624,5 +638,37 @@ public class CraneInspectReportServiceWeb {
     public String listUploadedReport(){
         List<Map<String,String>> list=craneInspectReportService.listUploadedReport();
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/updateRiskValueByChooseReport")
+    public String updateRiskValueByChooseReport(@FormParam("reportId")String reportId){
+          List<Map<String,String>>updateRiskValueList=new ArrayList<Map<String, String>>();
+          String[] str=reportId.split(",");
+          for(int i=0;i<str.length;i++){
+              List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(str[i]));
+              for(CraneInspectReport c:craneList){
+                  Map<String,String> map=new HashMap<String, String>();
+                  String riskValue=getRiskValueByReportNumber(c.getReportNumber());
+                  if(riskValue!=null){
+                  map.put("reportNumber",c.getReportNumber());
+                  map.put("riskvalue",riskValue);
+                  updateRiskValueList.add(map);
+                  }
+              }
+          }
+          //批量更新
+        for(Map<String,String> m:updateRiskValueList){
+            craneInspectReportService.updateRiskValueByChooseReport(m.get("reportNumber"),m.get("riskvalue"));
+        }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    public String getRiskValueByReportNumber(String reportNumber){
+        for(Map<String,String>mm:mList){
+            if(mm.get("reportNumber").equals(reportNumber)){
+                return mm.get("riskvalue");
+            }
+        }
+        return null;
     }
 }

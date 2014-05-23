@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+</title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        /*
+         *ligerui定义
+         */
+        $("#parentName").ligerComboBox({});
+        $("#level").ligerComboBox({});
+        $("#submitBtn").ligerButton({
+        });
+        /*
+         *按钮提交事件，将企业基本信息录入数据库中
+         */
+        $("#submitBtn").click(function(){
+            var data = {};
+
+        });
+    </script>
+    <style type="text/css">
+
+    </style>
+
+</head>
+
+<body style="padding:10px">
+<div id="menuNameArea">
+    <span>菜单名:</span>
+       <span class="inputarea">
+           <input  type="text" id="name" />
+       </span>
+</div>
+<div id="menuUrlArea">
+    <span>路径:</span>
+       <span class="inputarea">
+           <input  type="text" id="url" />
+       </span>
+</div>
+<div id="menuLevelArea">
+    <span>级别:</span>
+       <span  >
+            <input type="text" readonly="true" id="level">
+       </span>
+</div>
+<div id="menuParentNameArea">
+    <span>父节点:</span>
+    <span  >
+          <input type="text" readonly="true" id="parentName">
+    </span>
+</div>
+<div>
+    <input  value="提交" id="submitBtn"/>
+</div>
+</body>
+</html>

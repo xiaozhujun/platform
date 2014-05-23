@@ -61,7 +61,8 @@
             "getAreaInfoByCondition":'rs/craneinspectreport/getAreaInfoByCondition',
             "listUploadedReport":'rs/craneinspectreport/listUploadedReport',
             "calculateRiskValue":'rs/craneinspectreport/calculateRiskValue',
-            "calculateMaxValue":'rs/craneinspectreport/calculateMaxValue'
+            "calculateMaxValue":'rs/craneinspectreport/calculateMaxValue',
+            "updateRiskValueByChooseReport":'rs/craneinspectreport/updateRiskValueByChooseReport'
         },
         "authority":{
             "add":"rs/authority/add"
@@ -109,6 +110,13 @@
             "update":"rs/userDataRole/update",
             "delete":"rs/userDataRole/delete",
             "list":"rs/userDataRole/list"
+        },
+        "riskModel":{
+            "add":"rs/riskModel/add",
+            "update":"rs/riskModel/update",
+            "delete":"rs/riskModel/delete",
+            "list":"rs/riskModel/list",
+            "getClassNameFromPackage":"rs/riskModel/getClassNameFromPackage"
         }
     }
 })(jQuery);

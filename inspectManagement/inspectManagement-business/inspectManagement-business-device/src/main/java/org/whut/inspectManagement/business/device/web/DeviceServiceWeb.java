@@ -80,4 +80,13 @@ public class DeviceServiceWeb {
         java.util.List<Device> list=deviceService.list();
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+  //  @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+   // @Path("/getId")
+   // @GET
+   // public long getId(@FormParam("number") long number){
+    //   return deviceService.getIdByNumber(number);
+   // }
+
+
 }

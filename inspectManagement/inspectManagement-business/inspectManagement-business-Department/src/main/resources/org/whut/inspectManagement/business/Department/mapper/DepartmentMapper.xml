@@ -40,7 +40,6 @@
         DELETE FROM department
         <where>
             <if test="id != null">ID=#{id}</if>
-
             <if test="name != null"> AND NAME=#{name}</if>
         </where>
     </delete>
@@ -56,4 +55,11 @@
             <if test="appId!=null">AND APPID=#{appId}</if>
         </where>
     </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from department
+        where NAME=#{name} and APPID=#{appId}
+    </select>
+
 </mapper>

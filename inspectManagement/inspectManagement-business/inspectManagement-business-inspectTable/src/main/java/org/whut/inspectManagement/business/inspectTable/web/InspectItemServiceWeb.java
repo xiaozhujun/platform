@@ -63,16 +63,19 @@ public class InspectItemServiceWeb {
             inspectItemList.add(inspectItem);
         }
         inspectItemService.addList(inspectItemList);
-        String [] inspectItemChoiceList=inspectChoiceId.split(";");
-        List<InspectItemChoice> inspectItemChoices=new ArrayList<InspectItemChoice>();
-        if (isInput==0){
-            for(String choice:inspectItemChoiceList){
-                InspectItemChoice inspectItemChoice=new InspectItemChoice();
-                inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemByNameAndNumber(name,number));
-                inspectItemChoice.setInspectChoiceId(Integer.parseInt(choice));
-                inspectItemChoices.add(inspectItemChoice);
+        if(inspectChoiceId!=""||inspectChoiceId.equals("")){
+        }else {
+            String [] inspectItemChoiceList=inspectChoiceId.split(";");
+            List<InspectItemChoice> inspectItemChoices=new ArrayList<InspectItemChoice>();
+            if (isInput==0){
+                for(String choice:inspectItemChoiceList){
+                    InspectItemChoice inspectItemChoice=new InspectItemChoice();
+                    inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemByNameAndNumber(name,number));
+                    inspectItemChoice.setInspectChoiceId(Integer.parseInt(choice));
+                    inspectItemChoices.add(inspectItemChoice);
+                }
+                inspectItemChoiceService.addList(inspectItemChoices);
             }
-            inspectItemChoiceService.addList(inspectItemChoices);
         }
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
     }

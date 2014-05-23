@@ -8,6 +8,7 @@ import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -95,5 +96,15 @@ public class MongoConnector {
         DBObject dbObject = getDocument(objectID);
         ArrayList data = (ArrayList)dbObject.get("data");
         return data;
+    }
+
+    //根据查询条件返回文档数组
+    public List<DBObject> getDocumentList(BasicDBObject query){
+        if(query==null){
+            throw new IllegalArgumentException("object id is null");
+        }
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        return collection.find(query).toArray();
     }
 }

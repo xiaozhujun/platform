@@ -15,15 +15,39 @@
     <script type="text/javascript">
 
         $(function(){
-            $.post($.URL.inspectItem.list,null,listCallback,"json");
-        });
+            $.post($.URL.inspectItem.list,null,itemListCallback,"json");
+            $.post($.URL.inspectTable.getList,null,tableListCallBack,"json");
+            $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
+        })
+        var myData=[];
+        function tableListCallBack(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.name;
+                    myData.push(j);
+                });
+            }
+        };
         var gridData = {};
-        function listCallback(data){
+        function itemListCallback(data){
             if(data.code==200){
                 gridData.Rows = data.data;
 
                 gridData.Total = data.data.length;
                 f_initGrid();
+            }
+        }
+        var choiceData =[];
+        function choiceListCallBack(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.choiceValue;
+                    j["id"]=content.choiceValue;
+                    choiceData.push(j);
+                })
             }
         }
         var manager, g;
@@ -39,8 +63,12 @@
                         editor: { type: 'text'}
                     },
                     { display: '创建时间',name: 'createtime',width:100},
-                    { display: '点检表ID',name: 'inspectTableId',type:'int',
-                        editor: { type: 'text'}
+                    { display: '点检表',name: 'inspectTableName',
+                        editor: { type:'select',data:myData,valueField:'id',textField:'text',
+                            isMultiSelect:true,isShowCheckBox:true},
+                        render:function(item){
+                            return item.inspectTableName;
+                        }
                     },
                     { display: '点检区域ID',name: 'inspectAreaId',type:'int',
                         editor: { type: 'text'}
@@ -48,11 +76,18 @@
                     { display: '编号',name: 'number',type:'string',
                         editor: { type: 'text'}
                     },
-                    { display: '是否输入',name: 'input',type:'int',
-                        editor: { type: 'text'}
+                    { display: '是否输入',name: 'inputName',type:'string',
+                        editor: { type:'select', data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
+                        render:function(item){
+                            return item.inputName;
+                        }
                     },
-                    { display: 'appId', name: 'appId', type: 'long',
-                        editor: { type: 'long' }
+                    { display: '选值',name: 'choiceValue',type:'string',
+                        editor: { type:'select', data:choiceData,valueField:'id',textField:'text',
+                            isMultiSelect:true,isShowCheckBox:true},
+                        render:function(item){
+                            return item.choiceValue;
+                        }
                     },
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {

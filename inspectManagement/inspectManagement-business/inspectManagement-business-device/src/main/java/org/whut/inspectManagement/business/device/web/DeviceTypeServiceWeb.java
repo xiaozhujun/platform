@@ -6,6 +6,7 @@ import org.whut.inspectManagement.business.device.entity.DeviceType;
 import org.whut.inspectManagement.business.device.service.DeviceTypeService;
 import org.whut.inspectManagement.business.device.entity.DeviceType;
 import org.whut.inspectManagement.business.device.service.DeviceTypeService;
+import org.whut.inspectManagement.business.device.service.InspectAreaService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -26,6 +27,8 @@ import java.util.List;
 public class DeviceTypeServiceWeb {
     @Autowired
     DeviceTypeService deviceTypeService;
+    @Autowired
+    InspectAreaService inspectAreaService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
@@ -75,5 +78,13 @@ public class DeviceTypeServiceWeb {
         else {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
+    }
+
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/getName")
+    @POST
+    public  String getName(@FormParam("id") long id){
+       long id1= inspectAreaService.getTypeIdByAreaId(id);
+        return  deviceTypeService.getNameById(id1);
     }
 }

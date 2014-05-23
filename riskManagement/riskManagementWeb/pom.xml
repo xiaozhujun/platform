@@ -73,6 +73,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>riskManagement</groupId>
+            <artifactId>riskManagement-business-riskmodel</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>platform</groupId>
             <artifactId>business-datarule</artifactId>
             <version>${project.version}</version>

@@ -27,6 +27,16 @@
         </selectKey>
     </insert>
 
+    <select id="FindByDNumberAndAreaId"   parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+        id
+        from inspecttag
+        <where>
+            <if test="number!=null"> NUMBER=#{number}</if>
+            <if test="inspectAreaId!=null">AND INSPECTAREAID=#{inspectAreaId}</if>
+        </where>
+    </select>
+
     <select id="findByCondition" parameterType="map" resultMap="inspectTagResultMap">
         select
         <include refid="inspectTag_fields"/>

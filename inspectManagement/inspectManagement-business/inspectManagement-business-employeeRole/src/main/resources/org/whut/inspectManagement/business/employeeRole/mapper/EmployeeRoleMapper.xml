@@ -74,4 +74,11 @@
         where ID=#{id}
     </select>
 
+    <select id="getByName" parameterType="map" resultMap="employeeRoleResultMapper">
+        select
+        <include refid="employeeRole_fields"/>
+        from employeerole
+        where NAME=#{name} and APPID=#{appId}
+    </select>
+
 </mapper>

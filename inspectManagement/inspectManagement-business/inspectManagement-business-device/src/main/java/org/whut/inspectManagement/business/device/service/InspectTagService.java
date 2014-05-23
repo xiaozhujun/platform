@@ -32,4 +32,7 @@ public class InspectTagService {
     public List<InspectTag> list(){
         return inspectTagMapper.findByCondition(new HashMap<String, Object>());
     }
+    public long FindByDNumberAndAreaId(long number,long areaId){
+        return inspectTagMapper.FindByDNumberAndAreaId(number,areaId);
+    }
 }

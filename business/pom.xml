@@ -17,6 +17,7 @@
         <module>business-datarule</module>
         <module>business-appuser</module>
         <module>business-app</module>
+        <module>business-menu</module>
     </modules>
 
 

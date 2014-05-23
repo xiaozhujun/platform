@@ -110,6 +110,13 @@
             "update":"rs/userDataRole/update",
             "delete":"rs/userDataRole/delete",
             "list":"rs/userDataRole/list"
+        },
+        "riskModel":{
+            "add":"rs/riskModel/add",
+            "update":"rs/riskModel/update",
+            "delete":"rs/riskModel/delete",
+            "list":"rs/riskModel/list",
+            "getClassNameFromPackage":"rs/riskModel/getClassNameFromPackage"
         }
     }
 })(jQuery);

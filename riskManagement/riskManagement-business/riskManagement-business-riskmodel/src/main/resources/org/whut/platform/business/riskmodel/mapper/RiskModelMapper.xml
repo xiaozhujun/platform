@@ -62,7 +62,7 @@
         FROM riskmodel WHERE ID=#{id}
     </select>
 
-    <select id="list" resultMap="riskMoldelResultMap">
+    <select id="list" resultMap="riskModelResultMap">
         SELECT
         <include refid="risk_model_fields"/>
         FROM riskmodel
@@ -73,5 +73,22 @@
             <if test="description != null">AND DESCRIPTION=#{description}</if>
         </where>
         ORDER BY name
+    </select>
+    <select id="findByName" parameterType="java.lang.String" resultMap="riskModelResultMap">
+         SELECT
+        <include refid="risk_model_fields"/>
+        FROM
+        riskmodel
+        WHERE
+        name=#{name}
+    </select>
+    <select id="findByCondition" parameterType="map" resultMap="riskModelResultMap">
+        SELECT
+        <include refid="risk_model_fields" />
+        FROM riskmodel
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="className!=null">AND className=#{className}</if>
+        </where>
     </select>
 </mapper>

@@ -40,6 +40,20 @@
         </where>
     </select>
 
+    <select id="getTypeIdByAreaId"   parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+          deviceTypeId
+        from    inspectarea
+        where  ID=#{id}
+    </select>
+
+    <select id="findIdByName"   parameterType="java.lang.String" resultType="java.lang.Long">
+        select
+           id
+        from    inspectarea
+        where  NAME=#{name}
+    </select>
+
     <update id="update" parameterType="InspectArea">
         UPDATE inspectarea
         <set>

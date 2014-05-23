@@ -34,12 +34,11 @@ public class InspectTableDownloadServiceWeb {
     @GET
     public String  downloadInspectTable(@PathParam("id") String id,@Context HttpServletResponse response){
         long tableId = Long.parseLong(id);
-        System.out.println("???????????????"+tableId);
+        String tableName = inspectTableDownloadService.getTableNameById(tableId);
         String result = inspectTableDownloadService.docConstruction(tableId);
         if(result!=""){
            try{
-               String downloadFileName = "机修人员点检表.xml";
-               System.out.println("???????????????"+downloadFileName);
+               String downloadFileName = tableName+".xml";
                response.setContentType("text/plain");
                response.setHeader("Location", new String(downloadFileName.getBytes("GBK"), "UTF-8"));
                response.setHeader("Content-Disposition","attachment; filename="

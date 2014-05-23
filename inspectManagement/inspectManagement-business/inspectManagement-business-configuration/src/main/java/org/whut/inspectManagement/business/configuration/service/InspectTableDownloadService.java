@@ -7,7 +7,10 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.configuration.entity.InspectTableItem;
+import org.whut.inspectManagement.business.device.mapper.InspectAreaMapper;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
+import org.whut.inspectManagement.business.inspectTable.entity.InspectItemChoice;
+import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
 
@@ -31,6 +34,12 @@ public class InspectTableDownloadService {
 
     @Autowired
     private InspectItemMapper inspectItemMapper;
+
+    @Autowired
+    private InspectItemChoiceMapper inspectItemChoiceMapper;
+
+    @Autowired
+    private InspectAreaMapper inspectAreaMapper;
     public String docConstruction(long tableId){
        String name = inspectTableMapper.getNameById(tableId);
        List<InspectItem> itemList = inspectItemMapper.getInspectItemByInspectTableId(tableId);
@@ -40,8 +49,11 @@ public class InspectTableDownloadService {
            InspectItem  it = (InspectItem)iterator.next();
            InspectTableItem inspectTableItem = new InspectTableItem();
            inspectTableItem.setInspectType(name);
-           inspectTableItem.setDeviceType("");
-           inspectTableItem.setArea("");
+           Long inspectAreaId = it.getInspectAreaId();
+           String deviceType = inspectAreaMapper.getDeviceTypeByAreaId(inspectAreaId);
+           inspectTableItem.setDeviceType(deviceType);
+           String area = inspectAreaMapper.getAreaById(inspectAreaId);
+           inspectTableItem.setArea(area);
            inspectTableItem.setName(it.getName());
            inspectTableItem.setId(it.getId());
            int is = it.getInput();
@@ -52,61 +64,46 @@ public class InspectTableDownloadService {
                inspectTableItem.setInput("true");
            }
            inspectTableItem.setDescription(it.getDescription());
+           Long itemId = it.getId();
+           List<String> valueList = inspectItemChoiceMapper.getChoicesByItemId(itemId);
+           inspectTableItem.setValues(valueList);
+           inspectTableItemList.add(inspectTableItem);
        }
        String result=null;
-       InspectTableItem i = new InspectTableItem();
-       i.setName("1");
-       i.setId(1);
-       i.setDescription("no");
-       i.setInspectType("1");
-        i.setArea("1");
-       i.setDeviceType("门机");
-       i.setInput("true");
-       List<InspectTableItem> list = new ArrayList<InspectTableItem>();
-       list.add(i);
-       String deviceType = "";
+       String dType = inspectTableItemList.get(0).getDeviceType();
        Document doc = DocumentHelper.createDocument();
        Element table = doc.addElement("check").addAttribute("inspecttype",name);
        table.addAttribute("inspecttime","");
        table.addAttribute("worker","");
        table.addAttribute("workernumber","");
        table.addAttribute("devicenumber","");
-       Element dt  = table.addElement("deviceType").addAttribute("name","门机");
+       Element dt  = table.addElement("deviceType").addAttribute("name",dType);
        String location = "";
-       Iterator it = list.iterator();
-       System.out.println(">>>>>>>>>>>>>>1");
+       Iterator it = inspectTableItemList.iterator();
        Element lc = null;
-       System.out.println(">>>>>>>>>>>>>>2");
        while(it.hasNext()){
            InspectTableItem iti = (InspectTableItem)it.next();
            String loc = iti.getArea();
            if(location!=loc){
                location = loc;
-               lc = dt.addElement("location").addAttribute("name",location);
+               lc = dt.addElement("location").addAttribute("name",loc);
             }
-       System.out.println(">>>>>>>>>>>>>>3");
        Element item = lc.addElement("field");
        item.addAttribute("name",iti.getName());
        item.addAttribute("id", String.valueOf(iti.getId()));
        item.addAttribute("isInput",iti.getInput());
        item.addAttribute("util","");
-       System.out.println(">>>>>>>>>>>>>>4");
        if(iti.getInput().equals("false")){
-            System.out.println(">>>>>>>>>>>>>>5");
             Iterator it1 = iti.getValues().iterator();
-           System.out.println(">>>>>>>>>>>>>>6");
             while(it1.hasNext()){
-                System.out.println(">>>>>>>>>>>>>>7");
                 String value = (String) it1.next();
-                System.out.println(">>>>>>>>>>>>>>"+value);
                 item.addElement("value").addAttribute("name",value);
             }
         }
-       System.out.println(">>>>>>>>>>>>>>5");
     }
     try{
         OutputFormat format = OutputFormat.createPrettyPrint();
-        String encoding = "utf-8";
+        String encoding = "gbk";
         format.setEncoding(encoding);
         format.setNewlines(true);
         OutputStream outputStream = new ByteArrayOutputStream();
@@ -120,5 +117,9 @@ public class InspectTableDownloadService {
         e.printStackTrace();
     }
        return  result;
+   }
+
+   public String getTableNameById(long id){
+      return inspectTableMapper.getNameById(id);
    }
 }

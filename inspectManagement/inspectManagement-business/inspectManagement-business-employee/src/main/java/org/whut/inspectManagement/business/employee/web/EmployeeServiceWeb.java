@@ -109,7 +109,6 @@ public class EmployeeServiceWeb {
                 userAuthority.setAuthorityId(authorityId);
                 userAuthority.setUserName(name);
                 userAuthority.setAuthorityName(roleArray[i]);
-                userAuthority.setAppId(appId);
                 userAuthorityService.add(userAuthority);
             }
 
@@ -167,7 +166,6 @@ public class EmployeeServiceWeb {
        // userAuthority.setId();
           userAuthority.setUserId(userId);
        // userAuthority.setAuthorityId();
-        userAuthority.setAppId(employee.getAppId());
       //  userAuthority.setAuthorityName();
         userAuthority.setUserName(userName);
 

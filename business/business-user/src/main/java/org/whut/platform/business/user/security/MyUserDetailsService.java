@@ -39,6 +39,8 @@ public class MyUserDetailsService implements UserDetailsService {
             MyUserDetail userDetails = new MyUserDetail();
             userDetails.setUserName(username);
             userDetails.setPassword(user.getPassword());//这里可以从数据库取
+            userDetails.setId(user.getId());
+            userDetails.setAppId(user.getAppId());
             userDetails.setAuthorities(getUserAuthority(username));
             return userDetails;
         }

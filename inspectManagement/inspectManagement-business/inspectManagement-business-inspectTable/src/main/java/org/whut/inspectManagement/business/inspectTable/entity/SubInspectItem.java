@@ -13,10 +13,10 @@ public class SubInspectItem {
     private String name;
     private String description;
     private Date createtime;
-    private long inspectAreaId;
+    private String inspectArea;
     private String number;
-    private String inspectTableName;
-    private String isInputName;
+    private String inspectTable;
+    private String isInput;
     private String choiceValue;
 
     public long getId() {
@@ -51,13 +51,12 @@ public class SubInspectItem {
         this.createtime = createtime;
     }
 
-
-    public long getInspectAreaId() {
-        return inspectAreaId;
+    public String getInspectArea() {
+        return inspectArea;
     }
 
-    public void setInspectAreaId(long inspectAreaId) {
-        this.inspectAreaId = inspectAreaId;
+    public void setInspectArea(String inspectArea) {
+        this.inspectArea = inspectArea;
     }
 
     public String getNumber() {
@@ -68,21 +67,20 @@ public class SubInspectItem {
         this.number = number;
     }
 
-
-    public String getInspectTableName() {
-        return inspectTableName;
+    public String getInspectTable() {
+        return inspectTable;
     }
 
-    public void setInspectTableName(String inspectTableName) {
-        this.inspectTableName = inspectTableName;
+    public void setInspectTable(String inspectTable) {
+        this.inspectTable = inspectTable;
     }
 
-    public String getInputName() {
-        return isInputName;
+    public String getInput() {
+        return isInput;
     }
 
-    public void setInputName(String inputName) {
-        isInputName = inputName;
+    public void setInput(String input) {
+        isInput = input;
     }
 
     public String getChoiceValue() {

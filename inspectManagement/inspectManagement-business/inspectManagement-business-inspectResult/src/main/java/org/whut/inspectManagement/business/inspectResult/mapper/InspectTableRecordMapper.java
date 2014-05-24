@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.inspectResult.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.inspectResult.entity.InspectTableRecord;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -11,4 +12,6 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  * To change this template use File | Settings | File Templates.
  */
 public interface InspectTableRecordMapper extends AbstractMapper<InspectTableRecord> {
+    public long getIdByTableId(long tableId);
+    public int updateTableRecord(@Param("exceptionCount") int exceptionCount,@Param("tableId") long tableId);
 }

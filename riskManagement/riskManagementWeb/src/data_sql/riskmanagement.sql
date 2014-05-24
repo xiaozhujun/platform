@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : riskManagement
+Source Server         : localhost_3306
 Source Server Version : 50151
 Source Host           : localhost:3306
 Source Database       : riskmanagement
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50151
 File Encoding         : 65001
 
-Date: 2014-04-23 18:26:00
+Date: 2014-05-24 09:28:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7633,14 +7633,17 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `sex` varchar(255) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `appid` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'xiaozhujun', 'e10adc3949ba59abbe56e057f20f883e', '男', 'admin');
-INSERT INTO `user` VALUES ('2', 'zhangsan', 'hello', 'nan', 'user');
+INSERT INTO `user` VALUES ('1', 'xiaozhujun', 'e10adc3949ba59abbe56e057f20f883e', '男', 'admin', '启用', '0');
+INSERT INTO `user` VALUES ('2', 'zhangsan', 'hello', 'nan', 'user', '启用', '0');
+INSERT INTO `user` VALUES ('3', 'test', '098f6bcd4621d373cade4e832627b4f6', '男', 'ROLE_USER', '启用', '0');
 
 -- ----------------------------
 -- Table structure for `user_authority`
@@ -7653,13 +7656,14 @@ CREATE TABLE `user_authority` (
   `userName` varchar(255) DEFAULT NULL,
   `authorityName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_authority
 -- ----------------------------
 INSERT INTO `user_authority` VALUES ('1', '1', '1', 'xiaozhujun', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('2', '1', '2', 'xiaozhujun', 'ROLE_ADMIN');
+INSERT INTO `user_authority` VALUES ('3', '3', '1', 'test', 'ROLE_USER');
 
 -- ----------------------------
 -- Table structure for `user_drole`
@@ -7672,9 +7676,10 @@ CREATE TABLE `user_drole` (
   `userName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `droleName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=gbk;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Records of user_drole
 -- ----------------------------
 INSERT INTO `user_drole` VALUES ('1', '1', '1', 'xiaozhujun', 'drole1');
+INSERT INTO `user_drole` VALUES ('2', '3', '1', 'test', 'drole1');

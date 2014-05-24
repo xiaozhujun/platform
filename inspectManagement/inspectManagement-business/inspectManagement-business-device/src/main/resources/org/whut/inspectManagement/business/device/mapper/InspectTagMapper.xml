@@ -27,14 +27,11 @@
         </selectKey>
     </insert>
 
-    <select id="FindByDNumberAndAreaId"   parameterType="java.lang.Long" resultType="java.lang.Long">
-        select
-        id
-        from inspecttag
-        <where>
-            <if test="number!=null"> NUMBER=#{number}</if>
-            <if test="inspectAreaId!=null">AND INSPECTAREAID=#{inspectAreaId}</if>
-        </where>
+    <select id="getIdByDeviceNumAndAreaId"   parameterType="map" resultType="java.lang.Long">
+       select it.id
+       from device d, inspecttag it
+       where it.deviceId = d.id
+       and d.number = #{deviceNumber} and it.inspectAreaId= #{inspectAreaId}
     </select>
 
     <select id="findByCondition" parameterType="map" resultMap="inspectTagResultMap">

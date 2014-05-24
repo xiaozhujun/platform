@@ -64,4 +64,16 @@
         <include refid="inspectTableRecord_fields" />
         FROM inspecttablerecord WHERE ID=#{id}
     </select>
+
+    <select id="getIdByTableId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT
+        id
+        FROM inspecttablerecord WHERE inspectTableId=#{tableId}
+    </select>
+
+    <update id="updateTableRecord" parameterType="map">
+        UPDATE inspecttablerecord
+        SET exceptioncount=#{exceptionCount}
+        WHERE ID = #{tableId};
+    </update>
 </mapper>

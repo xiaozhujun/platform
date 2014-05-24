@@ -1,12 +1,10 @@
-//测试冲突 朱禛华
-//测试冲突-肖竹军
 package org.whut.platform.business.user.entity;
 
 /**
  * Created with IntelliJ IDEA.
- * User: xiaozhujun
- * Date: 14-1-26
- * Time: 上午11:28
+ * User: sunhui
+ * Date: 14-5-12
+ * Time: 上午9:40
  * To change this template use File | Settings | File Templates.
  */
 public class User {
@@ -15,6 +13,25 @@ public class User {
     private String password;
     private String sex;
     private String role;
+
+    private String status;
+    private long appId;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(long appId) {
+        this.appId = appId;
+    }
 
     public long getId() {
         return id;
@@ -41,7 +58,7 @@ public class User {
     }
 
     public String getSex(){
-         return sex;
+        return sex;
     }
 
     public void setSex(String sex){

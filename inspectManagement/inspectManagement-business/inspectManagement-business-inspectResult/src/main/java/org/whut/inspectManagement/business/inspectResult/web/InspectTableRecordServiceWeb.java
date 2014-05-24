@@ -52,8 +52,11 @@ public class InspectTableRecordServiceWeb {
             SAXReader sr = new SAXReader();
             Document document = sr.read(inputStream);
             Element root = document.getRootElement();
-            System.out.println(">>>>>>>>>"+root.getName());
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            // System.out.println(">>>>>>>>>"+root.getName());
+            inspectTableRecordService.DomReadXml(document);
+
+            return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功！");
+
         }
         catch(Exception e){
             e.printStackTrace();

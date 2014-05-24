@@ -62,4 +62,10 @@
           from inspectitem_choice as ic,inspectchoice as i
           where ic.inspectitemid=#{itemId} and ic.inspectChoiceId = i.id
       </select>
+    <delete id="deleteByInspectItemId" parameterType="java.lang.Long">
+    DELETE
+    FROM inspectitem_choice
+    WHERE
+    inspectitemid=#{id}
+    </delete>
 </mapper>

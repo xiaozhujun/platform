@@ -13,6 +13,7 @@ public class InspectTableItem {
     private String inspectType;
     private String deviceType;
     private String area;
+    private long areaId;
     private String name;
     private long id;
     private String isInput;
@@ -41,6 +42,14 @@ public class InspectTableItem {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public long getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(long areaId) {
+        this.areaId = areaId;
     }
 
     public String getName() {

@@ -74,4 +74,15 @@
         </where>
     </delete>
 
+    <select id="getAreaById"   parameterType="java.lang.Long" resultType="java.lang.String">
+        select  name
+        from  inspectarea
+        where id=#{id}
+    </select>
+
+    <select id="getDeviceTypeByAreaId"   parameterType="java.lang.Long" resultType="java.lang.String">
+        select dt.name
+        from  inspectarea as ia, devicetype as dt
+        where ia.id=#{inspectAreaId} and dt.id = ia.deviceTypeId
+    </select>
 </mapper>

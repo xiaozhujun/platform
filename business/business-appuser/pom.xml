@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <name>business-appuser</name>
-    <artifactId>business-appuser</artifactId>
+    <artifactId>business-appuser1</artifactId>
 
     <dependencies>
         <dependency>

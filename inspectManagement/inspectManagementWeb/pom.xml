@@ -54,7 +54,7 @@
         </dependency>
         <dependency>
             <groupId>platform</groupId>
-            <artifactId>business-appuser</artifactId>
+            <artifactId>business-user</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

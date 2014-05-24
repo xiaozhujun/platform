@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.employeeRole.entity.EmployeeRole;
 import org.whut.inspectManagement.business.employeeRole.entity.SubEmployeeRole;
 import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleService;
-import org.whut.inspectManagement.business.user.service.AuthorityService;
+import org.whut.platform.business.user.service.AuthorityService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;

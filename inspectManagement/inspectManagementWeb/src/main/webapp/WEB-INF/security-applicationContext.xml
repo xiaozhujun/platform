@@ -16,7 +16,7 @@
 
     <!-- 配置过滤器 -->
     <beans:bean id="myFilter"
-                class="org.whut.inspectManagement.business.user.security.MySecurityInterceptorFilter">
+                class="org.whut.platform.business.user.security.MySecurityInterceptorFilter">
         <!-- 用户拥有的权限 -->
         <beans:property name="authenticationManager" ref="authenticationManager" />
         <!-- 用户是否拥有所请求资源的权限 -->
@@ -26,11 +26,11 @@
     </beans:bean>
 
     <beans:bean id="myAccessDecisionManager"
-                class="org.whut.inspectManagement.business.user.security.MyAccessDecisionManager">
+                class="org.whut.platform.business.user.security.MyAccessDecisionManager">
     </beans:bean>
     <!-- 系统运行时加载 系统要拦截的资源   与用户请求时要过滤的资源 -->
     <beans:bean id="mySecurityMetadataSource"
-                class="org.whut.inspectManagement.business.user.security.MySecurityMetadataSource"
+                class="org.whut.platform.business.user.security.MySecurityMetadataSource"
             >
     </beans:bean>
 
@@ -87,7 +87,7 @@
     	        <beans:property name="key" value="cas"></beans:property>
     	    </beans:bean>
 
-            <beans:bean id="myUserDeatailsService" class="org.whut.inspectManagement.business.user.security.MyUserDetailsService"/>
+            <beans:bean id="myUserDeatailsService" class="org.whut.platform.business.user.security.MyUserDetailsService"/>
 
 
 

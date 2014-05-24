@@ -89,9 +89,16 @@
         </where>
     </select>
 
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT name
+        FROM authority WHERE ID=#{id}
+    </select>
+
     <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
          SELECT
          id
          FROM authority WHERE NAME=#{name}
      </select>
+
+
 </mapper>

@@ -2,7 +2,6 @@ package org.whut.inspectManagement.business.employee.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whut.inspectManagement.business.Department.entity.Department;
 import org.whut.inspectManagement.business.Department.service.DepartmentService;
 import org.whut.inspectManagement.business.app.service.AppService;
 import org.whut.inspectManagement.business.employee.entity.Employee;
@@ -11,12 +10,11 @@ import org.whut.inspectManagement.business.employee.service.EmployeeEmployeeRole
 import org.whut.inspectManagement.business.employee.service.EmployeeService;
 import org.whut.inspectManagement.business.employeeRole.entity.EmployeeRole;
 import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleService;
-import org.whut.inspectManagement.business.user.entity.User;
-import org.whut.inspectManagement.business.user.entity.UserAuthority;
-import org.whut.inspectManagement.business.user.service.UserService;
-import org.whut.inspectManagement.business.user.service.AuthorityService;
-import org.whut.inspectManagement.business.user.service.UserAuthorityService;
-
+import org.whut.platform.business.user.entity.User;
+import org.whut.platform.business.user.entity.UserAuthority;
+import org.whut.platform.business.user.service.AuthorityService;
+import org.whut.platform.business.user.service.UserAuthorityService;
+import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 

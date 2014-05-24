@@ -14,6 +14,16 @@ public class UserAuthority {
     private String userName;
     private String authorityName;
 
+    public long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(long appId) {
+        this.appId = appId;
+    }
+
+    private long appId;
+
     public long getId() {
         return id;
     }

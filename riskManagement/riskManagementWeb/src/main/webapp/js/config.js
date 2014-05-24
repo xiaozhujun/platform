@@ -64,9 +64,9 @@
             "calculateMaxValue":'rs/craneinspectreport/calculateMaxValue',
             "updateRiskValueByChooseReport":'rs/craneinspectreport/updateRiskValueByChooseReport'
         },
-        "authority":{
+        /*"authority":{
             "add":"rs/authority/add"
-        },
+        },*/
         "user":{
             "add":"rs/user/add",
             "update":"rs/user/update",

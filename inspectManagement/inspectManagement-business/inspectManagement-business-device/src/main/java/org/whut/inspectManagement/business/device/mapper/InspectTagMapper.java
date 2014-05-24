@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.device.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.device.entity.InspectTag;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -15,5 +16,5 @@ import java.util.Map;
  */
 public interface InspectTagMapper extends AbstractMapper<InspectTag> {
     public List<InspectTag> findByCondition(Map<String,Object> map);
-    public Long FindByDNumberAndAreaId(long deviceNumber,long areaId);
+    public Long getIdByDeviceNumAndAreaId(@Param("deviceNumber") long deviceNumber,@Param("inspectAreaId")long inspectAreaId);
 }

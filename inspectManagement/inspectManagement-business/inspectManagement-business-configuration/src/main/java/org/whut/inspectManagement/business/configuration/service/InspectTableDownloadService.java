@@ -50,6 +50,7 @@ public class InspectTableDownloadService {
            InspectTableItem inspectTableItem = new InspectTableItem();
            inspectTableItem.setInspectType(name);
            Long inspectAreaId = it.getInspectAreaId();
+           inspectTableItem.setAreaId(inspectAreaId);
            String deviceType = inspectAreaMapper.getDeviceTypeByAreaId(inspectAreaId);
            inspectTableItem.setDeviceType(deviceType);
            String area = inspectAreaMapper.getAreaById(inspectAreaId);
@@ -87,10 +88,11 @@ public class InspectTableDownloadService {
            if(location!=loc){
                location = loc;
                lc = dt.addElement("location").addAttribute("name",loc);
+               lc.addAttribute("areaId", String.valueOf(iti.getAreaId()));
             }
        Element item = lc.addElement("field");
        item.addAttribute("name",iti.getName());
-       item.addAttribute("id", String.valueOf(iti.getId()));
+       item.addAttribute("itemId", String.valueOf(iti.getId()));
        item.addAttribute("isInput",iti.getInput());
        item.addAttribute("util","");
        if(iti.getInput().equals("false")){

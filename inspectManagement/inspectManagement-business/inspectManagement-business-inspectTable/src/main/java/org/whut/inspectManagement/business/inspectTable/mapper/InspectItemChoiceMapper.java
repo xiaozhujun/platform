@@ -15,4 +15,5 @@ import java.util.List;
 public interface InspectItemChoiceMapper extends AbstractMapper<InspectItemChoice> {
     public void addList(List<InspectItemChoice> inspectItemChoices);
     public List<Long> getChoiceIdByItemId(long id);
+    public void deleteByInspectItemId(long id);
 }

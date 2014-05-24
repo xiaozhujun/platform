@@ -31,11 +31,7 @@ public class InspectItemService {
     public List<InspectItem> list(){
         return inspectItemMapper.findByCondition(new HashMap<String, Object>());
     }
-    public long getInspectItemByNameAndNumber(String name,String number){
-        return inspectItemMapper.getInspectItemByNameAndNumber(name,number);
-    }
-
-    public long findIdByCondition(InspectItem inspectItem){
-        return inspectItemMapper.findIdByCondition(inspectItem);
+    public long getInspectItemIdByNameAndNumber(String name,String number){
+        return inspectItemMapper.getInspectItemIdByNameAndNumber(name,number);
     }
 }

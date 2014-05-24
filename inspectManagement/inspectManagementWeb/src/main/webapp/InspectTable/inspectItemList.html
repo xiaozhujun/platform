@@ -63,23 +63,23 @@
                         editor: { type: 'text'}
                     },
                     { display: '创建时间',name: 'createtime',width:100},
-                    { display: '点检表',name: 'inspectTableName',
-                        editor: { type:'select',data:myData,valueField:'id',textField:'text',
-                            isMultiSelect:true,isShowCheckBox:true},
+                    { display: '点检表',name: 'inspectTable',
+                        editor: { type:'select',data:myData,valueField:'id',textField:'text'
+                            },
                         render:function(item){
-                            return item.inspectTableName;
+                            return item.inspectTable;
                         }
                     },
-                    { display: '点检区域ID',name: 'inspectAreaId',type:'int',
+                    { display: '点检区域',name: 'inspectArea',
                         editor: { type: 'text'}
                     },
                     { display: '编号',name: 'number',type:'string',
                         editor: { type: 'text'}
                     },
-                    { display: '是否输入',name: 'inputName',type:'string',
+                    { display: '是否输入',name: 'input',type:'string',
                         editor: { type:'select', data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
                         render:function(item){
-                            return item.inputName;
+                            return item.input;
                         }
                     },
                     { display: '选值',name: 'choiceValue',type:'string',

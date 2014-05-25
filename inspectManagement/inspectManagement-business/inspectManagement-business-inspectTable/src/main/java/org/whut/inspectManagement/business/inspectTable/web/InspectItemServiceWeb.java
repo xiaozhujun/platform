@@ -2,8 +2,6 @@ package org.whut.inspectManagement.business.inspectTable.web;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.codehaus.jettison.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
@@ -76,7 +74,7 @@ public class InspectItemServiceWeb {
             if (isInput==0){
                 for(String choice:inspectItemChoiceList){
                     InspectItemChoice inspectItemChoice=new InspectItemChoice();
-                    inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemByNameAndNumber(name,number));
+                    inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemIdByNameAndNumber(name,number));
                     inspectItemChoice.setInspectChoiceId(Integer.parseInt(choice));
                     inspectItemChoices.add(inspectItemChoice);
                 }
@@ -137,7 +135,7 @@ public class InspectItemServiceWeb {
             subInspectItem.setNumber(a.getNumber());
             subInspectItem.setCreatetime(a.getCreatetime());
             subInspectItem.setDescription(a.getDescription());
-            //subInspectItem.setInspectArea(a.getInspectAreaId());
+            subInspectItem.setInspectArea("qq");
             subInspectItem.setInspectTable(inspectTableService.getNameById(a.getInspectTableId()));
             if(a.getInput()==0){
                 subInspectItem.setInput("否");
@@ -166,42 +164,32 @@ public class InspectItemServiceWeb {
         else {
             isInput=1;
         }
-
-        String[] inspectTableNameArray=subInspectItem.getInspectTable().split(";");
-        List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
-        for(String a:inspectTableNameArray){
             InspectItem inspectItem=new InspectItem();
+        inspectItem.setId(subInspectItem.getId());
             inspectItem.setName(subInspectItem.getName());
             inspectItem.setDescription(subInspectItem.getDescription());
             inspectItem.setCreatetime(subInspectItem.getCreatetime());
+            //inspectItem.setInspectAreaId(subInspectItem.getInspectArea());
             //inspectItem.setInspectAreaId(subInspectItem.getInspectAreaId());
             inspectItem.setNumber(subInspectItem.getNumber());
             inspectItem.setInput(isInput);
-            inspectItem.setInspectTableId(inspectTableService.getIdByName(a));
-            inspectItemList.add(inspectItem);
-        }
-        List<Long> inspectItemIdList=new ArrayList<Long>();
-        for(InspectItem item:inspectItemList){
-            inspectItemIdList.add(inspectItemService.findIdByCondition(item));
-        }
-        inspectItemList.get(0).setId(subInspectItem.getId());
-        inspectItemService.update(inspectItemList.get(0));
-        inspectItemList.remove(0);
-        if(!inspectItemList.isEmpty())  {
-        inspectItemService.addList(inspectItemList);
-        }
+            inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
+
+
+        inspectItemService.update(inspectItem);
+
        //更新inspectItem_choice表
 
         List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
         String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
-        for (long l:inspectItemIdList){
+        inspectItemChoiceService.deleteByInspectItemId(subInspectItem.getId());
             for(String a:choiceValueArray){
                 InspectItemChoice inspectItemChoice=new InspectItemChoice();
-                inspectItemChoice.setInspectItemId(l);
+                inspectItemChoice.setInspectItemId(subInspectItem.getId());
                  inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValue(a));
                  inspectItemChoicesList.add(inspectItemChoice);
             }
-        }
+
         if(!inspectItemChoicesList.isEmpty()) {
         inspectItemChoiceService.addList(inspectItemChoicesList);
         }
@@ -212,14 +200,13 @@ public class InspectItemServiceWeb {
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString") String jsonString){
-        System.out.println("aaaaaaaaaaaaaaaaaaaaa");
-        System.out.println(jsonString);
         InspectItem inspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectItem.class);
+        inspectItemChoiceService.deleteByInspectItemId(inspectItem.getId());
         int result=inspectItemService.delete(inspectItem);
         if(result>=0){
-        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
         }
         else
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作失败");
     }
-}
+  }

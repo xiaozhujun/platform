@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.entity.User;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -77,7 +78,7 @@ public class UserServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(user,JsonResultUtils.Code.SUCCESS);
     }
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    @Path("currentUser")
+    @Path("/currentUser")
     @GET
     public String  currentUser(){
         String username = null;
@@ -101,5 +102,29 @@ public class UserServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(user,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/currentUserName")
+    @GET
+    public String  currentUserName(){
+        String userName = UserContext.currentUserName();
+        return JsonResultUtils.getObjectResultByStringAsDefault(userName,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/currentUserId")
+    @GET
+    public String  currentUserId(){
+        long userId = UserContext.currentUserId();
+        return JsonResultUtils.getObjectResultByStringAsDefault(userId,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/currentUserAppId")
+    @GET
+    public String  currentUserAppId(){
+        long userAppId = UserContext.currentUserAppId();
+        return JsonResultUtils.getObjectResultByStringAsDefault(userAppId,JsonResultUtils.Code.SUCCESS);
     }
 }

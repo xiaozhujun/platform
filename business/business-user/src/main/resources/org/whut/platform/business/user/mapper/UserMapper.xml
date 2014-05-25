@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.user.mapper.UserMapper">
     <sql id="user_fields">
-		ID,NAME,PASSWORD,SEX,ROLE
+		ID,NAME,PASSWORD,SEX,ROLE,STATUS,APPID
 	</sql>
 
     <resultMap id="userResultMap" type="User">
@@ -13,6 +13,8 @@
         <result property="password" column="PASSWORD" />
         <result property="sex" column="SEX"/>
         <result property="role" column="ROLE"/>
+        <result property="status" column="STATUS"/>
+        <result property="appId" column="APPID"/>
     </resultMap>
 
     <insert id="add" parameterType="User"  keyProperty="id"
@@ -21,7 +23,7 @@
         user(
         <include refid="user_fields" />
         )
-        VALUES (#{id}, #{name}, #{password},#{sex},#{role});
+        VALUES (#{id}, #{name}, #{password},#{sex},#{role},#{status},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -43,7 +45,9 @@
             <if test="name != null">NAME=#{name},</if>
             <if test="password != null">PASSWORD=#{password},</if>
             <if test="sex != null">SEX=#{sex},</if>
-            <if test="role !=null">ROLE=#{role}</if>
+            <if test="role !=null">ROLE=#{role},</if>
+            <if test="status !=null">STATUS=#{status},</if>
+            <if test="appId !=null">APPID=#{appId}</if>
         </set>
         WHERE ID = #{id};
     </update>
@@ -78,6 +82,8 @@
             <if test="password!=null">AND PASSWORD=#{password}</if>
             <if test="sex!=null">AND SEX=#{sex}</if>
             <if test="role!=null">AND ROLE=#{role}</if>
+            <if test="status!=null">AND STATUS=#{status}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
         </where>
     </select>
 

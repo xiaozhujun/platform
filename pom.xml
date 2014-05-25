@@ -16,7 +16,6 @@
         <module>realtimeMonitor</module>
         <!--<module>auth</module>-->
     </modules>
-
     <properties>
         <spring.version>3.2.5.RELEASE</spring.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
@@ -42,7 +41,6 @@
         <jedis.version>2.1.0</jedis.version>
         <logback.ext.version>0.1.1</logback.ext.version>
     </properties>
-
     <dependencyManagement>
         <dependencies>
 
@@ -272,7 +270,6 @@
 
         </dependencies>
     </dependencyManagement>
-
     <repositories>
         <repository>
             <id>release.maven.java.net</id>
@@ -281,5 +278,4 @@
             <layout>default</layout>
         </repository>
     </repositories>
-
 </project>

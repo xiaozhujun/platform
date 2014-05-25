@@ -11,4 +11,5 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  * To change this template use File | Settings | File Templates.
  */
 public interface InspectItemRecordMapper extends AbstractMapper<InspectItemRecord>{
+    public long getIdByName(String name);
 }

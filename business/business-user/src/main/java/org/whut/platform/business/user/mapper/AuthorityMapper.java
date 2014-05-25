@@ -15,4 +15,5 @@ import java.util.Map;
 public interface AuthorityMapper extends AbstractMapper<Authority> {
     public List<Authority> findByCondition(Map<String,Object> map);
     public long getIdByName(String name);
+    public String getNameById(long id);
 }

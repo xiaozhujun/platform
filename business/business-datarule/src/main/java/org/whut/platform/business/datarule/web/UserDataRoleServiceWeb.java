@@ -63,6 +63,8 @@ public class UserDataRoleServiceWeb {
             user.setPassword(password);
             user.setSex(sex);
             user.setRole(role);
+            user.setStatus("启用");
+            user.setAppId(0);
             userService.add(user);
             long userId =  userService.getIdByName(name);
             String[] roleArray = role.split(";");

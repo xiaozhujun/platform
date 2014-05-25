@@ -16,6 +16,9 @@ import java.util.List;
 public class MyUserDetail implements UserDetails {
     private String userName;
     private String password;
+    private long id;
+    private long appId;
+
     private List<GrantedAuthority> authorities;
 
     @Override
@@ -68,5 +71,25 @@ public class MyUserDetail implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(long appId) {
+        this.appId = appId;
     }
 }

@@ -44,6 +44,9 @@ public class MongoConnector {
     public static DB getDB(String dbName){
         return mongo.getDB(dbName);
     }
+
+
+
     //传感器数据舒服构造函数
     public MongoConnector(String dbName, String collectionName){
         this.dbName = dbName;
@@ -171,5 +174,15 @@ public class MongoConnector {
         DB db = mongo.getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         collection.drop();
+    }
+
+    //根据查询条件返回文档数组
+    public List<DBObject> getDocumentList(BasicDBObject query){
+        if(query==null){
+            throw new IllegalArgumentException("object id is null");
+        }
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        return collection.find(query).toArray();
     }
 }

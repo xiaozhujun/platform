@@ -74,4 +74,10 @@
         <include refid="inspectItemRecord_fields" />
         FROM inspectitemrecord WHERE ID=#{id}
     </select>
+
+    <select id="getIdByName" parameterType="InspectItemRecord" resultMap="inspectItemRecordResultMap">
+        SELECT
+         id
+         FROM inspectitemrecord WHERE NAME=#{name}
+    </select>
 </mapper>

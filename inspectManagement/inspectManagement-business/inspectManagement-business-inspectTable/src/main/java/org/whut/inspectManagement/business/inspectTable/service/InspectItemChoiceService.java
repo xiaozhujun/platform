@@ -27,8 +27,11 @@ public class InspectItemChoiceService {
         String choiceValue="";
         List<Long> choiceIdList=inspectItemChoiceMapper.getChoiceIdByItemId(id);
         for(int i=0;i<choiceIdList.size();i++){
-            choiceValue=choiceValue+";" +inspectChoiceService .getChoiceValueById(choiceIdList.get(i));
+            choiceValue=choiceValue+inspectChoiceService .getChoiceValueById(choiceIdList.get(i));
         }
         return choiceValue;
+    }
+    public void deleteByInspectItemId(long id){
+        inspectItemChoiceMapper.deleteByInspectItemId(id);
     }
 }

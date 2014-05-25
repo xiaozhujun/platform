@@ -83,13 +83,4 @@ public class InspectTagServiceWeb {
         }
     }
 
-
-    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    @Path("/getId")
-    @POST
-    public  long getId(@FormParam("number") long number,@FormParam("name") String name){
-        long id= inspectAreaService.findIdByName(name);
-        return inspectTagService.FindByDNumberAndAreaId(number,id);
-    }
-
 }

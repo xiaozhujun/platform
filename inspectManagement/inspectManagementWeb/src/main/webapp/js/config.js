@@ -32,7 +32,8 @@
             "add":"rs/inspectItem/add",
             "list":"rs/inspectItem/list",
             "update":"rs/inspectItem/update" ,
-            "delete":"rs/inspectItem/delete"
+            "delete":"rs/inspectItem/delete",
+            "addList":"rs/inspectItem/addList"
         },
         "department":{
             "add":"rs/department/add",

@@ -27,12 +27,12 @@
                     j["id"]=content.id;
                     myData.push(j);
                 });
-                $("#inspectTableId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
                     data:myData,
                     width:200,
                     valueField:'id',
                     textField:'text',
-                    valueFieldID:'inspectTableIdSelect'
+                    valueFieldID:'inspectTableSelect'
                 })
             }
         }
@@ -46,17 +46,17 @@
                     j["id"]=content.id;
                     myData.push(j);
                 })
-                $("#area").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                $("#inspectArea").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
                     data:myData,width:200,
                     valueField:'id',
                     textField:'text',
-                    valueFieldID:'areaSelect'
+                    valueFieldID:'inspectAreaSelect'
                 })
             }
         }
-        var initData={ Rows: [{ "__status": null, "ID": 1, "name": "", "number": "", "isInput": 1,"choiceValue":"正常;异常;无"}]}
+        var initData={ Rows: [{ "__status": null, "ID": 1,"isInput": 0,"choiceValue":"正常;异常;无"}]}
 
-        var isInputData = [{ id: 0, text: '是' }, { id: 1, text: '否'}];
+        var isInputData = [{ id: 0, text: '否' }, { id: 1, text: '是'}];
         var choicesData=[];
 
         $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
@@ -64,7 +64,7 @@
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var ch={};
-                    ch['type']=content.id;
+                    ch['id']=content.choiceValue;
                     ch['text']=content.choiceValue;
                     choicesData.push(ch);
                 })
@@ -76,34 +76,37 @@
         {
             g =  manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'ID', width: 100, type: 'int',frozen:true },
-                    { display: '名称', name: 'name',width:300,
+                    { display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
+                    { display: '名称', name: 'name',width:150,
                         editor: { type: 'text' }
                     },
-                    { display: '编号', name: 'number', width: 250, type: 'text', editor: { type: 'text'} },
+                    { display: '编号', name: 'number', width: 150, type: 'text', editor: { type: 'text'} },
 
-                    { display: '是否输入', width: 100, name: 'isInput',type:'int',
+                    { display: '是否输入', width: 80, name: 'isInput',type:'int',
                         editor: { type: 'select', data: isInputData, valueColumnName: 'id' },
                         render: function (item)
                         {
-                            if (parseInt(item.isInput) == 0) return '是';
-                            return '否';
+                            if (parseInt(item.isInput) == 0) return '否';
+                            return '是';
                         }
                     },
-                    { display: '点检选值', name: 'choiceValue', type:'string',
-                        editor: { type: 'select', data: choicesData,valueField:'type',textField:'text'
+                    { display: '点检选值', name: 'choiceValue',width:150,
+                        editor: { type: 'select', data: choicesData,valueColumnName:'id',displayColumnName:'text'
                         ,isMultiSelect:true,isShowCheckBox:true},
                         render: function (item){
                             return item.choiceValue;
                         }
-                    }
+                    },
+                    {display:'所属点检表',name:'inspectTable',width:200,editor:{type:'text' ,isReady:true}},
+                    {display:'所属点检区域',name:'inspectArea',width:150,editor:{type:'text',isReady:true}},
+                    {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
                 ],
                 onSelectRow: function (rowdata, rowindex)
                 {
                     $("#txtrowindex").val(rowindex);
                 },
                 enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
-                data:initData
+                data:null
             });
 
             window.dialog = $.ligerDialog.open({
@@ -125,7 +128,7 @@
         {
             manager.deleteSelectedRow();
         }
-        var newrowid = 100;
+        var newrowid = 1;
         function addNewRow()
         {
             var row = manager.getSelectedRow();
@@ -133,40 +136,25 @@
             //参数2:插入的位置 Row Data
             //参数3:之前或者之后(非必填)
             manager.addRow({
-                DepartmentID: 3,
-                DepartmentName: '销售部',
-                RealName: "分为" + newrowid,
                 ID: newrowid++,
-                Sex : 1,
-                Age : 25,
-                IncomeDay: new Date(1306108800000),
-                Phone : "2343434",
-                Address: "wwrere4"
-            }, row, document.getElementById("chkbefore").checked);
+                name:'',
+                number:'',
+                isInput:"0",
+                choiceValue:'正常;异常;无',
+                inspectTable:$("#inspectTable").val(),
+                inspectArea:$("#inspectArea").val()
+            }, row, document.getElementById("checked").checked);
         }
-        function getRows() {
-            var data = manager.rows;
-            alert(JSON.stringify(data));
+        function submitBtn(){
+            var data=JSON.stringify(manager.getData());
+            $.post($.URL.inspectItem.addList,{"jsonStringList":data},addCallback,"json");
         }
-        function getData()
-        {
-            var data = manager.getData();
-            alert(JSON.stringify(data));
-        }
-        function getUpdate()
-        {
-            var data = manager.getUpdated();
-            alert(JSON.stringify(data));
-        }
-        function getDelete()
-        {
-            var data = manager.getDeleted();
-            alert(JSON.stringify(data));
-        }
-        function getAdd()
-        {
-            var data = manager.getAdded();
-            alert(JSON.stringify(data));
+        function addCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success(data.message);
+            }else{
+                $.ligerDialog.error(data.message);
+            }
         }
         $("#delete").ligerButton({});
         $("#add").ligerButton({});
@@ -174,8 +162,6 @@
     </script>
     <style type="text/css">
         .l-div {height: 30px;margin-top: 10px}
-        .l-span-edit { margin-left: 10px;  width: 70px;}
-        .l-edit{width: 60px; margin-left: 12px;}
         .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
         .l-edit-com{width: 60px; margin-left: 10px; float: left;}
     </style>
@@ -184,16 +170,17 @@
     <div class="l-div">
         <span class="l-span-edit-com">所属点检表:</span>
             <span class="l-edit-com">
-                <input name="inspectTableId"  type="text" id="inspectTableId" />
+                <input name="inspectTable"  type="text" id="inspectTable" />
             </span>
         <span style="margin-left: 160px;  width: 70px;float: left;margin-top: 2px">所属区域 ：</span>
             <span style="width: 60px; margin-left: 10px; float: left;">
-                <input name="area" type="text" id="area" />
+                <input name="inspectArea" type="text" id="inspectArea" />
             </span>
         <span>
             <div id="add" style="width:100px;float: left;margin-left: 200px" onclick="addNewRow()">添加</div>
             <div id="delete" style="width:100px; float: left;margin-left: 40px" onclick="deleteRow()">删除</div>
-            <div id="submitBtn" style="width: 100px;float: left;margin-left: 40px">提交</div>
+            <div id="submitBtn" style="width: 100px;float: left;margin-left: 40px" onclick="submitBtn()">提交</div>
+            <input type="checkbox" id="checked" style="display: none"/>
         </span>
     </div>
     <div class="l-clear"></div>

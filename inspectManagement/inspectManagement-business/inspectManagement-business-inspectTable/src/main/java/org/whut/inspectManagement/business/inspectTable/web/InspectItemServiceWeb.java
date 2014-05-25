@@ -1,5 +1,7 @@
 package org.whut.inspectManagement.business.inspectTable.web;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
@@ -22,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: choumiaoer
@@ -40,6 +43,7 @@ public class InspectItemServiceWeb {
     InspectItemChoiceService inspectItemChoiceService;
     @Autowired
     InspectChoiceService inspectChoiceService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
@@ -79,6 +83,45 @@ public class InspectItemServiceWeb {
         }
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/addList")
+    @POST
+    public String addList(@FormParam("jsonStringList") String jsonStringList){
+        List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
+        List<InspectItemChoice> inspectItemChoiceList=new ArrayList<InspectItemChoice>();
+        Date date=new Date();
+        try {
+            JSONArray jsonArray=new JSONArray(jsonStringList);
+            System.out.println(jsonArray.get(0));
+            for(int i=0;i<jsonArray.length();i++){
+                String jsonString= jsonArray.get(i).toString();
+                SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+                InspectItem inspectItem=new InspectItem();
+                inspectItem.setName(subInspectItem.getName());
+                inspectItem.setNumber(subInspectItem.getNumber());
+                inspectItem.setCreatetime(date);
+                System.out.println("jjjjjjjjjjjjjjjjj");
+                System.out.println(subInspectItem.getInput());
+                inspectItem.setInput(0);
+                inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
+                inspectItem.setInspectAreaId(1);
+                inspectItem.setDescription(subInspectItem.getDescription());
+                inspectItemList.add(inspectItem);
+
+
+                String choices=subInspectItem.getChoiceValue();
+                String [] choicesList=choices.split(";");
+                for (String choice:choicesList){
+                    InspectItemChoice inspectItemChoice=new InspectItemChoice();
+                    inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValue(choice));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        inspectItemService.addList(inspectItemList);
+        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
+    }
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
     @POST
@@ -87,7 +130,7 @@ public class InspectItemServiceWeb {
         List<SubInspectItem> subList=new ArrayList<SubInspectItem>();
         for(InspectItem a:list){
             SubInspectItem subInspectItem=new SubInspectItem();
-             subInspectItem.setId(a.getId());
+            subInspectItem.setId(a.getId());
             subInspectItem.setName(a.getName());
             subInspectItem.setNumber(a.getNumber());
             subInspectItem.setCreatetime(a.getCreatetime());
@@ -127,6 +170,7 @@ public class InspectItemServiceWeb {
             inspectItem.setDescription(subInspectItem.getDescription());
             inspectItem.setCreatetime(subInspectItem.getCreatetime());
             //inspectItem.setInspectAreaId(subInspectItem.getInspectArea());
+            //inspectItem.setInspectAreaId(subInspectItem.getInspectAreaId());
             inspectItem.setNumber(subInspectItem.getNumber());
             inspectItem.setInput(isInput);
             inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
@@ -158,11 +202,11 @@ public class InspectItemServiceWeb {
     public String delete(@FormParam("jsonString") String jsonString){
         InspectItem inspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectItem.class);
         inspectItemChoiceService.deleteByInspectItemId(inspectItem.getId());
-        int resault=inspectItemService.delete(inspectItem);
-        if(resault>=0){
-        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
+        int result=inspectItemService.delete(inspectItem);
+        if(result>=0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
         }
         else
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作失败");
     }
-}
+  }

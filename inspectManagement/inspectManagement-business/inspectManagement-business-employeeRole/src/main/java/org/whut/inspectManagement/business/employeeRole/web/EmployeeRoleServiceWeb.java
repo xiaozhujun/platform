@@ -3,8 +3,11 @@ package org.whut.inspectManagement.business.employeeRole.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.employeeRole.entity.EmployeeRole;
+import org.whut.inspectManagement.business.employeeRole.entity.EmployeeRoleInspectTable;
 import org.whut.inspectManagement.business.employeeRole.entity.SubEmployeeRole;
+import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleInspectTableService;
 import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleService;
+import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 import org.whut.platform.business.user.service.AuthorityService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -35,20 +38,24 @@ public class EmployeeRoleServiceWeb {
     private EmployeeRoleService employeeRoleService;
     @Autowired
     private AuthorityService authorityService;
+    @Autowired
+    private EmployeeRoleInspectTableService employeeRoleInspectTableService;
+    @Autowired
+    private InspectTableService inspectTableService;
 
     @Produces( MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authority") String authority,@FormParam("appid") String appid)
+    public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authority") String authority,@FormParam("appid") long appid,@FormParam("inspectTable") String inspectTable)
     {
-        if(name==null||name.trim().equals("")||authority==null)
+        if(name==null||name.trim().equals("")||authority==null||inspectTable==null)
         {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
         long id;
         try
         {
-            id=employeeRoleService.getIdByName(name,Long.parseLong(appid));
+            id=employeeRoleService.getIdByName(name,appid);
         }
         catch (Exception e)
         {
@@ -56,14 +63,26 @@ public class EmployeeRoleServiceWeb {
         }
         if(id==0)
         {
-        EmployeeRole employeeRole=new EmployeeRole();
-        long authorityid = authorityService.getIdByName(authority);
-        employeeRole.setAppId(Long.parseLong(appid));
-        employeeRole.setDescription(description);
-        employeeRole.setStatus(status);
-        employeeRole.setAuthorityId(authorityid);
-        employeeRole.setName(name);
-        employeeRoleService.add(employeeRole);
+            EmployeeRole employeeRole=new EmployeeRole();
+            long authorityid = authorityService.getIdByName(authority);
+            employeeRole.setAppId(appid);
+            employeeRole.setDescription(description);
+            employeeRole.setStatus(status);
+            employeeRole.setAuthorityId(authorityid);
+            employeeRole.setName(name);
+            employeeRoleService.add(employeeRole);
+            long employeeRoleId=employeeRoleService.getIdByName(name,appid);
+            String [] inspectTableArray=inspectTable.split(";");
+            for(int i=0;i<inspectTableArray.length;i++)
+            {
+                 EmployeeRoleInspectTable employeeRoleInspectTable=new EmployeeRoleInspectTable();
+                employeeRoleInspectTable.setAppId(appid);
+                employeeRoleInspectTable.setEmployeeRoleName(name);
+                employeeRoleInspectTable.setEmployeeRoleId(employeeRoleId);
+                employeeRoleInspectTable.setInspectTableId(inspectTableService.getIdByName(inspectTableArray[i],appid));
+                employeeRoleInspectTable.setInspectTableName(inspectTableArray[i]);
+                employeeRoleInspectTableService.add(employeeRoleInspectTable);
+            }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else

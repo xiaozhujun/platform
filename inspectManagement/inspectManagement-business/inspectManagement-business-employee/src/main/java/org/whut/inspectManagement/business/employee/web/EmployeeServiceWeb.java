@@ -152,7 +152,7 @@ public class EmployeeServiceWeb {
         }
         long id;
         try {
-            id = userService.getIdByName(subEmployee.getName());
+            id = employeeService.getIdByName(subEmployee.getName());
         } catch (Exception ex) {
             id = 0;
         }

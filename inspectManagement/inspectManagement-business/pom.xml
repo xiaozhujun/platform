@@ -19,6 +19,7 @@
         <module>inspectManagement-business-employeeRole</module>
         <module>inspectManagement-business-device</module>
         <module>inspectManagement-business-configuration</module>
+        <module>inspectManagement-business-inspectReport</module>
     </modules>
 
 </project>

@@ -98,6 +98,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-inspectTable</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
     </dependencies>
 

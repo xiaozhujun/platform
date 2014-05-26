@@ -79,7 +79,7 @@ public class EmployeeRoleServiceWeb {
                 employeeRoleInspectTable.setAppId(appid);
                 employeeRoleInspectTable.setEmployeeRoleName(name);
                 employeeRoleInspectTable.setEmployeeRoleId(employeeRoleId);
-                employeeRoleInspectTable.setInspectTableId(inspectTableService.getIdByName(inspectTableArray[i]));
+                employeeRoleInspectTable.setInspectTableId(inspectTableService.getIdByName(inspectTableArray[i],appid));
                 employeeRoleInspectTable.setInspectTableName(inspectTableArray[i]);
                 employeeRoleInspectTableService.add(employeeRoleInspectTable);
             }

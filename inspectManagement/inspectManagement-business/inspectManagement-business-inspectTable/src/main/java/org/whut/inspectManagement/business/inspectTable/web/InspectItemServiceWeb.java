@@ -2,6 +2,7 @@ package org.whut.inspectManagement.business.inspectTable.web;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.device.service.InspectAreaService;
@@ -15,7 +16,6 @@ import org.whut.inspectManagement.business.inspectTable.service.InspectItemServi
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 
 import org.whut.platform.business.user.security.UserContext;
-import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -46,8 +46,6 @@ public class InspectItemServiceWeb {
     InspectItemChoiceService inspectItemChoiceService;
     @Autowired
     InspectChoiceService inspectChoiceService;
-    @Autowired
-    UserService userService;
     @Autowired
     InspectAreaService inspectAreaService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -93,16 +91,12 @@ public class InspectItemServiceWeb {
     @Path("/addList")
     @POST
     public String addList(@FormParam("jsonStringList") String jsonStringList){
-        long appId=userService.getMyUserDetailFromSession().getAppId();
-        System.out.println(appId);
-        long a=UserContext.currentUserAppId();
-
+        long appId=UserContext.currentUserAppId();
         List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
         List<InspectItemChoice> inspectItemChoiceList=new ArrayList<InspectItemChoice>();
         Date date=new Date();
         try {
             JSONArray jsonArray=new JSONArray(jsonStringList);
-            System.out.println(jsonArray.get(0));
             for(int i=0;i<jsonArray.length();i++){
                 String jsonString= jsonArray.get(i).toString();
                 SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
@@ -110,31 +104,38 @@ public class InspectItemServiceWeb {
                 inspectItem.setName(subInspectItem.getName());
                 inspectItem.setNumber(subInspectItem.getNumber());
                 inspectItem.setCreatetime(date);
-                System.out.println("jjjjjjjjjjjjjjjjj");
-                System.out.println(subInspectItem.getInput());
-                inspectItem.setInput(0);
+                JSONObject jsonObject= (JSONObject) jsonArray.get(i);
+                String input=jsonObject.getString("isInput");
+                inspectItem.setInput(Integer.parseInt(input));
                 inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
                 inspectItem.setInspectAreaId(inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType()));
                 inspectItem.setDescription(subInspectItem.getDescription());
                 inspectItem.setAppId(appId);
                 inspectItemList.add(inspectItem);
-
-
-                String choices=subInspectItem.getChoiceValue();
-                String [] choicesList=choices.split(";");
-                for (String choice:choicesList){
-                    InspectItemChoice inspectItemChoice=new InspectItemChoice();
-                    inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValue(choice));
-                    inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemIdByNameAndNumber(subInspectItem.getName(),subInspectItem.getNumber()));
-                    inspectItemChoice.setAppId(appId);
-                    inspectItemChoiceList.add(inspectItemChoice);
+            }
+            inspectItemService.addList(inspectItemList);
+            for(int j=0;j<jsonArray.length();j++){
+                String jsonString= jsonArray.get(j).toString();
+                SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+                JSONObject jsonObject= (JSONObject) jsonArray.get(j);
+                String input=jsonObject.getString("isInput");
+                if(input.equals("0")){
+                    String choices=subInspectItem.getChoiceValue();
+                    String [] choicesList=choices.split(";");
+                    for (String choice:choicesList){
+                        InspectItemChoice inspectItemChoice=new InspectItemChoice();
+                        inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValue(choice));
+                        inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemIdByNameAndNumber(subInspectItem.getName(),subInspectItem.getNumber()));
+                        inspectItemChoice.setAppId(appId);
+                        inspectItemChoiceList.add(inspectItemChoice);
+                    }
                 }
             }
+            inspectItemChoiceService.addList(inspectItemChoiceList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        inspectItemChoiceService.addList(inspectItemChoiceList);
-        inspectItemService.addList(inspectItemList);
+
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
     }
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")

@@ -6,9 +6,6 @@
             "delete":"rs/power/delete",
             "list":"rs/power/list"
         },
-       /* "appauthority":{
-            "add":"rs/appauthority/add"
-        },*/
         "appuser":{
             "add":"rs/user/add",
             "update":"rs/user/update",

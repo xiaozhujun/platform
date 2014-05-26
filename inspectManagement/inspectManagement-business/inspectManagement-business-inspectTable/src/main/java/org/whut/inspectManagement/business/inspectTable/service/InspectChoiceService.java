@@ -29,8 +29,8 @@ public class InspectChoiceService {
     public int update(InspectChoice inspectChoice){
         return inspectChoiceMapper.update(inspectChoice);
     }
-    public long getIdByChoiceValue(String choiceValue){
-        return inspectChoiceMapper.getIdByChoiceValue(choiceValue);
+    public long getIdByChoiceValueAndAppId(String choiceValue,long appId){
+        return inspectChoiceMapper.getIdByChoiceValueAndAppId(choiceValue, appId);
     }
     public List<String> getChoiceValueById(long id){
         return inspectChoiceMapper.getChoiceValueById(id);

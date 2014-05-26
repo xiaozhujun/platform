@@ -124,7 +124,7 @@ public class InspectTableRecordService {
                         if(inspectChoiceValue!="正常"){
                             exceptionCount++;
                         }
-                        long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValue(inspectChoiceValue);
+                        long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValueAndAppId(inspectChoiceValue,appId);
                         inspectItemRecord.setInspectTableId(inspectTableId);
                         inspectItemRecord.setInspectTagId(inspectTagId);
                         inspectItemRecord.setInspectItemId(itemId1);

@@ -54,10 +54,10 @@
         SELECT *
         FROM inspectchoice
     </select>
-    <select id="getIdByChoiceValue" parameterType="java.lang.String" resultType="java.lang.Long">
+    <select id="getIdByChoiceValueAndAppId" parameterType="map" resultType="java.lang.Long">
         SELECT id
         FROM inspectchoice
-        WHERE choiceValue=#{choiceValue}
+        WHERE choiceValue=#{choiceValue} AND appid=#{appId}
     </select>
      <select id="getChoiceValueById" parameterType="java.lang.Long" resultType="java.lang.String">
          SELECT choicevalue

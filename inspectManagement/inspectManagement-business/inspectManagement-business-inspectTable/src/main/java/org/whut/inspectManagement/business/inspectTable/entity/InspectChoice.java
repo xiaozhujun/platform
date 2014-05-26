@@ -10,7 +10,7 @@ package org.whut.inspectManagement.business.inspectTable.entity;
 public class InspectChoice {
     private long id;
     private String choiceValue;
-    private int appId;
+    private long appId;
 
     public long getId() {
         return id;
@@ -28,11 +28,11 @@ public class InspectChoice {
         this.choiceValue = choiceValue;
     }
 
-    public int getAppId() {
+    public long getAppId() {
         return appId;
     }
 
-    public void setAppId(int appId) {
+    public void setAppId(long appId) {
         this.appId = appId;
     }
 }

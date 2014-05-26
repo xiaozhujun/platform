@@ -19,9 +19,6 @@ public class InspectItemService {
     private InspectItemMapper inspectItemMapper;
 
 
-    public void addList(List<InspectItem> inspectItemList){
-        inspectItemMapper.addList(inspectItemList);
-    }
     public int delete(InspectItem inspectItem){
         return inspectItemMapper.delete(inspectItem);
     }
@@ -33,5 +30,9 @@ public class InspectItemService {
     }
     public long getInspectItemIdByNameAndNumber(String name,String number){
         return inspectItemMapper.getInspectItemIdByNameAndNumber(name,number);
+    }
+
+    public void addList(List<InspectItem> inspectItemList){
+        inspectItemMapper.addList(inspectItemList);
     }
 }

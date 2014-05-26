@@ -18,6 +18,7 @@ public class SubInspectItem {
     private String inspectTable;
     private String isInput;
     private String choiceValue;
+    private String deviceType;
 
     public long getId() {
         return id;
@@ -89,5 +90,13 @@ public class SubInspectItem {
 
     public void setChoiceValue(String choiceValue) {
         this.choiceValue = choiceValue;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 }

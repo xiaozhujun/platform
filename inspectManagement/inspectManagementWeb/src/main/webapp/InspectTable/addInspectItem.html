@@ -80,9 +80,9 @@
                     { display: '名称', name: 'name',width:150,
                         editor: { type: 'text' }
                     },
-                    { display: '编号', name: 'number', width: 150, type: 'text', editor: { type: 'text'} },
+                    { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
 
-                    { display: '是否输入', width: 80, name: 'isInput',type:'int',
+                    { display: '是否输入', width: 50, name: 'isInput',type:'int',
                         editor: { type: 'select', data: isInputData, valueColumnName: 'id' },
                         render: function (item)
                         {
@@ -97,8 +97,9 @@
                             return item.choiceValue;
                         }
                     },
-                    {display:'所属点检表',name:'inspectTable',width:200,editor:{type:'text' ,isReady:true}},
+                    {display:'所属点检表',name:'inspectTable',width:150,editor:{type:'text' ,isReady:true}},
                     {display:'所属点检区域',name:'inspectArea',width:150,editor:{type:'text',isReady:true}},
+                    {display:'设备类型',name:'deviceType',width:100,editor:{type:'text'}},
                     {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
                 ],
                 onSelectRow: function (rowdata, rowindex)
@@ -175,6 +176,10 @@
         <span style="margin-left: 160px;  width: 70px;float: left;margin-top: 2px">所属区域 ：</span>
             <span style="width: 60px; margin-left: 10px; float: left;">
                 <input name="inspectArea" type="text" id="inspectArea" />
+            </span>
+        <span style="margin-left: 260px;  width: 70px;float: left;margin-top: 2px">设备类型 ：</span>
+            <span style="width: 60px; margin-left: 10px; float: left;">
+                <input name="deviceType" type="text" id="deviceType"/>
             </span>
         <span>
             <div id="add" style="width:100px;float: left;margin-left: 200px" onclick="addNewRow()">添加</div>

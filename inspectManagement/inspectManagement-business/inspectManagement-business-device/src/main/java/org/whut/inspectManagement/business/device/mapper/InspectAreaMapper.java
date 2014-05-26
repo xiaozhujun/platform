@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.device.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.device.entity.InspectArea;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -19,4 +20,5 @@ public interface InspectAreaMapper extends AbstractMapper<InspectArea> {
     public Long getTypeIdByAreaId(long id);
     public String getAreaById(long id);
     public String getDeviceTypeByAreaId(long inspectAreaId);
+    public long getInspectAreaIdByAreaNameAndDeviceTypeName(@Param("areaName") String areaName,@Param("deviceTypeName") String deviceTypeName);
 }

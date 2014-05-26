@@ -4,6 +4,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.inspectManagement.business.device.service.InspectAreaService;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
 import org.whut.inspectManagement.business.inspectTable.entity.SubInspectItem;
 
@@ -13,6 +14,8 @@ import org.whut.inspectManagement.business.inspectTable.service.InspectItemChoic
 import org.whut.inspectManagement.business.inspectTable.service.InspectItemService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 
+import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -43,7 +46,10 @@ public class InspectItemServiceWeb {
     InspectItemChoiceService inspectItemChoiceService;
     @Autowired
     InspectChoiceService inspectChoiceService;
-
+    @Autowired
+    UserService userService;
+    @Autowired
+    InspectAreaService inspectAreaService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
@@ -87,6 +93,10 @@ public class InspectItemServiceWeb {
     @Path("/addList")
     @POST
     public String addList(@FormParam("jsonStringList") String jsonStringList){
+        long appId=userService.getMyUserDetailFromSession().getAppId();
+        System.out.println(appId);
+        long a=UserContext.currentUserAppId();
+
         List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
         List<InspectItemChoice> inspectItemChoiceList=new ArrayList<InspectItemChoice>();
         Date date=new Date();
@@ -104,8 +114,9 @@ public class InspectItemServiceWeb {
                 System.out.println(subInspectItem.getInput());
                 inspectItem.setInput(0);
                 inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
-                inspectItem.setInspectAreaId(1);
+                inspectItem.setInspectAreaId(inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType()));
                 inspectItem.setDescription(subInspectItem.getDescription());
+                inspectItem.setAppId(appId);
                 inspectItemList.add(inspectItem);
 
 
@@ -114,11 +125,15 @@ public class InspectItemServiceWeb {
                 for (String choice:choicesList){
                     InspectItemChoice inspectItemChoice=new InspectItemChoice();
                     inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValue(choice));
+                    inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemIdByNameAndNumber(subInspectItem.getName(),subInspectItem.getNumber()));
+                    inspectItemChoice.setAppId(appId);
+                    inspectItemChoiceList.add(inspectItemChoice);
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        inspectItemChoiceService.addList(inspectItemChoiceList);
         inspectItemService.addList(inspectItemList);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
     }

@@ -85,4 +85,9 @@
         from  inspectarea as ia, devicetype as dt
         where ia.id=#{inspectAreaId} and dt.id = ia.deviceTypeId
     </select>
+    <select id="getInspectAreaIdByAreaNameAndDeviceTypeName" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM inspectarea ia,devicetype dt
+        WHERE ia.name=#{areaName} AND devicetype.id=ia.devicetypeid AND  dt.name=#{deviceTypeName}
+    </select>
 </mapper>

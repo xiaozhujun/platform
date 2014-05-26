@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.Department.entity.Department;
 import org.whut.inspectManagement.business.Department.service.DepartmentService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -31,12 +32,13 @@ public class DepartmentServiceWeb {
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("status") String status,@FormParam("appid") long appid)
+    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("status") String status)
     {
         if(name==null||name.trim().equals(""))
         {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数错误");
         }
+        long appid= UserContext.currentUserAppId();
         long id;
         try
         {
@@ -90,7 +92,8 @@ public class DepartmentServiceWeb {
     @Path("/list")
     @POST
     public String list(){
-        List<Department> list=departmentService.list();
+        long appId=UserContext.currentUserAppId();
+        List<Department> list=departmentService.list(appId,null,null);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 

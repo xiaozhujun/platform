@@ -49,10 +49,9 @@
         <include refid="department_fields"/>
         FROM department
         <where>
-            <if test="name!=null">NAME=#{name}</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="name!=null">AND NAME=#{name}</if>
             <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
-            <if test="description!=null">AND DESCRIPTION=#{description}</if>
-            <if test="appId!=null">AND APPID=#{appId}</if>
         </where>
     </select>
 

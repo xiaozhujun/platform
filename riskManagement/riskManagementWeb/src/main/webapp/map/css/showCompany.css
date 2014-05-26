@@ -607,11 +607,11 @@ body{
     margin-bottom: 60px; width: 50%;
 }
 .slider{
-    margin-left: 20px;
-    display: inline-block;
+    margin-left: 12px;
     margin-top: 8px;
-    width: 900px;
+    width: 650px;
     height: 30px;
+    float:left;
 }
 #input_search{
     width: 385px;

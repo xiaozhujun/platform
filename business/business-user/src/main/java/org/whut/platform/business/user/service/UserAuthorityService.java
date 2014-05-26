@@ -35,6 +35,10 @@ public class UserAuthorityService {
         return mapper.deleteByUserName(userName);
     }
 
+    public int deleteByUserId(long userId){
+        return mapper.deleteByUserId(userId);
+    }
+
     public List<UserAuthority> findByAuthorityName(String authorityName){
         if(authorityName==null||authorityName.trim().equals("")) return null;
         return mapper.findByAuthorityName(authorityName);
@@ -42,5 +46,10 @@ public class UserAuthorityService {
 
     public int delete(UserAuthority userAuthority){
         return mapper.delete(userAuthority);
+    }
+
+    public List<UserAuthority> findByUserId(long userId)
+    {
+        return mapper.findByUserId(userId);
     }
 }

@@ -17,9 +17,7 @@
         $(function(){
             $.post($.URL.employee.list,null,listCallback,"json");
             $.post($.URL.employeeRole.list,null,listEmployeeRoleCallback,"json");
-            $.post($.URL.department.list,null,listDepartmentCallback,"json");
-            $.get($.URL.authority.list,null,listAuthorityCallback,"json");
-
+            $.post($.URL.department.list,null,listDepartmentCallback,"json")
         });
         var gridData = {};
         function listCallback(data){
@@ -43,19 +41,7 @@
             }
 
         }
-        var roleData = [];
-        function listAuthorityCallback(data){
-            if(data.code==200){
 
-                $.each(data.data,function(index,content){
-                    var rs={};
-                    rs["type"]=content.name;
-                    rs["text"]=content.name;
-                    roleData.push(rs);
-                });
-            }
-
-        }
         var departmentNameData = [];
         function listDepartmentCallback(data){
             if(data.code==200){
@@ -99,21 +85,12 @@
                             return item.employeeRoleName;
                         }
                     },
-                    { display: '用户权限', name: 'role', type: 'string',
-                        editor: { type:'select',data:roleData,valueField:'type',textField:'text',
-                            isMultiSelect:true,isShowCheckBox:true},
+
+                    { display: '部门', name: 'department', type: 'string',
+                        editor: { type:'select',data:departmentNameData,valueField:'type',textField:'text'
+                        },
                         render:function(item){
-                            return item.role;
-                        }
-                    },
-                    { display: 'appName', name: 'appName',
-                        editor: { type: 'text' }
-                    },
-                    { display: '部门', name: 'departmentName', type: 'string',
-                        editor: { type:'select',data:departmentNameData,valueField:'type',textField:'text',
-                            isMultiSelect:true,isShowCheckBox:true},
-                        render:function(item){
-                            return item.departmentName;
+                            return item.department;
                         }
                     },
                     { display: '状态',name: 'status',
@@ -123,7 +100,7 @@
                         }
                     },
 
-                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
                         if (!rowdata._editing)
@@ -168,7 +145,7 @@
                 $.ligerDialog.success("修改成功");
             }
             else{
-                $.ligerDialog.error("修改失败！");
+                $.ligerDialog.error(data.message);
             }
         }
 

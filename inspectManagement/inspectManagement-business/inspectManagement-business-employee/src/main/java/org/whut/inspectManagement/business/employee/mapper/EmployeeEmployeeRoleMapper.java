@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface EmployeeEmployeeRoleMapper extends AbstractMapper {
     public List<EmployeeEmployeeRole> findByEmployeeName(String employeeName);
+    public int deleteByEmployeeId(long employeeId);
     public int deleteByEmployeeName(String employeeName);
     public List<EmployeeEmployeeRole> findByEmployeeRoleName(String EmployeeRoleName);
+    public List<EmployeeEmployeeRole> getByEmployeeId(long employeeId);
 }

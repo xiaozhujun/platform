@@ -47,16 +47,31 @@
                     myData.push(j);
                 })
                 $("#inspectArea").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
-                    data:myData,width:200,
+                    data:myData,width:120,
                     valueField:'id',
                     textField:'text',
                     valueFieldID:'inspectAreaSelect'
                 })
             }
         }
+        $.get($.URL.deviceType.list,null,deviceCallback,"json");
+        function deviceCallback(data){
+            if(data.code=200){
+                var myData=[];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j['id']=content.id;
+                    j['text']=content.name;
+                    myData.push(j);
+                })
+                $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                width:180,data:myData,valueField:'id',textField:'text',valueFieldID:'deviceTypeSelect'
+                })
+            }
+        }
         var initData={ Rows: [{ "__status": null, "ID": 1,"isInput": 0,"choiceValue":"正常;异常;无"}]}
 
-        var isInputData = [{ id: 0, text: '否' }, { id: 1, text: '是'}];
+        var isInputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
         var choicesData=[];
 
         $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
@@ -82,8 +97,8 @@
                     },
                     { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
 
-                    { display: '是否输入', width: 50, name: 'isInput',type:'int',
-                        editor: { type: 'select', data: isInputData, valueColumnName: 'id' },
+                    { display: '是否输入', width: 50, name: 'isInput',
+                        editor: { type: 'select', data: isInputData, valueColumnName: 'id',displayColumnName:'text' },
                         render: function (item)
                         {
                             if (parseInt(item.isInput) == 0) return '否';
@@ -143,11 +158,13 @@
                 isInput:"0",
                 choiceValue:'正常;异常;无',
                 inspectTable:$("#inspectTable").val(),
-                inspectArea:$("#inspectArea").val()
+                inspectArea:$("#inspectArea").val(),
+                deviceType:$("#deviceType").val()
             }, row, document.getElementById("checked").checked);
         }
         function submitBtn(){
             var data=JSON.stringify(manager.getData());
+            alert(data);
             $.post($.URL.inspectItem.addList,{"jsonStringList":data},addCallback,"json");
         }
         function addCallback(data){
@@ -177,12 +194,12 @@
             <span style="width: 60px; margin-left: 10px; float: left;">
                 <input name="inspectArea" type="text" id="inspectArea" />
             </span>
-        <span style="margin-left: 260px;  width: 70px;float: left;margin-top: 2px">设备类型 ：</span>
+        <span style="margin-left: 90px;  width: 70px;float: left;margin-top: 2px">设备类型 ：</span>
             <span style="width: 60px; margin-left: 10px; float: left;">
                 <input name="deviceType" type="text" id="deviceType"/>
             </span>
         <span>
-            <div id="add" style="width:100px;float: left;margin-left: 200px" onclick="addNewRow()">添加</div>
+            <div id="add" style="width:100px;float: left;margin-left: 150px" onclick="addNewRow()">添加</div>
             <div id="delete" style="width:100px; float: left;margin-left: 40px" onclick="deleteRow()">删除</div>
             <div id="submitBtn" style="width: 100px;float: left;margin-left: 40px" onclick="submitBtn()">提交</div>
             <input type="checkbox" id="checked" style="display: none"/>

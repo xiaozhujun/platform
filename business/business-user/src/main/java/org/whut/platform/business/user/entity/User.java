@@ -16,6 +16,15 @@ public class User {
 
     private String status;
     private long appId;
+    private String appName;
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 
     public String getStatus() {
         return status;

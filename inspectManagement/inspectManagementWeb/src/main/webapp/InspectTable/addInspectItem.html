@@ -91,12 +91,14 @@
         {
             g =  manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
+                    {display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
+                    {display:'所属点检表',name:'inspectTable',width:150,frozen:true},
+                    {display:'所属点检区域',name:'inspectArea',width:150,frozen:true},
+                    {display:'设备类型',name:'deviceType',width:100,frozen:true},
                     { display: '名称', name: 'name',width:150,
                         editor: { type: 'text' }
                     },
                     { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
-
                     { display: '是否输入', width: 50, name: 'isInput',
                         editor: { type: 'select', data: isInputData, valueColumnName: 'id',displayColumnName:'text' },
                         render: function (item)
@@ -112,9 +114,6 @@
                             return item.choiceValue;
                         }
                     },
-                    {display:'所属点检表',name:'inspectTable',width:150,editor:{type:'text' ,isReady:true}},
-                    {display:'所属点检区域',name:'inspectArea',width:150,editor:{type:'text',isReady:true}},
-                    {display:'设备类型',name:'deviceType',width:100,editor:{type:'text'}},
                     {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
                 ],
                 onSelectRow: function (rowdata, rowindex)
@@ -164,7 +163,6 @@
         }
         function submitBtn(){
             var data=JSON.stringify(manager.getData());
-            alert(data);
             $.post($.URL.inspectItem.addList,{"jsonStringList":data},addCallback,"json");
         }
         function addCallback(data){

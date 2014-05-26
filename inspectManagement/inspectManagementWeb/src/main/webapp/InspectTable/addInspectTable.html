@@ -23,7 +23,7 @@
         });
         function addCallBack(data){
             if(data.code==200){
-                $.ligerDialog.success("修改成功");
+                $.ligerDialog.success(data.message);
             }
             else{
                 $.ligerDialog.error(data.message);

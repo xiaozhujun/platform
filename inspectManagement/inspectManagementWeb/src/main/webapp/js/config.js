@@ -7,17 +7,17 @@
             "list":"rs/power/list"
         },
         "user":{
-            "add":"rs/appuser/add",
-            "update":"rs/appuser/update",
-            "delete":"rs/appuser/delete",
-            "list":"rs/appuser/list",
-            "getId":"rs/appuser/getIdByName"
+            "add":"rs/user/add",
+            "update":"rs/user/update",
+            "delete":"rs/user/delete",
+            "list":"rs/user/list",
+            "getId":"rs/user/getIdByName"
         },
         "authority":{
-             "add":"rs/appauthority/add",
-             "update":"rs/appauthority/update",
-             "delete":"rs/appauthority/delete",
-            "list":"rs/appauthority/list"
+             "add":"rs/authority/add",
+             "update":"rs/authority/update",
+             "delete":"rs/authority/delete",
+            "list":"rs/authority/list"
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"

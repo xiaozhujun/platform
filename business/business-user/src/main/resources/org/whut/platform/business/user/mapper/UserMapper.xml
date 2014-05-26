@@ -92,4 +92,12 @@
          id
          FROM user WHERE NAME=#{name}
      </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="User">
+        SELECT
+        <include refid="user_fields"/>
+        from user
+        where ID=#{id}
+    </select>
+
 </mapper>

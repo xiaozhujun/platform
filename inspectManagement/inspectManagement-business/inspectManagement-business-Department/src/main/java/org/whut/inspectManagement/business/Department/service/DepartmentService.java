@@ -39,4 +39,9 @@ public class DepartmentService {
     {
         return departmentMapper.getIdByName(name,appId);
     }
+
+    public String getNameById(long id)
+    {
+        return departmentMapper.getNameById(id);
+    }
 }

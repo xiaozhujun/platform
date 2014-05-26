@@ -61,17 +61,14 @@
             <if test="appId!=null">AND APPID=#{appId}</if>
         </where>
     </select>
-    <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
-        SELECT
-        id
+    <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT  id
         FROM inspecttable
-        WHERE name=#{name}
+        WHERE name=#{name} AND appid=#{appId}
     </select>
     <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
-        select
-        name
+        select  name
         from  inspecttable
         where id=#{id}
-
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectTable;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -31,15 +32,23 @@ public class InspectTableServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("inspectTableName") String name,@FormParam("description") String description){
-
+        long appId=UserContext.currentUserAppId();
         if(name==null||name.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
+        long id;
+        try {
+           id=inspectTableService.getIdByName(name,appId);
+        }catch (Exception e){
+            id=0;
+        }
+        if (id!=0){ return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检表名已存在");}
         Date date=new Date();
         InspectTable inspectTable=new InspectTable();
         inspectTable.setName(name);
         inspectTable.setCreatetime(date);
         inspectTable.setDescription(description);
+        inspectTable.setAppId(appId);
         inspectTableService.add(inspectTable);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -56,12 +65,25 @@ public class InspectTableServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
+        long appId=UserContext.currentUserAppId();
         InspectTable inspectTable = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectTable.class);
-        if(inspectTable.getName()==null||inspectTable.getAppId()==0||inspectTable.getName().equals("")){
+        if(inspectTable.getName()==null||inspectTable.getName().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
         Date date=new Date();
         inspectTable.setCreatetime(date);
+        inspectTable.setName(inspectTable.getName());
+        long id;
+        try {
+            id=inspectTableService.getIdByName(inspectTable.getName(),appId);
+        }catch (Exception e){
+            id=0;
+        }
+        if(id!=0){
+            if(id!=inspectTable.getId()){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检表名已存在");
+            }
+        }
         inspectTableService.update(inspectTable);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

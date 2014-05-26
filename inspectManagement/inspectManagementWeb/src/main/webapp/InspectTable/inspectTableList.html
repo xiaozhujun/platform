@@ -31,15 +31,10 @@
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '点检表名',name: 'name',
-                        editor: { type: 'text'}
-                    },
+                    { display: '点检表名',name: 'name',editor:{type:'text'}} ,
                     { display: '创建时间',name: 'createtime',width:100},
                     { display: '描述',name: 'description',type:'string',
                         editor: { type: 'text'}
-                    },
-                    { display: 'appId', name: 'appId', type: 'long',
-                        editor: { type: 'long' }
                     },
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
@@ -83,10 +78,10 @@
 
         function updateCallback(data){
             if(data.code==200){
-                $.ligerDialog.success("修改成功");
+                $.ligerDialog.success(data.message);
             }
             else{
-                $.ligerDialog.error("修改失败！");
+                $.ligerDialog.error(data.message);
             }
         }
 

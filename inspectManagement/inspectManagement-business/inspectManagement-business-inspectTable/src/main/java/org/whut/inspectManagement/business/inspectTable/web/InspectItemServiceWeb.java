@@ -107,7 +107,7 @@ public class InspectItemServiceWeb {
                 JSONObject jsonObject= (JSONObject) jsonArray.get(i);
                 String input=jsonObject.getString("isInput");
                 inspectItem.setInput(Integer.parseInt(input));
-                inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
+                inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
                 inspectItem.setInspectAreaId(inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType()));
                 inspectItem.setDescription(subInspectItem.getDescription());
                 inspectItem.setAppId(appId);
@@ -168,6 +168,7 @@ public class InspectItemServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
+        long appId=UserContext.currentUserAppId();
         SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
         if(subInspectItem.getName()==null||subInspectItem.getInspectArea()==null||subInspectItem.getInspectTable()==null||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
@@ -189,7 +190,7 @@ public class InspectItemServiceWeb {
             //inspectItem.setInspectAreaId(subInspectItem.getInspectAreaId());
             inspectItem.setNumber(subInspectItem.getNumber());
             inspectItem.setInput(isInput);
-            inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
+            inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
 
 
         inspectItemService.update(inspectItem);

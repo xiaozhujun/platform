@@ -74,16 +74,17 @@
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
             $.post($.URL.inspectTable.update,{"jsonString":jsonString},updateCallback,"json");
+            function updateCallback(data){
+                if(data.code==200){
+                    $.ligerDialog.success(data.message);
+                }
+                else{
+                    $.ligerDialog.error(data.message);
+                }
+            }
         }
 
-        function updateCallback(data){
-            if(data.code==200){
-                $.ligerDialog.success(data.message);
-            }
-            else{
-                $.ligerDialog.error(data.message);
-            }
-        }
+
 
         function deleteRow(rowid)
         {

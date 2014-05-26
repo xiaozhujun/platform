@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectChoice;
 import org.whut.inspectManagement.business.inspectTable.service.InspectChoiceService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -29,12 +30,22 @@ public class InspectChoiceServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("choiceValue") String choiceValue){
-
+        long appId= UserContext.currentUserAppId();
         if(choiceValue==null||choiceValue.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
+        long id;
+        try {
+            id=inspectChoiceService.getIdByChoiceValueAndAppId(choiceValue,appId);
+        }catch (Exception e){
+            id=0;
+        }
+        if(id!=0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检选值已存在");
+        }
         InspectChoice inspectChoice=new InspectChoice();
         inspectChoice.setChoiceValue(choiceValue);
+        inspectChoice.setAppId(appId);
         inspectChoiceService.add(inspectChoice);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -51,11 +62,23 @@ public class InspectChoiceServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
+        long appId=UserContext.currentUserAppId();
         InspectChoice inspectChoice = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectChoice.class);
         if(inspectChoice.getChoiceValue()==null||inspectChoice.getChoiceValue().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
-       inspectChoiceService.update(inspectChoice);
+        long id;
+        try {
+            id=inspectChoiceService.getIdByChoiceValueAndAppId(inspectChoice.getChoiceValue(),appId);
+        }catch (Exception e){
+            id=0;
+        }
+        if(id!=0){
+            if(id!=inspectChoice.getId()){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检选值已存在");
+            }
+        }
+        inspectChoiceService.update(inspectChoice);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 

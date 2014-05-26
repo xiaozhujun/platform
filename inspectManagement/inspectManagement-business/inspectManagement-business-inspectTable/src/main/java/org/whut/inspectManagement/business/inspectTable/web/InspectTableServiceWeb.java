@@ -72,7 +72,6 @@ public class InspectTableServiceWeb {
         }
         Date date=new Date();
         inspectTable.setCreatetime(date);
-        inspectTable.setName(inspectTable.getName());
         long id;
         try {
             id=inspectTableService.getIdByName(inspectTable.getName(),appId);

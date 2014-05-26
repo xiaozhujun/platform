@@ -124,7 +124,7 @@ public class InspectItemServiceWeb {
                     String [] choicesList=choices.split(";");
                     for (String choice:choicesList){
                         InspectItemChoice inspectItemChoice=new InspectItemChoice();
-                        inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValue(choice));
+                        inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValueAndAppId(choice,appId));
                         inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemIdByNameAndNumber(subInspectItem.getName(),subInspectItem.getNumber()));
                         inspectItemChoice.setAppId(appId);
                         inspectItemChoiceList.add(inspectItemChoice);
@@ -200,11 +200,11 @@ public class InspectItemServiceWeb {
         List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
         String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
         inspectItemChoiceService.deleteByInspectItemId(subInspectItem.getId());
-            for(String a:choiceValueArray){
+            for(String choice:choiceValueArray){
                 InspectItemChoice inspectItemChoice=new InspectItemChoice();
                 inspectItemChoice.setInspectItemId(subInspectItem.getId());
-                 inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValue(a));
-                 inspectItemChoicesList.add(inspectItemChoice);
+                inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValueAndAppId(choice,appId));
+                inspectItemChoicesList.add(inspectItemChoice);
             }
 
         if(!inspectItemChoicesList.isEmpty()) {

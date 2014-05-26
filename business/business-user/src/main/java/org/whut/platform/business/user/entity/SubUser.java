@@ -16,6 +16,16 @@ public class SubUser {
         private String role;
         private String dataRole;
 
+    public long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(long appId) {
+        this.appId = appId;
+    }
+
+    private long appId;
+
         public long getId() {
             return id;
         }

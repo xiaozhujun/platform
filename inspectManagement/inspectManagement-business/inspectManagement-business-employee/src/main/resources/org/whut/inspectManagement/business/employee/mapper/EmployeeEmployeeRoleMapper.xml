@@ -40,6 +40,10 @@
         WHERE EMPLOYEENAME = #{employeeName};
     </update>
 
+    <delete id="deleteByEmployeeId" parameterType="java.lang.Long">
+        DELETE FROM employee_employeerole
+        WHERE EMPLOYEEID= #{employeeId};
+    </delete>
 
     <delete id="deleteByEmployeeName" parameterType="java.lang.String">
         DELETE FROM employee_employeerole
@@ -69,5 +73,12 @@
         SELECT
         <include refid="emp_empRole_fields"/>
         FROM employee_employeerole WHERE employeRoleName=#{employeeRoleName}
+    </select>
+
+    <select id="getByEmployeeId" parameterType="java.lang.Long" resultMap="EmpEmpRoleResultMap">
+        select
+        <include refid="emp_empRole_fields"/>
+        from employee_employeerole
+        where EMPLOYEEID=#{employeeId}
     </select>
 </mapper>

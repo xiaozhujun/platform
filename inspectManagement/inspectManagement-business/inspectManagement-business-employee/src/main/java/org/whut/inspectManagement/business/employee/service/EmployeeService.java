@@ -1,6 +1,6 @@
 package org.whut.inspectManagement.business.employee.service;
 
-        import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
         import org.whut.inspectManagement.business.employee.entity.Employee;
         import org.whut.inspectManagement.business.employee.mapper.EmployeeMapper;
 
@@ -23,5 +23,10 @@ public class EmployeeService {
     public long getIdByName(String name){ return employeeMapper.getIdByName(name);}
     public List<Employee> list(){
         return employeeMapper.findByCondition(new HashMap<String, Object>());
+    }
+
+    public Employee getById(long id)
+    {
+        return employeeMapper.getById(id);
     }
 }

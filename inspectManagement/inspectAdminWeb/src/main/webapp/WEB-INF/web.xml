@@ -63,7 +63,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>org.whut.inspectManagement.business</param-value>
+            <param-value>org.whut.inspectManagement.business,org.whut.platform.business</param-value>
         </init-param>
     </servlet>
 

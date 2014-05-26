@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper">
         <sql id="inspectItem_fields">
-          ID,NAME,DESCRIPTION,CREATETIME,INSPECTTABLEID,INSPECTAREAID,NUMBER,ISINPUT
+          ID,NAME,DESCRIPTION,CREATETIME,INSPECTTABLEID,INSPECTAREAID,NUMBER,ISINPUT,APPID
     </sql>
     <resultMap id="inspectItemResultMap" type="inspectItem">
         <id property="id" column="ID" />
@@ -15,6 +15,7 @@
         <result property="inspectAreaId" column="INSPECTAREAID"/>
         <result property="number" column="NUMBER"/>
         <result property="isInput" column="ISINPUT"/>
+        <result property="appId" column="APPID"/>
     </resultMap>
     <insert id="add" parameterType="inspectItem"  keyProperty="id"
             useGeneratedKeys="true">
@@ -22,7 +23,7 @@
        inspectitem(
         <include refid="inspectItem_fields" />
         )
-        VALUES (#{id}, #{name},#{description}, #{createtime},#{inspectTableId},#{inspectAreaId},#{number});
+        VALUES (#{id}, #{name},#{description}, #{createtime},#{inspectTableId},#{inspectAreaId},#{number},#{isInput},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -34,8 +35,8 @@
         FROM inspectitem
         <where>
             <if test="name!=null">NAME=#{name}</if>
-            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
             <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
             <if test="inspectTableId!=null">AND INSPECTTABLEID=#{inspectTableId}</if>
             <if test="inspectAreaId!=null">AND INSPECTAREAID=#{inspectAreaId}</if>
             <if test="number!=null">AND NUMBER=#{number}</if>
@@ -74,7 +75,7 @@
         <include refid="inspectItem_fields"/>)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.name},#{item.description},#{item.createtime},#{item.inspectTableId},#{item.inspectAreaId},#{item.number},#{item.isInput})
+            (#{item.id},#{item.name},#{item.description},#{item.createtime},#{item.inspectTableId},#{item.inspectAreaId},#{item.number},#{item.isInput},#{item.appId})
         </foreach>
     </insert>
     <select id="getInspectItemIdByNameAndNumber" parameterType="map" resultType="java.lang.Long">

@@ -16,7 +16,7 @@ public class SubInspectItem {
     private String inspectArea;
     private String number;
     private String inspectTable;
-    private String isInput;
+    private String input;
     private String choiceValue;
     private String deviceType;
 
@@ -77,11 +77,11 @@ public class SubInspectItem {
     }
 
     public String getInput() {
-        return isInput;
+        return input;
     }
 
     public void setInput(String input) {
-        isInput = input;
+        this.input = input;
     }
 
     public String getChoiceValue() {

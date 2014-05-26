@@ -62,4 +62,10 @@
         where NAME=#{name} and APPID=#{appId}
     </select>
 
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select name
+        from department
+        where ID=#{id}
+    </select>
+
 </mapper>

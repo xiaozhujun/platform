@@ -39,6 +39,11 @@
         WHERE USERNAME = #{userName};
     </update>
 
+    <delete id="deleteByUserId" parameterType="java.lang.Long">
+        DELETE FROM user_authority
+        WHERE USERID = #{userId};
+    </delete>
+
     <delete id="deleteByUserName" parameterType="java.lang.String">
         DELETE FROM user_authority
         WHERE USERNAME = #{userName};
@@ -68,4 +73,12 @@
         <include refid="user_authority_fields"/>
         FROM user_authority WHERE authorityName=#{authorityName}
     </select>
+
+    <select id="findByUserId" parameterType="java.lang.Long" resultMap="userAuthorityResultMap">
+        select
+        <include refid="user_authority_fields" />
+        from user_authority
+        where USERID=#{userId}
+    </select>
+
 </mapper>

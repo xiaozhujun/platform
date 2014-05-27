@@ -30,6 +30,30 @@
                 });
             }
         };
+        $.get($.URL.inspectArea.list,null,areaCallBack,"json");
+        var areaData=[]
+        function areaCallBack(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.name;
+                   areaData.push(j);
+                });
+            }
+        }
+        $.get($.URL.deviceType.list,null,deviceCallback,"json");
+        var deviceData=[];
+         function deviceCallback(data){
+            if(data.code=200){
+                $.each(data.data,function(index,content){
+                     var j={};
+                     j['id']=content.name;
+                     j['text']=content.name;
+                     deviceData.push(j);
+                });
+            }
+         }
         var gridData = {};
         function itemListCallback(data){
             if(data.code==200){
@@ -59,24 +83,36 @@
                     { display: '点检项名',name: 'name',
                         editor: { type: 'text'}
                     },
-                    { display: '描述',name: 'description',
+                    { display: '编号',name: 'number',type:'string',
                         editor: { type: 'text'}
                     },
-                    { display: '创建时间',name: 'createtime',width:100},
                     { display: '点检表',name: 'inspectTable',
                         editor: { type:'select',data:myData,valueField:'id',textField:'text'
-                            },
+                        },
                         render:function(item){
                             return item.inspectTable;
                         }
                     },
+                    { display: '设备类型',name: 'deviceType',
+                        editor: { type:'select',data:deviceData,valueField:'id',textField:'text'
+                        },
+                        render:function(item){
+                            return item.deviceType;
+                        }
+                    },
+
                     { display: '点检区域',name: 'inspectArea',
-                        editor: { type: 'text'}
+                        editor: { type:'select',data:areaData,valueField:'id',textField:'text'
+                        },
+                        render:function(item){
+                            return item.inspectArea;
+                        }
                     },
-                    { display: '编号',name: 'number',type:'string',
-                        editor: { type: 'text'}
-                    },
-                    { display: '是否输入',name: 'input',type:'string',
+
+
+
+
+                    { display: '是否输入',name: 'input',type:'string',width:70,
                         editor: { type:'select', data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
                         render:function(item){
                             return item.input;
@@ -89,6 +125,10 @@
                             return item.choiceValue;
                         }
                     },
+                    { display: '描述',name: 'description',
+                        editor: { type: 'text'}
+                    },
+                    { display: '创建时间',name: 'createtime',width:100},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -134,7 +174,7 @@
                 $.ligerDialog.success("修改成功");
             }
             else{
-                $.ligerDialog.error("修改失败！");
+                $.ligerDialog.error(data.message);
             }
         }
 

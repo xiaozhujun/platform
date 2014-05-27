@@ -8,7 +8,9 @@ import org.whut.inspectManagement.business.employeeRole.entity.SubEmployeeRole;
 import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleInspectTableService;
 import org.whut.inspectManagement.business.employeeRole.service.EmployeeRoleService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
+import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.service.AuthorityService;
+import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -43,6 +45,8 @@ public class EmployeeRoleServiceWeb {
     @Autowired
     private InspectTableService inspectTableService;
 
+
+
     @Produces( MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
@@ -75,7 +79,7 @@ public class EmployeeRoleServiceWeb {
             String [] inspectTableArray=inspectTable.split(";");
             for(int i=0;i<inspectTableArray.length;i++)
             {
-                 EmployeeRoleInspectTable employeeRoleInspectTable=new EmployeeRoleInspectTable();
+                EmployeeRoleInspectTable employeeRoleInspectTable=new EmployeeRoleInspectTable();
                 employeeRoleInspectTable.setAppId(appid);
                 employeeRoleInspectTable.setEmployeeRoleName(name);
                 employeeRoleInspectTable.setEmployeeRoleId(employeeRoleId);
@@ -98,19 +102,38 @@ public class EmployeeRoleServiceWeb {
         if(subEmployeeRole.getName()==null||subEmployeeRole.getAppId()==0||subEmployeeRole.getName().equals("")||subEmployeeRole.getStatus()==null){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
+        long id;
+        try {
+            id =employeeRoleService.getIdByName(subEmployeeRole.getName(),subEmployeeRole.getAppId());
+        } catch (Exception ex) {
+            id = 0;
+        }
+        if (id == 0||id==subEmployeeRole.getId())
+        {
+        employeeRoleInspectTableService.deleteByEmployeeRoleId(subEmployeeRole.getId());
+        String[] inspectTableNameArray=subEmployeeRole.getInspectTable().split(";");
+           for(int i=0;i<inspectTableNameArray.length;i++){
+            long inspectTableId = inspectTableService.getIdByName(inspectTableNameArray[i],subEmployeeRole.getAppId());
+            EmployeeRoleInspectTable employeeRoleInspectTable=new EmployeeRoleInspectTable();
+            employeeRoleInspectTable.setEmployeeRoleName(subEmployeeRole.getName());
+            employeeRoleInspectTable.setEmployeeRoleId(subEmployeeRole.getId());
+            employeeRoleInspectTable.setAppId(subEmployeeRole.getAppId());
+            employeeRoleInspectTable.setInspectTableId(inspectTableId);
+            employeeRoleInspectTable.setInspectTableName(inspectTableNameArray[i]);
+            employeeRoleInspectTableService.add(employeeRoleInspectTable);
+            }
+
         EmployeeRole employeeRole= employeeRoleService.getById(subEmployeeRole.getId());
         employeeRole.setAuthorityId(authorityService.getIdByName(subEmployeeRole.getAuthority()));
         employeeRole.setName(subEmployeeRole.getName());
         employeeRole.setStatus(subEmployeeRole.getStatus());
         employeeRole.setDescription(subEmployeeRole.getDescription());
-       int result= employeeRoleService.update(employeeRole);
-        if(result>0)
-        {
+        employeeRoleService.update(employeeRole);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else
         {
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"修改的用户名已存在！");
         }
     }
 
@@ -119,9 +142,16 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String delete(@FormParam("jsonString") String jsonString)
     {
-        EmployeeRole employeeRole=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,EmployeeRole.class);
-        int result=employeeRoleService.delete(employeeRole);
-        if(result>0)
+        SubEmployeeRole subEmployeeRole=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubEmployeeRole.class);
+        EmployeeRole employeeRole=new EmployeeRole();
+        User user=new User();
+        employeeRole.setId(subEmployeeRole.getId());
+        employeeRole.setName(subEmployeeRole.getName());
+
+
+        int result2= employeeRoleInspectTableService.deleteByEmployeeRoleId(subEmployeeRole.getId());
+        int result1=employeeRoleService.delete(employeeRole);
+        if(result1>0&&result2>0)
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         else
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
@@ -132,16 +162,31 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String list()
     {
-        List<EmployeeRole> employeeRolelist=employeeRoleService.list();
+        List<EmployeeRole> employeeRoleList=employeeRoleService.list();
         List<SubEmployeeRole> subEmployeeRoleList=new ArrayList<SubEmployeeRole>();
-        for(EmployeeRole e:employeeRolelist)
+
+        for(EmployeeRole e:employeeRoleList)
         {
+            List<EmployeeRoleInspectTable> employeeRoleInspectTablesList=employeeRoleInspectTableService.getByEmployeeRoleId(e.getId());
+          String inspectTableName="";
+            for(int i=0;i<employeeRoleInspectTablesList.toArray().length;i++)
+            {
+                if(i==0)
+                 {
+                     inspectTableName=employeeRoleInspectTablesList.get(i).getInspectTableName();
+                 }
+                else
+                 {
+                     inspectTableName+=";"+employeeRoleInspectTablesList.get(i).getInspectTableName();
+                 }
+            }
            SubEmployeeRole subEmployeeRole=new SubEmployeeRole();
            subEmployeeRole.setName(e.getName());
             subEmployeeRole.setStatus(e.getStatus());
             subEmployeeRole.setDescription(e.getDescription());
             subEmployeeRole.setId(e.getId());
             subEmployeeRole.setAppId(e.getAppId());
+            subEmployeeRole.setInspectTable(inspectTableName);
             String authority=authorityService.getNameById(e.getAuthorityId());
             subEmployeeRole.setAuthority(authority);
             subEmployeeRoleList.add(subEmployeeRole);

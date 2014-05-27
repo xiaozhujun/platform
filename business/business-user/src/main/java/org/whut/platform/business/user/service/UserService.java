@@ -55,6 +55,12 @@ public class UserService {
         }
         return null;
     }
+
+    public User getById(long id)
+    {
+        return userMapper.getById(id);
+    }
+
     public MyUserDetail getMyUserDetailFromSession(){
         MyUserDetail myUserDetail= (MyUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return myUserDetail;

@@ -14,6 +14,7 @@ import org.whut.inspectManagement.business.inspectResult.mapper.InspectTableReco
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
+import org.whut.platform.business.user.security.UserContext;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,7 +46,7 @@ public class InspectTableRecordService {
     @Autowired
     InspectTagMapper inspectTagMapper;
     public void DomReadXml(Document document) {
-
+        long appId= UserContext.currentUserAppId();
         int flag = 0;
         String tname = null;
         String area = null;
@@ -71,7 +72,7 @@ public class InspectTableRecordService {
 
         else{
             tname = root.attribute("inspecttype").getValue();
-            inspectTableId=inspectTableMapper.getIdByName(tname);
+            inspectTableId=inspectTableMapper.getIdByNameAndAppId(tname,appId);
             t = root.attribute("inspecttime").getValue();
             worknum=root.attribute("workernumber").getValue();
             dnum=root.attribute("devicenumber").getValue();
@@ -86,7 +87,7 @@ public class InspectTableRecordService {
                 exception.printStackTrace();
             }
             long userId;//解析数据插入到InspectTableRecord
-            long appId;
+
             userId=Long.parseLong(worknum);
             inspectTableRecord.setInspectTableId(inspectTableId);
             inspectTableRecord.setCreateTime(createTime);
@@ -123,7 +124,7 @@ public class InspectTableRecordService {
                         if(inspectChoiceValue!="正常"){
                             exceptionCount++;
                         }
-                        long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValue(inspectChoiceValue);
+                        long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValueAndAppId(inspectChoiceValue,appId);
                         inspectItemRecord.setInspectTableId(inspectTableId);
                         inspectItemRecord.setInspectTagId(inspectTagId);
                         inspectItemRecord.setInspectItemId(itemId1);

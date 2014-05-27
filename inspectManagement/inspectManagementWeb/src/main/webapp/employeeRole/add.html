@@ -32,7 +32,25 @@
 
                 }
             }
+            $.post($.URL.inspectTable.getList,null,inspectTableListCallback,"json");
+            function inspectTableListCallback(data){
+                if(data.code==200){
+                    var myData = [];
+                    $.each(data.data,function(index,content){
+                        var j={};
+                        j["text"]=content.name;
+                        j["id"]=content.id;
+                        myData.push(j);
+                    });
+                    $("#InspectTable").ligerComboBox({ isShowCheckBox:true,isMultiSelect:true,
+                        data:myData,
+                        valueFieldID: 'InspectTableSelect'
+                    });
+
+                }
+            }
         });
+
 
         $("#submitBtn").click(function(){
             var data = {};
@@ -40,6 +58,7 @@
             data.appid ='1';
             data.authority=$("#Authority").val();
             data.status = "启用";
+            data.inspectTable=$("#InspectTable").val();
             data.description = $("#Description").val();
             $.post($.URL.employeeRole.add,data,addemployeeRoleCallback,"json");
         });
@@ -76,6 +95,12 @@
         <tr>
             <td align="right" class="l-table-edit-td">用户权限:</td>
             <td align="left" class="l-table-edit-td"><input name="Authority" type="text" id="Authority" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+
+        <tr>
+            <td align="right" class="l-table-edit-td">点检表:</td>
+            <td align="left" class="l-table-edit-td"><input name="InspectTable" type="text" id="InspectTable" ltype="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>

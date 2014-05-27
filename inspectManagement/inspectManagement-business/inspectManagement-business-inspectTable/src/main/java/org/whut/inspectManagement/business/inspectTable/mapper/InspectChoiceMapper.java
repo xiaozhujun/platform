@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.inspectTable.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectChoice;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -13,8 +14,8 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface InspectChoiceMapper extends AbstractMapper<InspectChoice> {
-    public long getIdByChoiceValue(String choiceValue);
-    public List<InspectChoice> getList();
+    public long getIdByChoiceValueAndAppId(@Param("choiceValue") String choiceValue,@Param("appId") long appId);
+    public List<InspectChoice> getListByAppId(long appId);
     public List<String> getChoiceValueById(Long id);
 }
 

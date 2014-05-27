@@ -20,8 +20,8 @@ public class InspectTableService {
     public void add(InspectTable inspectTable){
         inspectTableMapper.add(inspectTable);
     }
-    public List<InspectTable> getList(){
-        return  inspectTableMapper.getList();
+    public List<InspectTable> getListByAppId(long appId){
+        return  inspectTableMapper.getListByAppId(appId);
     }
     public void update(InspectTable inspectTable){
         inspectTableMapper.update(inspectTable);
@@ -29,10 +29,11 @@ public class InspectTableService {
     public void delete(InspectTable inspectTable){
         inspectTableMapper.delete(inspectTable );
     }
-    public long getIdByName(String name){
-        return inspectTableMapper.getIdByName(name);
+    public long getIdByName(String name,long appId){
+        return inspectTableMapper.getIdByNameAndAppId(name, appId);
     }
     public String getNameById(long id){
         return inspectTableMapper.getNameById(id);
     }
+
 }

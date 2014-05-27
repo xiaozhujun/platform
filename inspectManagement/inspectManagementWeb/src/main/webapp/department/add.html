@@ -16,7 +16,6 @@
         $("#submitBtn").click(function(){
             var data = {};
             data.name = $("#Name").val();
-            data.appid ='1';
             data.status = "启用";
             data.description = $("#Description").val();
             $.post($.URL.department.add,data,addDepartmentCallback,"json");

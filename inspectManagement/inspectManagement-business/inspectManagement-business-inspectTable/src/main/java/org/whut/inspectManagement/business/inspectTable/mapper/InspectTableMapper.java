@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.inspectTable.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectTable;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -14,8 +15,7 @@ import java.util.Map;
  */
 public interface InspectTableMapper extends AbstractMapper<InspectTable>{
     public List<InspectTable> findByCondition(Map<String,Object> map);
-    public List<InspectTable> getList();
-    public long getIdByName(String name);
+    public List<InspectTable> getListByAppId(long appId);
+    public long getIdByNameAndAppId(@Param("name")String name,@Param("appId") long appId);
     public String getNameById(long id);
-
 }

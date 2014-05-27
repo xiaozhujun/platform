@@ -86,25 +86,13 @@
 
         <dependency>
             <groupId>inspectManagement</groupId>
-            <artifactId>inspectManagement-business-Department</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>inspectManagement</groupId>
             <artifactId>inspectManagement-business-device</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>inspectManagement</groupId>
-            <artifactId>inspectManagement-business-employee</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>inspectManagement</groupId>
-            <artifactId>inspectManagement-business-employeeRole</artifactId>
+            <artifactId>inspectManagement-business-deptAndEmployee</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.deptAndEmployee.mapper.EmployeeRoleInspectTableMapper">
+    <sql id="employeeRoleinspectTable_fields">
+         ID,EMPLOYEEROLEID,EMPLOYEEROLENAME,INSPECTTABLEID,INSPECTTABLENAME,APPID
+    </sql>
+    <resultMap type="EmployeeRoleInspectTable" id="EmpRoleInspectTableResultMap">
+        <id property="id" column="ID" />
+        <result property="employeeRoleId" column="EMPLOYEEROLEID"/>
+        <result property="employeeRoleName" column="EMPLOYEEROLENAME"/>
+        <result property="inspectTableId" column="INSPECTTABLEID"/>
+        <result property="inspectTableName" column="INSPECTTABLENAME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" keyProperty="id" parameterType="EmployeeRoleInspectTable" useGeneratedKeys="true">
+        insert into
+        employeerole_inspecttable(
+        <include refid="employeeRoleinspectTable_fields"/>
+        )
+        values (#{id},#{employeeRoleId},#{employeeRoleName},#{inspectTableId},#{inspectTableName},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="EmployeeRoleInspectTable">
+        UPDATE employeerole_inspecttable
+        <set>
+            <if test="userId != null">EMPLOYEEROLEID=#{employeeRoleId},</if>
+            <if test="authorityId != null">EMPLOYEEROLENAME=#{employeeRoleName},</if>
+            <if test="userName != null">INSPECTTABLEID=#{inspectTabelId},</if>
+            <if test="authorityName != null">INSPECTTABLENAME=#{inspectTableName},</if>
+            <if test="appId != null">APPID=#{appId}</if>
+        </set>
+        WHERE EMPLOYEEROLENAME = #{employeeRoleName} and APPID=#{appId};
+    </update>
+
+    <delete id="deleteByEmployeeRoleId" parameterType="java.lang.Long">
+        DELETE FROM employeerole_inspecttable
+        WHERE EMPLOYEEROLEID= #{employeeRoleId};
+    </delete>
+
+    <delete id="delete" parameterType="EmployeeRoleInspectTable">
+        DELETE FROM employeerole_inspecttable
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="EmployeeRoleInspectTable" resultMap="EmpRoleInspectTableResultMap">
+        SELECT
+        <include refid="employeeRoleinspectTable_fields" />
+        FROM employeerole_inspecttable WHERE ID=#{id};
+    </select>
+
+    <select id="findByInspectTableName" parameterType="java.lang.String" resultMap="EmpRoleInspectTableResultMap">
+        SELECT
+        <include refid="employeeRoleinspectTable_fields" />
+        FROM employeerole_inspecttable where InspectTableName=#{InspectTableName}
+    </select>
+
+    <select id="findByEmployeeRoleName" parameterType="java.lang.String" resultMap="EmpRoleInspectTableResultMap">
+        SELECT
+        <include refid="employeeRoleinspectTable_fields"/>
+        FROM employeerole_inspecttable WHERE employeRoleName=#{employeeRoleName}
+    </select>
+
+    <select id="getByEmployeeRoleId" parameterType="java.lang.Long" resultMap="EmpRoleInspectTableResultMap">
+        select
+        <include refid="employeeRoleinspectTable_fields"/>
+        from employeerole_inspecttable
+        where EMPLOYEEROLEID=#{employeeRoleId}
+    </select>
+
+</mapper>

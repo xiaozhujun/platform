@@ -19,12 +19,16 @@
             var data = {};
             data.name = $("#appName").val();
             data.description = $("#appDescription").val();
-            data.status = "启用";
+        /*    data.status = "启用";*/
             $.post($.URL.app.add,data,addAppCallback,"json");
         });
         function addAppCallback(data){
             if(data.code==200){
                 $.ligerDialog.success('操作成功');
+            }
+            else
+            {
+                $.ligerDialog.error(data.message);
             }
         }
     </script>

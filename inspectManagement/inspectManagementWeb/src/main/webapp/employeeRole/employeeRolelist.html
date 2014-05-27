@@ -17,6 +17,7 @@
         $(function(){
             $.get($.URL.authority.list,null,listAuthorityCallback,"json");
             $.post($.URL.employeeRole.list,null,listEmployeeRoleCallback,"json");
+            $.post($.URL.inspectTable.getList,null,inspectTableListCallback,"json");
         });
         var gridData = {};
         function listEmployeeRoleCallback(data){
@@ -40,6 +41,18 @@
 
         }
 
+        var inspectTableData=[];
+        function inspectTableListCallback(data){
+            if(data.code==200){
+                for(var i=0;i<data.data.length;i++){
+                    var inspectTable={};
+                    inspectTable.type =data.data[i].name;
+                    inspectTable.text=data.data[i].name;
+                    inspectTableData.push(inspectTable);
+                }
+            }
+        }
+
         var statusData = [{ type: '启用', text: '启用' },{ type: '封禁', text: '封禁' }];
 
 
@@ -57,6 +70,13 @@
                             },
                         render:function(item){
                             return item.authority;
+                        }
+                    },
+                    { display: '点检表', name: 'inspectTable', type: 'string',
+                        editor: { type:'select',data:inspectTableData,valueField:'type',textField:'text',
+                            isMultiSelect:true,isShowCheckBox:true},
+                        render:function(item){
+                            return item.inspectTable;
                         }
                     },
                     { display: '状态',name: 'status',
@@ -114,7 +134,7 @@
                 $.ligerDialog.success("修改成功");
             }
             else{
-                $.ligerDialog.error("修改失败！");
+                $.ligerDialog.error(data.message);
             }
         }
 

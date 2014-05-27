@@ -13,6 +13,15 @@ public class Menu {
     long level;
     String url;
     String parentname;
+    long pid;
+
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
 
     public long getId() {
         return id;

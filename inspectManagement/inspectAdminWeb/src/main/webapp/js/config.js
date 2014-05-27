@@ -17,7 +17,8 @@
              "add":"rs/authority/add",
              "update":"rs/authority/update",
              "delete":"rs/authority/delete",
-            "list":"rs/authority/list"
+            "list":"rs/authority/list",
+            "show":"rs/authority/show"
         },
         "appuserappauthority":{
               "add":"rs/userappauthority/add"
@@ -29,10 +30,21 @@
             "delete":"rs/app/delete"
         },
         "menu" :{
-            "add" :"rs/menu/add" ,
+            "addParentMenu" :"rs/menu/addParentMenu" ,
+            "addSonMenu" :"rs/menu/addSonMenu" ,
             /*"list":"rs/menu/list",*/
             "update":"rs/menu/update",
-            "delete":"rs/menu/delete"
+            "delete":"rs/menu/delete",
+            "list":"rs/menu/list",
+            "getParentInfoById": "rs/menu/getParentInfoById"
+
+
+        },
+        "authoritymenu" :{
+            "add" :"rs/authoritymenu/add" ,
+            "list":"rs/authoritymenu/list",
+            "update":"rs/authoritymenu/update",
+            "delete":"rs/authoritymenu/delete"
         }
     }
 })(jQuery);

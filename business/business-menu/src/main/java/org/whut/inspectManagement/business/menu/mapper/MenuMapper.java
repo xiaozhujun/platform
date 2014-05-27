@@ -1,6 +1,10 @@
 package org.whut.inspectManagement.business.menu.mapper;
 
+import org.whut.inspectManagement.business.menu.entity.Menu;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -11,5 +15,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  * To change this template use File | Settings | File Templates.
  */
 public interface MenuMapper extends AbstractMapper{
-
+    public List<Menu> findByCondition(Map<String,Object> map);
+    public Menu get(long id);
+    public String getNameById(long id);
 }

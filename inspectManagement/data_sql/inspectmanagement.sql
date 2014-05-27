@@ -372,6 +372,7 @@ CREATE TABLE `inspecttag` (
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pid` bigint(20) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `level` bigint(20) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,

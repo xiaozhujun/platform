@@ -33,7 +33,8 @@
             "list":"rs/inspectItem/list",
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete",
-            "addList":"rs/inspectItem/addList"
+            "addList":"rs/inspectItem/addList",
+            getInspectAreaIdByNames:"rs/inspectItem/getInspectAreaIdByNames"
         },
         "department":{
             "add":"rs/department/add",
@@ -60,6 +61,7 @@
             "update":"rs/inspectArea/update",
             "delete":"rs/inspectArea/delete",
             "list":"rs/inspectArea/list"
+
         },
         "inspectTag":{
             "add":"rs/inspectTag/add",

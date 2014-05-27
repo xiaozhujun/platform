@@ -62,14 +62,23 @@ public class InspectItemServiceWeb {
                 String jsonString= jsonArray.get(i).toString();
                 SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
                 InspectItem inspectItem=new InspectItem();
+                if(subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals("")){
+                    return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+                }
                 inspectItem.setName(subInspectItem.getName());
                 inspectItem.setNumber(subInspectItem.getNumber());
                 inspectItem.setCreatetime(date);
-                JSONObject jsonObject= (JSONObject) jsonArray.get(i);
-                String input=jsonObject.getString("isInput");
-                inspectItem.setInput(Integer.parseInt(input));
+              /*  JSONObject jsonObject= (JSONObject) jsonArray.get(i);
+                String input=jsonObject.getString("isInput");*/
+                inspectItem.setInput(Integer.parseInt(subInspectItem.getInput()));
                 inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
-                inspectItem.setInspectAreaId(inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType()));
+                long areaId;
+                try{
+                    areaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
+                }catch (Exception e){
+                    return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"设备类型不包含点检区域！");
+                }
+                inspectItem.setInspectAreaId(areaId);
                 inspectItem.setDescription(subInspectItem.getDescription());
                 inspectItem.setAppId(appId);
                 inspectItemList.add(inspectItem);
@@ -78,8 +87,9 @@ public class InspectItemServiceWeb {
             for(int j=0;j<jsonArray.length();j++){
                 String jsonString= jsonArray.get(j).toString();
                 SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-                JSONObject jsonObject= (JSONObject) jsonArray.get(j);
-                String input=jsonObject.getString("isInput");
+                /*JSONObject jsonObject= (JSONObject) jsonArray.get(j);
+                String input=jsonObject.getString("isInput");*/
+                String input=subInspectItem.getInput();
                 if(input.equals("0")){
                     String choices=subInspectItem.getChoiceValue();
                     String [] choicesList=choices.split(";");
@@ -185,5 +195,22 @@ public class InspectItemServiceWeb {
         }
         else
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作失败");
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getInspectAreaIdByNames")
+    @POST
+    public String getInspectAreaIdByNames(@FormParam("inspectTable") String inspectTable,@FormParam("inspectAreaName") String inspectAreaName,@FormParam("deviceTypeName") String deviceTypeName){
+        if (inspectTable==null||inspectTable.equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"所属点检表名不能为空！");
+        }else{
+            long appId=UserContext.currentUserAppId();
+            long areaId;
+            try {
+                areaId=inspectAreaService.getInspectAreaIdByNames(inspectAreaName,deviceTypeName,appId);
+            }catch (Exception e){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空或设备类型不包含点检区域！");
+            }
+            return JsonResultUtils.getObjectResultByStringAsDefault(areaId, JsonResultUtils.Code.SUCCESS);
+        }
     }
   }

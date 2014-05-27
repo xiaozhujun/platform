@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.deptAndEmployee.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeEmployeeRole;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -18,4 +19,5 @@ public interface EmployeeEmployeeRoleMapper extends AbstractMapper {
     public int deleteByEmployeeName(String employeeName);
     public List<EmployeeEmployeeRole> findByEmployeeRoleName(String EmployeeRoleName);
     public List<EmployeeEmployeeRole> getByEmployeeId(long employeeId);
+    public List<EmployeeEmployeeRole> getByEmployeeNameAndRole(@Param("employeeName") String employeeName,@Param("employeeRole") String employeeRole,@Param("appId") long appId);
 }

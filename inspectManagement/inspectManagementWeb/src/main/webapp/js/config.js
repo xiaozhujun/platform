@@ -72,7 +72,8 @@
             "add":"rs/employee/add",
             "update":"rs/employee/update",
             "delete":"rs/employee/delete",
-            "list":"rs/employee/list"
+            "list":"rs/employee/list",
+            "listEmployeeRoleByNameAndRole":"rs/employee/listEmployeeRoleByNameAndRole"
         },
         "employeeRole":{
             "add":"rs/employeeRole/add",

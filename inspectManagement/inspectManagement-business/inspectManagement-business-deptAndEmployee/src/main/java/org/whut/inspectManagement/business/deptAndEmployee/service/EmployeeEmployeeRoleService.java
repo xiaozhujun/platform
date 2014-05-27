@@ -56,4 +56,7 @@ public class EmployeeEmployeeRoleService {
     {
         return employeeEmployeeRoleMapper.getByEmployeeId(employeeId);
     }
+    public List<EmployeeEmployeeRole> getByEmployeeNameAndRole(String employeeName,String EmployeeRole,long appId){
+        return employeeEmployeeRoleMapper.getByEmployeeNameAndRole(employeeName, EmployeeRole, appId);
+    }
 }

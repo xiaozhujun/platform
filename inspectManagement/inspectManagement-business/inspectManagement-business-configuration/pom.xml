@@ -93,6 +93,12 @@
         </dependency>
 
         <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-deptAndEmployee</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>

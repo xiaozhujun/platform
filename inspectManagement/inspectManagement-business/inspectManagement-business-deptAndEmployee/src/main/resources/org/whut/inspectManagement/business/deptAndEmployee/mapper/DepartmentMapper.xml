@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.deptAndEmployee.mapper.DepartmentMapper">
+    <sql id="department_fields">
+        ID,NAME,STATUS,CREATETIME,DESCRIPTION,APPID
+            </sql>
+    <resultMap type="Department" id="departmentResultMapper">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="Department" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        department
+        (
+        <include refid="department_fields"/>
+        )
+        values (#{id},#{name},#{status},#{createtime},#{description},#{appId});
+        <selectKey keyProperty="id" resultType="long">
+            select LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Department">
+        update department
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="status!=null">STATUS=#{status},</if>
+            <if test="description!=null">DESCRIPTION=#{description}</if>
+        </set>
+        where ID=#{id};
+    </update>
+
+    <delete id="delete" parameterType="Department">
+        DELETE FROM department
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="name != null"> AND NAME=#{name}</if>
+        </where>
+    </delete>
+
+    <select id="findByCondition" parameterType="map" resultMap="departmentResultMapper">
+        SELECT
+        <include refid="department_fields"/>
+        FROM department
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="name!=null">AND NAME=#{name}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
+        </where>
+    </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from department
+        where NAME=#{name} and APPID=#{appId}
+    </select>
+
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select name
+        from department
+        where ID=#{id}
+    </select>
+
+</mapper>

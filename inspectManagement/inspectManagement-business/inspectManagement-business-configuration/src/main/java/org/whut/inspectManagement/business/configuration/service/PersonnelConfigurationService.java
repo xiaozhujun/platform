@@ -1,4 +1,7 @@
 package org.whut.inspectManagement.business.configuration.service;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeEmployeeRole;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,4 +11,8 @@ package org.whut.inspectManagement.business.configuration.service;
  * To change this template use File | Settings | File Templates.
  */
 public class PersonnelConfigurationService {
+    public String configurationConstruction(List<EmployeeEmployeeRole> list){
+        String result="";
+        return result;
+    }
 }

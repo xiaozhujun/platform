@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface InspectTableMapper extends AbstractMapper<InspectTable>{
     public List<InspectTable> findByCondition(Map<String,Object> map);
-    public List<InspectTable> getList();
+    public List<InspectTable> getListByAppId(long appId);
     public long getIdByNameAndAppId(@Param("name")String name,@Param("appId") long appId);
     public String getNameById(long id);
 }

@@ -57,8 +57,8 @@ public class InspectTableServiceWeb {
     @Path("/getList")
     @POST
     public String getList(){
-        List<InspectTable> list;
-        list=inspectTableService.getList();
+        long appId=UserContext.currentUserAppId();
+        List<InspectTable> list=inspectTableService.getListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

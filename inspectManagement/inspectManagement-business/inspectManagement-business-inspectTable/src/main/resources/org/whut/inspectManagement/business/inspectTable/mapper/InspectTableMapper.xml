@@ -26,9 +26,10 @@
         </selectKey>
     </insert>
 
-    <select id="getList"  resultMap="inspectTableResultMap">
+    <select id="getListByAppId" parameterType="java.lang.Long"  resultMap="inspectTableResultMap">
         SELECT *
         FROM inspecttable
+        WHERE appid=#{appId}
     </select>
 
     <update id="update" parameterType="inspectTable">

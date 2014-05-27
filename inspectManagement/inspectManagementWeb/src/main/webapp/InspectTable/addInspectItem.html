@@ -69,9 +69,16 @@
                 })
             }
         }
-        var initData={ Rows: [{ "__status": null, "ID": 1,"isInput": 0,"choiceValue":"正常;异常;无"}]}
+        var choices;
+        $.post($.URL.inspectChoice.getChoiceValues,null,choicesCallBack,"json");
+        function choicesCallBack(data){
+            if(data.code==200){
+               choices=data.data;
+            }
+        }
+        var initData={ Rows: [{ "__status": null, "ID": 1,"input": 0,"choiceValue":"正常;异常;无"}]}
 
-        var isInputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
+        var inputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
         var choicesData=[];
 
         $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
@@ -93,17 +100,17 @@
                 columns: [
                     {display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
                     {display:'所属点检表',name:'inspectTable',width:150,frozen:true},
-                    {display:'所属点检区域',name:'inspectArea',width:150,frozen:true},
                     {display:'设备类型',name:'deviceType',width:100,frozen:true},
+                    {display:'所属点检区域',name:'inspectArea',width:150,frozen:true},
                     { display: '名称', name: 'name',width:150,
                         editor: { type: 'text' }
                     },
                     { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
-                    { display: '是否输入', width: 50, name: 'isInput',
-                        editor: { type: 'select', data: isInputData, valueColumnName: 'id',displayColumnName:'text' },
+                    { display: '是否输入', width: 50, name: 'input',
+                        editor: { type: 'select', data: inputData, valueColumnName: 'id',displayColumnName:'text' },
                         render: function (item)
                         {
-                            if (parseInt(item.isInput) == 0) return '否';
+                            if (parseInt(item.input) == 0) return '否';
                             return '是';
                         }
                     },
@@ -146,20 +153,31 @@
         var newrowid = 1;
         function addNewRow()
         {
-            var row = manager.getSelectedRow();
-            //参数1:rowdata(非必填)
-            //参数2:插入的位置 Row Data
-            //参数3:之前或者之后(非必填)
-            manager.addRow({
-                ID: newrowid++,
-                name:'',
-                number:'',
-                isInput:"0",
-                choiceValue:'正常;异常;无',
-                inspectTable:$("#inspectTable").val(),
-                inspectArea:$("#inspectArea").val(),
-                deviceType:$("#deviceType").val()
-            }, row, document.getElementById("checked").checked);
+            var inspectTable=$("#inspectTable").val();
+            var areaName=$("#inspectArea").val();
+            var deviceTypeName=$("#deviceType").val();
+            $.post($.URL.inspectItem.getInspectAreaIdByNames,{"inspectTable":inspectTable,"inspectAreaName":areaName,"deviceTypeName":deviceTypeName},areaIdCallback,"json");
+            function areaIdCallback(data){
+                if(data.code==500){
+                    $.ligerDialog.error(data.message);
+                }
+                if(data.code==200){
+                    var row = manager.getSelectedRow();
+                    //参数1:rowdata(非必填)
+                    //参数2:插入的位置 Row Data
+                    //参数3:之前或者之后(非必填)
+                    manager.addRow({
+                        ID: newrowid++,
+                        name:'',
+                        number:'',
+                        input:"0",
+                        choiceValue:choices.toString(),
+                        inspectTable:$("#inspectTable").val(),
+                        inspectArea:$("#inspectArea").val(),
+                        deviceType:$("#deviceType").val()
+                    }, row, document.getElementById("checked").checked);
+                }
+            }
         }
         function submitBtn(){
             var data=JSON.stringify(manager.getData());
@@ -188,16 +206,17 @@
             <span class="l-edit-com">
                 <input name="inspectTable"  type="text" id="inspectTable" />
             </span>
-        <span style="margin-left: 160px;  width: 70px;float: left;margin-top: 2px">所属区域 ：</span>
-            <span style="width: 60px; margin-left: 10px; float: left;">
-                <input name="inspectArea" type="text" id="inspectArea" />
-            </span>
-        <span style="margin-left: 90px;  width: 70px;float: left;margin-top: 2px">设备类型 ：</span>
+        <span style="margin-left: 150px;  width: 60px;float: left;margin-top: 2px">设备类型:</span>
             <span style="width: 60px; margin-left: 10px; float: left;">
                 <input name="deviceType" type="text" id="deviceType"/>
             </span>
+        <span style="margin-left: 130px;  width: 60px;float: left;margin-top: 2px">所属区域:</span>
+            <span style="width: 60px; margin-left: 10px; float: left;">
+                <input name="inspectArea" type="text" id="inspectArea" />
+            </span>
+
         <span>
-            <div id="add" style="width:100px;float: left;margin-left: 150px" onclick="addNewRow()">添加</div>
+            <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">添加</div>
             <div id="delete" style="width:100px; float: left;margin-left: 40px" onclick="deleteRow()">删除</div>
             <div id="submitBtn" style="width: 100px;float: left;margin-left: 40px" onclick="submitBtn()">提交</div>
             <input type="checkbox" id="checked" style="display: none"/>

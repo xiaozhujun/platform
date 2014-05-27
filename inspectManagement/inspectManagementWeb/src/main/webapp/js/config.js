@@ -33,7 +33,8 @@
             "list":"rs/inspectItem/list",
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete",
-            "addList":"rs/inspectItem/addList"
+            "addList":"rs/inspectItem/addList",
+            getInspectAreaIdByNames:"rs/inspectItem/getInspectAreaIdByNames"
         },
         "department":{
             "add":"rs/department/add",
@@ -60,6 +61,7 @@
             "update":"rs/inspectArea/update",
             "delete":"rs/inspectArea/delete",
             "list":"rs/inspectArea/list"
+
         },
         "inspectTag":{
             "add":"rs/inspectTag/add",
@@ -72,7 +74,8 @@
             "add":"rs/employee/add",
             "update":"rs/employee/update",
             "delete":"rs/employee/delete",
-            "list":"rs/employee/list"
+            "list":"rs/employee/list",
+            "listEmployeeRoleByNameAndRole":"rs/employee/listEmployeeRoleByNameAndRole"
         },
         "employeeRole":{
             "add":"rs/employeeRole/add",
@@ -84,7 +87,8 @@
             "add":"rs/inspectChoice/add",
             "getList":"rs/inspectChoice/getList",
             "update":"rs/inspectChoice/update" ,
-            "delete":"rs/inspectChoice/delete"
+            "delete":"rs/inspectChoice/delete",
+            "getChoiceValues":"rs/inspectChoice/getChoiceValues"
         }
     }
 })(jQuery);

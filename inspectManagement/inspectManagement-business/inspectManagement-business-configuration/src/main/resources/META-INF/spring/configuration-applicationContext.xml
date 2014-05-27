@@ -3,4 +3,5 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="inspectTableDownloadService" class="org.whut.inspectManagement.business.configuration.service.InspectTableDownloadService" depends-on="mappers"/>
+    <bean id="personnelConfigurationService" class="org.whut.inspectManagement.business.configuration.service.PersonnelConfigurationService" depends-on="mappers"/>
 </beans>

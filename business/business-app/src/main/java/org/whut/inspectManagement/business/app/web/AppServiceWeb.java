@@ -31,10 +31,18 @@ public class AppServiceWeb {
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("status") String status){
-        if(name==null ||name.trim().equals("")|| description==null|| description.trim().equals("") ||status==null|| status.trim().equals("")){
+    public String add(@FormParam("name") String name,@FormParam("description") String description/*,@FormParam("status") String status*/){
+        if(name==null ||name.trim().equals("")|| description==null|| description.trim().equals("")/* ||status==null|| status.trim().equals("")*/){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
+        long id;
+        try{
+            id = appService.getIdByName(name);
+        }
+        catch (Exception ex){
+            id=0;
+        }
+        if(id==0){
         Date now=new Date();
         // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         // String createtime = dateFormat.format( now );
@@ -42,11 +50,15 @@ public class AppServiceWeb {
         App app=new App();
         app.setName(name);
         app.setDescription(description);
-        app.setStatus(status);
+        app.setStatus("启用");
         app.setCreatetime(now);
 
         appService.add(app);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else{
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "企业名已存在!");
+        }
     }
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")

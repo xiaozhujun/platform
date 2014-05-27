@@ -153,7 +153,7 @@ public class InspectItemServiceWeb {
         else {
             isInput=1;
         }
-         long inspectAreaId=inspectAreaService.getInspectAreaIdByAreaNameAndDeviceTypeName(subInspectItem.getInspectArea(),subInspectItem.getDeviceType());
+         long inspectAreaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
 
             InspectItem inspectItem=new InspectItem();
             inspectItem.setId(subInspectItem.getId());

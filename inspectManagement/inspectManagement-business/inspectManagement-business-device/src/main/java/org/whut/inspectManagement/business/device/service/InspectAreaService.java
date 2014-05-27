@@ -49,7 +49,5 @@ public class InspectAreaService {
     public String getAreaById(long inspectAreaId){
         return inspectAreaMapper.getAreaById(inspectAreaId);
     }
-    public long getInspectAreaIdByAreaNameAndDeviceTypeName( String areaName, String deviceTypeName){
-        return inspectAreaMapper.getInspectAreaIdByAreaNameAndDeviceTypeName(areaName,deviceTypeName);
-    }
+
 }

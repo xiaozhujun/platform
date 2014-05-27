@@ -3,6 +3,7 @@ package org.whut.inspectManagement.business.inspectTable.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectChoice;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapper;
+import org.whut.platform.business.user.security.UserContext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +18,8 @@ public class InspectChoiceService {
     @Autowired
     private InspectChoiceMapper inspectChoiceMapper;
 
-    public List<InspectChoice> getList(){
-         return inspectChoiceMapper.getList();
+    public List<InspectChoice> getList(long appId){
+         return inspectChoiceMapper.getListByAppId(appId);
     }
     public void add(InspectChoice inspectChoice){
          inspectChoiceMapper.add(inspectChoice);
@@ -34,5 +35,16 @@ public class InspectChoiceService {
     }
     public List<String> getChoiceValueById(long id){
         return inspectChoiceMapper.getChoiceValueById(id);
+    }
+    public String getInspectChoicesList(){
+        long appId= UserContext.currentUserAppId();
+        List<InspectChoice> inspectChoiceList=inspectChoiceMapper.getListByAppId(appId);
+        String choices="";
+        for (int i=0;i<inspectChoiceList.size()-1;i++){
+            String temp=inspectChoiceList.get(i).getChoiceValue()+";";
+            choices+=temp;
+        }
+        choices+=inspectChoiceList.get(inspectChoiceList.size()-1).getChoiceValue();
+        return choices;
     }
 }

@@ -14,12 +14,13 @@
     <modules>
         <module>inspectManagement-business-inspectTable</module>
         <module>inspectManagement-business-inspectResult</module>
-        <module>inspectManagement-business-Department</module>
+      <!--  <module>inspectManagement-business-Department</module>
         <module>inspectManagement-business-employee</module>
-        <module>inspectManagement-business-employeeRole</module>
+        <module>inspectManagement-business-employeeRole</module>-->
         <module>inspectManagement-business-device</module>
         <module>inspectManagement-business-configuration</module>
         <module>inspectManagement-business-inspectReport</module>
+        <module>inspectManagement-business-DeptAndEmployee</module>
     </modules>
 
 </project>

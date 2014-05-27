@@ -54,8 +54,8 @@ public class InspectChoiceServiceWeb {
     @Path("/getList")
     @POST
     public String getList(){
-        List<InspectChoice> list;
-        list=inspectChoiceService.getList();
+        long appId=UserContext.currentUserAppId();
+        List<InspectChoice> list=inspectChoiceService.getList(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -90,5 +90,11 @@ public class InspectChoiceServiceWeb {
         inspectChoiceService.delete(inspectChoice);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";+charset=UTF-8")
+    @Path("/getChoiceValues")
+    @POST
+    public String getChoiceValues(){
+        String choices=inspectChoiceService.getInspectChoicesList();
+        return JsonResultUtils.getObjectResultByStringAsDefault(choices,JsonResultUtils.Code.SUCCESS);
+    }
 }

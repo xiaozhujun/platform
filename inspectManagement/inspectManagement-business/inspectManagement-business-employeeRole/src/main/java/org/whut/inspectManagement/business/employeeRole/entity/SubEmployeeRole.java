@@ -16,6 +16,8 @@ public class SubEmployeeRole {
 
     private String authority;
 
+    private String inspectTable;
+
     private String status;
 
     private String description;
@@ -50,6 +52,14 @@ public class SubEmployeeRole {
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public String getInspectTable() {
+        return inspectTable;
+    }
+
+    public void setInspectTable(String inspectTable) {
+        this.inspectTable = inspectTable;
     }
 
     public String getDescription() {

@@ -15,6 +15,7 @@ import org.whut.inspectManagement.business.inspectTable.service.InspectItemChoic
 import org.whut.inspectManagement.business.inspectTable.service.InspectItemService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 
+
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -151,8 +152,9 @@ public class InspectItemServiceWeb {
             subInspectItem.setNumber(a.getNumber());
             subInspectItem.setCreatetime(a.getCreatetime());
             subInspectItem.setDescription(a.getDescription());
-            subInspectItem.setInspectArea("qq");
             subInspectItem.setInspectTable(inspectTableService.getNameById(a.getInspectTableId()));
+            subInspectItem.setInspectArea(inspectAreaService.getAreaById(a.getInspectAreaId()));
+            subInspectItem.setDeviceType(inspectAreaService.getDeviceTypeById(a.getInspectAreaId()));
             if(a.getInput()==0){
                 subInspectItem.setInput("否");
             }
@@ -180,13 +182,14 @@ public class InspectItemServiceWeb {
         else {
             isInput=1;
         }
+         long inspectAreaId=inspectAreaService.getInspectAreaIdByAreaNameAndDeviceTypeName(subInspectItem.getInspectArea(),subInspectItem.getDeviceType());
+
             InspectItem inspectItem=new InspectItem();
-        inspectItem.setId(subInspectItem.getId());
+            inspectItem.setId(subInspectItem.getId());
             inspectItem.setName(subInspectItem.getName());
             inspectItem.setDescription(subInspectItem.getDescription());
             inspectItem.setCreatetime(subInspectItem.getCreatetime());
-            //inspectItem.setInspectAreaId(subInspectItem.getInspectArea());
-            //inspectItem.setInspectAreaId(subInspectItem.getInspectAreaId());
+            inspectItem.setInspectAreaId(inspectAreaId);
             inspectItem.setNumber(subInspectItem.getNumber());
             inspectItem.setInput(isInput);
             inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable()));
@@ -216,8 +219,10 @@ public class InspectItemServiceWeb {
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString") String jsonString){
-        InspectItem inspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectItem.class);
-        inspectItemChoiceService.deleteByInspectItemId(inspectItem.getId());
+        SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+        inspectItemChoiceService.deleteByInspectItemId(subInspectItem.getId());
+        InspectItem inspectItem=new InspectItem();
+        inspectItem.setId(subInspectItem.getId());
         int result=inspectItemService.delete(inspectItem);
         if(result>=0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");

@@ -90,4 +90,10 @@
         FROM inspectarea ia,devicetype dt
         WHERE ia.name=#{areaName} AND dt.id=ia.deviceTypeId AND dt.name=#{deviceTypeName}
     </select>
+    <select id="getDeviceTypeById" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT dt.name
+        FROM devicetype dt,inspectarea ia
+        WHERE   ia.id=#{inspectAreaId} AND dt.id=ia.devicetypeid
+    </select>
+
 </mapper>

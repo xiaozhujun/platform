@@ -20,12 +20,12 @@
                 $.post($.URL.inspectChoice.add,data,addCallBack,"json") ;
             });
         });
-        function addCallBack(Data){
-            if(Data.code==200){
-                $.ligerDialog.success("修改成功");
+        function addCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success(data.message);
             }
             else{
-                $.ligerDialog.error("操作失败");
+                $.ligerDialog.error(data.message);
             }
         }
     </script>

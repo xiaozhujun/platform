@@ -34,9 +34,6 @@
                     { display: '点检选项',name: 'choiceValue',
                         editor: { type: 'text'}
                     },
-                    { display: 'appId', name: 'appId', type: 'long',
-                        editor: { type: 'long' }
-                    },
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -79,13 +76,12 @@
 
         function updateCallback(data){
             if(data.code==200){
-                $.ligerDialog.success("修改成功");
+                $.ligerDialog.success(data.message);
             }
             else{
-                $.ligerDialog.error("修改失败！");
+                $.ligerDialog.error(data.message);
             }
         }
-
         function deleteRow(rowid)
         {
             if (confirm('确定删除?'))

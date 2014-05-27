@@ -145,6 +145,17 @@ public class InspectItemServiceWeb {
         if(subInspectItem.getName()==null||subInspectItem.getInspectArea()==null||subInspectItem.getInspectTable()==null||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
+        long id;
+        try {
+            id=inspectItemService.getInspectItemIdByNameAndNumberAndAppId(subInspectItem.getName(),subInspectItem.getNumber(),appId);
+        }catch (Exception e){
+            id=0;
+        }
+        if (id!=0){
+            if(id!=subInspectItem.getId()) {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检项名点检编号已存在");
+            }
+        }
      //更新inspectItem表
        int isInput;
         if(subInspectItem.getInput().equals("否")){
@@ -153,7 +164,13 @@ public class InspectItemServiceWeb {
         else {
             isInput=1;
         }
-         long inspectAreaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
+        long inspectAreaId;
+        try{
+         inspectAreaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
+        }
+        catch (Exception e){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"该设备类型不存在此点检区域");
+        }
 
             InspectItem inspectItem=new InspectItem();
             inspectItem.setId(subInspectItem.getId());

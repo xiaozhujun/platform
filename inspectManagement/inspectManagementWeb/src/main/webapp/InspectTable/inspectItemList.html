@@ -83,19 +83,14 @@
                     { display: '点检项名',name: 'name',
                         editor: { type: 'text'}
                     },
-                    { display: '创建时间',name: 'createtime',width:100},
+                    { display: '编号',name: 'number',type:'string',
+                        editor: { type: 'text'}
+                    },
                     { display: '点检表',name: 'inspectTable',
                         editor: { type:'select',data:myData,valueField:'id',textField:'text'
-                            },
-                        render:function(item){
-                            return item.inspectTable;
-                        }
-                    },
-                    { display: '点检区域',name: 'inspectArea',
-                        editor: { type:'select',data:areaData,valueField:'id',textField:'text'
                         },
                         render:function(item){
-                            return item.inspectArea;
+                            return item.inspectTable;
                         }
                     },
                     { display: '设备类型',name: 'deviceType',
@@ -105,10 +100,19 @@
                             return item.deviceType;
                         }
                     },
-                    { display: '编号',name: 'number',type:'string',
-                        editor: { type: 'text'}
+
+                    { display: '点检区域',name: 'inspectArea',
+                        editor: { type:'select',data:areaData,valueField:'id',textField:'text'
+                        },
+                        render:function(item){
+                            return item.inspectArea;
+                        }
                     },
-                    { display: '是否输入',name: 'input',type:'string',
+
+
+
+
+                    { display: '是否输入',name: 'input',type:'string',width:70,
                         editor: { type:'select', data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
                         render:function(item){
                             return item.input;
@@ -124,6 +128,7 @@
                     { display: '描述',name: 'description',
                         editor: { type: 'text'}
                     },
+                    { display: '创建时间',name: 'createtime',width:100},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -169,7 +174,7 @@
                 $.ligerDialog.success("修改成功");
             }
             else{
-                $.ligerDialog.error("修改失败！");
+                $.ligerDialog.error(data.message);
             }
         }
 

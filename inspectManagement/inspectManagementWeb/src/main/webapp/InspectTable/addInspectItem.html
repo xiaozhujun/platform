@@ -69,6 +69,14 @@
                 })
             }
         }
+        var choices=[];
+        $.post($.URL.inspectChoice.getChoiceValues,null,choicesCallBack,"json");
+        function choicesCallBack(data){
+            if(data.code){
+                choices.push(data.data);
+                alert(choices);
+            }
+        }
         var initData={ Rows: [{ "__status": null, "ID": 1,"isInput": 0,"choiceValue":"正常;异常;无"}]}
 
         var isInputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
@@ -155,7 +163,7 @@
                 name:'',
                 number:'',
                 isInput:"0",
-                choiceValue:'正常;异常;无',
+                choiceValue:choices,
                 inspectTable:$("#inspectTable").val(),
                 inspectArea:$("#inspectArea").val(),
                 deviceType:$("#deviceType").val()

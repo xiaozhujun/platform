@@ -20,8 +20,8 @@ public class InspectTableService {
     public void add(InspectTable inspectTable){
         inspectTableMapper.add(inspectTable);
     }
-    public List<InspectTable> getList(){
-        return  inspectTableMapper.getList();
+    public List<InspectTable> getListByAppId(long appId){
+        return  inspectTableMapper.getListByAppId(appId);
     }
     public void update(InspectTable inspectTable){
         inspectTableMapper.update(inspectTable);

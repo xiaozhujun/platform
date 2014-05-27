@@ -84,7 +84,8 @@
             "add":"rs/inspectChoice/add",
             "getList":"rs/inspectChoice/getList",
             "update":"rs/inspectChoice/update" ,
-            "delete":"rs/inspectChoice/delete"
+            "delete":"rs/inspectChoice/delete",
+            "getChoiceValues":"rs/inspectChoice/getChoiceValues"
         }
     }
 })(jQuery);

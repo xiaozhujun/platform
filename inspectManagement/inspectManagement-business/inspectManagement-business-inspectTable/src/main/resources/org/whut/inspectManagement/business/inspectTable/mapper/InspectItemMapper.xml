@@ -78,10 +78,10 @@
             (#{item.id},#{item.name},#{item.description},#{item.createtime},#{item.inspectTableId},#{item.inspectAreaId},#{item.number},#{item.isInput},#{item.appId})
         </foreach>
     </insert>
-    <select id="getInspectItemIdByNameAndNumber" parameterType="map" resultType="java.lang.Long">
+    <select id="getInspectItemIdByNameAndNumberAndAppId" parameterType="map" resultType="java.lang.Long">
         SELECT id
         FROM inspectitem
-        WHERE name=#{name} AND number=#{number}
+        WHERE name=#{name} AND number=#{number} AND appid=#{appId}
     </select>
 
 </mapper>

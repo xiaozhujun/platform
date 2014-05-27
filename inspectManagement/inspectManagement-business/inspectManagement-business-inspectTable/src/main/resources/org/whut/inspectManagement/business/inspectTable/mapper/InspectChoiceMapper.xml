@@ -50,9 +50,10 @@
             (#{item.id},#{item.choiceValue},#{item.appId})
         </foreach>
     </insert>
-    <select id="getList" resultMap="InspectChoiceResultMap">
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="InspectChoiceResultMap">
         SELECT *
         FROM inspectchoice
+        WHERE appId=#{appId}
     </select>
     <select id="getIdByChoiceValueAndAppId" parameterType="map" resultType="java.lang.Long">
         SELECT id

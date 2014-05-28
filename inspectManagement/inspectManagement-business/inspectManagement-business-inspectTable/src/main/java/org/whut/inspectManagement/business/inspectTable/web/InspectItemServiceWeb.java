@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.inspectManagement.business.device.entity.InspectArea;
 import org.whut.inspectManagement.business.device.service.InspectAreaService;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
 import org.whut.inspectManagement.business.inspectTable.entity.SubInspectItem;
@@ -103,7 +104,10 @@ public class InspectItemServiceWeb {
                     }
                 }
             }
-            inspectItemChoiceService.addList(inspectItemChoiceList);
+            if(inspectItemChoiceList.size()!=0&&inspectItemChoiceList!=null){
+                inspectItemChoiceService.addList(inspectItemChoiceList);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -113,7 +117,8 @@ public class InspectItemServiceWeb {
     @Path("/list")
     @POST
     public String list(){
-        List<InspectItem> list=inspectItemService.list();
+        long appId=UserContext.currentUserAppId();
+        List<InspectItem> list=inspectItemService.getInspectItemListByAppId(appId);
         List<SubInspectItem> subList=new ArrayList<SubInspectItem>();
         for(InspectItem a:list){
             SubInspectItem subInspectItem=new SubInspectItem();
@@ -181,24 +186,30 @@ public class InspectItemServiceWeb {
             inspectItem.setNumber(subInspectItem.getNumber());
             inspectItem.setInput(isInput);
             inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
+           inspectItem.setAppId(appId);
 
 
         inspectItemService.update(inspectItem);
 
        //更新inspectItem_choice表
-
+        if(isInput==1){
+            inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
+        }
+        else {
         List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
         String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
-        inspectItemChoiceService.deleteByInspectItemId(subInspectItem.getId());
+        inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
             for(String choice:choiceValueArray){
                 InspectItemChoice inspectItemChoice=new InspectItemChoice();
                 inspectItemChoice.setInspectItemId(subInspectItem.getId());
                 inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValueAndAppId(choice,appId));
+                inspectItemChoice.setAppId(appId);
                 inspectItemChoicesList.add(inspectItemChoice);
             }
 
         if(!inspectItemChoicesList.isEmpty()) {
         inspectItemChoiceService.addList(inspectItemChoicesList);
+        }
         }
 
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -207,8 +218,9 @@ public class InspectItemServiceWeb {
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString") String jsonString){
+        long appId=UserContext.currentUserAppId();
         SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-        inspectItemChoiceService.deleteByInspectItemId(subInspectItem.getId());
+        inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
         InspectItem inspectItem=new InspectItem();
         inspectItem.setId(subInspectItem.getId());
         int result=inspectItemService.delete(inspectItem);
@@ -235,5 +247,12 @@ public class InspectItemServiceWeb {
             return JsonResultUtils.getObjectResultByStringAsDefault(areaId, JsonResultUtils.Code.SUCCESS);
         }
 
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UFT-8")
+    @Path("/getInspectAreaNameByDeviceTypeNameAndAppId")
+    @POST
+    public String getInspectAreaByDeviceTypeNameAndAppId(@FormParam("deviceType") long deviceType){
+        List<InspectArea> list=inspectAreaService.getInspectAreaByDeviceTypeId(deviceType);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
   }

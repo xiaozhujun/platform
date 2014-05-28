@@ -34,7 +34,8 @@
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete",
             "addList":"rs/inspectItem/addList",
-            getInspectAreaIdByNames:"rs/inspectItem/getInspectAreaIdByNames"
+            "getInspectAreaIdByNames":"rs/inspectItem/getInspectAreaIdByNames",
+            "getInspectAreaNameByDeviceTypeNameAndAppId":"rs/inspectItem/getInspectAreaNameByDeviceTypeNameAndAppId"
         },
         "department":{
             "add":"rs/department/add",

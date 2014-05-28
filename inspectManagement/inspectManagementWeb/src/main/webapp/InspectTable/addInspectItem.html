@@ -1,218 +1,238 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
-    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/core/inject.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $.post($.URL.inspectTable.getList,null,listCallBack,"json");
-        function listCallBack(data){
-            if(data.code==200){
-                var myData=[];
-                $.each(data.data,function(index,content){
-                    var j={};
-                    j["text"]=content.name;
-                    j["id"]=content.id;
-                    myData.push(j);
-                });
-                $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
-                    data:myData,
-                    width:200,
-                    valueField:'id',
-                    textField:'text',
-                    valueFieldID:'inspectTableSelect'
-                })
-            }
+<title></title>
+<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/core/inject.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $.post($.URL.inspectTable.getList,null,listCallBack,"json");
+    function listCallBack(data){
+        if(data.code==200){
+            var myData=[];
+            $.each(data.data,function(index,content){
+                var j={};
+                j["text"]=content.name;
+                j["id"]=content.id;
+                myData.push(j);
+            });
+            $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                data:myData,
+                width:200,
+                valueField:'id',
+                textField:'text',
+                valueFieldID:'inspectTableSelect'
+            })
         }
-        $.get($.URL.inspectArea.list,null,areaCallBack,"json");
-        function areaCallBack(data){
-            if(data.code==200){
-                var myData=[];
-                $.each(data.data,function(index,content){
-                    var j={};
-                    j["text"]=content.name;
-                    j["id"]=content.id;
-                    myData.push(j);
-                })
-                $("#inspectArea").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
-                    data:myData,width:120,
-                    valueField:'id',
-                    textField:'text',
-                    valueFieldID:'inspectAreaSelect'
-                })
-            }
+    }
+    $("#CB_inspectArea").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null});
+    $.get($.URL.deviceType.list,null,deviceCallback,"json");
+    function deviceCallback(data){
+        if(data.code=200){
+            var myData=[];
+            $.each(data.data,function(index,content){
+                var j={};
+                j['id']=content.id;
+                j['text']=content.name;
+                myData.push(j);
+            })
+            $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+                width:180,data:myData,valueField:'id',textField:'text',valueFieldID:'deviceTypeSelect',
+                onSelected:function(deviceType){
+                    if(deviceType!=null){
+                        $.post($.URL.inspectItem.getInspectAreaNameByDeviceTypeNameAndAppId,{"deviceType":deviceType},function areaCallback(data){
+                            if(data.code==200){
+                                var myData=[];
+                                $.each(data.data,function(index,content){
+                                    var j={};
+                                    j["text"]=content.name;
+                                    j["id"]=content.id;
+                                    myData.push(j);
+                                })
+                                liger.get("CB_inspectArea").setData(myData);
+                            }
+                        },"json");
+                    }
+                }
+            })
         }
-        $.get($.URL.deviceType.list,null,deviceCallback,"json");
-        function deviceCallback(data){
-            if(data.code=200){
-                var myData=[];
-                $.each(data.data,function(index,content){
-                    var j={};
-                    j['id']=content.id;
-                    j['text']=content.name;
-                    myData.push(j);
-                })
-                $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
-                width:180,data:myData,valueField:'id',textField:'text',valueFieldID:'deviceTypeSelect'
-                })
-            }
-        }
-        var choices;
-        $.post($.URL.inspectChoice.getChoiceValues,null,choicesCallBack,"json");
-        function choicesCallBack(data){
-            if(data.code==200){
-               choices=data.data;
-            }
-        }
-        var initData={ Rows: [{ "__status": null, "ID": 1,"input": 0,"choiceValue":"正常;异常;无"}]}
+    }
+    /*        var deviceType=$("#deviceType").val();
 
-        var inputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
-        var choicesData=[];
+     $.post($.URL.inspectItem.getInspectAreaNameByDeviceTypeNameAndAppId,{"deviceType":deviceType},areaCallBack,"json");
+     function areaCallBack(data){
+     if(data.code==200){
+     var myData=[];
+     $.each(data.data,function(index,content){
+     var j={};
+     j["text"]=content.name;
+     j["id"]=content.id;
+     myData.push(j);
+     })
+     $("#inspectArea").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+     data:myData,width:120,
+     valueField:'id',
+     textField:'text',
+     valueFieldID:'inspectAreaSelect'
+     })
+     }
+     }*/
 
-        $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
-        function  choiceListCallBack(data){
-            if(data.code==200){
-                $.each(data.data,function(index,content){
-                    var ch={};
-                    ch['id']=content.choiceValue;
-                    ch['text']=content.choiceValue;
-                    choicesData.push(ch);
-                })
-            }
+    var choices;
+    $.post($.URL.inspectChoice.getChoiceValues,null,choicesCallBack,"json");
+    function choicesCallBack(data){
+        if(data.code==200){
+            choices=data.data;
         }
-        $(f_initGrid);
-        var manager, g;
-        function f_initGrid()
-        {
-            g =  manager = $("#maingrid").ligerGrid({
-                columns: [
-                    {display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
-                    {display:'所属点检表',name:'inspectTable',width:150,frozen:true},
-                    {display:'设备类型',name:'deviceType',width:100,frozen:true},
-                    {display:'所属点检区域',name:'inspectArea',width:150,frozen:true},
-                    { display: '名称', name: 'name',width:150,
-                        editor: { type: 'text' }
-                    },
-                    { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
-                    { display: '是否输入', width: 50, name: 'input',
-                        editor: { type: 'select', data: inputData, valueColumnName: 'id',displayColumnName:'text' },
-                        render: function (item)
-                        {
-                            if (parseInt(item.input) == 0) return '否';
-                            return '是';
-                        }
-                    },
-                    { display: '点检选值', name: 'choiceValue',width:150,
-                        editor: { type: 'select', data: choicesData,valueColumnName:'id',displayColumnName:'text'
-                        ,isMultiSelect:true,isShowCheckBox:true},
-                        render: function (item){
-                            return item.choiceValue;
-                        }
-                    },
-                    {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
-                ],
-                onSelectRow: function (rowdata, rowindex)
-                {
-                    $("#txtrowindex").val(rowindex);
+    }
+    var initData={ Rows: [{ "__status": null, "ID": 1,"input": 0,"choiceValue":"正常;异常;无"}]}
+
+    var inputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
+    var choicesData=[];
+
+    $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
+    function  choiceListCallBack(data){
+        if(data.code==200){
+            $.each(data.data,function(index,content){
+                var ch={};
+                ch['id']=content.choiceValue;
+                ch['text']=content.choiceValue;
+                choicesData.push(ch);
+            })
+        }
+    }
+    $(f_initGrid);
+    var manager, g;
+    function f_initGrid()
+    {
+        g =  manager = $("#maingrid").ligerGrid({
+            columns: [
+                {display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
+                {display:'所属点检表',name:'inspectTable',width:150,frozen:true},
+                {display:'设备类型',name:'deviceType',width:100,frozen:true},
+                {display:'所属点检区域',name:'inspectArea',width:150,frozen:true},
+                { display: '名称', name: 'name',width:150,
+                    editor: { type: 'text' }
                 },
-                enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
-                data:null
-            });
+                { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
+                { display: '是否输入', width: 50, name: 'input',
+                    editor: { type: 'select', data: inputData, valueColumnName: 'id',displayColumnName:'text' },
+                    render: function (item)
+                    {
+                        if (parseInt(item.input) == 0) return '否';
+                        return '是';
+                    }
+                },
+                { display: '点检选值', name: 'choiceValue',width:150,
+                    editor: { type: 'select', data: choicesData,valueColumnName:'id',displayColumnName:'text'
+                        ,isMultiSelect:true,isShowCheckBox:true},
+                    render: function (item){
+                        return item.choiceValue;
+                    }
+                },
+                {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
+            ],
+            onSelectRow: function (rowdata, rowindex)
+            {
+                $("#txtrowindex").val(rowindex);
+            },
+            enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
+            data:null
+        });
 
-            window.dialog = $.ligerDialog.open({
-                isResize: true,
-                isHidden: true,
-                target: $("<div id='message' class='message'></div>"),
-                buttons: [
-                    { text: '关闭', onclick: function (i, d) { d.hide(); } }
-                ]
-            });
-            dialog.hide();
-            window.alert = function (message) {
-                $("#message").html(message.toString());
-                dialog.show();
-            }
+        window.dialog = $.ligerDialog.open({
+            isResize: true,
+            isHidden: true,
+            target: $("<div id='message' class='message'></div>"),
+            buttons: [
+                { text: '关闭', onclick: function (i, d) { d.hide(); } }
+            ]
+        });
+        dialog.hide();
+        window.alert = function (message) {
+            $("#message").html(message.toString());
+            dialog.show();
         }
+    }
 
-        function deleteRow()
-        {
-            manager.deleteSelectedRow();
-        }
-        var newrowid = 1;
-        function addNewRow()
-        {
-            var inspectTable=$("#inspectTable").val();
-            var areaName=$("#inspectArea").val();
-            var deviceTypeName=$("#deviceType").val();
-            $.post($.URL.inspectItem.getInspectAreaIdByNames,{"inspectTable":inspectTable,"inspectAreaName":areaName,"deviceTypeName":deviceTypeName},areaIdCallback,"json");
-            function areaIdCallback(data){
-                if(data.code==500){
-                    $.ligerDialog.error(data.message);
-                }
-                if(data.code==200){
-                    var row = manager.getSelectedRow();
-                    //参数1:rowdata(非必填)
-                    //参数2:插入的位置 Row Data
-                    //参数3:之前或者之后(非必填)
-                    manager.addRow({
-                        ID: newrowid++,
-                        name:'',
-                        number:'',
-                        input:"0",
-                        choiceValue:choices.toString(),
-                        inspectTable:$("#inspectTable").val(),
-                        inspectArea:$("#inspectArea").val(),
-                        deviceType:$("#deviceType").val()
-                    }, row, document.getElementById("checked").checked);
-                }
-            }
-        }
-        function submitBtn(){
-            var data=JSON.stringify(manager.getData());
-            $.post($.URL.inspectItem.addList,{"jsonStringList":data},addCallback,"json");
-        }
-        function addCallback(data){
-            if(data.code==200){
-                $.ligerDialog.success(data.message);
-            }else{
+    function deleteRow()
+    {
+        manager.deleteSelectedRow();
+    }
+    var newrowid = 1;
+    function addNewRow()
+    {
+        var inspectTable=$("#inspectTable").val();
+        var areaName=$("#CB_inspectArea").val();
+        var deviceTypeName=$("#deviceType").val();
+        $.post($.URL.inspectItem.getInspectAreaIdByNames,{"inspectTable":inspectTable,"inspectAreaName":areaName,"deviceTypeName":deviceTypeName},areaIdCallback,"json");
+        function areaIdCallback(data){
+            if(data.code==500){
                 $.ligerDialog.error(data.message);
             }
+            if(data.code==200){
+                var row = manager.getSelectedRow();
+                //参数1:rowdata(非必填)
+                //参数2:插入的位置 Row Data
+                //参数3:之前或者之后(非必填)
+                manager.addRow({
+                    ID: newrowid++,
+                    name:'',
+                    number:'',
+                    input:"0",
+                    choiceValue:choices.toString(),
+                    inspectTable:$("#inspectTable").val(),
+                    inspectArea:$("#CB_inspectArea").val(),
+                    deviceType:$("#deviceType").val()
+                }, row, document.getElementById("checked").checked);
+            }
         }
-        $("#delete").ligerButton({});
-        $("#add").ligerButton({});
-        $("#submitBtn").ligerButton({});
-    </script>
-    <style type="text/css">
-        .l-div {height: 30px;margin-top: 10px}
-        .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
-        .l-edit-com{width: 60px; margin-left: 10px; float: left;}
-    </style>
+    }
+    function submitBtn(){
+        var data=JSON.stringify(manager.getData());
+        $.post($.URL.inspectItem.addList,{"jsonStringList":data},addCallback,"json");
+    }
+    function addCallback(data){
+        if(data.code==200){
+            $.ligerDialog.success(data.message);
+        }else{
+            $.ligerDialog.error(data.message);
+        }
+    }
+    $("#delete").ligerButton({});
+    $("#add").ligerButton({});
+    $("#submitBtn").ligerButton({});
+</script>
+<style type="text/css">
+    .l-div {height: 30px;margin-top: 10px}
+    .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
+    .l-edit-com{width: 60px; margin-left: 10px; float: left;}
+</style>
 </head>
 <body style="padding:10px">
-    <div class="l-div">
-        <span class="l-span-edit-com">所属点检表:</span>
+<div class="l-div">
+    <span class="l-span-edit-com">所属点检表:</span>
             <span class="l-edit-com">
                 <input name="inspectTable"  type="text" id="inspectTable" />
             </span>
-        <span style="margin-left: 150px;  width: 60px;float: left;margin-top: 2px">设备类型:</span>
+    <span style="margin-left: 150px;  width: 60px;float: left;margin-top: 2px">设备类型:</span>
             <span style="width: 60px; margin-left: 10px; float: left;">
                 <input name="deviceType" type="text" id="deviceType"/>
             </span>
-        <span style="margin-left: 130px;  width: 60px;float: left;margin-top: 2px">所属区域:</span>
+    <span style="margin-left: 130px;  width: 60px;float: left;margin-top: 2px">所属区域:</span>
             <span style="width: 60px; margin-left: 10px; float: left;">
-                <input name="inspectArea" type="text" id="inspectArea" />
+                <input name="inspectArea" type="text" id="CB_inspectArea" />
             </span>
 
         <span>
@@ -221,16 +241,16 @@
             <div id="submitBtn" style="width: 100px;float: left;margin-left: 40px" onclick="submitBtn()">提交</div>
             <input type="checkbox" id="checked" style="display: none"/>
         </span>
-    </div>
-    <div class="l-clear"></div>
-    <div id="maingrid" style="margin-top:5px"></div> <br />
-    <br />
+</div>
+<div class="l-clear"></div>
+<div id="maingrid" style="margin-top:5px"></div> <br />
+<br />
 
-    <div style="display:none;">
-        <!-- g data total ttt -->
-    </div>
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
 
-    <div style="display:none">
-        <!--  数据统计代码 --></div>
+<div style="display:none">
+    <!--  数据统计代码 --></div>
 </body>
 </html>

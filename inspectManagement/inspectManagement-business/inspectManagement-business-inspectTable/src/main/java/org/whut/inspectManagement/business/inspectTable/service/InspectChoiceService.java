@@ -33,7 +33,7 @@ public class InspectChoiceService {
     public long getIdByChoiceValueAndAppId(String choiceValue,long appId){
         return inspectChoiceMapper.getIdByChoiceValueAndAppId(choiceValue, appId);
     }
-    public List<String> getChoiceValueById(long id){
+    public String getChoiceValueById(long id){
         return inspectChoiceMapper.getChoiceValueById(id);
     }
     public String getInspectChoicesList(){

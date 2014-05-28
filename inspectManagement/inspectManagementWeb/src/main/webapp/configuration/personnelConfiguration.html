@@ -43,7 +43,6 @@
         });
         var gridData={};
         function  listCallback(data){
-            alert(data.data);
             if(data.code==200){
                 gridData.Rows=data.data;
                 gridData.Total=data.data.length;
@@ -70,7 +69,6 @@
              }
              else{
                  var data = $.toJSON(selectedRows);
-                 alert(data);
                  window.location.href="rs/personnelConfiguration/importPersonnelConfiguration/"+encodeURI(data);
              }
         });

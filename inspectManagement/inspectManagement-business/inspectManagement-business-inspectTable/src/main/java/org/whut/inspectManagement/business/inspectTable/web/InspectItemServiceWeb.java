@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.inspectManagement.business.device.entity.InspectArea;
 import org.whut.inspectManagement.business.device.service.InspectAreaService;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
 import org.whut.inspectManagement.business.inspectTable.entity.SubInspectItem;
@@ -103,7 +104,10 @@ public class InspectItemServiceWeb {
                     }
                 }
             }
-            inspectItemChoiceService.addList(inspectItemChoiceList);
+            if(inspectItemChoiceList.size()!=0&&inspectItemChoiceList!=null){
+                inspectItemChoiceService.addList(inspectItemChoiceList);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -235,5 +239,12 @@ public class InspectItemServiceWeb {
             return JsonResultUtils.getObjectResultByStringAsDefault(areaId, JsonResultUtils.Code.SUCCESS);
         }
 
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UFT-8")
+    @Path("/getInspectAreaNameByDeviceTypeNameAndAppId")
+    @POST
+    public String getInspectAreaByDeviceTypeNameAndAppId(@FormParam("deviceType") long deviceType){
+        List<InspectArea> list=inspectAreaService.getInspectAreaByDeviceTypeId(deviceType);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
   }

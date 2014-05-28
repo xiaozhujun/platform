@@ -13,4 +13,5 @@ public interface EmployeeMapper extends AbstractMapper<Employee> {
     public long getIdByName(String name);
     public List<Employee> findByCondition(Map<String, Object> map);
     public Employee getById(long id);
+    public List<Employee> getListByAppId(long appId);
 }

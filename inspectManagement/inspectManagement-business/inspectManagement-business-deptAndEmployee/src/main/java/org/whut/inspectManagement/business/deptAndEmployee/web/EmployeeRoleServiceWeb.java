@@ -9,8 +9,11 @@ import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleS
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 import org.whut.platform.business.user.entity.User;
+import org.whut.platform.business.user.entity.UserAuthority;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.AuthorityService;
+import org.whut.platform.business.user.service.UserAuthorityService;
+import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -48,6 +51,10 @@ public class EmployeeRoleServiceWeb {
     private InspectTableService inspectTableService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserAuthorityService userAuthorityService;
 
 
 
@@ -107,9 +114,10 @@ public class EmployeeRoleServiceWeb {
         if(subEmployeeRole.getName()==null||subEmployeeRole.getAppId()==0||subEmployeeRole.getName().equals("")||subEmployeeRole.getStatus()==null){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
+        long appId=UserContext.currentUserAppId();
         long id;
         try {
-            id =employeeRoleService.getIdByName(subEmployeeRole.getName(),subEmployeeRole.getAppId());
+            id =employeeRoleService.getIdByName(subEmployeeRole.getName(),appId);
         } catch (Exception ex) {
             id = 0;
         }
@@ -118,16 +126,20 @@ public class EmployeeRoleServiceWeb {
             employeeRoleInspectTableService.deleteByEmployeeRoleId(subEmployeeRole.getId());
             String[] inspectTableNameArray=subEmployeeRole.getInspectTable().split(";");
             for(int i=0;i<inspectTableNameArray.length;i++){
-                long inspectTableId = inspectTableService.getIdByName(inspectTableNameArray[i],subEmployeeRole.getAppId());
+                long inspectTableId = inspectTableService.getIdByName(inspectTableNameArray[i],appId);
                 EmployeeRoleInspectTable employeeRoleInspectTable=new EmployeeRoleInspectTable();
                 employeeRoleInspectTable.setEmployeeRoleName(subEmployeeRole.getName());
                 employeeRoleInspectTable.setEmployeeRoleId(subEmployeeRole.getId());
-                employeeRoleInspectTable.setAppId(subEmployeeRole.getAppId());
+                employeeRoleInspectTable.setAppId(appId);
                 employeeRoleInspectTable.setInspectTableId(inspectTableId);
                 employeeRoleInspectTable.setInspectTableName(inspectTableNameArray[i]);
                 employeeRoleInspectTableService.add(employeeRoleInspectTable);
             }
             EmployeeRole employeeRole= employeeRoleService.getById(subEmployeeRole.getId());
+            //判断角色的权限是否更改
+            boolean isAuthorityChanged=false;
+            if(subEmployeeRole.getAuthority()!=authorityService.getNameById(employeeRole.getAuthorityId()))
+                isAuthorityChanged=true;
             employeeRole.setAuthorityId(authorityService.getIdByName(subEmployeeRole.getAuthority()));
             employeeRole.setName(subEmployeeRole.getName());
             employeeRole.setStatus(subEmployeeRole.getStatus());
@@ -159,7 +171,77 @@ public class EmployeeRoleServiceWeb {
                     employeeService.update(employee);
                 }
             }
+            //角色的权限如果更改就要更改对应user的权限
+            if(isAuthorityChanged)
+            {
+                List<Long> employeeIdlist=new ArrayList<Long>();
+                //获取所有拥有该角色的员工编号
+                for(EmployeeEmployeeRole employeeEmployeeRole:employeeEmployeeRoleList)
+                {
+                    boolean isEmployeeIdExist=false;
+                    for(int i=0;i<employeeIdlist.toArray().length;i++)
+                    {
+                        if(employeeIdlist.get(i)==employeeEmployeeRole.getEmployeeId())
+                            isEmployeeIdExist=true;
+                    }
+                    if(!isEmployeeIdExist)
+                        employeeIdlist.add(employeeEmployeeRole.getEmployeeId());
+                }
+                for(int i=0;i<employeeIdlist.toArray().length;i++)
+                {
+                    long userId=employeeService.getById(employeeIdlist.get(i)).getUserId();
+                    //原先user的权限列表
+                    List<UserAuthority> userAuthorityList=userAuthorityService.findByUserId(userId);
+                    String[] employeeRolelist=employeeService.getById(employeeIdlist.get(i)).getEmployeeRoleName().split(";");
+                    //现在user的应该有的权限列表
+                    ArrayList<Long> authorityIdList=new ArrayList<Long>();
+                    for(int j=0;j<employeeRolelist.length;j++)
+                    {
+                        boolean isExist=false;
+                        employeeRole= employeeRoleService.getByName(employeeRolelist[j],appId);
+                        for(long aid:authorityIdList)
+                        {
+                            if(aid==employeeRole.getAuthorityId())
+                                isExist=true;
+                        }
+                        if(!isExist)
+                            authorityIdList.add(employeeRole.getAuthorityId());
+                    }
+                    //判断旧的权限在新的中不存在，如果不存在就删除
+                    for(UserAuthority userAuthority:userAuthorityList)
+                    {
+                        boolean isAuthorityExist=false;
+                        for(int j=0;j<authorityIdList.toArray().length;j++)
+                        {
+                            if(userAuthority.getAuthorityId()==authorityIdList.get(j))
+                                isAuthorityExist=true;
+                        }
+                        if(!isAuthorityExist)
+                            userAuthorityService.delete(userAuthority);
+                    }
+                    //判断新的在旧的中是否不存在，如果不存在就添加
+                    for(int j=0;j<authorityIdList.toArray().length;j++)
+                    {
+                        boolean isAuthorityNotExist=true;
+                        for(UserAuthority userAuthority:userAuthorityList)
+                        {
+                            if(userAuthority.getAuthorityId()==authorityIdList.get(j))
+                                isAuthorityNotExist=false;
+                        }
+                        if(isAuthorityNotExist)
+                        {
 
+                            UserAuthority userAuthority=new UserAuthority();
+                            userAuthority.setAppId(appId);
+                            userAuthority.setAuthorityId(authorityIdList.get(i));
+                            userAuthority.setAuthorityName(authorityService.getNameById(authorityIdList.get(i)));
+                            userAuthority.setUserId(userId);
+                            userAuthority.setUserName(userService.getById(userId).getName());
+                            userAuthorityService.add(userAuthority);
+                        }
+                    }
+                }
+            }
 
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }

@@ -22,4 +22,6 @@ public interface EmployeeRoleMapper extends AbstractMapper{
     public EmployeeRole getById(long id);
 
     public EmployeeRole getByName(@Param("name") String name, @Param("appId") long appId);
+
+    public List<EmployeeRole> getListByAppId(long appId);
 }

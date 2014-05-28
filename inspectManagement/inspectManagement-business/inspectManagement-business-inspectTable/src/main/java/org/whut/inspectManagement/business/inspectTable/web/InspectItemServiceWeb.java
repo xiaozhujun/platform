@@ -234,5 +234,6 @@ public class InspectItemServiceWeb {
             }
             return JsonResultUtils.getObjectResultByStringAsDefault(areaId, JsonResultUtils.Code.SUCCESS);
         }
+
     }
   }

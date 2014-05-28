@@ -9,6 +9,7 @@ import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleI
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 import org.whut.platform.business.user.entity.User;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.AuthorityService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -49,12 +50,13 @@ public class EmployeeRoleServiceWeb {
     @Produces( MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authority") String authority,@FormParam("appid") long appid,@FormParam("inspectTable") String inspectTable)
+    public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authority") String authority,@FormParam("inspectTable") String inspectTable)
     {
-        if(name==null||name.trim().equals("")||authority==null||inspectTable==null)
+        if(name==null||name.trim().equals("")||authority==null||inspectTable==null||inspectTable.equals(""))
         {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
+        long appid=UserContext.currentUserAppId();
         long id;
         try
         {
@@ -161,9 +163,9 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String list()
     {
-        List<EmployeeRole> employeeRoleList=employeeRoleService.list();
+        long appId= UserContext.currentUserAppId();
+        List<EmployeeRole> employeeRoleList=employeeRoleService.getListByAppId(appId);
         List<SubEmployeeRole> subEmployeeRoleList=new ArrayList<SubEmployeeRole>();
-
         for(EmployeeRole e:employeeRoleList)
         {
             List<EmployeeRoleInspectTable> employeeRoleInspectTablesList=employeeRoleInspectTableService.getByEmployeeRoleId(e.getId());

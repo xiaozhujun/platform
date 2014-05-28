@@ -55,11 +55,12 @@ public class EmployeeServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name, @FormParam("password") String password, @FormParam("sex") String sex, @FormParam("departmentName") String departmentName, @FormParam("status") String status, @FormParam("employeeRoleName") String employeeRoleName, @FormParam("appId") long appId) {
+    public String add(@FormParam("name") String name, @FormParam("password") String password, @FormParam("sex") String sex, @FormParam("departmentName") String departmentName, @FormParam("status") String status, @FormParam("employeeRoleName") String employeeRoleName) {
         if (name == null || name.trim().equals("") || password == null || password.trim().equals("") || sex == null || sex.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
         long id;
+        long appId=UserContext.currentUserAppId();
         try {
             id = userService.getIdByName(name);
         } catch (Exception ex) {
@@ -160,7 +161,7 @@ public class EmployeeServiceWeb {
         if (id == 0||id==subEmployee.getId())
         {
         long userId =employeeService.getById(subEmployee.getId()).getUserId();
-        long appId=employeeService.getById(subEmployee.getId()).getAppId();
+        long appId=UserContext.currentUserAppId();
         String userName=  subEmployee.getName();
         String[] employeeRoleArray=subEmployee.getEmployeeRoleName().split(";");
         String role="";
@@ -236,8 +237,10 @@ public class EmployeeServiceWeb {
     @POST
     public String delete(@FormParam("jsonString") String jsonString)
     {
-        Employee employee=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Employee.class);
+        long appId=UserContext.currentUserAppId();
+        SubEmployee subEmployee=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubEmployee.class);
         User user = new User();
+        Employee employee=employeeService.getById(subEmployee.getId());
         long userId =employee.getUserId();
         String userName=employee.getName();
         user.setId(userId);
@@ -255,7 +258,8 @@ public class EmployeeServiceWeb {
     @Path("/list")
     @POST
     public String list(){
-        List<Employee> list=employeeService.list();
+        long appId= UserContext.currentUserAppId();
+        List<Employee> list=employeeService.getListByAppId(appId);
         List<SubEmployee> subEmployeeList=new ArrayList<SubEmployee>();
         for(Employee employee:list){
             SubEmployee subEmployee=new SubEmployee();

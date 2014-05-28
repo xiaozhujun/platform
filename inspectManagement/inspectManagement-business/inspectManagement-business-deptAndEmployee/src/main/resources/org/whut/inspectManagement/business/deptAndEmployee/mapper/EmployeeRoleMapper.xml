@@ -81,4 +81,11 @@
         where NAME=#{name} and APPID=#{appId}
     </select>
 
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="employeeRoleResultMapper">
+        select
+        <include refid="employeeRole_fields"/>
+        from employeerole
+        where APPID=#{appId}
+    </select>
+
 </mapper>

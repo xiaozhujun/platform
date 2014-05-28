@@ -29,4 +29,9 @@ public class EmployeeService {
     {
         return employeeMapper.getById(id);
     }
+
+    public List<Employee> getListByAppId(long appId)
+    {
+        return employeeMapper.getListByAppId(appId);
+    }
 }

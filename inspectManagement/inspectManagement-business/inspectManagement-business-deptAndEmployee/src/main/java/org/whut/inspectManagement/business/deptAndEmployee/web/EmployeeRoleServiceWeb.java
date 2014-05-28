@@ -2,11 +2,11 @@ package org.whut.inspectManagement.business.deptAndEmployee.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRole;
-import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRoleInspectTable;
-import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployeeRole;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.*;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeEmployeeRoleService;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleInspectTableService;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleService;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.security.UserContext;
@@ -39,11 +39,15 @@ public class EmployeeRoleServiceWeb {
     @Autowired
     private EmployeeRoleService employeeRoleService;
     @Autowired
+    private EmployeeEmployeeRoleService employeeEmployeeRoleService;
+    @Autowired
     private AuthorityService authorityService;
     @Autowired
     private EmployeeRoleInspectTableService employeeRoleInspectTableService;
     @Autowired
     private InspectTableService inspectTableService;
+    @Autowired
+    private EmployeeService employeeService;
 
 
 
@@ -111,26 +115,53 @@ public class EmployeeRoleServiceWeb {
         }
         if (id == 0||id==subEmployeeRole.getId())
         {
-        employeeRoleInspectTableService.deleteByEmployeeRoleId(subEmployeeRole.getId());
-        String[] inspectTableNameArray=subEmployeeRole.getInspectTable().split(";");
-           for(int i=0;i<inspectTableNameArray.length;i++){
-            long inspectTableId = inspectTableService.getIdByName(inspectTableNameArray[i],subEmployeeRole.getAppId());
-            EmployeeRoleInspectTable employeeRoleInspectTable=new EmployeeRoleInspectTable();
-            employeeRoleInspectTable.setEmployeeRoleName(subEmployeeRole.getName());
-            employeeRoleInspectTable.setEmployeeRoleId(subEmployeeRole.getId());
-            employeeRoleInspectTable.setAppId(subEmployeeRole.getAppId());
-            employeeRoleInspectTable.setInspectTableId(inspectTableId);
-            employeeRoleInspectTable.setInspectTableName(inspectTableNameArray[i]);
-            employeeRoleInspectTableService.add(employeeRoleInspectTable);
+            employeeRoleInspectTableService.deleteByEmployeeRoleId(subEmployeeRole.getId());
+            String[] inspectTableNameArray=subEmployeeRole.getInspectTable().split(";");
+            for(int i=0;i<inspectTableNameArray.length;i++){
+                long inspectTableId = inspectTableService.getIdByName(inspectTableNameArray[i],subEmployeeRole.getAppId());
+                EmployeeRoleInspectTable employeeRoleInspectTable=new EmployeeRoleInspectTable();
+                employeeRoleInspectTable.setEmployeeRoleName(subEmployeeRole.getName());
+                employeeRoleInspectTable.setEmployeeRoleId(subEmployeeRole.getId());
+                employeeRoleInspectTable.setAppId(subEmployeeRole.getAppId());
+                employeeRoleInspectTable.setInspectTableId(inspectTableId);
+                employeeRoleInspectTable.setInspectTableName(inspectTableNameArray[i]);
+                employeeRoleInspectTableService.add(employeeRoleInspectTable);
+            }
+            EmployeeRole employeeRole= employeeRoleService.getById(subEmployeeRole.getId());
+            employeeRole.setAuthorityId(authorityService.getIdByName(subEmployeeRole.getAuthority()));
+            employeeRole.setName(subEmployeeRole.getName());
+            employeeRole.setStatus(subEmployeeRole.getStatus());
+            employeeRole.setDescription(subEmployeeRole.getDescription());
+            employeeRoleService.update(employeeRole);
+
+            List<EmployeeEmployeeRole> employeeEmployeeRoleList=employeeEmployeeRoleService.getByEmployeeRoleId(subEmployeeRole.getId());
+            for(EmployeeEmployeeRole employeeEmployeeRole:employeeEmployeeRoleList){
+                if(employeeEmployeeRole.getEmployeeRoleName()!=subEmployeeRole.getName())
+                {
+                    Employee employee=employeeService.getById(employeeEmployeeRole.getEmployeeId());
+                    employeeEmployeeRole.setEmployeeRoleName(subEmployeeRole.getName());
+                    employeeEmployeeRoleService.update(employeeEmployeeRole);
+
+                    List<EmployeeEmployeeRole>employeeEmployeeRoleByIdList=employeeEmployeeRoleService.getByEmployeeId(employeeEmployeeRole.getEmployeeId());
+                    String employeeRoleName="";
+                    for(int j=0;j<employeeEmployeeRoleByIdList.toArray().length;j++)
+                    {
+                        if(j==0)
+                        {
+                            employeeRoleName=employeeEmployeeRoleByIdList.get(j).getEmployeeRoleName();
+                        }
+                        else
+                        {
+                            employeeRoleName+=";"+employeeEmployeeRoleByIdList.get(j).getEmployeeRoleName();
+                        }
+                    }
+                    employee.setEmployeeRoleName(employeeRoleName);
+                    employeeService.update(employee);
+                }
             }
 
-        EmployeeRole employeeRole= employeeRoleService.getById(subEmployeeRole.getId());
-        employeeRole.setAuthorityId(authorityService.getIdByName(subEmployeeRole.getAuthority()));
-        employeeRole.setName(subEmployeeRole.getName());
-        employeeRole.setStatus(subEmployeeRole.getStatus());
-        employeeRole.setDescription(subEmployeeRole.getDescription());
-        employeeRoleService.update(employeeRole);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else
         {

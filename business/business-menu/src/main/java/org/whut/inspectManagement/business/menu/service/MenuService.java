@@ -37,4 +37,8 @@ public class MenuService {
     public String getNameById(long id){
         return menuMapper.getNameById(id);
     }
+    public List<Menu> getMenuByUserId(long userid)
+    {
+        return  menuMapper.getMenuByUserId(userid);
+    }
 }

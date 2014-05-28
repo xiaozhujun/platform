@@ -9,6 +9,18 @@
         /*
         *ligerui定义
         */
+        $.get($.URL.appuser.currentUserId,null,getuseridCallback,"json");
+        function getuseridCallback(useriddata)
+        {
+          if(useriddata.code==200)
+          {
+              alert(useriddata.data.length)  ;
+              var userid={};
+              userid.userid= useriddata.data;
+              $.post($.URL.menu.getMenuByUserId,userid,addAppCallback,"json");
+          }
+        }
+
         $("#appName").ligerTextBox({width:500});
         $("#submitBtn").ligerButton({
         });

@@ -34,4 +34,7 @@ public class InspectItemService {
     public void addList(List<InspectItem> inspectItemList){
         inspectItemMapper.addList(inspectItemList);
     }
+    public List<InspectItem> getInspectItemListByAppId(long appId){
+        return inspectItemMapper.getInspectItemListByAppId(appId);
+    }
 }

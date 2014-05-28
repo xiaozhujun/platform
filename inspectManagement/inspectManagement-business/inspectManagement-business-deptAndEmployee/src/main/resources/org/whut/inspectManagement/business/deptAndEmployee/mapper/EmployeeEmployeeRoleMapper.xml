@@ -37,7 +37,7 @@
             <if test="employeeRoleName != null">EMPLOYEEROLENAME=#{employeeRoleName},</if>
             <if test="appId != null">APPID=#{appId}</if>
         </set>
-        WHERE EMPLOYEENAME = #{employeeName};
+        WHERE ID = #{id};
     </update>
 
     <delete id="deleteByEmployeeId" parameterType="java.lang.Long">
@@ -80,6 +80,13 @@
         <include refid="emp_empRole_fields"/>
         from employee_employeerole
         where EMPLOYEEID=#{employeeId}
+    </select>
+
+    <select id="getByEmployeeRoleId" parameterType="java.lang.Long" resultMap="EmpEmpRoleResultMap">
+        select
+        <include refid="emp_empRole_fields"/>
+        from employee_employeerole
+        where EMPLOYEEROLEID=#{employeeRoleId}
     </select>
 
     <select id="getByEmployeeNameAndRole" parameterType="map" resultMap="EmpEmpRoleResultMap">

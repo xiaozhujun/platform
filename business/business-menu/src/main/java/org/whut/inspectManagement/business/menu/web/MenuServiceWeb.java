@@ -124,5 +124,13 @@ public class MenuServiceWeb {
 
         return JsonResultUtils.getObjectResultByStringAsDefault(menu,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/getMenuByUserId")
+    @POST
+    public String getMenuByUserId(@FormParam("userid")  long userid)
+    {
+        List<Menu> list=menuService.getMenuByUserId(userid) ;
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 
 }

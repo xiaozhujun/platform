@@ -17,4 +17,5 @@ public interface AuthorityMenuMapper extends AbstractMapper {
     public List<AuthorityMenu> findByCondition(Map<String,Object> map);
     public AuthorityMenu get(long id);
     public void addList(List<AuthorityMenu> list);
+    public int deleteByAuthorityId(long authorityId);
 }

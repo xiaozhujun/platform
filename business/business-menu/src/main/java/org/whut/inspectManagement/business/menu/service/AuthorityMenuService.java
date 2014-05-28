@@ -27,7 +27,9 @@ public class AuthorityMenuService {
     public int delete(AuthorityMenu authorityMenu){
         return authorityMenuMapper.delete(authorityMenu);
     }
-
+    public int deleteByAuthorityId(long authorityId){
+        return authorityMenuMapper.deleteByAuthorityId(authorityId);
+    }
     public int update(AuthorityMenu authorityMenu){
         return authorityMenuMapper.update(authorityMenu);
     }

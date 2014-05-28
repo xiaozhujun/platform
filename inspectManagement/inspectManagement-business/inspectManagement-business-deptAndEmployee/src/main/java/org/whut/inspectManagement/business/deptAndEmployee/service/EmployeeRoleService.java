@@ -50,4 +50,9 @@ public class EmployeeRoleService {
     public EmployeeRole getByName(String name,long appId){
         return employeeRoleMapper.getByName(name,appId);
     }
+
+    public List<EmployeeRole> getListByAppId(long appId)
+    {
+        return employeeRoleMapper.getListByAppId(appId);
+    }
 }

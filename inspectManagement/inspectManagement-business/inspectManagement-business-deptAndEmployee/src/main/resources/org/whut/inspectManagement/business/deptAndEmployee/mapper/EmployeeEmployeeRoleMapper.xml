@@ -31,10 +31,10 @@
     <update id="update" parameterType="EmployeeEmployeeRole">
         UPDATE employee_employeerole
         <set>
-            <if test="userId != null">EMPLOYEEID=#{employeeId},</if>
-            <if test="authorityId != null">EMPLOYEEROLEID=#{employeeRoleId},</if>
-            <if test="userName != null">EMPLOYEENAME=#{employeeName},</if>
-            <if test="authorityName != null">EMPLOYEEROLENAME=#{employeeRoleName},</if>
+            <if test="employeeId != null">EMPLOYEEID=#{employeeId},</if>
+            <if test="employeeRoleId != null">EMPLOYEEROLEID=#{employeeRoleId},</if>
+            <if test="employeeName != null">EMPLOYEENAME=#{employeeName},</if>
+            <if test="employeeRoleName != null">EMPLOYEEROLENAME=#{employeeRoleName},</if>
             <if test="appId != null">APPID=#{appId}</if>
         </set>
         WHERE EMPLOYEENAME = #{employeeName};

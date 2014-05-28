@@ -60,8 +60,6 @@
                 data.employeeRoleName = $("#employeeRoleName").val();
                 data.status="启用";
                 data.departmentName =$("#departmentName").val();
-                /*需要添加获取当前用户的appId*/
-                data.appId="1";
                 data.role=$("#Role").val();;
                 $.post($.URL.employee.add,data,addEmployeeCallback,"json");
 

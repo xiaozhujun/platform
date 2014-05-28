@@ -11,7 +11,8 @@
             "update":"rs/user/update",
             "delete":"rs/user/delete",
             "list":"rs/user/list",
-            "getId":"rs/user/getIdByName"
+            "getId":"rs/user/getIdByName" ,
+            "currentUserId": "rs/user/currentUserId"
         },
         "appauthority":{
              "add":"rs/authority/add",
@@ -36,8 +37,8 @@
             "update":"rs/menu/update",
             "delete":"rs/menu/delete",
             "list":"rs/menu/list",
-            "getParentInfoById": "rs/menu/getParentInfoById"
-
+            "getParentInfoById": "rs/menu/getParentInfoById"  ,
+            "getMenuByUserId": "rs/menu/getMenuByUserId"
 
         },
         "authoritymenu" :{

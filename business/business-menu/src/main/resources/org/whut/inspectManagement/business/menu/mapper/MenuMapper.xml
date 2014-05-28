@@ -77,4 +77,11 @@
         FROM menu WHERE ID=#{id}
     </select>
 
+    <select id="getMenuByUserId" parameterType="java.lang.Long" resultMap="menuResultMap">
+      SELECT m.*
+    FROM user_authority AS ua,authority_menu AS am,menu AS m
+    WHERE  ua.authorityName=am.authorityName AND am.menuName=m.name  AND userId=#{userid}
+    GROUP BY m.id
+    </select>
+
 </mapper>

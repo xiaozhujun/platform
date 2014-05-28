@@ -83,5 +83,10 @@
         FROM inspectitem
         WHERE name=#{name} AND number=#{number} AND appid=#{appId}
     </select>
+    <select id="getInspectItemListByAppId" parameterType="java.lang.Long" resultMap="inspectItemResultMap">
+        SELECT *
+        FROM inspectitem
+        WHERE appid=#{appId}
+    </select>
 
 </mapper>

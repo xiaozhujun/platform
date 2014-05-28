@@ -213,4 +213,12 @@ public class AuthorityServiceWeb {
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(listNew, JsonResultUtils.Code.SUCCESS);
     }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/show")
+    @GET
+    public String show(){
+        List<Authority> list=authorityService.list();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
 }

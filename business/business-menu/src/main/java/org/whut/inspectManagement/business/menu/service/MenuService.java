@@ -24,9 +24,17 @@ public class MenuService {
     public int delete(Menu menu){
         return menuMapper.delete(menu);
     }
+
     public int update(Menu menu){
         return menuMapper.update(menu);
     }
-
-
+    public List<Menu> list(){
+        return menuMapper.findByCondition(new HashMap<String, Object>());
+    }
+    public Menu get(long id){
+        return menuMapper.get(id);
+    }
+    public String getNameById(long id){
+        return menuMapper.getNameById(id);
+    }
 }

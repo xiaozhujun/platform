@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var manager = null;
+//初始化菜单树
+        $(function ()
+        {
+            $.get($.URL.menu.list,null,listCallback,"json");
+
+            var treeData=[];
+            var addsonbtn=document.getElementById("addSonBtn");
+            var updateBtn=document.getElementById("updateBtn");
+            var updateDiv=document.getElementById("updateDiv");
+            function listCallback(data){
+                if(data.code==200){
+                    treeData=data.data;
+                    $("#tree1").ligerTree({
+                        data: treeData,
+                        idFieldName:'id',
+                        parentIDFieldName:'pid',
+                        textFieldName:'name',
+                        slide:false,
+                        onSelect: function () {
+                            addsonbtn.style.visibility="visible";
+                            updateBtn.style.visibility="visible";
+                        },
+                        onCancelselect: function () {
+                            addsonbtn.style.visibility="hidden";
+                            updateBtn.style.visibility="hidden";
+                        }
+
+                    });
+                    manager=$("#tree1").ligerTree({ checkbox: true, ajaxType: 'get' });
+                }
+                else if(data.code==500){
+                    $.ligerDialog.error(data.message);
+                }
+
+            }
+
+
+         });
+//添加
+        function addTreeItem()
+        {
+            $("#mainContainer").load("menu/addMenu_parent.html");
+
+        }
+        function addTreeItem2()
+        {
+            var node=manager.getSelected();
+            var nextPid=node.data.id;
+            //alert("nextPid=" + nextPid);
+            localStorage['nextPid'] = nextPid;
+            $("#mainContainer").load("menu/addMenu_son.html");
+        }
+
+
+//删除
+        function removeTreeItem()
+        {
+            var node = manager.getChecked();
+            if (node.length!=0)
+            {
+                    if (confirm('确定删除这' + node.length + '项?'))
+                             { alert(node.length);
+                                var data={};
+                                var deleteIds="";
+                                for(var i=0;i<node.length;i++){
+                                    var deleteId=node[i].data.id;
+                                    alert("deleteId" + deleteId);
+                                    deleteIds+= deleteId + ";";
+
+                                   }
+                                alert("deleteIds" + deleteIds);
+                                data.Ids= deleteIds;
+                                $.post($.URL.menu.delete,data,deleteCallback,"json");
+                            }
+
+            }
+            else
+                alert('请先选择节点');
+        }
+        function deleteCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("成功删除！");
+            }else{
+                $.ligerDialog.success("删除失败！");
+            }
+        }
+
+
+//修改
+        function updateTreeItem()
+        {
+            updateDiv.style.visibility="visible";
+        }
+
+        function postUpdate(){
+            var node=manager.getSelected();
+            var data = {};
+            data.name = $("#name").val();
+            data.url = $("#url").val();
+            data.id=node.data.id;
+            alert(data.name + " " +data.url + " " + data.id);
+            $.post($.URL.menu.update,data,updateMenuCallback,"json");
+        }
+        function updateMenuCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("成功修改！");
+            }else{
+                $.ligerDialog.success("修改失败！");
+            }
+        }
+        function cancelUpdate()
+        {
+            updateDiv.style.visibility="hidden";
+        }
+
+//刷新菜单树
+        function updateTree()
+        {
+            $("#mainContainer").load("menu/list.html");
+        }
+
+
+
+    </script>
+    <style type="text/css">
+        .tree
+        {
+            width:330px;
+            height:300px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
+        </style>
+</head>
+<body style="padding:10px">
+<!--<input type="text" class="l-text" value="节点名" id="txtNode" style="display:block; float:left; margin-right:10px;" />-->
+
+<!--<a class="l-button" onclick="reload()" style="float:left;margin-right:10px;">重新加载</a>-->
+
+<a class="l-button" onclick="addTreeItem()" style="float:left;margin-right:10px;">添加根菜单</a>
+<a class="l-button" onclick="updateTree()" style="float:left;margin-right:10px;">刷新菜单</a>
+<a class="l-button" onclick="removeTreeItem()" style="float:left;margin-right:10px;">删除菜单</a>
+<a id="updateBtn" class="l-button" onclick="updateTreeItem()" style="width:150px;float:left;margin-right:10px;visibility: hidden">修改菜单信息</a>
+
+<a id="addSonBtn" class="l-button" onclick="addTreeItem2()" style="float:left;margin-right:10px;visibility: hidden">增加子菜单</a>
+<br />
+<br />
+<!-- 带复选框和图标 -->
+<div class="tree">
+    <ul style="width: 244px;" id="tree1"></ul>
+</div>
+
+<div id="updateDiv" style="float:left; margin-right: 10px; visibility: hidden; background-color: lightgreen; position: relative;left: 400px;top: -315px;width:400px;height:300px">
+    <div id="menuNameArea">
+        <span>菜单名:</span>
+       <span class="inputarea">
+           <input  type="text" id="name" />
+       </span>
+    </div>
+    <div id="menuUrlArea">
+        <span>路  径:</span>
+       <span class="inputarea">
+           <input  type="text" id="url" />
+       </span>
+    </div>
+    <a class="l-button" onclick="postUpdate()" style="width:100px;float:left;margin-right:10px;">提交修改信息</a>
+    <a class="l-button" onclick="cancelUpdate()" style="width:100px;float:left;margin-right:10px;">取消</a>
+</div>
+</body>
+</html>

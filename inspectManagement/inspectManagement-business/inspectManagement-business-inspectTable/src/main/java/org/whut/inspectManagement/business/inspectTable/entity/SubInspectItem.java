@@ -20,6 +20,7 @@ public class SubInspectItem {
     private String choiceValue;
     private String deviceType;
 
+
     public long getId() {
         return id;
     }

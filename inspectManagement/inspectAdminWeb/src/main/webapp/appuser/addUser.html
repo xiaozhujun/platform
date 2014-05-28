@@ -16,6 +16,10 @@
 
         $(function ()
         {
+            $("#userApp").ligerComboBox({
+                data:null,
+                valueFieldID: 'userAppSelect'
+            });
             $.get($.URL.appauthority.list,null,listCallback,"json");
             function listCallback(data){
                 if(data.code==200){
@@ -45,10 +49,8 @@
                         j["id"]=content.id;
                         myData.push(j);
                     });
-                    $("#userApp").ligerComboBox({
-                        data:myData,
-                        valueFieldID: 'userAppSelect'
-                    });
+                    $("#userApp").ligerComboBox({data:myData});
+                   /* liger.get("userApp").setData(myData);*/
 
                 }
             }

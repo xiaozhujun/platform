@@ -81,4 +81,15 @@
         from employee_employeerole
         where EMPLOYEEID=#{employeeId}
     </select>
+
+    <select id="getByEmployeeNameAndRole" parameterType="map" resultMap="EmpEmpRoleResultMap">
+       select
+       <include refid="emp_empRole_fields"/>
+        from employee_employeerole
+        <where>
+            <if test="employeeName != null">EMPLOYEENAME=#{employeeName}</if>
+            <if test="employeeRole !=null">and EMPLOYEEROLENAME=#{employeeRole}</if>
+            <if test="appId != null"> and APPID=#{appId}</if>
+        </where>
+    </select>
 </mapper>

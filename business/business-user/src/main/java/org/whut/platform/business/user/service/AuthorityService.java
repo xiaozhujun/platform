@@ -33,6 +33,7 @@ public class AuthorityService {
          return mapper.findByCondition(new HashMap<String, Object>());
      }
 
+
      public long getIdByName(String name){
          return mapper.getIdByName(name);
      }

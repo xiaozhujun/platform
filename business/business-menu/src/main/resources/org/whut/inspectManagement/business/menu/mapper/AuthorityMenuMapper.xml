@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.menu.mapper.AuthorityMenuMapper">
+    <sql id="authoritymenu_fields">
+		ID,AUTHORITYNAME,AUTHORITYID,MENUID,MENUNAME
+	</sql>
+
+    <resultMap id="authorityMenuResultMap" type="authorityMenu">
+        <id property="id" column="ID" />
+        <result property="authorityName" column="AUTHORITYNAME" />
+        <result property="authorityId" column="AUTHORITYID" />
+        <result property="menuId" column="MENUID"/>
+        <result property="menuName" column="MENUNAME"/>
+
+    </resultMap>
+
+    <insert id="add" parameterType="authorityMenu"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        authority_menu(
+        <include refid="authoritymenu_fields" />
+        )
+        VALUES (#{id}, #{authorityName}, #{authorityId},#{menuId},#{menuName});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <insert id="addList" parameterType="java.util.List"   useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        authority_menu(
+        <include refid="authoritymenu_fields" />
+        )
+        VALUES
+            <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.authorityName}, #{item.authorityId},#{item.menuId},#{item.menuName})
+            </foreach>
+
+    </insert>
+
+    <update id="update" parameterType="authorityMenu">
+        UPDATE authority_menu
+        <set>
+            <if test="authorityName != null">AUTHORITYNAME=#{authorityName},</if>
+            <if test="menuId != null">MENUID=#{menuId},</if>
+            <!-- <if test="authorityId != null">AUTHORITYID=#{authorityId},</if>
+             <if test="menuName != null">MENUNAME=#{menuName},</if>
+             <if test="pid != null">PID=#{pid},</if>-->
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="authorityMenu">
+        DELETE FROM authority_menu
+        <where>
+            <if test="id != null">ID=#{id}</if>
+
+        </where>
+    </delete>
+
+
+    <select id="findByCondition" parameterType="map" resultMap="authorityMenuResultMap">
+        SELECT
+        <include refid="authoritymenu_fields"/>
+        FROM authority_menu
+        <where>
+            <if test="authorityName != null">AUTHORITYNAME=#{authorityName},</if>
+            <if test="authorityId != null">AUTHORITYID=#{authorityId},</if>
+            <if test="menuId != null">MENUID=#{menuId},</if>
+            <if test="menuName != null">MENUNAME=#{menuName},</if>
+
+        </where>
+    </select>
+
+    <select id="get" parameterType="java.lang.Long" resultMap="authorityMenuResultMap">
+        SELECT
+        <include refid="authoritymenu_fields" />
+        FROM authority_menu
+        WHERE ID=#{id}
+    </select>
+
+</mapper>

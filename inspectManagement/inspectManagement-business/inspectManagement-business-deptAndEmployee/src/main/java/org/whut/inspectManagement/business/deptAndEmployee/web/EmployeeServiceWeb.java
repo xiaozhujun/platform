@@ -276,6 +276,24 @@ public class EmployeeServiceWeb {
 
         return JsonResultUtils.getObjectResultByStringAsDefault(subEmployeeList, JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/listEmployeeRoleByNameAndRole")
+    @POST
+    public String listEmployeeRoleByNameAndRole(@FormParam("employeeName") String employeeName,@FormParam("employeeRole") String employeeRole){
+         if((employeeName==null||employeeName.equals(""))&&(employeeRole==null||employeeRole.equals(""))){
+             employeeName=null;
+             employeeRole=null;
+         }
+         else if((employeeName==null||employeeName.equals(""))&&employeeRole!=null&&!employeeRole.equals("")){
+             employeeName=null;
+         }
+         else if(employeeName!=null&&!employeeName.equals("")&&(employeeRole==null||employeeRole.equals(""))){
+             employeeRole=null;
+         }
+         long appId = UserContext.currentUserAppId();
+         List<EmployeeEmployeeRole> list = employeeEmployeeRoleService.getByEmployeeNameAndRole(employeeName,employeeRole,appId);
+         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }
 
 

@@ -10,13 +10,64 @@
     <script type="text/javascript">
         $(function ()
         {
-            $("#accordion").ligerAccordion();
-            $("#accordion li").click(function(){
-                var url = $(this).attr("url");
-                if((typeof url)!="undefined"){
-                    $("#mainContainer").load(url);
+            //获得当前用户id
+            $.get($.URL.user.currentUserId,null,getuseridCallback,"json");
+            function getuseridCallback(useriddata)
+            {
+                if(useriddata.code==200)
+                {
+                    var userid={};
+                    userid.userid= useriddata.data;
+                    //通过id获得当前用户的menu
+                    $.post($.URL.menu.getMenuByUserId,userid,menuCallback,"json");
                 }
-            });
+            }
+            function menuCallback(menudata)
+            {
+                if(menudata.code==200)
+                {
+                    var s=new Array();
+                    for(var i=0;i<menudata.data.length;i++)
+                    {
+                        //获得父级菜单，存进数组s【】
+                        if(menudata.data[i].level ==1)
+                        {
+                            s[i]="<div title='"+menudata.data[i].name+"' style='padding:10px'><ul>"  ;
+                        }
+                        //寻找s【j】对应的子菜单
+                        else
+                        {
+                            for(var j=0;j<= s.length;j++)
+                            {
+                                if(menudata.data[i].pid==j)
+                                {
+                                    s[j-1]=s[j-1]+ "<li url='"+menudata.data[i].url+"'>"+menudata.data[i].name+"</li>";
+                                }
+                            }
+                        }
+                    }
+                    //拼接，存进menuload
+                    var menuload="";
+                    for(var j=0;j< s.length;j++)
+                    {
+                        if(typeof(s[j]) != "undefined")
+                        {
+                            s[j]=s[j]+"</ul></div>";
+                            menuload=menuload+s[j] ;
+                      /*      alert("s"+j+":"+s[j]);*/
+                        }
+                    }
+                    $("#accordion").append(menuload);
+                    $("#accordion").ligerAccordion();
+                    $("#accordion li").click(function(){
+                        var url = $(this).attr("url");
+                        if((typeof url)!="undefined"){
+                            $("#mainContainer").load(url);
+                        }
+                    });
+                  /*  alert(menuload) ;*/
+                }
+            }
         });
 
     </script>
@@ -28,7 +79,7 @@
 </head>
 <body style="padding:10px">
 <div id="accordion">
-    <div title="部门管理" style="padding:10px">
+    <!--<div title="部门管理" style="padding:10px">
         <ul>
             <li url="department/add.html">添加部门</li>
             <li url="department/list.html">部门列表</li>
@@ -71,7 +122,7 @@
             <li url="**/add.html">报表统计</li>
             <li url="**/list.html">报表详情</li>
         </ul>
-    </div>
+    </div>-->
 </div>
 </body>
 </html>

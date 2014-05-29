@@ -59,6 +59,11 @@
         </dependency>
         <dependency>
             <groupId>platform</groupId>
+            <artifactId>business-menu</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>platform</groupId>
             <artifactId>business-app</artifactId>
             <version>${project.version}</version>
         </dependency>

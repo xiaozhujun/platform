@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50151
 File Encoding         : 65001
 
-Date: 2014-05-28 11:25:23
+Date: 2014-05-29 11:56:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,11 +26,12 @@ CREATE TABLE `app` (
   `status` varchar(255) DEFAULT NULL,
   `createtime` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of app
 -- ----------------------------
+INSERT INTO `app` VALUES ('1', '企业1', '1', '启用', '2014-05-28');
 
 -- ----------------------------
 -- Table structure for `authority`
@@ -61,7 +62,7 @@ CREATE TABLE `authority_menu` (
   `menuId` bigint(20) DEFAULT NULL,
   `menuName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authority_menu
@@ -95,6 +96,19 @@ INSERT INTO `authority_menu` VALUES ('101', '2', 'ROLE_ADMIN', '26', '人员配�
 INSERT INTO `authority_menu` VALUES ('102', '2', 'ROLE_ADMIN', '27', '设备配置查询');
 INSERT INTO `authority_menu` VALUES ('103', '2', 'ROLE_ADMIN', '28', '点检表下载');
 INSERT INTO `authority_menu` VALUES ('104', '2', 'ROLE_ADMIN', '29', '人员与点检项目表下载');
+INSERT INTO `authority_menu` VALUES ('105', '2', 'ROLE_ADMIN', '4', '点检表管理');
+INSERT INTO `authority_menu` VALUES ('106', '2', 'ROLE_ADMIN', '19', '添加点检表');
+INSERT INTO `authority_menu` VALUES ('107', '2', 'ROLE_ADMIN', '20', '点检表列表');
+INSERT INTO `authority_menu` VALUES ('108', '2', 'ROLE_ADMIN', '21', '添加点检项');
+INSERT INTO `authority_menu` VALUES ('109', '2', 'ROLE_ADMIN', '22', '点检项列表');
+INSERT INTO `authority_menu` VALUES ('110', '2', 'ROLE_ADMIN', '23', '点检选值添加');
+INSERT INTO `authority_menu` VALUES ('111', '2', 'ROLE_ADMIN', '24', '点检选值列表');
+INSERT INTO `authority_menu` VALUES ('112', '2', 'ROLE_ADMIN', '5', '数据管理');
+INSERT INTO `authority_menu` VALUES ('113', '2', 'ROLE_ADMIN', '25', '点检结果上传');
+INSERT INTO `authority_menu` VALUES ('114', '2', 'ROLE_ADMIN', '26', '人员配置查询');
+INSERT INTO `authority_menu` VALUES ('115', '2', 'ROLE_ADMIN', '27', '设备配置查询');
+INSERT INTO `authority_menu` VALUES ('116', '2', 'ROLE_ADMIN', '28', '点检表下载');
+INSERT INTO `authority_menu` VALUES ('117', '2', 'ROLE_ADMIN', '29', '人员与点检项目表下载');
 
 -- ----------------------------
 -- Table structure for `authority_power`
@@ -107,14 +121,18 @@ CREATE TABLE `authority_power` (
   `powerResource` varchar(255) DEFAULT NULL,
   `authorityName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authority_power
 -- ----------------------------
 INSERT INTO `authority_power` VALUES ('1', '1', '1', '/rs/**', 'ROLE_USER');
 INSERT INTO `authority_power` VALUES ('2', '1', '4', '/index.html', 'ROLE_USER');
-INSERT INTO `authority_power` VALUES ('3', '2', '3', '/admin.html', 'ROLE_ADMIN');
+INSERT INTO `authority_power` VALUES ('4', '2', '1', '/rs/**', 'ROLE_ADMIN');
+INSERT INTO `authority_power` VALUES ('5', '2', '2', '/user.html', 'ROLE_ADMIN');
+INSERT INTO `authority_power` VALUES ('6', '2', '3', '/admin.html', 'ROLE_ADMIN');
+INSERT INTO `authority_power` VALUES ('7', '2', '4', '/index.html', 'ROLE_ADMIN');
+INSERT INTO `authority_power` VALUES ('8', '2', '15', 'cas/**', 'ROLE_ADMIN');
 
 -- ----------------------------
 -- Table structure for `department`
@@ -524,13 +542,15 @@ CREATE TABLE `user` (
   `appId` bigint(20) DEFAULT '1',
   `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'xiaozhujun', 'e10adc3949ba59abbe56e057f20f883e', '男', 'admin', '1', null);
-INSERT INTO `user` VALUES ('2', 'zhangsan', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_USER', '1', null);
+INSERT INTO `user` VALUES ('1', 'xiaozhujun', 'e10adc3949ba59abbe56e057f20f883e', '男', 'admin', '1', '启用');
+INSERT INTO `user` VALUES ('2', 'zhangsan', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_USER', '1', '启用');
+INSERT INTO `user` VALUES ('3', 'sunhui', 'e68fa2bc61b75b8a06766e25905052c7', '男', 'ROLE_USER', '1', '启用');
+INSERT INTO `user` VALUES ('4', 'liujinxia', 'c99c1cbefe13019978d90cb442cb8f78', '女', 'ROLE_ADMIN', '1', '启用');
 
 -- ----------------------------
 -- Table structure for `user_authority`
@@ -543,7 +563,7 @@ CREATE TABLE `user_authority` (
   `userName` varchar(255) DEFAULT NULL,
   `authorityName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_authority
@@ -551,3 +571,5 @@ CREATE TABLE `user_authority` (
 INSERT INTO `user_authority` VALUES ('1', '1', '1', 'xiaozhujun', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('2', '1', '2', 'xiaozhujun', 'ROLE_ADMIN');
 INSERT INTO `user_authority` VALUES ('5', '2', '1', 'zhangsan', 'ROLE_USER');
+INSERT INTO `user_authority` VALUES ('6', '3', '1', 'sunhui', 'ROLE_USER');
+INSERT INTO `user_authority` VALUES ('7', '4', '2', 'liujinxia', 'ROLE_ADMIN');

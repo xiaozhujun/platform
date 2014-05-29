@@ -139,7 +139,9 @@ public class EmployeeRoleServiceWeb {
             //判断角色的权限是否更改
             boolean isAuthorityChanged=false;
             if(subEmployeeRole.getAuthority()!=authorityService.getNameById(employeeRole.getAuthorityId()))
+            {
                 isAuthorityChanged=true;
+            }
             employeeRole.setAuthorityId(authorityService.getIdByName(subEmployeeRole.getAuthority()));
             employeeRole.setName(subEmployeeRole.getName());
             employeeRole.setStatus(subEmployeeRole.getStatus());
@@ -181,17 +183,20 @@ public class EmployeeRoleServiceWeb {
                     boolean isEmployeeIdExist=false;
                     for(int i=0;i<employeeIdlist.toArray().length;i++)
                     {
-                        if(employeeIdlist.get(i)==employeeEmployeeRole.getEmployeeId())
+                        if(employeeIdlist.get(i)==employeeEmployeeRole.getEmployeeId()){
                             isEmployeeIdExist=true;
+                        }
                     }
-                    if(!isEmployeeIdExist)
+                    if(!isEmployeeIdExist) {
                         employeeIdlist.add(employeeEmployeeRole.getEmployeeId());
+                    }
                 }
                 for(int i=0;i<employeeIdlist.toArray().length;i++)
                 {
                     long userId=employeeService.getById(employeeIdlist.get(i)).getUserId();
                     //原先user的权限列表
                     List<UserAuthority> userAuthorityList=userAuthorityService.findByUserId(userId);
+                    String role="";
                     String[] employeeRolelist=employeeService.getById(employeeIdlist.get(i)).getEmployeeRoleName().split(";");
                     //现在user的应该有的权限列表
                     ArrayList<Long> authorityIdList=new ArrayList<Long>();
@@ -201,11 +206,13 @@ public class EmployeeRoleServiceWeb {
                         employeeRole= employeeRoleService.getByName(employeeRolelist[j],appId);
                         for(long aid:authorityIdList)
                         {
-                            if(aid==employeeRole.getAuthorityId())
+                            if(aid==employeeRole.getAuthorityId()) {
                                 isExist=true;
+                            }
                         }
-                        if(!isExist)
+                        if(!isExist) {
                             authorityIdList.add(employeeRole.getAuthorityId());
+                        }
                     }
                     //判断旧的权限在新的中不存在，如果不存在就删除
                     for(UserAuthority userAuthority:userAuthorityList)
@@ -213,20 +220,29 @@ public class EmployeeRoleServiceWeb {
                         boolean isAuthorityExist=false;
                         for(int j=0;j<authorityIdList.toArray().length;j++)
                         {
-                            if(userAuthority.getAuthorityId()==authorityIdList.get(j))
+                            if(authorityIdList.get(j).equals(userAuthority.getAuthorityId())) {
                                 isAuthorityExist=true;
+                            }
                         }
-                        if(!isAuthorityExist)
+                        if(!isAuthorityExist)  {
                             userAuthorityService.delete(userAuthority);
+                        }
                     }
                     //判断新的在旧的中是否不存在，如果不存在就添加
                     for(int j=0;j<authorityIdList.toArray().length;j++)
                     {
+                        if(j==0)  {
+                            role=authorityService.getNameById(authorityIdList.get(j));
+                        }
+                        else{
+                            role+=";"+authorityService.getNameById(authorityIdList.get(j));
+                        }
                         boolean isAuthorityNotExist=true;
                         for(UserAuthority userAuthority:userAuthorityList)
                         {
-                            if(userAuthority.getAuthorityId()==authorityIdList.get(j))
+                            if(authorityIdList.get(j).equals(userAuthority.getAuthorityId())){
                                 isAuthorityNotExist=false;
+                            }
                         }
                         if(isAuthorityNotExist)
                         {
@@ -234,12 +250,15 @@ public class EmployeeRoleServiceWeb {
                             UserAuthority userAuthority=new UserAuthority();
                             userAuthority.setAppId(appId);
                             userAuthority.setAuthorityId(authorityIdList.get(i));
-                            userAuthority.setAuthorityName(authorityService.getNameById(authorityIdList.get(i)));
+                            userAuthority.setAuthorityName(authorityService.getNameById(authorityIdList.get(j)));
                             userAuthority.setUserId(userId);
                             userAuthority.setUserName(userService.getById(userId).getName());
                             userAuthorityService.add(userAuthority);
                         }
                     }
+                    User user =userService.getById(userId);
+                    user.setRole(role);
+                    userService.update(user);
                 }
             }
 
@@ -256,15 +275,80 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String delete(@FormParam("jsonString") String jsonString)
     {
+        long appId=UserContext.currentUserAppId();
         SubEmployeeRole subEmployeeRole=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubEmployeeRole.class);
-        EmployeeRole employeeRole=new EmployeeRole();
-        User user=new User();
-        employeeRole.setId(subEmployeeRole.getId());
-        employeeRole.setName(subEmployeeRole.getName());
+        EmployeeRole employeeRole=employeeRoleService.getById(subEmployeeRole.getId());
 
-
-        int result2= employeeRoleInspectTableService.deleteByEmployeeRoleId(subEmployeeRole.getId());
+        int result2=employeeRoleInspectTableService.deleteByEmployeeRoleId(subEmployeeRole.getId());
         int result1=employeeRoleService.delete(employeeRole);
+        List<EmployeeEmployeeRole> employeeEmployeeRoleList=employeeEmployeeRoleService.getByEmployeeRoleId(subEmployeeRole.getId());
+        List<Long> employeeIdlist=new ArrayList<Long>();
+        //获取所有拥有该角色的员工编号
+        for(EmployeeEmployeeRole employeeEmployeeRole:employeeEmployeeRoleList)
+        {
+            boolean isEmployeeIdExist=false;
+            for(int i=0;i<employeeIdlist.toArray().length;i++)
+            {
+                if(employeeIdlist.get(i)==employeeEmployeeRole.getEmployeeId())
+                    isEmployeeIdExist=true;
+            }
+            if(!isEmployeeIdExist)
+                employeeIdlist.add(employeeEmployeeRole.getEmployeeId());
+        }
+        employeeEmployeeRoleService.deleteByEmployeeRoleId(subEmployeeRole.getId());
+        for(int i=0;i<employeeIdlist.toArray().length;i++)
+        {
+            long userId=employeeService.getById(employeeIdlist.get(i)).getUserId();
+            //原先user的权限列表
+            List<UserAuthority> userAuthorityList=userAuthorityService.findByUserId(userId);
+            String role="";
+            String employeeRoleString="";
+            List<EmployeeEmployeeRole> empEmpRoleList=employeeEmployeeRoleService.getByEmployeeId(subEmployeeRole.getId());
+            //现在user的应该有的权限列表
+            ArrayList<Long> authorityIdList=new ArrayList<Long>();
+            for(int j=0;j<empEmpRoleList.toArray().length;j++)
+            {
+                if(j==0)
+                    employeeRoleString=empEmpRoleList.get(j).getEmployeeRoleName();
+                else
+                    employeeRoleString+=";"+empEmpRoleList.get(j).getEmployeeRoleName();
+                boolean isExist=false;
+                employeeRole= employeeRoleService.getById(empEmpRoleList.get(j).getEmployeeRoleId());
+                for(long aid:authorityIdList)
+                {
+                    if(aid==employeeRole.getAuthorityId())
+                        isExist=true;
+                }
+                if(!isExist)
+                    authorityIdList.add(employeeRole.getAuthorityId());
+            }
+            //判断旧的权限在新的中不存在，如果不存在就删除
+            for(UserAuthority userAuthority:userAuthorityList)
+            {
+                boolean isAuthorityExist=false;
+                for(int j=0;j<authorityIdList.toArray().length;j++)
+                {
+                    if(userAuthority.getAuthorityId()==authorityIdList.get(j))
+                        isAuthorityExist=true;
+                }
+                if(!isAuthorityExist)
+                    userAuthorityService.delete(userAuthority);
+            }
+            //修改user里面的role
+            for(int j=0;j<authorityIdList.toArray().length;j++)
+            {
+                if(j==0)
+                    role=authorityService.getNameById(authorityIdList.get(j));
+                else
+                    role+=";"+authorityService.getNameById(authorityIdList.get(j));
+            }
+            User user =userService.getById(userId);
+            user.setRole(role);
+            userService.update(user);
+            Employee employee=employeeService.getById(employeeIdlist.get(i));
+            employee.setEmployeeRoleName(employeeRoleString);
+            employeeService.update(employee);
+        }
         if(result1>0&&result2>0)
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         else

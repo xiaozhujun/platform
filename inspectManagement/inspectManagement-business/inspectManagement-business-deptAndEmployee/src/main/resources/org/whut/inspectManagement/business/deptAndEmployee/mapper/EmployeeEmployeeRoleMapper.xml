@@ -45,6 +45,11 @@
         WHERE EMPLOYEEID= #{employeeId};
     </delete>
 
+    <delete id="deleteByEmployeeRoleId" parameterType="java.lang.Long">
+        DELETE FROM employee_employeerole
+        WHERE EMPLOYEEROLEID= #{employeeRoleId};
+    </delete>
+
     <delete id="deleteByEmployeeName" parameterType="java.lang.String">
         DELETE FROM employee_employeerole
         WHERE EMPLOYEENAME = #{employeeName};

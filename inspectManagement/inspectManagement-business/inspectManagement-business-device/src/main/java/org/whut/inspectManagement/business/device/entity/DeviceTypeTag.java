@@ -7,6 +7,7 @@ package org.whut.inspectManagement.business.device.entity;
  * Time: 下午7:50
  * To change this template use File | Settings | File Templates.
  */
+
 public class DeviceTypeTag {
     private String deviceType;
     private String deviceTypeNumber;

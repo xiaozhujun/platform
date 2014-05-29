@@ -25,14 +25,14 @@ public class InspectItemChoiceService {
          inspectItemChoiceMapper.addList(inspectItemChoiceList);
     }
     public String getChoiceValueByItemId(long id){
-        long appId= UserContext.currentUserAppId();
         String choiceValue="";
         List<Long> choiceIdList=inspectItemChoiceMapper.getChoiceIdByItemId(id);
-        for(int i=0;i<choiceIdList.size();i++){
+        for(int i=0;i<choiceIdList.size()-1;i++){
             String choice;
             choice=inspectChoiceService .getChoiceValueById(choiceIdList.get(i))+";";
             choiceValue+=choice;
         }
+        choiceValue+=inspectChoiceService.getChoiceValueById(choiceIdList.get(choiceIdList.size()-1));
         return choiceValue;
     }
     public void deleteByInspectItemIdAndAppId(long inspectItemId,long appId){

@@ -34,7 +34,6 @@
             "list":"rs/inspectItem/list",
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete",
-            "addList":"rs/inspectItem/addList",
             "getInspectAreaIdByNames":"rs/inspectItem/getInspectAreaIdByNames",
             "getInspectAreaNameByDeviceTypeNameAndAppId":"rs/inspectItem/getInspectAreaNameByDeviceTypeNameAndAppId"
         },
@@ -49,7 +48,8 @@
             "list":"rs/device/list",
             "update":"rs/device/update",
             "delete":"rs/device/delete",
-            "getId":"rs/device/getId"
+            "getId":"rs/device/getId",
+            "getListByCondition":"rs/device/getListByCondition"
         },
         "deviceType":{
             "add":"rs/deviceType/add",

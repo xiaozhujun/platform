@@ -27,7 +27,7 @@
         </selectKey>
     </insert>
 
-    <select id="getIdByNumber"  parameterType="java.lang.Long" resultType="java.lang.Long">
+    <select id="getIdByNumber"  parameterType="java.lang.String" resultType="java.lang.Long">
         select   id
         from   device
         where NUMBER=#{number};
@@ -67,4 +67,17 @@
         </where>
     </delete>
 
+    <select id="getListByCondition" parameterType="map" resultType="map">
+        select
+        dt.name as deviceType,dt.number as deviceTypeNumber,d.number as deviceNumber,t.name as tagName,t.id as tagId,t.number as tagNumber
+        from device d,devicetype dt,inspecttag t
+        <where>
+            d.deviceTypeId=dt.id
+            and t.deviceId = d.id
+            <if test="deviceNumber!=null">and d.number=#{deviceNumber}</if>
+            <if test="deviceType!=null">and  dt.name=#{deviceType}</if>
+            <if test="tagName!=null">and t.name=#{tagName}</if>
+            <if test="appId!=null">and d.appId=#{appId}</if>
+        </where>
+    </select>
 </mapper>

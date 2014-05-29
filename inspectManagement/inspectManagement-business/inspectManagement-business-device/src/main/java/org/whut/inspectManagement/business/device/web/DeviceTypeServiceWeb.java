@@ -32,8 +32,8 @@ public class DeviceTypeServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("number") long number, @FormParam("description") String description,@FormParam("appId") long appId){
-        if(name==null||name.trim().equals("")||number==0||description==null||description
+    public String add(@FormParam("name") String name,@FormParam("number") String number, @FormParam("description") String description,@FormParam("appId") long appId){
+        if(name==null||name.trim().equals("")||number.equals("")||description==null||description
                 .trim().equals("")||appId==0) {
             return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }

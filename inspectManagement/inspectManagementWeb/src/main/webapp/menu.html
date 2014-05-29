@@ -34,14 +34,17 @@
                         {
                             s[i]="<div title='"+menudata.data[i].name+"' style='padding:10px'><ul>"  ;
                         }
-                        //寻找s【j】对应的子菜单
-                        else
+                    }
+                    for(var i=0;i<menudata.data.length;i++)
+                    {
+                        if(menudata.data[i].level !=1)
                         {
-                            for(var j=0;j<= s.length;j++)
+                            //寻找s【j】对应的子菜单
+                            for(var j=0;j< s.length;j++)
                             {
-                                if(menudata.data[i].pid==j)
+                                if(typeof(s[j]) != "undefined"&&menudata.data[i].pid==menudata.data[j].id)
                                 {
-                                    s[j-1]=s[j-1]+ "<li url='"+menudata.data[i].url+"'>"+menudata.data[i].name+"</li>";
+                                    s[j]=s[j]+ "<li url='"+menudata.data[i].url+"'>"+menudata.data[i].name+"</li>";
                                 }
                             }
                         }

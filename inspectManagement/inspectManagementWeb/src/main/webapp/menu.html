@@ -34,10 +34,8 @@
                         {
                             s[i]="<div title='"+menudata.data[i].name+"' style='padding:10px'><ul>"  ;
                         }
-                    }
-                    for(var i=0;i<menudata.data.length;i++)
-                    {
-                        if(menudata.data[i].level !=1)
+                        //一般情况下在出现子菜单之前父菜单已经存在s【】中
+                        else  if(menudata.data[i].level !=1)
                         {
                             //寻找s【j】对应的子菜单
                             for(var j=0;j< s.length;j++)
@@ -49,6 +47,22 @@
                             }
                         }
                     }
+                    //异常情况下在出现子菜单之前父菜单没有存在s【】中，采用如下做法
+                   /* for(var i=0;i<menudata.data.length;i++)
+                    {
+                        //获得父级菜单，存进数组s【】
+                        if(menudata.data[i].level !=1)
+                        {
+                            //寻找s【j】对应的子菜单
+                            for(var j=0;j< s.length;j++)
+                            {
+                                if(typeof(s[j]) != "undefined"&&menudata.data[i].pid==menudata.data[j].id)
+                                {
+                                    s[j]=s[j]+ "<li url='"+menudata.data[i].url+"'>"+menudata.data[i].name+"</li>";
+                                }
+                            }
+                        }
+                    }*/
                     //拼接，存进menuload
                     var menuload="";
                     for(var j=0;j< s.length;j++)

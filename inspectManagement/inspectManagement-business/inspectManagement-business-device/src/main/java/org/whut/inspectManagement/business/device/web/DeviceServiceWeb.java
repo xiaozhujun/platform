@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.device.entity.Device;
 import org.whut.inspectManagement.business.device.service.DeviceService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -11,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,10 +30,10 @@ public class DeviceServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("number")long number,@FormParam("description")String description,
+    public String add(@FormParam("name") String name,@FormParam("number") String number,@FormParam("description")String description,
                       @FormParam("appId")long appId,@FormParam("deviceTypeId")long deviceTypeId
                       ){
-        if(name==null||number==0||description==null||appId==0||deviceTypeId==0||name.equals("")){
+        if(name==null||number.equals("")||description==null||appId==0||deviceTypeId==0||name.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         else {
@@ -81,12 +83,41 @@ public class DeviceServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 
-  //  @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
-   // @Path("/getId")
-   // @GET
-   // public long getId(@FormParam("number") long number){
-    //   return deviceService.getIdByNumber(number);
-   // }
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getListByCondition")
+    @POST
+    public String getId(@FormParam("deviceType") String deviceType,@FormParam("deviceNumber") String deviceNumber,@FormParam("tagName") String tagName){
+        long addId= UserContext.currentUserAppId();
+        if((deviceType==null||deviceType.equals(""))&&(deviceNumber==null||deviceNumber.equals(""))&&(tagName==null||tagName.equals(""))) {
+            deviceType=null;
+            deviceNumber=null;
+            tagName=null;
+        }
+        else if((deviceType!=null||!deviceType.equals(""))&&(deviceNumber==null||deviceNumber.equals(""))&&(tagName==null||tagName.equals(""))){
+             deviceNumber=null;
+             tagName=null;
+        }
+        else if((deviceType==null||deviceType.equals(""))&&(deviceNumber!=null||!deviceNumber.equals(""))&&(tagName==null||tagName.equals(""))){
+            deviceType=null;
+            tagName=null;
+        }
+        else if((deviceType==null||deviceType.equals(""))&&(deviceNumber==null||deviceNumber.equals(""))&&(tagName!=null||!tagName.equals(""))){
+            deviceType=null;
+            deviceNumber=null;
+        }
+        else if((deviceType!=null||!deviceType.equals(""))&&(deviceNumber!=null||!deviceNumber.equals(""))&&(tagName==null||tagName.equals(""))){
+           tagName=null;
+        }
+        else if((deviceType!=null||!deviceType.equals(""))&&(deviceNumber==null||deviceNumber.equals(""))&&(tagName!=null||!tagName.equals(""))){
+            deviceNumber=null;
+        }
+        else if((deviceType==null||deviceType.equals(""))&&(deviceNumber!=null||!deviceNumber.equals(""))&&(tagName!=null||!tagName.equals(""))){
+               deviceType=null;
+        }
+        List<Map<String,String>> mapList = deviceService.getListByCondition(deviceType,deviceNumber,tagName,addId);
+        System.out.println(mapList.get(0).get("deviceType"));
+        return JsonResultUtils.getObjectResultByStringAsDefault(mapList, JsonResultUtils.Code.SUCCESS);
+    }
 
 
 }

@@ -14,8 +14,100 @@
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
+            $.get($.URL.deviceType.list,null,deviceTypeListCallback,"json");
+            $.get($.URL.device.list,null,deviceListCallback,"json");
+            $.get($.URL.inspectTag.list,tagListCallback,"json");
         });
+        function deviceTypeListCallback(data){
+            if(data.code==200){
+                var deviceTypeData = [];
+                $.each(data.data,function(index,content){
+                    var i={};
+                    i["text"]=content.name;
+                    i["id"]=content.id;
+                    deviceTypeData.push(i);
+                });
+                $("#deviceType").ligerComboBox({
+                    data:deviceTypeData
+                });
+            }
+        }
+        function deviceListCallback(data){
+            if(data.code==200){
+                var deviceNumberData = [];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.number;
+                    j["id"]=content.id;
+                    deviceNumberData.push(j);
+                });
+                $("#deviceNumber").ligerComboBox({
+                     data:deviceNumberData
+                });
+            }
+        }
+        function tagListCallback(data){
+           if(data.code==200){
+               var tagNameData=[];
+               $.each(data.data,function(indext,content){
+                  var k={};
+                  k["name"]=content.name;
+                  k["id"]=content.id;
+                  tagNameData.push(k);
+               });
+               $("#tagName").ligerComboBox({
+                   data:tagNameData,
+                   textField:"name"
+               });
+           }
+        }
+        $("#submitBtn").click(function(){
+            var deviceType = $("#deviceType").val();
+            var deviceNumber = $("#deviceNumber").val();
+            var tagName = $("#tagName").val();
+            if(deviceType==""&&deviceNumber==""&&tagName==""){
+                $.ligerDialog.warn("请输入查询条件！") ;
+            }
+            else{
+                $.post($.URL.device.getListByCondition,{"deviceType":deviceType,"deviceNumber":deviceNumber,"tagName":tagName},getListByConditionCallback,"json");
+            }
+        });
+        var gridData={};
+        function  getListByConditionCallback(data){
+            if(data.code==200){
+                gridData.Rows=data.data;
+                gridData.Total=data.data.length;
+                f_initGrid();
+            }
+        }
+        var manager,g
+        function f_initGrid(){
+            g = manager = $("#maingrid").ligerGrid({
+                columns: [
+                    { display: '设备类型', name: 'deviceType', type: 'text', frozen: true },
+                    { display: '设备类型编号',name: 'deviceTypeNumber',type: 'text', frozen:true},
+                    { display: '设备编号',name: 'deviceNumber', type: 'text',frozen:true},
+                    { display: '标签区域',name: 'tagName',type:'text',frozen:true },
+                    { display: '标签号',name: 'tagId',type:'text',frozen:true },
+                    { display: '标签编号',name: 'deviceNumber',type:'text',frozen:true }
+                ],
+                data: gridData,checkbox:true,isMultiSelect:true,
+                width: '100%'
+            });
+        }
 
+        $("#exportBtn").click(function(){
+
+            var selectedRows =  g.getSelectedRows();
+            if(selectedRows.length==0||selectedRows==undefined){
+                $.ligerDialog.warn("未选择行！");
+            }
+            else{
+                var data = $.toJSON(selectedRows);
+                window.location.href="rs/deviceConfiguration/importDeviceConfiguration/"+encodeURI(data);
+            }
+
+        });
     </script>
     <style type="text/css">
         .l-table-edit {}
@@ -35,6 +127,7 @@
             <td align="right" class="l-table-edit-td">标签名:</td>
             <td align="left" class="l-table-edit-td"><input name="tagName" type="text" id="tagName" ltype="text" readonly="true"/></td>
             <td align="right"><input type="button" value="查询" id="submitBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="导出配置文件" id="exportBtn" class="l-button l-button-submit"/></td>
         </tr>
     </table>
 </div>

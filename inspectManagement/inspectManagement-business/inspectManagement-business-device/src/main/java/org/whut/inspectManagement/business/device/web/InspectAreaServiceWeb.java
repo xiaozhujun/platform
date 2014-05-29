@@ -28,8 +28,8 @@ public class InspectAreaServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("number") long number,@FormParam("deviceTypeId") long deviceTypeId,@FormParam("appId") long appId ){
-        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number==0||deviceTypeId==0||appId==0){
+    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("number") String number,@FormParam("deviceTypeId") long deviceTypeId,@FormParam("appId") long appId ){
+        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number.equals("")||deviceTypeId==0||appId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空！");
         }
         Date date=new Date();

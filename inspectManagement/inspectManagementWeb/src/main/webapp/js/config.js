@@ -11,7 +11,8 @@
             "update":"rs/user/update",
             "delete":"rs/user/delete",
             "list":"rs/user/list",
-            "getId":"rs/user/getIdByName"
+            "getId":"rs/user/getIdByName" ,
+            "currentUserId": "rs/user/currentUserId"
         },
         "authority":{
              "add":"rs/authority/add",
@@ -33,7 +34,6 @@
             "list":"rs/inspectItem/list",
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete",
-            "addList":"rs/inspectItem/addList",
             "getInspectAreaIdByNames":"rs/inspectItem/getInspectAreaIdByNames",
             "getInspectAreaNameByDeviceTypeNameAndAppId":"rs/inspectItem/getInspectAreaNameByDeviceTypeNameAndAppId"
         },
@@ -91,6 +91,16 @@
             "update":"rs/inspectChoice/update" ,
             "delete":"rs/inspectChoice/delete",
             "getChoiceValues":"rs/inspectChoice/getChoiceValues"
+        }     ,
+        "menu" :{
+            "addParentMenu" :"rs/menu/addParentMenu" ,
+            "addSonMenu" :"rs/menu/addSonMenu" ,
+            /*"list":"rs/menu/list",*/
+            "update":"rs/menu/update",
+            "delete":"rs/menu/delete",
+            "list":"rs/menu/list",
+            "getParentInfoById": "rs/menu/getParentInfoById"  ,
+            "getMenuByUserId": "rs/menu/getMenuByUserId"
         }
     }
 })(jQuery);

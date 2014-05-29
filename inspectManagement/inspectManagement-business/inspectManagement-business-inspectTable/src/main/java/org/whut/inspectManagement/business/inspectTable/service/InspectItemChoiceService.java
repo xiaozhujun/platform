@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItemChoice;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.service.InspectChoiceService;
+import org.whut.platform.business.user.security.UserContext;
 
 import java.util.List;
 
@@ -26,12 +27,15 @@ public class InspectItemChoiceService {
     public String getChoiceValueByItemId(long id){
         String choiceValue="";
         List<Long> choiceIdList=inspectItemChoiceMapper.getChoiceIdByItemId(id);
-        for(int i=0;i<choiceIdList.size();i++){
-            choiceValue=choiceValue+inspectChoiceService .getChoiceValueById(choiceIdList.get(i));
+        for(int i=0;i<choiceIdList.size()-1;i++){
+            String choice;
+            choice=inspectChoiceService .getChoiceValueById(choiceIdList.get(i))+";";
+            choiceValue+=choice;
         }
+        choiceValue+=inspectChoiceService.getChoiceValueById(choiceIdList.get(choiceIdList.size()-1));
         return choiceValue;
     }
-    public void deleteByInspectItemId(long id){
-        inspectItemChoiceMapper.deleteByInspectItemId(id);
+    public void deleteByInspectItemIdAndAppId(long inspectItemId,long appId){
+        inspectItemChoiceMapper.deleteByInspectItemIdAndAppId(inspectItemId,appId);
     }
 }

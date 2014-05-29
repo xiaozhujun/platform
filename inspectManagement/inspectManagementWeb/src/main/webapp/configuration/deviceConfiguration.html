@@ -95,6 +95,19 @@
                 width: '100%'
             });
         }
+
+        $("#exportBtn").click(function(){
+
+            var selectedRows =  g.getSelectedRows();
+            if(selectedRows.length==0||selectedRows==undefined){
+                $.ligerDialog.warn("未选择行！");
+            }
+            else{
+                var data = $.toJSON(selectedRows);
+                window.location.href="rs/deviceConfiguration/importDeviceConfiguration/"+encodeURI(data);
+            }
+
+        });
     </script>
     <style type="text/css">
         .l-table-edit {}
@@ -114,6 +127,7 @@
             <td align="right" class="l-table-edit-td">标签名:</td>
             <td align="left" class="l-table-edit-td"><input name="tagName" type="text" id="tagName" ltype="text" readonly="true"/></td>
             <td align="right"><input type="button" value="查询" id="submitBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="导出配置文件" id="exportBtn" class="l-button l-button-submit"/></td>
         </tr>
     </table>
 </div>

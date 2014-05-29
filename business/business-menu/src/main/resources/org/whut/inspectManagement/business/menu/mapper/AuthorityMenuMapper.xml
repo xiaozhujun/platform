@@ -64,6 +64,12 @@
 
         </where>
     </delete>
+    <delete id="deleteByAuthorityId" parameterType="java.lang.Long">
+        DELETE FROM authority_menu
+        <where>
+           AUTHORITYID=#{authorityId}
+        </where>
+    </delete>
 
 
     <select id="findByCondition" parameterType="map" resultMap="authorityMenuResultMap">

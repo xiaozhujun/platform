@@ -74,4 +74,25 @@ public class AuthorityMenuServiceWeb {
 
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/delete")
+    @POST
+    public String delete(@FormParam("authorityIds") String authorityIds)
+    {
+        int  result=0;
+        String idString=authorityIds;
+        String[] idStringArray=idString.split(",");
+
+        for(int i=0;i<idStringArray.length;i++) {
+            long authorityId=Long.parseLong(idStringArray[i]);
+            result = authorityMenuService.deleteByAuthorityId(authorityId);
+         }
+
+        if(result>=0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+    }
 }

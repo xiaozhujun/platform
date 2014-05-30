@@ -15,7 +15,7 @@
     <script type="text/javascript">
         $(function ()
         {
-            $.post($.URL.department.list,null,listDepartmentCallback,"json");
+            $.post($.URL.department.canUseList,null,listDepartmentCallback,"json");
             function listDepartmentCallback(data){
                 if(data.code==200){
                     var myData = [];

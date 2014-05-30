@@ -41,7 +41,8 @@
             "add":"rs/department/add",
             "list":"rs/department/list",
             "update":"rs/department/update",
-            "delete":"rs/department/delete"
+            "delete":"rs/department/delete",
+            "canUseList":"rs/department/canUseList"
         },
         "device":{
             "add":"rs/device/add" ,
@@ -83,6 +84,7 @@
             "add":"rs/employeeRole/add",
             "update":"rs/employeeRole/update",
             "delete":"rs/employeeRole/delete",
+            "canUseList":"rs/employeeRole/canUseList",
             "list":"rs/employeeRole/list"
         },
         "inspectChoice":{

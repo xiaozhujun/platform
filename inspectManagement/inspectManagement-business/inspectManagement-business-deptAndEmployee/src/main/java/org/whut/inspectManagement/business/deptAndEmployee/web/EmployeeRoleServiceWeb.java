@@ -391,4 +391,20 @@ public class EmployeeRoleServiceWeb {
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(subEmployeeRoleList,JsonResultUtils.Code.SUCCESS);
     }
-}
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/canUseList")
+    @POST
+    public String canUseList() {
+        long appId = UserContext.currentUserAppId();
+        List<EmployeeRole> list=employeeRoleService.getListByAppId(appId);
+        List<EmployeeRole> canUseList=new ArrayList<EmployeeRole>();
+        for(EmployeeRole employeeRole:list){
+            if(employeeRole.getStatus().equals("启用")){
+                canUseList.add(employeeRole);
+            }
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(canUseList,JsonResultUtils.Code.SUCCESS);
+    }
+
+    }

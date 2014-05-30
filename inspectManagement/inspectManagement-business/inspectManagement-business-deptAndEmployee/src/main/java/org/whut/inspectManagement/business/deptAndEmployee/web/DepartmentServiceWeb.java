@@ -3,7 +3,9 @@ package org.whut.inspectManagement.business.deptAndEmployee.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.Department;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.Employee;
 import org.whut.inspectManagement.business.deptAndEmployee.service.DepartmentService;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -14,6 +16,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +34,8 @@ public class DepartmentServiceWeb {
 
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private EmployeeService employeeService;
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
@@ -96,8 +101,24 @@ public class DepartmentServiceWeb {
     @POST
     public String list(){
         long appId=UserContext.currentUserAppId();
+
         List<Department> list=departmentService.list(appId,null,null);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/canUseList")
+    @POST
+    public String canUseList(){
+        long appId=UserContext.currentUserAppId();
+
+        List<Department> list=departmentService.list(appId,null,null);
+        List<Department> canUseDepartmentList= new ArrayList<Department>();
+        for(Department department:list){
+            if(department.getStatus().equals("启用")){
+                canUseDepartmentList.add(department);
+            }
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(canUseDepartmentList, JsonResultUtils.Code.SUCCESS);
+    }
 }

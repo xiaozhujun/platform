@@ -33,9 +33,9 @@ public class DeviceConfigurationService {
             tag.addElement("deviceType").addText(dtt.getDeviceType());
             tag.addElement("deviceTypeNum").addText(dtt.getDeviceTypeNumber());
             tag.addElement("deviceNum").addText(dtt.getDeviceNumber());
-            tag.addElement("tagArea").addText(dtt.getTagName());
-            tag.addElement("tagAreaNum").addText(String.valueOf(dtt.getTagId()));
-            tag.addElement("number").addText(dtt.getTagNumber());
+            tag.addElement("tagName").addText(dtt.getTagName());
+            tag.addElement("tagId").addText(String.valueOf(dtt.getTagId()));
+            tag.addElement("tagNumber").addText(dtt.getTagNumber());
         }
         try{
             OutputFormat outputFormat =OutputFormat.createPrettyPrint();

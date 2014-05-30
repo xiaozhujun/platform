@@ -9,6 +9,7 @@ import org.whut.inspectManagement.business.device.service.DeviceTypeService;
 import org.whut.inspectManagement.business.device.service.InspectAreaService;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
+import org.whut.platform.business.user.security.UserContext;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -32,11 +33,12 @@ public class DeviceTypeServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("number") String number, @FormParam("description") String description,@FormParam("appId") long appId){
+    public String add(@FormParam("name") String name,@FormParam("number") String number, @FormParam("description") String description){
         if(name==null||name.trim().equals("")||number.equals("")||description==null||description
-                .trim().equals("")||appId==0) {
+                .trim().equals("")) {
             return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
+        long appId= UserContext.currentUserAppId();
         DeviceType deviceType=new DeviceType();
         deviceType.setName(name);
         deviceType.setNumber(number);

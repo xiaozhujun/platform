@@ -49,16 +49,23 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
                 resourceMap = new HashMap<String, Collection<ConfigAttribute>>();  
                 List<AuthorityPower> resources = authorityPowerServices.getAuthorityPowerList();
                  for (AuthorityPower resource : resources) {
-                Collection<ConfigAttribute> configAttributes =  
-                                    new ArrayList<ConfigAttribute>();  
-                // 以权限名封装为Spring的security Object    
-                //resource.getRoleName() 角色名称 可随意 role_admin  或者 admin  
-                ConfigAttribute configAttribute =   
-                                    new SecurityConfig(resource.getAuthorityName());
-                configAttributes.add(configAttribute);  
-                //resource.getInterceptUrl() 格式必须是 拦截的包路径    
-                //或者是 比如  /manager/**/*.jh  或者  /system/manager/**/*.jsp  
-                resourceMap.put(resource.getPowerResource(), configAttributes);
+
+                    Collection<ConfigAttribute> configAttributes = null;
+                     if(resourceMap.containsKey(resource.getPowerResource())){
+                         ConfigAttribute configAttribute = new SecurityConfig(resource.getAuthorityName());
+                         configAttributes = (Collection<ConfigAttribute>)resourceMap.get(resource.getPowerResource());
+                         configAttributes.add(configAttribute);
+                     }else{
+                         configAttributes =  new ArrayList<ConfigAttribute>();
+                         // 以权限名封装为Spring的security Object
+                         //resource.getRoleName() 角色名称 可随意 role_admin  或者 admin
+                         ConfigAttribute configAttribute =
+                                 new SecurityConfig(resource.getAuthorityName());
+                         configAttributes.add(configAttribute);
+                         //resource.getInterceptUrl() 格式必须是 拦截的包路径
+                         //或者是 比如  /manager/**/*.jh  或者  /system/manager/**/*.jsp
+                     }
+                    resourceMap.put(resource.getPowerResource(), configAttributes);
                  }  
             }  
                         

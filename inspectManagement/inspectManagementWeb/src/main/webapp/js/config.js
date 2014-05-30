@@ -84,6 +84,7 @@
             "add":"rs/employeeRole/add",
             "update":"rs/employeeRole/update",
             "delete":"rs/employeeRole/delete",
+            "canUseList":"rs/employeeRole/canUseList",
             "list":"rs/employeeRole/list"
         },
         "inspectChoice":{

@@ -32,7 +32,7 @@
 
                 }
             }
-            $.post($.URL.employeeRole.list,null,listEmployeeRoleCallback,"json");
+            $.post($.URL.employeeRole.canUseList,null,listEmployeeRoleCallback,"json");
             function listEmployeeRoleCallback(data){
                 if(data.code==200){
                     var myData = [];

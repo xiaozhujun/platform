@@ -18,4 +18,5 @@ public interface MenuMapper extends AbstractMapper{
     public List<Menu> findByCondition(Map<String,Object> map);
     public Menu get(long id);
     public String getNameById(long id);
+    public List<Menu> getMenuByUserId(long userid);
 }

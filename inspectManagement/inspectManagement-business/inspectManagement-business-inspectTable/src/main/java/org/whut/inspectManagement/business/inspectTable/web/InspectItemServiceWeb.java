@@ -51,12 +51,12 @@ public class InspectItemServiceWeb {
     @Autowired
     InspectAreaService inspectAreaService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/addList")
+    @Path("/add")
     @POST
-    public String addList(@FormParam("jsonStringList") String jsonStringList){
+    public String add(@FormParam("jsonStringList") String jsonStringList){
         long appId=UserContext.currentUserAppId();
-        List<InspectItem> inspectItemList=new ArrayList<InspectItem>();
         List<InspectItemChoice> inspectItemChoiceList=new ArrayList<InspectItemChoice>();
+        List<SubInspectItem> list=new ArrayList<SubInspectItem>();
         Date date=new Date();
         try {
             JSONArray jsonArray=new JSONArray(jsonStringList);
@@ -74,44 +74,46 @@ public class InspectItemServiceWeb {
                 String input=jsonObject.getString("isInput");*/
                 inspectItem.setInput(Integer.parseInt(subInspectItem.getInput()));
                 inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
-                long areaId;
-                try{
-                    areaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
-                }catch (Exception e){
-                    return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"设备类型不包含点检区域！");
-                }
-                inspectItem.setInspectAreaId(areaId);
+                inspectItem.setInspectAreaId(inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId));
                 inspectItem.setDescription(subInspectItem.getDescription());
                 inspectItem.setAppId(appId);
-                inspectItemList.add(inspectItem);
-            }
-            inspectItemService.addList(inspectItemList);
-            for(int j=0;j<jsonArray.length();j++){
-                String jsonString= jsonArray.get(j).toString();
-                SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-                /*JSONObject jsonObject= (JSONObject) jsonArray.get(j);
-                String input=jsonObject.getString("isInput");*/
-                String input=subInspectItem.getInput();
-                if(input.equals("0")){
-                    String choices=subInspectItem.getChoiceValue();
-                    String [] choicesList=choices.split(";");
-                    for (String choice:choicesList){
-                        InspectItemChoice inspectItemChoice=new InspectItemChoice();
-                        inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValueAndAppId(choice,appId));
-                        inspectItemChoice.setInspectItemId(inspectItemService.getInspectItemIdByNameAndNumberAndAppId(subInspectItem.getName(),subInspectItem.getNumber(),appId));
-                        inspectItemChoice.setAppId(appId);
-                        inspectItemChoiceList.add(inspectItemChoice);
+                long id;
+                try {
+                    id=inspectItemService.getInspectItemIdByNameAndNumberAndAppId(subInspectItem.getName(),subInspectItem.getNumber(),appId);
+                }catch (Exception e){
+                    id=0;
+                }
+                if(id==0){
+                    inspectItemService.add(inspectItem);
+                    long inspectId=inspectItem.getId();
+                    String input=subInspectItem.getInput();
+                    if(input.equals("0")){
+                        String choices=subInspectItem.getChoiceValue();
+                        String [] choiceList=choices.split(";");
+                        for(String choice:choiceList){
+                            InspectItemChoice inspectItemChoice=new InspectItemChoice();
+                            inspectItemChoice.setInspectItemId(inspectId);
+                            inspectItemChoice.setAppId(appId);
+                            inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValueAndAppId(choice,appId));
+                            inspectItemChoiceList.add(inspectItemChoice);
+                        }
                     }
+                }else{
+                    list.add(subInspectItem);
                 }
             }
-            if(inspectItemChoiceList.size()!=0&&inspectItemChoiceList!=null){
+            if(inspectItemChoiceList.size()!=0){
                 inspectItemChoiceService.addList(inspectItemChoiceList);
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
+        if(list.size()!=0){
+
+            return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.DUPLICATE);
+        }else {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
+        }
     }
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
@@ -136,7 +138,9 @@ public class InspectItemServiceWeb {
             else{
                   subInspectItem.setInput("是");
                 }
-            subInspectItem.setChoiceValue(inspectItemChoiceService.getChoiceValueByItemId(a.getId()));
+            if(a.getInput()==0){
+                subInspectItem.setChoiceValue(inspectItemChoiceService.getChoiceValueByItemId(a.getId()));
+            }
             subList.add(subInspectItem);
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(subList, JsonResultUtils.Code.SUCCESS);

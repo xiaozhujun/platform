@@ -11,7 +11,8 @@
             "update":"rs/user/update",
             "delete":"rs/user/delete",
             "list":"rs/user/list",
-            "getId":"rs/user/getIdByName"
+            "getId":"rs/user/getIdByName" ,
+            "currentUserId": "rs/user/currentUserId"
         },
         "authority":{
              "add":"rs/authority/add",
@@ -33,7 +34,6 @@
             "list":"rs/inspectItem/list",
             "update":"rs/inspectItem/update" ,
             "delete":"rs/inspectItem/delete",
-            "addList":"rs/inspectItem/addList",
             "getInspectAreaIdByNames":"rs/inspectItem/getInspectAreaIdByNames",
             "getInspectAreaNameByDeviceTypeNameAndAppId":"rs/inspectItem/getInspectAreaNameByDeviceTypeNameAndAppId"
         },
@@ -41,14 +41,16 @@
             "add":"rs/department/add",
             "list":"rs/department/list",
             "update":"rs/department/update",
-            "delete":"rs/department/delete"
+            "delete":"rs/department/delete",
+            "canUseList":"rs/department/canUseList"
         },
         "device":{
             "add":"rs/device/add" ,
             "list":"rs/device/list",
             "update":"rs/device/update",
             "delete":"rs/device/delete",
-            "getId":"rs/device/getId"
+            "getId":"rs/device/getId",
+            "getListByCondition":"rs/device/getListByCondition"
         },
         "deviceType":{
             "add":"rs/deviceType/add",
@@ -82,6 +84,7 @@
             "add":"rs/employeeRole/add",
             "update":"rs/employeeRole/update",
             "delete":"rs/employeeRole/delete",
+            "canUseList":"rs/employeeRole/canUseList",
             "list":"rs/employeeRole/list"
         },
         "inspectChoice":{
@@ -90,6 +93,16 @@
             "update":"rs/inspectChoice/update" ,
             "delete":"rs/inspectChoice/delete",
             "getChoiceValues":"rs/inspectChoice/getChoiceValues"
+        }     ,
+        "menu" :{
+            "addParentMenu" :"rs/menu/addParentMenu" ,
+            "addSonMenu" :"rs/menu/addSonMenu" ,
+            /*"list":"rs/menu/list",*/
+            "update":"rs/menu/update",
+            "delete":"rs/menu/delete",
+            "list":"rs/menu/list",
+            "getParentInfoById": "rs/menu/getParentInfoById"  ,
+            "getMenuByUserId": "rs/menu/getMenuByUserId"
         }
     }
 })(jQuery);

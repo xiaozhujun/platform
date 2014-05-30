@@ -63,4 +63,9 @@ public class EmployeeEmployeeRoleService {
     public List<EmployeeEmployeeRole> getByEmployeeNameAndRole(String employeeName,String EmployeeRole,long appId){
         return employeeEmployeeRoleMapper.getByEmployeeNameAndRole(employeeName, EmployeeRole, appId);
     }
+
+    public int deleteByEmployeeRoleId(long employeeRoleId)
+    {
+        return employeeEmployeeRoleMapper.deleteByEmployeeRoleId(employeeRoleId);
+    }
 }

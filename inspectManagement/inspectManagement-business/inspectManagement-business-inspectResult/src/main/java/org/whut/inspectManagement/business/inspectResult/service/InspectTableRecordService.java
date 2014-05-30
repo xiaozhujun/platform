@@ -76,8 +76,7 @@ public class InspectTableRecordService {
             t = root.attribute("inspecttime").getValue();
             worknum=root.attribute("workernumber").getValue();
             dnum=root.attribute("devicenumber").getValue();
-            long deviceNumber = Long.parseLong(dnum);
-            deviceId = deviceMapper.getIdByNumber(deviceNumber);
+            deviceId = deviceMapper.getIdByNumber(dnum);
             Element e1 = root.element("devicetype");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -104,7 +103,7 @@ public class InspectTableRecordService {
                 area = e5.attribute("name").getValue();
                 areaId = e5.attribute("areaId").getValue();
                 long inspectAreaId = Long.parseLong(areaId);
-                inspectTagId = inspectTagMapper.getIdByDeviceNumAndAreaId(deviceNumber,inspectAreaId);
+                inspectTagId = inspectTagMapper.getIdByDeviceNumAndAreaId(dnum,inspectAreaId);
                 List<Element> elements = e5.elements();
                 Iterator<Element> it = elements.iterator();
                 while (it.hasNext()) {

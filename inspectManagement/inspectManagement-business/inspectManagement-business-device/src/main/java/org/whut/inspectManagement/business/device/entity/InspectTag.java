@@ -14,7 +14,7 @@ public class InspectTag {
     private String name;
     private String description;
     private Date createtime;
-    private long number;
+    private String number;
     private long inspectAreaId;
     private long deviceId;
     private long appId;
@@ -51,11 +51,11 @@ public class InspectTag {
         this.createtime = createtime;
     }
 
-    public long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

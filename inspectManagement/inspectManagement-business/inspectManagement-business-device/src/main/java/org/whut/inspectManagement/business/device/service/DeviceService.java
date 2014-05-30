@@ -2,6 +2,7 @@ package org.whut.inspectManagement.business.device.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.device.entity.Device;
+import org.whut.inspectManagement.business.device.entity.DeviceTypeTag;
 import org.whut.inspectManagement.business.device.mapper.DeviceMapper;
 
 import java.util.HashMap;
@@ -34,8 +35,10 @@ public class DeviceService {
     public void delete(Device device){
         deviceMapper.delete(device);
     }
-    public long getIdByNumber(long number) {
+    public long getIdByNumber(String number) {
         return deviceMapper.getIdByNumber(number);
     }
-
+    public List<Map<String,String>> getListByCondition(String deviceType,String deviceNumber,String tagName,long appId){
+       return deviceMapper.getListByCondition(deviceType,deviceNumber,tagName,appId);
+    }
 }

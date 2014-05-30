@@ -10,6 +10,62 @@
     <script type="text/javascript">
         $(function ()
         {
+            $.get($.URL.appuser.currentUserId,null,getuseridCallback,"json");
+            function getuseridCallback(useriddata)
+            {
+                if(useriddata.code==200)
+                {
+                    var userid={};
+                    userid.userid= useriddata.data;
+                    $.post($.URL.menu.getMenuByUserId,userid,menuCallback,"json");
+                }
+            }
+            function menuCallback(menudata)
+            {
+                if(menudata.code==200)
+                {
+                    var s=new Array();
+                    var ss=new Array();
+                       for(var i=0;i<menudata.data.length;i++)
+                       {
+                           if(menudata.data[i].level ==1)
+                           {
+                             s[i]="<div title='"+menudata.data[i].name+"' style='padding:10px'><ul>"  ;
+                           }
+                           else
+                           {
+                               for(var j=0;j<= s.length;j++)
+                               {
+                               if(menudata.data[i].pid==j)
+                                  {
+                                   s[j-1]=s[j-1]+ "<li url='"+menudata.data[i].url+"'>"+menudata.data[i].name+"</li>";
+                                  }
+                               }
+                           }
+                       }
+                    var menuload="";
+                    for(var j=0;j< s.length;j++)
+                    {
+                        if(typeof(s[j]) != "undefined")
+                        {
+                            s[j]=s[j]+"</ul></div>";
+                            menuload=menuload+s[j] ;
+                            alert("s"+j+":"+s[j]);
+                        }
+                    }
+                    alert(menuload) ;
+                }
+            }
+            var s1="<li url='department/add.html'>添加部门1</li><li url='department/list.html'>部门列表1</li>";
+            var s2="<li url='department/add.html'>添加部门2</li><li url='department/list.html'>部门列表2</li>";
+            var s3="<li url='department/add.html'>添加部门3</li><li url='department/list.html'>部门列表3</li>";
+
+          var  a1="<div title='部门管理1' style='padding:10px'><ul>"+s1+"</ul></div>" ;
+          var  a2="<div title='部门管理2' style='padding:10px'><ul>"+s2+"</ul></div>" ;
+          var  a3="<div title='部门管理3' style='padding:10px'><ul>"+s3+"</ul></div>" ;
+            var a=a1+a2+a3;
+
+            $("#accordion").append(a);
             $("#accordion").ligerAccordion();
             $("#accordion li").click(function(){
                 var url = $(this).attr("url");
@@ -33,8 +89,8 @@
 <div id="accordion">
     <div title="企业管理" style="padding:10px">
         <ul>
-            <li url="app/addApp.html">添加</li>
-            <li url="app/listApp.html">列表</li>
+            <li url="app/addApp.html">添加企业</li>
+            <li url="app/listApp.html">企业列表</li>
         </ul>
     </div>
     <div title="用户管理" style="padding:10px">
@@ -68,9 +124,6 @@
             <li url="authorityMenu/list.html">角色菜单列表</li>
         </ul>
     </div>
-<div style="display:none;">
-
-</div>
 </div>
 </body>
 </html>

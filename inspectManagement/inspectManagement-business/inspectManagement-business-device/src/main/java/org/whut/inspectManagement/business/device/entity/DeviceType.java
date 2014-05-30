@@ -10,7 +10,7 @@ package org.whut.inspectManagement.business.device.entity;
 public class DeviceType {
     private  long id;
     private String name;
-    private  long number;
+    private  String number;
     private  String description;
     private  long appId;
 
@@ -30,11 +30,11 @@ public class DeviceType {
         this.name = name;
     }
 
-    public long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

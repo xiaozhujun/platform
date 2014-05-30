@@ -30,8 +30,8 @@ public class InspectTagServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("createtime") Date createtime,@FormParam("number") long number,@FormParam("inspectAreaId") long inspectAreaId,@FormParam("deviceId") long deviceId,@FormParam("appId") long appId ){
-        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number==0||inspectAreaId==0||deviceId==0||appId==0){
+    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("createtime") Date createtime,@FormParam("number") String number,@FormParam("inspectAreaId") long inspectAreaId,@FormParam("deviceId") long deviceId,@FormParam("appId") long appId ){
+        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number.equals("")||inspectAreaId==0||deviceId==0||appId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空！");
         }
         Date date=new Date();

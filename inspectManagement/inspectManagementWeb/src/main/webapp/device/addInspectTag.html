@@ -61,7 +61,6 @@
                 data.number=$("#inspectTagNumber").val();
                 data.inspectAreaId=$("#inspectAreaId").val();
                 data.deviceId=$("#deviceId").val();
-                data.appId=$("#inspectTagAppId").val();
                 $.post($.URL.inspectTag.add,data,addCallBack,"json");
             })
             function addCallBack(data){
@@ -98,12 +97,7 @@
                 <input name="inspectTagName" type="text" id="inspectTagName" ltype="text" /></td>
             <td align="left"></td>
         </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">标签描述:</td>
-            <td align="left" class="l-table-edit-td">
-                <textarea id="inspectTagDescription" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
-            </td><td align="left"></td>
-        </tr>
+
         <tr>
             <td align="right" class="l-table-edit-td">标签编号:</td>
             <td align="left" class="l-table-edit-td">
@@ -123,10 +117,10 @@
             </td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">appId:</td>
+            <td align="right" class="l-table-edit-td">标签描述:</td>
             <td align="left" class="l-table-edit-td">
-                <input type="text"  id="inspectTagAppId">
-            </td>
+                <textarea id="inspectTagDescription" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
+            </td><td align="left"></td>
         </tr>
     </table>
     <br />

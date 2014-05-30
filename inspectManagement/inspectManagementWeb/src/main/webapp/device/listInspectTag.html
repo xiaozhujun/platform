@@ -69,19 +69,16 @@
                     {display:'标签名',name:'name',
                         editor:{type:'text'}
                     } ,
-                    {display:'标签描述',name:'description',
-                        editor:{type:'text'}
-                    } ,
                     {display:'创建时间',name:'createtime'
 
                     },
                     {display:'标签编号',name:'number',
                         editor:{type:'text'}
                     },
-                    { display: '点检区域ID', name: 'InspectAreaId', type: 'int',
+                    { display: '点检区域ID', name: 'inspectAreaId', type: 'int',
                         editor: { type: 'select', data: mData, valueField: 'type'},
                         render:function(item){
-                            return item.InspectAreaId;
+                            return item.inspectAreaId;
                         }
                     },
                     { display: '设备ID', name: 'deviceId', type: 'int',
@@ -93,6 +90,9 @@
                     {display:'appId',name:'appId',
                         editor:{type:'text'}
                     }  ,
+                    {display:'标签描述',name:'description',
+                        editor:{type:'text'}
+                    } ,
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {
                         var h="";

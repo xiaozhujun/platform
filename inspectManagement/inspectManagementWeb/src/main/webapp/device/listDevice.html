@@ -61,9 +61,7 @@
                         editor:{type:'text'}
                     },
 
-                    {display:'设备描述',name:'description',
-                        editor:{type:'text'}
-                    } ,
+
 
                     {display:'appId',name:'appId',
                         editor:{type:'text'}
@@ -75,6 +73,9 @@
                             return item.deviceTypeId;
                         }
                     },
+                    {display:'设备描述',name:'description',
+                        editor:{type:'text'}
+                    } ,
 
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {

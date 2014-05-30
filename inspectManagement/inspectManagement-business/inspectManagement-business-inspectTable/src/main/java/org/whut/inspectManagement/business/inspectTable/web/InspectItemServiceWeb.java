@@ -151,7 +151,7 @@ public class InspectItemServiceWeb {
     public String update(@FormParam("jsonString") String jsonString){
         long appId=UserContext.currentUserAppId();
         SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-        if(subInspectItem.getName()==null||subInspectItem.getInspectArea()==null||subInspectItem.getInspectTable()==null||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")){
+        if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long id;

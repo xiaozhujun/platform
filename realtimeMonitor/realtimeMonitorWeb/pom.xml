@@ -66,6 +66,12 @@
             <artifactId>spring-security-config</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>realtimeMonitor</groupId>
+            <artifactId>realtimeMonitor-business-report</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

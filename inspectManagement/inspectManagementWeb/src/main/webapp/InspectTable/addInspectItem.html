@@ -180,7 +180,7 @@
         $.post($.URL.inspectItem.getInspectAreaIdByNames,{"inspectTable":inspectTable,"inspectAreaName":areaName,"deviceTypeName":deviceTypeName},areaIdCallback,"json");
         function areaIdCallback(data){
             if(data.code==500){
-                $.ligerDialog.error(data.message);
+                $.ligerDialog.warn(data.message);
             }
             if(data.code==200){
                 var row = manager.getSelectedRow();
@@ -221,7 +221,7 @@
                 $.ligerDialog.closeWaitting();
             }, 2000);
         }else if(data.code==500){
-            $.ligerDialog.error(data.message);
+            $.ligerDialog.warn(data.message);
         }
     }
     $("#delete").ligerButton({});

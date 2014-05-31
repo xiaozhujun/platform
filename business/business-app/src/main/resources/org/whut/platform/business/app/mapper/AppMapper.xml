@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.app.mapper.AppMapper">
+    <sql id="app_fields">
+		ID,NAME,DESCRIPTION,STATUS,CREATETIME
+	</sql>
+
+    <resultMap id="appResultMap" type="App">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="status" column="STATUS"/>
+        <result property="createtime" column="CREATETIME"/>
+
+    </resultMap>
+
+    <insert id="add" parameterType="App"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        app(
+        <include refid="app_fields" />
+        )
+        VALUES (#{id}, #{name}, #{description},#{status},#{createtime});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM app
+        <where>
+            <if test="name != null">NAME=#{name}</if>
+        </where>
+    </select>
+
+
+    <update id="update" parameterType="App">
+        UPDATE app
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            <if test="description != null">DESCRIPTION=#{description},</if>
+            <if test="status != null">STATUS=#{status},</if>
+            <if test="createtime != null">CREATETIME=#{createtime},</if>
+
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="App">
+        DELETE FROM app
+        <where>
+            <if test="id != null">ID=#{id}</if>
+
+            <if test="name != null"> AND NAME=#{name}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="App" resultMap="appResultMap">
+        SELECT
+        <include refid="app_fields" />
+        FROM app WHERE ID=#{id}
+    </select>
+
+    <select id="findByName" parameterType="java.lang.String" resultMap="appResultMap">
+        SELECT
+        <include refid="app_fields" />
+        FROM app where name=#{name}
+    </select>
+
+    <select id="findByCondition" parameterType="map" resultMap="appResultMap">
+        SELECT
+        <include refid="app_fields"/>
+        FROM app
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="description!=null">AND DESCRIPTION=#{description}</if>
+            <if test="status!=null">AND STATUS=#{status}</if>
+
+        </where>
+    </select>
+
+    <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+         SELECT
+         id
+         FROM app WHERE NAME=#{name}
+     </select>
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+         SELECT
+         name
+         FROM app WHERE ID=#{id}
+     </select>
+</mapper>

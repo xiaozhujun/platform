@@ -177,7 +177,7 @@ public class MongoConnector {
     }
 
     //根据查询条件返回文档数组
-    public List<DBObject> getDocumentList(BasicDBObject query){
+    public List<DBObject> getDocumentList(DBObject query){
         if(query==null){
             throw new IllegalArgumentException("object id is null");
         }

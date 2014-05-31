@@ -3,7 +3,7 @@ package org.whut.inspectManagement.business.deptAndEmployee.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.deptAndEmployee.service.DepartmentService;
-import org.whut.inspectManagement.business.app.service.AppService;
+import org.whut.platform.business.app.service.AppService;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.Employee;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeEmployeeRole;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployee;

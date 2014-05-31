@@ -1,7 +1,9 @@
-package org.whut.monitor.report.service;
+package org.whut.monitor.business.report.service;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.QueryOperators;
+import com.mongodb.util.JSON;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
 import java.util.*;
@@ -47,6 +49,13 @@ public class ReportService {
         return (ArrayList)dbObject.get(resourceBundle.getString("mongo.field.sensor.data"));
     }
 
+    //根据json条件字符串查询文档列表
+    public List<DBObject> queryDocuments(String params){
+
+        DBObject query = (DBObject) JSON.parse(params);
+        return mongoConnector.getDocumentList(query);
+    }
+
     //根据条件查询文档列表
     public List<DBObject> queryDocuments(HashMap<String,String> params){
 
@@ -64,16 +73,17 @@ public class ReportService {
 
     //获取指定传感器在时间段内的数据
     public List<DBObject> queryDocuments(Date startTime,Date endTime,String sensorNum){
-        BasicDBObject query = new BasicDBObject();
+        ArrayList<BasicDBObject> query = new ArrayList<BasicDBObject>();
         if(startTime!=null){
-            query.append("time",new BasicDBObject("$gte",startTime));
+            query.add(new BasicDBObject("time", new BasicDBObject("$gte", startTime.getTime())));
         }
         if(endTime!=null){
-            query.append("time",new BasicDBObject("$lte",endTime));
+            query.add(new BasicDBObject("time", new BasicDBObject("$lte", endTime.getTime())));
         }
         if(sensorNum!=null){
-            query.append("sensorNum",new BasicDBObject("$ne",sensorNum));
+            query.add(new BasicDBObject("sensorNum", sensorNum));
         }
-        return mongoConnector.getDocumentList(query);
+        BasicDBObject condition = new BasicDBObject(QueryOperators.AND,query);
+        return mongoConnector.getDocumentList(condition);
     }
 }

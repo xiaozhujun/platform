@@ -1,9 +1,9 @@
-package org.whut.inspectManagement.business.app.web;
+package org.whut.platform.business.app.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whut.inspectManagement.business.app.entity.App;
-import org.whut.inspectManagement.business.app.service.AppService;
+import org.whut.platform.business.app.entity.App;
+import org.whut.platform.business.app.service.AppService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;

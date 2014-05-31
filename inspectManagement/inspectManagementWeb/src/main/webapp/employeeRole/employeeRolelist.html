@@ -66,21 +66,21 @@
                         editor: { type: 'text'}
                     },
                     { display: '用户权限', name: 'authority', type: 'string',
-                        editor: { type:'select',data:roleData,valueField:'type'
-                            },
+                        editor: { type:'select',data:roleData,valueField:'type',emptyText:null
+                        },
                         render:function(item){
                             return item.authority;
                         }
                     },
                     { display: '点检表', name: 'inspectTable', type: 'string',
                         editor: { type:'select',data:inspectTableData,valueField:'type',textField:'text',
-                            isMultiSelect:true,isShowCheckBox:true},
+                            isMultiSelect:true,isShowCheckBox:true,emptyText:null},
                         render:function(item){
                             return item.inspectTable;
                         }
                     },
                     { display: '状态',name: 'status',
-                        editor: { type: 'select',data:statusData,valueField:'type'},
+                        editor: { type: 'select',data:statusData,valueField:'type',emptyText:null},
                         render:function(item){
                             return item.status;
                         }

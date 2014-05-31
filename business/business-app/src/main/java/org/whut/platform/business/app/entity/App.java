@@ -1,4 +1,4 @@
-package org.whut.inspectManagement.business.app.entity;
+package org.whut.platform.business.app.entity;
 
 import java.util.Date;
 

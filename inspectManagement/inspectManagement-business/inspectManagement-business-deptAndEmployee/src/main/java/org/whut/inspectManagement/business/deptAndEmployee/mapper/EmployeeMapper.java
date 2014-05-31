@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.deptAndEmployee.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.Employee;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -14,4 +15,5 @@ public interface EmployeeMapper extends AbstractMapper<Employee> {
     public List<Employee> findByCondition(Map<String, Object> map);
     public Employee getById(long id);
     public List<Employee> getListByAppId(long appId);
+    public List<Employee> getByNameDepartmentAndRole(@Param("name")String name,@Param("departmentId")String departmentId,@Param("employeeRoleName")String employeeRoleName,@Param("appId")long appId);
 }

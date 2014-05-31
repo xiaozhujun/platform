@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.whut.inspectManagement.business.app.service.AppService;
+import org.whut.platform.business.app.service.AppService;
 import org.whut.platform.business.user.entity.SubUser;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.security.UserContext;

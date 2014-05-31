@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.whut.inspectManagement.business.app.mapper.AppMapper">
+<mapper namespace="org.whut.platform.business.app.mapper.AppMapper">
     <sql id="app_fields">
 		ID,NAME,DESCRIPTION,STATUS,CREATETIME
 	</sql>

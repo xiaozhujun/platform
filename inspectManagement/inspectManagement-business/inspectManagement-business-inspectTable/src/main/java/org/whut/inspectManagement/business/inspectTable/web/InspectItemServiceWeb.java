@@ -151,7 +151,7 @@ public class InspectItemServiceWeb {
     public String update(@FormParam("jsonString") String jsonString){
         long appId=UserContext.currentUserAppId();
         SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-        if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")){
+        if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getInspectTable().equals("null")||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long id;
@@ -165,6 +165,7 @@ public class InspectItemServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检项名点检编号已存在");
             }
         }
+
      //更新inspectItem表
        int isInput;
         if(subInspectItem.getInput().equals("否")){

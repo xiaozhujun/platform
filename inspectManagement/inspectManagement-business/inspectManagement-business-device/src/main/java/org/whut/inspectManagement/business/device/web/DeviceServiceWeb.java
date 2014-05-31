@@ -117,7 +117,6 @@ public class DeviceServiceWeb {
                deviceType=null;
         }
         List<Map<String,String>> mapList = deviceService.getListByCondition(deviceType,deviceNumber,tagName,addId);
-        System.out.println(mapList.get(0).get("deviceType"));
         return JsonResultUtils.getObjectResultByStringAsDefault(mapList, JsonResultUtils.Code.SUCCESS);
     }
 

@@ -43,7 +43,7 @@
                         editor: { type: 'text'}
                     },
                     { display: '状态',name: 'status',
-                        editor: { type: 'select',data:statusData,valueField:'type'},
+                        editor: { type: 'select',data:statusData,valueField:'type',emptyText:null},
                         render:function(item){
                             return item.status;
                         }

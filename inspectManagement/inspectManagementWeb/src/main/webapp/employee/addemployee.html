@@ -25,7 +25,7 @@
                         j["id"]=content.id;
                         myData.push(j);
                     });
-                    $("#departmentName").ligerComboBox({
+                    $("#departmentName").ligerComboBox({emptyText:null,
                         data:myData,
                         valueFieldID: 'departmentNameSelect'
                     });
@@ -35,20 +35,20 @@
             $.post($.URL.employeeRole.canUseList,null,listEmployeeRoleCallback,"json");
             function listEmployeeRoleCallback(data){
                 if(data.code==200){
-                    var myData = [];
+                    var myData=[];
                     $.each(data.data,function(index,content){
                         var j={};
                         j["text"]=content.name;
                         j["id"]=content.id;
                         myData.push(j);
                     });
-                    $("#employeeRoleName").ligerComboBox({ isShowCheckBox:true,isMultiSelect:true,
+                    $("#employeeRoleName").ligerComboBox({ isShowCheckBox:true,isMultiSelect:true,emptyText:null,
                         data:myData,
                         valueFieldID: 'employeeRoleName'
                     });
                 }
             }
-            $("#employeeSex").ligerComboBox({
+            $("#employeeSex").ligerComboBox({emptyText:null,
                 data:[{"text":'男',"id":"0"},{"text":"女","id":"1"}],
                 valueFieldID:'employeeSexSelect'
             });
@@ -60,12 +60,12 @@
                 data.employeeRoleName = $("#employeeRoleName").val();
                 data.status="启用";
                 data.departmentName =$("#departmentName").val();
-                data.role=$("#Role").val();;
+                data.role=$("#Role").val();
                 $.post($.URL.employee.add,data,addEmployeeCallback,"json");
 
             });
 
-         });
+        });
 
         function addEmployeeCallback(data){
             if(data.code==200){

@@ -60,6 +60,9 @@ public class InspectItemServiceWeb {
         Date date=new Date();
         try {
             JSONArray jsonArray=new JSONArray(jsonStringList);
+            if(jsonArray.length()==0){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
+            }
             for(int i=0;i<jsonArray.length();i++){
                 String jsonString= jsonArray.get(i).toString();
                 SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);

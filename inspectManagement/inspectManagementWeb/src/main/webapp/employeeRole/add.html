@@ -25,7 +25,7 @@
                         j["id"]=content.id;
                         myData.push(j);
                     });
-                    $("#Authority").ligerComboBox({
+                    $("#Authority").ligerComboBox({emptyText:null,
                         data:myData,
                         valueFieldID: 'AuthoritySelect'
                     });
@@ -42,7 +42,7 @@
                         j["id"]=content.id;
                         myData.push(j);
                     });
-                    $("#InspectTable").ligerComboBox({ isShowCheckBox:true,isMultiSelect:true,
+                    $("#InspectTable").ligerComboBox({ isShowCheckBox:true,isMultiSelect:true,emptyText:null,
                         data:myData,
                         valueFieldID: 'InspectTableSelect'
                     });

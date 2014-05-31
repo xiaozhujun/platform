@@ -92,4 +92,16 @@
         where ID=#{id}
     </select>
 
+    <select id="getByNameDepartmentAndRole" parameterType="map" resultMap="employeeResultMap">
+        select
+        <include refid="employee_fields"/>
+        from employee
+        <where>
+            <if test="name !=null"> NAME LIKE #{name}</if>
+            <if test="departmentId !=null">and DEPARTMENTID=#{departmentId}</if>
+            <if test="employeeRoleName !=null">and EMPLOYEEROLENAME like #{employeeRoleName}</if>
+            <if test="appId !=null"> and APPID=#{appId}</if>
+        </where>
+    </select>
+
 </mapper>

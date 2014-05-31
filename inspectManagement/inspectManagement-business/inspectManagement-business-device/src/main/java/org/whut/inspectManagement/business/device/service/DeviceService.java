@@ -41,4 +41,7 @@ public class DeviceService {
     public List<Map<String,String>> getListByCondition(String deviceType,String deviceNumber,String tagName,long appId){
        return deviceMapper.getListByCondition(deviceType,deviceNumber,tagName,appId);
     }
+    public List<Map<String,String>> getListByTagId(long tagId){
+        return deviceMapper.getListByTagId(tagId);
+    }
 }

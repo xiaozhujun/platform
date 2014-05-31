@@ -104,4 +104,11 @@
             <if test="appId != null"> and APPID=#{appId}</if>
         </where>
     </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultMap="EmpEmpRoleResultMap">
+        select
+        <include refid="emp_empRole_fields"/>
+        from employee_employeerole
+        where id=#{id}
+    </select>
 </mapper>

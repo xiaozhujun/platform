@@ -68,4 +68,8 @@ public class EmployeeEmployeeRoleService {
     {
         return employeeEmployeeRoleMapper.deleteByEmployeeRoleId(employeeRoleId);
     }
+
+    public EmployeeEmployeeRole getById(long id){
+       return employeeEmployeeRoleMapper.getById(id);
+    }
 }

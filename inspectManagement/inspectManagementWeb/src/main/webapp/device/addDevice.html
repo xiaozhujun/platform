@@ -40,7 +40,6 @@
                 data.name=$("#deviceName").val();
                 data.number=$("#deviceNumber").val();
                 data.description=$("#deviceDescription").val();
-                data.appId=$("#deviceAppId").val();
                 data.deviceTypeId=$("#deviceTypeId").val();
 
                 $.post($.URL.device.add,data,addCallBack,"json");
@@ -79,30 +78,26 @@
                 <input name="deviceName" type="text" id="deviceName" ltype="text" /></td>
             <td align="left"></td>
         </tr>
-        <tr>
+
         <tr>
             <td align="right" class="l-table-edit-td">设备编号:</td>
             <td align="left" class="l-table-edit-td">
                 <input type="text"  id="deviceNumber">
             </td>
         </tr>
-        <td align="right" class="l-table-edit-td">设备描述:</td>
-        <td align="left" class="l-table-edit-td">
-            <textarea id="deviceDescription" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
-        </td><td align="left"></td>
-        </tr>
 
-        <tr>
-            <td align="right" class="l-table-edit-td">appId:</td>
-            <td align="left" class="l-table-edit-td">
-                <input type="text"  id="deviceAppId">
-            </td>
-        </tr>
+
         <tr>
             <td align="right" class="l-table-edit-td">设备类型ID:</td>
             <td align="left" class="l-table-edit-td">
                 <input type="text" readonly="true" id="deviceTypeId">
             </td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">设备描述:</td>
+            <td align="left" class="l-table-edit-td">
+                <textarea id="deviceDescription" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
+            </td><td align="left"></td>
         </tr>
 
     </table>

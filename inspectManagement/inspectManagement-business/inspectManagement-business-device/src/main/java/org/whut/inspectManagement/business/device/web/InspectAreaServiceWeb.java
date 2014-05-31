@@ -5,6 +5,7 @@ import org.springframework.stereotype.*;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.device.entity.InspectArea;
 import org.whut.inspectManagement.business.device.service.InspectAreaService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -28,10 +29,11 @@ public class InspectAreaServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("number") String number,@FormParam("deviceTypeId") long deviceTypeId,@FormParam("appId") long appId ){
-        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number.equals("")||deviceTypeId==0||appId==0){
+    public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("number") String number,@FormParam("deviceTypeId") long deviceTypeId){
+        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number.equals("")||deviceTypeId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空！");
         }
+        long appId= UserContext.currentUserAppId();
         Date date=new Date();
         InspectArea inspectArea=new InspectArea();
         inspectArea.setName(name);

@@ -5,4 +5,5 @@
     <bean id="inspectTableDownloadService" class="org.whut.inspectManagement.business.configuration.service.InspectTableDownloadService" depends-on="mappers"/>
     <bean id="personnelConfigurationService" class="org.whut.inspectManagement.business.configuration.service.PersonnelConfigurationService" depends-on="mappers"/>
     <bean id="DeviceConfigurationService" class="org.whut.inspectManagement.business.configuration.service.DeviceConfigurationService" depends-on="mappers"/>
+    <bean id="roleTablesDownloadService" class="org.whut.inspectManagement.business.configuration.service.RoleTablesDownloadService" depends-on="mappers"/>
 </beans>

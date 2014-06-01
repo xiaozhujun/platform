@@ -1,13 +1,11 @@
 package org.whut.inspectManagement.business.configuration.service;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployeeRole;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -22,27 +20,25 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class RoleTablesDownloadService {
-    public String roleTablesDocConstruction(JSONArray jsonArray) throws JSONException {
+    public String roleTablesDocConstruction(List<SubEmployeeRole> list){
         String result="";
+        String roleTemp= "";
         Document doc = DocumentHelper.createDocument();
         Element RolesTable = doc.addElement("RolesTable");
-        for(int i= 0;i<jsonArray.length();i++){
-            JSONObject jsonObject = (JSONObject)(jsonArray.get(i));
+        Iterator<SubEmployeeRole> iterator = list.iterator();
+        while(iterator.hasNext()){
+            SubEmployeeRole ser = iterator.next();
             Element role = RolesTable.addElement("Role");
-            role.addAttribute("name",jsonObject.getString("name"));
-            role.addAttribute("roleNum",jsonObject.getString("id"));
-            String inspectTable = jsonObject.getString("inspectTable");
-            String[] tables  = inspectTable.split(";");
-            if(tables.length>0){
-                for(int j=0;j<tables.length;j++){
-                     role.addElement("TableItem").addAttribute("name",tables[j]);
-                }
+            role.addAttribute("name",ser.getName());
+            role.addAttribute("roleNum", String.valueOf(ser.getId()));
+            String[] tables = ser.getInspectTable().split(";");
+            for(String s:tables){
+                role.addElement("TableItem").addAttribute("name",s);
             }
-
         }
         try{
             OutputFormat outputFormat =OutputFormat.createPrettyPrint();
-            String encoding = "UTF-8";
+            String encoding = "gbk";
             outputFormat.setEncoding(encoding);
             outputFormat.setNewlines(true);
             OutputStream outputStream = new ByteArrayOutputStream();

@@ -25,8 +25,8 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class PlatformReport {
-          private  static PlatformMysqlConnector ds=new PlatformMysqlConnector();
-          private  static Connection connection=ds.getConnection();
+          private PlatformMysqlConnector ds=new PlatformMysqlConnector();
+
          /*
          传入报表模板，一个map集合，还有导出报表的类型,导出报表
           */
@@ -45,6 +45,7 @@ public class PlatformReport {
         private void exportReportByType(String reportTemplate,String type,Map parameters,HttpServletRequest request,HttpServletResponse response,String reportName){
             File reportFile=null;
             reportFile=new File(reportTemplate);
+            Connection connection=ds.getConnection();
             try{
                 JasperReport jasperReport= (JasperReport)JRLoader.loadObject(reportFile.getPath());
                 if(type.equals("html")){
@@ -100,6 +101,8 @@ public class PlatformReport {
                 }
             }catch (Exception e){
                 e.printStackTrace();
+            }finally{
+                ds.close(connection,null,null);
             }
         }
 }

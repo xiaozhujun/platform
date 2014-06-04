@@ -139,8 +139,8 @@ public class InspectItemServiceWeb {
                 subInspectItem.setInput("否");
             }
             else{
-                  subInspectItem.setInput("是");
-                }
+                subInspectItem.setInput("是");
+            }
             if(a.getInput()==0){
                 subInspectItem.setChoiceValue(inspectItemChoiceService.getChoiceValueByItemId(a.getId()));
             }
@@ -169,8 +169,8 @@ public class InspectItemServiceWeb {
             }
         }
 
-     //更新inspectItem表
-       int isInput;
+        //更新inspectItem表
+        int isInput;
         if(subInspectItem.getInput().equals("否")){
             isInput=0;
         }
@@ -179,34 +179,36 @@ public class InspectItemServiceWeb {
         }
         long inspectAreaId;
         try{
-         inspectAreaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
+            inspectAreaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
         }
         catch (Exception e){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"该设备类型不存在此点检区域");
         }
-
-            InspectItem inspectItem=new InspectItem();
-            inspectItem.setId(subInspectItem.getId());
-            inspectItem.setName(subInspectItem.getName());
-            inspectItem.setDescription(subInspectItem.getDescription());
-            inspectItem.setCreatetime(subInspectItem.getCreatetime());
-            inspectItem.setInspectAreaId(inspectAreaId);
-            inspectItem.setNumber(subInspectItem.getNumber());
-            inspectItem.setInput(isInput);
-            inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
-           inspectItem.setAppId(appId);
+        if(isInput==0&&subInspectItem.getChoiceValue().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"请选择点检选值");
+        }
+        InspectItem inspectItem=new InspectItem();
+        inspectItem.setId(subInspectItem.getId());
+        inspectItem.setName(subInspectItem.getName());
+        inspectItem.setDescription(subInspectItem.getDescription());
+        inspectItem.setCreatetime(subInspectItem.getCreatetime());
+        inspectItem.setInspectAreaId(inspectAreaId);
+        inspectItem.setNumber(subInspectItem.getNumber());
+        inspectItem.setInput(isInput);
+        inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
+        inspectItem.setAppId(appId);
 
 
         inspectItemService.update(inspectItem);
 
-       //更新inspectItem_choice表
+        //更新inspectItem_choice表
         if(isInput==1){
             inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
         }
         else {
-        List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
-        String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
-        inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
+            List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
+            String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
+            inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
             for(String choice:choiceValueArray){
                 InspectItemChoice inspectItemChoice=new InspectItemChoice();
                 inspectItemChoice.setInspectItemId(subInspectItem.getId());
@@ -215,9 +217,9 @@ public class InspectItemServiceWeb {
                 inspectItemChoicesList.add(inspectItemChoice);
             }
 
-        if(!inspectItemChoicesList.isEmpty()) {
-        inspectItemChoiceService.addList(inspectItemChoicesList);
-        }
+            if(!inspectItemChoicesList.isEmpty()) {
+                inspectItemChoiceService.addList(inspectItemChoicesList);
+            }
         }
 
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -241,10 +243,13 @@ public class InspectItemServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getInspectAreaIdByNames")
     @POST
-    public String getInspectAreaIdByNames(@FormParam("inspectTable") String inspectTable,@FormParam("inspectAreaName") String inspectAreaName,@FormParam("deviceTypeName") String deviceTypeName){
+    public String getInspectAreaIdByNames(@FormParam("inspectTable") String inspectTable,@FormParam("inspectAreaName") String inspectAreaName,@FormParam("deviceTypeName") String deviceTypeName,@FormParam("choices")String choices){
         if (inspectTable==null||inspectTable.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"所属点检表名不能为空！");
-        }else{
+        }else if(choices==null||choices.equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"请先添加点检选值！");
+        }
+        else{
             long appId=UserContext.currentUserAppId();
             long areaId;
             try {
@@ -263,4 +268,4 @@ public class InspectItemServiceWeb {
         List<InspectArea> list=inspectAreaService.getInspectAreaByDeviceTypeId(deviceType);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
-  }
+}

@@ -3,7 +3,7 @@ package org.whut.inspectManagement.business.deptAndEmployee.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.deptAndEmployee.service.DepartmentService;
-import org.whut.inspectManagement.business.app.service.AppService;
+import org.whut.platform.business.app.service.AppService;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.Employee;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeEmployeeRole;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployee;
@@ -56,6 +56,7 @@ public class EmployeeServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name, @FormParam("password") String password, @FormParam("sex") String sex, @FormParam("departmentName") String departmentName, @FormParam("status") String status, @FormParam("employeeRoleName") String employeeRoleName) {
+        System.out.println(sex);
         if (name == null || name.trim().equals("") || password == null || password.trim().equals("") || sex == null || sex.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
@@ -160,71 +161,71 @@ public class EmployeeServiceWeb {
         }
         if (id == 0||id==subEmployee.getId())
         {
-        long userId =employeeService.getById(subEmployee.getId()).getUserId();
-        long appId=UserContext.currentUserAppId();
-        String userName=  subEmployee.getName();
-        String[] employeeRoleArray=subEmployee.getEmployeeRoleName().split(";");
-        String role="";
-        for(int i=0;i<employeeRoleArray.length;i++)
-        {
-            String authority=authorityService.getNameById(employeeRoleService.getByName(employeeRoleArray[i],appId).getAuthorityId());
-            if(i==0)
-                role=authority;
-            else
-                role+=";"+authority;
-        }
-
-        userAuthorityService.deleteByUserId(userId);
-        employeeEmployeeRoleService.deleteByEmployeeId(subEmployee.getId());
-        ArrayList<Long> authorityIdList=new ArrayList<Long>();
-        for(int i=0;i<employeeRoleArray.length;i++)
-        {
-            boolean isExist=false;
-            EmployeeRole employeeRole= employeeRoleService.getByName(employeeRoleArray[i],appId);
-            for(long aid:authorityIdList)
+            long userId =employeeService.getById(subEmployee.getId()).getUserId();
+            long appId=UserContext.currentUserAppId();
+            String userName=  subEmployee.getName();
+            String[] employeeRoleArray=subEmployee.getEmployeeRoleName().split(";");
+            String role="";
+            for(int i=0;i<employeeRoleArray.length;i++)
             {
-                if(aid==employeeRole.getAuthorityId())
-                    isExist=true;
+                String authority=authorityService.getNameById(employeeRoleService.getByName(employeeRoleArray[i],appId).getAuthorityId());
+                if(i==0)
+                    role=authority;
+                else
+                    role+=";"+authority;
             }
-            if(!isExist)
-                authorityIdList.add(employeeRole.getAuthorityId());
-        }
-        User user =userService.getById(userId);
-        user.setName(userName);
-        user.setPassword(subEmployee.getPassword());
-        user.setSex(subEmployee.getSex());
-        user.setStatus(subEmployee.getStatus());
-        user.setRole(role);
-        userService.update(user);
-        for (int i = 0; i < authorityIdList.toArray().length; i++) {
-            UserAuthority userAuthority = new UserAuthority();
-            userAuthority.setUserId(userId);
-            userAuthority.setAuthorityId(authorityIdList.get(i));
-            userAuthority.setUserName(userName);
-            userAuthority.setAuthorityName(authorityService.getNameById(authorityIdList.get(i)));
-            userAuthorityService.add(userAuthority);
-        }
 
-        Employee  employee=employeeService.getById(subEmployee.getId());
-        employee.setDepartmentId(departmentService.getIdByName(subEmployee.getDepartment(),appId));
-        employee.setName(userName);
-        employee.setEmployeeRoleName(subEmployee.getEmployeeRoleName());
-        employee.setPassword(subEmployee.getPassword());
-        employee.setSex(subEmployee.getSex());
-        employee.setStatus(subEmployee.getStatus());
-        employeeService.update(employee);
-        for(int i=0;i<employeeRoleArray.length;i++)
-        {
-            long roleId=employeeRoleService.getIdByName(employeeRoleArray[i],appId);
-            EmployeeEmployeeRole employeeEmployeeRole=new EmployeeEmployeeRole();
-            employeeEmployeeRole.setAppId(appId);
-            employeeEmployeeRole.setEmployeeId(subEmployee.getId());
-            employeeEmployeeRole.setEmployeeName(userName);
-            employeeEmployeeRole.setEmployeeRoleId(roleId);
-            employeeEmployeeRole.setEmployeeRoleName(employeeRoleArray[i]);
-            employeeEmployeeRoleService.add(employeeEmployeeRole);
-        }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            userAuthorityService.deleteByUserId(userId);
+            employeeEmployeeRoleService.deleteByEmployeeId(subEmployee.getId());
+            ArrayList<Long> authorityIdList=new ArrayList<Long>();
+            for(int i=0;i<employeeRoleArray.length;i++)
+            {
+                boolean isExist=false;
+                EmployeeRole employeeRole= employeeRoleService.getByName(employeeRoleArray[i],appId);
+                for(long aid:authorityIdList)
+                {
+                    if(aid==employeeRole.getAuthorityId())
+                        isExist=true;
+                }
+                if(!isExist)
+                    authorityIdList.add(employeeRole.getAuthorityId());
+            }
+            User user =userService.getById(userId);
+            user.setName(userName);
+            user.setPassword(subEmployee.getPassword());
+            user.setSex(subEmployee.getSex());
+            user.setStatus(subEmployee.getStatus());
+            user.setRole(role);
+            userService.update(user);
+            for (int i = 0; i < authorityIdList.toArray().length; i++) {
+                UserAuthority userAuthority = new UserAuthority();
+                userAuthority.setUserId(userId);
+                userAuthority.setAuthorityId(authorityIdList.get(i));
+                userAuthority.setUserName(userName);
+                userAuthority.setAuthorityName(authorityService.getNameById(authorityIdList.get(i)));
+                userAuthorityService.add(userAuthority);
+            }
+
+            Employee  employee=employeeService.getById(subEmployee.getId());
+            employee.setDepartmentId(departmentService.getIdByName(subEmployee.getDepartment(),appId));
+            employee.setName(userName);
+            employee.setEmployeeRoleName(subEmployee.getEmployeeRoleName());
+            employee.setPassword(subEmployee.getPassword());
+            employee.setSex(subEmployee.getSex());
+            employee.setStatus(subEmployee.getStatus());
+            employeeService.update(employee);
+            for(int i=0;i<employeeRoleArray.length;i++)
+            {
+                long roleId=employeeRoleService.getIdByName(employeeRoleArray[i],appId);
+                EmployeeEmployeeRole employeeEmployeeRole=new EmployeeEmployeeRole();
+                employeeEmployeeRole.setAppId(appId);
+                employeeEmployeeRole.setEmployeeId(subEmployee.getId());
+                employeeEmployeeRole.setEmployeeName(userName);
+                employeeEmployeeRole.setEmployeeRoleId(roleId);
+                employeeEmployeeRole.setEmployeeRoleName(employeeRoleArray[i]);
+                employeeEmployeeRoleService.add(employeeEmployeeRole);
+            }
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else
         {
@@ -280,19 +281,71 @@ public class EmployeeServiceWeb {
     @Path("/listEmployeeRoleByNameAndRole")
     @POST
     public String listEmployeeRoleByNameAndRole(@FormParam("employeeName") String employeeName,@FormParam("employeeRole") String employeeRole){
-         if((employeeName==null||employeeName.equals(""))&&(employeeRole==null||employeeRole.equals(""))){
-             employeeName=null;
-             employeeRole=null;
-         }
-         else if((employeeName==null||employeeName.equals(""))&&employeeRole!=null&&!employeeRole.equals("")){
-             employeeName=null;
-         }
-         else if(employeeName!=null&&!employeeName.equals("")&&(employeeRole==null||employeeRole.equals(""))){
-             employeeRole=null;
-         }
-         long appId = UserContext.currentUserAppId();
-         List<EmployeeEmployeeRole> list = employeeEmployeeRoleService.getByEmployeeNameAndRole(employeeName,employeeRole,appId);
-         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+        if((employeeName==null||employeeName.equals(""))&&(employeeRole==null||employeeRole.equals(""))){
+            employeeName=null;
+            employeeRole=null;
+        }
+        else if((employeeName==null||employeeName.equals(""))&&employeeRole!=null&&!employeeRole.equals("")){
+            employeeName=null;
+        }
+        else if(employeeName!=null&&!employeeName.equals("")&&(employeeRole==null||employeeRole.equals(""))){
+            employeeRole=null;
+        }
+        long appId = UserContext.currentUserAppId();
+        List<EmployeeEmployeeRole> list = employeeEmployeeRoleService.getByEmployeeNameAndRole(employeeName,employeeRole,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/listEmployeeByNameDepartmentAndRole")
+    @POST
+    public String listEmployeeByNameDepartmentAndRole(@FormParam("name") String name,@FormParam("department") String department,@FormParam("employeeRoleName") String employeeRoleName){
+        if((name==null||name.equals(""))&&(department==null||department.equals(""))&&(employeeRoleName==null||employeeRoleName.equals(""))){
+            name="";
+            department=null;
+            employeeRoleName="";
+        }
+        else if((name!=null||!name.equals(""))&&(department==null||department.equals(""))&&(employeeRoleName==null||employeeRoleName.equals(""))){
+            department=null;
+            employeeRoleName="";
+        }
+        else if((name==null||name.equals(""))&&(department!=null||!department.equals(""))&&(employeeRoleName==null||employeeRoleName.equals(""))){
+            name="";
+            employeeRoleName="";
+        }
+        else if((name==null||name.equals(""))&&(department==null||department.equals(""))&&(employeeRoleName!=null||!employeeRoleName.equals(""))){
+            name="";
+            department=null;
+        }
+        else if((name!=null||!name.equals(""))&&(department!=null||!department.equals(""))&&(employeeRoleName==null||employeeRoleName.equals(""))){
+            employeeRoleName="";
+        }
+        else if((name!=null||!name.equals(""))&&(department==null||department.equals(""))&&(employeeRoleName!=null||!employeeRoleName.equals(""))){
+            department=null;
+        }
+        else if((name==null||name.equals(""))&&(department!=null||!department.equals(""))&&(employeeRoleName!=null||!employeeRoleName.equals(""))){
+            name="";
+        }
+        long appId = UserContext.currentUserAppId();
+        name="%"+name+"%";
+        employeeRoleName="%"+employeeRoleName+"%";
+        String  departmentId=null;
+        if(department!=null){
+            departmentId=String.valueOf(departmentService.getIdByName(department,appId));}
+        List<Employee> list = employeeService.getByNameDepartmentAndRole(name,departmentId,employeeRoleName,appId);
+        List<SubEmployee> subEmployeeList=new ArrayList<SubEmployee>();
+        for(Employee employee:list){
+            SubEmployee subEmployee=new SubEmployee();
+            subEmployee.setStatus(employee.getStatus());
+            subEmployee.setEmployeeRoleName(employee.getEmployeeRoleName());
+            subEmployee.setId(employee.getId());
+            subEmployee.setName(employee.getName());
+            subEmployee.setPassword(employee.getPassword());
+            subEmployee.setSex(employee.getSex());
+            subEmployee.setAppId(employee.getAppId());
+            subEmployee.setDepartment(departmentService.getNameById(employee.getDepartmentId()));
+            subEmployeeList.add(subEmployee);
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(subEmployeeList, JsonResultUtils.Code.SUCCESS);
     }
 }
 

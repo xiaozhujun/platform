@@ -1,6 +1,6 @@
-package org.whut.inspectManagement.business.app.mapper;
+package org.whut.platform.business.app.mapper;
 
-import org.whut.inspectManagement.business.app.entity.App;
+import org.whut.platform.business.app.entity.App;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 import java.util.List;

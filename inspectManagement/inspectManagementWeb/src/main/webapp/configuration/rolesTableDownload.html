@@ -37,8 +37,18 @@
             });
         }
         $("#exportBtn").click(function(){
-            var data = $.toJSON(g.getData());
-            window.location.href="rs/roleTablesConfiguration/downloadRoleTablesConfiguration/"+data;
+            var allData = g.getData();
+            if(allData==null||allData==undefined){
+                $.ligerDialog.warn("没有数据!");
+            }
+            else{
+                var str = "";
+                $(allData).each(function(){
+                    str +=this.id+",";
+                });
+                var data = str.substring(0,str.length-1);
+                window.location.href="rs/roleTablesConfiguration/downloadRoleTablesConfiguration/"+data;
+            }
         });
     </script>
     <style type="text/css">

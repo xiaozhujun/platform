@@ -1,8 +1,8 @@
-package org.whut.inspectManagement.business.app.service;
+package org.whut.platform.business.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.whut.inspectManagement.business.app.entity.App;
-import org.whut.inspectManagement.business.app.mapper.AppMapper;
+import org.whut.platform.business.app.entity.App;
+import org.whut.platform.business.app.mapper.AppMapper;
 
 import java.util.HashMap;
 import java.util.List;

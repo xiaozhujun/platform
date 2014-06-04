@@ -60,6 +60,9 @@ public class InspectItemServiceWeb {
         Date date=new Date();
         try {
             JSONArray jsonArray=new JSONArray(jsonStringList);
+            if(jsonArray.length()==0){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
+            }
             for(int i=0;i<jsonArray.length();i++){
                 String jsonString= jsonArray.get(i).toString();
                 SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
@@ -151,7 +154,7 @@ public class InspectItemServiceWeb {
     public String update(@FormParam("jsonString") String jsonString){
         long appId=UserContext.currentUserAppId();
         SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-        if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")){
+        if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getInspectTable().equals("null")||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long id;
@@ -165,6 +168,7 @@ public class InspectItemServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检项名点检编号已存在");
             }
         }
+
      //更新inspectItem表
        int isInput;
         if(subInspectItem.getInput().equals("否")){

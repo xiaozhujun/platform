@@ -59,12 +59,16 @@
             });
         }
         $("#exportBtn").click(function(){
-             var selectedRows =  g.getSelectedRows();
+             var selectedRows = g.getCheckedRows();
              if(selectedRows.length==0||selectedRows==undefined){
                  $.ligerDialog.warn("未选择行！");
              }
              else{
-                 var data = $.toJSON(selectedRows);
+                 var str= "";
+                 $(selectedRows).each(function(){
+                     str+=this.id+",";
+                 });
+                 var data = str.substring(0,str.length-1);
                  window.location.href="rs/personnelConfiguration/importPersonnelConfiguration/"+encodeURI(data);
              }
         });

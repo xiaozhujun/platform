@@ -20,6 +20,6 @@ public interface InspectItemMapper extends AbstractMapper<InspectItem> {
     public long getInspectItemIdByNameAndNumberAndAppId(@Param("name") String name,@Param("number") String number,@Param("appId")long appId);
     public long findIdByCondition(InspectItem inspectItem);
     public long getInspectItemByNameAndNumber(@Param("name") String name,@Param("number") String number);
-    public List<InspectItem> getInspectItemByInspectTableId(long inspectTableId);
+    public List<InspectItem> getInspectItemByInspectTableId(@Param("inspectTableId") long inspectTableId,@Param("appId") long appId);
     public List<InspectItem> getInspectItemListByAppId(long appId);
 }

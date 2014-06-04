@@ -13,6 +13,7 @@ import org.whut.inspectManagement.business.inspectTable.entity.InspectItemChoice
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
+import org.whut.platform.business.user.security.UserContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,7 +43,8 @@ public class InspectTableDownloadService {
     private InspectAreaMapper inspectAreaMapper;
     public String docConstruction(long tableId){
        String name = inspectTableMapper.getNameById(tableId);
-       List<InspectItem> itemList = inspectItemMapper.getInspectItemByInspectTableId(tableId);
+      long appId = UserContext.currentUserAppId();
+       List<InspectItem> itemList = inspectItemMapper.getInspectItemByInspectTableId(tableId,appId);
        List<InspectTableItem> inspectTableItemList = new ArrayList<InspectTableItem>();
        Iterator iterator = itemList.iterator();
        while(iterator.hasNext()){

@@ -65,12 +65,7 @@
             var deviceType = $("#deviceType").val();
             var deviceNumber = $("#deviceNumber").val();
             var tagName = $("#tagName").val();
-            if(deviceType==""&&deviceNumber==""&&tagName==""){
-                $.ligerDialog.warn("请输入查询条件！") ;
-            }
-            else{
-                $.post($.URL.device.getListByCondition,{"deviceType":deviceType,"deviceNumber":deviceNumber,"tagName":tagName},getListByConditionCallback,"json");
-            }
+            $.post($.URL.device.getListByCondition,{"deviceType":deviceType,"deviceNumber":deviceNumber,"tagName":tagName},getListByConditionCallback,"json");
         });
         var gridData={};
         function  getListByConditionCallback(data){
@@ -87,7 +82,7 @@
                     { display: '设备类型', name: 'deviceType', type: 'text', frozen: true },
                     { display: '设备类型编号',name: 'deviceTypeNumber',type: 'text', frozen:true},
                     { display: '设备编号',name: 'deviceNumber', type: 'text',frozen:true},
-                    { display: '标签区域',name: 'tagName',type:'text',frozen:true },
+                    { display: '标签区 域',name: 'tagName',type:'text',frozen:true },
                     { display: '标签号',name: 'tagId',type:'text',frozen:true },
                     { display: '标签编号',name: 'tagNumber',type:'text',frozen:true }
                 ],

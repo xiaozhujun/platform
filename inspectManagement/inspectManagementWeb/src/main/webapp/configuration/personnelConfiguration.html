@@ -34,12 +34,8 @@
         $("#submitBtn").click(function(){
              var employeeName = $("#userName").val();
              var employeeRole = $("#userRole").val();
-             if(employeeName==""&&employeeRole==""){
-                 $.ligerDialog.warn("请输入查询条件！") ;
-             }
-             else{
-             $.post($.URL.employee.listEmployeeRoleByNameAndRole,{"employeeName":employeeName,"employeeRole":employeeRole},listCallback,"json");
-             }
+            $.post($.URL.employee.listEmployeeRoleByNameAndRole,{"employeeName":employeeName,"employeeRole":employeeRole},listCallback,"json");
+
         });
         var gridData={};
         function  listCallback(data){

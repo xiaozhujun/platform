@@ -88,5 +88,10 @@
         FROM inspectitem
         WHERE appid=#{appId}
     </select>
-
+    <select id="getInspectItemByInspectTableId" parameterType="map" resultMap="inspectItemResultMap">
+        SELECT *
+        FROM inspectitem
+        WHERE appid=#{appId}
+        AND inspectTableId = #{inspectTableId}
+    </select>
 </mapper>

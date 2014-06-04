@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.inspectReport.web;
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -7,5 +8,7 @@ package org.whut.inspectManagement.business.inspectReport.web;
  * Time: 下午8:11
  * To change this template use File | Settings | File Templates.
  */
+
 public class inspectReportServiceWeb {
+
 }

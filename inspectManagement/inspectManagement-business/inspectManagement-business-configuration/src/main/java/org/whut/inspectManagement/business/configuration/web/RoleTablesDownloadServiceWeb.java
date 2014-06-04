@@ -1,10 +1,13 @@
 package org.whut.inspectManagement.business.configuration.web;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.configuration.service.RoleTablesDownloadService;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRole;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRoleInspectTable;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployeeRole;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleInspectTableService;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,33 +36,59 @@ public class RoleTablesDownloadServiceWeb {
      @Autowired
      RoleTablesDownloadService roleTablesDownloadService;
 
+    @Autowired
+    EmployeeRoleInspectTableService employeeRoleInspectTableService;
+
+    @Autowired
+    EmployeeRoleService employeeRoleService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/downloadRoleTablesConfiguration/{data}")
     @GET
     public void setRoleTablesDownload(@PathParam("data") String data,@Context HttpServletResponse response){
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            String result =  roleTablesDownloadService.roleTablesDocConstruction(jsonArray);
-            System.out.println(result);
-            if(result!=""){
-                try{
-                    String fileName = "RoleTables.xml";
-                    response.setContentType("text/plain");
-                    response.setHeader("Location",new String(fileName.getBytes("GBK"),"UTF-8"));
-                    response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("gb2312"),"ISO8859-1"));
-                    OutputStream outputStream = response.getOutputStream();
-                    outputStream.write(result.getBytes());
-                    outputStream.flush();
-                    outputStream.close();
-                }
-                catch(Exception e){
-                    e.printStackTrace();
-                    logger.error(e.getMessage());
+        List<SubEmployeeRole> list=new ArrayList<SubEmployeeRole>();
+        String[] ids = data.split(",");
+        for(String s:ids){
+            long id = Long.parseLong(s);
+            EmployeeRole er = employeeRoleService.getById(id);
+            SubEmployeeRole ser = new SubEmployeeRole();
+            ser.setId(id);
+            ser.setName(er.getName());
+            List<EmployeeRoleInspectTable> eriList = employeeRoleInspectTableService.getByEmployeeRoleId(id);
+            String inspectTableName="";
+            int length = eriList.toArray().length;
+            if(length>0){
+                for(int i=0;i<length;i++)
+                {
+                   if(i==0)
+                   {
+                      inspectTableName=eriList.get(i).getInspectTableName();
+                   }
+                   else
+                   {
+                    inspectTableName+=";"+eriList.get(i).getInspectTableName();
+                   }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            logger.error(e.getMessage());
+            ser.setInspectTable(inspectTableName);
+            list.add(ser);
+        }
+        String result =  roleTablesDownloadService.roleTablesDocConstruction(list);
+        System.out.println(result);
+        if(result!=""){
+           try{
+               String fileName = "RoleTables.xml";
+               response.setContentType("text/plain");
+               response.setHeader("Location",new String(fileName.getBytes("GBK"),"UTF-8"));
+               response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("gb2312"),"ISO8859-1"));
+               OutputStream outputStream = response.getOutputStream();
+               outputStream.write(result.getBytes());
+               outputStream.flush();
+               outputStream.close();
+           }
+           catch(Exception e){
+               e.printStackTrace();
+               logger.error(e.getMessage());
+           }
         }
     }
 }

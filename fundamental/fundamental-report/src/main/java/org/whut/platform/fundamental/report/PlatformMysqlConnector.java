@@ -2,9 +2,7 @@ package org.whut.platform.fundamental.report;
 
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,6 +31,29 @@ public class PlatformMysqlConnector {
             e.printStackTrace();
         }
        return connection;
+    }
+    public void close(Connection connection,PreparedStatement statement,ResultSet rs){
+        if(rs!=null){
+            try{
+               rs.close();
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+        if(statement!=null){
+            try{
+              statement.close();
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+        if(connection!=null){
+            try{
+                connection.close();
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
     public static void main(String[] args){
         PlatformMysqlConnector ds=new PlatformMysqlConnector();

@@ -377,7 +377,7 @@
         FROM craneinspectreport cr GROUP BY useTime order by useTime asc
     </select>
     <select id="getCraneInfoByCondition" parameterType="map" resultMap="craneInspectReportResultMap">
-        SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
+        SELECT cr.*,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber
         FROM craneinspectreport cr,address a,riskvalue r
         WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber
         <if test="province!=null">
@@ -407,7 +407,7 @@
         GROUP BY cr.unitaddress  ORDER BY  craneNumber desc
     </select>
     <select id="getCityInfoByCondition" parameterType="map" resultType="map">
-        SELECT a.id,a.city,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
         WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
@@ -431,7 +431,7 @@
         GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
     <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
-         SELECT a.id,a.area,r.riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+         SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
         WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
          <if test="province!=null">
@@ -494,6 +494,30 @@
             (#{item.reportNumber},#{item.riskvalue})
         </foreach>
     </insert>
+    <insert id="batchInsertToAddressRiskValue" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+         addressriskvalue(addressid,riskvalue)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.riskvalue})
+        </foreach>
+    </insert>
+    <insert id="batchInsertToCityRiskValue" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        city_riskvalue(province,city,riskvalue)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.province},#{item.city},#{item.riskvalue})
+        </foreach>
+    </insert>
     <select id="listUploadedReport" resultType="map">
         select
         *
@@ -550,4 +574,58 @@
         FROM  uploadedreport
         WHERE  name=#{reportName}
     </select>
+    <select id="validateAddressRiskValueIsExistByAddressId" parameterType="java.lang.Long" resultType="map">
+        SELECT addr.*,a.*
+        FROM
+        addressriskvalue addr,address a
+        WHERE  addr.addressId=a.id
+        AND addr.addressId=#{addressId}
+    </select>
+    <update id="updateAreaRiskValue" parameterType="map">
+        UPDATE
+        addressriskvalue
+        SET
+        <if test="riskValue!=null">
+         riskvalue=#{riskValue}
+        </if>
+        <if test="addressId!=null">
+        WHERE addressId=#{addressId}
+        </if>
+    </update>
+    <select id="validateCityRiskValueIsExistByProvinceAndCity" parameterType="map" resultType="map">
+        SELECT
+        *
+        FROM
+        city_riskvalue
+        <if test="province!=null">
+        WHERE province=#{province}
+        </if>
+        <if test="city!=null">
+        AND city=#{city}
+        </if>
+    </select>
+    <update id="updateCityRiskValue" parameterType="map">
+        UPDATE
+        city_riskvalue
+        SET
+        riskvalue=#{riskValue}
+        WHERE
+        <if test="province!=null">
+         province=#{province}
+        </if>
+        <if test="city!=null">
+         AND city=#{city}
+        </if>
+    </update>
+    <update id="updateProvinceRiskValue" parameterType="map">
+        UPDATE
+        province_riskvalue
+        SET
+        <if test="riskValue!=null">
+         riskvalue=#{riskValue}
+        </if>
+        <if test="province!=null">
+          WHERE province=#{province}
+        </if>
+    </update>
 </mapper>

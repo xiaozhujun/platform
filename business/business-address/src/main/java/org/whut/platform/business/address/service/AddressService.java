@@ -94,4 +94,13 @@ public class AddressService {
     public List<Address>getAreaWithDataRule(String province,String city,String userName){
         return mapper.getAreaWithDataRule(province,city,userName);
     }
+    public List<Address> getAddressInfoByAddressId(){
+        return mapper.getAddressInfoByAddressId();
+    }
+    public List<Address> getProvinceCity(){
+        return mapper.getProvinceCity();
+    }
+    public List<Address> getProvince(){
+        return mapper.getProvince();
+    }
 }

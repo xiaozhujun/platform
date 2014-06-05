@@ -32,4 +32,8 @@ public interface AddressMapper extends AbstractMapper {
     public String findProvinceById(long id);
     public String findCityById(long id);
     public String findAreaById(long id);
+
+    public List<Address>getAddressInfoByAddressId();
+    public List<Address>getProvinceCity();
+    public List<Address>getProvince();
 }

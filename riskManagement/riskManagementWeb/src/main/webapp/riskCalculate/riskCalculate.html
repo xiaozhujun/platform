@@ -21,7 +21,8 @@
                         text: '风险计算', children:
                             [
                                 { text: '计算最大风险',id:'maxRisk', click: itemclick },
-                                { text: '计算风险值', id: 'risk', click: itemclick }
+                                { text: '计算风险值', id: 'risk', click: itemclick },
+                                { text: '计算省市区风险', id: 'proRisk', click: itemclick }
                             ]
                     }]
         };
@@ -102,6 +103,11 @@
                     }else if(s==""){
                         $.ligerDialog.alert("请选择计算报告!");
                     }
+                        break;
+                    case 'proRisk':
+                        $.ligerDialog.waitting('正在努力计算中,请稍候...');
+                        $.post($.URL.craneinspectreport.calculateAreaRisk,null,calculateAreaRiskCallback,"json");
+
                 }
             }
         }
@@ -111,7 +117,7 @@
                     $.ligerDialog.success("计算完成!");
             }
         }
-        var repeatData={}
+        var repeatData={};
         function calculateRiskValueCallback(data){
             if(data.code==200){
                 $("#hiddenField").html("");
@@ -127,6 +133,23 @@
                     f_reportGrid();
                     openDialog();
                 }
+            }
+        }
+        function calculateAreaRiskCallback(data){
+             if(data.code==200){
+                     $.post($.URL.craneinspectreport.calculateCityRisk,null,calculateCityRiskCallback,"json");
+             }
+        }
+        function calculateCityRiskCallback(data){
+            if(data.code==200){
+                    //证明没有重复
+                    $.post($.URL.dataRuleAddress.calculateProvinceRisk,null,calculateProvinceRiskCallback,"json");
+            }
+        }
+        function calculateProvinceRiskCallback(data){
+            if(data.code=200){
+                    $.ligerDialog.closeWaitting();
+                    $.ligerDialog.success("计算完成!");
             }
         }
         function openDialog(){
@@ -180,7 +203,6 @@
                 width: '100%'
             });
         }
-
     </script>
 </head>
 <body  style="padding:10px">
@@ -188,9 +210,7 @@
 <div id="topmenu" />
 <div id="maingrid" style="margin-top:1px"></div> <br />
 <div id="report" style="margin-top: 100px">
-<div id="repeatReportgrid" style="display: block">
-</div>
-
+<div id="repeatReportgrid" style="display: block"></div>
 </div>
 <div style="display:none;">
     <!-- g data total ttt -->

@@ -40,11 +40,13 @@ public class InspectChoiceService {
         long appId= UserContext.currentUserAppId();
         List<InspectChoice> inspectChoiceList=inspectChoiceMapper.getListByAppId(appId);
         String choices="";
-        for (int i=0;i<inspectChoiceList.size()-1;i++){
-            String temp=inspectChoiceList.get(i).getChoiceValue()+";";
-            choices+=temp;
+        if(inspectChoiceList.size()!=0){
+            for (int i=0;i<inspectChoiceList.size()-1;i++){
+                String temp=inspectChoiceList.get(i).getChoiceValue()+";";
+                choices+=temp;
+            }
+            choices+=inspectChoiceList.get(inspectChoiceList.size()-1).getChoiceValue();
         }
-        choices+=inspectChoiceList.get(inspectChoiceList.size()-1).getChoiceValue();
         return choices;
     }
 }

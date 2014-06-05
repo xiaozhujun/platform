@@ -526,4 +526,25 @@ public class CraneInspectReportService {
     public Long getCraneTypeIdByCraneEquipment(String equipmentVariety){
         return mapper.getCraneTypeIdByCraneEquipment(equipmentVariety);
     }
+    public void batchInsertToAddressRiskValue(List<Map<String,Float>> mapList){
+         mapper.batchInsertToAddressRiskValue(mapList);
+    }
+    public void batchInsertToCityRiskValue(List<Map<String,Float>> mapList){
+         mapper.batchInsertToCityRiskValue(mapList);
+    }
+    public Map<String,String> validateAddressRiskValueIsExistByAddressId(long addressId){
+        return mapper.validateAddressRiskValueIsExistByAddressId(addressId);
+    }
+    public void updateAreaRiskValue(Long addressId,Long riskValue){
+        mapper.updateAreaRiskValue(addressId,riskValue);
+    }
+    public Map<String,String> validateCityRiskValueIsExistByProvinceAndCity(String province,String city){
+        return mapper.validateCityRiskValueIsExistByProvinceAndCity(province,city);
+    }
+    public void updateCityRiskValue(String province,String city,Float riskValue){
+        mapper.updateCityRiskValue(province,city,riskValue);
+    }
+    public void updateProvinceRiskValue(String province,Long riskValue){
+       mapper.updateProvinceRiskValue(province,riskValue);
+    }
 }

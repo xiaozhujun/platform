@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- JMS Stuff -->
+    <bean id="jmsConnectionFactory" class="org.whut.platform.fundamental.message.factory.ActiveMQConnectionFactoryBean"/>
+
+    <!-- 定义消息提供者，用与发送消息 -->
+    <bean id="messageProducer"
+          class="org.whut.platform.fundamental.message.impl.PlatformMessageProducerImpl"
+          init-method="springInit" destroy-method="stop">
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+    <!-- 定义消息接受者，用与接收消息 -->
+    <bean id="messageConsumer"
+          class="org.whut.platform.fundamental.message.impl.PlatformMessageConsumerImpl"
+          init-method="springInit" destroy-method="stop">
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+        <property name="messageListener" ref="messageDistributer"></property>
+    </bean>
+    <!-- 定义监听destination的registry -->
+    <bean id="monitorRegistry"
+          class="org.whut.platform.fundamental.message.impl.PlatformMessageMonitorRegistryImpl">
+        <property name="consumer" ref="messageConsumer" />
+    </bean>
+
+    <!-- 异步接收消息处理类 -->
+    <bean id="messageDistributer"
+          class="org.whut.platform.fundamental.message.impl.PlatformMessageDistributer">
+    </bean>
+
+</beans>

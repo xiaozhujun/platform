@@ -74,6 +74,16 @@
     <update id="updateTableRecord" parameterType="map">
         UPDATE inspecttablerecord
         SET exceptioncount=#{exceptionCount}
-        WHERE ID = #{tableId};
+        WHERE ID = #{tableId}
+        AND appId=#{appId}
     </update>
+
+    <select id="getInspectTableId" parameterType="map" resultType="java.lang.Long">
+        SELECT
+        inspectTableId
+        FROM inspecttablerecord
+        WHERE createtime = #{createTime}
+        AND inspectTableId=#{inspectTableId}
+        AND appId=#{appId}
+    </select>
 </mapper>

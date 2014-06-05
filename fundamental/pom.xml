@@ -25,6 +25,7 @@
         <module>fundamental-androidCasClient</module>
         <module>fundamental-report</module>
         <module>fundamental-map</module>
+        <module>fundamental-message</module>
     </modules>
 
 

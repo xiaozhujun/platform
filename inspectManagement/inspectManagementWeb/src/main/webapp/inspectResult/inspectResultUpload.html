@@ -63,7 +63,13 @@
                 percent.html(percentVal);
             },
             complete: function(xhr) {
-                status.html(xhr.responseText);
+                var data = JSON.parse(xhr.responseText);
+                if(data.code==200){
+                    status.html("上传成功！")
+                }
+                else{
+                    status.html(data.message);
+                }
             }
         });
     });

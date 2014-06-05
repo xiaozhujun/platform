@@ -51,6 +51,14 @@ public interface PlatformMessageProducer {
 	 */
 	void sendTopic(String destination, Map<String, Object> map);
 
+    /**
+     * 发送topic
+     *
+     * @param destination
+     * @param message
+     */
+    void sendTopic(String destination, Message message);
+
 	/**
 	 * 发送queue
 	 * 
@@ -58,4 +66,12 @@ public interface PlatformMessageProducer {
 	 * @param map
 	 */
 	void sendQueue(String destination, Map<String, Object> map);
+
+    /**
+     * 发送queue
+     *
+     * @param destination
+     * @param message
+     */
+    void sendQueue(String destination, Message message);
 }

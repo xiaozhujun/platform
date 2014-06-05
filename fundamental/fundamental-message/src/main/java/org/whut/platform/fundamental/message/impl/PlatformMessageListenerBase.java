@@ -13,20 +13,20 @@ import org.whut.platform.fundamental.message.api.PlatformMessageListener;
  */
 public abstract class PlatformMessageListenerBase implements PlatformMessageListener,InitializingBean{
     @Autowired
-    PlatformMessageDistributer distributer;
+    PlatformMessageDistributer  platformMessageDistributer;
 
     public PlatformMessageDistributer getDistributer() {
-        return distributer;
+        return platformMessageDistributer;
     }
 
     public void setDistributer(PlatformMessageDistributer distributer) {
-        this.distributer = distributer;
+        this.platformMessageDistributer = distributer;
     }
 
     @Override
     public void afterPropertiesSet(){
-        if(this.distributer!=null){
-            distributer.addListener(this);
+        if(this.platformMessageDistributer!=null){
+            platformMessageDistributer.addListener(this);
         }
     }
 

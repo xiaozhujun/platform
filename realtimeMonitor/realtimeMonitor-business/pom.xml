@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>realtimeMonitor-business-report</module>
+        <module>realtimeMonitor-business-communication</module>
     </modules>
 
 </project>

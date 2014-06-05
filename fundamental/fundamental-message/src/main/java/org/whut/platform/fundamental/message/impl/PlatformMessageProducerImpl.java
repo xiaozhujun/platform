@@ -102,11 +102,21 @@ public class PlatformMessageProducerImpl implements PlatformMessageProducer {
 		sendMessage(new ActiveMQTopic(destination), map);
 	}
 
-	public void sendQueue(String destination, Map<String, Object> map) {
+    @Override
+    public void sendTopic(String destination, Message message) {
+        sendMessage(new ActiveMQTopic(destination), message);
+    }
+
+    public void sendQueue(String destination, Map<String, Object> map) {
 		sendMessage(new ActiveMQQueue(destination), map);
 	}
 
-	/**
+    @Override
+    public void sendQueue(String destination, Message message) {
+        sendMessage(new ActiveMQQueue(destination), message);
+    }
+
+    /**
 	 * 发送消息
 	 */
 	public void sendMessage(final Destination destination,

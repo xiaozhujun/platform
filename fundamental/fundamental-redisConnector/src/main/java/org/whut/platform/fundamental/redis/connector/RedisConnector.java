@@ -7,8 +7,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.util.ResourceBundle;
-
 public class RedisConnector {
 
     private static PlatformLogger logger = PlatformLogger.getLogger(RedisConnector.class);
@@ -16,10 +14,6 @@ public class RedisConnector {
     private static int expire;
     private static JedisPool pool;
     static {
-        ResourceBundle bundle = ResourceBundle.getBundle("redis");
-        if (bundle == null) {
-            throw new IllegalArgumentException("[redis.properties] is not found!");
-        }
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxActive(Integer.valueOf(FundamentalConfigProvider.get("redis.pool.maxActive")));
         config.setMaxIdle(Integer.valueOf(FundamentalConfigProvider.get("redis.pool.maxIdle")));

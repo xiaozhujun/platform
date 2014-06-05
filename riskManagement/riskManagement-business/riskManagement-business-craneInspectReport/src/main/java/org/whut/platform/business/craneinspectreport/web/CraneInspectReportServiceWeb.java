@@ -1,6 +1,7 @@
 package org.whut.platform.business.craneinspectreport.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.riskcalculate.ICalculateRisk;
@@ -48,6 +49,10 @@ public class CraneInspectReportServiceWeb {
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MultipartRequestParser multipartRequestParser=new MultipartRequestParser();
     private static List<Map<String,String>> mList=new ArrayList<Map<String, String>>();
+    //缓存查出的所有地址
+    private static List<Address> addressList=new ArrayList<Address>();
+
+
     @Produces(MediaType.MULTIPART_FORM_DATA)
     @Path("/upload")
     @POST
@@ -657,7 +662,7 @@ public class CraneInspectReportServiceWeb {
                   }
               }
           }
-          //批量更新
+          //更新
         for(Map<String,String> m:updateRiskValueList){
             craneInspectReportService.updateRiskValueByChooseReport(m.get("reportNumber"),m.get("riskvalue"));
         }
@@ -670,5 +675,62 @@ public class CraneInspectReportServiceWeb {
             }
         }
         return null;
+    }
+    //获取所有的地址
+    public List<Address> getAllAddress(){
+         List<Address> list=addressService.getAddressInfoByAddressId();
+         return list;
+    }
+    //查出相关联的省市
+    public List<Address> getProvinceCity(){
+        List<Address> list=addressService.getProvinceCity();
+        return list;
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/calculateAreaRisk")
+    public String calculateAreaRisk(){
+        //通过区查出有多少unitAddress,然后根据每家unitAddress求出区域风险平均值
+        //查出所有的区
+        addressList=getAllAddress();
+        List<Map<String,Float>> areaList=new ArrayList<Map<String, Float>>();
+        boolean flag=false;
+        for(Address address:addressList){
+            //根据省市
+            Map<String,String> addressRiskValue=craneInspectReportService.validateAddressRiskValueIsExistByAddressId(address.getId());
+            if(addressRiskValue==null){
+                flag=true;
+            }else{
+                craneInspectReportService.updateAreaRiskValue(Long.parseLong(String.valueOf(addressRiskValue.get("addressid"))),Long.parseLong(String.valueOf(addressRiskValue.get("riskvalue"))));
+            }
+            areaList=craneInspectReportService.getAreaInfoByCondition(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
+        }
+        if(flag){
+           craneInspectReportService.batchInsertToAddressRiskValue(areaList);
+        }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/calculateCityRisk")
+    public String calculateCityAreaRisk(){
+        //通过区查出有多少unitAddress,然后根据每家unitAddress求出区域风险平均值
+        //查出所有的区
+        List<Map<String,Float>> cityList=new ArrayList<Map<String, Float>>();
+        boolean flag=false;
+        List<Address> addresses=getProvinceCity();
+        for(Address address:addresses){
+            Map<String,String> cityRiskValueMap=craneInspectReportService.validateCityRiskValueIsExistByProvinceAndCity(address.getProvince(),address.getCity());
+            if(cityRiskValueMap==null){
+                flag=true;
+            }else{
+                craneInspectReportService.updateCityRiskValue(cityRiskValueMap.get("province"),cityRiskValueMap.get("city"),Float.parseFloat(cityRiskValueMap.get("riskvalue")));
+            }
+            cityList=craneInspectReportService.getCityInfoByCondition(address.getProvince(),"0","0","0",0f,0f);
+        }
+        if(flag){
+        craneInspectReportService.batchInsertToCityRiskValue(cityList);
+        }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

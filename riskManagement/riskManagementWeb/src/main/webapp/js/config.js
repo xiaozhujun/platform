@@ -62,7 +62,9 @@
             "listUploadedReport":'rs/craneinspectreport/listUploadedReport',
             "calculateRiskValue":'rs/craneinspectreport/calculateRiskValue',
             "calculateMaxValue":'rs/craneinspectreport/calculateMaxValue',
-            "updateRiskValueByChooseReport":'rs/craneinspectreport/updateRiskValueByChooseReport'
+            "updateRiskValueByChooseReport":'rs/craneinspectreport/updateRiskValueByChooseReport',
+            "calculateAreaRisk":'rs/craneinspectreport/calculateAreaRisk',
+            "calculateCityRisk":'rs/craneinspectreport/calculateCityRisk'
         },
         /*"authority":{
             "add":"rs/authority/add"
@@ -103,7 +105,8 @@
             "getAreaAndColorWithDataRole":"rs/dataRuleAddress/getAreaAndColorWithDataRole",
             "getAddressesIdBydRoleName":"rs/dataRuleAddress/getAddressIdBydRoleName",
             "getProvinceInfoWithDataRuleByCondition":"rs/dataRuleAddress/getProvinceInfoWithDataRuleByCondition",
-            "getProvinceListWithDataRole":"rs/dataRuleAddress/getProvinceListWithDataRole"
+            "getProvinceListWithDataRole":"rs/dataRuleAddress/getProvinceListWithDataRole",
+            "calculateProvinceRisk":"rs/dataRuleAddress/calculateProvinceRisk"
         },
         "userDataRole":{
             "add":"rs/userDataRole/add",

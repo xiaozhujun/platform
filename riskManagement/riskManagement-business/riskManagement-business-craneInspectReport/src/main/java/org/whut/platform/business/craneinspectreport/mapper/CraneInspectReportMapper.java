@@ -1,5 +1,6 @@
 package org.whut.platform.business.craneinspectreport.mapper;
 import org.apache.ibatis.annotations.Param;
+import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -80,4 +81,11 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public long findIdFromUploadedReportByName(@Param("reportName") String reportName);
     public Long getCraneTypeIdByCraneEquipment(@Param("equipmentVariety")String equipmentVariety);
     public Map<String,String>validateUploadedReport(@Param("reportName") String reportName);
+    public void batchInsertToAddressRiskValue(List<Map<String,Float>> list);
+    public void batchInsertToCityRiskValue(List<Map<String,Float>> list);
+    public Map<String,String>validateAddressRiskValueIsExistByAddressId(long addressId);
+    public void updateAreaRiskValue(@Param("addressId")Long addressId,@Param("riskValue")Long riskValue);
+    public Map<String,String>validateCityRiskValueIsExistByProvinceAndCity(@Param("province")String province,@Param("city")String city);
+    public void updateCityRiskValue(@Param("province")String province,@Param("city")String city,@Param("riskValue")Float riskValue);
+    public void updateProvinceRiskValue(@Param("province")String province,@Param("riskValue")Long riskValue);
 }

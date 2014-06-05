@@ -23,7 +23,7 @@
                     var myData=[];
                     $.each(data.data,function(index,content){
                         var j={};
-                        j["text"]=content.id;
+                        j["text"]=content.name;
                         j["id"]=content.id;
                         myData.push(j);
 
@@ -41,7 +41,7 @@
                     var mData=[];
                     $.each(data.data,function(index,content){
                         var j={};
-                        j["text"]=content.id;
+                        j["text"]=content.name;
                         j["id"]=content.id;
                         mData.push(j);
 
@@ -59,8 +59,8 @@
                 data.name=$("#inspectTagName").val();
                 data.description=$("#inspectTagDescription").val();
                 data.number=$("#inspectTagNumber").val();
-                data.inspectAreaId=$("#inspectAreaId").val();
-                data.deviceId=$("#deviceId").val();
+                data.inspectAreaId=$("#inspectAreaIdSelect").val();
+                data.deviceId=$("#deviceIdSelect").val();
                 $.post($.URL.inspectTag.add,data,addCallBack,"json");
             })
             function addCallBack(data){
@@ -105,13 +105,13 @@
             </td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">点检区域ID:</td>
+            <td align="right" class="l-table-edit-td">点检区域名:</td>
             <td align="left" class="l-table-edit-td">
                 <input type="text" readonly="true" id="inspectAreaId">
             </td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">设备ID:</td>
+            <td align="right" class="l-table-edit-td">设备名:</td>
             <td align="left" class="l-table-edit-td">
                 <input type="text" id="deviceId">
             </td>

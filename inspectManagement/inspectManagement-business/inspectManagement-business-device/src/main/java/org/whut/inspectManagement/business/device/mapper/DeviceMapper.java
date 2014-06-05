@@ -20,4 +20,8 @@ public interface DeviceMapper extends AbstractMapper<Device> {
     public long getIdByNumber(String number);
     public List<Map<String,String>> getListByCondition(@Param("deviceType") String deviceType,@Param("deviceNumber") String deviceNumber,@Param("tagName") String tagName,@Param("appId") long appId);
     public List<Map<String,String>> getListByTagId(long tagId);
+    public String getNameById(long id);
+    public List<Device> getListByAppId(long appId);
+    public long getIdByName(@Param("name") String name, @Param("appId") long appId);
+    public List<Device> getInfoByCondition(@Param("name")String name,@Param("number")String number,@Param("deviceTypeId")long deviceTypeId,@Param("appId")long appId);
 }

@@ -52,13 +52,12 @@
     <update id="update" parameterType="InspectTag">
         UPDATE inspecttag
         <set>
-            <if test="name!=null">NAME=#{name}</if>
-            <if test="description!=null">AND DESCRIPTION=#{description}</if>
-            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
-            <if test="number!=null">AND NUMBER=#{number}</if>
-            <if test="inspectAreaId!=null">AND INSPECTAREAID=#{inspectAreaId}</if>
-            <if test="deviceId!=null">AND DEVICEID=#{deviceId}</if>
-            <if test="appId!=null">AND APPID=#{appId}</if>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="createtime!=null">CREATETIME=#{createtime},</if>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="inspectAreaId!=null">INSPECTAREAID=#{inspectAreaId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId}</if>
         </set>
         WHERE ID=#{id}
     </update>
@@ -69,5 +68,12 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="inspectTagResultMap">
+        select
+        <include refid="inspectTag_fields"/>
+        from inspecttag
+        where APPID=#{appId}
+    </select>
 
 </mapper>

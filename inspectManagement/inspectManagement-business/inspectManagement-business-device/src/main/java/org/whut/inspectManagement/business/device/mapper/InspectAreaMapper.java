@@ -23,4 +23,6 @@ public interface InspectAreaMapper extends AbstractMapper<InspectArea> {
     public long getInspectAreaIdByAreaNameAndDeviceTypeName(@Param("areaName") String areaName,@Param("deviceTypeName") String deviceTypeName,@Param("appId") long appId);
     public String getDeviceTypeById(long inspectAreaId);
     public List<InspectArea> getInspectAreaByDeviceTypeId(long deviceTypeId);
+    public List<InspectArea> getListByAppId(long appId);
+    public long getIdByName(@Param("name") String name, @Param("appId") long appId);
 }

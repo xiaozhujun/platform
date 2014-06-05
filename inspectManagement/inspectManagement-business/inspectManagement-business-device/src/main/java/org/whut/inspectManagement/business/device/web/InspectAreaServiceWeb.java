@@ -4,13 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.device.entity.InspectArea;
+import org.whut.inspectManagement.business.device.entity.SubInspectArea;
 import org.whut.inspectManagement.business.device.service.InspectAreaService;
+import  org.whut.inspectManagement.business.device.service.DeviceTypeService;
+
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +28,9 @@ import java.util.List;
 @Component
 @Path("/inspectArea")
 public class InspectAreaServiceWeb {
+
+    @Autowired
+    private DeviceTypeService deviceTypeService;
     @Autowired
     private InspectAreaService inspectAreaService;
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -50,15 +57,37 @@ public class InspectAreaServiceWeb {
     @Path("/list")
     @GET
     public String list(){
-        List<InspectArea> list=inspectAreaService.list();
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+
+        long appId= UserContext.currentUserAppId();
+        List<InspectArea> list=inspectAreaService.getListByAppId(appId);
+        List<SubInspectArea> subEmployeeList=new ArrayList<SubInspectArea>();
+         for (InspectArea inspectArea:list){
+             SubInspectArea subInspectArea=new SubInspectArea();
+             subInspectArea.setName(inspectArea.getName());
+             subInspectArea.setId(inspectArea.getId());
+             subInspectArea.setDescription(inspectArea.getDescription());
+             subInspectArea.setCreatetime(inspectArea.getCreatetime());
+             subInspectArea.setAppId(inspectArea.getAppId());
+             subInspectArea.setNumber(inspectArea.getNumber());
+             subInspectArea.setDeviceTypeName(deviceTypeService.getNameById(inspectArea.getDeviceTypeId()));
+             subEmployeeList.add(subInspectArea);
+         }
+        return JsonResultUtils.getObjectResultByStringAsDefault(subEmployeeList,JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-        InspectArea inspectArea= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectArea.class);
+        SubInspectArea  subInspectArea= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectArea.class);
+         InspectArea inspectArea=new InspectArea();
+        inspectArea.setId(subInspectArea.getId());
+        inspectArea.setName(subInspectArea.getName());
+        inspectArea.setDescription(subInspectArea.getDescription());
+        inspectArea.setAppId(subInspectArea.getAppId());
+        inspectArea.setNumber(subInspectArea.getNumber());
+        inspectArea.setCreatetime(subInspectArea.getCreatetime());
+        inspectArea.setDeviceTypeId(deviceTypeService.getIdByName(subInspectArea.getDeviceTypeName(),subInspectArea.getAppId()));
         int result=inspectAreaService.update(inspectArea);
         if(result>0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

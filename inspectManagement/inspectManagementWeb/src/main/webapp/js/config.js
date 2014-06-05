@@ -50,7 +50,9 @@
             "update":"rs/device/update",
             "delete":"rs/device/delete",
             "getId":"rs/device/getId",
-            "getListByCondition":"rs/device/getListByCondition"
+            "getListByCondition":"rs/device/getListByCondition" ,
+            "query":"rs/device/query" ,
+            " getInfoByCondition" :"rs/device/getInfoByCondition"
         },
         "deviceType":{
             "add":"rs/deviceType/add",

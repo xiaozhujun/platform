@@ -23,7 +23,7 @@
                     var myData=[];
                     $.each(data.data,function(index,content){
                         var j={};
-                        j["text"]=content.id;
+                        j["text"]=content.name;
                         j["id"]=content.id;
                         myData.push(j);
 
@@ -40,7 +40,7 @@
                 data.name=$("#inspectAreaName").val();
                 data.description=$("#inspectAreaDescription").val();
                 data.number=$("#inspectAreaNumber").val();
-                data.deviceTypeId=$("#inspectDeviceTypeId").val();
+                data.deviceTypeId=$("#inspectDeviceTypeIdSelect").val();
                 $.post($.URL.inspectArea.add,data,addCallBack,"json");
             })
             function addCallBack(data){
@@ -85,7 +85,7 @@
             </td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">设备类型ID:</td>
+            <td align="right" class="l-table-edit-td">设备类型:</td>
             <td align="left" class="l-table-edit-td">
                 <input type="text" readonly="true" id="inspectDeviceTypeId">
             </td>

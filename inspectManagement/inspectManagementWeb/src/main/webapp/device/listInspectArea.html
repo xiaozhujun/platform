@@ -36,8 +36,8 @@
 
                 $.each(data.data,function(index,content){
                     var j={};
-                    j["text"]=content.id;
-                    j["type"]=content.id;
+                    j["text"]=content.name;
+                    j["type"]=content.name;
                     myData.push(j);
 
                 })
@@ -56,21 +56,19 @@
                     {display:'点检区域名',name:'name',
                         editor:{type:'text'}
                     } ,
-                    {display:'创建时间',name:'createtime'
+                    {display:'创建时间',name:'createtime',width:100
 
                     },
                     {display:'区域编号',name:'number',
                         editor:{type:'text'}
                     },
-                    { display: '设备类型ID', name: 'deviceTypeId', type: 'int',
+                    { display: '设备类型名', name: 'deviceTypeName', type: 'String',
                         editor: { type: 'select', data: myData, valueField: 'type'},
                         render:function(item){
-                            return item.deviceTypeId;
+                            return item.deviceTypeName;
                         }
                     },
-                    {display:'appId',name:'appId',
-                        editor:{type:'text'}
-                    }  ,
+
                     {display:'区域描述',name:'description',
                         editor:{type:'text'}
                     } ,

@@ -57,12 +57,12 @@
     <update id="update" parameterType="InspectArea">
         UPDATE inspectarea
         <set>
-            <if test="name!=null">NAME=#{name}</if>
-            <if test="description!=null">AND DESCRIPTION=#{description}</if>
-            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
-            <if test="number!=null">AND NUMBER=#{number}</if>
-            <if test="deviceTypeId!=null">AND DEVICETYPEID=#{deviceTypeId}</if>
-            <if test="appId!=null">AND APPID=#{appId}</if>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="createtime!=null">CREATETIME=#{createtime},</if>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="deviceTypeId!=null">DEVICETYPEID=#{deviceTypeId}</if>
+
         </set>
         WHERE ID=#{id}
     </update>
@@ -77,7 +77,7 @@
     <select id="getAreaById"   parameterType="java.lang.Long" resultType="java.lang.String">
         select  name
         from  inspectarea
-        where id=#{id}
+        where ID=#{id}
     </select>
 
     <select id="getDeviceTypeByAreaId"   parameterType="java.lang.Long" resultType="java.lang.String">
@@ -99,6 +99,19 @@
         SELECT *
         FROM inspectarea
         WHERE devicetypeid=#{deviceTypeId}
+    </select>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="inspectAreaResultMap">
+        select
+        <include refid="inspectArea_fields"/>
+        from inspectarea
+        where APPID=#{appId}
+    </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from inspectarea
+        where NAME=#{name} and APPID=#{appId}
     </select>
 
 </mapper>

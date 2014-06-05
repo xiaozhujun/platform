@@ -81,10 +81,19 @@ public class DataRoleAddressService {
     public Long getCraneNumberByArea(String province,String city,String area){
         return dataRoleAddressMapper.getCraneNumberByArea(province,city,area);
     }
-    public   List<Map<String,String>> getProvinceInfoWithDataRuleByCondition(long userId,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
+    public   List<Map<String,String>> getProvinceInfoWithDataRuleByCondition(Long userId,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
         return dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,sTime,eTime,startValue,endValue);
     }
     public List<Map<String,String>>getProvinceListWithDataRole(long userId){
            return dataRoleAddressMapper.getProvinceListWithDataRole(userId);
+    }
+    public void batchInsertToProvinceRiskValue(List<Map<String,String>> mapList){
+           dataRoleAddressMapper.batchInsertToProvinceRiskValue(mapList);
+    }
+    public void updateProvinceRiskValue(String province,Float riskValue){
+           dataRoleAddressMapper.updateProvinceRiskValue(province,riskValue);
+    }
+    public Map<String,String> validateProvinceRiskValueIsExistByProvince(String province){
+           return dataRoleAddressMapper.validateProvinceRiskValueIsExistByProvince(province);
     }
 }

@@ -30,7 +30,7 @@
     <select id="getNameById"  parameterType="java.lang.Long" resultType="java.lang.String">
         select name
         from devicetype
-        where id=#{id};
+        where ID=#{id};
     </select>
 
     <select id="findByCondition" parameterType="map" resultMap="deviceTypeResultMap">
@@ -47,10 +47,10 @@
     <update id="update" parameterType="DeviceType">
         UPDATE devicetype
         <set>
-            <if test="name!=null">NAME=#{name}</if>
-            <if test="number!=null">AND NUMBER=#{number}</if>
-            <if test="description!=null">AND DESCRIPTION=#{description}</if>
-            <if test="appId!=null">AND APPID=#{appId}</if>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="description!=null">DESCRIPTION=#{description}</if>
+
         </set>
         WHERE ID=#{id}
     </update>
@@ -62,5 +62,17 @@
         </where>
     </delete>
 
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceTypeResultMap">
+        select
+        <include refid="deviceType_fields"/>
+        from devicetype
+        where APPID=#{appId}
+    </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from devicetype
+        where NAME=#{name} and APPID=#{appId}
+    </select>
 
 </mapper>

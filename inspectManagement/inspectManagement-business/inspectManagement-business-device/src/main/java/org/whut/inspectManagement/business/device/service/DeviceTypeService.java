@@ -32,4 +32,13 @@ public class DeviceTypeService {
     public String getNameById(long id){
         return deviceTypeMapper.getNameById(id);
     }
+    public List<DeviceType> getListByAppId(long appId)
+    {
+        return deviceTypeMapper.getListByAppId(appId);
+    }
+
+    public long getIdByName(String name,long appId)
+    {
+        return deviceTypeMapper.getIdByName(name,appId);
+    }
 }

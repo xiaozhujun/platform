@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.device.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.device.entity.DeviceType;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -16,4 +17,7 @@ import java.util.Map;
 public interface DeviceTypeMapper extends AbstractMapper<DeviceType> {
     public List<DeviceType> findByCondition(Map<String,Object> map);
     public String getNameById(long id);
+    public List<DeviceType> getListByAppId(long appId);
+    public long getIdByName(@Param("name") String name, @Param("appId") long appId);
+
 }

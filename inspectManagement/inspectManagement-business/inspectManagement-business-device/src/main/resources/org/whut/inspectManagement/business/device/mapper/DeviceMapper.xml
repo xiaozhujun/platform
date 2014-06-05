@@ -27,10 +27,11 @@
         </selectKey>
     </insert>
 
-    <select id="getIdByNumber"  parameterType="java.lang.String" resultType="java.lang.Long">
+    <select id="getIdByNumber"  parameterType="map" resultType="java.lang.Long">
         select   id
         from   device
-        where NUMBER=#{number};
+        where number=#{number}
+        and  appId=#{appId}
     </select>
 
     <select id="findByCondition" parameterType="device" resultMap="deviceResultMap">
@@ -91,4 +92,36 @@
             <if test="_parameter!=null">and t.id=#{_parameter}</if>
         </where>
     </select>
+
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select name
+        from device
+        where ID=#{id}
+    </select>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceResultMap">
+        select
+        <include refid="device_fields"/>
+        from device
+        where APPID=#{appId}
+    </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from device
+        where NAME=#{name} and APPID=#{appId}
+    </select>
+
+    <select id="getInfoByCondition" parameterType="map" resultMap="deviceResultMap">
+        select
+        <include refid="device_fields"/>
+        from device
+        <where>
+            <if test="name !=null"> NAME LIKE #{name}</if>
+            <if test="number !=null"> and NUMBER LIKE #{number}</if>
+            <if test="deviceTypeId !=0">and DEVICETYPEID = #{deviceTypeId}</if>
+            <if test="appId !=null"> and APPID=#{appId}</if>
+        </where>
+    </select>
+
 </mapper>

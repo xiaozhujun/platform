@@ -176,34 +176,35 @@ public class EmployeeRoleServiceWeb {
             //角色的权限如果更改就要更改对应user的权限
             if(isAuthorityChanged)
             {
-                List<Long> employeeIdlist=new ArrayList<Long>();
+                List<Long> employeeIdList=new ArrayList<Long>();
                 //获取所有拥有该角色的员工编号
                 for(EmployeeEmployeeRole employeeEmployeeRole:employeeEmployeeRoleList)
                 {
                     boolean isEmployeeIdExist=false;
-                    for(int i=0;i<employeeIdlist.toArray().length;i++)
+                    for(int i=0;i<employeeIdList.toArray().length;i++)
                     {
-                        if(employeeIdlist.get(i)==employeeEmployeeRole.getEmployeeId()){
+                        if(employeeIdList.get(i)==employeeEmployeeRole.getEmployeeId()){
                             isEmployeeIdExist=true;
                         }
                     }
                     if(!isEmployeeIdExist) {
-                        employeeIdlist.add(employeeEmployeeRole.getEmployeeId());
+                        employeeIdList.add(employeeEmployeeRole.getEmployeeId());
                     }
                 }
-                for(int i=0;i<employeeIdlist.toArray().length;i++)
+
+                for(int i=0;i<employeeIdList.toArray().length;i++)
                 {
-                    long userId=employeeService.getById(employeeIdlist.get(i)).getUserId();
+                    long userId=employeeService.getById(employeeIdList.get(i)).getUserId();
                     //原先user的权限列表
                     List<UserAuthority> userAuthorityList=userAuthorityService.findByUserId(userId);
                     String role="";
-                    String[] employeeRolelist=employeeService.getById(employeeIdlist.get(i)).getEmployeeRoleName().split(";");
+                    String[] employeeRoleList=employeeService.getById(employeeIdList.get(i)).getEmployeeRoleName().split(";");
                     //现在user的应该有的权限列表
                     ArrayList<Long> authorityIdList=new ArrayList<Long>();
-                    for(int j=0;j<employeeRolelist.length;j++)
+                    for(int j=0;j<employeeRoleList.length;j++)
                     {
                         boolean isExist=false;
-                        employeeRole= employeeRoleService.getByName(employeeRolelist[j],appId);
+                        employeeRole= employeeRoleService.getByName(employeeRoleList[j],appId);
                         for(long aid:authorityIdList)
                         {
                             if(aid==employeeRole.getAuthorityId()) {
@@ -214,54 +215,46 @@ public class EmployeeRoleServiceWeb {
                             authorityIdList.add(employeeRole.getAuthorityId());
                         }
                     }
-                    //判断旧的权限在新的中不存在，如果不存在就删除
-                    for(UserAuthority userAuthority:userAuthorityList)
-                    {
-                        boolean isAuthorityExist=false;
-                        for(int j=0;j<authorityIdList.toArray().length;j++)
-                        {
-                            if(authorityIdList.get(j).equals(userAuthority.getAuthorityId())) {
-                                isAuthorityExist=true;
-                            }
-                        }
-                        if(!isAuthorityExist)  {
-                            userAuthorityService.delete(userAuthority);
-                        }
-                    }
-                    //判断新的在旧的中是否不存在，如果不存在就添加
-                    for(int j=0;j<authorityIdList.toArray().length;j++)
-                    {
-                        if(j==0)  {
-                            role=authorityService.getNameById(authorityIdList.get(j));
-                        }
-                        else{
-                            role+=";"+authorityService.getNameById(authorityIdList.get(j));
-                        }
-                        boolean isAuthorityNotExist=true;
-                        for(UserAuthority userAuthority:userAuthorityList)
-                        {
-                            if(authorityIdList.get(j).equals(userAuthority.getAuthorityId())){
-                                isAuthorityNotExist=false;
-                            }
-                        }
-                        if(isAuthorityNotExist)
-                        {
 
-                            UserAuthority userAuthority=new UserAuthority();
-                            userAuthority.setAppId(appId);
-                            userAuthority.setAuthorityId(authorityIdList.get(i));
-                            userAuthority.setAuthorityName(authorityService.getNameById(authorityIdList.get(j)));
+
+                    if (userAuthorityList.toArray().length==0){
+                        UserAuthority userAuthority=userAuthorityList.get(0);
+                        role=authorityService.getNameById(authorityIdList.get(0));
+                        userAuthority.setAuthorityId(authorityIdList.get(0));
+                        userAuthority.setAuthorityName(role);
+                        userAuthorityService.update(userAuthority);
+                        User user =userService.getById(userId);
+                        user.setRole(role);
+                        userService.update(user);
+                    }
+                    else {
+                        for(int j=0;j<authorityIdList.toArray().length;j++){
+                            if(j==0)  {
+                                role=authorityService.getNameById(authorityIdList.get(j));
+                            }
+                            else{
+                                role+=";"+authorityService.getNameById(authorityIdList.get(j));
+                            }
+                        }
+                        User user=userService.getById(userId);
+                        user.setRole(role);
+                        userService.update(user);
+
+                        userAuthorityService.deleteByUserName(user.getName());
+
+                        String[] roleArray = role.split(";");
+                        for (int k= 0;k < roleArray.length;k++) {
+                            long authorityId = authorityService.getIdByName(roleArray[k]);
+                            UserAuthority userAuthority = new UserAuthority();
                             userAuthority.setUserId(userId);
-                            userAuthority.setUserName(userService.getById(userId).getName());
+                            userAuthority.setAuthorityId(authorityId);
+                            userAuthority.setUserName(user.getName());
+                            userAuthority.setAuthorityName(roleArray[k]);
                             userAuthorityService.add(userAuthority);
                         }
                     }
-                    User user =userService.getById(userId);
-                    user.setRole(role);
-                    userService.update(user);
                 }
             }
-
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else

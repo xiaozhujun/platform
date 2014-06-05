@@ -183,4 +183,19 @@
         from   address
         where id=#{id}
     </select>
+    <select id="getAddressInfoByAddressId" resultMap="addressResultMap">
+        select a.*
+        from address a,craneinspectreport cr
+        where a.id=cr.addressId group by a.id
+    </select>
+    <select id="getProvinceCity" resultMap="addressResultMap">
+         SELECT a.province,a.city
+         FROM address a,craneinspectreport cr
+         WHERE a.id=cr.addressId GROUP BY a.province,a.city
+    </select>
+    <select id="getProvince" resultMap="addressResultMap">
+         SELECT a.province
+         FROM address a,craneinspectreport cr
+         WHERE a.id=cr.addressId GROUP BY a.province
+    </select>
 </mapper>

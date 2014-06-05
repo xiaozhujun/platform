@@ -48,14 +48,30 @@ public class InspectTableRecordServiceWeb {
             //XML文档解析
             MultipartFile file = multipartRequest.getFile("filename");
             String filename = file.getOriginalFilename();
-            InputStream inputStream = file.getInputStream();
-            SAXReader sr = new SAXReader();
-            Document document = sr.read(inputStream);
-            Element root = document.getRootElement();
-            // System.out.println(">>>>>>>>>"+root.getName());
-            inspectTableRecordService.DomReadXml(document);
 
-            return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功！");
+            String [] s = filename.split("\\.");
+            if (s[s.length - 1].equals("xml")){
+                InputStream inputStream = file.getInputStream();
+                SAXReader sr = new SAXReader();
+                Document document = sr.read(inputStream);
+                Element root = document.getRootElement();
+                // System.out.println(">>>>>>>>>"+root.getName());
+                int flag =  inspectTableRecordService.DomReadXml(document);
+                if(flag==2){
+                    System.out.println("文件内容不合法！");
+                    return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"文件内容不合法！");
+                }
+                else if(flag==1){
+                    return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检结果已存在！");
+                }
+                else{
+                    return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"上传成功！");
+                }
+            } else {
+                System.out.println("文件格式有误！");
+                // return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+                return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"文件格式错误！");
+            }
 
         }
         catch(Exception e){
@@ -64,4 +80,5 @@ public class InspectTableRecordServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
     }
+
 }

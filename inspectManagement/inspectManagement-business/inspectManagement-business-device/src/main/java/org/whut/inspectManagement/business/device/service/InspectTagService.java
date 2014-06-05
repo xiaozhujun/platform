@@ -33,4 +33,8 @@ public class InspectTagService {
         return inspectTagMapper.findByCondition(new HashMap<String, Object>());
     }
 
+    public List<InspectTag> getListByAppId(long appId)
+    {
+        return inspectTagMapper.getListByAppId(appId);
+    }
 }

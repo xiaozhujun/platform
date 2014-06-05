@@ -36,8 +36,8 @@
 
                 $.each(data.data,function(index,content){
                     var j={};
-                    j["text"]=content.id;
-                    j["type"]=content.id;
+                    j["text"]=content.name;
+                    j["type"]=content.name;
                     myData.push(j);
 
                 })
@@ -49,8 +49,8 @@
 
                 $.each(data.data,function(index,content){
                     var w={};
-                    w["text"]=content.id;
-                    w["type"]=content.id;
+                    w["text"]=content.name;
+                    w["type"]=content.name;
                     mData.push(w);
 
                 })
@@ -69,27 +69,25 @@
                     {display:'标签名',name:'name',
                         editor:{type:'text'}
                     } ,
-                    {display:'创建时间',name:'createtime'
+                    {display:'创建时间',name:'createtime',width:100
 
                     },
                     {display:'标签编号',name:'number',
                         editor:{type:'text'}
                     },
-                    { display: '点检区域ID', name: 'inspectAreaId', type: 'int',
+                    { display: '点检区域', name: 'inspectAreaName', type: 'String',
                         editor: { type: 'select', data: mData, valueField: 'type'},
                         render:function(item){
-                            return item.inspectAreaId;
+                            return item.inspectAreaName;
                         }
                     },
-                    { display: '设备ID', name: 'deviceId', type: 'int',
+                    { display: '设备名称', name: 'deviceName', type: 'String',
                         editor: { type: 'select', data: myData, valueField: 'type'},
                         render:function(item){
-                            return item.deviceId;
+                            return item.deviceName;
                         }
                     },
-                    {display:'appId',name:'appId',
-                        editor:{type:'text'}
-                    }  ,
+
                     {display:'标签描述',name:'description',
                         editor:{type:'text'}
                     } ,

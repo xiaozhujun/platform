@@ -35,6 +35,8 @@ public class DataRoleAddressServiceWeb {
     private DataRoleAddressService dataRoleAddressService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AddressService addressService;
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -132,5 +134,25 @@ public class DataRoleAddressServiceWeb {
         long userId=userService.getIdByName(userName);
         List<Map<String,String>> list=dataRoleAddressService.getProvinceListWithDataRole(userId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/calculateProvinceRisk")
+    public String  calculateProvinceRisk(){
+        List<Map<String,String>> provinceList=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(null,"0","0","0",0f,0f);
+        List<Address> list=addressService.getProvince();
+        boolean flag=false;
+        for(Address address:list){
+            Map<String,String> repeatProvinceMap=dataRoleAddressService.validateProvinceRiskValueIsExistByProvince(address.getProvince());
+            if(repeatProvinceMap==null){
+                flag=true;
+            }else{
+                dataRoleAddressService.updateProvinceRiskValue(repeatProvinceMap.get("province"),Float.parseFloat(repeatProvinceMap.get("riskvalue")));
+            }
+        }
+        if(flag){
+        dataRoleAddressService.batchInsertToProvinceRiskValue(provinceList);
+        }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

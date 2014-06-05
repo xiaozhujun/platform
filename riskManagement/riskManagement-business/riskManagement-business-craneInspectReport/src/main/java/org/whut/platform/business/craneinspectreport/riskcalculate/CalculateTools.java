@@ -10,6 +10,7 @@ import org.whut.platform.fundamental.util.tool.ToolUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -207,5 +208,17 @@ public class CalculateTools {
     public  static void main(String[] args){
            CalculateTools tools=new CalculateTools();
            System.out.println(tools.filter(null,"^[+-]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][+-]?[0-9]+)?$"));
+    }
+    public Float getAverageRiskValue(List<Float> riskValueList){
+          Float sum=0f;
+          if(riskValueList!=null||riskValueList.size()!=0){
+          for(Float riskValue:riskValueList){
+                sum+=riskValue;
+          }
+          Float average=sum/riskValueList.size();
+          return average;
+          }else{
+              return null;
+          }
     }
 }

@@ -81,7 +81,7 @@ public class InspectTableRecordService {
             }
             inspectTableId=inspectTableMapper.getIdByNameAndAppId(tname,appId);
 
-            deviceId = deviceMapper.getIdByNumber(dnum);
+            deviceId = deviceMapper.getIdByNumber(dnum,appId);
             Element e1 = root.element("devicetype");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -94,13 +94,15 @@ public class InspectTableRecordService {
             long userId;//解析数据插入到InspectTableRecord
 
             userId=Long.parseLong(worknum);
+            inspectTableRecord.setUseId(userId);
             inspectTableRecord.setInspectTableId(inspectTableId);
             inspectTableRecord.setCreateTime(createTime);
             inspectTableRecord.setExceptionCount(exceptionCount);
             inspectTableRecord.setInspectTableId(inspectTableId);
+            inspectTableRecord.setAppId(appId);
             long checkedTableId = 0;
             try{
-                checkedTableId = inspectTableRecordMapper.getInspectTableId(t,inspectTableId);}
+                checkedTableId = inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);}
             catch (Exception e){
                 e.printStackTrace();
             }
@@ -112,7 +114,7 @@ public class InspectTableRecordService {
             else {
                 inspectTableRecordMapper.add(inspectTableRecord);
             }
-            long inspectTableRecordId =inspectTableRecordMapper.getInspectTableId(t,inspectTableId);;
+            long inspectTableRecordId =inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);
             List<Element> e2 = e1.elements();
             Iterator<Element> it2 = e2.iterator();
             while (it2.hasNext()) {
@@ -122,7 +124,7 @@ public class InspectTableRecordService {
                 area = e5.attribute("name").getValue();
                 areaId = e5.attribute("areaId").getValue();
                 long inspectAreaId = Long.parseLong(areaId);
-                inspectTagId = inspectTagMapper.getIdByDeviceNumAndAreaId(dnum,inspectAreaId);
+                inspectTagId = inspectTagMapper.getIdByDeviceNumAndAreaId(dnum,inspectAreaId,appId);
                 List<Element> elements = e5.elements();
                 Iterator<Element> it = elements.iterator();
                 while (it.hasNext()) {
@@ -146,18 +148,19 @@ public class InspectTableRecordService {
                         inspectItemRecord.setInspectTableId(inspectTableId);
                         inspectItemRecord.setInspectTagId(inspectTagId);
                         inspectItemRecord.setInspectItemId(itemId1);
+                        inspectItemRecord.setInspectChoiceId(inspectChoiceId);
                         inspectItemRecord.setInspectChoiceValue(inspectChoiceValue);
                         inspectItemRecord.setInspectTableRecordId(inspectTableRecordId);
                         inspectItemRecord.setUserId(userId);
                         inspectItemRecord.setDeviceId(deviceId);
-                        // inspectItemRecord.setAppId(appId);
+                        inspectItemRecord.setAppId(appId);
                         inspectItemRecordMapper.add(inspectItemRecord);
                         System.out.println(tname + area + createTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
                     }
                 }
             }
 
-            inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId);
+            inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId,appId);
 
         }
         return flag;

@@ -35,8 +35,8 @@ public class DeviceService {
     public void delete(Device device){
         deviceMapper.delete(device);
     }
-    public long getIdByNumber(String number) {
-        return deviceMapper.getIdByNumber(number);
+    public long getIdByNumber(String number,long appId) {
+        return deviceMapper.getIdByNumber(number,appId);
     }
     public List<Map<String,String>> getListByCondition(String deviceType,String deviceNumber,String tagName,long appId){
        return deviceMapper.getListByCondition(deviceType,deviceNumber,tagName,appId);

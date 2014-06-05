@@ -31,7 +31,9 @@
        select it.id
        from device d, inspecttag it
        where it.deviceId = d.id
-       and d.number = #{deviceNumber} and it.inspectAreaId= #{inspectAreaId}
+       and d.number = #{deviceNumber}
+       and it.inspectAreaId= #{inspectAreaId}
+       and it.appId=#{appId}
     </select>
 
     <select id="findByCondition" parameterType="map" resultMap="inspectTagResultMap">

@@ -45,7 +45,7 @@ public class InspectTableRecordService {
     DeviceMapper deviceMapper;
     @Autowired
     InspectTagMapper inspectTagMapper;
-    public void DomReadXml(Document document) {
+    public int DomReadXml(Document document) {
         long appId= UserContext.currentUserAppId();
         int flag = 0;
         String tname = null;
@@ -68,20 +68,26 @@ public class InspectTableRecordService {
         Element root = document.getRootElement();
         if(root.getName()!="check"){
             flag = 2;
+            return flag;
         }
-
         else{
             tname = root.attribute("inspecttype").getValue();
-            inspectTableId=inspectTableMapper.getIdByNameAndAppId(tname,appId);
             t = root.attribute("inspecttime").getValue();
             worknum=root.attribute("workernumber").getValue();
             dnum=root.attribute("devicenumber").getValue();
+            if(tname.equals("")||t.equals("")||worknum.equals("")||dnum.equals("")){
+                flag = 2;
+                return  flag;
+            }
+            inspectTableId=inspectTableMapper.getIdByNameAndAppId(tname,appId);
+
             deviceId = deviceMapper.getIdByNumber(dnum);
             Element e1 = root.element("devicetype");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             try{
                 createTime = sdf.parse(t);
+                System.out.println(createTime);
             }catch (ParseException exception){
                 exception.printStackTrace();
             }
@@ -92,8 +98,21 @@ public class InspectTableRecordService {
             inspectTableRecord.setCreateTime(createTime);
             inspectTableRecord.setExceptionCount(exceptionCount);
             inspectTableRecord.setInspectTableId(inspectTableId);
-            inspectTableRecordMapper.add(inspectTableRecord);
-            long inspectTableRecordId =inspectTableRecordMapper.getIdByTableId(inspectTableId);
+            long checkedTableId = 0;
+            try{
+                checkedTableId = inspectTableRecordMapper.getInspectTableId(t,inspectTableId);}
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            if(checkedTableId>0){
+                System.out.println("点检结果已存在!");
+                flag  =1 ;
+                return flag;
+            }
+            else {
+                inspectTableRecordMapper.add(inspectTableRecord);
+            }
+            long inspectTableRecordId =inspectTableRecordMapper.getInspectTableId(t,inspectTableId);;
             List<Element> e2 = e1.elements();
             Iterator<Element> it2 = e2.iterator();
             while (it2.hasNext()) {
@@ -131,7 +150,7 @@ public class InspectTableRecordService {
                         inspectItemRecord.setInspectTableRecordId(inspectTableRecordId);
                         inspectItemRecord.setUserId(userId);
                         inspectItemRecord.setDeviceId(deviceId);
-                       // inspectItemRecord.setAppId(appId);
+                        // inspectItemRecord.setAppId(appId);
                         inspectItemRecordMapper.add(inspectItemRecord);
                         System.out.println(tname + area + createTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
                     }
@@ -140,10 +159,9 @@ public class InspectTableRecordService {
 
             inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId);
 
-
-
         }
-
+        return flag;
     }
 
 }
+

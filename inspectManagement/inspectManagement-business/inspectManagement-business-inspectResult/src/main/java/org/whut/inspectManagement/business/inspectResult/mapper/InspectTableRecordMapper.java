@@ -14,4 +14,5 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 public interface InspectTableRecordMapper extends AbstractMapper<InspectTableRecord> {
     public long getIdByTableId(long tableId);
     public int updateTableRecord(@Param("exceptionCount") int exceptionCount,@Param("tableId") long tableId);
+    public long getInspectTableId(@Param("createTime")String createTime,@Param("inspectTableId")long inspectTableId);
 }

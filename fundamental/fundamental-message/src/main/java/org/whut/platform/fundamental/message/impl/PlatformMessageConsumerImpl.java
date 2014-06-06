@@ -54,7 +54,7 @@ public class PlatformMessageConsumerImpl {
 					isInitialized = true;
 					// 唤醒等待的线程
 					doMonitorCondition.signal();
-					LOGGER.info("PeixunMessageConsumer initialized successful!");
+					LOGGER.info("PlatformMessageConsumer initialized successful!");
 				} catch (JMSException e) {
 					LOGGER.debug("error:", e);
 				} finally {

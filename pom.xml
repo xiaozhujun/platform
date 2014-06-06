@@ -40,7 +40,7 @@
         <mongo.driver.version>2.11.3</mongo.driver.version>
         <jedis.version>2.1.0</jedis.version>
         <logback.ext.version>0.1.1</logback.ext.version>
-        <activemq.version>5.9.1</activemq.version>
+        <activemq.version>5.7.0</activemq.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -269,12 +269,18 @@
                 <version>${jedis.version}</version>
             </dependency>
 
+            <!-- activeMQ begin-->
             <dependency>
                 <groupId>org.apache.activemq</groupId>
-                <artifactId>activemq-all</artifactId>
+                <artifactId>activemq-core</artifactId>
                 <version>${activemq.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-pool</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+            <!-- activeMQ end-->
         </dependencies>
     </dependencyManagement>
     <repositories>

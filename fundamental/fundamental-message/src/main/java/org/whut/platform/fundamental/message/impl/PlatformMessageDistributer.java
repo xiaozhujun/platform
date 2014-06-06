@@ -56,6 +56,7 @@ public class PlatformMessageDistributer implements MessageListener {
 		String monitorDestination;
 		for (PlatformMessageListener l : listeners) {
 			monitorDestination = l.getMessageName();
+            LOGGER.info(monitorDestination +"=? "+ messageName);
 			if (StringUtils.isNotBlank(monitorDestination)
 					&& StringUtils.equalsIgnoreCase(monitorDestination,
 							messageName)) {

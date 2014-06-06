@@ -64,11 +64,11 @@ public class NIOServer implements Runnable{
     }
     // 处理请求
     private void handleKey(SelectionKey selectionKey) {
+        // 接受请求
+        ServerSocketChannel server = null;
+        SocketChannel client = null;
+        String receiveText = null;
         try{
-            // 接受请求
-            ServerSocketChannel server = null;
-            SocketChannel client = null;
-            String receiveText = null;
             String sendText;
             int count=0;
             String msgBuffer = "";
@@ -130,6 +130,13 @@ public class NIOServer implements Runnable{
                 client.register(selector, SelectionKey.OP_READ);
             }
         }catch (Exception e){
+            if(e instanceof IOException){
+                try {
+                    client.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
             e.printStackTrace();
         }
 

@@ -30,9 +30,13 @@
       <param-value>/WEB-INF/applicationContext.xml,classpath*:META-INF/spring/*-applicationContext.xml</param-value>
   </context-param>
   <!-- Servlet Filters ================================================ -->
-
-
-
+    <context-param>
+        <param-name>logbackConfigLocation</param-name>
+        <param-value>WEB-INF/logback.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+    </listener>
   <!-- Filter mappings ================================================ -->
 
   <listener>
@@ -47,6 +51,11 @@
   <listener>
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
   </listener>
+
+    <listener>
+        <description>Socket服务随web启动而启动</description>
+        <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
+    </listener>
 
     <!-- Spring FilterChain(security) -->
     <filter>

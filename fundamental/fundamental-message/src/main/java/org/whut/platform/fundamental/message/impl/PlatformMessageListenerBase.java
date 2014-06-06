@@ -2,6 +2,7 @@ package org.whut.platform.fundamental.message.impl;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.api.PlatformMessageListener;
 
 /**
@@ -12,6 +13,9 @@ import org.whut.platform.fundamental.message.api.PlatformMessageListener;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class PlatformMessageListenerBase implements PlatformMessageListener,InitializingBean{
+
+    private static final PlatformLogger logger = PlatformLogger.getLogger(PlatformMessageListenerBase.class);
+
     @Autowired
     PlatformMessageDistributer  platformMessageDistributer;
 
@@ -25,6 +29,7 @@ public abstract class PlatformMessageListenerBase implements PlatformMessageList
 
     @Override
     public void afterPropertiesSet(){
+        logger.info("listener add:"+ this.getClass().getName());
         if(this.platformMessageDistributer!=null){
             platformMessageDistributer.addListener(this);
         }

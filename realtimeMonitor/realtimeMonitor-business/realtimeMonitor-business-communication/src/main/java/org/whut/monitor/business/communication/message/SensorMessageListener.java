@@ -33,7 +33,7 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
         if (message instanceof ActiveMQTextMessage){
             try {
                 String messageText = ((ActiveMQTextMessage) message).getText();
-                logger.info("parse data: "+messageText);
+                logger.info("onMessage data: "+messageText);
                 sensorDataService.saveMessage(messageText);
             } catch (JMSException e) {
                 logger.error(e.getMessage());

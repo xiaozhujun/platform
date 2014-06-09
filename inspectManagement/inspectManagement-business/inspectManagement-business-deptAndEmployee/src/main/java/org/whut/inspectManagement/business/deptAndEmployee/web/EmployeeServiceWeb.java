@@ -57,7 +57,7 @@ public class EmployeeServiceWeb {
     @POST
     public String add(@FormParam("name") String name, @FormParam("password") String password, @FormParam("sex") String sex, @FormParam("departmentName") String departmentName, @FormParam("status") String status, @FormParam("employeeRoleName") String employeeRoleName) {
         System.out.println(sex);
-        if (name == null || name.trim().equals("") || password == null || password.trim().equals("") || sex == null || sex.trim().equals("")) {
+        if (name.trim().equals("")|| password.trim().equals("") || sex.trim().equals("")||departmentName.trim().equals("")||status.trim().equals("")||employeeRoleName.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
         long id;
@@ -333,6 +333,9 @@ public class EmployeeServiceWeb {
             departmentId=String.valueOf(departmentService.getIdByName(department,appId));}
         List<Employee> list = employeeService.getByNameDepartmentAndRole(name,departmentId,employeeRoleName,appId);
         List<SubEmployee> subEmployeeList=new ArrayList<SubEmployee>();
+        if (list==null)  {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "查询不到结果!");
+        }
         for(Employee employee:list){
             SubEmployee subEmployee=new SubEmployee();
             subEmployee.setStatus(employee.getStatus());
@@ -346,6 +349,8 @@ public class EmployeeServiceWeb {
             subEmployeeList.add(subEmployee);
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(subEmployeeList, JsonResultUtils.Code.SUCCESS);
+
+
     }
 }
 

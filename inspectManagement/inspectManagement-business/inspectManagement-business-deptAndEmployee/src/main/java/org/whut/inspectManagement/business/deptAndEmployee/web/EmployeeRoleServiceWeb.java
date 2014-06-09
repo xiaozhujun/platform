@@ -63,7 +63,7 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authority") String authority,@FormParam("inspectTable") String inspectTable)
     {
-        if(name==null||name.trim().equals("")||authority==null||inspectTable==null||inspectTable.equals(""))
+        if(name==null||name.trim().equals("")||authority==null||inspectTable==null||inspectTable.equals("")||description==null||description.trim().equals(""))
         {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }

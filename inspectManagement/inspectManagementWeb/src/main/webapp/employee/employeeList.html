@@ -146,7 +146,7 @@ $("#submitBtn").click(function(){
     data.department=$("#department").val();
     data.employeeRoleName = $("#employeeRole").val();
     if(data.name==""&&data.department==""&&data.employeeRoleName==""){
-        $.ligerDialog.warn("请输入查询条件！") ;
+        $.post($.URL.employee.list,null,listCallback,"json");
     }
     else{
 
@@ -246,6 +246,9 @@ function queryListCallback(data){
         gridData.Total=data.data.length;
         f_initGrid();
     }
+    else if(data.code==500) {
+        $.ligerDialog.error(data.message);
+    }
 }
 function beginEdit(rowid) {
     manager.beginEdit(rowid);
@@ -267,6 +270,7 @@ function updateCallback(data){
     }
     else{
         $.ligerDialog.error(data.message);
+        $("#list").load("employee/employeeList.html");
     }
 }
 
@@ -349,8 +353,7 @@ function addNewRow()
     </form>
 </div>
 <div id="list">
-    <div id="chaxun">
-        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
                 <td align="right" class="l-table-edit-td">员工名:</td>
                 <td align="left" class="l-table-edit-td"><input name="employeeName" type="text" id="employeeName" ltype="text" /></td>
@@ -362,7 +365,6 @@ function addNewRow()
                 <td align="right"><input type="button" value="添加员工" id="addSubmitBtn" class="l-button l-button-submit" /></td>
             </tr>
         </table>
-    </div>
     <div class="l-clear"></div>
     <div id="maingrid" style="margin-top:20px"></div> <br />
 </div>

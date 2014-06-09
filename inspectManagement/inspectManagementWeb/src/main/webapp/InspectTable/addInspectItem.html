@@ -215,7 +215,7 @@ function addCallback(data){
         var jsonObj2={};
         jsonObj2.Rows=data.data;
         manager.set({data:jsonObj2});
-        $.ligerDialog.waitting('存在如下重复记录');
+        $.ligerDialog.waitting('如下记录已存在');
         setTimeout(function ()
         {
             $.ligerDialog.closeWaitting();

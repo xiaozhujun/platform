@@ -69,16 +69,16 @@
             if (node.length!=0)
             {
                     if (confirm('确定删除这' + node.length + '项?'))
-                             { alert(node.length);
+                             {/* alert(node.length);*/
                                 var data={};
                                 var deleteIds="";
                                 for(var i=0;i<node.length;i++){
                                     var deleteId=node[i].data.id;
-                                    alert("deleteId" + deleteId);
+                                  /*  alert("deleteId" + deleteId);*/
                                     deleteIds+= deleteId + ";";
 
                                    }
-                                alert("deleteIds" + deleteIds);
+                        /*        alert("deleteIds" + deleteIds);*/
                                 data.Ids= deleteIds;
                                 $.post($.URL.menu.delete,data,deleteCallback,"json");
                             }
@@ -108,7 +108,7 @@
             data.name = $("#name").val();
             data.url = $("#url").val();
             data.id=node.data.id;
-            alert(data.name + " " +data.url + " " + data.id);
+           /* alert(data.name + " " +data.url + " " + data.id);*/
             $.post($.URL.menu.update,data,updateMenuCallback,"json");
         }
         function updateMenuCallback(data){

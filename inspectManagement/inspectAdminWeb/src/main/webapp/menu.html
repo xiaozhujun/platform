@@ -50,22 +50,12 @@
                         {
                             s[j]=s[j]+"</ul></div>";
                             menuload=menuload+s[j] ;
-                            alert("s"+j+":"+s[j]);
+                         /*   alert("s"+j+":"+s[j]);*/
                         }
                     }
-                    alert(menuload) ;
+                  /*  alert(menuload) ;*/
                 }
             }
-            var s1="<li url='department/add.html'>添加部门1</li><li url='department/list.html'>部门列表1</li>";
-            var s2="<li url='department/add.html'>添加部门2</li><li url='department/list.html'>部门列表2</li>";
-            var s3="<li url='department/add.html'>添加部门3</li><li url='department/list.html'>部门列表3</li>";
-
-          var  a1="<div title='部门管理1' style='padding:10px'><ul>"+s1+"</ul></div>" ;
-          var  a2="<div title='部门管理2' style='padding:10px'><ul>"+s2+"</ul></div>" ;
-          var  a3="<div title='部门管理3' style='padding:10px'><ul>"+s3+"</ul></div>" ;
-            var a=a1+a2+a3;
-
-            $("#accordion").append(a);
             $("#accordion").ligerAccordion();
             $("#accordion li").click(function(){
                 var url = $(this).attr("url");

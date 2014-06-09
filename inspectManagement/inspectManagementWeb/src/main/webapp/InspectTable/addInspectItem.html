@@ -28,7 +28,7 @@ function listCallBack(data){
             j["id"]=content.id;
             myData.push(j);
         });
-        $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+        $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
             data:myData,
             width:200,
             valueField:'id',
@@ -48,7 +48,7 @@ function deviceCallback(data){
             j['text']=content.name;
             myData.push(j);
         })
-        $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+        $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
             width:180,data:myData,valueField:'id',textField:'text',valueFieldID:'deviceTypeSelect',
             onSelected:function(deviceType){
                 if(deviceType!=null){

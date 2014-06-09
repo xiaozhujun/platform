@@ -87,11 +87,14 @@ public class InspectItemServiceWeb {
                     id=0;
                 }
                 if(id==0){
+                    String input=subInspectItem.getInput();
+                    String choices=subInspectItem.getChoiceValue();
+                    if((input.equals("0")&&choices==null)||choices.equals("null")||choices.equals("")||choices.contains("null")){
+                        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检选值不能为空!");
+                    }
                     inspectItemService.add(inspectItem);
                     long inspectId=inspectItem.getId();
-                    String input=subInspectItem.getInput();
                     if(input.equals("0")){
-                        String choices=subInspectItem.getChoiceValue();
                         String [] choiceList=choices.split(";");
                         for(String choice:choiceList){
                             InspectItemChoice inspectItemChoice=new InspectItemChoice();

@@ -78,11 +78,24 @@ public class DepartmentServiceWeb {
     public String update(@FormParam("jsonString") String jsonString)
     {
     Department department = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Department.class);
-    if(department.getName()==null||department.getAppId()==0||department.getName().equals("")||department.getStatus()==null){
+    if(department.getName()==null||department.getName().equals("")||department.getStatus()==null){
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
     }
-    departmentService.update(department);
-    return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        long appid= UserContext.currentUserAppId();
+        long id;
+        try{
+            id=departmentService.getIdByName(department.getName(),appid);
+        }catch (Exception ex) {
+            id = 0;
+        }
+        if(id==0||id==department.getId()) {
+            departmentService.update(department);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else
+        {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"修改的部门已存在！");
+        }
     }
 
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
@@ -121,4 +134,6 @@ public class DepartmentServiceWeb {
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(canUseDepartmentList, JsonResultUtils.Code.SUCCESS);
     }
+
+
 }

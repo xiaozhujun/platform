@@ -78,6 +78,7 @@
                     $.ligerDialog.success(data.message);
                 }
                 else{
+                    $("#mainContainer").load("InspectTable/inspectTableList.html");
                     $.ligerDialog.warn(data.message);
                 }
             }

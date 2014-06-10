@@ -28,7 +28,7 @@ function listCallBack(data){
             j["id"]=content.id;
             myData.push(j);
         });
-        $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+        $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
             data:myData,
             width:200,
             valueField:'id',
@@ -48,7 +48,7 @@ function deviceCallback(data){
             j['text']=content.name;
             myData.push(j);
         })
-        $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,
+        $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
             width:180,data:myData,valueField:'id',textField:'text',valueFieldID:'deviceTypeSelect',
             onSelected:function(deviceType){
                 if(deviceType!=null){
@@ -215,13 +215,16 @@ function addCallback(data){
         var jsonObj2={};
         jsonObj2.Rows=data.data;
         manager.set({data:jsonObj2});
-        $.ligerDialog.waitting('存在如下重复记录');
+        $.ligerDialog.waitting('如下记录已存在');
         setTimeout(function ()
         {
             $.ligerDialog.closeWaitting();
         }, 2000);
     }else if(data.code==500){
-        $.ligerDialog.warn(data.message);
+        var jsonObj3={};
+        jsonObj3.Rows=data.data;
+        manager.set({data:jsonObj3});
+        $.ligerDialog.warn("参数不能为空或参数错误！");
     }
 }
 $("#delete").ligerButton({});

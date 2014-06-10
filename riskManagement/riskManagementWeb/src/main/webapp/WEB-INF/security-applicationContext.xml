@@ -81,7 +81,7 @@
     	        <beans:property name="serviceProperties" ref="serviceProperties"></beans:property>
     	        <beans:property name="ticketValidator">
     	            <beans:bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
-    	                <beans:constructor-arg index="0" value="http://192.168.100.38/cas"></beans:constructor-arg>
+    	                <beans:constructor-arg index="0" value="http://219.141.208.172/cas"></beans:constructor-arg>
     	            </beans:bean>
     	        </beans:property>
     	        <beans:property name="key" value="cas"></beans:property>

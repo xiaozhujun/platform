@@ -16,12 +16,35 @@
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
-            $("#txt3").ligerComboBox({
-
-            });
+            $.get($.URL.device.list,null,listCallback,"json");
+            function listCallback(data){
+                if(data.code==200){
+                    var deviceData=[];
+                    for(i=0;i<data.length;i++){
+                        var d={};
+                        d['text']=data.data[i].name;
+                        d['id']=data.data[i].id;
+                        deviceData.push(d);
+                    }
+                    $("#txt3").ligerComboBox({
+                        data:deviceData,valueFieldID:"txt3"
+                    });
+                }
+            }
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
+            $("#submitBtn").click(function(){
+                var did=$("#txt3").val();
+                var sTime=$("#txt4").val();
+                var eTime=$("#txt5").val();
+                $("#reportShow").load($.URL.inspectReport.reportSearch,{"sTime":sTime,"eTime":eTime,"deviceId":did,"userId":null,"flag":"4"},reportSearchCallback,"json");
+            });
         });
+        function reportSearchCallback(data){
+            if(data.code==200){
+                alert("hah");
+            }
+        }
     </script>
 
 </head>

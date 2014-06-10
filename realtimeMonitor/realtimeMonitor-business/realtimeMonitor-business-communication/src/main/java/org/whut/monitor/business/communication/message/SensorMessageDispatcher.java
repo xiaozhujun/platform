@@ -3,6 +3,7 @@ package org.whut.monitor.business.communication.message;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
 
 import javax.jms.MessageNotWriteableException;
@@ -16,6 +17,8 @@ import javax.jms.MessageNotWriteableException;
  */
 public class SensorMessageDispatcher implements MessageDispatcher {
 
+    public static final PlatformLogger logger = PlatformLogger.getLogger(SensorMessageDispatcher.class);
+
     private static final String destination = Constants.SENSOR_QUEUE_DESTINATION;
 
     @Autowired
@@ -24,7 +27,7 @@ public class SensorMessageDispatcher implements MessageDispatcher {
     @Override
     public void dispatchMessage(String messageBody) {
         if (messageBody!=null){
-
+            logger.info("dispatch: "+messageBody);
             try {
                 ActiveMQTextMessage message = new ActiveMQTextMessage();
                 message.setText(messageBody);

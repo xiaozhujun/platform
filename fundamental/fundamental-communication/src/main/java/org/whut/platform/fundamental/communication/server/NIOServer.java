@@ -10,6 +10,7 @@ package org.whut.platform.fundamental.communication.server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -19,10 +20,15 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
 public class NIOServer implements Runnable{
+
+    public static final PlatformLogger logger = PlatformLogger.getLogger(NIOServer.class);
+    public static HashMap<SocketChannel,StringBuffer> msgBufferMap = new HashMap<SocketChannel, StringBuffer>();
+
     /*标识数字*/
     private  int flag = 0;
     /*缓冲区大小*/
@@ -42,6 +48,20 @@ public class NIOServer implements Runnable{
 
     public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
         this.messageDispatcher = messageDispatcher;
+    }
+
+    /**
+     *获得当前key的消息缓冲
+     * @param key
+     * @return
+     */
+    public StringBuffer getMsgBuffer(SocketChannel key){
+        StringBuffer msgBuffer = msgBufferMap.get(key);
+        if(msgBuffer==null){
+            msgBuffer = new StringBuffer();
+            msgBufferMap.put(key,msgBuffer);
+        }
+        return msgBuffer;
     }
 
     public NIOServer(){
@@ -71,7 +91,6 @@ public class NIOServer implements Runnable{
         try{
             String sendText;
             int count=0;
-            String msgBuffer = "";
             // 测试此键的通道是否已准备好接受新的套接字连接。
             if (selectionKey.isAcceptable()) {
                 // 返回为之创建此键的通道。
@@ -83,7 +102,7 @@ public class NIOServer implements Runnable{
                 client.configureBlocking(false);
                 // 注册到selector，等待连接
                 client.register(selector, SelectionKey.OP_READ);
-                System.out.println("socket client accept");
+                logger.info("socket client accept");
             } else if (selectionKey.isReadable()) {
                 // 返回为之创建此键的通道。
                 client = (SocketChannel) selectionKey.channel();
@@ -93,26 +112,8 @@ public class NIOServer implements Runnable{
                 count = client.read(receivebuffer);
                 if (count > 0) {
                     receiveText = new String( receivebuffer.array(),0,count);
-                    System.out.println("服务器端接受客户端数据--:"+receiveText);
-                    client.register(selector, SelectionKey.OP_WRITE);
-                    //对接受数据的处理
-                    msgBuffer +=receiveText;
-                    System.out.println("socket client recive: "+receiveText);
-                    int startIndex = msgBuffer.indexOf("{sensors:[{");
-                    int endIndex = msgBuffer.indexOf("}]}",startIndex);
-                    if(endIndex>0){
-                        if(startIndex>=0&&endIndex>startIndex){
-                            String temp = msgBuffer.substring(startIndex,endIndex+3);
-                            if(temp.lastIndexOf("{sensors:[{")>1){
-                                temp=temp.substring(temp.lastIndexOf("{sensors:[{"));
-                            }
-                            msgBuffer = msgBuffer.substring(endIndex+3);
-                            System.out.println("socket server parse: "+temp);
-                            dealMessageForMongo(temp);
-                        }else{
-                            msgBuffer = msgBuffer.substring(endIndex+3);
-                        }
-                    }
+                    logger.info("receive : " + receiveText);
+                    resolveMessage(receiveText,client);
                 }
             } else if (selectionKey.isWritable()) {
                 //将缓冲区清空以备下次写入
@@ -139,18 +140,67 @@ public class NIOServer implements Runnable{
             }
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @param args
+     * @throws java.io.IOException
+     */
+    public static void main(String[] args) throws IOException {
+//       NIOServer server = new NIOServer();
+//       server.listen();
+         String data = "data:[58]}]}{sensors:[{sensorNum:1,dateType:'Vibration',time:'2013-11-05 10:29:24',data:[58]}]}";
+        int startIndex = data.indexOf("{sensors:[{");
+        int endIndex = data.indexOf("}]}");
+        System.out.println(data.substring(0,endIndex+3));
 
     }
-    private void dealMessageForMongo(String msgBody){
 
-        try {
-            messageDispatcher.dispatchMessage(msgBody);
-//            if(sensorDataService.saveMessage(msgBody)==null){
-//                System.out.println("ERROR:SAVE FAILED: "+msgBody);
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    private void resolveMessage(String msg,SocketChannel key){
+        //client.register(selector, SelectionKey.OP_WRITE);
+        //对接受数据的处理
+        StringBuffer msgBuffer = getMsgBuffer(key);
+        String localMsg = msg;
+        while (true){
+            int startIndex = localMsg.indexOf("{sensors:[{");
+            int endIndex = localMsg.indexOf("}]}",startIndex);
+            if(endIndex>=0&&startIndex>=0){
+                if(endIndex<startIndex){
+                    if(msgBuffer.length()>0){
+                        msgBuffer.append(msg.substring(0,endIndex+3));
+                        messageDispatcher.dispatchMessage(msgBuffer.toString());
+                        msgBuffer.delete(0,msgBuffer.length()-1);
+                    }
+                    localMsg = localMsg.substring(startIndex);
+                }else{
+                    messageDispatcher.dispatchMessage(localMsg.substring(startIndex,endIndex+3));
+                    if(msgBuffer.length()>0){
+                        msgBuffer.delete(0,msgBuffer.length()-1);
+                    }
+                    localMsg = localMsg.substring(endIndex+3);
+                }
+            }else if(endIndex>=0&&startIndex<0){
+                if(msgBuffer.length()>0){
+                    msgBuffer.append(msg.substring(0,endIndex+3));
+                    messageDispatcher.dispatchMessage(msgBuffer.toString());
+                    msgBuffer.delete(0,msgBuffer.length()-1);
+                }
+                break;
+            }else if(endIndex<0&&startIndex>=0){
+                if(msgBuffer.length()>0){
+                    msgBuffer.delete(0,msgBuffer.length()-1);
+                }
+                msgBuffer.append(localMsg.substring(startIndex));
+                break;
+            }else {
+                if(msgBuffer.length()>0){
+                    msgBuffer.append(localMsg);
+                }
+                break;
+            }
+
         }
+
     }
 
     @Override
@@ -179,13 +229,5 @@ public class NIOServer implements Runnable{
             }catch (Exception e){}
         }
 
-    /**
-     * @param args
-     * @throws java.io.IOException
-     */
-    public static void main(String[] args) throws IOException {
-        // TODO Auto-generated method stub
-        NIOServer server = new NIOServer();
-        server.listen();
-    }
+
 }

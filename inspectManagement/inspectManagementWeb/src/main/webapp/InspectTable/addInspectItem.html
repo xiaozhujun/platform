@@ -221,7 +221,10 @@ function addCallback(data){
             $.ligerDialog.closeWaitting();
         }, 2000);
     }else if(data.code==500){
-        $.ligerDialog.warn(data.message);
+        var jsonObj3={};
+        jsonObj3.Rows=data.data;
+        manager.set({data:jsonObj3});
+        $.ligerDialog.warn("参数不能为空或参数错误！");
     }
 }
 $("#delete").ligerButton({});

@@ -81,6 +81,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>platform</groupId>
+            <artifactId>fundamental-mongoConnector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>

@@ -8,4 +8,7 @@ package org.whut.inspectManagement.business.inspectReport.entity;
  * To change this template use File | Settings | File Templates.
  */
 public class InspectReport {
+
+
+
 }

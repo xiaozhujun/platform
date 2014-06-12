@@ -108,7 +108,9 @@
             "getMenuByUserId": "rs/menu/getMenuByUserId"
         },
         "inspectReport":{
-            "reportSearch":"rs/inspectReport/reportSearch"
+            "reportSearch":"rs/inspectReport/reportSearch",
+            "getInspectTableRecordList":"rs/inspectReport/getInspectTableRecordList",
+            "getInspectInfo":"rs/inspectReport/getInspectInfo"
         }
     }
 })(jQuery);

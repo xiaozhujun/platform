@@ -88,4 +88,23 @@
   </if>
   GROUP BY devname,zhouqi,shijian
  </select>
+ <select id="getInspectTableRecordList" parameterType="java.lang.String" resultType="map">
+  SELECT
+  itr.createtime,itr.exceptioncount,itr.mongoId,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename
+  FROM
+  inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt
+  WHERE
+  itr.userId=u.id AND itr.inspectTableId=t.id AND itr.deviceId=d.id AND dt.id=d.deviceTypeId
+  <if test="createTime!=null">
+  AND itr.createtime=#{createTime}
+  </if>
+ </select>
+ <select id="getInfoByMongoDbObject" parameterType="map" resultType="map">
+  SELECT
+  u.name as userName,d.name as devName,t.name as tName,tag.name as tagName, it.name as itemName,ic.choiceValue as inspectChoiceValue
+  FROM
+  user u,device d,inspecttable t,inspecttag tag,inspectitem it,inspectchoice ic
+  WHERE u.id=#{userId} AND d.id=#{deviceId} AND t.id=#{inspectTableId} AND tag.id=#{inspectTagId} AND it.id=#{inspectItemId} AND ic.choiceValue=#{inspectChoiceValue}
+  GROUP BY  u.id,d.id,t.id,tag.id,it.id
+ </select>
 </mapper>

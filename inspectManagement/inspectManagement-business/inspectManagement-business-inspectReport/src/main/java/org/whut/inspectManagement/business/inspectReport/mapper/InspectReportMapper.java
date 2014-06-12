@@ -1,7 +1,12 @@
 package org.whut.inspectManagement.business.inspectReport.mapper;
 
+import com.mongodb.DBObject;
+import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.inspectReport.entity.InspectReport;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,4 +17,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  */
 public interface InspectReportMapper extends AbstractMapper<InspectReport>{
 
+     public List<Map<String,String>> getInspectTableRecordList(@Param("createTime")String createTime);
+
+     public Map<String,String> getInfoByMongoDbObject(Map<String,String> map);
 }

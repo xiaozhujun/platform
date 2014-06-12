@@ -1,6 +1,7 @@
-#searchContainer{
+.searchContainer{
     width: 100%;
     height: 25px;
+    margin-top: 5px;
 }
 .searchItem{
     width: 200px;

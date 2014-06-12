@@ -106,6 +106,9 @@
             "list":"rs/menu/list",
             "getParentInfoById": "rs/menu/getParentInfoById"  ,
             "getMenuByUserId": "rs/menu/getMenuByUserId"
+        },
+        "inspectReport":{
+            "reportSearch":"rs/inspectReport/reportSearch"
         }
     }
 })(jQuery);

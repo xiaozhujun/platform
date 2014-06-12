@@ -14,6 +14,7 @@ import java.sql.*;
 public class PlatformMysqlConnector {
     private static String className= FundamentalConfigProvider.get("dbcp.riskmanagement.driverClassName");
     private String url=FundamentalConfigProvider.get("dbcp.riskmanagement.url");
+    private String inspectUrl=FundamentalConfigProvider.get("dbcp.inspectmanagement.url");
     private String username=FundamentalConfigProvider.get("dbcp.riskmanagement.username");
     private String password=FundamentalConfigProvider.get("dbcp.riskmanagement.password");
     static {
@@ -31,6 +32,15 @@ public class PlatformMysqlConnector {
             e.printStackTrace();
         }
        return connection;
+    }
+    public Connection getInspectConnection(){
+        Connection connection=null;
+        try{
+            connection= DriverManager.getConnection(inspectUrl,username,password);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return connection;
     }
     public void close(Connection connection,PreparedStatement statement,ResultSet rs){
         if(rs!=null){

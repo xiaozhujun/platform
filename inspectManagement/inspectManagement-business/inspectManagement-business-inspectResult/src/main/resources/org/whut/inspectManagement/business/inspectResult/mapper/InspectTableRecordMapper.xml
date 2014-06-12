@@ -74,7 +74,7 @@
     <update id="updateTableRecord" parameterType="map">
         UPDATE inspecttablerecord
         SET exceptioncount=#{exceptionCount}
-        WHERE ID = #{tableId}
+        WHERE inspectTableId = #{tableId}
         AND appId=#{appId}
     </update>
 

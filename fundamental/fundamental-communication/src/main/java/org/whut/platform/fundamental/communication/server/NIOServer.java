@@ -112,8 +112,10 @@ public class NIOServer implements Runnable{
                 count = client.read(receivebuffer);
                 if (count > 0) {
                     receiveText = new String( receivebuffer.array(),0,count);
-                    logger.info("receive : " + receiveText);
-                    resolveMessage(receiveText,client);
+                    if(receiveText!=null){
+                        logger.info("receive : " + receiveText);
+                        resolveMessage(receiveText,client);
+                    }
                 }
             } else if (selectionKey.isWritable()) {
                 //将缓冲区清空以备下次写入

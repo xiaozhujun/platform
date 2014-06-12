@@ -141,7 +141,7 @@ public class InspectTableRecordService {
                         Element ge = git.next();
                         inspectChoiceValue = ge.attribute("name").getValue();
                         System.out.println(">>>>>>>>>>>>>>>>>>"+inspectChoiceValue);
-                        if(inspectChoiceValue!="正常"){
+                        if(!(inspectChoiceValue.equals("正常"))){
                             exceptionCount++;
                         }
                         long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValueAndAppId(inspectChoiceValue,appId);

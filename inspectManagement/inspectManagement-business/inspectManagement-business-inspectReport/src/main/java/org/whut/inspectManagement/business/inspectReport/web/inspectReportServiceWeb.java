@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectReport.entity.MongoConstant;
 import org.whut.inspectManagement.business.inspectReport.entity.ReportInfo;
+import org.whut.inspectManagement.business.inspectReport.entity.ReportTemplate;
 import org.whut.inspectManagement.business.inspectReport.entity.SubReportInfo;
 import org.whut.inspectManagement.business.inspectReport.mapper.ReportSqlMapper;
 import org.whut.inspectManagement.business.inspectReport.service.InspectReportService;
@@ -194,9 +195,9 @@ public class inspectReportServiceWeb {
         //根据传过来的map取得mongoId,然后从mongo中查出相应的值.然后根据各个Id来查出相应的信息来放到list中后导出html格式的报表
         reportInfoList=getReportListSource(map);
         Map<String,String> parameters=new HashMap<String, String>();
-        String path=request.getSession().getServletContext().getRealPath("/reportTemplate/") + "/";
+        String path=request.getSession().getServletContext().getRealPath(ReportTemplate.reportTemplateDir) + "/";
         parameters.put(MongoConstant.SUBREPORT_DIR,path);
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/report2.jasper");
+        String reportTemplate=request.getSession().getServletContext().getRealPath(ReportTemplate.reportInfoTemplate);
         reportNameMap.put("tableName",map.get(MongoConstant.tableName));
         platformReport.exportReportByType(reportTemplate,type,parameters,request,response,map.get(MongoConstant.tableName),reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -243,9 +244,9 @@ public class inspectReportServiceWeb {
     @Path("/exportPeopleInfoReport/{type}")
     public void exportPeopleInfoReport(@PathParam("type")String type){
         Map<String,String> parameters=new HashMap<String, String>();
-        String path=request.getSession().getServletContext().getRealPath("/reportTemplate/") + "/";
+        String path=request.getSession().getServletContext().getRealPath(ReportTemplate.reportTemplateDir) + "/";
         parameters.put(MongoConstant.SUBREPORT_DIR,path);
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/report2.jasper");
+        String reportTemplate=request.getSession().getServletContext().getRealPath(ReportTemplate.reportInfoTemplate);
         platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",reportInfoList);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -253,8 +254,8 @@ public class inspectReportServiceWeb {
     @Path("/getInspectPeoplePie")
     public String getInspectPeoplePie(){
         Connection connection=getConnection();
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/peopleInspect/peopleInspectPie.jasper");
-        getPeopleReportChart(reportTemplate,connection);
+        String reportTemplate=request.getSession().getServletContext().getRealPath(ReportTemplate.peopleInspectPie);
+        getPeopleReportChart(reportTemplate, connection);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -262,7 +263,7 @@ public class inspectReportServiceWeb {
     @Path("/getInspectDevicePie")
     public String getInspectDevicePie(){
         Connection connection=getConnection();
-        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/deviceInspect/deviceInspectPie.jasper");
+        String reportTemplate=request.getSession().getServletContext().getRealPath(ReportTemplate.deviceInspectPie);
         getPeopleReportChart(reportTemplate,connection);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

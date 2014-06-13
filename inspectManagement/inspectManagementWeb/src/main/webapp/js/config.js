@@ -110,7 +110,9 @@
         "inspectReport":{
             "reportSearch":"rs/inspectReport/reportSearch",
             "getInspectTableRecordList":"rs/inspectReport/getInspectTableRecordList",
-            "getInspectInfo":"rs/inspectReport/getInspectInfo"
+            "getInspectInfo":"rs/inspectReport/getInspectInfo",
+            "getInspectPeoplePie":"rs/inspectReport/getInspectPeoplePie",
+            "getInspectDevicePie":"rs/inspectReport/getInspectDevicePie"
         }
     }
 })(jQuery);

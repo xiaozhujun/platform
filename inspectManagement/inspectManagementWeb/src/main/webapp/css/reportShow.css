@@ -1,6 +1,13 @@
 .reportContent{
     margin-top: 5px;
 }
+.reportBlock{
+    width: 99%;
+    float: left;
+    min-height: 200px;
+    margin-left: 5px;
+    margin-top: 1px;
+}
 .exportDiv{
     width: 100%;
     display: none;

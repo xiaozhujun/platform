@@ -215,37 +215,6 @@ public class inspectReportServiceWeb {
            }
            return mapList;
     }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @GET
-    @Path("/test")
-    public String test(){
-        try{
-            List<ReportInfo> list=new ArrayList<ReportInfo>();
-            for(int i=0;i<=5;i++){
-                ReportInfo reportInfo=new ReportInfo();
-                reportInfo.settName("tname"+i);
-                reportInfo.setDevName("device"+i);
-                reportInfo.setUserName("user"+i);
-                reportInfo.setCreateTime(transferDateToString(new Date()));
-                reportInfo.setTagName("tag"+i);
-                SubReportInfo subReportInfo=new SubReportInfo();
-                List<SubReportInfo> list1=new ArrayList<SubReportInfo>();
-                subReportInfo.setInspectChoiceValue("正常");
-                subReportInfo.setItemName("item"+i);
-                list1.add(subReportInfo);
-                reportInfo.setSubReportInfoList(list1);
-                list.add(reportInfo);
-            }
-            Map<String,String> parameters=new HashMap<String, String>();
-            String path=request.getSession().getServletContext().getRealPath("/reportTemplate/") + "/";
-            parameters.put("SUBREPORT_DIR",path);
-            String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/report2.jasper");
-            platformReport.exportReportByType(reportTemplate,"html",parameters,request,response,"test",list);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-       return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-    }
     public List<ReportInfo> getReportListSource(Map<String,String> map){
         List<DBObject> d=getInfoFromMongoByMongoId(map.get(MongoConstant.mongoId));
         List<Map<String,String>> l=getInfoByMongoDbObject(d);
@@ -278,5 +247,52 @@ public class inspectReportServiceWeb {
         parameters.put(MongoConstant.SUBREPORT_DIR,path);
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/report2.jasper");
         platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",reportInfoList);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @GET
+    @Path("/getInspectPeoplePie")
+    public String getInspectPeoplePie(){
+        Connection connection=getConnection();
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/peopleInspect/peopleInspectPie.jasper");
+        getPeopleReportChart(reportTemplate,connection);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @GET
+    @Path("/getInspectDevicePie")
+    public String getInspectDevicePie(){
+        Connection connection=getConnection();
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/deviceInspect/deviceInspectPie.jasper");
+        getPeopleReportChart(reportTemplate,connection);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    public Connection getConnection(){
+        Connection connection=null;
+        try {
+            connection=sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return connection;
+    }
+    public String getPeopleSql(){
+        String sql="SELECT itr.createtime,sum(itr.exceptioncount) as exceptioncount,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName FROM inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt,employee em WHERE itr.userId=u.id AND itr.inspectTableId=t.id AND itr.deviceId=d.id AND dt.id=d.deviceTypeId AND em.userId=u.id AND itr.createtime='"+transferDateToString(new Date())+"' group by em.employeeRoleName";
+        return sql;
+    }
+    public String getDeviceSql(){
+        String sql="SELECT itr.createtime,sum(itr.exceptioncount) as exceptioncount,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName FROM inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt,employee em WHERE itr.userId=u.id AND itr.inspectTableId=t.id AND itr.deviceId=d.id AND dt.id=d.deviceTypeId AND em.userId=u.id AND itr.createtime='"+transferDateToString(new Date())+"' group by d.name";
+        return sql;
+    }
+    public void getPeopleReportChart(String reportTemplate,Connection connection){
+        String peopleSql=getPeopleSql();
+        Map<String,String> parameters=new HashMap<String, String>();
+        parameters.put("sql",peopleSql);
+        platformReport.getMapToExportReport(reportTemplate,parameters,"html",request,response,"report",connection);
+    }
+    public void getDeviceReportChart(String reportTemplate,Connection connection){
+        String deviceSql=getDeviceSql();
+        Map<String,String> parameters=new HashMap<String, String>();
+        parameters.put("sql",deviceSql);
+        platformReport.getMapToExportReport(reportTemplate,parameters,"html",request,response,"report",connection);
     }
 }

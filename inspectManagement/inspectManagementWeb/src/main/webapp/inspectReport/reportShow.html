@@ -18,12 +18,12 @@
     <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
             $.get($.URL.user.list,null,userListCallback,"json");
             $.get($.URL.device.list,null,listCallback,"json");
             $.post($.URL.inspectReport.getInspectTableRecordList,null,getInspectTableRecordListCallback,"json");
-
         });
             function userListCallback(data){
                 if(data.code==200){
@@ -118,16 +118,16 @@
         {
             g1 = manager1 = $("#devicegrid").ligerGrid({
                 columns: [
-                    { display: '点检设备', name: 'devname', width:249,
+                    { display: '点检设备', name: 'devname', width:247,
                         editor: { type: 'text' }
                     },
-                    { display: '点检人员', name: 'username', type: 'string', width:249,
+                    { display: '点检人员', name: 'username', type: 'string', width:247,
                         editor: { type: 'text' }
                     },
-                    { display: '点检时间', name: 'createtime', width:249,
+                    { display: '点检时间', name: 'createtime', width:247,
                         editor: { type: 'text' }
                     },
-                    { display: '异常数', name: 'exceptioncount',width:249,
+                    { display: '异常数', name: 'exceptioncount',width:247,
                         editor: { type: 'text' }
                     },
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
@@ -194,6 +194,27 @@
                 $.ligerDialog().alert("请输入导出报表类型!");
             }
         });
+        $("#panel1").ligerPanel({
+            title:'人员日检',
+            width:'100%'
+        });
+        $("#panel2").ligerPanel({
+            title:'人员日检',
+            width:'100%'
+        });
+        $("#panel3").ligerPanel({
+            title:'人员日检',
+            width:'100%'
+        });
+        $("#panel4").ligerPanel({
+            title:'人员日检',
+            width:'100%'
+        });
+       /* $("#peopleInspectPie").load($.URL.inspectReport.getInspectPeoplePie,null,getInspectPeoplePieCallback,"json");
+        function getInspectPeoplePieCallback(){
+
+        }*/
+       // $("#deviceInspectPie").load($.URL.inspectReport.getInspectDevicePie,null,getInspectPeoplePieCallback,"json");
     </script>
 
 </head>
@@ -213,9 +234,19 @@
                  </span>
                  <span class="exportBtn"><span><input type="button" value="导出" id="exportBtn" class="l-button l-button-submit" /></span></span>
              </div>
-             <div class="reportContent">
-                  <div id="maingrid"></div>
-                  <div id="reportShow"></div>
+             <div class="reportContent" id="reportShow">
+                   <!--这里分四个块-->
+                   <div class="reportBlock">
+                       <div id="panel1">
+                           <div id="maingrid"></div>
+                       </div>
+                   </div>
+                   <!--<div class="reportBlock">
+                       <div id="panel2">
+                          <div id="peopleInspectPie"></div>
+                       </div>
+                   </div>-->
+                  <!--<div id="maingrid"></div>-->
              </div>
          </div>
          <div title="设备日检">
@@ -232,9 +263,18 @@
                  </span>
                  <span class="exportBtn"><span><input type="button" value="导出" id="exportDevBtn" class="l-button l-button-submit" /></span></span>
              </div>
-             <div class="reportContent">
-                    <div id="devicegrid"></div>
-                    <div id="devReportShow"></div>
+             <div class="reportContent" id="devReportShow">
+                     <div class="reportBlock">
+                         <div id="panel3">
+                             <div id="devicegrid"></div>
+                         </div>
+                     </div>
+                    <!-- <div class="reportBlock">
+                         <div id="panel4">
+                             <div id="deviceInspectPie"></div>
+                         </div>
+                     </div>-->
+                   <!-- <div id="devicegrid"></div>-->
              </div>
          </div>
      </div>

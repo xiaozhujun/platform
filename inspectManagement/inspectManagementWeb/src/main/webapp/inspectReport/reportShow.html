@@ -23,12 +23,7 @@
             $.get($.URL.user.list,null,userListCallback,"json");
             $.get($.URL.device.list,null,listCallback,"json");
             $.post($.URL.inspectReport.getInspectTableRecordList,null,getInspectTableRecordListCallback,"json");
-            $("#b").click(function(){
-                $("#reportShow").load("rs/inspectReport/test",null,testCallback,"json");
-            });
-            function testCallback(){
 
-            }
         });
             function userListCallback(data){
                 if(data.code==200){
@@ -115,7 +110,7 @@
                 enabledEdit: true,clickToEdit:false, isScroll: false,
                 data: peopleRecordData,
                 width: '100%',
-                groupColumnDisplay:'员工类型',groupColumnName:'role'
+                groupColumnDisplay:'员工类型',groupColumnName:'employeeRoleName'
             });
         }
         var manager1, g1;
@@ -156,16 +151,51 @@
         function getInfo(rowid){
             var row=manager.getRow(rowid);
             var jsonString= $.toJSON(row);
-            $("#reportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString},getInspectInfoCallback,"json");
+            $("#maingrid").css("display","none");
+            $("#exportDiv").css("display","block");
+            $("#reportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
         }
         function getDevInfo(rowid){
-            var row=manager.getRow(rowid);
+            var row=manager1.getRow(rowid);
             var jsonString= $.toJSON(row);
+            $("#devicegrid").css("display","none");
+            $("#exportDeviceDiv").css("display","block");
+            $("#devReportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
         }
         function getInspectInfoCallback(data){
-
         }
+        $("#exportType").ligerComboBox({
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'exportType'
+        });
+        $("#exportBtn").click(function(){
+            var type=$("#exportType").val();
+            if(type!=null){
+                location.href= "rs/inspectReport/exportPeopleInfoReport/"+type;
+            }else{
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
+        $("#exportDevType").ligerComboBox({
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'exportDevType'
+        });
+        $("#exportDevBtn").click(function(){
+            var type=$("#exportDevType").val();
+            if(type!=null){
+                location.href= "rs/inspectReport/exportPeopleInfoReport/"+type;
+            }else{
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
     </script>
+
 </head>
 <body>
      <div id="tab1">
@@ -177,10 +207,15 @@
                  <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt5" type="text"></span></div>
                  <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
              </div>
+             <div class="exportDiv" id="exportDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportType"></span>
+                 </span>
+                 <span class="exportBtn"><span><input type="button" value="导出" id="exportBtn" class="l-button l-button-submit" /></span></span>
+             </div>
              <div class="reportContent">
                   <div id="maingrid"></div>
-                 <div id="test"><input type="button" id="b"> </div>
-                 <div id="reportShow"></div>
+                  <div id="reportShow"></div>
              </div>
          </div>
          <div title="设备日检">
@@ -191,8 +226,15 @@
                  <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt9" type="text"></span></div>
                  <div class="btn"><span><input type="button" value="查看" id="submitBtn2" class="l-button l-button-submit" /></span></div>
              </div>
+             <div class="exportDiv" id="exportDeviceDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportDevType"></span>
+                 </span>
+                 <span class="exportBtn"><span><input type="button" value="导出" id="exportDevBtn" class="l-button l-button-submit" /></span></span>
+             </div>
              <div class="reportContent">
                     <div id="devicegrid"></div>
+                    <div id="devReportShow"></div>
              </div>
          </div>
      </div>

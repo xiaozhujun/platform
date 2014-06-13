@@ -90,11 +90,11 @@
  </select>
  <select id="getInspectTableRecordList" parameterType="java.lang.String" resultType="map">
   SELECT
-  itr.createtime,itr.exceptioncount,itr.mongoId,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename
+  itr.createtime,itr.exceptioncount,itr.mongoId,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName
   FROM
-  inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt
+  inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt,employee em
   WHERE
-  itr.userId=u.id AND itr.inspectTableId=t.id AND itr.deviceId=d.id AND dt.id=d.deviceTypeId
+  itr.userId=u.id AND itr.inspectTableId=t.id AND itr.deviceId=d.id AND dt.id=d.deviceTypeId AND em.userId=u.id
   <if test="createTime!=null">
   AND itr.createtime=#{createTime}
   </if>

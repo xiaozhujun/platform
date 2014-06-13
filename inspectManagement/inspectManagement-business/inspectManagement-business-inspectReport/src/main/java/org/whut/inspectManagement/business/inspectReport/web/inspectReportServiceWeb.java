@@ -49,6 +49,10 @@ public class inspectReportServiceWeb {
 
     private PlatformReport platformReport=new PlatformReport();
 
+    private static List<ReportInfo> reportInfoList=new ArrayList<ReportInfo>();
+
+    private static Map<String,String> reportNameMap=new HashMap<String, String>();
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/reportSearch")
@@ -183,15 +187,18 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getInspectInfo")
-    public String getInspectInfo(@FormParam("jsonString")String jsonString){
+    public String getInspectInfo(@FormParam("jsonString")String jsonString,@FormParam("type") String type){
+        reportInfoList.clear();
+        reportNameMap.clear();
         Map<String,String> map= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Map.class);
         //根据传过来的map取得mongoId,然后从mongo中查出相应的值.然后根据各个Id来查出相应的信息来放到list中后导出html格式的报表
-        List<ReportInfo> reportInfoList=getReportListSource(map);
+        reportInfoList=getReportListSource(map);
         Map<String,String> parameters=new HashMap<String, String>();
         String path=request.getSession().getServletContext().getRealPath("/reportTemplate/") + "/";
         parameters.put(MongoConstant.SUBREPORT_DIR,path);
         String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/report2.jasper");
-        platformReport.exportReportByType(reportTemplate,"html",parameters,request,response,"test",reportInfoList);
+        reportNameMap.put("tableName",map.get(MongoConstant.tableName));
+        platformReport.exportReportByType(reportTemplate,type,parameters,request,response,map.get(MongoConstant.tableName),reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
     public List<DBObject> getInfoFromMongoByMongoId(String mongoId){
@@ -261,5 +268,15 @@ public class inspectReportServiceWeb {
             }
         }
         return reportInfoList;
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @GET
+    @Path("/exportPeopleInfoReport/{type}")
+    public void exportPeopleInfoReport(@PathParam("type")String type){
+        Map<String,String> parameters=new HashMap<String, String>();
+        String path=request.getSession().getServletContext().getRealPath("/reportTemplate/") + "/";
+        parameters.put(MongoConstant.SUBREPORT_DIR,path);
+        String reportTemplate=request.getSession().getServletContext().getRealPath("/reportTemplate/report2.jasper");
+        platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",reportInfoList);
     }
 }

@@ -30,4 +30,5 @@ public class MongoConstant {
         public static final String SUBREPORT_DIR="SUBREPORT_DIR";
         public static final String craneInspectReportDB="craneInspectReportDB";
         public static final String inspectItemRecordCollection="inspectItemRecordCollection";
+        public static final String tableName="tablename";
 }

@@ -80,7 +80,7 @@
 
     <select id="getInspectTableId" parameterType="map" resultType="java.lang.Long">
         SELECT
-        inspectTableId
+        id
         FROM inspecttablerecord
         WHERE createtime = #{createTime}
         AND inspectTableId=#{inspectTableId}

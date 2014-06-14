@@ -18,8 +18,8 @@ public class InspectReportService {
     @Autowired
     private InspectReportMapper mapper;
 
-    public List<Map<String,String>> getInspectTableRecordList(String createTime){
-        return mapper.getInspectTableRecordList(createTime);
+    public List<Map<String,String>> getInspectTableRecordList(String userId,String deviceId,String sTime,String eTime){
+        return mapper.getInspectTableRecordList(userId,deviceId,sTime,eTime);
     }
     public Map<String,String>getInfoByMongoDbObject(Map<String,String> map){
         return mapper.getInfoByMongoDbObject(map);

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public interface InspectReportMapper extends AbstractMapper<InspectReport>{
 
-     public List<Map<String,String>> getInspectTableRecordList(@Param("createTime")String createTime);
+     public List<Map<String,String>> getInspectTableRecordList(@Param("userId")String userId,@Param("deviceId")String deviceId,@Param("sTime")String sTime,@Param("eTime")String eTime);
 
      public Map<String,String> getInfoByMongoDbObject(Map<String,String> map);
 }

@@ -23,48 +23,72 @@
         $(function(){
             $.get($.URL.user.list,null,userListCallback,"json");
             $.get($.URL.device.list,null,listCallback,"json");
-            $.post($.URL.inspectReport.getInspectTableRecordList,null,getInspectTableRecordListCallback,"json");
         });
             function userListCallback(data){
                 if(data.code==200){
                     var userData=[];
-                    for(i=0;i<data.length;i++){
+                    for(var i=0;i<data.data.length;i++){
                         var d={};
                         d['text']=data.data[i].name;
                         d['id']=data.data[i].id;
                         userData.push(d);
                     }
-                    $("#txt2").ligerComboBox({
-                        data:userData,valueFieldID:"txt2"
-                    });
-                    $("#txt6").ligerComboBox({
-                        data:userData,valueFieldID:"txt2"
+                    $("#user").ligerComboBox({
+                        data:userData,valueFieldID:"user"
                     });
                 }
             }
             function listCallback(data){
                 if(data.code==200){
                     var deviceData=[];
-                    for(i=0;i<data.length;i++){
+                    for(var i=0;i<data.data.length;i++){
                         var d={};
                         d['text']=data.data[i].name;
                         d['id']=data.data[i].id;
                         deviceData.push(d);
                     }
-                    $("#txt3").ligerComboBox({
-                        data:deviceData,valueFieldID:"txt3"
-                    });
-                    $("#txt7").ligerComboBox({
-                        data:deviceData,valueFieldID:"txt3"
+                    $("#device").ligerComboBox({
+                        data:deviceData,valueFieldID:"device"
                     });
                 }
             }
+            var d=new Date();
+            var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            $("#tab1").ligerTab();
+            $("#sTime").ligerDateEditor({initValue: dd});
+            $("#eTime").ligerDateEditor({initValue: dd});
+            $("#panel1").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            $("#panel2").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            $("#panel3").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            $("#panel4").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            function getInspectTableRecordList(){
+                var userId=$("#user").val();
+                var deviceId=$("#device").val();
+                var sTime=$("#sTime").val();
+                var eTime=$("#eTime").val();
+                $.post($.URL.inspectReport.getInspectTableRecordList,{"userId":userId,"deviceId":deviceId,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
+            }
+            getInspectTableRecordList();
+            $("#submitBtn1").click(function(){
+                getInspectTableRecordList();
+            });
             var peopleRecordData={};
             function getInspectTableRecordListCallback(data){
                  if(data.code==200){
                      if(data.data[0]==undefined){
-                           $("#maingrid").html("抱歉,没有相关信息!");
-                           $("#devicegrid").html("抱歉,没有相关信息!");
+                         $.ligerDialog.alert("抱歉,记录不存在!");
                      }else{
                          peopleRecordData.Rows = data.data;
                          peopleRecordData.Total = data.data.length;
@@ -73,11 +97,6 @@
                      }
                  }
             }
-            $("#tab1").ligerTab();
-            $("#txt4").ligerDateEditor();
-            $("#txt5").ligerDateEditor();
-            $("#txt8").ligerDateEditor();
-            $("#txt9").ligerDateEditor();
         var manager, g;
         function f_peopleRecord()
         {
@@ -153,6 +172,7 @@
             var jsonString= $.toJSON(row);
             $("#maingrid").css("display","none");
             $("#exportDiv").css("display","block");
+            $("#panel1").css("display","none")
             $("#reportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
         }
         function getDevInfo(rowid){
@@ -160,6 +180,7 @@
             var jsonString= $.toJSON(row);
             $("#devicegrid").css("display","none");
             $("#exportDeviceDiv").css("display","block");
+            $("#panel2").css("display","none")
             $("#devReportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
         }
         function getInspectInfoCallback(data){
@@ -194,40 +215,26 @@
                 $.ligerDialog().alert("请输入导出报表类型!");
             }
         });
-        $("#panel1").ligerPanel({
-            title:'人员日检',
-            width:'100%'
-        });
-        $("#panel2").ligerPanel({
-            title:'人员日检',
-            width:'100%'
-        });
-        $("#panel3").ligerPanel({
-            title:'人员日检',
-            width:'100%'
-        });
-        $("#panel4").ligerPanel({
-            title:'人员日检',
-            width:'100%'
-        });
+
        /* $("#peopleInspectPie").load($.URL.inspectReport.getInspectPeoplePie,null,getInspectPeoplePieCallback,"json");
         function getInspectPeoplePieCallback(){
 
         }*/
        // $("#deviceInspectPie").load($.URL.inspectReport.getInspectDevicePie,null,getInspectPeoplePieCallback,"json");
+
     </script>
 
 </head>
 <body>
+        <div class="searchContainer">
+            <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="device" type="text"></span></div>
+            <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="user" type="text"></span></div>
+            <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="sTime" type="text"></span></div>
+            <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span></div>
+            <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
+        </div>
      <div id="tab1">
          <div title="人员日检">
-             <div class="searchContainer">
-                 <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="txt2" type="text"></span></div>
-                 <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="txt3" type="text"></span></div>
-                 <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="txt4" type="text"></span></div>
-                 <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt5" type="text"></span></div>
-                 <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
-             </div>
              <div class="exportDiv" id="exportDiv">
                  <span class="exportType">
                     <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportType"></span>
@@ -250,13 +257,6 @@
              </div>
          </div>
          <div title="设备日检">
-             <div class="searchContainer">
-                 <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="txt6" type="text"></span></div>
-                 <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="txt7" type="text"></span></div>
-                 <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="txt8" type="text"></span></div>
-                 <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt9" type="text"></span></div>
-                 <div class="btn"><span><input type="button" value="查看" id="submitBtn2" class="l-button l-button-submit" /></span></div>
-             </div>
              <div class="exportDiv" id="exportDeviceDiv">
                  <span class="exportType">
                     <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportDevType"></span>

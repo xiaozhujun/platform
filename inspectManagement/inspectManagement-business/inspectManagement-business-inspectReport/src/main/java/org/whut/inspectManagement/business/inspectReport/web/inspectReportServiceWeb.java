@@ -175,9 +175,8 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getInspectTableRecordList")
-    public String getInspectTableRecordList(){
-        Date createTime=new Date();
-        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(transferDateToString(createTime));
+    public String getInspectTableRecordList(@FormParam("userId")String userId,@FormParam("deviceId")String deviceId,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     public String transferDateToString(Date d){

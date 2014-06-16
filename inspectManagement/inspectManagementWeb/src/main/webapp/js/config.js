@@ -106,6 +106,13 @@
             "list":"rs/menu/list",
             "getParentInfoById": "rs/menu/getParentInfoById"  ,
             "getMenuByUserId": "rs/menu/getMenuByUserId"
+        },
+        "inspectReport":{
+            "reportSearch":"rs/inspectReport/reportSearch",
+            "getInspectTableRecordList":"rs/inspectReport/getInspectTableRecordList",
+            "getInspectInfo":"rs/inspectReport/getInspectInfo",
+            "getInspectPeoplePie":"rs/inspectReport/getInspectPeoplePie",
+            "getInspectDevicePie":"rs/inspectReport/getInspectDevicePie"
         }
     }
 })(jQuery);

@@ -2,22 +2,24 @@ package org.whut.monitor.business.communication.web;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Component;
 import org.whut.monitor.business.communication.service.SensorDataService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Controller
-@RequestMapping(value = "/sensors", method = RequestMethod.GET)
-public class DeviceDataController {
+@Component
+@Path("/sensors")
+public class SensorDataWeb {
+
     @Autowired
     private SensorDataService sensorDataService;
 
@@ -32,9 +34,10 @@ public class DeviceDataController {
         return result + ")";
     }
 
-    @RequestMapping(value = "/sensor/data/{id}.htm")
-    @ResponseBody
-    public String getSensorDataArray(HttpServletRequest request,HttpServletResponse response,@PathVariable("id") String id){
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/sensor/data/{id}.htm")
+    @GET
+    public String getSensorDataArray(@Context HttpServletRequest request,@PathParam("id") String id){
         ArrayList dataArray = sensorDataService.getCurrentSensorDataArray(id);
         HashMap map = new HashMap();
         map.put("data",dataArray);

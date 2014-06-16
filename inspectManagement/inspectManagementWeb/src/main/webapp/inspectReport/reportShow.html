@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/reportShow.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.get($.URL.user.list,null,userListCallback,"json");
+            $.get($.URL.device.list,null,listCallback,"json");
+        });
+            function userListCallback(data){
+                if(data.code==200){
+                    var userData=[];
+                    for(var i=0;i<data.data.length;i++){
+                        var d={};
+                        d['text']=data.data[i].name;
+                        d['id']=data.data[i].id;
+                        userData.push(d);
+                    }
+                    $("#user").ligerComboBox({
+                        data:userData,valueFieldID:"user"
+                    });
+                }
+            }
+            function listCallback(data){
+                if(data.code==200){
+                    var deviceData=[];
+                    for(var i=0;i<data.data.length;i++){
+                        var d={};
+                        d['text']=data.data[i].name;
+                        d['id']=data.data[i].id;
+                        deviceData.push(d);
+                    }
+                    $("#device").ligerComboBox({
+                        data:deviceData,valueFieldID:"device"
+                    });
+                }
+            }
+            var d=new Date();
+            var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            $("#tab1").ligerTab();
+            $("#sTime").ligerDateEditor({initValue: dd});
+            $("#eTime").ligerDateEditor({initValue: dd});
+            $("#panel1").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            $("#panel2").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            $("#panel3").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            $("#panel4").ligerPanel({
+                title:'人员日检',
+                width:'100%'
+            });
+            function getInspectTableRecordList(){
+                var userId=$("#user").val();
+                var deviceId=$("#device").val();
+                var sTime=$("#sTime").val();
+                var eTime=$("#eTime").val();
+                $.post($.URL.inspectReport.getInspectTableRecordList,{"userId":userId,"deviceId":deviceId,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
+            }
+            getInspectTableRecordList();
+            $("#submitBtn1").click(function(){
+                getInspectTableRecordList();
+            });
+            var peopleRecordData={};
+            function getInspectTableRecordListCallback(data){
+                 if(data.code==200){
+                     if(data.data[0]==undefined){
+                         $.ligerDialog.alert("抱歉,记录不存在!");
+                     }else{
+                         peopleRecordData.Rows = data.data;
+                         peopleRecordData.Total = data.data.length;
+                         f_peopleRecord();
+                         f_deviceRecord();
+                     }
+                 }
+            }
+        var manager, g;
+        function f_peopleRecord()
+        {
+            g = manager = $("#maingrid").ligerGrid({
+                columns: [
+                    { display: '点检人员', name: 'username',
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检项目', name: 'tablename', type: 'string',
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检时间', name: 'createtime',
+                        editor: { type: 'text' }
+                    },
+                    { display: '异常数', name: 'exceptioncount', hidden:'mongoId',
+                        editor: { type: 'text' }
+                    },
+                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+                    {
+                        var h = "";
+                        h += "<a href='javascript:getInfo(" + rowindex + ")'>详情</a> ";
+                        return h;
+                    }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: peopleRecordData,
+                width: '100%',
+                groupColumnDisplay:'员工类型',groupColumnName:'employeeRoleName'
+            });
+        }
+        var manager1, g1;
+        function f_deviceRecord()
+        {
+            g1 = manager1 = $("#devicegrid").ligerGrid({
+                columns: [
+                    { display: '点检设备', name: 'devname', width:247,
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检人员', name: 'username', type: 'string', width:247,
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检时间', name: 'createtime', width:247,
+                        editor: { type: 'text' }
+                    },
+                    { display: '异常数', name: 'exceptioncount',width:247,
+                        editor: { type: 'text' }
+                    },
+                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+                    {
+                        var h = "";
+                        h += "<a href='javascript:getDevInfo(" + rowindex + ")'>详情</a> ";
+                        return h;
+                    }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: peopleRecordData,
+                width: '100%',
+                groupColumnDisplay:'设备类型',groupColumnName:'typename'
+            });
+        }
+        function getInfo(rowid){
+            var row=manager.getRow(rowid);
+            var jsonString= $.toJSON(row);
+            $("#maingrid").css("display","none");
+            $("#exportDiv").css("display","block");
+            $("#panel1").css("display","none")
+            $("#reportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
+        }
+        function getDevInfo(rowid){
+            var row=manager1.getRow(rowid);
+            var jsonString= $.toJSON(row);
+            $("#devicegrid").css("display","none");
+            $("#exportDeviceDiv").css("display","block");
+            $("#panel2").css("display","none")
+            $("#devReportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
+        }
+        function getInspectInfoCallback(data){
+        }
+        $("#exportType").ligerComboBox({
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'exportType'
+        });
+        $("#exportBtn").click(function(){
+            var type=$("#exportType").val();
+            if(type!=null){
+                location.href= "rs/inspectReport/exportPeopleInfoReport/"+type;
+            }else{
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
+        $("#exportDevType").ligerComboBox({
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'exportDevType'
+        });
+        $("#exportDevBtn").click(function(){
+            var type=$("#exportDevType").val();
+            if(type!=null){
+                location.href= "rs/inspectReport/exportPeopleInfoReport/"+type;
+            }else{
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
+
+       /* $("#peopleInspectPie").load($.URL.inspectReport.getInspectPeoplePie,null,getInspectPeoplePieCallback,"json");
+        function getInspectPeoplePieCallback(){
+
+        }*/
+       // $("#deviceInspectPie").load($.URL.inspectReport.getInspectDevicePie,null,getInspectPeoplePieCallback,"json");
+
+    </script>
+
+</head>
+<body>
+        <div class="searchContainer">
+            <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="device" type="text"></span></div>
+            <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="user" type="text"></span></div>
+            <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="sTime" type="text"></span></div>
+            <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span></div>
+            <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
+        </div>
+     <div id="tab1">
+         <div title="人员日检">
+             <div class="exportDiv" id="exportDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportType"></span>
+                 </span>
+                 <span class="exportBtn"><span><input type="button" value="导出" id="exportBtn" class="l-button l-button-submit" /></span></span>
+             </div>
+             <div class="reportContent" id="reportShow">
+                   <!--这里分四个块-->
+                   <div class="reportBlock">
+                       <div id="panel1">
+                           <div id="maingrid"></div>
+                       </div>
+                   </div>
+                   <!--<div class="reportBlock">
+                       <div id="panel2">
+                          <div id="peopleInspectPie"></div>
+                       </div>
+                   </div>-->
+                  <!--<div id="maingrid"></div>-->
+             </div>
+         </div>
+         <div title="设备日检">
+             <div class="exportDiv" id="exportDeviceDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportDevType"></span>
+                 </span>
+                 <span class="exportBtn"><span><input type="button" value="导出" id="exportDevBtn" class="l-button l-button-submit" /></span></span>
+             </div>
+             <div class="reportContent" id="devReportShow">
+                     <div class="reportBlock">
+                         <div id="panel3">
+                             <div id="devicegrid"></div>
+                         </div>
+                     </div>
+                    <!-- <div class="reportBlock">
+                         <div id="panel4">
+                             <div id="deviceInspectPie"></div>
+                         </div>
+                     </div>-->
+                   <!-- <div id="devicegrid"></div>-->
+             </div>
+         </div>
+     </div>
+</body>
+</html>

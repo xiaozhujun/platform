@@ -53,9 +53,9 @@
   </listener>
 
     <listener>
-        <description>Socket服务随web启动而启动</description>
-        <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
-    </listener>
+    <description>Socket服务随web启动而启动</description>
+    <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
+</listener>
 
     <!-- Spring FilterChain(security) -->
     <filter>

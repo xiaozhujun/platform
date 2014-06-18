@@ -77,9 +77,9 @@ public class RoleTablesDownloadServiceWeb {
         if(result!=""){
            try{
                String fileName = "RoleTables.xml";
-               response.setContentType("text/plain");
-               response.setHeader("Location",new String(fileName.getBytes("GBK"),"UTF-8"));
-               response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("gb2312"),"ISO8859-1"));
+               response.setContentType("text/plain;charset=utf-8");
+               response.setHeader("Location",fileName);
+               response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("utf-8"),"ISO8859-1"));
                OutputStream outputStream = response.getOutputStream();
                outputStream.write(result.getBytes());
                outputStream.flush();

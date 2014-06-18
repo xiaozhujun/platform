@@ -39,10 +39,10 @@ public class InspectTableDownloadServiceWeb {
         if(result!=""){
            try{
                String downloadFileName = tableName+".xml";
-               response.setContentType("text/plain");
-               response.setHeader("Location", new String(downloadFileName.getBytes("GBK"), "UTF-8"));
+               response.setContentType("text/plain;charset=utf-8");
+               response.setHeader("Location", downloadFileName);
                response.setHeader("Content-Disposition","attachment; filename="
-                       + new String(downloadFileName.getBytes("gb2312"),"ISO8859-1"));
+                       + new String(downloadFileName.getBytes("utf-8"),"ISO8859-1"));
                OutputStream outputStream = response.getOutputStream();
                outputStream.write(result.getBytes());
                outputStream.flush();

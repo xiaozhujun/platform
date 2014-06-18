@@ -160,7 +160,7 @@ public class InspectTableRecordService {
                 }
             }
 
-            inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId,appId);
+            inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId,t,appId);
 
         }
         return flag;

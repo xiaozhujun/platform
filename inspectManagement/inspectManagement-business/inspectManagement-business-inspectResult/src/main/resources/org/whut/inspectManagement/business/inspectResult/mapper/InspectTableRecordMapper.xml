@@ -76,6 +76,7 @@
         SET exceptioncount=#{exceptionCount}
         WHERE inspectTableId = #{tableId}
         AND appId=#{appId}
+        AND createtime = #{createTime}
     </update>
 
     <select id="getInspectTableId" parameterType="map" resultType="java.lang.Long">

@@ -38,7 +38,7 @@ public class RoleTablesDownloadService {
         }
         try{
             OutputFormat outputFormat =OutputFormat.createPrettyPrint();
-            String encoding = "gbk";
+            String encoding = "UTF-8";
             outputFormat.setEncoding(encoding);
             outputFormat.setNewlines(true);
             OutputStream outputStream = new ByteArrayOutputStream();

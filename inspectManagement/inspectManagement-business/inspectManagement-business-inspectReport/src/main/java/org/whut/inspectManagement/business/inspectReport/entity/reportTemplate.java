@@ -8,8 +8,8 @@ package org.whut.inspectManagement.business.inspectReport.entity;
  * To change this template use File | Settings | File Templates.
  */
 public class ReportTemplate {
-     public static String reportInfoTemplate="/ReportTemplate/report2.jasper";
-     public static String peopleInspectPie="/ReportTemplate/peopleInspect/peopleInspectPie.jasper";
-     public static String deviceInspectPie="/ReportTemplate/deviceInspect/deviceInspectPie.jasper";
-     public static String reportTemplateDir="/ReportTemplate/";
+     public static String reportInfoTemplate="/reportTemplate/report2.jasper";
+     public static String peopleInspectPie="/reportTemplate/peopleInspect/peopleInspectPie.jasper";
+     public static String deviceInspectPie="/reportTemplate/deviceInspect/deviceInspectPie.jasper";
+     public static String reportTemplateDir="/reportTemplate/";
 }

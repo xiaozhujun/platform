@@ -26,9 +26,18 @@ public class InsertToMongoData {
             String mongoString="{inspectitemrecords:[{'mongoId':'1','inspectTableId':'1','inspectTagId':'2','inspectItemId':'16','inspectChoiceId':'1','inspectChoiceValue':'正常','inspectTableRecord':'1','userId':'1','deviceId':'1','appId':'1','note':'笔记'}]}";
             mongoConnector.insertDocument(mongoString);
         }
-
+        public static void test(){
+            try{
+                System.out.println(new String("机修人员".getBytes("GBK"))+"1");
+                System.out.println(new String("机修人员".getBytes("UTF-8"))+"2");
+                System.out.println("机修人员"+"3");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         public static void main(String[] args){
-               insertToMongoData();
+               //insertToMongoData();
+            test();
         }
 
 }

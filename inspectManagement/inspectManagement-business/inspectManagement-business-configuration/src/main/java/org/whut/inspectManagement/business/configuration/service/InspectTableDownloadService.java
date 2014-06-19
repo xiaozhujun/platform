@@ -112,7 +112,7 @@ public class InspectTableDownloadService {
        }
     try{
         OutputFormat format = OutputFormat.createPrettyPrint();
-        String encoding = "gbk";
+        String encoding = "UTF-8";
         format.setEncoding(encoding);
         format.setNewlines(true);
         OutputStream outputStream = new ByteArrayOutputStream();

@@ -23,21 +23,21 @@ import java.util.List;
 public class PersonnelConfigurationService {
     public String configurationConstruction(List<EmployeeEmployeeRole> list){
         String result="";
-        Iterator<EmployeeEmployeeRole> iterator = list.iterator();
         Document doc = DocumentHelper.createDocument();
         Element employees = doc.addElement("employees");
-        while(iterator.hasNext()){
-            EmployeeEmployeeRole eer = iterator.next();
+        for(int i=0;i<list.size();i++){
+            EmployeeEmployeeRole eer =list.get(i);
             Element employee = employees.addElement("employee");
             employee.addElement("cardType").addText("1");
             employee.addElement("role").addText(eer.getEmployeeRoleName());
+            System.out.println(eer.getEmployeeRoleName()+"test");
             employee.addElement("roleNum").addText(String.valueOf(eer.getEmployeeRoleId()));
             employee.addElement("name").addText(eer.getEmployeeName());
             employee.addElement("number").addText(String.valueOf(eer.getEmployeeId()));
         }
         try{
             OutputFormat outputFormat =OutputFormat.createPrettyPrint();
-            String encoding = "GBK";
+            String encoding = "UTF-8";
             outputFormat.setEncoding(encoding);
             outputFormat.setNewlines(true);
             OutputStream outputStream = new ByteArrayOutputStream();

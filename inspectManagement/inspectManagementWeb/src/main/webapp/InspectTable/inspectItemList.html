@@ -87,14 +87,14 @@
                         editor: { type: 'text'}
                     },
                     { display: '点检表',name: 'inspectTable',
-                        editor: { type:'select',data:myData,valueField:'id',textField:'text'
+                        editor: { type:'select',emptyText:null,data:myData,valueField:'id',textField:'text'
                         },
                         render:function(item){
                             return item.inspectTable;
                         }
                     },
                     { display: '设备类型',name: 'deviceType',
-                        editor: { type:'select',data:deviceData,valueField:'id',textField:'text'
+                        editor: { type:'select',emptyText:null,data:deviceData,valueField:'id',textField:'text'
                         },
                         render:function(item){
                             return item.deviceType;
@@ -102,7 +102,7 @@
                     },
 
                     { display: '点检区域',name: 'inspectArea',
-                        editor: { type:'select',data:areaData,valueField:'id',textField:'text'
+                        editor: { type:'select',emptyText:null,data:areaData,valueField:'id',textField:'text'
                         },
                         render:function(item){
                             return item.inspectArea;
@@ -113,13 +113,13 @@
 
 
                     { display: '是否输入',name: 'input',type:'string',width:70,
-                        editor: { type:'select', data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
+                        editor: { type:'select',emptyText:null, data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
                         render:function(item){
                             return item.input;
                         }
                     },
                     { display: '选值',name: 'choiceValue',type:'string',
-                        editor: { type:'select', data:choiceData,valueField:'id',textField:'text',
+                        editor: { type:'select',emptyText:null, data:choiceData,valueField:'id',textField:'text',
                             isMultiSelect:true,isShowCheckBox:true},
                         render:function(item){
                             return item.choiceValue;

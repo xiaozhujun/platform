@@ -128,7 +128,7 @@ function f_initGrid()
             },
             { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
             { display: '是否输入', width: 50, name: 'input',
-                editor: { type: 'select', data: inputData, valueColumnName: 'id',displayColumnName:'text' },
+                editor: { type: 'select',emptyText:null, data: inputData, valueColumnName: 'id',displayColumnName:'text' },
                 render: function (item)
                 {
                     if (parseInt(item.input) == 0) return '否';
@@ -136,7 +136,7 @@ function f_initGrid()
                 }
             },
             { display: '点检选值', name: 'choiceValue',width:150,
-                editor: { type: 'select', data: choicesData,valueColumnName:'id',displayColumnName:'text'
+                editor: { type: 'select',emptyText:null, data: choicesData,valueColumnName:'id',displayColumnName:'text'
                     ,isMultiSelect:true,isShowCheckBox:true},
                 render: function (item){
                     return item.choiceValue;

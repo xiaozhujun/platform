@@ -15,7 +15,8 @@ public class InspectTableRecord {
     private Date createTime;
     private long exceptionCount;
     private long appId;
-
+    private String mongoId;
+    private long deviceId;
     public long getId() {
         return id;
     }
@@ -62,5 +63,21 @@ public class InspectTableRecord {
 
     public void setAppId(long appId){
         this.appId = appId;
+    }
+
+    public String getMongoId() {
+        return mongoId;
+    }
+
+    public void setMongoId(String mongoId) {
+        this.mongoId = mongoId;
+    }
+
+    public long getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(long deviceId) {
+        this.deviceId = deviceId;
     }
 }

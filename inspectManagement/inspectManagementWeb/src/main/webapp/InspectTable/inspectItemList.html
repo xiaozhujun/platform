@@ -171,6 +171,7 @@
 
         function updateCallback(data){
             if(data.code==200){
+                $("#mainContainer").load("InspectTable/inspectItemList.html");
                 $.ligerDialog.success("修改成功");
             }
             else{

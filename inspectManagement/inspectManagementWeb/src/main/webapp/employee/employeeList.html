@@ -13,7 +13,7 @@
 <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
 <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+$.ligerDialog.close("#addEmployee");
 $(function(){
 
     $.post($.URL.employee.list,null,listCallback,"json");
@@ -198,25 +198,11 @@ $("#addSubmitBtn").click(function(){
         ],
         valueFieldID: 'employeeSexSelect'
     });
-
-    obj1 = document.getElementById('add');
-    obj1.style.display = 'block';
-    obj2 = document.getElementById('list');
-    obj2.style.display = 'none';
-    // f_show();
-    //$.ligerDialog.open({showMin: true,title:'添加员工', target: $("#add")});
+    f_show();
+    $.ligerDialog.open({showMin: true,title:'添加员工', target: $("#addEmployee")});
 });
-$("#backBtn").click(function(){
-    obj1 = document.getElementById('add');
-    obj1.style.display = 'none';
-    obj2 = document.getElementById('list');
-    obj2.style.display = 'block';
-    $.post($.URL.employee.list,null,listCallback,"json");
-});
-
 
 $("#submitBtn1").click(function(){
-
     var data = {};
     data.name = $("#employeeName1").val();
     data.password = $("#employeePassword").val();
@@ -226,12 +212,12 @@ $("#submitBtn1").click(function(){
     data.departmentName =$("#departmentName").val();
     data.role=$("#Role").val();
     $.post($.URL.employee.add,data,addEmployeeCallback,"json");
-
 });
 
 function addEmployeeCallback(data){
     if(data.code==200){
         $.ligerDialog.success('操作成功');
+        $.post($.URL.employee.list,null,listCallback,"json");
     }
     else if(data.code==500)
     {
@@ -299,22 +285,22 @@ function addNewRow()
     manager.addEditRow();
 }
 
-//function f_show(){
-//  $('#add').css({opacity:900});
-//}
+function f_show(){
+    $('#addEmployee').css('display','block');
+}
 
 </script>
 <style type="text/css">
     .l-table-edit {}
     .l-table-edit-td{ padding:4px;}
     .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
-
+    .l-dialog-tc{background:#E0EDFF; }
 
 </style>
 </head>
 <body  style="padding:10px">
 
-<div id="add"  style="display: none" >
+<div id="addEmployee"  style="display: none" >
     <form name="form1" method="post" action="" id="form1"  >
         <div>
         </div>
@@ -348,23 +334,21 @@ function addNewRow()
         </table>
         <br />
         <input type="button" value="提交" id="submitBtn1" class="l-button l-button-submit" />
-        <input type="button" value="返回列表" id="backBtn" class="l-button l-button-submit" />
-
     </form>
 </div>
 <div id="list">
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
-            <tr>
-                <td align="right" class="l-table-edit-td">员工名:</td>
-                <td align="left" class="l-table-edit-td"><input name="employeeName" type="text" id="employeeName" ltype="text" /></td>
-                <td align="right" class="l-table-edit-td">所属部门:</td>
-                <td align="left" class="l-table-edit-td"><input name="department" type="text" id="department" ltype="text"/></td>
-                <td align="right" class="l-table-edit-td">员工角色:</td>
-                <td align="left" class="l-table-edit-td"><input name="employeeRole" type="text" id="employeeRole" ltype="text"/></td>
-                <td align="right"><input type="button" value="查询" id="submitBtn" class="l-button l-button-submit" /></td>
-                <td align="right"><input type="button" value="添加员工" id="addSubmitBtn" class="l-button l-button-submit" /></td>
-            </tr>
-        </table>
+        <tr>
+            <td align="right" class="l-table-edit-td">员工名:</td>
+            <td align="left" class="l-table-edit-td"><input name="employeeName" type="text" id="employeeName" ltype="text" /></td>
+            <td align="right" class="l-table-edit-td">所属部门:</td>
+            <td align="left" class="l-table-edit-td"><input name="department" type="text" id="department" ltype="text"/></td>
+            <td align="right" class="l-table-edit-td">员工角色:</td>
+            <td align="left" class="l-table-edit-td"><input name="employeeRole" type="text" id="employeeRole" ltype="text"/></td>
+            <td align="right"><input type="button" value="查询" id="submitBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="添加员工" id="addSubmitBtn" class="l-button l-button-submit" /></td>
+        </tr>
+    </table>
     <div class="l-clear"></div>
     <div id="maingrid" style="margin-top:20px"></div> <br />
 </div>

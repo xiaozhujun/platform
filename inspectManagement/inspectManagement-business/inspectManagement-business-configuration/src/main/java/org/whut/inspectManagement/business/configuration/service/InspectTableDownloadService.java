@@ -91,7 +91,7 @@ public class InspectTableDownloadService {
            while(it.hasNext()){
                InspectTableItem iti = (InspectTableItem)it.next();
                String loc = iti.getArea();
-               if(location!=loc){
+               if(!location.equals(loc)){
                    location = loc;
                    lc = dt.addElement("location").addAttribute("name",loc);
                    lc.addAttribute("areaId", String.valueOf(iti.getAreaId()));

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectResult.mapper.InspectTableRecordMapper">
     <sql id="inspectTableRecord_fields">
-		ID,INSPECTTABLEID,USERID,CREATETIME,EXCEPTIONCOUNT,APPID
+		ID,INSPECTTABLEID,USERID,CREATETIME,EXCEPTIONCOUNT,APPID,MONGOID,DEVICEID
 	</sql>
 
     <resultMap id="inspectTableRecordResultMap" type="InspectTableRecord">
@@ -14,6 +14,8 @@
         <result property="createTime" column="CREATETIME"/>
         <result property="exceptionCount" column="EXCEPTIONCOUNT"/>
         <result property="appId" column="APPID"/>
+        <result property="mongoId" column="MONGOID"/>
+        <result property="deviceId" column="DEVICEID"/>
     </resultMap>
 
     <insert id="add" parameterType="InspectTableRecord"  keyProperty="id"
@@ -22,7 +24,7 @@
         inspecttablerecord(
         <include refid="inspectTableRecord_fields" />
         )
-        VALUES (#{id}, #{inspectTableId}, #{userId},#{createTime},#{exceptionCount},#{appId});
+        VALUES (#{id}, #{inspectTableId}, #{userId},#{createTime},#{exceptionCount},#{appId},#{mongoId},#{deviceId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id

@@ -15,12 +15,14 @@ import org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapp
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
 import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -45,6 +47,7 @@ public class InspectTableRecordService {
     DeviceMapper deviceMapper;
     @Autowired
     InspectTagMapper inspectTagMapper;
+    private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","inspectItemRecordCollection");
     public int DomReadXml(Document document) {
         long appId= UserContext.currentUserAppId();
         int flag = 0;
@@ -63,7 +66,7 @@ public class InspectTableRecordService {
         long inspectTableId;
         long inspectTagId = 0;
         long deviceId = 0;
-
+        List<InspectItemRecord> inspectItemRecords=new ArrayList<InspectItemRecord>();
         InspectTableRecord inspectTableRecord =new InspectTableRecord();
         Element root = document.getRootElement();
         if(root.getName()!="check"){
@@ -92,27 +95,33 @@ public class InspectTableRecordService {
                 exception.printStackTrace();
             }
             long userId;//解析数据插入到InspectTableRecord
-
             userId=Long.parseLong(worknum);
+            String mongoId=userId+""+deviceId+""+inspectTableId;
             inspectTableRecord.setUseId(userId);
             inspectTableRecord.setInspectTableId(inspectTableId);
             inspectTableRecord.setCreateTime(createTime);
             inspectTableRecord.setExceptionCount(exceptionCount);
             inspectTableRecord.setInspectTableId(inspectTableId);
+            inspectTableRecord.setMongoId(mongoId);
+            inspectTableRecord.setDeviceId(deviceId);
             inspectTableRecord.setAppId(appId);
             long checkedTableId = 0;
+            if(inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId)!=null){
             try{
-                checkedTableId = inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);}
+                checkedTableId = inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);
+            }
             catch (Exception e){
                 e.printStackTrace();
+            }
             }
             if(checkedTableId>0){
                 System.out.println("点检结果已存在!");
                 flag  =1 ;
                 return flag;
             }
-            else {
+            else if(inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId)==null){
                 inspectTableRecordMapper.add(inspectTableRecord);
+                flag=5;
             }
             long inspectTableRecordId =inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);
             List<Element> e2 = e1.elements();
@@ -155,16 +164,38 @@ public class InspectTableRecordService {
                         inspectItemRecord.setDeviceId(deviceId);
                         inspectItemRecord.setAppId(appId);
                         inspectItemRecordMapper.add(inspectItemRecord);
+                        inspectItemRecords.add(inspectItemRecord);
                         System.out.println(tname + area + createTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
                     }
                 }
             }
-
             inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId,t,appId);
-
+        }
+        if(flag==5){
+        insertToInspectItemRecordCollection(inspectItemRecords);
         }
         return flag;
     }
-
+      public void insertToInspectItemRecordCollection(List<InspectItemRecord> inspectItemRecords){
+          int len=inspectItemRecords.size();
+          String mongoString="{inspectitemrecords:[";
+          for(int i=0;i<len;i++){
+              String mongoId=inspectItemRecords.get(i).getUserId()+""+inspectItemRecords.get(i).getDeviceId()+""+inspectItemRecords.get(i).getInspectTableId();
+              mongoString+="{'mongoId':'"+mongoId+"','inspectTableId':'"+inspectItemRecords.get(i).getInspectTableId()+
+                      "','inspectTagId':'"+inspectItemRecords.get(i).getInspectTagId()+"','inspectItemId':'"+inspectItemRecords.get(i).getInspectItemId()+
+                      "','inspectChoiceId':'"+inspectItemRecords.get(i).getInspectChoiceId()+"','inspectChoiceValue':'"+inspectItemRecords.get(i).getInspectChoiceValue()+
+                      "','inspectTableRecordId':'"+inspectItemRecords.get(i).getInspectTableRecordId()+"','userId':'"+inspectItemRecords.get(i).getUserId()+
+                      "','deviceId':'"+inspectItemRecords.get(i).getDeviceId()+"','appId':'"+inspectItemRecords.get(i).getAppId()+"','note':'"+inspectItemRecords.get(i).getNote()+"'},";
+            if(i+1==len){
+                mongoString+="{'mongoId':'"+mongoId+"','inspectTableId':'"+inspectItemRecords.get(i).getInspectTableId()+
+                        "','inspectTagId':'"+inspectItemRecords.get(i).getInspectTagId()+"','inspectItemId':'"+inspectItemRecords.get(i).getInspectItemId()+
+                        "','inspectChoiceId':'"+inspectItemRecords.get(i).getInspectChoiceId()+"','inspectChoiceValue':'"+inspectItemRecords.get(i).getInspectChoiceValue()+
+                        "','inspectTableRecordId':'"+inspectItemRecords.get(i).getInspectTableRecordId()+"','userId':'"+inspectItemRecords.get(i).getUserId()+
+                        "','deviceId':'"+inspectItemRecords.get(i).getDeviceId()+"','appId':'"+inspectItemRecords.get(i).getAppId()+"','note':'"+inspectItemRecords.get(i).getNote()+"'}";
+            }
+          }
+          mongoString+="]}";
+          mongoConnector.insertDocument(mongoString);
+      }
 }
 

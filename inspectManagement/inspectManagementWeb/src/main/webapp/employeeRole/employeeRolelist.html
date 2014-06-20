@@ -125,7 +125,7 @@
             valueFieldID: 'AuthoritySelect'
         });
         f_show();
-        $.ligerDialog.open({showMin: true,title:'添加员工角色', target: $("#addEmployeeRole")});
+        $.ligerDialog.open({title:'添加员工角色', target: $("#addEmployeeRole")});
     });
     $("#submitBtn1").click(function(){
         var data = {};
@@ -167,7 +167,7 @@
         }
         else{
             $.ligerDialog.error(data.message);
-            $("#list").load("employeeRole/employeeRolelist.html");
+            $.post($.URL.employeeRole.list,null,listEmployeeRoleCallback,"json");
         }
     }
 

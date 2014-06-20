@@ -259,7 +259,7 @@ public class EmployeeRoleServiceWeb {
         }
         else
         {
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"修改的用户名已存在！");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"修改的员工角色名已存在！");
         }
     }
 

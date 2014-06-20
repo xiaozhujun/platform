@@ -199,7 +199,7 @@ $("#addSubmitBtn").click(function(){
         valueFieldID: 'employeeSexSelect'
     });
     f_show();
-    $.ligerDialog.open({showMin: true,title:'添加员工', target: $("#addEmployee")});
+    $.ligerDialog.open({title:'添加员工', target: $("#addEmployee")});
 });
 
 $("#submitBtn1").click(function(){
@@ -256,7 +256,7 @@ function updateCallback(data){
     }
     else{
         $.ligerDialog.error(data.message);
-        $("#list").load("employee/employeeList.html");
+        $.post($.URL.employee.list,null,listCallback,"json");
     }
 }
 

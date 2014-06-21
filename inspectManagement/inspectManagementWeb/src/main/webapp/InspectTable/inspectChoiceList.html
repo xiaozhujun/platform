@@ -13,7 +13,7 @@
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script type="text/javascript">
-
+        $.ligerDialog.close("#addChoiceList") ;
         $(function(){
             $.post($.URL.inspectChoice.getList,null,listCallback,"json");
         });
@@ -75,11 +75,17 @@
 
         function updateCallback(data){
             if(data.code==200){
+                //$("#mainContainer").load("InspectTable/inspectChoiceList.html");
+                $.post($.URL.inspectChoice.getList,null,listCallback,"json");
                 $.ligerDialog.success(data.message);
             }
             else{
-                $("#mainContainer").load("InspectTable/inspectChoiceList.html");
+
+                //alert("操作失败");
+               // $("#mainContainer").load("InspectTable/inspectChoiceList.html");
+                $.post($.URL.inspectChoice.getList,null,listCallback,"json");
                 $.ligerDialog.warn(data.message);
+
             }
         }
         function deleteRow(rowid)
@@ -101,6 +107,51 @@
             }
         }
 
+//        $("#addSubmitBtn").click(function(){
+//
+//            //   $("#inputChoiceValue").val("");
+//            f_show();
+//            $("#addChoiceList input[name]").val("");
+//            $.ligerDialog.open({isDrag: true,title:'添加选项', target: $("#addChoiceList")});
+//        });
+        function f_add(){
+            $("#addChoiceList input[name]").val("");
+            f_show();
+            $.ligerDialog.open({isDrag: true,title:'添加选项', target: $("#addChoiceList")});
+        };
+
+        function f_show(){
+            $('#addChoiceList').css('display','block');
+            //$('#addChoiceList').css({opacity:0.8});
+        }
+
+        $(function(){
+            $("#submitBtn").click(function(){
+               // console.info($(this).parent().serialize())  ;
+               // var data = {};
+               // data.choiceValue = $("#inputChoiceValue").val();
+                $.post($.URL.inspectChoice.add, $(this).parent().serialize(),addCallBack,"json") ;
+                //$("#inputChoiceValue").val("");
+            });
+        });
+        function addCallBack(data){
+            if(data.code==200){
+
+                // $("#mainContainer").load("InspectTable/inspectChoiceList.html");
+               $.post($.URL.inspectChoice.getList,null,listCallback,"json");
+                $.ligerDialog.success(data.message);
+
+
+            }
+            else{
+                //$("#mainContainer").load("InspectTable/inspectChoiceList.html");
+               // $.post($.URL.inspectChoice.getList,null,listCallback,"json");
+                $.ligerDialog.warn(data.message);
+
+            }
+        }
+
+
         var newrowid = 100;
         function addNewRow()
         {
@@ -108,11 +159,38 @@
         }
 
     </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF; }
+    </style>
 </head>
 <body  style="padding:10px">
-<div class="l-clear"></div>
-<div id="maingrid" style="margin-top:20px"></div> <br />
 
+<div id="addChoiceList"  style="display: none" >
+    <form name="form1" method="post" action="" id="form1"  >
+        <div>
+        </div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">选项:</td>
+                <td align="left" class="l-table-edit-td"><input name="choiceValue" type="text" id="inputChoiceValue" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+
+        </table>
+        <br />
+        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+
+    </form>
+</div>
+
+<div id="list">
+    <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:20px"></div> <br />
+</div>
 <div style="display:none;">
     <!-- g data total ttt -->
 </div>

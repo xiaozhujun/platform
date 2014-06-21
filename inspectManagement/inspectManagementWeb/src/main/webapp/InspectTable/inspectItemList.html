@@ -12,7 +12,9 @@
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+
     <script type="text/javascript">
+
 
         $(function(){
             $.post($.URL.inspectItem.list,null,itemListCallback,"json");
@@ -74,6 +76,10 @@
                 })
             }
         }
+
+
+
+
         var manager, g;
         function f_initGrid()
         {
@@ -87,14 +93,14 @@
                         editor: { type: 'text'}
                     },
                     { display: '点检表',name: 'inspectTable',
-                        editor: { type:'select',data:myData,valueField:'id',textField:'text'
+                        editor: { type:'select',data:myData,valueField:'id',textField:'text',emptyText:null
                         },
                         render:function(item){
                             return item.inspectTable;
                         }
                     },
                     { display: '设备类型',name: 'deviceType',
-                        editor: { type:'select',data:deviceData,valueField:'id',textField:'text'
+                        editor: { type:'select',data:deviceData,valueField:'id',textField:'text',emptyText:null
                         },
                         render:function(item){
                             return item.deviceType;
@@ -102,25 +108,22 @@
                     },
 
                     { display: '点检区域',name: 'inspectArea',
-                        editor: { type:'select',data:areaData,valueField:'id',textField:'text'
+                        editor: { type:'select',data:areaData,valueField:'id',textField:'text' ,emptyText:null
                         },
                         render:function(item){
                             return item.inspectArea;
                         }
                     },
-
-
-
-
                     { display: '是否输入',name: 'input',type:'string',width:70,
-                        editor: { type:'select', data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
+                        editor: { type:'select',data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],
+                            valueField:'id',textField:'text',emptyText:null},
                         render:function(item){
                             return item.input;
                         }
                     },
                     { display: '选值',name: 'choiceValue',type:'string',
                         editor: { type:'select', data:choiceData,valueField:'id',textField:'text',
-                            isMultiSelect:true,isShowCheckBox:true},
+                            isMultiSelect:true,isShowCheckBox:true,emptyText:null},
                         render:function(item){
                             return item.choiceValue;
                         }
@@ -171,10 +174,13 @@
 
         function updateCallback(data){
             if(data.code==200){
+                $.post($.URL.inspectItem.list,null,itemListCallback,"json");
                 $.ligerDialog.success("修改成功");
+
             }
             else{
-                $("#mainContainer").load("InspectTable/inspectItemList.html");
+                $.post($.URL.inspectItem.list,null,itemListCallback,"json");
+               // $("#mainContainer").load("InspectTable/inspectItemList.html");
                 $.ligerDialog.warn(data.message);
             }
         }
@@ -203,10 +209,63 @@
         {
             manager.addEditRow();
         }
+  //弹出框实现方法
+//        $("#addSubmitBtn").click(function(){
+//            f_show();
+//            $.ligerDialog.open({showMin: true,title:'添加点检项', target: $("#add")});
+//        });
+//        function f_show(){
+//            $('#add').css({opacity:0.8});
+//        }
+
+        $(function(){
+            $("#submitBtn").click(function(){
+                var data = {};
+                data.choiceValue = $("#inspectTable").val();
+                data.choiceValue = $("#deviceType").val();
+                data.choiceValue = $("#inspectArea").val();
+                $.post($.URL.inspectItem.add,data,{"jsonStringList":data},"json") ;
+            });
+        });
+        function addCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success(data.message);
+                $("#mainContainer").load("InspectTable/inspectItemList.html");
+            }
+            else{
+                $.ligerDialog.warn(data.message);
+                $("#mainContainer").load("InspectTable/inspectItemList.html");
+            }
+        }
+
+        $("#addSubmitBtn").click(function(){
+            $("#mainContainer").load("InspectTable/addInspectItem.html");
+        });
+
+
+
 
     </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF; }
+    </style>
 </head>
 <body  style="padding:10px">
+
+
+<div id="list">
+    <div><input type="button" value="添加点检项" id="addSubmitBtn" class="l-button l-button-submit" /></div>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:20px"></div> <br />
+</div>
+
+
+
+
+
 <div class="l-clear"></div>
 <div id="maingrid" style="margin-top:20px"></div> <br />
 

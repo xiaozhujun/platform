@@ -120,15 +120,16 @@ function f_initGrid()
     g =  manager = $("#maingrid").ligerGrid({
         columns: [
             {display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
+            {display:'状态',name:'status', width:80,frozen:true},
             {display:'所属点检表',name:'inspectTable',width:150,frozen:true},
             {display:'设备类型',name:'deviceType',width:100,frozen:true},
             {display:'所属点检区域',name:'inspectArea',width:150,frozen:true},
-            { display: '名称', name: 'name',width:150,
+            { display: '名称', name: 'name',width:100,
                 editor: { type: 'text' }
             },
             { display: '编号', name: 'number', width: 100, type: 'text', editor: { type: 'text'} },
             { display: '是否输入', width: 50, name: 'input',
-                editor: { type: 'select', data: inputData, valueColumnName: 'id',displayColumnName:'text' },
+                editor: { type: 'select',emptyText:null,data: inputData, valueColumnName: 'id',displayColumnName:'text' },
                 render: function (item)
                 {
                     if (parseInt(item.input) == 0) return '否';
@@ -137,12 +138,13 @@ function f_initGrid()
             },
             { display: '点检选值', name: 'choiceValue',width:150,
                 editor: { type: 'select', data: choicesData,valueColumnName:'id',displayColumnName:'text'
-                    ,isMultiSelect:true,isShowCheckBox:true},
+                    ,isMultiSelect:true,isShowCheckBox:true,emptyText:null},
                 render: function (item){
                     return item.choiceValue;
                 }
             },
-            {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
+            {display:'描述',name:'description', width:115,type: 'text', editor: { type: 'text'}}
+
         ],
         onSelectRow: function (rowdata, rowindex)
         {
@@ -196,40 +198,53 @@ function addNewRow()
                 inspectTable:$("#inspectTable").val(),
                 inspectArea:$("#CB_inspectArea").val(),
                 deviceType:$("#deviceType").val(),
-                description:''
+                description:'',
+                status:"未提交"
             }, row, document.getElementById("checked").checked);
         }
     }
 }
 function submitBtn(){
+//    var selected = manager.getSelectedRows();
+//    var data=JSON.stringify(selected);
     var data=JSON.stringify(manager.getData());
+    //alert(data);
     $.post($.URL.inspectItem.add,{"jsonStringList":data},addCallback,"json");
 }
 function addCallback(data){
     if(data.code==200){
-        var jsonObj1={};
-        jsonObj1.Rows=[];
-        manager.set({data:jsonObj1});
+         var jsonObj1={};
+        jsonObj1.Rows=data.data;
+       manager.set({data:jsonObj1});
         $.ligerDialog.success(data.message);
     }else if(data.code==302){
         var jsonObj2={};
         jsonObj2.Rows=data.data;
         manager.set({data:jsonObj2});
-        $.ligerDialog.waitting('如下记录已存在');
-        setTimeout(function ()
-        {
-            $.ligerDialog.closeWaitting();
-        }, 2000);
+       // $.ligerDialog.waitting('如下记录已存在');
+//        setTimeout(function ()
+//        {
+//            $.ligerDialog.closeWaitting();
+//        }, 2000);
+        $.ligerDialog.warn("参数有误");
     }else if(data.code==500){
         var jsonObj3={};
         jsonObj3.Rows=data.data;
         manager.set({data:jsonObj3});
-        $.ligerDialog.warn("参数不能为空或参数错误！");
+        //$.ligerDialog.warn("参数不能为空或参数错误！");
+        $.ligerDialog.warn("参数有误");
     }
 }
+
+function returnBtn()
+{
+    $("#mainContainer").load("InspectTable/inspectItemList.html");
+}
+
 $("#delete").ligerButton({});
 $("#add").ligerButton({});
 $("#submitBtn").ligerButton({});
+$("#return").ligerButton({});
 </script>
 <style type="text/css">
     .l-div {height: 30px;margin-top: 10px}
@@ -255,7 +270,8 @@ $("#submitBtn").ligerButton({});
         <span>
             <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">添加</div>
             <div id="delete" style="width:100px; float: left;margin-left: 20px" onclick="deleteRow()">删除</div>
-            <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">提交</div>
+            <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">全部提交</div>
+             <div id="return" style="width: 100px;float: left;margin-left: 20px" onclick="returnBtn()">返回列表</div>
             <input type="checkbox" id="checked" style="display: none"/>
         </span>
 </div>

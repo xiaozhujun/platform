@@ -17,6 +17,17 @@ public class InspectItem {
     private long inspectAreaId;
     private String number;
     private int isInput;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
 
     private long appId;
 

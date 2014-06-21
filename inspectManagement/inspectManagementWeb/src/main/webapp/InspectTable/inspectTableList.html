@@ -13,7 +13,7 @@
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script type="text/javascript">
-
+        $.ligerDialog.close("#addTableList");
         $(function(){
             $.post($.URL.inspectTable.getList,null,listCallback,"json");
         });
@@ -75,16 +75,50 @@
             $.post($.URL.inspectTable.update,{"jsonString":jsonString},updateCallback,"json");
             function updateCallback(data){
                 if(data.code==200){
+                   // $("#mainContainer").load("InspectTable/inspectTableList.html");
+                    $.post($.URL.inspectTable.getList,null,listCallback,"json");
                     $.ligerDialog.success(data.message);
+
                 }
                 else{
-                    $("#mainContainer").load("InspectTable/inspectTableList.html");
+                         $.post($.URL.inspectTable.getList,null,listCallback,"json");
+                   // $("#mainContainer").load("InspectTable/inspectTableList.html");
+
                     $.ligerDialog.warn(data.message);
                 }
             }
         }
 
+        $("#addSubmitBtn").click(function(){
+            f_show();
+            $("#addTableList input[name]").val("");
+            $.ligerDialog.open({isDrag: true,title:'添加点检表', target: $("#addTableList")});
+        });
+        function f_show(){
+            $('#addTableList').css({display:'block'});
+        }
 
+            $("#submitBtn1").click(function(){
+                var data = {};
+                data.addinspectTableName = $("#addinspectTableName").val();
+                data.adddescription = $("#adddescription").val();
+                $.post($.URL.inspectTable.add,data,addCallBack,"json") ;
+            });
+        function addCallBack(data){
+            if(data.code==200){
+
+               // $("#mainContainer").load("InspectTable/inspectTableList.html");
+                $.post($.URL.inspectTable.getList,null,listCallback,"json");
+                $.ligerDialog.success(data.message);
+            }
+            else{
+                    //alert(data.message);
+               // $("#mainContainer").load("InspectTable/inspectTableList.html");
+                //$.post($.URL.inspectTable.getList,null,listCallback,"json");
+                 $.ligerDialog.warn(data.message);
+
+            }
+        }
 
         function deleteRow(rowid)
         {
@@ -112,10 +146,42 @@
         }
 
     </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF; }
+    </style>
 </head>
 <body  style="padding:10px">
-<div class="l-clear"></div>
-<div id="maingrid" style="margin-top:20px"></div> <br />
+
+<div id="addTableList"  style="display: none" >
+    <form name="form1" method="post" action="" id="form1"  >
+        <div>
+        </div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">点检表名:</td>
+                <td align="left" class="l-table-edit-td"><input name="addinspectTableName" type="text" id="addinspectTableName"  /></td>
+           </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">描述:</td>
+                <td align="left" class="l-table-edit-td"><input name="adddescription" type="text" id="adddescription"  /></td>
+                 <td align="left"></td>
+            </tr>
+                </table>
+        <br />
+        <input type="button" value="提交" id="submitBtn1" class="l-button l-button-submit" />
+
+    </form>
+</div>
+
+<div id="list">
+    <div><input type="button" value="添加" id="addSubmitBtn" class="l-button l-button-submit" /></div>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:20px"></div> <br />
+</div>
+
 
 <div style="display:none;">
     <!-- g data total ttt -->

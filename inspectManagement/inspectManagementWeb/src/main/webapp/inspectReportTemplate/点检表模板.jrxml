@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a572c6a-51d4-4df8-89d1-609bdab19c29">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from inspect_table]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="createtime" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="version" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trole" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b7d1a55c-f7fa-4a79-94b9-711311464e2d" x="223" y="0" width="100" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[点检表]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4ae3ce75-19fe-4761-b849-1f08862afda4" x="0" y="0" width="137" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[编号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ad281b6a-a355-4193-bdaf-d69eea0a67dc" x="137" y="0" width="137" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[表名]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="29cbce39-752f-485b-ac3e-074c8ae70ff2" x="274" y="0" width="137" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[角色]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5299febc-5b34-4512-8659-16bab2634d87" x="411" y="0" width="142" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[创建时间]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="664a3cc9-7ce6-404d-b8dd-190f6e5a61b4" x="0" y="0" width="137" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="59411c69-a1bf-4081-b2e2-82215075e1f2" x="137" y="0" width="137" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dcd96cab-2afd-446b-b3bf-34d4c71cc7ae" x="274" y="0" width="137" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{trole}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="78393a43-e74a-4625-9a50-679ef9f38ea9" x="411" y="0" width="142" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{createtime}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="7b8c62ed-98bd-46a3-92b9-e61b0d6a439c" x="223" y="0" width="100" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[点检表表尾]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

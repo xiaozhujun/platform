@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.configuration.entity.InspectTableItem;
 import org.whut.inspectManagement.business.device.mapper.InspectAreaMapper;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
-import org.whut.inspectManagement.business.inspectTable.entity.InspectItemChoice;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
@@ -72,42 +71,48 @@ public class InspectTableDownloadService {
            inspectTableItem.setValues(valueList);
            inspectTableItemList.add(inspectTableItem);
        }
-       String result=null;
-       String dType = inspectTableItemList.get(0).getDeviceType();
-       Document doc = DocumentHelper.createDocument();
-       Element table = doc.addElement("check").addAttribute("inspecttype",name);
-       table.addAttribute("inspecttime","");
-       table.addAttribute("worker","");
-       table.addAttribute("workernumber","");
-       table.addAttribute("devicenumber","");
-       Element dt  = table.addElement("deviceType").addAttribute("name",dType);
-       String location = "";
-       Iterator it = inspectTableItemList.iterator();
-       Element lc = null;
-       while(it.hasNext()){
-           InspectTableItem iti = (InspectTableItem)it.next();
-           String loc = iti.getArea();
-           if(location!=loc){
-               location = loc;
-               lc = dt.addElement("location").addAttribute("name",loc);
-               lc.addAttribute("areaId", String.valueOf(iti.getAreaId()));
-            }
-       Element item = lc.addElement("field");
-       item.addAttribute("name",iti.getName());
-       item.addAttribute("itemId", String.valueOf(iti.getId()));
-       item.addAttribute("isInput",iti.getInput());
-       item.addAttribute("util","");
-       if(iti.getInput().equals("false")){
-            Iterator it1 = iti.getValues().iterator();
-            while(it1.hasNext()){
-                String value = (String) it1.next();
-                item.addElement("value").addAttribute("name",value);
-            }
-        }
-    }
+        Document doc = DocumentHelper.createDocument();
+        String result="";
+
+       if(inspectTableItemList.size()>0){
+
+
+           String dType = inspectTableItemList.get(0).getDeviceType();
+
+           Element table = doc.addElement("check").addAttribute("inspecttype",name);
+           table.addAttribute("inspecttime","");
+           table.addAttribute("worker","");
+           table.addAttribute("workernumber","");
+           table.addAttribute("devicenumber","");
+           Element dt  = table.addElement("deviceType").addAttribute("name",dType);
+           String location = "";
+           Iterator it = inspectTableItemList.iterator();
+           Element lc = null;
+           while(it.hasNext()){
+               InspectTableItem iti = (InspectTableItem)it.next();
+               String loc = iti.getArea();
+               if(!location.equals(loc)){
+                   location = loc;
+                   lc = dt.addElement("location").addAttribute("name",loc);
+                   lc.addAttribute("areaId", String.valueOf(iti.getAreaId()));
+               }
+               Element item = lc.addElement("field");
+               item.addAttribute("name",iti.getName());
+               item.addAttribute("itemId", String.valueOf(iti.getId()));
+               item.addAttribute("isInput",iti.getInput());
+               item.addAttribute("util","");
+               if(iti.getInput().equals("false")){
+                   Iterator it1 = iti.getValues().iterator();
+                   while(it1.hasNext()){
+                       String value = (String) it1.next();
+                       item.addElement("value").addAttribute("name",value);
+                   }
+               }
+           }
+       }
     try{
         OutputFormat format = OutputFormat.createPrettyPrint();
-        String encoding = "gbk";
+        String encoding = "UTF-8";
         format.setEncoding(encoding);
         format.setNewlines(true);
         OutputStream outputStream = new ByteArrayOutputStream();

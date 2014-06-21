@@ -44,7 +44,7 @@ public class DepartmentServiceWeb {
     {
         if(name==null||name.trim().equals(""))
         {
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数错误");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
         long appid= UserContext.currentUserAppId();
         long id;
@@ -58,15 +58,15 @@ public class DepartmentServiceWeb {
         }
         if(id==0)
         {
-        Department department=new Department();
-        department.setName(name);
-        department.setStatus(status);
-        department.setDescription(description);
-        department.setAppId(appid);
-        Date now= new Date();
-        department.setCreatetime(now);
-        departmentService.add(department);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            Department department=new Department();
+            department.setName(name);
+            department.setStatus(status);
+            department.setDescription(description);
+            department.setAppId(appid);
+            Date now= new Date();
+            department.setCreatetime(now);
+            departmentService.add(department);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该部门！");
@@ -77,10 +77,10 @@ public class DepartmentServiceWeb {
     @POST
     public String update(@FormParam("jsonString") String jsonString)
     {
-    Department department = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Department.class);
-    if(department.getName()==null||department.getName().equals("")||department.getStatus()==null){
-        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
-    }
+        Department department = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Department.class);
+        if(department.getName()==null||department.getName().equals("")||department.getStatus()==null){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
+        }
         long appid= UserContext.currentUserAppId();
         long id;
         try{
@@ -108,7 +108,7 @@ public class DepartmentServiceWeb {
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
-  /*添加saas化*/
+    /*添加saas化*/
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
     @POST

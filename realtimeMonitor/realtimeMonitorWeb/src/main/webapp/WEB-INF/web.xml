@@ -53,26 +53,26 @@
   </listener>
 
     <listener>
-        <description>Socket服务随web启动而启动</description>
-        <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
-    </listener>
+    <description>Socket服务随web启动而启动</description>
+    <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
+</listener>
 
     <!-- Spring FilterChain(security) -->
-    <filter>
+  <!--  <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
     <servlet>
         <servlet-name>jerseyServlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>org.whut.platform.business,org.whut.monitor.business.</param-value>
+            <param-value>org.whut.monitor.business,org.whut.platform.business</param-value>
         </init-param>
     </servlet>
 

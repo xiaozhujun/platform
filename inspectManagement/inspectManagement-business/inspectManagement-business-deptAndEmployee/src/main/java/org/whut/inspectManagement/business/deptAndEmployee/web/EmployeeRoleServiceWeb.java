@@ -63,7 +63,7 @@ public class EmployeeRoleServiceWeb {
     @POST
     public String add(@FormParam("name") String name,@FormParam("status") String status,@FormParam("description") String description,@FormParam("authority") String authority,@FormParam("inspectTable") String inspectTable)
     {
-        if(name==null||name.trim().equals("")||authority==null||inspectTable==null||inspectTable.equals("")||description==null||description.trim().equals(""))
+        if(name==null||name.trim().equals("")||authority==null||inspectTable==null||inspectTable.equals(""))
         {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
@@ -99,7 +99,7 @@ public class EmployeeRoleServiceWeb {
                 employeeRoleInspectTable.setInspectTableName(inspectTableArray[i]);
                 employeeRoleInspectTableService.add(employeeRoleInspectTable);
             }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"员工角色名已存在！");
@@ -259,7 +259,7 @@ public class EmployeeRoleServiceWeb {
         }
         else
         {
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"修改的用户名已存在！");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"修改的员工角色名已存在！");
         }
     }
 
@@ -359,20 +359,20 @@ public class EmployeeRoleServiceWeb {
         for(EmployeeRole e:employeeRoleList)
         {
             List<EmployeeRoleInspectTable> employeeRoleInspectTablesList=employeeRoleInspectTableService.getByEmployeeRoleId(e.getId());
-          String inspectTableName="";
+            String inspectTableName="";
             for(int i=0;i<employeeRoleInspectTablesList.toArray().length;i++)
             {
                 if(i==0)
-                 {
-                     inspectTableName=employeeRoleInspectTablesList.get(i).getInspectTableName();
-                 }
+                {
+                    inspectTableName=employeeRoleInspectTablesList.get(i).getInspectTableName();
+                }
                 else
-                 {
-                     inspectTableName+=";"+employeeRoleInspectTablesList.get(i).getInspectTableName();
-                 }
+                {
+                    inspectTableName+=";"+employeeRoleInspectTablesList.get(i).getInspectTableName();
+                }
             }
-           SubEmployeeRole subEmployeeRole=new SubEmployeeRole();
-           subEmployeeRole.setName(e.getName());
+            SubEmployeeRole subEmployeeRole=new SubEmployeeRole();
+            subEmployeeRole.setName(e.getName());
             subEmployeeRole.setStatus(e.getStatus());
             subEmployeeRole.setDescription(e.getDescription());
             subEmployeeRole.setId(e.getId());
@@ -400,4 +400,4 @@ public class EmployeeRoleServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(canUseList,JsonResultUtils.Code.SUCCESS);
     }
 
-    }
+}

@@ -112,6 +112,22 @@ public class MongoConnector {
         }
         return null;
     }
+    //根据reportNumber来提取某一条记录
+    public List<DBObject>  getInspectItemRecordByMongoId(String mongoId){
+        DB db = mongo.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        DBCursor dbCursor=collection.find();
+        List<DBObject> list=new ArrayList<DBObject>();
+        while (dbCursor.hasNext()){
+            List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("inspectitemrecords");
+            for(DBObject dd:d){
+                if(dd.get("mongoId").equals(mongoId)){
+                    list.add(dd);
+                };
+            }
+        }
+        return list;
+    }
     //取根据每一类来找出某一列的值，用来算最大值
     public List<String> getOneColumnByEquipmentVariety(String column,List<String> equipmentVariety){
         DB db = mongo.getDB(dbName);

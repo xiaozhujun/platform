@@ -39,7 +39,7 @@ public class DeviceConfigurationService {
         }
         try{
             OutputFormat outputFormat =OutputFormat.createPrettyPrint();
-            String encoding = "GBK";
+            String encoding = "UTF-8";
             outputFormat.setEncoding(encoding);
             outputFormat.setNewlines(true);
             OutputStream outputStream = new ByteArrayOutputStream();

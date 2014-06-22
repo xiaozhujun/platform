@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.inspectResult.service;
 
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -63,9 +64,10 @@ public class InspectTableRecordService {
         String worknum=null;
         int exceptionCount=0;
         Date createTime=null;
-        long inspectTableId;
+        long inspectTableId=0;
         long inspectTagId = 0;
         long deviceId = 0;
+        String comment=null;
         List<InspectItemRecord> inspectItemRecords=new ArrayList<InspectItemRecord>();
         InspectTableRecord inspectTableRecord =new InspectTableRecord();
         Element root = document.getRootElement();
@@ -82,7 +84,18 @@ public class InspectTableRecordService {
                 flag = 2;
                 return  flag;
             }
-            inspectTableId=inspectTableMapper.getIdByNameAndAppId(tname,appId);
+            try{
+                inspectTableId=inspectTableMapper.getIdByNameAndAppId(tname,appId);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+            if(inspectTableId==0)
+            {
+                flag = 3;
+                return flag;
+            }
 
             deviceId = deviceMapper.getIdByNumber(dnum,appId);
             Element e1 = root.element("devicetype");
@@ -149,6 +162,13 @@ public class InspectTableRecordService {
                         InspectItemRecord inspectItemRecord =new InspectItemRecord();
                         Element ge = git.next();
                         inspectChoiceValue = ge.attribute("name").getValue();
+                        Attribute a =ge.attribute("comment");
+                        if (a!=null)
+                        {
+                            comment=a.getValue();
+                            if(!comment.equals(""))
+                                inspectItemRecord.setNote(comment);
+                        }
                         System.out.println(">>>>>>>>>>>>>>>>>>"+inspectChoiceValue);
                         if(!(inspectChoiceValue.equals("正常"))){
                             exceptionCount++;

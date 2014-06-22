@@ -57,7 +57,10 @@ public class InspectTableRecordServiceWeb {
                 Element root = document.getRootElement();
                 // System.out.println(">>>>>>>>>"+root.getName());
                 int flag =  inspectTableRecordService.DomReadXml(document);
-                if(flag==2){
+                if(flag==3){
+                    return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检表不存在！");
+                }
+                else if(flag==2){
                     System.out.println("文件内容不合法！");
                     return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"文件内容不合法！");
                 }

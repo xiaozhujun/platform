@@ -19,6 +19,7 @@
 <script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 <script type="text/javascript">
 $.post($.URL.inspectTable.getList,null,listCallBack,"json");
+$("#maingrid").hide();
 function listCallBack(data){
     if(data.code==200){
         var myData=[];
@@ -176,7 +177,7 @@ function deleteRow()
 var newrowid = 1;
 function addNewRow()
 {
-    var inspectTable=$("#inspectTable").val();
+  var inspectTable=$("#inspectTable").val();
     var areaName=$("#CB_inspectArea").val();
     var deviceTypeName=$("#deviceType").val();
     $.post($.URL.inspectItem.getInspectAreaIdByNames,{"inspectTable":inspectTable,"inspectAreaName":areaName,"deviceTypeName":deviceTypeName,"choices":choices},areaIdCallback,"json");
@@ -185,6 +186,7 @@ function addNewRow()
             $.ligerDialog.warn(data.message);
         }
         if(data.code==200){
+            $("#maingrid").show();
             var row = manager.getSelectedRow();
             //参数1:rowdata(非必填)
             //参数2:插入的位置 Row Data
@@ -240,7 +242,6 @@ function returnBtn()
 {
     $("#mainContainer").load("InspectTable/inspectItemList.html");
 }
-
 $("#delete").ligerButton({});
 $("#add").ligerButton({});
 $("#submitBtn").ligerButton({});
@@ -268,9 +269,9 @@ $("#return").ligerButton({});
             </span>
 
         <span>
-            <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">添加</div>
+            <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">新增</div>
             <div id="delete" style="width:100px; float: left;margin-left: 20px" onclick="deleteRow()">删除</div>
-            <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">全部提交</div>
+            <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">添加</div>
              <div id="return" style="width: 100px;float: left;margin-left: 20px" onclick="returnBtn()">返回列表</div>
             <input type="checkbox" id="checked" style="display: none"/>
         </span>

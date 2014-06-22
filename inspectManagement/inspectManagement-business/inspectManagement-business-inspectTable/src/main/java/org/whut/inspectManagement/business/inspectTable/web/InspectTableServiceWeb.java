@@ -31,7 +31,7 @@ public class InspectTableServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("addinspectTableName") String name,@FormParam("adddescription") String description){
+    public String add(@FormParam("inspectTableName") String name,@FormParam("description") String description){
         long appId=UserContext.currentUserAppId();
         if(name==null||name.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");

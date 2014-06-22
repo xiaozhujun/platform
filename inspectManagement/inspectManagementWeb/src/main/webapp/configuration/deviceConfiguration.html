@@ -27,7 +27,7 @@
                     i["id"]=content.id;
                     deviceTypeData.push(i);
                 });
-                $("#deviceType").ligerComboBox({
+                $("#deviceType").ligerComboBox({emptyText:null,
                     data:deviceTypeData
                 });
             }
@@ -41,7 +41,7 @@
                     j["id"]=content.id;
                     deviceNumberData.push(j);
                 });
-                $("#deviceNumber").ligerComboBox({
+                $("#deviceNumber").ligerComboBox({emptyText:null,
                      data:deviceNumberData
                 });
             }
@@ -55,7 +55,7 @@
                   k["id"]=content.id;
                   tagNameData.push(k);
                });
-               $("#tagName").ligerComboBox({
+               $("#tagName").ligerComboBox({emptyText:null,
                    data:tagNameData,
                    textField:"name"
                });

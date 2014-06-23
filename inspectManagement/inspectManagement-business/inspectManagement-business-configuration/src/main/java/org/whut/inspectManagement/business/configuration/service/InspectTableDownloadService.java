@@ -84,7 +84,7 @@ public class InspectTableDownloadService {
            table.addAttribute("worker","");
            table.addAttribute("workernumber","");
            table.addAttribute("devicenumber","");
-           Element dt  = table.addElement("deviceType").addAttribute("name",dType);
+           Element dt  = table.addElement("devicetype").addAttribute("name",dType);
            String location = "";
            Iterator it = inspectTableItemList.iterator();
            Element lc = null;

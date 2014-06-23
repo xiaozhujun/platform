@@ -70,9 +70,13 @@
         var gridData={};
         function  getListByConditionCallback(data){
             if(data.code==200){
+
                 gridData.Rows=data.data;
                 gridData.Total=data.data.length;
                 f_initGrid();
+                if(gridData.Total==0){
+                    $.ligerDialog.warn("查询记录不存在！") ;
+                }
             }
         }
         var manager,g

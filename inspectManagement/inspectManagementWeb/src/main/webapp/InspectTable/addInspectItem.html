@@ -120,7 +120,7 @@ function f_initGrid()
 {
     g =  manager = $("#maingrid").ligerGrid({
         columns: [
-            {display: '主键', name: 'ID', width: 50, type: 'int',frozen:true },
+            {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
             {display:'状态',name:'status', width:80,frozen:true},
             {display:'所属点检表',name:'inspectTable',width:150,frozen:true},
             {display:'设备类型',name:'deviceType',width:100,frozen:true},
@@ -192,7 +192,7 @@ function addNewRow()
             //参数2:插入的位置 Row Data
             //参数3:之前或者之后(非必填)
             manager.addRow({
-                ID: newrowid++,
+                id: newrowid++,
                 name:'',
                 number:'',
                 input:"0",

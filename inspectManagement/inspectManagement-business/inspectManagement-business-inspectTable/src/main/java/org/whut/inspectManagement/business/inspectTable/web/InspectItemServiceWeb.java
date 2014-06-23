@@ -71,7 +71,8 @@ public class InspectItemServiceWeb {
                 InspectItem inspectItem=new InspectItem();
                 String input=subInspectItem.getInput();
                 String choices=subInspectItem.getChoiceValue();
-
+               long key=subInspectItem.getId();
+                subInspectItem.setId(key);
                 if(input.equals("1")&&(subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals(""))){
                     subInspectItem.setStatus("信息空缺");
                     itemErrorList.add(subInspectItem);
@@ -89,19 +90,20 @@ public class InspectItemServiceWeb {
                     inspectItem.setInspectAreaId(inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId));
                     inspectItem.setDescription(subInspectItem.getDescription());
                     inspectItem.setAppId(appId);
+
                     if (subInspectItem.getStatus().equals("已提交")){
 
                        itemSuccessList.add(subInspectItem);
 
                     }else{
 
-                    long id;
+                    long note;
                     try {
-                        id=inspectItemService.getInspectItemIdByNameAndNumberAndAppId(subInspectItem.getName(),subInspectItem.getNumber(),appId);
+                        note=inspectItemService.getInspectItemIdByNameAndNumberAndAppId(subInspectItem.getName(),subInspectItem.getNumber(),appId);
                     }catch (Exception e){
-                        id=0;
+                        note=0;
                     }
-                    if(id==0){
+                    if(note==0){
                         inspectItemService.add(inspectItem);
                         subInspectItem.setStatus("已提交");
 

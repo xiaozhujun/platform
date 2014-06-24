@@ -41,8 +41,17 @@ public class DeviceServiceWeb {
         if(name==null||number.equals("")||description==null||deviceTypeId==0||name.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
-        else {
-            long appId= UserContext.currentUserAppId();
+
+        long appId= UserContext.currentUserAppId();
+        long id;
+
+        try{
+               id=deviceService.getIdByNumber(number,appId);
+        }
+        catch(Exception e){
+              id=0;
+        }
+        if(id==0) {
             Device device=new Device();
             device.setName(name);
             device.setNumber(number);
@@ -50,10 +59,11 @@ public class DeviceServiceWeb {
             device.setAppId(appId);
             device.setDeviceTypeId(deviceTypeId);
             deviceService.add(device);
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
         }
-
-
-        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
+        else{
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该设备!");
+        }
     }
 
 
@@ -197,6 +207,9 @@ public class DeviceServiceWeb {
             subDevice.setId(device.getId());
             subDevice.setDeviceTypeName(deviceTypeService.getNameById(device.getDeviceTypeId()));
             subDevicesList.add(subDevice);
+        }
+        if(subDevicesList.toArray().length==0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "查询不到结果!");
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(subDevicesList, JsonResultUtils.Code.SUCCESS);
     }

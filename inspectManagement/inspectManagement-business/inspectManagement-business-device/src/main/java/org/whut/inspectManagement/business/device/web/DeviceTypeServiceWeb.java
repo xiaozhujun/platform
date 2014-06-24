@@ -39,14 +39,27 @@ public class DeviceTypeServiceWeb {
             return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long appId= UserContext.currentUserAppId();
-        DeviceType deviceType=new DeviceType();
-        deviceType.setName(name);
-        deviceType.setNumber(number);
-        deviceType.setDescription(description);
-        deviceType.setAppId(appId);
-        deviceTypeService.add(deviceType);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        long id;
+        try{
+            id=deviceTypeService.getIdByName(name,appId);
+        }
+        catch (Exception e){
+            id=0;
+        }
+        if(id==0){
+            DeviceType deviceType=new DeviceType();
+            deviceType.setName(name);
+            deviceType.setNumber(number);
+            deviceType.setDescription(description);
+            deviceType.setAppId(appId);
+            deviceTypeService.add(deviceType);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else{
+            return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该设备类型!");
+        }
     }
+
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/list")
     @GET

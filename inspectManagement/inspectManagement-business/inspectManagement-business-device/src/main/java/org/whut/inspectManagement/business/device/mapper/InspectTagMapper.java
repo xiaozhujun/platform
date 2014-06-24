@@ -19,4 +19,5 @@ public interface InspectTagMapper extends AbstractMapper<InspectTag> {
     public Long getIdByDeviceNumAndAreaId(@Param("deviceNumber") String deviceNumber,@Param("inspectAreaId")long inspectAreaId,@Param("appId") long appId);
     public List<InspectTag> getListByAppId(long appId);
     public String getIdByName(String name);
+    public Long getIdByNumber(@Param("number") String number,@Param("appId") long appId);
 }

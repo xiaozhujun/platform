@@ -41,16 +41,28 @@ public class InspectAreaServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空！");
         }
         long appId= UserContext.currentUserAppId();
-        Date date=new Date();
-        InspectArea inspectArea=new InspectArea();
-        inspectArea.setName(name);
-        inspectArea.setDescription(description);
-        inspectArea.setCreatetime(date);
-        inspectArea.setNumber(number);
-        inspectArea.setDeviceTypeId(deviceTypeId);
-        inspectArea.setAppId(appId);
-        inspectAreaService.add(inspectArea);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        long id;
+        try{
+            id=deviceTypeService.getIdByName(name,appId);
+        }
+        catch (Exception e){
+            id=0;
+        }
+        if(id==0){
+            Date date=new Date();
+            InspectArea inspectArea=new InspectArea();
+            inspectArea.setName(name);
+            inspectArea.setDescription(description);
+            inspectArea.setCreatetime(date);
+            inspectArea.setNumber(number);
+            inspectArea.setDeviceTypeId(deviceTypeId);
+            inspectArea.setAppId(appId);
+            inspectAreaService.add(inspectArea);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else{
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该设备类型！");
+        }
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

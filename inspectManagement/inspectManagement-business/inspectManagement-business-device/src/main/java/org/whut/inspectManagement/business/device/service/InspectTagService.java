@@ -37,4 +37,8 @@ public class InspectTagService {
     {
         return inspectTagMapper.getListByAppId(appId);
     }
+
+    public long getIdByNumber(String number,long appId){
+        return inspectTagMapper.getIdByNumber(number,appId);
+    }
 }

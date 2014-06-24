@@ -40,17 +40,30 @@ public class InspectTagServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空！");
         }
         long appId= UserContext.currentUserAppId();
-        Date date=new Date();
-        InspectTag inspectTag=new InspectTag();
-        inspectTag.setName(name);
-        inspectTag.setDescription(description);
-        inspectTag.setNumber(number);
-        inspectTag.setCreatetime(date);
-        inspectTag.setInspectAreaId(inspectAreaId);
-        inspectTag.setDeviceId(deviceId);
-        inspectTag.setAppId(appId);
-        inspectTagService.add(inspectTag);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        long id;
+        try{
+            id=inspectTagService.getIdByNumber(number,appId);
+        }
+        catch (Exception e){
+            id=0;
+        }
+        if(id==0){
+            Date date=new Date();
+            InspectTag inspectTag=new InspectTag();
+            inspectTag.setName(name);
+            inspectTag.setDescription(description);
+            inspectTag.setNumber(number);
+            inspectTag.setCreatetime(date);
+            inspectTag.setInspectAreaId(inspectAreaId);
+            inspectTag.setDeviceId(deviceId);
+            inspectTag.setAppId(appId);
+            inspectTagService.add(inspectTag);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "已存在该标签！");
+        }
+
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

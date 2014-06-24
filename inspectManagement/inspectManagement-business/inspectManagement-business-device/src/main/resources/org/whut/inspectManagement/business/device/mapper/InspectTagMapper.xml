@@ -36,6 +36,17 @@
        and it.appId=#{appId}
     </select>
 
+    <select id="getIdByNumber" parameterType="map" resultType="java.lang.Long">
+        select id
+        from inspecttag
+        <where>
+             NUMBER=#{number}
+            AND APPID=#{appId}
+        </where>
+
+
+    </select>
+
     <select id="findByCondition" parameterType="map" resultMap="inspectTagResultMap">
         select
         <include refid="inspectTag_fields"/>

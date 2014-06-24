@@ -129,6 +129,9 @@
                 gridData.Total=data.data.length;
                 f_initGrid();
             }
+            else if(data.code==500){
+                $.ligerDialog.error(data.message);
+            }
         }
 
         function beginEdit(rowid){

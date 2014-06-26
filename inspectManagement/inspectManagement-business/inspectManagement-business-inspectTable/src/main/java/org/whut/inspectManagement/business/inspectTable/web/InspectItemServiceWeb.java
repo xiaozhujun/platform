@@ -286,12 +286,15 @@ public class InspectItemServiceWeb {
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/delete")
     @POST
-    public String delete(@FormParam("jsonString") String jsonString){
+    public String delete(@FormParam("jsonString") String jsonString) throws JSONException, ParseException{
         long appId=UserContext.currentUserAppId();
-        SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-        inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
+        //SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+        JSONObject jsonObject=new JSONObject(jsonString);
+
+        String itemId=jsonObject.getString("id");
+        inspectItemChoiceService.deleteByInspectItemIdAndAppId(Integer.parseInt(itemId),appId);
         InspectItem inspectItem=new InspectItem();
-        inspectItem.setId(subInspectItem.getId());
+        inspectItem.setId(Integer.parseInt(itemId));
         int result=inspectItemService.delete(inspectItem);
         if(result>=0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");

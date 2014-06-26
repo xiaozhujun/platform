@@ -36,20 +36,7 @@ public class RoleTablesDownloadService {
                 role.addElement("TableItem").addAttribute("name",s);
             }
         }
-        try{
-            OutputFormat outputFormat =OutputFormat.createPrettyPrint();
-            String encoding = "UTF-8";
-            outputFormat.setEncoding(encoding);
-            outputFormat.setNewlines(true);
-            OutputStream outputStream = new ByteArrayOutputStream();
-            XMLWriter xmlWriter = new XMLWriter(outputStream,outputFormat);
-            xmlWriter.write(doc);
-            xmlWriter.close();
-            result=outputStream.toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        result=new XmlFormat().getXmlStringByFormat(doc);
         return result;
     }
 }

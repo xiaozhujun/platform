@@ -55,7 +55,7 @@ public class PersonnelConfigurationServiceWeb {
                   response.setHeader("Location",fileName);
                   response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("utf-8"),"ISO8859-1"));
                   OutputStream outputStream = response.getOutputStream();
-                  outputStream.write(result.getBytes());
+                  outputStream.write(result.getBytes("utf-8"));
                   outputStream.flush();
                   outputStream.close();
            }

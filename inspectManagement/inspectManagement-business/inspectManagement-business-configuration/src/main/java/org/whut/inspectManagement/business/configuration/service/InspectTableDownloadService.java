@@ -14,9 +14,7 @@ import org.whut.inspectManagement.business.inspectTable.mapper.InspectItemMapper
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
 import org.whut.platform.business.user.security.UserContext;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +44,7 @@ public class InspectTableDownloadService {
        List<InspectItem> itemList = inspectItemMapper.getInspectItemByInspectTableId(tableId,appId);
        List<InspectTableItem> inspectTableItemList = new ArrayList<InspectTableItem>();
        Iterator iterator = itemList.iterator();
+        Document doc = DocumentHelper.createDocument();
        while(iterator.hasNext()){
            InspectItem  it = (InspectItem)iterator.next();
            InspectTableItem inspectTableItem = new InspectTableItem();
@@ -71,8 +70,8 @@ public class InspectTableDownloadService {
            inspectTableItem.setValues(valueList);
            inspectTableItemList.add(inspectTableItem);
        }
-        Document doc = DocumentHelper.createDocument();
-        String result="";
+
+        String result=null;
 
        if(inspectTableItemList.size()>0){
 
@@ -110,21 +109,7 @@ public class InspectTableDownloadService {
                }
            }
        }
-    try{
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        String encoding = "UTF-8";
-        format.setEncoding(encoding);
-        format.setNewlines(true);
-        OutputStream outputStream = new ByteArrayOutputStream();
-        XMLWriter writer = new XMLWriter(outputStream,format);
-        writer.write(doc);
-        writer.close();
-        result = outputStream.toString();
-        System.out.println(">>>>>>"+result);
-    }
-    catch(IOException e){
-        e.printStackTrace();
-    }
+       result=new XmlFormat().getXmlStringByFormat(doc);
        return  result;
    }
 

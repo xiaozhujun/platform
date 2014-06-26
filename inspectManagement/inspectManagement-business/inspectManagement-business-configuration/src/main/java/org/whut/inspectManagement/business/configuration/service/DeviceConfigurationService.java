@@ -37,20 +37,7 @@ public class DeviceConfigurationService {
             tag.addElement("tagId").addText(String.valueOf(dtt.getTagId()));
             tag.addElement("tagNumber").addText(dtt.getTagNumber());
         }
-        try{
-            OutputFormat outputFormat =OutputFormat.createPrettyPrint();
-            String encoding = "UTF-8";
-            outputFormat.setEncoding(encoding);
-            outputFormat.setNewlines(true);
-            OutputStream outputStream = new ByteArrayOutputStream();
-            XMLWriter xmlWriter = new XMLWriter(outputStream,outputFormat);
-            xmlWriter.write(doc);
-            xmlWriter.close();
-            result=outputStream.toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        result=new XmlFormat().getXmlStringByFormat(doc);
         return result;
     }
 }

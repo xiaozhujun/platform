@@ -266,7 +266,7 @@ public class InspectItemServiceWeb {
 //        }
         else {
             List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
-            String[] choiceValueArray=subInspectItem.getChoiceValue().split(",");
+            String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
             inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
             for(String choice:choiceValueArray){
                 InspectItemChoice inspectItemChoice=new InspectItemChoice();

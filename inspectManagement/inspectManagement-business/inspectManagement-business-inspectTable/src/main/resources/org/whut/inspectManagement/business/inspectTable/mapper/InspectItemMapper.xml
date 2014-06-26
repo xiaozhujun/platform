@@ -95,7 +95,7 @@
         AND inspectTableId = #{inspectTableId}
     </select>
     <select id="getInspectItemList" parameterType="java.lang.Long" resultType="map">
-        SELECT item.id,item.`name`,item.number,intable.`name` AS inspectTable,type.`name` AS deviceType,inarea.`name` AS inspectArea,item.isInput AS input,GROUP_CONCAT(DISTINCT choice.choiceValue) AS choiceValue,item.description,item.createtime
+        SELECT item.id,item.`name`,item.number,intable.`name` AS inspectTable,type.`name` AS deviceType,inarea.`name` AS inspectArea,item.isInput AS input,GROUP_CONCAT(DISTINCT choice.choiceValue separator ';') AS choiceValue,item.description,item.createtime
         FROM inspectitem item LEFT JOIN inspecttable intable ON item.inspectTableId=intable.id
         LEFT JOIN inspectarea inarea ON item.inspectAreaId=inarea.id
         LEFT JOIN devicetype type ON type.id=inarea.deviceTypeId

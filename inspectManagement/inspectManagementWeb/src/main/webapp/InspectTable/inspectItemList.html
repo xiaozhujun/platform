@@ -65,6 +65,7 @@
                 f_initGrid();
             }
         }
+        var inputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
         var choiceData =[];
         function choiceListCallBack(data){
             if(data.code==200){
@@ -110,14 +111,11 @@
                             return item.inspectArea;
                         }
                     },
-
-
-
-
                     { display: '是否输入',name: 'input',type:'string',width:70,
-                        editor: { type:'select',emptyText:null, data:[{"text":"否","id":"否"},{"text":"是","id":"是"}],valueField:'id',textField:'text'},
+                        editor: { type:'select',data:inputData,emptyText:null,valueField:'id',textField:'text'},
                         render:function(item){
-                            return item.input;
+                            if (parseInt(item.input) == 0) return '否';
+                            return '是';
                         }
                     },
                     { display: '选值',name: 'choiceValue',type:'string',

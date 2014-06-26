@@ -23,5 +23,5 @@ public interface InspectItemMapper extends AbstractMapper<InspectItem> {
     public List<InspectItem> getInspectItemByInspectTableId(@Param("inspectTableId") long inspectTableId,@Param("appId") long appId);
     public List<InspectItem> getInspectItemListByAppId(long appId);
     public String findIdByTagAndName(@Param("inspecttag")String inspecttag,@Param("name")String name);
-
+    public List<Map<String,String>> getInspectItemList(long appId);
 }

@@ -94,4 +94,13 @@
         WHERE appid=#{appId}
         AND inspectTableId = #{inspectTableId}
     </select>
+    <select id="getInspectItemList" parameterType="java.lang.Long" resultType="map">
+        SELECT item.id,item.`name`,item.number,intable.`name` AS inspectTable,type.`name` AS deviceType,inarea.`name` AS inspectArea,item.isInput AS input,GROUP_CONCAT(DISTINCT choice.choiceValue) AS choiceValue,item.description,item.createtime
+        FROM inspectitem item LEFT JOIN inspecttable intable ON item.inspectTableId=intable.id
+        LEFT JOIN inspectarea inarea ON item.inspectAreaId=inarea.id
+        LEFT JOIN devicetype type ON type.id=inarea.deviceTypeId
+        LEFT JOIN inspectitem_choice _choice ON  _choice.inspectItemId=item.id
+        LEFT JOIN inspectchoice choice ON _choice.inspectChoiceId=choice.id
+        GROUP BY item.id
+    </select>
 </mapper>

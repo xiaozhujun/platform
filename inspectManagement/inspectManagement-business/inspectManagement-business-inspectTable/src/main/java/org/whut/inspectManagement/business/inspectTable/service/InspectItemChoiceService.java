@@ -31,7 +31,9 @@ public class InspectItemChoiceService {
             choice=inspectChoiceService .getChoiceValueById(choiceIdList.get(i))+";";
             choiceValue+=choice;
         }
-        choiceValue+=inspectChoiceService.getChoiceValueById(choiceIdList.get(choiceIdList.size()-1));
+        if(choiceIdList.size()!=0){
+            choiceValue+=inspectChoiceService.getChoiceValueById(choiceIdList.get(choiceIdList.size()-1));
+        }
         return choiceValue;
     }
     public void deleteByInspectItemIdAndAppId(long inspectItemId,long appId){

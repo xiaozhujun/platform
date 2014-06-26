@@ -26,9 +26,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -153,7 +157,7 @@ public class InspectItemServiceWeb {
     @POST
     public String list(){
         long appId=UserContext.currentUserAppId();
-        List<InspectItem> list=inspectItemService.getInspectItemListByAppId(appId);
+        /*List<InspectItem> list=inspectItemService.getInspectItemListByAppId(appId);
         List<SubInspectItem> subList=new ArrayList<SubInspectItem>();
         for(InspectItem a:list){
             SubInspectItem subInspectItem=new SubInspectItem();
@@ -175,16 +179,32 @@ public class InspectItemServiceWeb {
                 subInspectItem.setChoiceValue(inspectItemChoiceService.getChoiceValueByItemId(a.getId()));
             }
             subList.add(subInspectItem);
-        }
-        return JsonResultUtils.getObjectResultByStringAsDefault(subList, JsonResultUtils.Code.SUCCESS);
+        }*/
+        List<Map<String,String>> list=inspectItemService.getInspectItemList(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/update")
     @POST
-    public String update(@FormParam("jsonString") String jsonString){
+    public String update(@FormParam("jsonString") String jsonString) throws JSONException, ParseException {
         long appId=UserContext.currentUserAppId();
-        SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-        if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getInspectTable().equals("null")||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber().equals("")){
+        JSONObject jsonObject=new JSONObject(jsonString);
+        SubInspectItem subInspectItem=new SubInspectItem();
+        String itemId=jsonObject.getString("id");
+        subInspectItem.setId(Integer.parseInt(itemId));
+        subInspectItem.setName(jsonObject.getString("name"));
+        subInspectItem.setNumber(jsonObject.getString("number"));
+        subInspectItem.setChoiceValue(jsonObject.getString("choiceValue"));
+        subInspectItem.setInspectArea(jsonObject.getString("inspectArea"));
+        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        subInspectItem.setCreatetime(format.parse(jsonObject.getString("createtime")));
+        subInspectItem.setDeviceType(jsonObject.getString("deviceType"));
+        subInspectItem.setDescription(jsonObject.getString("description"));
+        subInspectItem.setInput(jsonObject.getString("input"));
+        subInspectItem.setInspectTable(jsonObject.getString("inspectTable"));
+
+        //SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+        if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getInspectTable().equals("")||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long id;
@@ -200,13 +220,7 @@ public class InspectItemServiceWeb {
         }
 
         //更新inspectItem表
-        int isInput;
-        if(subInspectItem.getInput().equals("否")){
-            isInput=0;
-        }
-        else {
-            isInput=1;
-        }
+        int isInput=Integer.parseInt(subInspectItem.getInput());
         long inspectAreaId;
         try{
             inspectAreaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
@@ -252,7 +266,7 @@ public class InspectItemServiceWeb {
 //        }
         else {
             List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
-            String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
+            String[] choiceValueArray=subInspectItem.getChoiceValue().split(",");
             inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
             for(String choice:choiceValueArray){
                 InspectItemChoice inspectItemChoice=new InspectItemChoice();

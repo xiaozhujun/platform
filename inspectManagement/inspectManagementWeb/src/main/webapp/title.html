@@ -4,5 +4,38 @@
         text-align: center;
         font-size: 30px;
     }
+
+    #userInfo{
+        position: absolute;
+        bottom: 0;
+        right: 5px;
+        font-size: 14px;
+        display: none;
+    }
+
+    #userInfo div{
+       float: left;
+    }
 </style>
+<script>
+    $(document).ready(function(){
+        $.get($.URL.user.currentUserInfo,null,userInfoCallback,"json");
+    });
+
+    function userInfoCallback(data){
+        if(data!=null){
+            $("#userInfo").show();
+            $("#userNameDiv").html(data.data.name);
+            if(data.data.role=="ROLE_ADMIN"){
+                $("#adminLinkDiv").show();
+            }
+        }
+    }
+</script>
 <div id="title">物联智能点检平台</div>
+<div id="userInfo">
+    <div>欢迎您，</div>
+    <div id="userNameDiv"></div>
+    <div id="adminLinkDiv" style="display: none">|<a href="admin.html">管理后台</a></div>
+    <div id="logoutDiv">|<a href="logout">安全退出</a></div>
+</div>

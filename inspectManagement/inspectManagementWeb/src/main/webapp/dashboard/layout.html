@@ -1,0 +1,39 @@
+<script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+<script>
+    var navtab = null;
+    $(document).ready(function () {
+        $("#tab").ligerTab();
+        navtab = $("#tab").ligerGetTabManager();
+
+        $("#tab").ligerTab({onAfterSelectTabItem: function (tabid) {
+            loadTabPage(tabid);
+        }});
+    });
+
+    function loadTabPage(tabid){
+        if(tabid=="dayWorkerTab"){
+          $("#"+tabid).load("dashboard/dayWorker.html");
+        }else if(tabid=="dayDeviceTab"){
+            $("#"+tabid).load("dashboard/dayDevice.html");
+        }else if(tabid=="taskTab"){
+            $("#"+tabid).load("dashboard/task.html");
+        }else if(tabid=="dataTab"){
+            $("#"+tabid).load("dashboard/upload.html");
+        }else if(tabid=="uploadTab"){
+            $("#"+tabid).load("inspectResult/inspectResultUpload.html");
+        }
+    }
+</script>
+
+<div id="tab">
+    <div id="dayWorkerTab" tabid="dayWorkerTab" title="人员日检">
+    </div>
+    <div id="dayDeviceTab" tabid="dayDeviceTab" title="设备日检">
+    </div>
+    <div id="taskTab" tabid="taskTab" title="任务考勤">
+    </div>
+    <div id="dataTab" tabid="dataTab" title="数据分析">
+    </div>
+    <div id="uploadTab" tabid="uploadTab" title="点检上传">
+    </div>
+</div>

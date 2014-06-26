@@ -20,7 +20,7 @@ public class InspectItemChoiceService {
     private InspectChoiceService inspectChoiceService;
 
     public void addList(List<InspectItemChoice> inspectItemChoiceList){
-         inspectItemChoiceMapper.addList(inspectItemChoiceList);
+        inspectItemChoiceMapper.addList(inspectItemChoiceList);
     }
     public String getChoiceValueByItemId(long id){
         String choiceValue="";

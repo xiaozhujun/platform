@@ -4,6 +4,7 @@ import com.mongodb.*;
 import com.mongodb.util.JSON;
 import org.bson.types.ObjectId;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
+import org.whut.platform.fundamental.exception.BusinessException;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.net.UnknownHostException;
@@ -22,12 +23,16 @@ public class MongoConnector {
     private static PlatformLogger logger = PlatformLogger.getLogger(MongoConnector.class);
 
     private static Mongo mongo;
+    private static String user;
+    private static String password;
     private String dbName;
     private String collectionName;
 
     static {
         String host = FundamentalConfigProvider.get("mongo.host");
         String port = FundamentalConfigProvider.get("mongo.port");
+        user = FundamentalConfigProvider.get("mongo.user");
+        password = FundamentalConfigProvider.get("mongo.password");
         try {
             mongo = new Mongo(host,Integer.parseInt(port));
             logger.info("mongo is initialized,host is "+host+" ,port is "+port);
@@ -41,12 +46,6 @@ public class MongoConnector {
          return mongo;
     }
 
-    public static DB getDB(String dbName){
-        return mongo.getDB(dbName);
-    }
-
-
-
     //传感器数据舒服构造函数
     public MongoConnector(String dbName, String collectionName){
         this.dbName = dbName;
@@ -56,7 +55,7 @@ public class MongoConnector {
 
     //保存文档对象
     public String insertDocument(String documentJSON){
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         DBObject document = (DBObject) JSON.parse(documentJSON);
         WriteResult result = collection.insert(document);
@@ -68,7 +67,7 @@ public class MongoConnector {
     }
 
     public String insertDocumentObject(DBObject documentObject){
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         WriteResult result = collection.insert(documentObject);
         Object objectId = documentObject.get("_id");
@@ -83,7 +82,7 @@ public class MongoConnector {
         if(objectID==null){
             throw new IllegalArgumentException("object id is null");
         }
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(objectID));
@@ -99,7 +98,7 @@ public class MongoConnector {
     }
     //根据reportNumber来提取某一条记录
     public DBObject  getDBObjectByReportNumber(String reportNuumber){
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         DBCursor dbCursor=collection.find();
         while (dbCursor.hasNext()){
@@ -114,7 +113,7 @@ public class MongoConnector {
     }
     //根据reportNumber来提取某一条记录
     public List<DBObject>  getInspectItemRecordByMongoId(String mongoId){
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         DBCursor dbCursor=collection.find();
         List<DBObject> list=new ArrayList<DBObject>();
@@ -130,7 +129,7 @@ public class MongoConnector {
     }
     //取根据每一类来找出某一列的值，用来算最大值
     public List<String> getOneColumnByEquipmentVariety(String column,List<String> equipmentVariety){
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         DBCursor dbCursor=collection.find();
         List<String> list=new ArrayList<String>();
@@ -147,7 +146,7 @@ public class MongoConnector {
         return list;
     }
     public DBObject getMaxValueByCraneType(String craneTypeId){
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         DBCursor dbCursor=collection.find();
         while (dbCursor.hasNext()){
@@ -162,7 +161,7 @@ public class MongoConnector {
     }
     public List<DBObject> getDbArrayListFromMongo1(){
         //从mongo中拿出所有的记录
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         DBCursor dbCursor=collection.find();
         List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
@@ -175,7 +174,7 @@ public class MongoConnector {
     }
     public List<List<DBObject>> getDbArrayListFromMongo(){
         //从mongo中拿出所有的记录
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         DBCursor dbCursor=collection.find();
         List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
@@ -187,7 +186,7 @@ public class MongoConnector {
         return dd;
     }
     public void dropCollection(){
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         collection.drop();
     }
@@ -197,8 +196,23 @@ public class MongoConnector {
         if(query==null){
             throw new IllegalArgumentException("object id is null");
         }
-        DB db = mongo.getDB(dbName);
+        DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
         return collection.find(query).toArray();
+    }
+
+    public static DB getDB(String dbName){
+        if(mongo!=null){
+            DB db = mongo.getDB(dbName);
+            if(user!=null&&password!=null){
+                if(db.authenticate(user,password.toCharArray())){
+                    return db;
+                }else{
+                    throw new BusinessException(new Exception("mongo's user and password auth fail!"));
+                }
+            }
+            return db;
+        }
+        return null;
     }
 }

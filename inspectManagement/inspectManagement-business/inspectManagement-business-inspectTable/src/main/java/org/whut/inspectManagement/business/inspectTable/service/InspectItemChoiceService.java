@@ -20,7 +20,7 @@ public class InspectItemChoiceService {
     private InspectChoiceService inspectChoiceService;
 
     public void addList(List<InspectItemChoice> inspectItemChoiceList){
-         inspectItemChoiceMapper.addList(inspectItemChoiceList);
+        inspectItemChoiceMapper.addList(inspectItemChoiceList);
     }
     public String getChoiceValueByItemId(long id){
         String choiceValue="";
@@ -31,7 +31,9 @@ public class InspectItemChoiceService {
             choice=inspectChoiceService .getChoiceValueById(choiceIdList.get(i))+";";
             choiceValue+=choice;
         }
-        choiceValue+=inspectChoiceService.getChoiceValueById(choiceIdList.get(choiceIdList.size()-1));
+        if(choiceIdList.size()!=0){
+            choiceValue+=inspectChoiceService.getChoiceValueById(choiceIdList.get(choiceIdList.size()-1));
+        }
         return choiceValue;
     }
     public void deleteByInspectItemIdAndAppId(long inspectItemId,long appId){

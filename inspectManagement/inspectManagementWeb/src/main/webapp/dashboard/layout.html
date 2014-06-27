@@ -8,6 +8,8 @@
         $("#tab").ligerTab({onAfterSelectTabItem: function (tabid) {
             loadTabPage(tabid);
         }});
+
+        loadTabPage('dayWorkerTab');
     });
 
     function loadTabPage(tabid){

@@ -57,10 +57,7 @@ var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
 $("#tab1").ligerTab();
 $("#sTime").ligerDateEditor({initValue: dd});
 $("#eTime").ligerDateEditor({initValue: dd});
-$("#panel1").ligerPanel({
-    title:'人员日检',
-    width:'100%'
-});
+
 $("#panel2").ligerPanel({
     title:'人员日检',
     width:'100%'
@@ -78,29 +75,53 @@ function getInspectTableRecordList(){
     var deviceId=$("#device").val();
     var sTime=$("#sTime").val();
     var eTime=$("#eTime").val();
-    $.post($.URL.inspectReport.getInspectTableRecordList,{"userId":userId,"deviceId":deviceId,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
+    $.post($.URL.inspectReport.getInspectTableRecordGroupByEmployer,{"userId":userId,"deviceId":deviceId,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
 }
 getInspectTableRecordList();
 $("#submitBtn1").click(function(){
     getInspectTableRecordList();
 });
-var peopleRecordData={};
+
 function getInspectTableRecordListCallback(data){
     if(data.code==200){
-        if(data.data[0]==undefined){
+        if(data.data==null){
             $.ligerDialog.alert("抱歉,记录不存在!");
         }else{
-            peopleRecordData.Rows = data.data;
-            peopleRecordData.Total = data.data.length;
-            f_peopleRecord();
-            f_deviceRecord();
+            $("#reportShow").html("");
+            showData(data.data);
         }
     }
 }
+
+function showData(data){
+    for(var p in data){
+        // 方法
+        if(typeof(data[p])=="function"){
+        }else{
+            showGrid(p,data[p]);
+        }
+    }
+}
+
+function showGrid(name,data){
+    var reportBlock = $("<div class='reportBlock'></div>");
+    var reportPanel = $("<div></div>");
+    var grid = $("<div ></div>");
+    reportBlock.append(reportPanel);
+    reportPanel.append(grid);
+    $("#reportShow").append(reportBlock);
+    reportPanel.ligerPanel({
+        title:name,
+        width:'100%'
+    });
+    f_peopleRecord(grid,data);
+
+}
+
 var manager, g;
-function f_peopleRecord()
+function f_peopleRecord(grid,data)
 {
-    g = manager = $("#maingrid").ligerGrid({
+    g = manager = grid.ligerGrid({
         columns: [
             { display: '点检人员', name: 'username',
                 editor: { type: 'text' }
@@ -114,7 +135,7 @@ function f_peopleRecord()
             { display: '异常数', name: 'exceptioncount', hidden:'mongoId',
                 editor: { type: 'text' }
             },
-            { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+            { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
             {
                 var h = "";
                 h += "<a href='javascript:getInfo(" + rowindex + ")'>详情</a> ";
@@ -127,9 +148,8 @@ function f_peopleRecord()
             $("#txtrowindex").val(rowindex);
         },
         enabledEdit: true,clickToEdit:false, isScroll: false,
-        data: peopleRecordData,
-        width: '100%',
-        groupColumnDisplay:'员工类型',groupColumnName:'employeeRoleName'
+        data: data,
+        width: '100%'
     });
 }
 var manager1, g1;
@@ -137,19 +157,19 @@ function f_deviceRecord()
 {
     g1 = manager1 = $("#devicegrid").ligerGrid({
         columns: [
-            { display: '点检设备', name: 'devname', width:247,
+            { display: '点检设备', name: 'devname',
                 editor: { type: 'text' }
             },
-            { display: '点检人员', name: 'username', type: 'string', width:247,
+            { display: '点检人员', name: 'username',
                 editor: { type: 'text' }
             },
-            { display: '点检时间', name: 'createtime', width:247,
+            { display: '点检时间', name: 'createtime',
                 editor: { type: 'text' }
             },
-            { display: '异常数', name: 'exceptioncount',width:247,
+            { display: '异常数', name: 'exceptioncount',
                 editor: { type: 'text' }
             },
-            { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+            { display: '操作', isSort: false, render: function (rowdata, rowindex, value)
             {
                 var h = "";
                 h += "<a href='javascript:getDevInfo(" + rowindex + ")'>详情</a> ";
@@ -200,13 +220,6 @@ function getInspectInfoCallback(data){
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
 </div>
-<div class="reportContent" id="reportShow">
-    <!--这里分四个块-->
-    <div class="reportBlock">
-        <div id="panel1">
-            <div id="maingrid"></div>
-        </div>
-    </div>
-</div>
+<div class="reportContent" id="reportShow"></div>
 </body>
 </html>

@@ -113,7 +113,9 @@
             "getInspectTableRecordList":"rs/inspectReport/getInspectTableRecordList",
             "getInspectInfo":"rs/inspectReport/getInspectInfo",
             "getInspectPeoplePie":"rs/inspectReport/getInspectPeoplePie",
-            "getInspectDevicePie":"rs/inspectReport/getInspectDevicePie"
+            "getInspectDevicePie":"rs/inspectReport/getInspectDevicePie",
+            "getInspectTableRecordGroupByEmployer":"rs/inspectReport/getInspectTableRecordGroupByEmployer",
+            "getInspectTableRecordGroupByDevice":"rs/inspectReport/getInspectTableRecordGroupByDevice"
         }
     }
 })(jQuery);

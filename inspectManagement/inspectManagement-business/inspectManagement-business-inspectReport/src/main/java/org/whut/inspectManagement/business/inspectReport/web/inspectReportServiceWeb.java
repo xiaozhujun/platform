@@ -177,6 +177,47 @@ public class inspectReportServiceWeb {
         List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getInspectTableRecordGroupByEmployer")
+    public String getInspectTableRecordGroupByEmployer(@FormParam("userId")String userId,@FormParam("deviceId")String deviceId,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        HashMap<String,List> data = new HashMap<String, List>();
+        String key;
+        for(Map<String,String> o:list){
+            key = o.get("employeeRoleName");
+            if(data.containsKey(key)){
+               data.get(key).add(o);
+            }else{
+               ArrayList<Map<String,String>> listTemp = new ArrayList<Map<String, String>>();
+                listTemp.add(o);
+                data.put(key,listTemp);
+            }
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(data,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getInspectTableRecordGroupByDevice")
+    public String getInspectTableRecordGroupByDevice(@FormParam("userId")String userId,@FormParam("deviceId")String deviceId,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        HashMap<String,List> data = new HashMap<String, List>();
+        String key;
+        for(Map<String,String> o:list){
+            key = o.get("devname");
+            if(data.containsKey(key)){
+                data.get(key).add(o);
+            }else{
+                ArrayList<Map<String,String>> listTemp = new ArrayList<Map<String, String>>();
+                listTemp.add(o);
+                data.put(key,listTemp);
+            }
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(data,JsonResultUtils.Code.SUCCESS);
+    }
+
     public String transferDateToString(Date d){
         SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
         String s=sf.format(d);

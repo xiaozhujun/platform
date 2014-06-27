@@ -4,6 +4,7 @@ import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.report.service.ReportService;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -49,17 +50,17 @@ public class ReportServiceWeb {
             StringBuffer buffer =  new StringBuffer("");
             for(DBObject object:list){
 
-                buffer.append(format.format(new Date((Long)object.get("time"))));
+                buffer.append(format.format(new Date((Long)object.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time")))));
                 buffer.append(" ");
-                buffer.append(object.get("sensorNum"));
+                buffer.append(object.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")));
 
-                for(Object o:(List)object.get("data")){
+                for(Object o:(List)object.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"))){
                     buffer.append(" ");
                     buffer.append(o);
                 }
                 buffer.append("\r\n");
             }
-            response.setHeader( "Content-Disposition", "attachment;filename=" + sensorNum+".txt");
+            response.setHeader("Content-Disposition", "attachment;filename=" + sensorNum + ".txt");
             return  buffer.toString();
         } catch (ParseException e) {
            logger.error(e.getMessage());

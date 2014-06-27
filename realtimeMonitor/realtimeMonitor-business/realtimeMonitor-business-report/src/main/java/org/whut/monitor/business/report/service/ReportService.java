@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryOperators;
 import com.mongodb.util.JSON;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
 import java.util.*;
@@ -75,13 +76,13 @@ public class ReportService {
     public List<DBObject> queryDocuments(Date startTime,Date endTime,String sensorNum){
         ArrayList<BasicDBObject> query = new ArrayList<BasicDBObject>();
         if(startTime!=null){
-            query.add(new BasicDBObject("time", new BasicDBObject("$gte", startTime.getTime())));
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$gte", startTime.getTime())));
         }
         if(endTime!=null){
-            query.add(new BasicDBObject("time", new BasicDBObject("$lte", endTime.getTime())));
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$lte", endTime.getTime())));
         }
         if(sensorNum!=null){
-            query.add(new BasicDBObject("sensorNum", sensorNum));
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id"), sensorNum));
         }
         BasicDBObject condition = new BasicDBObject(QueryOperators.AND,query);
         return mongoConnector.getDocumentList(condition);

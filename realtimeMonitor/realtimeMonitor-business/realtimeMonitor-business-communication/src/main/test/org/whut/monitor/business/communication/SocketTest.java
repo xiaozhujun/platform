@@ -39,7 +39,7 @@ public class SocketTest {
 
                 }
                 Date now = new Date();
-                String json = "{sensors:[{sNum:'301',dataType:'Route',Time:"+now.getTime()+",Data:["+data+"]}]}";
+                String json = "{sensors:[{sNum:'2100000000010000',dataType:'Route',Time:"+now.getTime()+",Data:["+data+"]}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);

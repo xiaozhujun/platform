@@ -109,7 +109,11 @@
             <artifactId>inspectManagement-business-inspectTable</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-deptAndEmployee</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>inspectManagement</groupId>
             <artifactId>inspectManagement-business-device</artifactId>

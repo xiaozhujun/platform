@@ -6,6 +6,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.inspectManagement.business.deptAndEmployee.mapper.EmployeeMapper;
 import org.whut.inspectManagement.business.device.mapper.DeviceMapper;
 import org.whut.inspectManagement.business.device.mapper.InspectTagMapper;
 import org.whut.inspectManagement.business.inspectResult.entity.InspectItemRecord;
@@ -48,6 +49,8 @@ public class InspectTableRecordService {
     DeviceMapper deviceMapper;
     @Autowired
     InspectTagMapper inspectTagMapper;
+    @Autowired
+    EmployeeMapper employeeMapper;
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","inspectItemRecordCollection");
     public int DomReadXml(Document document) {
         long appId= UserContext.currentUserAppId();
@@ -77,7 +80,7 @@ public class InspectTableRecordService {
         }
         else{
             tname = root.attribute("inspecttype").getValue();
-            t = root.attribute("inspecttime").getValue();
+            t = filterDateString(root.attribute("inspecttime").getValue());
             worknum=root.attribute("workernumber").getValue();
             dnum=root.attribute("devicenumber").getValue();
             if(tname.equals("")||t.equals("")||worknum.equals("")||dnum.equals("")){
@@ -108,7 +111,8 @@ public class InspectTableRecordService {
                 exception.printStackTrace();
             }
             long userId;//解析数据插入到InspectTableRecord
-            userId=Long.parseLong(worknum);
+            //此时根据员工的员工编号查出userId
+            userId=employeeMapper.getById(Long.parseLong(worknum)).getUserId();
             String mongoId=userId+""+deviceId+""+inspectTableId;
             inspectTableRecord.setUseId(userId);
             inspectTableRecord.setInspectTableId(inspectTableId);
@@ -136,6 +140,7 @@ public class InspectTableRecordService {
                 inspectTableRecordMapper.add(inspectTableRecord);
                 flag=5;
             }
+
             long inspectTableRecordId =inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);
             List<Element> e2 = e1.elements();
             Iterator<Element> it2 = e2.iterator();
@@ -216,6 +221,17 @@ public class InspectTableRecordService {
           }
           mongoString+="]}";
           mongoConnector.insertDocument(mongoString);
+      }
+      public String filterDateString(String d){
+          String s=null;
+          try{
+              SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+              Date dd=sdf.parse(d);
+              s=sdf.format(dd);
+          }catch (Exception e){
+              e.printStackTrace();
+          }
+          return s;
       }
 }
 

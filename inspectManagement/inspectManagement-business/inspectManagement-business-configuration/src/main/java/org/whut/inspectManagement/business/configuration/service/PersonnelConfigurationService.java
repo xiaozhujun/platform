@@ -4,6 +4,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.whut.inspectManagement.business.configuration.entity.ConfigureParameter;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeEmployeeRole;
 
 import java.io.ByteArrayOutputStream;
@@ -24,16 +25,16 @@ public class PersonnelConfigurationService {
     public String configurationConstruction(List<EmployeeEmployeeRole> list){
         String result="";
         Document doc = DocumentHelper.createDocument();
-        Element employees = doc.addElement("employees");
+        Element employees = doc.addElement(ConfigureParameter.employers);
         for(int i=0;i<list.size();i++){
             EmployeeEmployeeRole eer =list.get(i);
-            Element employee = employees.addElement("employee");
-            employee.addElement("cardType").addText("1");
-            employee.addElement("role").addText(eer.getEmployeeRoleName());
+            Element employee = employees.addElement(ConfigureParameter.employer);
+            employee.addElement(ConfigureParameter.cardType).addText("1");
+            employee.addElement(ConfigureParameter.role).addText(eer.getEmployeeRoleName());
             System.out.println(eer.getEmployeeRoleName()+"test");
-            employee.addElement("roleNum").addText(String.valueOf(eer.getEmployeeRoleId()));
-            employee.addElement("name").addText(eer.getEmployeeName());
-            employee.addElement("number").addText(String.valueOf(eer.getEmployeeId()));
+            employee.addElement(ConfigureParameter.roleNum).addText(String.valueOf(eer.getEmployeeRoleId()));
+            employee.addElement(ConfigureParameter.name).addText(eer.getEmployeeName());
+            employee.addElement(ConfigureParameter.number).addText(String.valueOf(eer.getEmployeeId()));
         }
         result=new XmlFormat().getXmlStringByFormat(doc);
         return result;

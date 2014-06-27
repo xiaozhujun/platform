@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.inspectManagement.business.configuration.entity.ConfigureParameter;
 import org.whut.inspectManagement.business.configuration.service.DeviceConfigurationService;
 import org.whut.inspectManagement.business.device.entity.DeviceTypeTag;
 import org.whut.inspectManagement.business.device.service.DeviceService;
@@ -63,7 +64,7 @@ public class DeviceConfigurationServiceWeb {
         System.out.println(result);
         if(result!=""){
             try{
-                String fileName = "tags.xml";
+                String fileName = ConfigureParameter.tagsXml;
                 response.setContentType("text/plain;charset=utf-8");
                 response.setHeader("Location",fileName);
                 response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("utf-8"),"ISO8859-1"));

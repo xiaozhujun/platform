@@ -5,6 +5,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.whut.inspectManagement.business.configuration.entity.ConfigureParameter;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployeeRole;
 
 import java.io.ByteArrayOutputStream;
@@ -24,16 +25,16 @@ public class RoleTablesDownloadService {
         String result="";
         String roleTemp= "";
         Document doc = DocumentHelper.createDocument();
-        Element RolesTable = doc.addElement("RolesTable");
+        Element RolesTable = doc.addElement(ConfigureParameter.RolesTable);
         Iterator<SubEmployeeRole> iterator = list.iterator();
         while(iterator.hasNext()){
             SubEmployeeRole ser = iterator.next();
-            Element role = RolesTable.addElement("Role");
-            role.addAttribute("name",ser.getName());
-            role.addAttribute("roleNum", String.valueOf(ser.getId()));
+            Element role = RolesTable.addElement(ConfigureParameter.Role);
+            role.addAttribute(ConfigureParameter.name,ser.getName());
+            role.addAttribute(ConfigureParameter.roleNum, String.valueOf(ser.getId()));
             String[] tables = ser.getInspectTable().split(";");
             for(String s:tables){
-                role.addElement("TableItem").addAttribute("name",s);
+                role.addElement(ConfigureParameter.TableItem).addAttribute(ConfigureParameter.name,s);
             }
         }
         result=new XmlFormat().getXmlStringByFormat(doc);

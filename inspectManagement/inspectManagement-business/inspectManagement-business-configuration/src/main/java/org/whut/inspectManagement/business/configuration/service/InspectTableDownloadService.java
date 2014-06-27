@@ -6,6 +6,7 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.inspectManagement.business.configuration.entity.ConfigureParameter;
 import org.whut.inspectManagement.business.configuration.entity.InspectTableItem;
 import org.whut.inspectManagement.business.device.mapper.InspectAreaMapper;
 import org.whut.inspectManagement.business.inspectTable.entity.InspectItem;
@@ -78,12 +79,12 @@ public class InspectTableDownloadService {
 
            String dType = inspectTableItemList.get(0).getDeviceType();
 
-           Element table = doc.addElement("check").addAttribute("inspecttype",name);
-           table.addAttribute("inspecttime","");
-           table.addAttribute("worker","");
-           table.addAttribute("workernumber","");
-           table.addAttribute("devicenumber","");
-           Element dt  = table.addElement("devicetype").addAttribute("name",dType);
+           Element table = doc.addElement(ConfigureParameter.check).addAttribute(ConfigureParameter.inspecttype,name);
+           table.addAttribute(ConfigureParameter.inspecttime,"");
+           table.addAttribute(ConfigureParameter.worker,"");
+           table.addAttribute(ConfigureParameter.workernumber,"");
+           table.addAttribute(ConfigureParameter.devicenumber,"");
+           Element dt  = table.addElement(ConfigureParameter.devicetype).addAttribute(ConfigureParameter.name,dType);
            String location = "";
            Iterator it = inspectTableItemList.iterator();
            Element lc = null;
@@ -92,19 +93,19 @@ public class InspectTableDownloadService {
                String loc = iti.getArea();
                if(!location.equals(loc)){
                    location = loc;
-                   lc = dt.addElement("location").addAttribute("name",loc);
-                   lc.addAttribute("areaId", String.valueOf(iti.getAreaId()));
+                   lc = dt.addElement(ConfigureParameter.location).addAttribute(ConfigureParameter.name,loc);
+                   lc.addAttribute(ConfigureParameter.areaId, String.valueOf(iti.getAreaId()));
                }
-               Element item = lc.addElement("field");
-               item.addAttribute("name",iti.getName());
-               item.addAttribute("itemId", String.valueOf(iti.getId()));
-               item.addAttribute("isInput",iti.getInput());
-               item.addAttribute("util","");
+               Element item = lc.addElement(ConfigureParameter.field);
+               item.addAttribute(ConfigureParameter.name,iti.getName());
+               item.addAttribute(ConfigureParameter.itemId, String.valueOf(iti.getId()));
+               item.addAttribute(ConfigureParameter.isInput,iti.getInput());
+               item.addAttribute(ConfigureParameter.util,"");
                if(iti.getInput().equals("false")){
                    Iterator it1 = iti.getValues().iterator();
                    while(it1.hasNext()){
                        String value = (String) it1.next();
-                       item.addElement("value").addAttribute("name",value);
+                       item.addElement(ConfigureParameter.value).addAttribute(ConfigureParameter.name,value);
                    }
                }
            }

@@ -22,11 +22,13 @@ public class SensorDataService {
     private String sensorCollection;
     private RedisConnector redisConnector;
     private MongoConnector mongoConnector;
+    private int keyExpireTime;
 
     //构造函数
     public SensorDataService(){
         sensorDB = FundamentalConfigProvider.get("monitor.mongo.sensorDB");
         sensorCollection = FundamentalConfigProvider.get("monitor.mongo.sensorCollection");
+        keyExpireTime = Integer.parseInt(FundamentalConfigProvider.get("redis.key.expire"));
 
         redisConnector = new RedisConnector();
         mongoConnector = new MongoConnector(sensorDB,sensorCollection);
@@ -46,7 +48,7 @@ public class SensorDataService {
 
                 String temp = mongoConnector.insertDocumentObject(curSensor);
                 if(objectID!=null){
-                    if(redisConnector.set(sensor, temp)){
+                    if(redisConnector.set(sensor,keyExpireTime,temp)){
                         objectID+=temp + " ";
                     }
                 }

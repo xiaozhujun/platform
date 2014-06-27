@@ -17,7 +17,7 @@ public class SocketTest {
     public static void main(String[] args)  {
         //为了简单起见，所有的异常都直接往外抛
         String host = "www.cseicms.com";  //要连接的服务端IP地址
-        //String host = "www.cseicms.com";  //要连接的服务端IP地址
+        //String host = "127.0.0.1";  //要连接的服务端IP地址
         int port = 38888;   //要连接的服务端对应的监听端口
         //与服务端建立连接
         Socket client = null;
@@ -32,14 +32,14 @@ public class SocketTest {
             for (long j=0;j<count;j++){
                 for(int i=0;i<60;i++){
                     if(i==0){
-                        data.append(Math.round(Math.random()*4));
+                        data.append(Math.round(Math.random()*500));
                     }else{
-                        data.append(",").append(Math.round(Math.random()*4));
+                        data.append(",").append(Math.round(Math.random()*500));
                     }
 
                 }
                 Date now = new Date();
-                String json = "{sensors:[{sensorNum:'301',dataType:'Route',time:"+now.getTime()+",data:["+data+"]}]}";
+                String json = "{sensors:[{sNum:'301',dataType:'Route',Time:"+now.getTime()+",Data:["+data+"]}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);

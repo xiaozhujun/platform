@@ -46,6 +46,21 @@ public class RedisConnector {
         return false;
     }
 
+    public boolean set(String key,int expire,String value){
+        Jedis jedis = pool.getResource();
+        try{
+            String result = jedis.setex(key,expire,value);
+            if (result.equals("OK")){
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            pool.returnResource(jedis);
+        }
+        return false;
+    }
+
     public String get(String key){
         Jedis jedis = pool.getResource();
         String result = null;

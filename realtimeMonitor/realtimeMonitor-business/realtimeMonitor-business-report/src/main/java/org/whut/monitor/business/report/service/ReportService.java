@@ -7,6 +7,7 @@ import com.mongodb.util.JSON;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -74,12 +75,13 @@ public class ReportService {
 
     //获取指定传感器在时间段内的数据
     public List<DBObject> queryDocuments(Date startTime,Date endTime,String sensorNum){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ArrayList<BasicDBObject> query = new ArrayList<BasicDBObject>();
         if(startTime!=null){
-            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$gte", startTime.getTime())));
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$gte", format.format(startTime))));
         }
         if(endTime!=null){
-            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$lte", endTime.getTime())));
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$lte", format.format(endTime))));
         }
         if(sensorNum!=null){
             query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id"), sensorNum));

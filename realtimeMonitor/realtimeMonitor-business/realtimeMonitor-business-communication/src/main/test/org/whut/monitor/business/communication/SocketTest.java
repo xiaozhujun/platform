@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -29,6 +30,8 @@ public class SocketTest {
             long count = 1000000;
             StringBuffer data = new StringBuffer("");
             Date startTime = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
             for (long j=0;j<count;j++){
                 for(int i=0;i<60;i++){
                     if(i==0){
@@ -39,7 +42,7 @@ public class SocketTest {
 
                 }
                 Date now = new Date();
-                String json = "{sensors:[{sNum:'2100000000010000',dataType:'Route',Time:"+now.getTime()+",Data:["+data+"]}]}";
+                String json = "{sensors:[{sNum:'2100000000010000',dataType:'Route',Time:'"+format.format(now)+"',Data:["+data+"]}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);

@@ -151,10 +151,17 @@ public class NIOServer implements Runnable{
     public static void main(String[] args) throws IOException {
 //       NIOServer server = new NIOServer();
 //       server.listen();
-         String data = "data:[58]}]}{sensors:[{sensorNum:1,dateType:'Vibration',time:'2013-11-05 10:29:24',data:[58]}]}";
+         String data = "{sensors:[{sNum:2100000000010000,Freq:24000,Samp:512,Time:'2014-06-27 15:12:48',Data:[-73,-73,-73,-73,-74,-74,-75,-75,-76,-77,-77,-77,-77,-77,-77,-77,-76,-75,-75,-74,-73,-73,-72,-72,-72,-73,-73,-74,-75,-75,-76,-76,-77,-77,-77,-77,-77,-76,-76,-75,-75,-74,-74,-73,-73,-73,-73,-73,-74,-74,-75,-76,-77,-78,-79,-79,-79,-80,-80,-79,-78,-76,-75,-73,-72,-71,-69,-68,-68,-68,-69,-70,-71,-73,-75,-77,-79,-81,-82,-83,-83,-83,-83,-82,-80,-78,-76,-75,-73,-72,-70,-69,-68,-68,-68,-69,-70,-72,-73,-75,-76,-78,-79,-80,-81,-81,-82,-81,-80,-79,-78,-76,-75,-73,-72,-71,-71,-70,-70,-71,-72,-72,-74,-75,-76,-77,-78,-79,-79,-79,-79,-79,-78,-77,-76,-75,-74,-74,-73,-72,-72,-72,-72,-73,-73,-74,-75,-75,-76,-77,-77,-77,-77,-77,-77,-76,-75,-75,-74,-74,-74,-73,-73,-74,-74,-75,-75,-76,-76,-77,-78,-78,-78,-78,-78,-77,-77,-76,-75,-74,-73,-73,-72,-72,-71,-71,-71,-71,-71,-72,-72,-73,-74,-75,-75,-76,-76,-77,-77,-76,-76,-76,-75,-75,-75,-75,-74,-74,-74,-74,-75,-75,-75,-75,-75,-76,-76,-76,-76,-75,-75,-75,-74,-74,-73,-72,-71,-71,-71,-71,-71,-72,-72,-74,-75,-77,-78,-79,-80,-81,-81,-81,-81,-81,-80,-78,-77,-75,-74,-72,-71,-70,-69,-68,-68,-68]},{sNum:2100000000010010,Freq:24000,Samp:512,Time:'2014-06-27 15:12:48',Data:[-75,-75,-75,-75,-76,-75,-75,-75,-75,-75,-75,-75,-75,-75,-75,-75,-75,-74,-74,-74,-74,-74,-74,-74,-74,-74,-74,-75,-75,-75,-75,-75,-75,-75,-75,-74,-74,-73,-72,-72,-72,-72,-72,-72,-72,-72,-73,-73,-73,-74,-74,-73,-73,-73,-73,-73,-73,-73,-72,-72,-72,-73,-73,-73,-73,-73,-74,-74,-74,-74,-74,-74,-73,-73,-73,-73,-72,-72,-72,-72,-72,-72,-72,-72,-72,-73,-73,-73,-73,-73,-74,-74,-75,-74,-74,-74,-74,-73,-72,-72,-72,-71,-71,-71,-72,-72,-73,-73,-74,-75,-75,-75,-75,-75,-75,-74,-74,-74,-74,-74,-73,-73,-73,-73,-72,-72,-72,-72,-72,-72,-72,-72,-73,-73,-74,-74,-75,-75,-75,-76,-76,-75,-75,-75,-74,-74,-73,-72,-72,-72,-72,-72,-73,-73,-73,-73,-73,-73,-72,-72,-72,-72,-72,-72,-72,-72,-73,-73,-73,-73,-74,-73,-73,-73,-74,-73,-73,-73,-73,-73,-73,-73,-74,-74,-74,-74,-74,-74,-75,-75,-74,-75,-74,-74,-74,-74,-74,-74,-74,-74,-74,-74,-74,-75,-75,-75,-75,-75,-75,-75,-75,-75,-75,-75,-75,-76,-76,-76,-76,-76,-76,-76,-76,-75,-75,-75,-75,-74,-74,-74,-74,-74,-74,-74,-74,-74,-74,-74,-73,-73,-73,-73,-73,-74,-74,-74,-75,-75,-75,-76,-76,-76,-76,-76,-75,-75]}]}";
         int startIndex = data.indexOf("{sensors:[{");
         int endIndex = data.indexOf("}]}");
         System.out.println(data.substring(0,endIndex+3));
+
+        StringBuffer buffer = new StringBuffer("");
+        buffer.append(data);
+        System.out.println("1:"+buffer.toString());
+
+        buffer.setLength(0);
+        System.out.println("2:"+buffer.toString());
 
     }
 
@@ -169,28 +176,31 @@ public class NIOServer implements Runnable{
             if(endIndex>=0&&startIndex>=0){
                 if(endIndex<startIndex){
                     if(msgBuffer.length()>0){
+                        logger.info("text1:append: "+msg.substring(0,endIndex+3));
                         msgBuffer.append(msg.substring(0,endIndex+3));
                         messageDispatcher.dispatchMessage(msgBuffer.toString());
-                        msgBuffer.delete(0,msgBuffer.length()-1);
+                        msgBuffer.setLength(0);
                     }
                     localMsg = localMsg.substring(startIndex);
                 }else{
+                    logger.info("text2:append: "+localMsg.substring(startIndex,endIndex+3));
                     messageDispatcher.dispatchMessage(localMsg.substring(startIndex,endIndex+3));
                     if(msgBuffer.length()>0){
-                        msgBuffer.delete(0,msgBuffer.length()-1);
+                        msgBuffer.setLength(0);
                     }
                     localMsg = localMsg.substring(endIndex+3);
                 }
             }else if(endIndex>=0&&startIndex<0){
                 if(msgBuffer.length()>0){
+                    logger.info("text3:append: "+msg.substring(0,endIndex+3));
                     msgBuffer.append(msg.substring(0,endIndex+3));
                     messageDispatcher.dispatchMessage(msgBuffer.toString());
-                    msgBuffer.delete(0,msgBuffer.length()-1);
+                    msgBuffer.setLength(0);
                 }
                 break;
             }else if(endIndex<0&&startIndex>=0){
                 if(msgBuffer.length()>0){
-                    msgBuffer.delete(0,msgBuffer.length()-1);
+                    msgBuffer.setLength(0);
                 }
                 msgBuffer.append(localMsg.substring(startIndex));
                 break;

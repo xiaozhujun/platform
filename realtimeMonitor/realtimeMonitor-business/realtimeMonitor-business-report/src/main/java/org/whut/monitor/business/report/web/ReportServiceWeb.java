@@ -50,7 +50,7 @@ public class ReportServiceWeb {
             StringBuffer buffer =  new StringBuffer("");
             for(DBObject object:list){
 
-                buffer.append(format.format(new Date((Long)object.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time")))));
+                buffer.append(object.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time")));
                 buffer.append(" ");
                 buffer.append(object.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")));
 

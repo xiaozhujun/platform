@@ -44,7 +44,7 @@ public class InspectTableDownloadServiceWeb {
                response.setHeader("Content-Disposition","attachment; filename="
                        + new String(downloadFileName.getBytes("utf-8"),"ISO8859-1"));
                OutputStream outputStream = response.getOutputStream();
-               outputStream.write(result.getBytes());
+               outputStream.write(result.getBytes("utf-8"));
                outputStream.flush();
                outputStream.close();
            }

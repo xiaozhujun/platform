@@ -2,6 +2,7 @@ package org.whut.inspectManagement.business.configuration.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.inspectManagement.business.configuration.entity.ConfigureParameter;
 import org.whut.inspectManagement.business.configuration.service.RoleTablesDownloadService;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRole;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRoleInspectTable;
@@ -76,12 +77,12 @@ public class RoleTablesDownloadServiceWeb {
         System.out.println(result);
         if(result!=""){
            try{
-               String fileName = "RoleTables.xml";
+               String fileName = ConfigureParameter.RolesTableXml;
                response.setContentType("text/plain;charset=utf-8");
                response.setHeader("Location",fileName);
                response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("utf-8"),"ISO8859-1"));
                OutputStream outputStream = response.getOutputStream();
-               outputStream.write(result.getBytes());
+               outputStream.write(result.getBytes("utf-8"));
                outputStream.flush();
                outputStream.close();
            }

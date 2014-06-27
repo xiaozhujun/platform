@@ -5,6 +5,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.whut.inspectManagement.business.configuration.entity.ConfigureParameter;
 import org.whut.inspectManagement.business.device.entity.DeviceTypeTag;
 
 import java.io.ByteArrayOutputStream;
@@ -25,32 +26,19 @@ public class DeviceConfigurationService {
         String result="";
         Iterator<DeviceTypeTag> iterator = list.iterator();
         Document doc = DocumentHelper.createDocument();
-        Element tags = doc.addElement("tags");
+        Element tags = doc.addElement(ConfigureParameter.tags);
         while(iterator.hasNext()){
             DeviceTypeTag dtt = iterator.next();
-            Element tag = tags.addElement("tag");
-            tag.addElement("cardType").addText("2");
-            tag.addElement("deviceType").addText(dtt.getDeviceType());
-            tag.addElement("deviceTypeNum").addText(dtt.getDeviceTypeNumber());
-            tag.addElement("deviceNum").addText(dtt.getDeviceNumber());
-            tag.addElement("tagName").addText(dtt.getTagName());
-            tag.addElement("tagId").addText(String.valueOf(dtt.getTagId()));
-            tag.addElement("tagNumber").addText(dtt.getTagNumber());
+            Element tag = tags.addElement(ConfigureParameter.tag);
+            tag.addElement(ConfigureParameter.cardType).addText("2");
+            tag.addElement(ConfigureParameter.deviceType).addText(dtt.getDeviceType());
+            tag.addElement(ConfigureParameter.deviceTypeNum).addText(dtt.getDeviceTypeNumber());
+            tag.addElement(ConfigureParameter.deviceNum).addText(dtt.getDeviceNumber());
+            tag.addElement(ConfigureParameter.tagArea).addText(dtt.getTagName());
+            tag.addElement(ConfigureParameter.tagAreaNum).addText(String.valueOf(dtt.getTagId()));
+            tag.addElement(ConfigureParameter.tagNumber).addText(dtt.getTagNumber());
         }
-        try{
-            OutputFormat outputFormat =OutputFormat.createPrettyPrint();
-            String encoding = "UTF-8";
-            outputFormat.setEncoding(encoding);
-            outputFormat.setNewlines(true);
-            OutputStream outputStream = new ByteArrayOutputStream();
-            XMLWriter xmlWriter = new XMLWriter(outputStream,outputFormat);
-            xmlWriter.write(doc);
-            xmlWriter.close();
-            result=outputStream.toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        result=new XmlFormat().getXmlStringByFormat(doc);
         return result;
     }
 }

@@ -102,24 +102,23 @@ function showData(data){
         }
     }
 }
-
+var peopleData={};
 function showGrid(name,data){
     var reportBlock = $("<div class='reportBlock'></div>");
     var reportPanel = $("<div></div>");
-    var grid = $("<div ></div>");
-    reportBlock.append(reportPanel);
+    var grid = $("<div></div>");
     reportPanel.append(grid);
+    reportBlock.append(reportPanel);
     $("#reportShow").append(reportBlock);
+    peopleData.Rows=data;
+    f_peopleRecord(grid);
     reportPanel.ligerPanel({
         title:name,
         width:'100%'
     });
-    f_peopleRecord(grid,data);
-
 }
-
 var manager, g;
-function f_peopleRecord(grid,data)
+function f_peopleRecord(grid)
 {
     g = manager = grid.ligerGrid({
         columns: [
@@ -148,7 +147,7 @@ function f_peopleRecord(grid,data)
             $("#txtrowindex").val(rowindex);
         },
         enabledEdit: true,clickToEdit:false, isScroll: false,
-        data: data,
+        data: peopleData,
         width: '100%'
     });
 }

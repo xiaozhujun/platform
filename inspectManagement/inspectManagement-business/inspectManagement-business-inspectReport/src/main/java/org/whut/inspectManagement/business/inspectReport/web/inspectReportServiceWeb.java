@@ -240,11 +240,13 @@ public class inspectReportServiceWeb {
         platformReport.exportReportByType(reportTemplate,type,parameters,request,response,map.get(MongoConstant.tableName),reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+    //根据mongoId从mongoDb中取出数据
     public List<DBObject> getInfoFromMongoByMongoId(String mongoId){
         MongoConnector mongoConnector=new MongoConnector(MongoConstant.craneInspectReportDB,MongoConstant.inspectItemRecordCollection);
         List<DBObject> d=mongoConnector.getInspectItemRecordByMongoId(mongoId);
         return d;
     }
+    //从mongoDb中取出的id直接查询出相应的数据
     public List<Map<String,String>> getInfoByMongoDbObject(List<DBObject> dList){
            List<Map<String,String>> mapList=new ArrayList<Map<String, String>>();
            for(DBObject dd:dList){
@@ -254,6 +256,7 @@ public class inspectReportServiceWeb {
            }
            return mapList;
     }
+    //封装报表的数据源
     public List<ReportInfo> getReportListSource(Map<String,String> map){
         List<DBObject> d=getInfoFromMongoByMongoId(map.get(MongoConstant.mongoId));
         List<Map<String,String>> l=getInfoByMongoDbObject(d);
@@ -277,6 +280,7 @@ public class inspectReportServiceWeb {
         }
         return reportInfoList;
     }
+    //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
     @Path("/exportPeopleInfoReport/{type}")

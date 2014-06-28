@@ -57,19 +57,6 @@ var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
 $("#tab1").ligerTab();
 $("#sTime").ligerDateEditor({initValue: dd});
 $("#eTime").ligerDateEditor({initValue: dd});
-
-$("#panel2").ligerPanel({
-    title:'人员日检',
-    width:'100%'
-});
-$("#panel3").ligerPanel({
-    title:'人员日检',
-    width:'100%'
-});
-$("#panel4").ligerPanel({
-    title:'人员日检',
-    width:'100%'
-});
 function getInspectTableRecordList(){
     var userId=$("#user").val();
     var deviceId=$("#device").val();
@@ -146,44 +133,9 @@ function f_peopleRecord(grid)
         {
             $("#txtrowindex").val(rowindex);
         },
-        enabledEdit: true,clickToEdit:false, isScroll: false,
+        enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
         data: peopleData,
         width: '100%'
-    });
-}
-var manager1, g1;
-function f_deviceRecord()
-{
-    g1 = manager1 = $("#devicegrid").ligerGrid({
-        columns: [
-            { display: '点检设备', name: 'devname',
-                editor: { type: 'text' }
-            },
-            { display: '点检人员', name: 'username',
-                editor: { type: 'text' }
-            },
-            { display: '点检时间', name: 'createtime',
-                editor: { type: 'text' }
-            },
-            { display: '异常数', name: 'exceptioncount',
-                editor: { type: 'text' }
-            },
-            { display: '操作', isSort: false, render: function (rowdata, rowindex, value)
-            {
-                var h = "";
-                h += "<a href='javascript:getDevInfo(" + rowindex + ")'>详情</a> ";
-                return h;
-            }
-            }
-        ],
-        onSelectRow: function (rowdata, rowindex)
-        {
-            $("#txtrowindex").val(rowindex);
-        },
-        enabledEdit: true,clickToEdit:false, isScroll: false,
-        data: peopleRecordData,
-        width: '100%',
-        groupColumnDisplay:'设备类型',groupColumnName:'typename'
     });
 }
 function getInfo(rowid){
@@ -204,12 +156,7 @@ function getDevInfo(rowid){
 }
 function getInspectInfoCallback(data){
 }
-
-
-
-
 </script>
-
 </head>
 <body>
 <div class="searchContainer">

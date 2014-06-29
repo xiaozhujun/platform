@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectReport.entity.JasperReportTemplate;
 import org.whut.inspectManagement.business.inspectReport.entity.MongoConstant;
+import org.whut.inspectManagement.business.inspectReport.entity.ReportSearch;
 import org.whut.inspectManagement.business.inspectReport.mapper.ReportSqlMapper;
 import org.whut.inspectManagement.business.inspectReport.service.InspectReportService;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
@@ -30,7 +31,6 @@ import java.util.*;
 @Component
 @Path("/inspectReport")
 public class inspectReportServiceWeb {
-    private ReportSqlMapper reportSqlMapper=new ReportSqlMapper();
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Context
@@ -49,117 +49,57 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/reportSearch")
-    public String reportSearch(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("deviceId")String deviceId,@FormParam("userId")String userId,@FormParam("flag") String flag){
-        Connection connection=null;
-        try {
-            connection=sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    public String reportSearch(@FormParam("jsonString")String jsonString,@FormParam("flag") String flag){
+        ReportSearch reportSearch=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,ReportSearch.class);
         if(flag.equals("0")){
-            deviceCount(sTime,eTime,connection);
+            deviceCount(reportSearch.getsTime(),reportSearch.geteTime());
         }else if(flag.equals("1")){
             //deviceInfo
-            deviceInfo(sTime, eTime, deviceId, connection);
+            deviceInfo(reportSearch.getsTime(), reportSearch.geteTime(), reportSearch.getDeviceId());
         }else if(flag.equals("2")){
             //peopleCount
-            peopleCount(sTime,eTime,deviceId,connection);
+            peopleCount(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceId());
         }else if(flag.equals("3")){
             //peopleInfo
-            peopleInfo(sTime,eTime,deviceId,userId,connection);
+            peopleInfo(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceId(),reportSearch.getUserId());
         }else if(flag.equals("4")){
             //deviceHistory
-            deviceHistory(sTime,eTime,deviceId,connection);
+            deviceHistory(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceId());
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
        }
-
-    public String test(String sTime,String eTime,String deviceId,String userId){
-        String sql=null;
+    public void deviceCount(String sTime,String eTime){
+        //根据sTime和eTime来查出相应的值,封装成list，到报表
         try{
-            String name="test";
-            Map<String,Object> map=new HashMap<String, Object>();
-            map.put("sTime",sTime);
-            map.put("eTime",eTime);
-            map.put("deviceId",deviceId);
-            map.put("userId",userId);
-            sql=reportSqlMapper.getSql("deviceCountSql",sqlSessionFactory,map);
-            System.out.println(sql + "sql语句");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return sql;
-    }
-    public void deviceCount(String sTime,String eTime,Connection connection){
-        try{
-            Map<String,Object> map=new HashMap<String, Object>();
-            map.put("sTime",sTime);
-            map.put("eTime",eTime);
-            String deviceSql=reportSqlMapper.getSql("deviceCountSql",sqlSessionFactory,map);
-            Map<String,String> parameters=new HashMap<String, String>();
-            parameters.put("sql",deviceSql);
             String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/deviceCount1.jasper");
-            platformReport.getMapToExportReport(reportTemplate,parameters,"html",request,response,"deviceCount",connection);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void deviceInfo(String sTime,String eTime,String deviceId,Connection connection){
+    public void deviceInfo(String sTime,String eTime,String deviceId){
         try{
-            Map<String,Object> map=new HashMap<String, Object>();
-            map.put("sTime",sTime);
-            map.put("eTime",eTime);
-            map.put("deviceId",deviceId);
-            String deviceSql=reportSqlMapper.getSql("deviceInfoSql",sqlSessionFactory,map);
-            Map<String,String> parameters=new HashMap<String, String>();
-            parameters.put("sql",deviceSql);
             String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/deviceCount.jasper");
-            platformReport.getMapToExportReport(reportTemplate,parameters,"html",request,response,"deviceInfo",connection);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void peopleCount(String sTime,String eTime,String deviceId,Connection connection){
+    public void peopleCount(String sTime,String eTime,String deviceId){
         try{
-            Map<String,Object> map=new HashMap<String, Object>();
-            map.put("sTime",sTime);
-            map.put("eTime",eTime);
-            map.put("deviceId",deviceId);
-            String deviceSql=reportSqlMapper.getSql("peopleCountSql",sqlSessionFactory,map);
-            Map<String,String> parameters=new HashMap<String, String>();
-            parameters.put("sql",deviceSql);
             String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/peopleCount.jasper");
-            platformReport.getMapToExportReport(reportTemplate,parameters,"html",request,response,"peopleCount",connection);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void peopleInfo(String sTime,String eTime,String deviceId,String userId,Connection connection){
+    public void peopleInfo(String sTime,String eTime,String deviceId,String userId){
         try{
-            Map<String,Object> map=new HashMap<String, Object>();
-            map.put("sTime",sTime);
-            map.put("eTime",eTime);
-            map.put("deviceId",deviceId);
-            String peopleInfoSql=reportSqlMapper.getSql("peopleInfoSql",sqlSessionFactory,map);
-            Map<String,String> parameters=new HashMap<String, String>();
-            parameters.put("sql",peopleInfoSql);
             String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/reportx2.jasper");
-            platformReport.getMapToExportReport(reportTemplate,parameters,"html",request,response,"peopleInfo",connection);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void deviceHistory(String sTime,String eTime,String deviceId,Connection connection){
+    public void deviceHistory(String sTime,String eTime,String deviceId){
         try{
-            Map<String,Object> map=new HashMap<String, Object>();
-            map.put("sTime",sTime);
-            map.put("eTime",eTime);
-            map.put("deviceId",deviceId);
-            String deviceHistorySql=reportSqlMapper.getSql("deviceHistory",sqlSessionFactory,map);
-            Map<String,String> parameters=new HashMap<String, String>();
-            parameters.put("sql",deviceHistorySql);
             String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/deviceHistory1.jasper");
-            platformReport.getMapToExportReport(reportTemplate,parameters,"html",request,response,"deviceHistory",connection);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -210,12 +150,6 @@ public class inspectReportServiceWeb {
             }
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(data,JsonResultUtils.Code.SUCCESS);
-    }
-
-    public String transferDateToString(Date d){
-        SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
-        String s=sf.format(d);
-        return s;
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST

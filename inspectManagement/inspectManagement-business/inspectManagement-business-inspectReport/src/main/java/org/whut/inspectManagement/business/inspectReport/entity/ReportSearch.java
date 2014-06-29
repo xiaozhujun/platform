@@ -12,7 +12,7 @@ public class ReportSearch {
 
     private String eTime;
 
-    private String deviceNum;
+    private String deviceId;
 
     private String userId;
 
@@ -32,12 +32,12 @@ public class ReportSearch {
         this.eTime = eTime;
     }
 
-    public String getDeviceNum() {
-        return deviceNum;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setDeviceNum(String deviceNum) {
-        this.deviceNum = deviceNum;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getUserId() {

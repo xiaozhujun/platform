@@ -1,15 +1,13 @@
 package org.whut.inspectManagement.business.inspectReport.entity;
 
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: ThinkPad
- * Date: 14-6-11
- * Time: 下午7:01
+ * Date: 14-6-29
+ * Time: 下午3:58
  * To change this template use File | Settings | File Templates.
  */
-public class ReportInfo {
+public class ReportInfoBean {
     private String tName;
 
     private String devName;
@@ -20,7 +18,9 @@ public class ReportInfo {
 
     private String tagName;
 
-    private List<SubReportInfo> subReportInfoList;
+    private String itemName;
+
+    private String inspectChoiceValue;
 
     public String gettName() {
         return tName;
@@ -62,11 +62,19 @@ public class ReportInfo {
         this.tagName = tagName;
     }
 
-    public List<SubReportInfo> getSubReportInfoList() {
-        return subReportInfoList;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setSubReportInfoList(List<SubReportInfo> subReportInfoList) {
-        this.subReportInfoList = subReportInfoList;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getInspectChoiceValue() {
+        return inspectChoiceValue;
+    }
+
+    public void setInspectChoiceValue(String inspectChoiceValue) {
+        this.inspectChoiceValue = inspectChoiceValue;
     }
 }

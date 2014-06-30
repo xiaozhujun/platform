@@ -28,7 +28,7 @@ public class UserService {
         userMapper.add(user);
     }
 
-    public long getIdByName(String name){
+    public Long getIdByName(String name){
         return userMapper.getIdByName(name);
     }
     public int update(User user){

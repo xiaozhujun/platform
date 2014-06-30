@@ -56,7 +56,7 @@ public class DeviceService {
         return deviceMapper.getNameById(id);
     }
 
-    public long getIdByName(String name,long appId)
+    public Long getIdByName(String name,long appId)
     {
         return deviceMapper.getIdByName(name,appId);
     }

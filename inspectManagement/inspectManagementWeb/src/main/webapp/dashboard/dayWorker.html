@@ -58,14 +58,14 @@ $("#tab1").ligerTab();
 $("#sTime").ligerDateEditor({initValue: dd});
 $("#eTime").ligerDateEditor({initValue: dd});
 function getInspectTableRecordList(){
-    var userId=$("#user").val();
-    var deviceId=$("#device").val();
+    var user=$("#user").val();
+    var device=$("#device").val();
     var sTime=$("#sTime").val();
     var eTime=$("#eTime").val();
-    $.post($.URL.inspectReport.getInspectTableRecordGroupByEmployer,{"userId":userId,"deviceId":deviceId,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
+    $.post($.URL.inspectReport.getInspectTableRecordGroupByEmployer,{"userName":user,"deviceName":device,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
 }
 getInspectTableRecordList();
-$("#submitBtn1").click(function(){
+$("#submitBtn").click(function(){
     getInspectTableRecordList();
 });
 
@@ -164,7 +164,7 @@ function getInspectInfoCallback(data){
     <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="user" type="text"></span></div>
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="sTime" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span></div>
-    <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="submitBtn" class="l-button l-button-submit" /></span></div>
 </div>
 <div class="reportContent" id="reportShow"></div>
 </body>

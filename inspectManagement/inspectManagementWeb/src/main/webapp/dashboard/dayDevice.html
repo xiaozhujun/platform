@@ -33,8 +33,8 @@
                 d['id']=data.data[i].id;
                 userData.push(d);
             }
-            $("#user").ligerComboBox({
-                data:userData,valueFieldID:"user"
+            $("#userName").ligerComboBox({
+                data:userData,valueFieldID:"userName"
             });
         }
     }
@@ -47,22 +47,22 @@
                 d['id']=data.data[i].id;
                 deviceData.push(d);
             }
-            $("#device").ligerComboBox({
-                data:deviceData,valueFieldID:"device"
+            $("#deviceName").ligerComboBox({
+                data:deviceData,valueFieldID:"deviceName"
             });
         }
     }
     var d=new Date();
     var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
     $("#tab1").ligerTab();
-    $("#sTime").ligerDateEditor({initValue: dd});
-    $("#eTime").ligerDateEditor({initValue: dd});
+    $("#st").ligerDateEditor({initValue: dd});
+    $("#et").ligerDateEditor({initValue: dd});
     function getInspectTableRecordList(){
-        var userId=$("#user").val();
-        var deviceId=$("#device").val();
-        var sTime=$("#sTime").val();
-        var eTime=$("#eTime").val();
-        $.post($.URL.inspectReport.getInspectTableRecordGroupByDevice,{"userId":userId,"deviceId":deviceId,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
+        var user=$("#userName").val();
+        var device=$("#deviceName").val();
+        var sTime=$("#st").val();
+        var eTime=$("#et").val();
+        $.post($.URL.inspectReport.getInspectTableRecordGroupByDevice,{"userName":user,"deviceName":device,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
     }
     getInspectTableRecordList();
     $("#submitBtn1").click(function(){
@@ -74,7 +74,7 @@
             if(data.data==null){
                 $.ligerDialog.alert("抱歉,记录不存在!");
             }else{
-                $("#reportShow").html("");
+                $("#deviceShow").html("");
                 showData(data.data);
             }
         }
@@ -144,7 +144,7 @@
         $("#maingrid").css("display","none");
         $("#exportDiv").css("display","block");
         $("#panel1").css("display","none")
-        $("#reportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
+        $("#deviceShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
     }
     function getDevInfo(rowid){
         var row=manager1.getRow(rowid);
@@ -165,10 +165,10 @@
 </head>
 <body>
 <div class="searchContainer">
-    <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="device" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="user" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="sTime" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="deviceName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="userName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="st" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="et" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
 </div>
 <div class="reportContent" id="deviceShow"></div>

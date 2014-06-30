@@ -54,11 +54,20 @@
         </dependency>
 
         <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-device</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-datasource</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-orm</artifactId>

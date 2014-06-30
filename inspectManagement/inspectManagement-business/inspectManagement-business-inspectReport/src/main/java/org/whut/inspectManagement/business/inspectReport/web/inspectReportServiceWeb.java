@@ -3,11 +3,13 @@ import com.mongodb.DBObject;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.inspectManagement.business.device.service.DeviceService;
 import org.whut.inspectManagement.business.inspectReport.entity.JasperReportTemplate;
 import org.whut.inspectManagement.business.inspectReport.entity.MongoConstant;
 import org.whut.inspectManagement.business.inspectReport.entity.ReportSearch;
 import org.whut.inspectManagement.business.inspectReport.mapper.ReportSqlMapper;
 import org.whut.inspectManagement.business.inspectReport.service.InspectReportService;
+import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.report.PlatformReport;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -39,6 +41,10 @@ public class inspectReportServiceWeb {
     HttpServletResponse response;
     @Autowired
     private InspectReportService inspectReportService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private DeviceService deviceService;
 
     private PlatformReport platformReport=new PlatformReport();
 
@@ -107,7 +113,9 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getInspectTableRecordList")
-    public String getInspectTableRecordList(@FormParam("userId")String userId,@FormParam("deviceId")String deviceId,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+    public String getInspectTableRecordList(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        String userId=String.valueOf(userService.getIdByName(userName));
+        String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
         List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
@@ -115,7 +123,9 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getInspectTableRecordGroupByEmployer")
-    public String getInspectTableRecordGroupByEmployer(@FormParam("userId")String userId,@FormParam("deviceId")String deviceId,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+    public String getInspectTableRecordGroupByEmployer(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        String userId=String.valueOf(userService.getIdByName(userName));
+        String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
         List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
         HashMap<String,List> data = new HashMap<String, List>();
         String key;
@@ -135,7 +145,9 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getInspectTableRecordGroupByDevice")
-    public String getInspectTableRecordGroupByDevice(@FormParam("userId")String userId,@FormParam("deviceId")String deviceId,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+    public String getInspectTableRecordGroupByDevice(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        String userId=String.valueOf(userService.getIdByName(userName));
+        String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
         List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
         HashMap<String,List> data = new HashMap<String, List>();
         String key;

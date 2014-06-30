@@ -142,7 +142,7 @@
         var row=manager.getRow(rowid);
         var jsonString= $.toJSON(row);
         $("#maingrid").css("display","none");
-        $("#exportDiv").css("display","block");
+        $("#exportDeviceDiv").css("display","block");
         $("#panel1").css("display","none")
         $("#deviceShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
     }
@@ -156,7 +156,21 @@
     }
     function getInspectInfoCallback(data){
     }
-
+    $("#exportDeviceBtn").click(function(){
+        var type=$("#exportDeviceType").val();
+        if(type!=null){
+            location.href= "rs/inspectReport/exportPeopleInfoReport/"+type;
+        }else{
+            $.ligerDialog().alert("请输入导出报表类型!");
+        }
+    });
+    $("#exportDeviceType").ligerComboBox({
+        data: [
+            { text: 'pdf', id: '1' },
+            { text: 'word', id: '2' },
+            { text: 'excel', id: '3' }
+        ], valueFieldID: 'exportDeviceType'
+    });
 
 
 
@@ -170,6 +184,12 @@
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="st" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="et" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
+</div>
+<div class="exportDiv" id="exportDeviceDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportDeviceType"></span>
+                 </span>
+    <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn" class="l-button l-button-submit" /></span></span>
 </div>
 <div class="reportContent" id="deviceShow"></div>
 </body>

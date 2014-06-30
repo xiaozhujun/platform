@@ -12,4 +12,5 @@ public class JasperReportTemplate {
      public static String peopleInspectPie="/reportTemplate/peopleInspect/peopleInspectPie.jasper";
      public static String deviceInspectPie="/reportTemplate/deviceInspect/deviceInspectPie.jasper";
      public static String reportTemplateDir="/reportTemplate/";
+     public static String deviceCountTemplate="/reportTemplate/dataAnalyze/deviceCount1.jasper";
 }

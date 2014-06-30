@@ -7,6 +7,7 @@ import org.whut.inspectManagement.business.device.service.DeviceService;
 import org.whut.inspectManagement.business.inspectReport.entity.JasperReportTemplate;
 import org.whut.inspectManagement.business.inspectReport.entity.MongoConstant;
 import org.whut.inspectManagement.business.inspectReport.entity.ReportSearch;
+import org.whut.inspectManagement.business.inspectReport.entity.SearchReportBean;
 import org.whut.inspectManagement.business.inspectReport.mapper.ReportSqlMapper;
 import org.whut.inspectManagement.business.inspectReport.service.InspectReportService;
 import org.whut.platform.business.user.service.UserService;
@@ -52,13 +53,15 @@ public class inspectReportServiceWeb {
 
     private static Map<String,String> reportNameMap=new HashMap<String, String>();
 
+    private static List<SearchReportBean> searchReportBeanList=new ArrayList<SearchReportBean>();
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/reportSearch")
-    public String reportSearch(@FormParam("jsonString")String jsonString,@FormParam("flag") String flag){
+    public String reportSearch(@FormParam("jsonString")String jsonString,@FormParam("flag") String flag,@FormParam("type")String type){
         ReportSearch reportSearch=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,ReportSearch.class);
         if(flag.equals("0")){
-            deviceCount(reportSearch.getsTime(),reportSearch.geteTime());
+            deviceCount(reportSearch.getsTime(),reportSearch.geteTime(),type);
         }else if(flag.equals("1")){
             //deviceInfo
             deviceInfo(reportSearch.getsTime(), reportSearch.geteTime(), reportSearch.getDeviceId());
@@ -74,10 +77,14 @@ public class inspectReportServiceWeb {
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
        }
-    public void deviceCount(String sTime,String eTime){
+    public void deviceCount(String sTime,String eTime,String type){
         //根据sTime和eTime来查出相应的值,封装成list，到报表
+        searchReportBeanList.clear();
         try{
-            String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/deviceCount1.jasper");
+            Map<String,String> parameters=new HashMap<String, String>();
+            searchReportBeanList=inspectReportService.getInspectTableRecordListByBean("null", "null", sTime, eTime);
+            String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceCountTemplate);
+            platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",searchReportBeanList);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -228,6 +235,17 @@ public class inspectReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportInfoTemplate);
         platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",reportInfoList);
     }
+    //根据不同的类型导出相应的报表
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @GET
+    @Path("/exportSearchReport/{type}")
+    public void exportSearchReport(@PathParam("type")String type){
+        Map<String,String> parameters=new HashMap<String, String>();
+        String path=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportTemplateDir) + "/";
+        parameters.put(MongoConstant.SUBREPORT_DIR,path);
+        String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportInfoTemplate);
+        platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",searchReportBeanList);
+    }
     public Connection getConnection(){
         Connection connection=null;
         try {
@@ -237,4 +255,5 @@ public class inspectReportServiceWeb {
         }
         return connection;
     }
+
 }

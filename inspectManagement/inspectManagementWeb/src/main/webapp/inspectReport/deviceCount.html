@@ -18,26 +18,32 @@
         $(function(){
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
-            $("#submitBtn").click(function(){
+            $("#submitBtn1").click(function(){
                var sTime=$("#txt4").val();
                var eTime=$("#txt5").val();
-               $("#reportShow").load($.URL.inspectReport.reportSearch,{"sTime":sTime,"eTime":eTime,"deviceId":null,"userId":null,"flag":"0"},reportSearchCallback,"json");
+               var j={"sTime":sTime,"eTime":eTime};
+               var jsonString= $.toJSON(j);
+               $("#deviceCountShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"0","type":"html"},reportSearchCallback,"json");
             });
         });
         function reportSearchCallback(data){
             if(data.code==200){
-                alert("hah");
+
             }
         }
     </script>
-
+    <style >
+        .reportShow{
+            float: left;
+        }
+    </style>
 </head>
 <body>
-     <div id="searchContainer">
+     <div id="searchContainer" class="searchContainer">
      <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="txt4" type="text"></span></div>
      <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt5" type="text"></span></div>
-     <div class="btn"><span><input type="button" value="查看" id="submitBtn" class="l-button l-button-submit" /></span></div>
+     <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
      </div>
-     <div id="reportShow"></div>
+     <div id="deviceCountShow" class="reportShow"></div>
 </body>
 </html>

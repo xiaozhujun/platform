@@ -76,6 +76,7 @@ function getInspectTableRecordListCallback(data){
         }else{
             $("#reportShow").html("");
             showData(data.data);
+
         }
     }
 }
@@ -156,6 +157,21 @@ function getDevInfo(rowid){
 }
 function getInspectInfoCallback(data){
 }
+$("#exportBtn").click(function(){
+    var type=$("#exportType").val();
+    if(type!=null){
+        location.href= "rs/inspectReport/exportPeopleInfoReport/"+type;
+    }else{
+        $.ligerDialog().alert("请输入导出报表类型!");
+    }
+});
+$("#exportType").ligerComboBox({
+    data: [
+        { text: 'pdf', id: '1' },
+        { text: 'word', id: '2' },
+        { text: 'excel', id: '3' }
+    ], valueFieldID: 'exportType'
+});
 </script>
 </head>
 <body>
@@ -165,6 +181,12 @@ function getInspectInfoCallback(data){
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="sTime" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn" class="l-button l-button-submit" /></span></div>
+</div>
+<div class="exportDiv" id="exportDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportType"></span>
+                 </span>
+    <span class="exportBtn"><span><input type="button" value="导出" id="exportBtn" class="l-button l-button-submit" /></span></span>
 </div>
 <div class="reportContent" id="reportShow"></div>
 </body>

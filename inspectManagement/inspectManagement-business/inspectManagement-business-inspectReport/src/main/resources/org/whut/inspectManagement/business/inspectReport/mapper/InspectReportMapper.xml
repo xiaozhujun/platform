@@ -3,7 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectReport.mapper.InspectReportMapper">
-<select id="deviceCountSql" parameterType="map" resultType="map">
+    <resultMap id="SearchReportBeanMap" type="SearchReportBean">
+        <result property="devname" column="DEVNAME" />
+        <result property="createtime" column="CREATETIME" />
+        <result property="exceptioncount" column="EXCEPTIONCOUNT"/>
+    </resultMap>
+    <select id="deviceCountSql" parameterType="map" resultType="map">
      SELECT itr.id,d.name as devname,d.number as numbers,count(itr.id)as itrcount,itr.createtime as intime,t.name as typename
      FROM inspectitemrecord itr,device d,devicetype t
      WHERE itr.deviceId=d.id AND itr.inspectChoiceId=2 AND d.deviceTypeId=t.id AND itr.createtime
@@ -106,6 +111,24 @@
   </if>
   group by em.employeeRoleName,d.name
  </select>
+ <select id="getInspectTableRecordListByBean" parameterType="map" resultMap="SearchReportBeanMap">
+        SELECT
+        itr.createtime,sum(itr.exceptioncount) exceptioncount,itr.mongoId,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName
+        FROM
+        inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt,employee em
+        WHERE
+        itr.userId=u.id AND itr.inspectTableId=t.id AND itr.deviceId=d.id AND dt.id=d.deviceTypeId AND em.userId=u.id
+        <if test='userId!="null"'>
+            AND itr.userId=#{userId}
+        </if>
+        <if test='deviceId!="null"'>
+            AND itr.deviceId=#{deviceId}
+        </if>
+        <if test='sTime!="" and eTime!=""'>
+            AND  itr.createtime BETWEEN #{sTime} AND #{eTime}
+        </if>
+        group by em.employeeRoleName,d.name
+</select>
  <select id="getInfoByMongoDbObject" parameterType="map" resultType="map">
   SELECT
   u.name as userName,d.name as devName,t.name as tName,tag.name as tagName, it.name as itemName,ic.choiceValue as inspectChoiceValue

@@ -104,12 +104,22 @@
 
         function postUpdate(){
             var node=manager.getSelected();
+
             var data = {};
             data.name = $("#name").val();
             data.url = $("#url").val();
             data.id=node.data.id;
            /* alert(data.name + " " +data.url + " " + data.id);*/
             $.post($.URL.menu.update,data,updateMenuCallback,"json");
+            if(node.data.pid==0)
+            {
+                var fdata = {};
+                fdata.name = $("#name").val();
+                fdata.url = $("#url").val();
+                fdata.id=node.data.id;
+                //* alert(data.name + " " +data.url + " " + data.id);*//*
+                $.post($.URL.menu.fsupdate,fdata,updateMenuCallback,"json");
+            }
         }
         function updateMenuCallback(data){
             if(data.code==200){

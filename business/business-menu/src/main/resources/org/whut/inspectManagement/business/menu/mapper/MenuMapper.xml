@@ -40,6 +40,17 @@
         </set>
         WHERE ID = #{id};
     </update>
+    <update id="fsupdate" parameterType="Menu">
+        UPDATE menu
+        <set>
+            <if test="parentname != null">PARENTNAME=#{name},</if>
+      <!--      <if test="url != null">URL=#{url},</if>-->
+            <!-- <if test="level != null">LEVEL=#{level},</if>
+             <if test="parentname != null">PARENTNAME=#{parentname},</if>
+             <if test="pid != null">PID=#{pid},</if>-->
+        </set>
+        WHERE PID = #{id};
+    </update>
 
     <delete id="delete" parameterType="Menu">
         DELETE FROM menu
@@ -80,7 +91,7 @@
     <select id="getMenuByUserId" parameterType="java.lang.Long" resultMap="menuResultMap">
       SELECT m.*
     FROM user_authority AS ua,authority_menu AS am,menu AS m
-    WHERE  ua.authorityName=am.authorityName AND am.menuName=m.name  AND userId=#{userid}
+    WHERE  ua.authorityName=am.authorityName AND am.menuId=m.id  AND userId=#{userid}
     GROUP BY m.id
     </select>
 

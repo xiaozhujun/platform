@@ -28,6 +28,9 @@ public class MenuService {
     public int update(Menu menu){
         return menuMapper.update(menu);
     }
+    public int fsupdate(Menu menu){
+        return menuMapper.fsupdate(menu);
+    }
     public List<Menu> list(){
         return menuMapper.findByCondition(new HashMap<String, Object>());
     }

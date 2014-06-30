@@ -104,6 +104,21 @@ public class MenuServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
     }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/fsupdate")
+    @POST
+    public String fsupdate(@FormParam("name") String name,@FormParam("url") String url,@FormParam("id") String id){
+        long thisId=Long.parseLong(id);
+        Menu menu=menuService.get(thisId);
+        menu.setName(name);
+        menu.setUrl(url);
+        int result = menuService.fsupdate(menu);
+        if(result>0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+    }
 
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")

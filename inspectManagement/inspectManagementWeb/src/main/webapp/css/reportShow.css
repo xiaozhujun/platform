@@ -4,9 +4,9 @@
 .reportBlock{
     width: 49%;
     float: left;
-    min-height: 200px;
     margin-left: 5px;
     margin-top: 1px;
+    margin-bottom: 5px;
 }
 .exportDiv{
     width: 100%;

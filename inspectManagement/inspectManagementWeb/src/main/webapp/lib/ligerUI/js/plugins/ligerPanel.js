@@ -16,7 +16,6 @@
 
     $.ligerDefaults.Panel = {
         width: 400,
-        height : 300,
         title: 'Panel',
         content: null,      //内容
         url: null,          //远程内容Url

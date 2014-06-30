@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.task.mapper.InspectPlanMapper">
+    <sql id="inspect_plan_fields">
+        ID,NAME,STATUS,CREATETIME,DESCRIPTION,APPID
+            </sql>
+    <resultMap type="InspectPlan" id="inspect_planResultMapper">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="inspectTableId" column="INSPECTTABLEID"/>
+        <result property="dayStart" column="DAYSTART"/>
+        <result property="dayEnd" column="DAYEND"/>
+        <result property="timeStart" column="TIMESTART"/>
+        <result property="timeEnd" column="TIMEEND"/>
+        <result property="status" column="STATUS"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="InspectPlan" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        inspect_plan
+        (
+        <include refid="inspect_plan_fields"/>
+        )
+        values (#{id},#{name},#{description},#{inspectTableId},#{dayStart},#{dayEnd},#{timeStart},#{timeEnd},#{status},#{createtime},#{appId});
+        <selectKey keyProperty="id" resultType="long">
+            select LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="InspectPlan">
+        update inspect_plan
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description}</if>
+            <if test="inspectTableId!=null">INSPECTTABLEID=#{inspectTableId},</if>
+            <if test="status!=null">STATUS=#{status},</if>
+            <if test="dayStart!=null">DAYSTART=#{dayStart},</if>
+            <if test="dayEnd!=null">DAYEND=#{dayEnd},</if>
+            <if test="timeStart!=null">TIMESTART=#{timeStart},</if>
+            <if test="timeEnd!=null">TIMEEND=#{timeEnd},</if>
+        </set>
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="InspectPlan">
+        DELETE FROM inspect_plan
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="id != null">ID=#{id}</if>
+            <if test="name != null"> AND NAME=#{name}</if>
+        </where>
+    </delete>
+
+    <select id="findByCondition" parameterType="map" resultMap="inspect_planResultMapper">
+        SELECT
+        <include refid="inspect_plan_fields"/>
+        FROM inspect_plan
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="name!=null">AND NAME=#{name}</if>
+            <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
+        </where>
+    </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from inspect_plan
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="name != null"> AND NAME=#{name}</if>
+        </where>
+    </select>
+
+    <select id="getNameById" parameterType="map" resultType="java.lang.String">
+        select name
+        from inspect_plan
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </select>
+
+</mapper>

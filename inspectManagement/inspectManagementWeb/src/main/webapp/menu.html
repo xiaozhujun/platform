@@ -10,6 +10,7 @@
     <script type="text/javascript">
         $(function ()
         {
+            var menuName="数据分析";
             //获得当前用户id
             $.get($.URL.user.currentUserId,null,getuseridCallback,"json");
             function getuseridCallback(useriddata)
@@ -30,12 +31,12 @@
                     for(var i=0;i<menudata.data.length;i++)
                     {
                         //获得父级菜单，存进数组s【】
-                        if(menudata.data[i].level ==1)
+                        if(menudata.data[i].level ==1&&menudata.data[i].name!=menuName)
                         {
                             s[i]="<div title='"+menudata.data[i].name+"' style='padding:10px'><ul>"  ;
                         }
                         //一般情况下在出现子菜单之前父菜单已经存在s【】中
-                        else  if(menudata.data[i].level !=1)
+                        else  if(menudata.data[i].level !=1&&menudata.data[i].parentname!=menuName)
                          {
                             //寻找s【j】对应的子菜单
                             for(var j=0;j< s.length;j++)

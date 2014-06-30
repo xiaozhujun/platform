@@ -49,7 +49,7 @@
 25	    -->
     	    <beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
                 <!--config for web www.cseicms.com test -->
-                <beans:property name="service" value="http://www.cseicms.com/inspectAdmin/j_spring_cas_security_check"></beans:property>
+                <beans:property name="service" value="http://localhost:8080/inspectAdmin/j_spring_cas_security_check"></beans:property>
                 <!--config for android test -->
                 <!--<beans:property name="service" value="http://www.cseicms.com/inspectPlatform/j_spring_cas_security_check"></beans:property>-->
     	        <beans:property name="sendRenew" value="false"></beans:property>

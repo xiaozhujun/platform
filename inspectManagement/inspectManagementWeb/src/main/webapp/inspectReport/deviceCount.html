@@ -39,7 +39,8 @@
         $("#eDeviceCountBtn").click(function(){
             var type=$("#eDeviceCountType").val();
             if(type!=null){
-                location.href= "rs/inspectReport/exportSearchReport/"+type;
+                var typeFlag=type+",0";
+                location.href= "rs/inspectReport/exportSearchReport/"+typeFlag;
             }else{
                 $.ligerDialog().alert("请输入导出报表类型!");
             }

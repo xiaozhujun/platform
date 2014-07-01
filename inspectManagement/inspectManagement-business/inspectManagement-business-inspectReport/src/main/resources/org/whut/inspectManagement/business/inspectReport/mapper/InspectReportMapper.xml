@@ -17,22 +17,27 @@
  <select id="getDeviceHistoryData" parameterType="map" resultMap="SearchReportBeanMap">
   SELECT *,count(id) as exceptioncount
   FROM (select itr.id,d.name as devname,
-  <if test="sTime!=null">
+  <if test='sTime!=""'>
   ceiling(datediff(itr.createtime,${sTime})/7)  as zhouqi,
   </if>
   itr.createtime as shijian
   FROM inspecttablerecord itr,device d
-  WHERE itr.deviceId=d.id  AND itr.createtime
-  <if test="sTime!=null">
-   BETWEEN ${sTime}
+  WHERE itr.deviceId=d.id
+  <if test='sTime!=""'>
+  AND itr.createtime BETWEEN ${sTime}
   </if>
-  <if test="eTime!=null">
+  <if test='eTime!=""'>
   AND ${eTime}
   </if>
-  <if test="deviceId!=null">
-  AND itr.deviceId=${deviceId}) as s
+  <if test='deviceId!="null"'>
+  AND itr.deviceId=${deviceId}
   </if>
-  GROUP BY devname,zhouqi,shijian
+  )as s
+  GROUP BY devname,
+  <if test='sTime!=""'>
+      zhouqi,
+  </if>
+     shijian
  </select>
  <select id="getInspectTableRecordList" parameterType="java.lang.String" resultType="map">
   SELECT

@@ -267,9 +267,23 @@ public class inspectReportServiceWeb {
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
-    @Path("/exportSearchReport/{type}")
-    public void exportSearchReport(@PathParam("type")String type){
-        String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceCountTemplate);
+    @Path("/exportSearchReport/{typeFlag}")
+    public void exportSearchReport(@PathParam("typeFlag")String typeFlag){
+        String reportTemplate=null;
+        String[] s=typeFlag.split(",");
+        String type=s[0];
+        String flag=s[1];
+        if(flag.equals("0")){
+            reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceCountTemplate);
+        }else if(flag.equals("1")){
+            reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceInfoTemplate);
+        }else if(flag.equals("2")){
+            reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleCountTemplate);
+        }else if(flag.equals("3")){
+            reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleInfoTemplate);
+        }else if(flag.equals("4")){
+            reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceHistoryTemplate);
+        }
         exportReport(reportTemplate,type,searchReportBeanList);
     }
     public void exportReport(String reportTemplate,String type,List list){

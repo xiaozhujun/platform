@@ -45,12 +45,29 @@
             var j={"sTime":sTime,"eTime":eTime,"deviceName":device} ;
             var jsonString= $.toJSON(j);
             $("#deviceInfoShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"1","type":"html"},reportSearchCallback,"json");
+            $("#eDeviceInfoDiv").css("display","block");
         }
         function reportSearchCallback(data){
             if(data.code==200){
 
             }
         }
+        $("#eDeviceInfoBtn").click(function(){
+            var type=$("#eDeviceInfoType").val();
+            if(type!=null){
+                var typeFlag=type+",1";
+                location.href= "rs/inspectReport/exportSearchReport/"+typeFlag;
+            }else{
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
+        $("#eDeviceInfoType").ligerComboBox({
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'eDeviceInfoType'
+        });
     </script>
 
 </head>
@@ -60,6 +77,12 @@
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="txt4" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt5" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn2" class="l-button l-button-submit" /></span></div>
+</div>
+<div class="exportDiv" id="eDeviceInfoDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="eDeviceInfoType"></span>
+                 </span>
+    <span class="exportBtn"><span><input type="button" value="导出" id="eDeviceInfoBtn" class="l-button l-button-submit" /></span></span>
 </div>
 <div id="deviceInfoShow"></div>
 </body>

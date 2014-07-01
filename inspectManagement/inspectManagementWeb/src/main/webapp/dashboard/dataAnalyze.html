@@ -60,6 +60,8 @@
                     }
                     $("#accordion").append(menuload);
                     $("#accordion").ligerAccordion();
+                    var fUrl=$("#accordion ul li:first-child").attr("url");
+                    $("#searchReportShow").load(fUrl);
                     $("#accordion li").click(function(){
                         var url = $(this).attr("url");
                         if((typeof url)!="undefined"){

@@ -20,7 +20,17 @@ public class InspectPlan {
     private int timeEnd;
     private Date createtime;
     private int status;
+    private String rule;
     private long appId;
+
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule;
+    }
 
     public long getId() {
         return id;

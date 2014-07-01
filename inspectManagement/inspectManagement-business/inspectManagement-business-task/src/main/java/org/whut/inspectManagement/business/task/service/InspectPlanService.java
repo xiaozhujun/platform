@@ -1,5 +1,12 @@
 package org.whut.inspectManagement.business.task.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.inspectManagement.business.task.entity.InspectPlan;
+import org.whut.inspectManagement.business.task.mapper.InspectPlanMapper;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
@@ -8,4 +15,32 @@ package org.whut.inspectManagement.business.task.service;
  * To change this template use File | Settings | File Templates.
  */
 public class InspectPlanService {
+    @Autowired
+    private InspectPlanMapper inspectPlanMapper;
+
+    public void add(InspectPlan device){
+        inspectPlanMapper.add(device);
+    }
+
+    public List<InspectPlan> list(){
+        return  inspectPlanMapper.findByCondition(new HashMap<String, Object>());
+    }
+
+    public List<InspectPlan> getListByAppId(long appId)
+    {
+        return inspectPlanMapper.getListByAppId(appId);
+    }
+
+    public void update(InspectPlan device){
+        inspectPlanMapper.update(device);
+    }
+
+    public void delete(InspectPlan device){
+        inspectPlanMapper.delete(device);
+    }
+
+    public long getIdByName(String name,long appId){
+        return inspectPlanMapper.getIdByName(name,appId);
+    }
+
 }

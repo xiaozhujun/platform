@@ -11,81 +11,18 @@
         <result property="itemName" column="ITEMNAME"/>
         <result property="userName" column="USERNAME" />
         <result property="mongoId" column="MONGOID" />
+        <result property="zhouqi" column="ZHOUQI" />
+        <result property="shijian" column="SHIJIAN" />
     </resultMap>
-    <select id="deviceCountSql" parameterType="map" resultType="map">
-     SELECT itr.id,d.name as devname,d.number as numbers,count(itr.id)as itrcount,itr.createtime as intime,t.name as typename
-     FROM inspectitemrecord itr,device d,devicetype t
-     WHERE itr.deviceId=d.id AND itr.inspectChoiceId=2 AND d.deviceTypeId=t.id AND itr.createtime
-     <if test="sTime!=null">
-     BETWEEN ${sTime}
-     </if>
-    <if test="eTime!=null">
-     AND ${eTime}
-    </if>
-     GROUP BY  d.name,itr.createtime
-     ORDER BY d.name,itr.createtime
-</select>
-<select id="deviceInfoSql" parameterType="map" resultType="map">
-   SELECT
-   tag.id as tagid, tag.name as tagname, u.id, u.name as username, itr.createtime,d.name as devname,d.id as devid,count(itr.id) as itrnum
-   FROM inspectitemrecord itr, inspecttag   tag,inspectitem it, device d,user u
-   WHERE itr.tag_id = tag.id AND itr.worker_id = u.id AND
-   itr.deviceId=d.id  AND itr.inspectChoiceId=2 AND itr.createtime
-   <if test="sTime!=null">
-   BETWEEN ${sTime}
-   </if>
-   <if test="eTime!=null">
-   AND ${eTime}
-   </if>
-   <if test="deviceId!=null">
-   AND itr.deviceId=#{deviceId}
-   </if>
-   GROUP BY  tag.name,itr.createtime
-   ORDER BY  u.name,d.name,itr.createtime;
-</select>
-<select id="peopleCountSql" parameterType="map" resultType="map">
- SELECT d.id as did,d.name as devname,u.id as uid,u.name as username,itr.createtime as intime
- FROM inspectitemrecord itr,device d,user u
- WHERE itr.deviceId=d.id  AND u.id=itr.userId
- AND itr.inspectChoiceId=2 AND itr.createtime
- <if test="sTime!=null">
- BETWEEN ${sTime}
- </if>
- <if test="eTime!=null">
- AND ${eTime}
- </if>
- <if test="deviceId!=null">
- AND itr.deviceId=${deviceId}
- </if>
- GROUP BY  itr.createtime
- ORDER BY u.name,d.name,itr.createtime;
-</select>
- <select id="peopleInfoSql" parameterType="map" resultType="map">
-   SELECT tag.id as tagid, tag.name as tagname, u.id, u.name as username, itr.createtime, d.name as devname,  d.id as devid, count(itr.id) as itrnum
-   FROM inspectitemrecord itr, inspecttag   tag,inspectitem it, device d,user u
-   WHERE itr.inspectTagId = tag.id AND itr.userId = u.id AND
-   itr.deviceId=d.id AND itr.inspectChoiceId=2 AND itr.createtime
-   <if test="sTime!=null">
-   BETWEEN ${sTime}
-   </if>
-   <if test="eTime!=null">
-   AND ${eTime}
-   </if>
-   <if test="uId!=null">
-   AND itr.userId=${uId}
-   </if>
-   GROUP BY  tag.name,itr.createtime
-   ORDER BY  u.name,d.name,itr.createtime
- </select>
- <select id="deviceHistory" parameterType="map" resultType="map">
-  SELECT *,count(id)as itnum
+ <select id="getDeviceHistoryData" parameterType="map" resultMap="SearchReportBeanMap">
+  SELECT *,count(id) as exceptioncount
   FROM (select itr.id,d.name as devname,
   <if test="sTime!=null">
   ceiling(datediff(itr.createtime,${sTime})/7)  as zhouqi,
   </if>
   itr.createtime as shijian
-  FROM inspectitemrecord itr,device d
-  WHERE itr.deviceId=d.id AND  itr.inspectChoiceId=2 AND itr.createtime
+  FROM inspecttablerecord itr,device d
+  WHERE itr.deviceId=d.id  AND itr.createtime
   <if test="sTime!=null">
    BETWEEN ${sTime}
   </if>

@@ -16,4 +16,5 @@ public class JasperReportTemplate {
      public static String deviceInfoTemplate="/reportTemplate/dataAnalyze/deviceCount.jasper";
      public static String peopleCountTemplate="/reportTemplate/dataAnalyze/peopleCount.jasper";
      public static String peopleInfoTemplate="/reportTemplate/dataAnalyze/peopleInfo.jasper";
+     public static String deviceHistoryTemplate="/reportTemplate/dataAnalyze/deviceHistory.jasper";
 }

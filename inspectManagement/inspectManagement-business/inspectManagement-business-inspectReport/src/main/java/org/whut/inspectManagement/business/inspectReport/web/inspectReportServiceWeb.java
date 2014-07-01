@@ -71,7 +71,7 @@ public class inspectReportServiceWeb {
             peopleInfo(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName(),reportSearch.getUserName(),type);
         }else if(flag.equals("4")){
             //deviceHistory
-            deviceHistory(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName());
+            deviceHistory(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName(),type);
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
        }
@@ -123,9 +123,12 @@ public class inspectReportServiceWeb {
             e.printStackTrace();
         }
     }
-    public void deviceHistory(String sTime,String eTime,String deviceName){
+    public void deviceHistory(String sTime,String eTime,String deviceName,String type){
         try{
-            String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/deviceHistory1.jasper");
+            String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
+            searchReportBeanList=inspectReportService.getDeviceHistoryData(sTime,eTime,deviceId);
+            String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceHistoryTemplate);
+            exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -29,4 +29,7 @@ public class InspectReportService {
     public List<SearchReportBean>getInspectTableRecordListByBean(String userId,String deviceId,String sTime,String eTime){
         return mapper.getInspectTableRecordListByBean(userId,deviceId,sTime,eTime);
     }
+    public List<SearchReportBean>getDeviceHistoryData(String sTime,String eTime,String deviceId){
+        return mapper.getDeviceHistoryData(sTime,eTime,deviceId);
+    }
 }

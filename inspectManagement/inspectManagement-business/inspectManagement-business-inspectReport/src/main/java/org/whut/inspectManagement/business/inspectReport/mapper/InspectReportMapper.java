@@ -23,4 +23,6 @@ public interface InspectReportMapper extends AbstractMapper<InspectReport>{
      public Map<String,String> getInfoByMongoDbObject(Map<String,String> map);
 
      public List<SearchReportBean>getInspectTableRecordListByBean(@Param("userId")String userId,@Param("deviceId")String deviceId,@Param("sTime")String sTime,@Param("eTime")String eTime);
+
+     public List<SearchReportBean>getDeviceHistoryData(@Param("sTime")String sTime,@Param("eTime")String eTime,@Param("deviceId")String deviceId);
 }

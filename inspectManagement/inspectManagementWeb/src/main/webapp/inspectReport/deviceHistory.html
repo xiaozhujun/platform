@@ -20,7 +20,7 @@
             function listCallback(data){
                 if(data.code==200){
                     var deviceData=[];
-                    for(i=0;i<data.length;i++){
+                    for(i=0;i<data.data.length;i++){
                         var d={};
                         d['text']=data.data[i].name;
                         d['id']=data.data[i].id;
@@ -33,18 +33,22 @@
             }
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
+            showDeviceHistoryReport();
             $("#submitBtn5").click(function(){
-                var device=$("#txt3").val();
-                var sTime=$("#txt4").val();
-                var eTime=$("#txt5").val();
-                var j={"sTime":sTime,"eTime":eTime,"deviceName":device};
-                var jsonString= $.toJSON(j);
-                $("#reportShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"4","type":"html"},reportSearchCallback,"json");
+                showDeviceHistoryReport();
             });
         });
+        function showDeviceHistoryReport(){
+            var device=$("#txt3").val();
+            var sTime=$("#txt4").val();
+            var eTime=$("#txt5").val();
+            var j={"sTime":sTime,"eTime":eTime,"deviceName":device};
+            var jsonString= $.toJSON(j);
+            $("#reportShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"4","type":"html"},reportSearchCallback,"json");
+        }
         function reportSearchCallback(data){
             if(data.code==200){
-                alert("hah");
+
             }
         }
     </script>

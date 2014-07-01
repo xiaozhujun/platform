@@ -24,6 +24,10 @@ public class SearchReportBean {
 
     private String mongoId;
 
+    private String zhouqi;
+
+    private String shijian;
+
     public String getCreatetime() {
         return createtime;
     }
@@ -86,5 +90,21 @@ public class SearchReportBean {
 
     public void setMongoId(String mongoId) {
         this.mongoId = mongoId;
+    }
+
+    public String getZhouqi() {
+        return zhouqi;
+    }
+
+    public void setZhouqi(String zhouqi) {
+        this.zhouqi = zhouqi;
+    }
+
+    public String getShijian() {
+        return shijian;
+    }
+
+    public void setShijian(String shijian) {
+        this.shijian = shijian;
     }
 }

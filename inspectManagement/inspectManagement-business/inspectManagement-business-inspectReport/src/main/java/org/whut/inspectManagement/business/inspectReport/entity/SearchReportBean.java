@@ -14,6 +14,16 @@ public class SearchReportBean {
 
     private long exceptioncount;
 
+    private String tagName;
+
+    private String itemName;
+
+    private String userName;
+
+    private String inspectChoiceValue;
+
+    private String mongoId;
+
     public String getCreatetime() {
         return createtime;
     }
@@ -36,5 +46,45 @@ public class SearchReportBean {
 
     public void setDevname(String devname) {
         this.devname = devname;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getInspectChoiceValue() {
+        return inspectChoiceValue;
+    }
+
+    public void setInspectChoiceValue(String inspectChoiceValue) {
+        this.inspectChoiceValue = inspectChoiceValue;
+    }
+
+    public String getMongoId() {
+        return mongoId;
+    }
+
+    public void setMongoId(String mongoId) {
+        this.mongoId = mongoId;
     }
 }

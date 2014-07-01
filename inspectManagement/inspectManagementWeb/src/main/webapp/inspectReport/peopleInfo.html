@@ -21,7 +21,7 @@
             function userListCallball(data){
                 if(data.code==200){
                     var userData=[];
-                    for(i=0;i<data.length;i++){
+                    for(i=0;i<data.data.length;i++){
                         var d={};
                         d['text']=data.data[i].name;
                         d['id']=data.data[i].id;
@@ -35,7 +35,7 @@
             function listCallback(data){
                 if(data.code==200){
                     var deviceData=[];
-                    for(i=0;i<data.length;i++){
+                    for(i=0;i<data.data.length;i++){
                         var d={};
                         d['text']=data.data[i].name;
                         d['id']=data.data[i].id;
@@ -49,29 +49,30 @@
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
             $("#submitBtn4").click(function(){
-                var did=$("#txt2").val();
-                var uid=$("#txt3").val();
+                var user=$("#txt2").val();
+                var device=$("#txt3").val();
                 var sTime=$("#txt4").val();
                 var eTime=$("#txt5").val();
-                $("#reportShow").load($.URL.inspectReport.reportSearch,{"sTime":sTime,"eTime":eTime,"deviceId":did,"userId":uid,"flag":"3"},reportSearchCallback,"json");
+                var j={"sTime":sTime,"eTime":eTime,"deviceName":device,"userName":user};
+                var jsonString= $.toJSON(j);
+                $("#peopleInfoShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"3","type":"html"},reportSearchCallback,"json");
             });
         });
         function reportSearchCallback(data){
             if(data.code==200){
-                alert("hah");
             }
         }
     </script>
 
 </head>
 <body>
-<div id="searchContainer">
+<div id="searchContainer" class="searchContainer">
     <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="txt2" type="text"></span></div>
     <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="txt3" type="text"></span></div>
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="txt4" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt5" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn4" class="l-button l-button-submit" /></span></div>
 </div>
-<div id="reportShow"></div>
+<div id="peopleInfoShow"></div>
 </body>
 </html>

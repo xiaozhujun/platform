@@ -51,8 +51,6 @@ public class inspectReportServiceWeb {
 
     private static List<Map<String,String>> reportInfoList=new ArrayList<Map<String, String>>();
 
-    private static Map<String,String> reportNameMap=new HashMap<String, String>();
-
     private static List<SearchReportBean> searchReportBeanList=new ArrayList<SearchReportBean>();
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -64,16 +62,16 @@ public class inspectReportServiceWeb {
             deviceCount(reportSearch.getsTime(),reportSearch.geteTime(),type);
         }else if(flag.equals("1")){
             //deviceInfo
-            deviceInfo(reportSearch.getsTime(), reportSearch.geteTime(), reportSearch.getDeviceId());
+            deviceInfo(reportSearch.getsTime(), reportSearch.geteTime(), reportSearch.getDeviceName(),type);
         }else if(flag.equals("2")){
             //peopleCount
-            peopleCount(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceId());
+            peopleCount(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName(),type);
         }else if(flag.equals("3")){
             //peopleInfo
-            peopleInfo(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceId(),reportSearch.getUserId());
+            peopleInfo(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName(),reportSearch.getUserName(),type);
         }else if(flag.equals("4")){
             //deviceHistory
-            deviceHistory(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceId());
+            deviceHistory(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName());
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
        }
@@ -81,36 +79,52 @@ public class inspectReportServiceWeb {
         //根据sTime和eTime来查出相应的值,封装成list，到报表
         searchReportBeanList.clear();
         try{
-            Map<String,String> parameters=new HashMap<String, String>();
             searchReportBeanList=inspectReportService.getInspectTableRecordListByBean("null", "null", sTime, eTime);
             String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceCountTemplate);
-            platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",searchReportBeanList);
+            exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void deviceInfo(String sTime,String eTime,String deviceId){
+    public void deviceInfo(String sTime,String eTime,String deviceName,String type){
+           searchReportBeanList.clear();
+          try{
+            //先根据条件拿到mongoId，然后根据mongoId来获取相应的mongo中的信息,将mongo中的信息以及拿出的Id组装成list，赋给jasperreport即可.
+            String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
+            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean("null",deviceId,sTime,eTime);
+            searchReportBeanList=getSearchReportListSourceByMongoId(list);
+            String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceInfoTemplate);
+            exportReport(reportTemplate,type,searchReportBeanList);
+          }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void peopleCount(String sTime,String eTime,String deviceName,String type){
+        searchReportBeanList.clear();
         try{
-            String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/deviceCount.jasper");
+            String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
+            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean("null",deviceId,sTime,eTime);
+            searchReportBeanList=getSearchReportListSourceByMongoId(list);
+            String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleCountTemplate);
+            exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void peopleCount(String sTime,String eTime,String deviceId){
+    public void peopleInfo(String sTime,String eTime,String deviceName,String userName,String type){
+        searchReportBeanList.clear();
         try{
-            String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/peopleCount.jasper");
+            String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
+            String userId=String.valueOf(userService.getIdByName(userName));
+            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean(userId,deviceId,sTime,eTime);
+            searchReportBeanList=getSearchReportListSourceByMongoId(list);
+            String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleInfoTemplate);
+            exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void peopleInfo(String sTime,String eTime,String deviceId,String userId){
-        try{
-            String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/reportx2.jasper");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void deviceHistory(String sTime,String eTime,String deviceId){
+    public void deviceHistory(String sTime,String eTime,String deviceName){
         try{
             String reportTemplate=request.getSession().getServletContext().getRealPath("/inspectReportTemplate/deviceHistory1.jasper");
         }catch(Exception e){
@@ -175,17 +189,11 @@ public class inspectReportServiceWeb {
     @Path("/getInspectInfo")
     public String getInspectInfo(@FormParam("jsonString")String jsonString,@FormParam("type") String type){
         reportInfoList.clear();
-        reportNameMap.clear();
         Map<String,String> map= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Map.class);
         //根据传过来的map取得mongoId,然后从mongo中查出相应的值.然后根据各个Id来查出相应的信息来放到list中后导出html格式的报表
-        //reportInfoList=getReportListSource(map);
         reportInfoList=getReportListSourceByMap(map);
-        Map<String,String> parameters=new HashMap<String, String>();
-        String path=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportTemplateDir) + "/";
-        //parameters.put(MongoConstant.SUBREPORT_DIR,path);
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportInfoTemplate);
-        reportNameMap.put("tableName",map.get(MongoConstant.tableName));
-        platformReport.exportReportByType(reportTemplate,type,parameters,request,response,map.get(MongoConstant.tableName),reportInfoList);
+        exportReport(reportTemplate,type,reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
     //根据mongoId从mongoDb中取出数据
@@ -224,36 +232,46 @@ public class inspectReportServiceWeb {
         }
         return reportInfoList;
     }
+    //对报表分析模块的list的封装
+    public List<SearchReportBean> getSearchReportListSourceByMongoId(List<SearchReportBean> mapList){
+        List<SearchReportBean> reportInfoList=new ArrayList<SearchReportBean>();
+        for(SearchReportBean map:mapList){
+        List<DBObject> d=getInfoFromMongoByMongoId(map.getMongoId());
+        List<Map<String,String>> l=getInfoByMongoDbObject(d);
+        for(Map<String,String> m:l){
+            if(m!=null){
+                SearchReportBean searchReportBean=new SearchReportBean();
+                searchReportBean.setUserName(m.get(MongoConstant.userName));
+                searchReportBean.setTagName(m.get(MongoConstant.tagName));
+                searchReportBean.setDevname(m.get(MongoConstant.devName));
+                searchReportBean.setCreatetime(map.getCreatetime());
+                searchReportBean.setItemName(m.get(MongoConstant.itemName));
+                searchReportBean.setInspectChoiceValue(m.get(MongoConstant.inspectChoiceValue));
+                searchReportBean.setExceptioncount(map.getExceptioncount());
+                reportInfoList.add(searchReportBean);
+            }
+        }
+        }
+        return reportInfoList;
+    }
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
     @Path("/exportPeopleInfoReport/{type}")
     public void exportPeopleInfoReport(@PathParam("type")String type){
-        Map<String,String> parameters=new HashMap<String, String>();
-        String path=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportTemplateDir) + "/";
-        parameters.put(MongoConstant.SUBREPORT_DIR,path);
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportInfoTemplate);
-        platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",reportInfoList);
+        exportReport(reportTemplate,type,reportInfoList);
     }
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
     @Path("/exportSearchReport/{type}")
     public void exportSearchReport(@PathParam("type")String type){
+        String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceCountTemplate);
+        exportReport(reportTemplate,type,searchReportBeanList);
+    }
+    public void exportReport(String reportTemplate,String type,List list){
         Map<String,String> parameters=new HashMap<String, String>();
-        String path=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportTemplateDir) + "/";
-        parameters.put(MongoConstant.SUBREPORT_DIR,path);
-        String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportInfoTemplate);
-        platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",searchReportBeanList);
+        platformReport.exportReportByType(reportTemplate,type,parameters,request,response,"report",list);
     }
-    public Connection getConnection(){
-        Connection connection=null;
-        try {
-            connection=sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
 }

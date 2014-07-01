@@ -7,6 +7,10 @@
         <result property="devname" column="DEVNAME" />
         <result property="createtime" column="CREATETIME" />
         <result property="exceptioncount" column="EXCEPTIONCOUNT"/>
+        <result property="tagName" column="TAGNAME" />
+        <result property="itemName" column="ITEMNAME"/>
+        <result property="userName" column="USERNAME" />
+        <result property="mongoId" column="MONGOID" />
     </resultMap>
     <select id="deviceCountSql" parameterType="map" resultType="map">
      SELECT itr.id,d.name as devname,d.number as numbers,count(itr.id)as itrcount,itr.createtime as intime,t.name as typename

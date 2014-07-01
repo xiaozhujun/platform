@@ -13,12 +13,18 @@
         display: none;
     }
 
+
     #userInfo div{
        float: left;
+    }
+    #userNameDiv
+    {
+        cursor: pointer;
     }
     a{
        text-decoration: none;
     }
+
 </style>
 <script>
     $(document).ready(function(){
@@ -29,6 +35,9 @@
         if(data!=null){
             $("#userInfo").show();
             $("#userNameDiv").html(data.data.name);
+            $("#userNameDiv").click(function(){
+                alert("test");
+            });
             if(data.data.role=="ROLE_ADMIN"){
                 $("#adminLinkDiv").show();
             }
@@ -42,3 +51,4 @@
     <div id="adminLinkDiv" style="display: none">|<a href="admin.html">管理后台</a></div>
     <div id="logoutDiv">|<a href="logout">安全退出</a></div>
 </div>
+

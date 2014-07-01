@@ -19,4 +19,5 @@ public interface MenuMapper extends AbstractMapper{
     public Menu get(long id);
     public String getNameById(long id);
     public List<Menu> getMenuByUserId(long userid);
+    public  int fsupdate(Menu menu);
 }

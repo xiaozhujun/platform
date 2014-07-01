@@ -35,6 +35,7 @@
             "addSonMenu" :"rs/menu/addSonMenu" ,
             /*"list":"rs/menu/list",*/
             "update":"rs/menu/update",
+            "fsupdate":"rs/menu/fsupdate",
             "delete":"rs/menu/delete",
             "list":"rs/menu/list",
             "getParentInfoById": "rs/menu/getParentInfoById"  ,

@@ -24,6 +24,7 @@
                var j={"sTime":sTime,"eTime":eTime};
                var jsonString= $.toJSON(j);
                $("#deviceCountShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"0","type":"html"},reportSearchCallback,"json");
+                $("#eDeviceCountDiv").css("display","block");
             });
         });
         function reportSearchCallback(data){
@@ -31,18 +32,34 @@
 
             }
         }
+        $("#eDeviceCountBtn").click(function(){
+            var type=$("#eDeviceCountType").val();
+            if(type!=null){
+                location.href= "rs/inspectReport/exportSearchReport/"+type;
+            }else{
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
+        $("#eDeviceCountType").ligerComboBox({
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'eDeviceCountType'
+        });
     </script>
-    <style >
-        .reportShow{
-            float: left;
-        }
-    </style>
 </head>
 <body>
      <div id="searchContainer" class="searchContainer">
      <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="txt4" type="text"></span></div>
      <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt5" type="text"></span></div>
      <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
+     </div>
+     <div class="exportDiv" id="eDeviceCountDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="eDeviceCountType"></span>
+                 </span>
+         <span class="exportBtn"><span><input type="button" value="导出" id="eDeviceCountBtn" class="l-button l-button-submit" /></span></span>
      </div>
      <div id="deviceCountShow" class="reportShow"></div>
 </body>

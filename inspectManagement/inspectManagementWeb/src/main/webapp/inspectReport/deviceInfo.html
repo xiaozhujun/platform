@@ -20,7 +20,7 @@
             function listCallback(data){
                 if(data.code==200){
                     var deviceData=[];
-                    for(i=0;i<data.length;i++){
+                    for(i=0;i<data.data.length;i++){
                         var d={};
                         d['text']=data.data[i].name;
                         d['id']=data.data[i].id;
@@ -34,10 +34,12 @@
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
             $("#submitBtn2").click(function(){
-                var did=$("#txt3").val();
+                var device=$("#txt3").val();
                 var sTime=$("#txt4").val();
                 var eTime=$("#txt5").val();
-                $("#reportShow").load($.URL.inspectReport.reportSearch,{"sTime":sTime,"eTime":eTime,"deviceId":did,"userId":null,"flag":"1"},reportSearchCallback,"json");
+                var j={"sTime":sTime,"eTime":eTime,"deviceName":device} ;
+                var jsonString= $.toJSON(j);
+                $("#deviceInfoShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"1","type":"html"},reportSearchCallback,"json");
             });
         });
         function reportSearchCallback(data){
@@ -49,12 +51,12 @@
 
 </head>
 <body>
-<div id="searchContainer">
+<div id="searchContainer" class="searchContainer">
     <div class="searchItem"><span class="item_font">设备:</span><span class="item_input"><input id="txt3" type="text"></span></div>
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="txt4" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="txt5" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn2" class="l-button l-button-submit" /></span></div>
 </div>
-<div id="reportShow"></div>
+<div id="deviceInfoShow"></div>
 </body>
 </html>

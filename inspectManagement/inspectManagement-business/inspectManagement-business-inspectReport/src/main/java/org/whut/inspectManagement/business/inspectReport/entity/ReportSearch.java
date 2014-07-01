@@ -12,9 +12,9 @@ public class ReportSearch {
 
     private String eTime;
 
-    private String deviceId;
+    private String deviceName;
 
-    private String userId;
+    private String userName;
 
     public String getsTime() {
         return sTime;
@@ -32,19 +32,19 @@ public class ReportSearch {
         this.eTime = eTime;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getDeviceName() {
+        return deviceName;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

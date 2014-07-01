@@ -34,10 +34,12 @@
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
             $("#submitBtn5").click(function(){
-                var did=$("#txt3").val();
+                var device=$("#txt3").val();
                 var sTime=$("#txt4").val();
                 var eTime=$("#txt5").val();
-                $("#reportShow").load($.URL.inspectReport.reportSearch,{"sTime":sTime,"eTime":eTime,"deviceId":did,"userId":null,"flag":"4"},reportSearchCallback,"json");
+                var j={"sTime":sTime,"eTime":eTime,"deviceName":device};
+                var jsonString= $.toJSON(j);
+                $("#reportShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"4","type":"html"},reportSearchCallback,"json");
             });
         });
         function reportSearchCallback(data){

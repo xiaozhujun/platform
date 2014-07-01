@@ -33,15 +33,19 @@
             }
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
+            showDeviceInfoReport();
             $("#submitBtn2").click(function(){
-                var device=$("#txt3").val();
-                var sTime=$("#txt4").val();
-                var eTime=$("#txt5").val();
-                var j={"sTime":sTime,"eTime":eTime,"deviceName":device} ;
-                var jsonString= $.toJSON(j);
-                $("#deviceInfoShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"1","type":"html"},reportSearchCallback,"json");
+                showDeviceInfoReport();
             });
         });
+        function showDeviceInfoReport(){
+            var device=$("#txt3").val();
+            var sTime=$("#txt4").val();
+            var eTime=$("#txt5").val();
+            var j={"sTime":sTime,"eTime":eTime,"deviceName":device} ;
+            var jsonString= $.toJSON(j);
+            $("#deviceInfoShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"1","type":"html"},reportSearchCallback,"json");
+        }
         function reportSearchCallback(data){
             if(data.code==200){
 

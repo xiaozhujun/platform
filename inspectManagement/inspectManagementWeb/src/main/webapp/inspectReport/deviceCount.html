@@ -18,15 +18,19 @@
         $(function(){
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
+            showDeviceCountReport();
             $("#submitBtn1").click(function(){
-               var sTime=$("#txt4").val();
-               var eTime=$("#txt5").val();
-               var j={"sTime":sTime,"eTime":eTime};
-               var jsonString= $.toJSON(j);
-               $("#deviceCountShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"0","type":"html"},reportSearchCallback,"json");
-                $("#eDeviceCountDiv").css("display","block");
+                showDeviceCountReport();
             });
         });
+        function showDeviceCountReport(){
+            var sTime=$("#txt4").val();
+            var eTime=$("#txt5").val();
+            var j={"sTime":sTime,"eTime":eTime};
+            var jsonString= $.toJSON(j);
+            $("#deviceCountShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"0","type":"html"},reportSearchCallback,"json");
+            $("#eDeviceCountDiv").css("display","block");
+        }
         function reportSearchCallback(data){
             if(data.code==200){
 

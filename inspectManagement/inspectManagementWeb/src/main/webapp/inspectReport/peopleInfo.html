@@ -48,16 +48,20 @@
             }
             $("#txt4").ligerDateEditor();
             $("#txt5").ligerDateEditor();
+            showPeopleInfoReport();
             $("#submitBtn4").click(function(){
-                var user=$("#txt2").val();
-                var device=$("#txt3").val();
-                var sTime=$("#txt4").val();
-                var eTime=$("#txt5").val();
-                var j={"sTime":sTime,"eTime":eTime,"deviceName":device,"userName":user};
-                var jsonString= $.toJSON(j);
-                $("#peopleInfoShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"3","type":"html"},reportSearchCallback,"json");
+                showPeopleInfoReport();
             });
         });
+        function showPeopleInfoReport(){
+            var user=$("#txt2").val();
+            var device=$("#txt3").val();
+            var sTime=$("#txt4").val();
+            var eTime=$("#txt5").val();
+            var j={"sTime":sTime,"eTime":eTime,"deviceName":device,"userName":user};
+            var jsonString= $.toJSON(j);
+            $("#peopleInfoShow").load($.URL.inspectReport.reportSearch,{"jsonString":jsonString,"flag":"3","type":"html"},reportSearchCallback,"json");
+        }
         function reportSearchCallback(data){
             if(data.code==200){
             }

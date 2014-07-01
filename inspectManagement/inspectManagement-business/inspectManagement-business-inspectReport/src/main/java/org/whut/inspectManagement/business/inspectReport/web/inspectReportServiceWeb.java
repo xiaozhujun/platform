@@ -103,8 +103,7 @@ public class inspectReportServiceWeb {
         searchReportBeanList.clear();
         try{
             String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean("null",deviceId,sTime,eTime);
-            searchReportBeanList=getSearchReportListSourceByMongoId(list);
+            searchReportBeanList=inspectReportService.getInspectTableRecordListByBean("null", deviceId, sTime, eTime);
             String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleCountTemplate);
             exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){

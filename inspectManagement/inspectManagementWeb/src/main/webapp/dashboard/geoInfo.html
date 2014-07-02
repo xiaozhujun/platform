@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="css/accordion.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/showCompany.css">
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/rightHidePanel.js"></script>
+    <script type="text/javascript">
+        $(function (){
+               $("#showMap").load("geoInfo/deviceGeoInfo.html");
+               $.rightHidePanel("panelarrow2","panelimg2","rightmain");
+        });
+    </script>
+</head>
+<body style="padding:10px">
+<div id="geoInfo" class="dataShow">
+<div id="leftContainer">
+<div id="toolbar">
+    <div id="search" class="searchShow">
+     <span id="titleSearch">
+        <span id="provinceSearch">
+         省:<select id="province">
+             <option value="0">---请选择---</option>
+                     </select>
+                    </span>
+                       <span id="citySearch">市:<select id="city">
+                           <option value="0">---请选择---</option>
+                       </select>
+                       </span>
+                      <span id="areaSearch"> 区:<select id="area">
+                            <option value="0">---请选择---</option>
+                        </select>
+                         </span>
+                       <span id="equipVarietySearch">企业:<select id="equipVariety">
+                            <option value="0">---请选择---</option>
+                        </select>
+                         </span>
+                      <span id="devSearch">更多选择:<select id="dev">
+                          <option value="0">---请选择---</option>
+                          <option value="1">设备</option>
+                          <option value="2">人员</option>
+                      </select>
+                         </span>
+                    </span>
+    </div>
+</div>
+    <div id="showMap"></div>
+</div>
+    <div class="relative"></div>
+    <div id="panelarrow2" title="隐藏列表" style="" class="">
+        <div id="panelimg2" class="arrow_bg_img"></div>
+        <!--<img class="collapse-left3" src="img/panelarrow2.png" id="panelimg2">-->
+    </div>
+    <div id="rightmain">
+        <div id="myTab">
+            <!--右侧信息栏-->
+        </div>
+    </div>
+</div>
+</body>
+</html>

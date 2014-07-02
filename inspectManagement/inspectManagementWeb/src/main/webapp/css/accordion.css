@@ -1,0 +1,5 @@
+body{ padding:20px; margin:0;}
+.dataShow{width: 100%;height: 100%;overflow: hidden}
+.accordion{width: 14%;min-height:500px;overflow:hidden;float:left}
+.accordion li{cursor: pointer;}
+.searchReportShow{min-height:500px;overflow: hidden;border: 1px solid #EAF2FE;margin-left: 2px}

@@ -9,11 +9,12 @@
             loadTabPage(tabid);
         }});
 
-        loadTabPage('dayWorkerTab');
+        loadTabPage('geoInfoTab');
     });
-
     function loadTabPage(tabid){
-        if(tabid=="dayWorkerTab"){
+        if(tabid=="geoInfoTab"){
+            $("#"+tabid).load("dashboard/geoInfo.html");
+        }else if(tabid=="dayWorkerTab"){
           $("#"+tabid).load("dashboard/dayWorker.html");
         }else if(tabid=="dayDeviceTab"){
             $("#"+tabid).load("dashboard/dayDevice.html");
@@ -29,6 +30,8 @@
 <style type="text/css">
 </style>
 <div id="tab">
+    <div id="geoInfoTab" tabid="geoInfoTab" title="地理信息">
+    </div>
     <div id="dayWorkerTab" tabid="dayWorkerTab" title="人员日检">
     </div>
     <div id="dayDeviceTab" tabid="dayDeviceTab" title="设备日检">

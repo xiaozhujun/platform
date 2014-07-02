@@ -36,7 +36,8 @@
         update inspect_plan
         <set>
             <if test="name!=null">NAME=#{name},</if>
-            <if test="description!=null">DESCRIPTION=#{description}</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="rule!=null">RULE=#{rule},</if>
             <if test="inspectTableId!=null">INSPECTTABLEID=#{inspectTableId},</if>
             <if test="status!=null">STATUS=#{status},</if>
             <if test="dayStart!=null">DAYSTART=#{dayStart},</if>
@@ -45,8 +46,8 @@
             <if test="timeEnd!=null">TIMEEND=#{timeEnd},</if>
         </set>
         <where>
-            <if test="appId!=null">APPID=#{appId}</if>
             <if test="id != null">ID=#{id}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
         </where>
     </update>
 
@@ -54,7 +55,7 @@
         DELETE FROM inspect_plan
         <where>
             <if test="appId!=null">APPID=#{appId}</if>
-            <if test="id != null">ID=#{id}</if>
+            <if test="id != null">AND ID=#{id}</if>
             <if test="name != null"> AND NAME=#{name}</if>
         </where>
     </delete>
@@ -65,7 +66,7 @@
         FROM inspect_plan
         <where>
             <if test="appId!=null">APPID=#{appId}</if>
-            <if test="name!=null">AND NAME=#{name}</if>
+            <if test="name!=null">AND NAME like #{name}</if>
             <if test="createtime!=null">AND CREATETIME=#{createtime}</if>
         </where>
     </select>
@@ -83,9 +84,16 @@
         select name
         from inspect_plan
         <where>
-            <if test="appId!=null">APPID=#{appId}</if>
             <if test="id != null">ID=#{id}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
         </where>
+    </select>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="inspect_planResultMapper">
+        select
+        <include refid="inspect_plan_fields"/>
+        from inspect_plan
+        where APPID=#{appId}
     </select>
 
 </mapper>

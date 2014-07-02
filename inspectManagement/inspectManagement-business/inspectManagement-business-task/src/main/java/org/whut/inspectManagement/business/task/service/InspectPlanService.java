@@ -18,8 +18,8 @@ public class InspectPlanService {
     @Autowired
     private InspectPlanMapper inspectPlanMapper;
 
-    public void add(InspectPlan device){
-        inspectPlanMapper.add(device);
+    public void add(InspectPlan inspectPlan){
+        inspectPlanMapper.add(inspectPlan);
     }
 
     public List<InspectPlan> list(){
@@ -31,16 +31,28 @@ public class InspectPlanService {
         return inspectPlanMapper.getListByAppId(appId);
     }
 
-    public void update(InspectPlan device){
-        inspectPlanMapper.update(device);
+    public void update(InspectPlan inspectPlan){
+        inspectPlanMapper.update(inspectPlan);
     }
 
-    public void delete(InspectPlan device){
-        inspectPlanMapper.delete(device);
+    public void delete(InspectPlan inspectPlan){
+        inspectPlanMapper.delete(inspectPlan);
     }
 
     public long getIdByName(String name,long appId){
         return inspectPlanMapper.getIdByName(name,appId);
+    }
+
+    public List<InspectPlan> query(HashMap<String, Object> params){
+        return  inspectPlanMapper.findByCondition(params);
+    }
+
+    public boolean isExist(String name,long appId){
+        long id = inspectPlanMapper.getIdByName(name,appId);
+        if(id==0){
+            return false;
+        }
+        return true;
     }
 
 }

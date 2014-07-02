@@ -25,36 +25,44 @@
            $("#submitBtn").click(function(){
                var data={};
                data.rule = $("#cronDiv").cron("value");
-               data.inspectTableId = $("#inspectTable").val();
+               data.inspectTableId = $("#inspectTableSelect").val();
                data.name=$("#name").val();
                data.description = $("#description").val();
-
-               $.post($.URL.taskPlan.addTaskPlan,data,addCallback,"json");
+               data.dayStart = $("#dayStart").val();
+               data.dayEnd = $("#dayEnd").val();
+               $.post($.URL.taskPlan.add,data,addCallback,"json");
            });
 
             $.post($.URL.inspectTable.getList,null,listCallBack,"json");
-            function listCallBack(data){
-                if(data.code==200){
-                    var myData=[];
-                    $.each(data.data,function(index,content){
-                        var j={};
-                        j["text"]=content.name;
-                        j["id"]=content.id;
-                        myData.push(j);
-                    });
-                    $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
-                        data:myData,
-                        width:200,
-                        valueField:'id',
-                        textField:'text',
-                        valueFieldID:'inspectTableSelect'
-                    })
-                }
-            }
+
+            var d=new Date();
+            var sDay=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            var eDay=d.getFullYear()+1+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            $("#dayStart").ligerDateEditor({initValue: sDay});
+            $("#dayEnd").ligerDateEditor({initValue: eDay});
         });
 
         function addCallback(data){
             $.ligerDialog.success(data.message);
+        }
+
+        function listCallBack(data){
+            if(data.code==200){
+                var myData=[];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    myData.push(j);
+                });
+                $("#inspectTable").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
+                    data:myData,
+                    width:200,
+                    valueField:'id',
+                    textField:'text',
+                    valueFieldID:'inspectTableSelect'
+                })
+            }
         }
     </script>
 
@@ -88,10 +96,24 @@
             <td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">点检项目:</td>
-            <td align="left" class="l-table-edit-td"><input name="inspectTable"  type="text" id="inspectTable" /></div></td>
+            <td align="right" class="l-table-edit-td">时间段:</td>
+            <td align="left" class="l-table-edit-td">
+                <table>
+                    <tr>
+                        <td>起始时间：</td>
+                        <td><input id="dayStart" type="text"></td>
+                        <td>&nbsp;&nbsp;终止时间：</td>
+                        <td><input id="dayEnd" type="text"></td>
+                    </tr>
+                </table></td>
             <td align="left"></td>
         </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">点检项目:</td>
+            <td align="left" class="l-table-edit-td"><select name="inspectTable"  type="text" id="inspectTable" /></div></td>
+            <td align="left"></td>
+        </tr>
+
     </table>
     <br />
     <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />

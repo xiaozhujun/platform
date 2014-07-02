@@ -53,23 +53,33 @@ public class inspectReportServiceWeb {
 
     private static List<SearchReportBean> searchReportBeanList=new ArrayList<SearchReportBean>();
 
+    private final String flag1="0";
+
+    private final String flag2="1";
+
+    private final String flag3="2";
+
+    private final String flag4="3";
+
+    private final String flag5="4";
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/reportSearch")
     public String reportSearch(@FormParam("jsonString")String jsonString,@FormParam("flag") String flag,@FormParam("type")String type){
         ReportSearch reportSearch=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,ReportSearch.class);
-        if(flag.equals("0")){
+        if(flag.equals(flag1)){
             deviceCount(reportSearch.getsTime(),reportSearch.geteTime(),type);
-        }else if(flag.equals("1")){
+        }else if(flag.equals(flag2)){
             //deviceInfo
             deviceInfo(reportSearch.getsTime(), reportSearch.geteTime(), reportSearch.getDeviceName(),type);
-        }else if(flag.equals("2")){
+        }else if(flag.equals(flag3)){
             //peopleCount
             peopleCount(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName(),type);
-        }else if(flag.equals("3")){
+        }else if(flag.equals(flag4)){
             //peopleInfo
             peopleInfo(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName(),reportSearch.getUserName(),type);
-        }else if(flag.equals("4")){
+        }else if(flag.equals(flag5)){
             //deviceHistory
             deviceHistory(reportSearch.getsTime(),reportSearch.geteTime(),reportSearch.getDeviceName(),type);
         }
@@ -273,15 +283,15 @@ public class inspectReportServiceWeb {
         String[] s=typeFlag.split(",");
         String type=s[0];
         String flag=s[1];
-        if(flag.equals("0")){
+        if(flag.equals(flag1)){
             reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceCountTemplate);
-        }else if(flag.equals("1")){
+        }else if(flag.equals(flag2)){
             reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceInfoTemplate);
-        }else if(flag.equals("2")){
+        }else if(flag.equals(flag3)){
             reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleCountTemplate);
-        }else if(flag.equals("3")){
+        }else if(flag.equals(flag4)){
             reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleInfoTemplate);
-        }else if(flag.equals("4")){
+        }else if(flag.equals(flag5)){
             reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceHistoryTemplate);
         }
         exportReport(reportTemplate,type,searchReportBeanList);

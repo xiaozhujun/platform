@@ -12,7 +12,7 @@ import java.util.Date;
 public class UserInspectPlan {
     private long id;
     private long userId;
-    private long planId;
+    private long inspectPlanId;
     private Date createtime;
     private int status;
     private long deviceId;
@@ -34,12 +34,12 @@ public class UserInspectPlan {
         this.userId = userId;
     }
 
-    public long getPlanId() {
-        return planId;
+    public long getInspectPlanId() {
+        return inspectPlanId;
     }
 
-    public void setPlanId(long planId) {
-        this.planId = planId;
+    public void setInspectPlanId(long inspectPlanId) {
+        this.inspectPlanId = inspectPlanId;
     }
 
     public Date getCreatetime() {

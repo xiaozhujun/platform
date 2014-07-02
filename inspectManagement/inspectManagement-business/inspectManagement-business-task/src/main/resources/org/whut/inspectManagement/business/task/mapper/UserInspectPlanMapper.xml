@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.task.mapper.UserInspectPlanMapper">
+    <sql id="user_inspect_plan_fields">
+        ID,NAME,DESCRIPTION,RULE,INSPECTTABLEID,DAYSTART,DAYEND,TIMESTART,TIMEEND,STATUS,CREATETIME,APPID
+            </sql>
+    <resultMap type="UserInspectPlan" id="user_inspect_planResultMapper">
+        <id property="id" column="ID"/>
+        <result property="userId" column="USERID"/>
+        <result property="deviceId" column="DEVICEID"/>
+        <result property="inspectPlanId" column="INSPECTPLANID"/>
+        <result property="status" column="STATUS"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="UserInspectPlan" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        user_inspect_plan
+        (
+        <include refid="user_inspect_plan_fields"/>
+        )
+        values (#{id},#{userId},#{deviceId},#{inspectPlanId},#{status},#{createtime},#{appId});
+        <selectKey keyProperty="id" resultType="long">
+            select LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="UserInspectPlan">
+        update user_inspect_plan
+        <set>
+            <if test="userId!=null">NAME=#{userId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId},</if>
+            <if test="inspectPlanId!=null">INSPECTPLANID=#{inspectPlanId},</if>
+            <if test="status!=null">STATUS=#{status},</if>
+        </set>
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="UserInspectPlan">
+        DELETE FROM user_inspect_plan
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="id != null">AND ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="user_inspect_planResultMapper">
+        select
+        <include refid="user_inspect_plan_fields"/>
+        from user_inspect_plan
+        where APPID=#{appId}
+    </select>
+
+
+    <select id="findByCondition" parameterType="UserInspectPlan" resultMap="user_inspect_planResultMapper">
+        SELECT
+        <include refid="user_inspect_plan_fields"/>
+        FROM inspect_plan
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="userId!=null">AND userId=#{userId}</if>
+            <if test="deviceId!=null">AND deviceId=#{deviceId}</if>
+            <if test="inspectPlanId!=null">AND inspectPlanId=#{inspectPlanId}</if>
+        </where>
+    </select>
+
+</mapper>

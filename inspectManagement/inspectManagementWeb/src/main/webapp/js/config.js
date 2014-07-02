@@ -118,7 +118,11 @@
             "getInspectTableRecordGroupByDevice":"rs/inspectReport/getInspectTableRecordGroupByDevice"
         },
         "taskPlan":{
-            "addTaskPlan":"rs/taskPlan/addTaskPlan"
+            "add":"rs/taskPlan/add",
+            "list":"rs/taskPlan/list",
+            "update":"rs/taskPlan/update",
+            "delete":"rs/taskPlan/delete",
+            "query":"rs/taskPlan/query"
         }
     }
 })(jQuery);

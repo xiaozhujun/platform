@@ -30,7 +30,7 @@
                data.description = $("#description").val();
                data.dayStart = $("#dayStart").val();
                data.dayEnd = $("#dayEnd").val();
-               $.post($.URL.taskPlan.addTaskPlan,data,addCallback,"json");
+               $.post($.URL.taskPlan.add,data,addCallback,"json");
            });
 
             $.post($.URL.inspectTable.getList,null,listCallBack,"json");

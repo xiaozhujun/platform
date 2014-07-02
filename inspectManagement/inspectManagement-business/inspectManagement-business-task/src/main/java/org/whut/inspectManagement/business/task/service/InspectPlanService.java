@@ -43,4 +43,16 @@ public class InspectPlanService {
         return inspectPlanMapper.getIdByName(name,appId);
     }
 
+    public List<InspectPlan> query(HashMap<String, Object> params){
+        return  inspectPlanMapper.findByCondition(params);
+    }
+
+    public boolean isExist(String name,long appId){
+        long id = inspectPlanMapper.getIdByName(name,appId);
+        if(id==0){
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -12,6 +12,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -31,7 +33,7 @@ public class InspectPlanServiceWeb {
     @Path("/addTaskPlan")
     @POST
     public String add(@FormParam("name") String name,@FormParam("inspectTableId") long inspectTableId,@FormParam("description")String description,
-                      @FormParam("rule")String rule
+                      @FormParam("rule")String rule,@FormParam("dayStart")String dayStart,@FormParam("dayEnd")String dayEnd
     ){
         if(name==null||name.trim().equals("")||rule==null||rule.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
@@ -47,6 +49,8 @@ public class InspectPlanServiceWeb {
             id=0;
         }
         if(id==0) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
             InspectPlan inspectPlan=new InspectPlan();
             inspectPlan.setName(name);
             inspectPlan.setDescription(description);
@@ -54,6 +58,17 @@ public class InspectPlanServiceWeb {
             inspectPlan.setRule(rule);
             inspectPlan.setCreatetime(new Date());
             inspectPlan.setAppId(appId);
+            String[] ruleItem = rule.split(" ");
+            inspectPlan.setTimeEnd(Integer.parseInt(ruleItem[0]));
+            inspectPlan.setTimeStart(Integer.parseInt(ruleItem[1]));
+            try {
+                inspectPlan.setDayStart(format.parse(dayStart));
+                inspectPlan.setDayEnd(format.parse(dayEnd));
+            } catch (ParseException e) {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"对不起，日期格式不正确!");
+            }
+
+            inspectPlanService.add(inspectPlan);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"恭喜您，任务计划添加成功!");
         }
         else{

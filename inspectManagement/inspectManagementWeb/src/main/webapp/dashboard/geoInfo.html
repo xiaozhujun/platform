@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/showCompany.css">
     <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
         $(function (){
                $("#showMap").load("geoInfo/deviceGeoInfo.html");
+               $.rightHidePanel("panelarrow2","panelimg2","rightmain");
         });
     </script>
 </head>
@@ -47,6 +49,11 @@
 </div>
     <div id="showMap"></div>
 </div>
+    <div class="relative"></div>
+    <div id="panelarrow2" title="隐藏列表" style="" class="">
+        <div id="panelimg2" class="arrow_bg_img"></div>
+        <!--<img class="collapse-left3" src="img/panelarrow2.png" id="panelimg2">-->
+    </div>
     <div id="rightmain">
         <div id="myTab">
             <!--右侧信息栏-->

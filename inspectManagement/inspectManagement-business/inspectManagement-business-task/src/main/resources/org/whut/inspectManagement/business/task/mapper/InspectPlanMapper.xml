@@ -4,12 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.task.mapper.InspectPlanMapper">
     <sql id="inspect_plan_fields">
-        ID,NAME,STATUS,CREATETIME,DESCRIPTION,APPID
+        ID,NAME,DESCRIPTION,RULE,INSPECTTABLEID,DAYSTART,DAYEND,TIMESTART,TIMEEND,STATUS,CREATETIME,APPID
             </sql>
     <resultMap type="InspectPlan" id="inspect_planResultMapper">
         <id property="id" column="ID"/>
         <result property="name" column="NAME"/>
         <result property="description" column="DESCRIPTION"/>
+        <result property="rule" column="RULE"/>
         <result property="inspectTableId" column="INSPECTTABLEID"/>
         <result property="dayStart" column="DAYSTART"/>
         <result property="dayEnd" column="DAYEND"/>
@@ -25,7 +26,7 @@
         (
         <include refid="inspect_plan_fields"/>
         )
-        values (#{id},#{name},#{description},#{inspectTableId},#{dayStart},#{dayEnd},#{timeStart},#{timeEnd},#{status},#{createtime},#{appId});
+        values (#{id},#{name},#{description},#{rule},#{inspectTableId},#{dayStart},#{dayEnd},#{timeStart},#{timeEnd},#{status},#{createtime},#{appId});
         <selectKey keyProperty="id" resultType="long">
             select LAST_INSERT_ID() as id
         </selectKey>

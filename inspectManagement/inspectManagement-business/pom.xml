@@ -21,6 +21,7 @@
         <module>inspectManagement-business-configuration</module>
         <module>inspectManagement-business-inspectReport</module>
         <module>inspectManagement-business-DeptAndEmployee</module>
+        <module>inspectManagement-business-task</module>
     </modules>
 
 </project>

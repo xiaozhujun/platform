@@ -116,6 +116,9 @@
             "getInspectDevicePie":"rs/inspectReport/getInspectDevicePie",
             "getInspectTableRecordGroupByEmployer":"rs/inspectReport/getInspectTableRecordGroupByEmployer",
             "getInspectTableRecordGroupByDevice":"rs/inspectReport/getInspectTableRecordGroupByDevice"
+        },
+        "taskPlan":{
+            "addTaskPlan":"rs/taskPlan/addTaskPlan"
         }
     }
 })(jQuery);

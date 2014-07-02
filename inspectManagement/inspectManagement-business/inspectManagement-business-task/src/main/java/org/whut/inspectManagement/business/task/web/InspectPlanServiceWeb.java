@@ -115,7 +115,7 @@ public class InspectPlanServiceWeb {
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/query")
     @POST
-    public String listEmployeeByNameDepartmentAndRole(@FormParam("name") String name){
+    public String query(@FormParam("name") String name){
         if((name==null||name.equals(""))){
             name="";
         }

@@ -6,7 +6,6 @@ import org.whut.inspectManagement.business.task.entity.UserInspectPlan;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,5 +18,5 @@ public interface UserInspectPlanMapper extends AbstractMapper<UserInspectPlan> {
     public List<InspectPlan> findByCondition(@Param("appId") long appId, @Param("name") String name, @Param("createtime") String createtime);
     public List<UserInspectPlan> getListByUserId(long userId,long appId);
     public List<UserInspectPlan> getListByAppId(long appId);
-    public List<UserInspectPlan> findByCondition(Map<String,Object> map);
+    public List<UserInspectPlan> findByCondition(UserInspectPlan userInspectPlan);
 }

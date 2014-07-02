@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.task.mapper.UserInspectPlanMapper">
     <sql id="user_inspect_plan_fields">
-        ID,NAME,DESCRIPTION,RULE,INSPECTTABLEID,DAYSTART,DAYEND,TIMESTART,TIMEEND,STATUS,CREATETIME,APPID
+        ID,USERID,DEVICEID,INSPECTPLANID,STATUS,CREATETIME,APPID
             </sql>
     <resultMap type="UserInspectPlan" id="user_inspect_planResultMapper">
         <id property="id" column="ID"/>
@@ -59,13 +59,13 @@
 
     <select id="findByCondition" parameterType="UserInspectPlan" resultMap="user_inspect_planResultMapper">
         SELECT
-        <include refid="user_inspect_plan_fields"/>
-        FROM inspect_plan
+        a.*,b.name as inspectPlanName,c.`name` as deviceName,d.`name` as inspectTableName,e.`name` as userName
+        FROM user_inspect_plan a,inspect_plan b,device c,inspecttable d,employee e
         <where>
-            <if test="appId!=null">APPID=#{appId}</if>
-            <if test="userId!=null">AND userId=#{userId}</if>
-            <if test="deviceId!=null">AND deviceId=#{deviceId}</if>
-            <if test="inspectPlanId!=null">AND inspectPlanId=#{inspectPlanId}</if>
+            <if test="appId!=0"> a.inspectPlanId=b.id and a.deviceId=c.id and a.userId=e.userId and b.inspectTableId=d.id AND a.APPID=#{appId}</if>
+            <if test="userId!=0">AND a.userId=#{userId}</if>
+            <if test="deviceId!=0">AND a.deviceId=#{deviceId}</if>
+            <if test="inspectPlanId!=0">AND a.inspectPlanId=#{inspectPlanId}</if>
         </where>
     </select>
 

@@ -18,6 +18,11 @@ public class UserInspectPlan {
     private long deviceId;
     private long appId;
 
+    private String userName;
+    private String inspectTableName;
+    private String deviceName;
+    private String inspectPlanName;
+
     public long getId() {
         return id;
     }
@@ -72,5 +77,37 @@ public class UserInspectPlan {
 
     public void setAppId(long appId) {
         this.appId = appId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getInspectTableName() {
+        return inspectTableName;
+    }
+
+    public void setInspectTableName(String inspectTableName) {
+        this.inspectTableName = inspectTableName;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getInspectPlanName() {
+        return inspectPlanName;
+    }
+
+    public void setInspectPlanName(String inspectPlanName) {
+        this.inspectPlanName = inspectPlanName;
     }
 }

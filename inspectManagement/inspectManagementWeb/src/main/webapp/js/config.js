@@ -123,6 +123,18 @@
             "update":"rs/taskPlan/update",
             "delete":"rs/taskPlan/delete",
             "query":"rs/taskPlan/query"
+        },
+        "userTaskPlan":{
+            "add":"rs/userInspectPlan/add",
+            "planGroupList":"rs/userInspectPlan/planGroupList",
+            "update":"rs/userInspectPlan/update",
+            "delete":"rs/userInspectPlan/delete",
+            "query":"rs/userInspectPlan/query"
+        },
+        "absolutePath":{
+            "userList":"/inspectManagement/"+ "rs/user/list",
+            "deviceList":"/inspectManagement/"+ "rs/device/list",
+            "userPlanAdd":"/inspectManagement/"+ "rs/userInspectPlan/add"
         }
     }
 })(jQuery);

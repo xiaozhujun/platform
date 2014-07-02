@@ -44,6 +44,9 @@
 
         function addCallback(data){
             $.ligerDialog.success(data.message);
+            if(data.code==200){
+                parent.getInspectPlanList();
+            }
         }
 
         function listCallBack(data){

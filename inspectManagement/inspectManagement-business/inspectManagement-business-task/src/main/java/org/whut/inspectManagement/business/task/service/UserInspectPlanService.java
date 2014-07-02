@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.task.entity.UserInspectPlan;
 import org.whut.inspectManagement.business.task.mapper.UserInspectPlanMapper;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,10 +21,6 @@ public class UserInspectPlanService {
         userInspectPlanMapper.add(inspectPlan);
     }
 
-    public List<UserInspectPlan> list(){
-        return  userInspectPlanMapper.findByCondition(new HashMap<String, Object>());
-    }
-
     public List<UserInspectPlan> getListByAppId(long appId)
     {
         return userInspectPlanMapper.getListByAppId(appId);
@@ -39,8 +34,8 @@ public class UserInspectPlanService {
         userInspectPlanMapper.delete(inspectPlan);
     }
 
-    public List<UserInspectPlan> query(HashMap<String, Object> params){
-        return  userInspectPlanMapper.findByCondition(params);
+    public List<UserInspectPlan> query(UserInspectPlan userInspectPlan){
+        return  userInspectPlanMapper.findByCondition(userInspectPlan);
     }
 
     public List<UserInspectPlan> getListByUserId(long userId,long appId){

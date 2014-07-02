@@ -23,7 +23,6 @@ public class InspectPlan {
     private String rule;
     private long appId;
 
-
     public String getRule() {
         return rule;
     }

@@ -6,7 +6,13 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $.initMap("中国",5);
+            $.get("http://api.map.baidu.com/location/ip?ak=E4805d16520de693a3fe707cdc962045&ip=202.198.16.3&coor=bd09ll",null,LocationCallback,"json");
         });
+        function  LocationCallback(data){
+                alert("kk");
+                var j= $.toJSON(data);
+                 alert(j);
+        }
     </script>
     <style type="text/css">
         #container{

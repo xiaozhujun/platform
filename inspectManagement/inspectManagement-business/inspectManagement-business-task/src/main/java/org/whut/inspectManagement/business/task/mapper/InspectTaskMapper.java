@@ -3,6 +3,8 @@ package org.whut.inspectManagement.business.task.mapper;
 import org.whut.inspectManagement.business.task.entity.InspectTask;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
@@ -11,4 +13,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  * To change this template use File | Settings | File Templates.
  */
 public interface InspectTaskMapper extends AbstractMapper<InspectTask>{
+    public List<InspectTask> getListByAppId(long appId);
+    public List<InspectTask> findByCondition(InspectTask inspectTask);
+
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.task.mapper.InspectTaskMapper">
+    <sql id="inspect_task_fields">
+        ID,INSPECTPLANID,INSPECTTABLEID,INSPECTTABLERECORDID,USERID,DEVICEID,FAULTCOUNT,INSPECTTIME,CREATETIME,STATUS,TASKDATE,TIMESTART,TIMEEND,,APPID
+            </sql>
+    <resultMap type="InspectTask" id="inspect_taskResultMapper">
+        <id property="id" column="ID"/>
+        <result property="inspectPlanId" column="INSPECTPLANID"/>
+        <result property="inspectTableId" column="INSPECTTABLEID"/>
+        <result property="inspectTableRecordId" column="INSPECTTABLERECORDID"/>
+        <result property="userId" column="USERID"/>
+        <result property="deviceId" column="DEVICEID"/>
+        <result property="faultCount" column="FAULTCOUNT"/>
+        <result property="inspectTime" column="INSPECTTIME"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="status" column="STATUS"/>
+        <result property="taskDate" column="TASKDATE"/>
+        <result property="timeStart" column="TIMESTART"/>
+        <result property="timeEnd" column="TIMEEND"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="InspectTask" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        inspect_task
+        (
+        <include refid="inspect_task_fields"/>
+        )
+        values (#{id},#{inspectPlanId},#{inspectTableId},#{inspectTableRecordId},#{userId},#{deviceId},#{faultCount},#{inspectTime},#{createtime},#{status},#{taskDate},#{timeStart},#{timeEnd},#{appId});
+        <selectKey keyProperty="id" resultType="long">
+            select LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="InspectTask">
+        update inspect_task
+        <set>
+            <if test="inspectPlanId!=null">INSPECTPLANID=#{inspectPlanId},</if>
+            <if test="inspectTableId!=null">INSPECTTABLEID=#{inspectTableId},</if>
+            <if test="inspectTableRecordId!=null">INSPECTTABLERECORDID=#{inspectTableRecordId},</if>
+            <if test="userId!=null">USERID=#{userId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId},</if>
+            <if test="faultCount!=null">FAULTCOUNT=#{faultCount},</if>
+            <if test="inspectTime!=null">INSPECTTIME=#{inspectTime},</if>
+            <if test="status!=null">STATUS=#{status},</if>
+            <if test="taskDate!=null">TASKDATE=#{taskDate},</if>
+            <if test="timeStart!=null">TIMESTART=#{timeStart},</if>
+            <if test="timeEnd!=null">TIMEEND=#{timeEnd},</if>
+        </set>
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="appId!=null">AND APPID=#{appId}</if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="InspectTask">
+        DELETE FROM inspect_task
+        <where>
+            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="id != null">AND ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="inspect_taskResultMapper">
+        select
+        <include refid="inspect_task_fields"/>
+        from inspect_task
+        where APPID=#{appId}
+    </select>
+
+    <select id="findByCondition" parameterType="InspectTask" resultMap="inspect_taskResultMapper">
+        SELECT
+        a.*,b.`name` as planName,c.`name` as tableName,d.`name` as deviceName
+        FROM inspect_task a,inspect_plan b,inspecttable c,device d
+        <where>
+            <if test="appId!=0"> a.inspectPlanId=b.id and a.inspectTableId=c.id and a.deviceId=d.id AND a.APPID=#{appId}</if>
+            <if test="userId!=0">AND a.userId=#{userId}</if>
+            <if test="deviceId!=0">AND a.deviceId=#{deviceId}</if>
+            <if test="inspectPlanId!=0">AND a.inspectPlanId=#{inspectPlanId}</if>
+            <if test="inspectTableId!=0">AND a.inspectTableId=#{inspectTableId}</if>
+            <if test="taskDate!=null">AND a.taskDate=#{taskDate}</if>
+        </where>
+    </select>
+
+
+</mapper>

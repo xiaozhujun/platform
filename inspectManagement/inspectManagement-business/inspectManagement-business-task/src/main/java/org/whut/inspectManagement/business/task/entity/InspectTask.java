@@ -20,7 +20,14 @@ public class InspectTask {
     private Date inspectTime;
     private Date createtime;
     private int status;
+    private Date taskDate;
+    private int timeStart;
+    private int timeEnd;
     private long appId;
+
+    private String tableName;
+    private String planName;
+    private String deviceName;
 
     public long getId() {
         return id;
@@ -100,6 +107,54 @@ public class InspectTask {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Date getTaskDate() {
+        return taskDate;
+    }
+
+    public void setTaskDate(Date taskDate) {
+        this.taskDate = taskDate;
+    }
+
+    public int getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(int timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public int getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(int timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getPlanName() {
+        return planName;
+    }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public long getAppId() {

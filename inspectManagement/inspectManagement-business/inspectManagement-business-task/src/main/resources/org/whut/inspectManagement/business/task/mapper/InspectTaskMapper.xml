@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.task.mapper.InspectTaskMapper">
     <sql id="inspect_task_fields">
-        ID,INSPECTPLANID,INSPECTTABLEID,INSPECTTABLERECORDID,USERID,DEVICEID,FAULTCOUNT,INSPECTTIME,CREATETIME,STATUS,TASKDATE,TIMESTART,TIMEEND,,APPID
+        ID,INSPECTPLANID,INSPECTTABLEID,INSPECTTABLERECORDID,USERID,DEVICEID,FAULTCOUNT,INSPECTTIME,CREATETIME,STATUS,TASKDATE,TIMESTART,TIMEEND,APPID
             </sql>
     <resultMap type="InspectTask" id="inspect_taskResultMapper">
         <id property="id" column="ID"/>
@@ -75,13 +75,38 @@
         a.*,b.`name` as planName,c.`name` as tableName,d.`name` as deviceName
         FROM inspect_task a,inspect_plan b,inspecttable c,device d
         <where>
-            <if test="appId!=0"> a.inspectPlanId=b.id and a.inspectTableId=c.id and a.deviceId=d.id AND a.APPID=#{appId}</if>
+            a.inspectPlanId=b.id and a.inspectTableId=c.id and a.deviceId=d.id
+            <if test="appId!=0"> AND a.APPID=#{appId}</if>
             <if test="userId!=0">AND a.userId=#{userId}</if>
             <if test="deviceId!=0">AND a.deviceId=#{deviceId}</if>
             <if test="inspectPlanId!=0">AND a.inspectPlanId=#{inspectPlanId}</if>
             <if test="inspectTableId!=0">AND a.inspectTableId=#{inspectTableId}</if>
             <if test="taskDate!=null">AND a.taskDate=#{taskDate}</if>
         </where>
+    </select>
+
+    <insert id="dispatchTask" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="long">
+            select LAST_INSERT_ID() as id
+        </selectKey>
+        insert into inspect_task
+        (
+        <include refid="inspect_task_fields"/>
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id},#{item.inspectPlanId},#{item.inspectTableId},#{item.inspectTableRecordId},#{item.userId},#{item.deviceId},#{item.faultCount},#{item.inspectTime},#{item.createtime},#{item.status},#{item.taskDate},#{item.timeStart},#{item.timeEnd},#{item.appId})
+        </foreach>
+
+    </insert>
+
+    <select id="getDispatchTaskList" parameterType="java.util.List" resultMap="inspect_taskResultMapper">
+        SELECT a.inspectPlanId,b.inspectTableId,a.userId,a.deviceId,b.timeStart,b.timeEnd,b.appId,CURDATE() as taskDate,NOW() as createtime
+        FROM user_inspect_plan a,inspect_plan b,device c,inspecttable d,employee e
+        where a.inspectPlanId=b.id and a.deviceId=c.id and a.userId=e.userId and b.inspectTableId=d.id and b.rule IN
+        <foreach item="ruleItem" index="index" collection="list" open="(" separator="," close=")">
+            #{ruleItem}
+        </foreach>
     </select>
 
 

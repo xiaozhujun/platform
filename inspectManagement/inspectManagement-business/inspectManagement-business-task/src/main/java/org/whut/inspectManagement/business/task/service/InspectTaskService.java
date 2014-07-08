@@ -70,4 +70,49 @@ public class InspectTaskService {
         }
         return resultMap;
     }
+
+    public boolean isTaskDispatched(){
+
+        InspectTask condition = new InspectTask();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = null;
+        try {
+            today =  format.parse(format.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        condition.setTaskDate(today);
+        List<InspectTask> list = mapper.findByCondition(condition);
+        if(list.size()>0){
+            return true;
+        }
+        return false;
+    }
+
+    public void dispatchTask(){
+        if(!isTaskDispatched()){
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = null;
+            try {
+                today =  format.parse(format.format(new Date()));
+            } catch (ParseException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(today);
+            int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            List<String> ruleCondition = new ArrayList<String>();
+            ruleCondition.add("* * *");
+            ruleCondition.add("* * "+week);
+            ruleCondition.add(day+" * *");
+            ruleCondition.add(day+" "+month+" *" );
+            List<InspectTask> list = mapper.getDispatchTaskList(ruleCondition);
+            if(list.size()>0){
+                mapper.dispatchTask(list);
+            }
+        }
+    }
 }

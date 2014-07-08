@@ -62,7 +62,8 @@
         a.*,b.name as inspectPlanName,c.`name` as deviceName,d.`name` as inspectTableName,e.`name` as userName
         FROM user_inspect_plan a,inspect_plan b,device c,inspecttable d,employee e
         <where>
-            <if test="appId!=0"> a.inspectPlanId=b.id and a.deviceId=c.id and a.userId=e.userId and b.inspectTableId=d.id AND a.APPID=#{appId}</if>
+            a.inspectPlanId=b.id and a.deviceId=c.id and a.userId=e.userId and b.inspectTableId=d.id
+            <if test="appId!=0">  AND a.APPID=#{appId}</if>
             <if test="userId!=0">AND a.userId=#{userId}</if>
             <if test="deviceId!=0">AND a.deviceId=#{deviceId}</if>
             <if test="inspectPlanId!=0">AND a.inspectPlanId=#{inspectPlanId}</if>

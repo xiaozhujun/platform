@@ -15,5 +15,7 @@ import java.util.List;
 public interface InspectTaskMapper extends AbstractMapper<InspectTask>{
     public List<InspectTask> getListByAppId(long appId);
     public List<InspectTask> findByCondition(InspectTask inspectTask);
+    public List<InspectTask> getDispatchTaskList(List<String> ruleCondition);
+    public void dispatchTask(List<InspectTask> list);
 
 }

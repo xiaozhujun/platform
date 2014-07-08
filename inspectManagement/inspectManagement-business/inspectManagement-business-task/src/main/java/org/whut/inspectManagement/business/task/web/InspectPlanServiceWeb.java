@@ -53,12 +53,16 @@ public class InspectPlanServiceWeb {
             inspectPlan.setName(name);
             inspectPlan.setDescription(description);
             inspectPlan.setInspectTableId(inspectTableId);
-            inspectPlan.setRule(rule);
             inspectPlan.setCreatetime(new Date());
             inspectPlan.setAppId(appId);
             String[] ruleItem = rule.split(" ");
             inspectPlan.setTimeEnd(Integer.parseInt(ruleItem[0]));
             inspectPlan.setTimeStart(Integer.parseInt(ruleItem[1]));
+            String ruleTemp = "";
+            for(int i=2;i<ruleItem.length;i++){
+               ruleTemp += ruleItem[i];
+            }
+            inspectPlan.setRule(ruleTemp);
             try {
                 inspectPlan.setDayStart(format.parse(dayStart));
                 inspectPlan.setDayEnd(format.parse(dayEnd));

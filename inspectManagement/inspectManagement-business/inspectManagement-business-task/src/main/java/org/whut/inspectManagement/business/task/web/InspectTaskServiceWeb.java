@@ -32,5 +32,13 @@ public class InspectTaskServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(inspectTaskService.getLastTaskByDeviceGroup(UserContext.currentUserAppId()), JsonResultUtils.Code.SUCCESS);
     }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/dispatchTask")
+    @GET
+    public String dispatchTask(){
+        inspectTaskService.dispatchTask();
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
 
 }

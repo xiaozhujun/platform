@@ -28,6 +28,10 @@ public class InspectTask {
     private String tableName;
     private String planName;
     private String deviceName;
+    private String userName;
+
+    private Date startDay;
+    private Date endDay;
 
     public long getId() {
         return id;
@@ -153,8 +157,32 @@ public class InspectTask {
         return deviceName;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
+    }
+
+    public Date getEndDay() {
+        return endDay;
+    }
+
+    public void setEndDay(Date endDay) {
+        this.endDay = endDay;
+    }
+
+    public Date getStartDay() {
+        return startDay;
+    }
+
+    public void setStartDay(Date startDay) {
+        this.startDay = startDay;
     }
 
     public long getAppId() {

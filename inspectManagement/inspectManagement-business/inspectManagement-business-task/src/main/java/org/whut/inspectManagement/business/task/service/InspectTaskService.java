@@ -45,18 +45,7 @@ public class InspectTaskService {
         return mapper.findByCondition(condition);
     }
 
-    public HashMap<String,List<InspectTask>> getLastTaskByDeviceGroup(long appId){
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = null;
-        try {
-            today =  format.parse(format.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        InspectTask condition = new InspectTask();
-        condition.setAppId(appId);
-        condition.setTaskDate(today);
+    public HashMap<String,List<InspectTask>> getLastTaskByDeviceGroup(InspectTask condition){
         List<InspectTask> list = mapper.findByCondition(condition);
         HashMap<String,List<InspectTask>> resultMap = new LinkedHashMap<String, List<InspectTask>>();
         for(InspectTask task:list){

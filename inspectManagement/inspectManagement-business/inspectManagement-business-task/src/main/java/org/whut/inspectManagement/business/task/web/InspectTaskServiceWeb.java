@@ -2,14 +2,15 @@ package org.whut.inspectManagement.business.task.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.inspectManagement.business.task.entity.InspectTask;
 import org.whut.inspectManagement.business.task.service.InspectTaskService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,9 +28,31 @@ public class InspectTaskServiceWeb {
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/lastTaskByDeviceGroup")
-    @GET
-    public String getLastTaskByDeviceGroup(){
-        return JsonResultUtils.getObjectResultByStringAsDefault(inspectTaskService.getLastTaskByDeviceGroup(UserContext.currentUserAppId()), JsonResultUtils.Code.SUCCESS);
+    @POST
+    public String getLastTaskByDeviceGroup(@FormParam("userId")long userId,@FormParam("deviceId")long deviceId,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        InspectTask condition = new InspectTask();
+        condition.setUserId(userId);
+        condition.setDeviceId(deviceId);
+        condition.setAppId(UserContext.currentUserAppId());
+        try {
+            if(sTime!=null&&!sTime.trim().equals("")){
+                condition.setStartDay(format.parse(sTime));
+            }
+            if(eTime!=null&&!eTime.trim().equals("")){
+                condition.setEndDay(format.parse(eTime));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+       /* Date today = null;
+        try {
+            today =  format.parse(format.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        condition.setTaskDate(today);*/
+        return JsonResultUtils.getObjectResultByStringAsDefault(inspectTaskService.getLastTaskByDeviceGroup(condition), JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

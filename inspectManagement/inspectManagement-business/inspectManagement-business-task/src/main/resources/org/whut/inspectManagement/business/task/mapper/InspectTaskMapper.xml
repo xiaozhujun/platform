@@ -72,16 +72,18 @@
 
     <select id="findByCondition" parameterType="InspectTask" resultMap="inspect_taskResultMapper">
         SELECT
-        a.*,b.`name` as planName,c.`name` as tableName,d.`name` as deviceName
-        FROM inspect_task a,inspect_plan b,inspecttable c,device d
+        a.*,b.`name` as planName,c.`name` as tableName,d.`name` as deviceName,e.name as userName
+        FROM inspect_task a,inspect_plan b,inspecttable c,device d,employee e
         <where>
-            a.inspectPlanId=b.id and a.inspectTableId=c.id and a.deviceId=d.id
+            a.inspectPlanId=b.id and a.inspectTableId=c.id and a.deviceId=d.id and a.userId=e.userId
             <if test="appId!=0"> AND a.APPID=#{appId}</if>
             <if test="userId!=0">AND a.userId=#{userId}</if>
             <if test="deviceId!=0">AND a.deviceId=#{deviceId}</if>
             <if test="inspectPlanId!=0">AND a.inspectPlanId=#{inspectPlanId}</if>
             <if test="inspectTableId!=0">AND a.inspectTableId=#{inspectTableId}</if>
             <if test="taskDate!=null">AND a.taskDate=#{taskDate}</if>
+            <if test="startDay!=null"><![CDATA[ AND a.taskDate>=#{startDay}]]></if>
+            <if test="endDay!=null"><![CDATA[ AND a.taskDate<=#{endDay} ]]> </if>
         </where>
     </select>
 

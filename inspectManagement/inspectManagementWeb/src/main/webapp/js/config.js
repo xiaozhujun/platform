@@ -131,6 +131,9 @@
             "delete":"rs/userInspectPlan/delete",
             "query":"rs/userInspectPlan/query"
         },
+        "inspectTask":{
+            "lastTaskByDeviceGroup":"rs/inspectTask/lastTaskByDeviceGroup"
+        },
         "absolutePath":{
             "userList":"/inspectManagement/"+ "rs/user/list",
             "deviceList":"/inspectManagement/"+ "rs/device/list",

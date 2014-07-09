@@ -41,6 +41,7 @@
         <jedis.version>2.1.0</jedis.version>
         <logback.ext.version>0.1.1</logback.ext.version>
         <activemq.version>5.7.0</activemq.version>
+        <quartz.version>1.8.6</quartz.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -281,6 +282,12 @@
                 <version>${activemq.version}</version>
             </dependency>
             <!-- activeMQ end-->
+
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>

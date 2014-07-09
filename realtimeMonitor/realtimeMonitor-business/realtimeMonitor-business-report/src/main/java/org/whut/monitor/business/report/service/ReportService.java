@@ -74,14 +74,14 @@ public class ReportService {
     }
 
     //获取指定传感器在时间段内的数据
-    public List<DBObject> queryDocuments(Date startTime,Date endTime,String sensorNum){
+    public List<DBObject> queryDocuments(long startTime,long endTime,String sensorNum){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ArrayList<BasicDBObject> query = new ArrayList<BasicDBObject>();
-        if(startTime!=null){
-            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$gte", format.format(startTime))));
+        if(startTime!=0L){
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$gte", startTime)));
         }
-        if(endTime!=null){
-            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$lte", format.format(endTime))));
+        if(endTime!=0L){
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$lte", endTime)));
         }
         if(sensorNum!=null){
             query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id"), sensorNum));

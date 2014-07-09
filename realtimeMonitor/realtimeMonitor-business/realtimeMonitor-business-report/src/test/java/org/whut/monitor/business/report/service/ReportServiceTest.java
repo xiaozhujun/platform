@@ -33,7 +33,7 @@ public class ReportServiceTest {
         Date endDate = dateFormat.parse("2014-05-31 23:55:00");
         System.out.println(endDate.getTime());
         ReportService reportService = new ReportService();
-        List<DBObject> list =  reportService.queryDocuments(startDate, endDate, "101");
+        List<DBObject> list =  reportService.queryDocuments(startDate.getTime(), endDate.getTime(), "101");
         System.out.println(list.size());
 
     }

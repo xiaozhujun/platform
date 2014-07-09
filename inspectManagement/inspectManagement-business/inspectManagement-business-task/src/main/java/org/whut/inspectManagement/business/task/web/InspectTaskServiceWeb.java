@@ -11,6 +11,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,13 +47,6 @@ public class InspectTaskServiceWeb {
         } catch (ParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-       /* Date today = null;
-        try {
-            today =  format.parse(format.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        condition.setTaskDate(today);*/
         return JsonResultUtils.getObjectResultByStringAsDefault(inspectTaskService.getLastTaskByDeviceGroup(condition), JsonResultUtils.Code.SUCCESS);
     }
 
@@ -63,5 +58,24 @@ public class InspectTaskServiceWeb {
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/userLastTask")
+    @GET
+    public String userLastTask(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        InspectTask condition = new InspectTask();
+        condition.setUserId(UserContext.currentUserId());
+        condition.setAppId(UserContext.currentUserAppId());
+        Date today = null;
+        try {
+            today =  format.parse(format.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        condition.setTaskDate(today);
+
+        List<InspectTask> list = inspectTaskService.findByCondition(condition);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 
 }

@@ -137,7 +137,10 @@
         "absolutePath":{
             "userList":"/inspectManagement/"+ "rs/user/list",
             "deviceList":"/inspectManagement/"+ "rs/device/list",
-            "userPlanAdd":"/inspectManagement/"+ "rs/userInspectPlan/add"
+            "userPlanAdd":"/inspectManagement/"+ "rs/userInspectPlan/add",
+            "getTableList":"/inspectManagement/"+"rs/inspectTable/getList",
+            "updateTaskPlan":"/inspectManagement/"+"rs/taskPlan/update"
+
         }
     }
 })(jQuery);

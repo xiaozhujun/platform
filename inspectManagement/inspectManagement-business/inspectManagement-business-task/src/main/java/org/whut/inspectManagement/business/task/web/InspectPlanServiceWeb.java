@@ -60,7 +60,11 @@ public class InspectPlanServiceWeb {
             inspectPlan.setTimeStart(Integer.parseInt(ruleItem[1]));
             String ruleTemp = "";
             for(int i=2;i<ruleItem.length;i++){
-               ruleTemp += ruleItem[i];
+                if(ruleTemp.equals("")){
+                    ruleTemp += ruleItem[i];
+                }else{
+                    ruleTemp += " "+ruleItem[i];
+                }
             }
             inspectPlan.setRule(ruleTemp);
             try {
@@ -81,18 +85,45 @@ public class InspectPlanServiceWeb {
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/update")
     @POST
-    public String update(@FormParam("jsonString") String jsonString)
+    public String update(@FormParam("id") long id,@FormParam("name") String name,@FormParam("inspectTableId") long inspectTableId,@FormParam("description")String description,
+                         @FormParam("rule")String rule,@FormParam("dayStart")String dayStart,@FormParam("dayEnd")String dayEnd)
     {
-        InspectPlan inspectPlan = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectPlan.class);
-        if(inspectPlan.getName()==null||inspectPlan.getRule()==null){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
+        if(id==0||name==null||name.trim().equals("")||rule==null||rule.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
         }
-        inspectPlan.setAppId(UserContext.currentUserAppId());
-        String[] ruleItem = inspectPlan.getRule().split(" ");
+
+        long appId= UserContext.currentUserAppId();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        InspectPlan inspectPlan=new InspectPlan();
+        inspectPlan.setId(id);
+        inspectPlan.setName(name);
+        inspectPlan.setDescription(description);
+        inspectPlan.setInspectTableId(inspectTableId);
+        inspectPlan.setCreatetime(new Date());
+        inspectPlan.setAppId(appId);
+        String[] ruleItem = rule.split(" ");
         inspectPlan.setTimeEnd(Integer.parseInt(ruleItem[0]));
         inspectPlan.setTimeStart(Integer.parseInt(ruleItem[1]));
+        String ruleTemp = "";
+        for(int i=2;i<ruleItem.length;i++){
+            if(ruleTemp.equals("")){
+                ruleTemp += ruleItem[i];
+            }else{
+                ruleTemp += " "+ruleItem[i];
+            }
+        }
+        inspectPlan.setRule(ruleTemp);
+        try {
+            inspectPlan.setDayStart(format.parse(dayStart));
+            inspectPlan.setDayEnd(format.parse(dayEnd));
+        } catch (ParseException e) {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"对不起，日期格式不正确!");
+        }
+
         inspectPlanService.update(inspectPlan);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+
     }
 
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")

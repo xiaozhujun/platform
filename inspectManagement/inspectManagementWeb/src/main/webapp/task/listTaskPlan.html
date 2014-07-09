@@ -15,18 +15,16 @@
     <script type="text/javascript">
 
         $(function(){
-            $.get($.URL.taskPlan.list,null,listTaskPlanCallBack,"json");
+           queryTaskPlanList();
         }) ;
 
-        var gridData={};
-        function listTaskPlanCallBack(data){
-            if(data.code==200){
-                gridData.Rows=data.data;
-                gridData.Total=data.data.length;
-                f_initGrid();
-            }
+        function queryTaskPlanList(){
+            var data={};
+            data.name =$("#name").val();
+            $.post($.URL.taskPlan.query,data,queryListCallback,"json");
         }
 
+        var gridData={};
         var manager,g;
         function f_initGrid(){
             g = manager = $("#maingrid").ligerGrid( {
@@ -81,9 +79,7 @@
 
         }
         $("#submitBtn").click(function(){
-            var data={};
-            data.name =$("#name").val();
-            $.post($.URL.taskPlan.query,data,queryListCallback,"json");
+            queryTaskPlanList();
         });
         function queryListCallback(data){
             if(data.code==200){
@@ -97,7 +93,9 @@
         }
 
         function beginEdit(rowid){
-            manager.beginEdit(rowid);
+            var taskPlan = manager.getRow(rowid);
+            updateTaskPlan(taskPlan);
+            // manager.beginEdit(rowid);
         }
         function cancelEdit(rowid){
             manager.cancelEdit(rowid);
@@ -138,6 +136,21 @@
         function addNewRow()
         {
             manager.addEditRow();
+        }
+
+        function updateTaskPlan(taskPlan){
+            $.ligerDialog.open({
+                height:500,
+                width: 800,
+                title : '修改计划',
+                url: 'task/updateTaskPlan.html',
+                showMax: false,
+                showToggle: true,
+                showMin: false,
+                isResize: false,
+                slide: false,
+                data:{taskPlan: taskPlan}
+            });
         }
 
 

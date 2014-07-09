@@ -69,6 +69,11 @@ $.extend({
             }
         }*/
     },
+    initCity:function initCityWithDataRule(data,size){
+        $.initMap(data.province,size);
+        $.clearAllMarker;
+        $.drawCityBoundaryWithRule(data.province,data,1);
+    },
     initAreaWithDataRule:function initAreaWithDataRule(province,city,size,flag){
         $.initMap(city,size);
         $.clearAllMarker;
@@ -84,6 +89,11 @@ $.extend({
             }
         }*/
     },
+    initArea:function initArea(data,size,flag){
+        $.initMap(data.city,size);
+        $.clearAllMarker;
+        $.drawAreaBoundaryWithRule(data.province,data.city,data,1);
+    },
     showProvinceRisk:function showProvinceRisk(flag)
     {
         $.initProvinceWithDataRule("中国",5,flag);
@@ -97,6 +107,10 @@ $.extend({
     {
         $.initCityWithDataRule(province,8,flag);
     },
+    showCity:function showCity(data,flag){
+        /*$.initCityWithDataRule(data.province,8,flag);*/
+        $.initCity(data,8,flag);
+    },
     /*
      显示地区风险
      @Param province 省
@@ -106,6 +120,9 @@ $.extend({
     showAreaRisk:function showAreaRisk(province,city,flag)
     {
         $.initAreaWithDataRule(province,city,10,flag);
+    },
+    showArea:function showArea(data,flag){
+        $.initArea(data,10,flag);
     },
     showCompanyRisk:function showCompanyRisk(city,area,size){
     $.initAndAddMarker(city,area);
@@ -227,8 +244,10 @@ $.extend({
                             },delay);
                         }
                         $("#province option[value='"+data.province+"']").attr("selected",true);
-                        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");
-                        $.showCityRisk(data.province,1);                    });
+                       /* $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");*/
+                       /* $.showCityRisk(data.province,1);*/
+                        $.showCity(data,1);
+                    });
                 }
             }
             if(maxPly){
@@ -270,8 +289,10 @@ $.extend({
                             },delay);
                         }
                         $("#city option[value='"+data.city+"']").attr("selected",true);
-                        $.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":data.city}, $.getAreaByProvinceAndCityCallback,"json");
-                        $.showAreaRisk(province,data.city,1);                    });
+                        /*$.post($.URL.dataRuleAddress.getAreaAndColorWithDataRole,{"province":province,"city":data.city}, $.getAreaByProvinceAndCityCallback,"json");*/
+                        /*$.showAreaRisk(province,data.city,1);*/
+                        $.showArea(data,1);
+                    });
                 }
             }
             if(maxPly){
@@ -392,6 +413,44 @@ $.extend({
         $.clearAllMarker();
         $.addMarker(riskRankArray);//向地图中添加marker
     },
+    addMyMark:function add(data){
+        var riskRankArray=new Array();
+        for(i=0;i<data.data.length;i++){
+            var item={};
+            item.title=data.data[i].app;
+            item.content=data.data[i].username;
+            item.point=data.data[i].lng+"|"+data.data[i].lat;
+            item.isOpen=0;
+            /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
+            item.icon={};
+            item.icon.w=23;
+            item.icon.h=25;
+            item.icon.t=21;
+            item.icon.x=9;
+            item.icon.lb=12;
+            if(data.data[i].flag==1){
+                item.icon.l=23;
+            }
+            if(data.data[i].flag==2){
+                item.icon.l=0;
+            }
+            if(data.data[i].flag==3){
+                item.icon.l=69;
+            }
+            if(data.data[i].flag==4){
+                item.icon.l=115;
+            }
+            if(data.data[i].flag==5){
+                item.icon.l=46;
+            }
+            if(data.data[i].flag==6){
+                item.icon.l=46;
+            }
+            riskRankArray.push(item);
+        }
+        $.clearAllMarker();
+        $.addMarker(riskRankArray);
+},
     switchToRiskRankTab:function switchToRiskRankTab(){
         $.rTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
     }

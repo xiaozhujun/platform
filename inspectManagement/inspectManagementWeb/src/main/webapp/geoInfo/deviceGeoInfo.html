@@ -9,15 +9,17 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $.initMap("中国",5);
+            //取数据时,得按照app来分组
             var data= $.getMyData();
             $.addMyMark(data);
-            $("#inspectContent").html("");
+            $("#rightshow").html("");
             for(i=0;i<data.data.length;i++){
                 var hideField={"appId":data.data[i].appId,"app":data.data[i].app,"address":data.data[i].address,"username":data.data[i].username,"lng":data.data[i].lng,"lat":data.data[i].lat,"flag":data.data[i].flag};
                 var jsonH= $.toJSON(hideField);
-                var inspectItem="<div class='inspectItem' id='inspectItem"+data.data[i].appId+"'><div class='inspectpic'><img src='images/qizhongji.jpg'/></div><span class='inspectcontent'><span class='inspectApp'>"+data.data[i].app+"</span><span class='inspectAddress'><span class='inspectFont'>地址:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].appId+"'>"+jsonH+"</span></span></span></div>";
-                $("#inspectContent").append(inspectItem);
+                var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].appId+"'><div class='inspectpic'><img src='images/qizhongji.jpg'/></div><span class='inspectcontent'><span class='inspectApp'>"+data.data[i].app+"</span><span class='inspectAddress'><span class='inspectFont'>地址:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].appId+"'>"+jsonH+"</span></span></span></div><div class='inspectInfoHide' id='inspectInfo"+data.data[i].appId+"'></div></div>";
+                $("#rightshow").append(inspectItem);
                 var inspectItemId="#inspectItem"+data.data[i].appId;
+                var inspectInfoId="#inspectInfo"+data.data[i].appId;
                 $(inspectItemId).mouseover(function(){
                     var id=this.id.substring(11,inspectItemId.length-1);
                     var hideField="#hideField"+id;
@@ -53,8 +55,37 @@
                     };
                     $.addOneMarkerWithId(appId,title,content,point,isOpen,icon,0);
                 });
+                $(inspectItemId).click(function(){
+                    var inspectInfo="#inspectInfo"+this.id.substring(11,inspectItemId.length-1);
+                    if($("#"+this.id).hasClass("inspectItem")){
+                        $("#"+this.id).removeClass("inspectItem").addClass("inspectItemHover");
+                    }else{
+                        $("#"+this.id).removeClass("inspectItemHover").addClass("inspectItem");
+                    }
+                    if($(inspectInfo).hasClass("inspectInfoHide")){
+                        $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
+                    }else{
+                        $(inspectInfo).removeClass("inspectInfoClick").addClass("inspectInfoHide");
+                    }
+                    $.post($.URL.inspectTask.getInspectTaskInfo,{"appId":this.id.substring(11,inspectItemId.length-1)},getInspectTaskInfoCallback,"json");
+                });
+
             }
         });
+        function getInspectTaskInfoCallback(data){
+           if(data.code==200){
+               var inspectInfoId="#inspectInfo"+data.str;
+               $(inspectInfoId).html("");
+               if(data.data[0]==undefined){
+                   $(inspectInfoId).append("抱歉,数据不存在!");
+               }else{
+                   for(i=0;i<data.data.length;i++){
+                       var inspectItem="<span class='_infoTitle'><span class='_titleFont'>起重机智能点检平台</span></span><span class='infoImg'><img src='images/qizhongji.jpg'></span><span class='infoMsg'><span class='msgItem'><span class='msgItemFont'>点检人员:"+data.data[i].username+"</span></span><span class='msgItem'><span class='msgItemFont'>点检设备:"+data.data[i].devname+"</span></span><span class='msgItem'><span class='msgItemFont'>点检表:"+data.data[i].tname+"</span></span></span>";
+                       $(inspectInfoId).append(inspectItem);
+                   }
+               }
+           }
+        }
 
     </script>
     <style type="text/css">

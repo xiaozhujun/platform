@@ -74,19 +74,7 @@
     right:0px;
     float: left;
 }
-#rightshow {
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-right-width: 0;
-    box-shadow: -1px 0 1px #AAAAAA;
-    margin: 0px;
-    min-height: 500px;
-    position: absolute;
-    width: 385px;
-    z-index: 1;
-    right:0px;
-    float: left;
-    display: none;
-}
+
 
 
 #panelimg2 {
@@ -106,10 +94,18 @@
     margin-top: 1px;
     font-size: 15px;
 }
-.inspectContent{
-    width:385px;
-    margin-top: 1px;
-    min-height: 200px;
+#rightshow{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #AAAAAA;
+    margin: 0px;
+    height: 100%;
+    position: absolute;
+    width: 385px;
+    z-index: 1;
+    right:0px;
+    float: left;
+    overflow: auto;
 }
 .inspectItem{
    width: 385px;
@@ -162,4 +158,17 @@
 .inspectFont{
     margin-left: 1px;
 }
+.inspectAll{
+    width: 385px;
+}
+.inspectInfoHide{
+    width: 385px;
+    display: none;
+    height: auto;
+}
+.inspectInfoClick{
+    width: 385px;
+    height: auto;
+}
+
 

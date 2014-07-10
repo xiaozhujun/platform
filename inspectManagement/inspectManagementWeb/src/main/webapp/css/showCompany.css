@@ -112,7 +112,6 @@ body{
     overflow: auto;
 }
 #rightshow{
-    width:400px;
     height:100%;
     float: left;
     margin-left:2px;
@@ -283,6 +282,10 @@ body{
     height: 188px;
     margin-left: 35px;
     float: left;
+}
+.infoImg img{
+    width: 310px;
+    height: 188px;
 }
 .infoMsg{
     width: 300px;

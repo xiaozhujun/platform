@@ -132,7 +132,8 @@
             "query":"rs/userInspectPlan/query"
         },
         "inspectTask":{
-            "lastTaskByDeviceGroup":"rs/inspectTask/lastTaskByDeviceGroup"
+            "lastTaskByDeviceGroup":"rs/inspectTask/lastTaskByDeviceGroup",
+            "getInspectTaskInfo":"rs/inspectTask/getInspectTaskInfo"
         },
         "absolutePath":{
             "userList":"/inspectManagement/"+ "rs/user/list",

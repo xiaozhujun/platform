@@ -11,8 +11,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -77,5 +79,11 @@ public class InspectTaskServiceWeb {
         List<InspectTask> list = inspectTaskService.findByCondition(condition);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getInspectTaskInfo")
+    @POST
+    public String getInspectTaskInfo(@FormParam("appId")String appId){
+        List<Map<String,String>> list=inspectTaskService.getInspectTaskInfo(appId);
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(list,200,appId);
+    }
 }

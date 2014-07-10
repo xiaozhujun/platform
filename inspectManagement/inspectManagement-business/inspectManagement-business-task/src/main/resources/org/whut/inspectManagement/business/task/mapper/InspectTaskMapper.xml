@@ -110,6 +110,10 @@
             #{ruleItem}
         </foreach>
     </select>
-
-
+    <select id="getInspectTaskInfo" parameterType="java.lang.String" resultType="map">
+         SELECT  u.id,u.name as username,t.name as tname,d.name as devname
+        FROM user u,inspecttable t,device d,inspecttask task
+        WHERE u.id=task.userId AND t.id=task.inspectTableId AND d.id=task.deviceId
+        And task.appId=#{appId}
+    </select>
 </mapper>

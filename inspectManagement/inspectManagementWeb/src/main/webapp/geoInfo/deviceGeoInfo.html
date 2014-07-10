@@ -2,7 +2,7 @@
 <html>
 <head>
     <title></title>
-    <script type="text/javascript" src="js/initMap.js"></script>
+    <script type="text/javascript" src="map/initMap.js"></script>
     <script type="text/javascript" src="map/data.js"></script>
     <script type="text/javascript" src="map/addMarker.js"></script>
     <script type="text/javascript">
@@ -10,6 +10,11 @@
             $.initMap("中国",5);
             var data= $.getData();
             $.addMyMark(data);
+            $("#inspectContent").html("");
+            for(i=0;i<data.data.length;i++){
+                var inspectItem="<div class='inspectItem'><div class='inspectpic'><img src='images/qizhongji.jpg'/></div><span class='inspectcontent'><span class='inspectApp'>"+data.data[i].app+"</span><span class='inspectAddress'><span class='inspectFont'>地址:</span>"+data.data[i].address+"</span></span></span></div>";
+                $("#inspectContent").append(inspectItem);
+            }
         });
     </script>
     <style type="text/css">

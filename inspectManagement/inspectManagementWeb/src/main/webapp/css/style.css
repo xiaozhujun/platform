@@ -117,6 +117,13 @@
    margin-top: 1px;
    cursor: pointer;
 }
+.inspectItemHover{
+    width: 385px;
+    height: 70px;
+    margin-top: 1px;
+    background-color: highlight;
+    color: #ffffff;
+}
 .inspectItem:hover{
     width: 385px;
     height: 70px;

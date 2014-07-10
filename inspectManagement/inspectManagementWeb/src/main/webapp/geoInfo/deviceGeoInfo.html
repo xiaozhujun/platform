@@ -2,20 +2,60 @@
 <html>
 <head>
     <title></title>
-    <script type="text/javascript" src="map/initMap.js"></script>
     <script type="text/javascript" src="map/data.js"></script>
+    <script type="text/javascript" src="map/initMap.js"></script>
     <script type="text/javascript" src="map/addMarker.js"></script>
+    <script type="text/javascript" src="lib/json2.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $.initMap("中国",5);
-            var data= $.getData();
+            var data= $.getMyData();
             $.addMyMark(data);
             $("#inspectContent").html("");
             for(i=0;i<data.data.length;i++){
-                var inspectItem="<div class='inspectItem'><div class='inspectpic'><img src='images/qizhongji.jpg'/></div><span class='inspectcontent'><span class='inspectApp'>"+data.data[i].app+"</span><span class='inspectAddress'><span class='inspectFont'>地址:</span>"+data.data[i].address+"</span></span></span></div>";
+                var hideField={"appId":data.data[i].appId,"app":data.data[i].app,"address":data.data[i].address,"username":data.data[i].username,"lng":data.data[i].lng,"lat":data.data[i].lat,"flag":data.data[i].flag};
+                var jsonH= $.toJSON(hideField);
+                var inspectItem="<div class='inspectItem' id='inspectItem"+data.data[i].appId+"'><div class='inspectpic'><img src='images/qizhongji.jpg'/></div><span class='inspectcontent'><span class='inspectApp'>"+data.data[i].app+"</span><span class='inspectAddress'><span class='inspectFont'>地址:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].appId+"'>"+jsonH+"</span></span></span></div>";
                 $("#inspectContent").append(inspectItem);
+                var inspectItemId="#inspectItem"+data.data[i].appId;
+                $(inspectItemId).mouseover(function(){
+                    var id=this.id.substring(11,inspectItemId.length-1);
+                    var hideField="#hideField"+id;
+                    var data= JSON2.parse($(hideField).text());
+                    var appId=data.appId;
+                    var title=data.app;
+                    var content=data.address;
+                    var point=data.lng+"|"+data.lat;
+                    isOpen=0;
+                    var icon={};
+                    icon.w=23;
+                    icon.h=25;
+                    icon.t=21;
+                    icon.x=9;
+                    icon.lb=12;
+                    if(data.flag==1){
+                        icon.l=23;
+                    }
+                    if(data.flag==2){
+                        icon.l=0;
+                    }
+                    if(data.flag==3){
+                        icon.l=69;
+                    }
+                    if(data.flag==4){
+                        icon.l=115;
+                    }
+                    if(data.flag==5){
+                        icon.l=46;
+                    }
+                    if(data.flag==6){
+                        icon.l=46;
+                    };
+                    $.addOneMarkerWithId(appId,title,content,point,isOpen,icon,0);
+                });
             }
         });
+
     </script>
     <style type="text/css">
         #container{

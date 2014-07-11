@@ -1,192 +1,197 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title></title>
-<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="css/report.css">
-<link rel="stylesheet" href="css/reportShow.css">
-<script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-<script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(function(){
-    $.get($.URL.user.list,null,userListCallback,"json");
-    $.get($.URL.device.list,null,listCallback,"json");
-});
-function userListCallback(data){
-    if(data.code==200){
-        var userData=[];
-        for(var i=0;i<data.data.length;i++){
-            var d={};
-            d['text']=data.data[i].name;
-            d['id']=data.data[i].id;
-            userData.push(d);
-        }
-        $("#user").ligerComboBox({
-            data:userData,valueFieldID:"user"
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/reportShow.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.get($.URL.user.list, null, userListCallback, "json");
+            $.get($.URL.device.list, null, listCallback, "json");
         });
-    }
-}
-function listCallback(data){
-    if(data.code==200){
-        var deviceData=[];
-        for(var i=0;i<data.data.length;i++){
-            var d={};
-            d['text']=data.data[i].name;
-            d['id']=data.data[i].id;
-            deviceData.push(d);
+        function userListCallback(data) {
+            if (data.code == 200) {
+                var userData = [];
+                for (var i = 0; i < data.data.length; i++) {
+                    var d = {};
+                    d['text'] = data.data[i].name;
+                    d['id'] = data.data[i].id;
+                    userData.push(d);
+                }
+                $("#user").ligerComboBox({
+                    data: userData, valueFieldID: "user"
+                });
+            }
         }
-        $("#device").ligerComboBox({
-            data:deviceData,valueFieldID:"device"
+        function listCallback(data) {
+            if (data.code == 200) {
+                var deviceData = [];
+                for (var i = 0; i < data.data.length; i++) {
+                    var d = {};
+                    d['text'] = data.data[i].name;
+                    d['id'] = data.data[i].id;
+                    deviceData.push(d);
+                }
+                $("#device").ligerComboBox({
+                    data: deviceData, valueFieldID: "device"
+                });
+            }
+        }
+        var d = new Date();
+        var dd = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+        $("#tab1").ligerTab();
+        $("#sTime").ligerDateEditor({initValue: dd});
+        $("#eTime").ligerDateEditor({initValue: dd});
+        function getInspectTableRecordList() {
+            var user = $("#user").val();
+            var device = $("#device").val();
+            var sTime = $("#sTime").val();
+            var eTime = $("#eTime").val();
+            $.post($.URL.inspectReport.getInspectTableRecordGroupByEmployer, {"userName": user, "deviceName": device, "sTime": sTime, "eTime": eTime}, getInspectTableRecordListCallback, "json");
+        }
+        getInspectTableRecordList();
+        $("#submitBtn").click(function () {
+            getInspectTableRecordList();
         });
-    }
-}
-var d=new Date();
-var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-$("#tab1").ligerTab();
-$("#sTime").ligerDateEditor({initValue: dd});
-$("#eTime").ligerDateEditor({initValue: dd});
-function getInspectTableRecordList(){
-    var user=$("#user").val();
-    var device=$("#device").val();
-    var sTime=$("#sTime").val();
-    var eTime=$("#eTime").val();
-    $.post($.URL.inspectReport.getInspectTableRecordGroupByEmployer,{"userName":user,"deviceName":device,"sTime":sTime,"eTime":eTime},getInspectTableRecordListCallback,"json");
-}
-getInspectTableRecordList();
-$("#submitBtn").click(function(){
-    getInspectTableRecordList();
-});
 
-function getInspectTableRecordListCallback(data){
-    if(data.code==200){
-        if(data.data==null){
-            $.ligerDialog.alert("抱歉,记录不存在!");
-        }else{
-            $("#reportShow").html("");
-            showData(data.data);
+        function getInspectTableRecordListCallback(data) {
+            if (data.code == 200) {
+                if (data.data == null) {
+                    $.ligerDialog.alert("抱歉,记录不存在!");
+                } else {
+                    $("#reportShow").html("");
+                    showData(data.data);
 
-        }
-    }
-}
-
-function showData(data){
-    for(var p in data){
-        // 方法
-        if(typeof(data[p])=="function"){
-        }else{
-            showGrid(p,data[p]);
-        }
-    }
-}
-var peopleData={};
-function showGrid(name,data){
-    var reportBlock = $("<div class='reportBlock'></div>");
-    var reportPanel = $("<div></div>");
-    var grid = $("<div></div>");
-    reportPanel.append(grid);
-    reportBlock.append(reportPanel);
-    $("#reportShow").append(reportBlock);
-    peopleData.Rows=data;
-    f_peopleRecord(grid);
-    reportPanel.ligerPanel({
-        title:name,
-        width:'100%'
-    });
-}
-var manager, g;
-function f_peopleRecord(grid)
-{
-    g = manager = grid.ligerGrid({
-        columns: [
-            { display: '点检人员', name: 'username',
-                editor: { type: 'text' }
-            },
-            { display: '点检项目', name: 'tablename', type: 'string',
-                editor: { type: 'text' }
-            },
-            { display: '点检时间', name: 'createtime',
-                editor: { type: 'text' }
-            },
-            { display: '异常数', name: 'exceptioncount', hidden:'mongoId',
-                editor: { type: 'text' }
-            },
-            { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
-            {
-                var h = "";
-                h += "<a href='javascript:getInfo(" + rowindex + ")'>详情</a> ";
-                return h;
+                }
             }
+        }
+
+        function showData(data) {
+            for (var p in data) {
+                // 方法
+                if (typeof(data[p]) == "function") {
+                } else {
+                    showGrid(p, data[p]);
+                }
             }
-        ],
-        onSelectRow: function (rowdata, rowindex)
-        {
-            $("#txtrowindex").val(rowindex);
-        },
-        enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
-        data: peopleData,
-        width: '100%'
-    });
-}
-function getInfo(rowid){
-    var row=manager.getRow(rowid);
-    var jsonString= $.toJSON(row);
-    $("#maingrid").css("display","none");
-    $("#exportDiv").css("display","block");
-    $("#panel1").css("display","none")
-    $("#reportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
-}
-function getDevInfo(rowid){
-    var row=manager1.getRow(rowid);
-    var jsonString= $.toJSON(row);
-    $("#devicegrid").css("display","none");
-    $("#exportDeviceDiv").css("display","block");
-    $("#panel2").css("display","none")
-    $("#devReportShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
-}
-function getInspectInfoCallback(data){
-}
-$("#exportBtn").click(function(){
-    var type=$("#exportType").val();
-    if(type!=null){
-        location.href= "rs/inspectReport/exportPeopleInfoReport/"+type;
-    }else{
-        $.ligerDialog().alert("请输入导出报表类型!");
-    }
-});
-$("#exportType").ligerComboBox({
-    data: [
-        { text: 'pdf', id: '1' },
-        { text: 'word', id: '2' },
-        { text: 'excel', id: '3' }
-    ], valueFieldID: 'exportType'
-});
-</script>
+        }
+        var peopleData = {};
+        function showGrid(name, data) {
+            var reportBlock = $("<div class='reportBlock'></div>");
+            var reportPanel = $("<div></div>");
+            var grid = $("<div></div>");
+            reportPanel.append(grid);
+            reportBlock.append(reportPanel);
+            $("#reportShow").append(reportBlock);
+            peopleData.Rows = data;
+            f_peopleRecord(grid);
+            reportPanel.ligerPanel({
+                title: name,
+                width: '100%'
+            });
+        }
+        var manager, g;
+        function f_peopleRecord(grid) {
+            g = manager = grid.ligerGrid({
+                columns: [
+                    { display: '点检人员', name: 'username',
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检项目', name: 'tablename', type: 'string',
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检时间', name: 'createtime',
+                        editor: { type: 'text' }
+                    },
+                    { display: '异常数', name: 'exceptioncount', hidden: 'mongoId',
+                        editor: { type: 'text' }
+                    },
+                    { display: '操作', isSort: false, render: function (rowdata, rowindex, value) {
+                        var h = "";
+                        h += "<a href='javascript:getInfo(" + rowindex + ")'>详情</a> ";
+                        return h;
+                    }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex) {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true, clickToEdit: false, isScroll: false, usePager: false,
+                data: peopleData,
+                width: '100%'
+            });
+        }
+        function getInfo(rowid) {
+            var row = manager.getRow(rowid);
+            var jsonString = $.toJSON(row);
+            $("#maingrid").css("display", "none");
+            $("#exportDiv").css("display", "block");
+            $("#panel1").css("display", "none")
+            $("#reportShow").load($.URL.inspectReport.getInspectInfo, {"jsonString": jsonString, "type": "html"}, getInspectInfoCallback, "json");
+        }
+        function getDevInfo(rowid) {
+            var row = manager1.getRow(rowid);
+            var jsonString = $.toJSON(row);
+            $("#devicegrid").css("display", "none");
+            $("#exportDeviceDiv").css("display", "block");
+            $("#panel2").css("display", "none")
+            $("#devReportShow").load($.URL.inspectReport.getInspectInfo, {"jsonString": jsonString, "type": "html"}, getInspectInfoCallback, "json");
+        }
+        function getInspectInfoCallback(data) {
+        }
+        $("#exportBtn").click(function () {
+            var type = $("#exportType").val();
+            if (type != null) {
+                location.href = "rs/inspectReport/exportPeopleInfoReport/" + type;
+            } else {
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
+        $("#exportType").ligerComboBox({
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'exportType'
+        });
+    </script>
 </head>
 <body>
 <div class="searchContainer">
-    <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="device" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="user" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="sTime" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span></div>
-    <div class="btn"><span><input type="button" value="查看" id="submitBtn" class="l-button l-button-submit" /></span></div>
+    <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="device" type="text"></span>
+    </div>
+    <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="user"
+                                                                                                type="text"></span>
+    </div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="sTime" type="text"></span>
+    </div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="eTime" type="text"></span>
+    </div>
+    <div class="btn"><span><input type="button" value="查看" id="submitBtn" class="l-button l-button-submit"/></span>
+    </div>
 </div>
 <div class="exportDiv" id="exportDiv">
                  <span class="exportType">
-                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text" id="exportType"></span>
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text"
+                                                                                        id="exportType"></span>
                  </span>
-    <span class="exportBtn"><span><input type="button" value="导出" id="exportBtn" class="l-button l-button-submit" /></span></span>
+    <span class="exportBtn"><span><input type="button" value="导出" id="exportBtn"
+                                         class="l-button l-button-submit"/></span></span>
 </div>
 <div class="reportContent" id="reportShow"></div>
 </body>

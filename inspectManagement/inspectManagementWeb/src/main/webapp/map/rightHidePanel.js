@@ -19,6 +19,4 @@
                  $(rightmain).css("display","block");
              }
          });
-}
-
- });
+}});

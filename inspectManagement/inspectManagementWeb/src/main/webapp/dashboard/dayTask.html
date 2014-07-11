@@ -34,8 +34,8 @@
                     d['id']=data.data[i].id;
                     userData.push(d);
                 }
-                $("#userName").ligerComboBox({
-                    data:userData,valueFieldID:"userNameSelect"
+                $("#taskUserName").ligerComboBox({
+                    data:userData,valueFieldID:"taskUserNameSelect"
                 });
             }
         }
@@ -48,21 +48,20 @@
                     d['id']=data.data[i].id;
                     deviceData.push(d);
                 }
-                $("#deviceName").ligerComboBox({
-                    data:deviceData,valueFieldID:"deviceNameSelect"
+                $("#taskDeviceName").ligerComboBox({
+                    data:deviceData,valueFieldID:"taskDeviceNameSelect"
                 });
             }
         }
         var d=new Date();
         var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-        $("#tab1").ligerTab();
-        $("#st").ligerDateEditor({initValue: dd});
-        $("#et").ligerDateEditor({initValue: dd});
+        $("#taskStartTime").ligerDateEditor({initValue: dd});
+        $("#taskEndTime").ligerDateEditor({initValue: dd});
         function getDeviceTaskList(){
-            var user=$("#userNameSelect").val();
-            var device=$("#deviceNameSelect").val();
-            var sTime=$("#st").val();
-            var eTime=$("#et").val();
+            var user=$("#taskUserNameSelect").val();
+            var device=$("#taskDeviceNameSelect").val();
+            var sTime=$("#taskStartTime").val();
+            var eTime=$("#taskEndTime").val();
             $.post($.URL.inspectTask.lastTaskByDeviceGroup,{"userId":user,"deviceId":device,"sTime":sTime,"eTime":eTime},getTaskByDeviceCallback,"json");
         }
 
@@ -156,9 +155,6 @@
         function getInfo(rowid){
             var row=manager.getRow(rowid);
             var jsonString= $.toJSON(row);
-            $("#maingrid").css("display","none");
-            $("#exportDeviceDiv").css("display","block");
-            $("#panel1").css("display","none")
             $("#taskShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
         }
 
@@ -166,10 +162,10 @@
 </head>
 <body>
 <div class="searchContainer">
-    <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="deviceName" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="userName" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="st" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="et" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="taskDeviceName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="taskUserName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="taskStartTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="taskEndTime" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
 </div>
 

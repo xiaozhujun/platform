@@ -15,4 +15,6 @@ import java.util.Map;
  */
 public interface InspectLocateMapper extends AbstractMapper{
     public List<Map<String,String>> getInspectLocateInfoByAppId(@Param("appId")long appId);
+    public Long validateIsExistRecord(@Param("appId")long appId,@Param("userId")long userId);
+
 }

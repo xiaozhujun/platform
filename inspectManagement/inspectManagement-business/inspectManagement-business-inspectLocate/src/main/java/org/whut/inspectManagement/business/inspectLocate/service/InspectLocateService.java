@@ -1,6 +1,7 @@
 package org.whut.inspectManagement.business.inspectLocate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.inspectManagement.business.inspectLocate.entity.InspectLocate;
 import org.whut.inspectManagement.business.inspectLocate.mapper.InspectLocateMapper;
 
 import java.util.List;
@@ -18,5 +19,14 @@ public class InspectLocateService {
     private InspectLocateMapper mapper;
     public List<Map<String,String>> getInspectLocateInfoByAppId(long appId){
         return mapper.getInspectLocateInfoByAppId(appId);
+    }
+    public Long validateIsExistRecord(long appId,long userId){
+        return mapper.validateIsExistRecord(appId,userId);
+    }
+    public int update(InspectLocate inspectLocate){
+        return mapper.update(inspectLocate);
+    }
+    public void  add(InspectLocate inspectLocate){
+         mapper.add(inspectLocate);
     }
 }

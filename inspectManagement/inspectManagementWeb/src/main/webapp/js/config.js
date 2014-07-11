@@ -136,7 +136,8 @@
             "getInspectTaskInfo":"rs/inspectTask/getInspectTaskInfo"
         },
         "inspectLocate":{
-             "getInspectLocateInfo":"rs/inspectLocate/getInspectLocateInfo"
+             "getInspectLocateInfo":"rs/inspectLocate/getInspectLocateInfo",
+            "receiveInspectLocateInfo":"rs/inspectLocate/receiveInspectLocateInfo"
         },
         "absolutePath":{
             "userList":"/inspectManagement/"+ "rs/user/list",

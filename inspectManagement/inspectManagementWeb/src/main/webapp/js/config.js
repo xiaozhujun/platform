@@ -135,6 +135,9 @@
             "lastTaskByDeviceGroup":"rs/inspectTask/lastTaskByDeviceGroup",
             "getInspectTaskInfo":"rs/inspectTask/getInspectTaskInfo"
         },
+        "inspectLocate":{
+             "getInspectLocateInfo":"rs/inspectLocate/getInspectLocateInfo"
+        },
         "absolutePath":{
             "userList":"/inspectManagement/"+ "rs/user/list",
             "deviceList":"/inspectManagement/"+ "rs/device/list",

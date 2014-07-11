@@ -177,9 +177,9 @@ $.extend({
         var riskRankArray=new Array();
         for(i=0;i<data.data.length;i++){
             var item={};
-            item.appId=data.data[i].appId;
-            item.title=data.data[i].app;
-            item.content=data.data[i].address;
+            item.userId=data.data[i].userId;
+            item.title="点检人员:"+data.data[i].userName;
+            item.content="点检设备:"+data.data[i].devName+"</br>点检表:"+data.data[i].inspectTableName+"</br>当前位置:"+data.data[i].address;
             item.point=data.data[i].lng+"|"+data.data[i].lat;
             item.isOpen=0;
             /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
@@ -189,24 +189,7 @@ $.extend({
             item.icon.t=21;
             item.icon.x=9;
             item.icon.lb=12;
-            if(data.data[i].flag==1){
-                item.icon.l=23;
-            }
-            if(data.data[i].flag==2){
-                item.icon.l=0;
-            }
-            if(data.data[i].flag==3){
-                item.icon.l=69;
-            }
-            if(data.data[i].flag==4){
-                item.icon.l=115;
-            }
-            if(data.data[i].flag==5){
-                item.icon.l=46;
-            }
-            if(data.data[i].flag==6){
-                item.icon.l=46;
-            }
+            item.icon.l=46;
             riskRankArray.push(item);
         }
         $.clearAllMarker();

@@ -112,6 +112,7 @@
    height: 70px;
    margin-top: 1px;
    cursor: pointer;
+   float: left;
 }
 .inspectItemHover{
     width: 385px;
@@ -119,6 +120,7 @@
     margin-top: 1px;
     background-color: highlight;
     color: #ffffff;
+    float: left;
 }
 .inspectItem:hover{
     width: 385px;
@@ -126,6 +128,7 @@
     margin-top: 1px;
     background-color: highlight;
     color: #ffffff;
+    float: left;
 }
 .inspectpic{
     height: 65px;
@@ -160,15 +163,18 @@
 }
 .inspectAll{
     width: 385px;
+    height: auto;
 }
 .inspectInfoHide{
     width: 385px;
     display: none;
     height: auto;
+    float:left;
 }
 .inspectInfoClick{
     width: 385px;
     height: auto;
+    float:left;
 }
 
 

@@ -9,7 +9,7 @@ $.extend({
     addMarkerWithId:function addMarker(markerArr){
         for(var i=0;i<markerArr.length;i++){
             var json = markerArr[i];
-            $.addOneMarkerWithId(json.appId,json.title,json.content,json.point,json.isOpen,json.icon,i);
+            $.addOneMarkerWithId(json.userId,json.title,json.content,json.point,json.isOpen,json.icon,i);
         }
     },
     //创建InfoWindow
@@ -52,15 +52,11 @@ $.extend({
             }
             _marker.addEventListener("click",function(){
                 this.openInfoWindow(_iw);
-                //$.iTabClick("#riskRank","#riskInfo","#rightRank","#rightshow");
-                //$.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":title}, $.getAreaInfoByUnitAddressCallback,"json");
+                $.myMouseover(id);
             });
             _marker.addEventListener("mouseover",function(){
                 this.openInfoWindow(_iw);
-
                 $.myMouseover(id);
-                //$.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoverCallback,"json");
-                // $.post($.URL.craneinspectreport.getAreaInfoByUnitAddress,{"unitAddress":title}, $.getAreaInfoByUnitAddressCallback,"json");
             });
             _marker.addEventListener("mouseout",function(){
                 $.myMouseout(id);
@@ -95,14 +91,11 @@ $.extend({
                 _marker.openInfoWindow(_iw);
             }
         })()
-    },
-
-    myMouseover:function myMouseover(id){
+    }
+    ,myMouseover:function myMouseover(id){
+        var inspectInfo="#inspectInfo"+id;
         var riskcontentId="#inspectItem"+id;
         $(riskcontentId).removeClass("inspectItem").addClass("inspectItemHover");
-    },
-    myMouseout:function myMouseout(id){
-        var riskcontentId="#inspectItem"+id;
-        $(riskcontentId).removeClass("inspectItemHover").addClass("inspectItem");
+        $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
     }
 });

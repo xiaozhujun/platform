@@ -4,6 +4,7 @@ import org.whut.inspectManagement.business.task.entity.InspectTask;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,5 +18,5 @@ public interface InspectTaskMapper extends AbstractMapper<InspectTask>{
     public List<InspectTask> findByCondition(InspectTask inspectTask);
     public List<InspectTask> getDispatchTaskList(List<String> ruleCondition);
     public void dispatchTask(List<InspectTask> list);
-
+    public List<Map<String,String>>getInspectTaskInfo(String appId);
 }

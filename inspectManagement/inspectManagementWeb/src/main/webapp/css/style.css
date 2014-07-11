@@ -74,19 +74,7 @@
     right:0px;
     float: left;
 }
-#rightshow {
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-right-width: 0;
-    box-shadow: -1px 0 1px #AAAAAA;
-    margin: 0px;
-    min-height: 500px;
-    position: absolute;
-    width: 385px;
-    z-index: 1;
-    right:0px;
-    float: left;
-    display: none;
-}
+
 
 
 #panelimg2 {
@@ -96,3 +84,97 @@
     margin-top: 32px;
     width: 6px;
 }
+#inspectTitle{
+    width:385px ;
+    height: 38px;
+    background-color: highlight;
+    text-align: center;
+    line-height: 38px;
+    color: #ffffff;
+    margin-top: 1px;
+    font-size: 15px;
+}
+#rightshow{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #AAAAAA;
+    margin: 0px;
+    height: 100%;
+    position: absolute;
+    width: 385px;
+    z-index: 1;
+    right:0px;
+    float: left;
+    overflow: auto;
+}
+.inspectItem{
+   width: 385px;
+   height: 70px;
+   margin-top: 1px;
+   cursor: pointer;
+   float: left;
+}
+.inspectItemHover{
+    width: 385px;
+    height: 70px;
+    margin-top: 1px;
+    background-color: highlight;
+    color: #ffffff;
+    float: left;
+}
+.inspectItem:hover{
+    width: 385px;
+    height: 70px;
+    margin-top: 1px;
+    background-color: highlight;
+    color: #ffffff;
+    float: left;
+}
+.inspectpic{
+    height: 65px;
+    width: 100px;
+    float: left;
+    margin-left: 2px;
+    margin-top: 2px;
+}
+.inspectpic img{
+    height: 64px;
+    width: 100px;
+}
+.inspectcontent{
+    width: 280px;
+    height:70px;
+    float: left;
+    margin-left: 3px;
+}
+.inspectApp{
+   width: 280px;
+   height: 28px;
+   float: left;
+   line-height: 25px;
+}
+.inspectAddress{
+    width: 280px;
+    height: 42px;
+    float: left;
+}
+.inspectFont{
+    margin-left: 1px;
+}
+.inspectAll{
+    width: 385px;
+    height: auto;
+}
+.inspectInfoHide{
+    width: 385px;
+    display: none;
+    height: auto;
+    float:left;
+}
+.inspectInfoClick{
+    width: 385px;
+    height: auto;
+    float:left;
+}
+
+

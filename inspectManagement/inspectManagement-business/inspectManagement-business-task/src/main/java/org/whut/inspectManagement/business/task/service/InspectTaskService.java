@@ -104,4 +104,7 @@ public class InspectTaskService {
             }
         }
     }
+    public List<Map<String,String>>getInspectTaskInfo(String appId){
+        return mapper.getInspectTaskInfo(appId);
+    }
 }

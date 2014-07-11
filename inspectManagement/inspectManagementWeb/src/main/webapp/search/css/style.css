@@ -1,0 +1,28 @@
+@charset "utf-8";
+/* CSS Document */
+.search_box {float:left;width:380px;height:32px;background:#3399FF url(../images/bg.png) no-repeat -297px -415px;padding-left:1px;display:inline;}
+.search {width:380px;margin:0px;line-height:34px;height:34px;}
+.search a {text-decoration:none;cursor:pointer;}
+.search input {float:left;}
+.select {background:#fff url(../images/bg.png) no-repeat 76px -5px;border:0;border-right:solid 2px #fff;width:82px;height:28px;color:#666;line-height:28px;padding-left:8px;float:left;position:relative;z-index:99999;font-size:14px;margin-top:2px;}
+.select_hover {background:#fff url(../images/bg.png) no-repeat 76px 15px;border-right:solid 2px #72C2FF;}
+.part {left:-3px;top:28px;width:180px;padding:4px 1px 1px;background:#fff url(../images/select_topbg.png) no-repeat left top;border:solid 3px #72C2FF;border-top:0;line-height:30px;position:absolute;z-index: 9999;height:auto;zoom:1;-moz-border-radius:0px 0px 3px 3px;-webkit-border-radius:0px 0px 3px 3px;border-radius:0px 0px 3px 3px;}
+.part p {overflow:hidden;}
+.part p a {height:30px;color:#666;line-height:30px;padding-left:8px;width:82px;border-left:solid 1px #f3f3f3;border-top:solid 1px #f3f3f3;background:#fff;display:inline-block;float:left;margin-left:-1px;margin-top:-1px;white-space:nowrap;}
+.part a:hover {background:#f5f5f5;color:#72C2FF;}
+.enter {border:0;width:240px;float:left;height:28px;color:#999;line-height:28px;padding-left:5px;margin-top:2px;font-size:14px;outline:none;}
+.enters {border:0;width:348px;float:left;height:28px;color:#333;line-height:28px;padding-left:5px;margin-top:2px;font-size:14px;outline:none;}
+.sb {background:url(../images/btn.jpg) no-repeat -5px 0;border:0;width:43px;_width:81px;height:28px;cursor:pointer;border-top: 1px solid #3399FF}
+.auto{
+    background-color: #FFFFFF ! important;
+    cursor: pointer ! important;
+    font: 14px/25px arial ! important;
+    height: 25px ! important;
+    /* padding: 0 8px ! important;*/
+    z-index: 4 ! important;
+    position: absolute;
+    margin-top:35px ;
+    margin-left: 88px;
+    display: none;
+
+}

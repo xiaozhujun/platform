@@ -112,7 +112,6 @@ body{
     overflow: auto;
 }
 #rightshow{
-    width:400px;
     height:100%;
     float: left;
     margin-left:2px;
@@ -283,6 +282,10 @@ body{
     height: 188px;
     margin-left: 35px;
     float: left;
+}
+.infoImg img{
+    width: 310px;
+    height: 188px;
 }
 .infoMsg{
     width: 300px;
@@ -619,6 +622,7 @@ body{
     height: 35px;
     background-color:#F7F7F7;
     border-bottom: 1px solid #72C2FF;
+    margin-top: 1px;
 }
 .inputSearchBtn{
     width: 60px;

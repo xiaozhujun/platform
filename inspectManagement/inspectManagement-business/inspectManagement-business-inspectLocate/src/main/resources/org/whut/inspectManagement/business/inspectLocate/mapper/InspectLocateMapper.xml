@@ -2,9 +2,64 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectLocate.mapper.InspectLocateMapper">
-   <select id="getInspectLocateInfoByAppId" parameterType="java.lang.Long" resultType="map">
+    <sql id="inspectLocate_fields">
+       ID,USERID,USERNAME,INSPECTSTARTTIME,INSPECTENDTIME,DEVICEID,DEVNAME,INSPECTTABLEID,INSPECTTABLENAME,LNG,LAT,APPID,STATUS,ADDRESS
+    </sql>
+    <resultMap id="inspectLocateResultMap" type="InspectLocate">
+        <id property="id" column="ID"/>
+        <result property="userId" column="USERID"/>
+        <result property="userName" column="USERNAME"/>
+        <result property="inspectStartTime" column="INSPECTSTARTTIME" />
+        <result property="inspectEndTime" column="INSPECTENDTIME"/>
+        <result property="deviceId" column="DEVICEID"/>
+        <result property="devName" column="DEVNAME"/>
+        <result property="inspectTableId" column="INSPECTTABLEID"/>
+        <result property="inspectTableName" column="INSPECTTABLENAME"/>
+        <result property="lng" column="LNG"/>
+        <result property="lat" column="LAT"/>
+        <result property="appId" column="APPID"/>
+        <result property="status" column="STATUS"/>
+        <result property="address" column="ADDRESS"/>
+    </resultMap>
+    <insert id="add" parameterType="InspectLocate"  keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        inspect_locate(
+        <include refid="inspectLocate_fields"/>
+        )
+        VALUES (#{id},#{userId},#{userName},#{inspectStartTime},#{inspectEndTime},#{deviceId},#{devName},#{inspectTableId},#{inspectTableName},#{lng},#{lat},#{appId},#{status},#{address});
+        <selectKey  resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="update" parameterType="InspectLocate">
+        UPDATE inspect_locate
+        <set>
+            <if test="userId!=null">USERID=#{userId},</if>
+            <if test="userName!=null">USERNAME=#{userName},</if>
+            <if test="inspectStartTime!=null">INSPECTSTARTTIME=#{inspectStartTime},</if>
+            <if test="inspectEndTime!=null">INSPECTENDTIME=#{inspectEndTime},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId},</if>
+            <if test="devName!=null">DEVNAME=#{devName},</if>
+            <if test="inspectTableId!=null">INSPECTTABLEID=#{inspectTableId},</if>
+            <if test="inspectTableName!=null">INSPECTTABLENAME=#{inspectTableName},</if>
+            <if test="lng!=null">LNG=#{lng},</if>
+            <if test="lat!=null">LAT=#{lat},</if>
+            <if test="appId!=null">APPID=#{appId},</if>
+            <if test="status!=null">STATUS=#{status},</if>
+            <if test="address!=null">ADDRESS=#{address}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <select id="getInspectLocateInfoByAppId" parameterType="java.lang.Long" resultType="map">
        SELECT *
        FROM inspect_locate
        WHERE appId=#{appId}
    </select>
+    <select id="validateIsExistRecord" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM inspect_locate
+        WHERE appId=#{appId} AND userId=#{userId}
+    </select>
+
 </mapper>

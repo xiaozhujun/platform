@@ -2,9 +2,7 @@ package org.whut.inspectManagement.business.inspectResult.service;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.deptAndEmployee.mapper.EmployeeMapper;
 import org.whut.inspectManagement.business.device.mapper.DeviceMapper;
@@ -15,13 +13,9 @@ import org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecor
 import org.whut.inspectManagement.business.inspectResult.mapper.InspectTableRecordMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
-import org.whut.inspectManagement.business.inspectTable.service.InspectTableService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -112,7 +106,8 @@ public class InspectTableRecordService {
             }
             long userId;//解析数据插入到InspectTableRecord
             //此时根据员工的员工编号查出userId
-            userId=employeeMapper.getById(Long.parseLong(worknum)).getUserId();
+            //userId=employeeMapper.getById(Long.parseLong(worknum)).getUserId();
+            userId=Long.parseLong(worknum);
             String mongoId=userId+""+deviceId+""+inspectTableId;
             inspectTableRecord.setUseId(userId);
             inspectTableRecord.setInspectTableId(inspectTableId);

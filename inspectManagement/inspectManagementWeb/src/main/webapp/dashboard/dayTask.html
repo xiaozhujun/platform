@@ -65,7 +65,7 @@
             $.post($.URL.inspectTask.lastTaskByDeviceGroup,{"userId":user,"deviceId":device,"sTime":sTime,"eTime":eTime},getTaskByDeviceCallback,"json");
         }
 
-        $("#submitBtn1").click(function(){
+        $("#taskSubmitBtn1").click(function(){
             getDeviceTaskList();
         });
 
@@ -166,7 +166,7 @@
     <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="taskUserName" type="text"></span></div>
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="taskStartTime" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="taskEndTime" type="text"></span></div>
-    <div class="btn"><span><input type="button" value="查看" id="submitBtn1" class="l-button l-button-submit" /></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="taskSubmitBtn1" class="l-button l-button-submit" /></span></div>
 </div>
 
 <div class="reportContent" id="taskShow"></div>

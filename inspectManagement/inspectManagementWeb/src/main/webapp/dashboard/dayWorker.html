@@ -109,16 +109,16 @@
         function f_peopleRecord(grid) {
             g = manager = grid.ligerGrid({
                 columns: [
-                    { display: '点检人员', name: 'username',
+                    { display: '点检人员', name: 'username',width:100,
                         editor: { type: 'text' }
                     },
-                    { display: '点检项目', name: 'tablename', type: 'string',
+                    { display: '点检项目', name: 'tablename', type: 'string',width:120,
                         editor: { type: 'text' }
                     },
-                    { display: '点检时间', name: 'createtime',
+                    { display: '点检时间', name: 'inspectTime',width:240,
                         editor: { type: 'text' }
                     },
-                    { display: '异常数', name: 'exceptioncount', hidden: 'mongoId',
+                    { display: '异常数', name: 'exceptioncount', hidden: 'mongoId',width:80,
                         editor: { type: 'text' }
                     },
                     { display: '操作', isSort: false, render: function (rowdata, rowindex, value) {

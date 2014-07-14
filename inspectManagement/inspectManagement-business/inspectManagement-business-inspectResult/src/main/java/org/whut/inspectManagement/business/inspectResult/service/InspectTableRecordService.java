@@ -60,7 +60,7 @@ public class InspectTableRecordService {
         long tableRecid=0;
         String worknum=null;
         int exceptionCount=0;
-        Date createTime=null;
+        Date inspectTime=null;
         long inspectTableId=0;
         long inspectTagId = 0;
         long deviceId = 0;
@@ -96,11 +96,11 @@ public class InspectTableRecordService {
 
             deviceId = deviceMapper.getIdByNumber(dnum,appId);
             Element e1 = root.element("devicetype");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
             try{
-                createTime = sdf.parse(t);
-                System.out.println(createTime);
+                inspectTime = sdf.parse(t);
+                System.out.println(inspectTime);
             }catch (ParseException exception){
                 exception.printStackTrace();
             }
@@ -111,7 +111,8 @@ public class InspectTableRecordService {
             String mongoId=userId+""+deviceId+""+inspectTableId;
             inspectTableRecord.setUseId(userId);
             inspectTableRecord.setInspectTableId(inspectTableId);
-            inspectTableRecord.setCreateTime(createTime);
+            inspectTableRecord.setCreateTime(new Date());
+            inspectTableRecord.setInspectTime(inspectTime);
             inspectTableRecord.setExceptionCount(exceptionCount);
             inspectTableRecord.setInspectTableId(inspectTableId);
             inspectTableRecord.setMongoId(mongoId);
@@ -185,7 +186,7 @@ public class InspectTableRecordService {
                         inspectItemRecord.setAppId(appId);
                         inspectItemRecordMapper.add(inspectItemRecord);
                         inspectItemRecords.add(inspectItemRecord);
-                        System.out.println(tname + area + createTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
+                        System.out.println(tname + area + inspectTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
                     }
                 }
             }
@@ -218,7 +219,7 @@ public class InspectTableRecordService {
           mongoConnector.insertDocument(mongoString);
       }
       public String filterDateString(String d){
-          String s=null;
+          /*String s=null;
           try{
               SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
               Date dd=sdf.parse(d);
@@ -226,7 +227,8 @@ public class InspectTableRecordService {
           }catch (Exception e){
               e.printStackTrace();
           }
-          return s;
+          return s;*/
+          return d;
       }
 }
 

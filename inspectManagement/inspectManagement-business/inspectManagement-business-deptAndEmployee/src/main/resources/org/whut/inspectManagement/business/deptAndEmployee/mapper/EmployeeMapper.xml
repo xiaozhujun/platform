@@ -92,6 +92,13 @@
         where ID=#{id}
     </select>
 
+    <select id="getByUserId" parameterType="java.lang.Long" resultMap="employeeResultMap">
+        select
+        <include refid="employee_fields"/>
+        from employee
+        where USERID=#{userId}
+    </select>
+
     <select id="getByNameDepartmentAndRole" parameterType="map" resultMap="employeeResultMap">
         select
         <include refid="employee_fields"/>

@@ -30,6 +30,11 @@ public class EmployeeService {
         return employeeMapper.getById(id);
     }
 
+    public Employee getByUserId(long id)
+    {
+        return employeeMapper.getByUserId(id);
+    }
+
     public List<Employee> getListByAppId(long appId)
     {
         return employeeMapper.getListByAppId(appId);

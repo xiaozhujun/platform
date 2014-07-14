@@ -273,17 +273,19 @@ public class CasClient
     }
 
     public static void main(String args[]){
-		CasClient casClient = new CasClient( "http://www.cseicms.com/cas/v1/");
- 		boolean loginResult = casClient.login("xiaozhujun", "123456", "http://www.cseicms.com/riskPlatform/j_spring_cas_security_check");
+		CasClient casClient = new CasClient( "http://www.cseicms.com/inspectCas/v1/");
+ 		boolean loginResult = casClient.login("zhaowei", "123456", "http://www.cseicms.com/inspectManagement/j_spring_cas_security_check");
 		if(loginResult){
-			String message = casClient.doGet("http://www.cseicms.com/riskPlatform/rs/user/currentUser");
+			String message = casClient.doGet("http://www.cseicms.com/inspectManagement/rs/user/currentUser");
 			System.out.println(message);
-            HashMap<String,String> params = new HashMap<String, String>();
-            params.put("resource","cas/**");
-            params.put("type","service");
-            params.put("description","cas client test from android");
-            message  = casClient.doPost("http://www.cseicms.com/riskPlatform/rs/power/add",params);
-            System.out.print(message);
+            message = casClient.doGet("http://www.cseicms.com/inspectManagement/rs/inspectUser/currentUser");
+            System.out.println(message);
+//            HashMap<String,String> params = new HashMap<String, String>();
+//            params.put("resource","cas/**");
+//            params.put("type","service");
+//            params.put("description","cas client test from android");
+//            message  = casClient.doPost("http://www.cseicms.com/riskPlatform/rs/power/add",params);
+//            System.out.print(message);
 		}
     }
 

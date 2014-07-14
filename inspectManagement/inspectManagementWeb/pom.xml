@@ -126,6 +126,12 @@
             <artifactId>inspectManagement-business-task</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>inspectManagement</groupId>
+            <artifactId>inspectManagement-business-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

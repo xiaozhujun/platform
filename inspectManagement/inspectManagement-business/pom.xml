@@ -23,6 +23,7 @@
         <module>inspectManagement-business-DeptAndEmployee</module>
         <module>inspectManagement-business-task</module>
         <module>inspectManagement-business-inspectLocate</module>
+        <module>inspectManagement-business-user</module>
     </modules>
 
 </project>

@@ -105,6 +105,7 @@
             });
         }
         var manager, g;
+        var array = [];
         function f_peopleRecord(grid)
         {
             g = manager = grid.ligerGrid({
@@ -138,7 +139,12 @@
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
                         var h = "";
-                        h += "<a href='javascript:getInfo(" + rowindex + ")'>详情</a> ";
+                        if(rowdata.inspectTableRecordId!=0){
+                            h += "<a href='javascript:getInfo(" + array.length + ")'>查看详情</a> ";
+                        }else{
+                            h += "暂无详情";
+                        }
+                        array.push(rowdata)
                         return h;
                     }
                     }
@@ -153,12 +159,12 @@
             });
         }
         function getInfo(rowid){
-            var row = manager.getRow(rowid);
-            var jsonString = $.toJSON(row);
+            var row = array[rowid];
+            //var jsonString = $.toJSON(row);
             $("#maingrid").css("display", "none");
             $("#exportDeviceDiv").css("display", "block");
-            $("#panel1").css("display", "none")
-            $("#taskShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
+            $("#panel1").css("display", "none");
+            $("#taskShow").load($.URL.inspectReport.getInspectInfo,{"id":row.inspectTableRecordId,"type":"html"},getInspectInfoCallback,"json");
         }
 
         function getInspectInfoCallback(data) {

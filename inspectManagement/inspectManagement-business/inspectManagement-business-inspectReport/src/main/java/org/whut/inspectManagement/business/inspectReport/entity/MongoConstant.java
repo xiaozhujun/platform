@@ -10,6 +10,7 @@ package org.whut.inspectManagement.business.inspectReport.entity;
 public class MongoConstant {
         public static final String inspectTableId="inspectTableId";
         public static final String userId="userId";
+    public static final String inspectTime="inspectTime";
         public static final String createTime="createtime";
         public static final String exceptionCount="exceptioncount";
         public static final String mongoId="mongoId";

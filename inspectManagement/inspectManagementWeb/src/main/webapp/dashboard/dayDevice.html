@@ -137,11 +137,11 @@
         }
         function getInfo(rowid) {
             var row = manager.getRow(rowid);
-            var jsonString = $.toJSON(row);
+            //var jsonString = $.toJSON(row);
             $("#maingrid").css("display", "none");
             $("#exportDeviceDiv").css("display", "block");
             $("#panel1").css("display", "none")
-            $("#deviceShow").load($.URL.inspectReport.getInspectInfo, {"jsonString": jsonString, "type": "html"}, getInspectInfoCallback, "json");
+            $("#deviceShow").load($.URL.inspectReport.getInspectInfo, {"id": row.id, "type": "html"}, getInspectInfoCallback, "json");
         }
         function getDevInfo(rowid) {
             var row = manager1.getRow(rowid);

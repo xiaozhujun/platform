@@ -1,4 +1,5 @@
 package org.whut.inspectManagement.business.inspectReport.web;
+
 import com.mongodb.DBObject;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,21 +9,25 @@ import org.whut.inspectManagement.business.inspectReport.entity.JasperReportTemp
 import org.whut.inspectManagement.business.inspectReport.entity.MongoConstant;
 import org.whut.inspectManagement.business.inspectReport.entity.ReportSearch;
 import org.whut.inspectManagement.business.inspectReport.entity.SearchReportBean;
-import org.whut.inspectManagement.business.inspectReport.mapper.ReportSqlMapper;
 import org.whut.inspectManagement.business.inspectReport.service.InspectReportService;
+import org.whut.inspectManagement.business.inspectResult.entity.InspectTableRecord;
+import org.whut.inspectManagement.business.inspectResult.service.InspectTableRecordService;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.report.PlatformReport;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -42,6 +47,10 @@ public class inspectReportServiceWeb {
     HttpServletResponse response;
     @Autowired
     private InspectReportService inspectReportService;
+
+    @Autowired
+    private InspectTableRecordService inspectTableRecordService;
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -199,10 +208,14 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getInspectInfo")
-    public String getInspectInfo(@FormParam("jsonString")String jsonString,@FormParam("type") String type){
+    public String getInspectInfo(@FormParam("id")String id,@FormParam("type") String type){
         reportInfoList.clear();
-        Map<String,String> map= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Map.class);
-        //根据传过来的map取得mongoId,然后从mongo中查出相应的值.然后根据各个Id来查出相应的信息来放到list中后导出html格式的报表
+        InspectTableRecord inspectTableRecord = inspectTableRecordService.getById(Long.parseLong(id));
+        HashMap<String,String> map = new HashMap<String, String>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        map.put("mongoId",inspectTableRecord.getMongoId());
+        map.put("inspectTime",format.format(inspectTableRecord.getInspectTime()));
+
         reportInfoList=getReportListSourceByMap(map);
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.reportInfoTemplate);
         exportReport(reportTemplate,type,reportInfoList);
@@ -236,7 +249,7 @@ public class inspectReportServiceWeb {
                 reportInfoMap.put(MongoConstant.tagName, m.get(MongoConstant.tagName));
                 reportInfoMap.put(MongoConstant.tName, m.get(MongoConstant.tName));
                 reportInfoMap.put(MongoConstant.devName, m.get(MongoConstant.devName));
-                reportInfoMap.put(MongoConstant.reportCreateTime, map.get(MongoConstant.createTime));
+                reportInfoMap.put(MongoConstant.reportCreateTime, map.get(MongoConstant.inspectTime));
                 reportInfoMap.put(MongoConstant.itemName,m.get(MongoConstant.itemName));
                 reportInfoMap.put(MongoConstant.inspectChoiceValue,m.get(MongoConstant.inspectChoiceValue));
                 reportInfoList.add(reportInfoMap);

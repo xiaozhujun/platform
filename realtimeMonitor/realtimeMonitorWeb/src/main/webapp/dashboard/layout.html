@@ -26,8 +26,8 @@
     function loadTabPage(tabid){
         if(tabid=="mainTab"){
             $("#"+tabid).load("dashboard/main.html");
-        }else if(tabid=="monitorTab"){
-          $("#"+tabid).load("dashboard/monitor.html");
+        }else if(tabid=="collectorTab"){
+          $("#"+tabid).load("dashboard/collector.html");
         }else if(tabid=="realInfoTab"){
             $("#"+tabid).load("dashboard/realInfo.html");
         }else if(tabid=="dataAnalysisTab"){
@@ -40,7 +40,7 @@
 <div id="tab" style="height: 100%;">
     <div id="mainTab" tabid="mainTab" title="首页" style="height: 100%;">
     </div>
-    <div id="monitorTab" tabid="monitorTab" title="采集仪" style="height: 100%;">
+    <div id="collectorTab" tabid="collectorTab" title="采集仪" style="height: 100%;">
     </div>
     <div id="realInfoTab" tabid="realInfoTab" title="实时信号" style="height: 100%;">
     </div>

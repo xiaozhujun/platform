@@ -15,17 +15,17 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
+        var currentMonitor,grid;
         $(document).ready(function(){
 
-            var grid;
             var gridData = [
-                {id:'01',group:'测量组1',name:'采集仪001',monitor:'振动测点1',lastMessageTime:'2014-07-15',status:'1'},
-                {id:'02',group:'测量组1',name:'采集仪002',monitor:'振动测点2',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'03',group:'测量组2',name:'采集仪003',monitor:'振动测点3',lastMessageTime:'2014-07-15',status:'1'},
-                {id:'04',group:'测量组2',name:'采集仪004',monitor:'振动测点4',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'05',group:'测量组3',name:'采集仪005',monitor:'振动测点5',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'06',group:'测量组3',name:'采集仪006',monitor:'振动测点6',lastMessageTime:'2014-07-15',status:'1'},
-                {id:'07',group:'测量组3',name:'采集仪007',monitor:'振动测点7',lastMessageTime:'2014-07-15',status:'0'}
+                {id:'01',group:'测量组1',collector:'采集仪001',monitor:'振动测点1',lastMessageTime:'2014-07-15',status:'1'},
+                {id:'02',group:'测量组1',collector:'采集仪002',monitor:'振动测点2',lastMessageTime:'2014-07-15',status:'0'},
+                {id:'03',group:'测量组2',collector:'采集仪003',monitor:'振动测点3',lastMessageTime:'2014-07-15',status:'1'},
+                {id:'04',group:'测量组2',collector:'采集仪004',monitor:'振动测点4',lastMessageTime:'2014-07-15',status:'0'},
+                {id:'05',group:'测量组3',collector:'采集仪005',monitor:'振动测点5',lastMessageTime:'2014-07-15',status:'0'},
+                {id:'06',group:'测量组3',collector:'采集仪006',monitor:'振动测点6',lastMessageTime:'2014-07-15',status:'1'},
+                {id:'07',group:'测量组3',collector:'采集仪007',monitor:'振动测点7',lastMessageTime:'2014-07-15',status:'0'}
 
             ];
 
@@ -33,7 +33,7 @@
                 columns:[
                     {name:'id',display:'序号',width:'auto'},
                     {name:'group',display:'测量组',width:'auto'},
-                    {name:'name',display:'采集仪名称',width:'auto'},
+                    {name:'collector',display:'采集仪名称',width:'auto'},
                     {name:'monitor',display:'测点',width:'auto'},
                     {name:'lastMessageTime',display:'最后通信时间',width:'auto'},
                     { display: '状态', name: 'status',width:'auto',
@@ -58,10 +58,12 @@
                 width:'auto',resizable:true
             });
 
-
-
-
         });
+
+        function getInfo(rowindex){
+            currentMonitor = grid.getRow(rowindex);
+            $("#realInfoTab").load("dashboard/realData.html");
+        }
 
     </script>
 

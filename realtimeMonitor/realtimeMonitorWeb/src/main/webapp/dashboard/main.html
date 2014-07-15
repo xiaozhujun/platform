@@ -31,18 +31,7 @@
                 {id:'10',name:'成都╱1╱垂直',type:'均方差(um/s)',data:'0.897',position:'垂直',count:'8'}
             ];
 
-            grid = $("#mainGrid").ligerGrid({
-                columns:[
-                    {name:'id',display:'序号',width:'100'},
-                    {name:'name',display:'采集仪/测点号/测点信息',width:'300'},
-                    {name:'type',display:'报警参数类型',width:'200'},
-                    {name:'data',display:'报警示意图',width:'200'},
-                    {name:'position',display:'测点信息',width:'150'},
-                    {name:'count',display:'报警次数',width:'100'}
-                ],
-                data:{Rows: gridData},clickToEdit: false, isScroll: true, usePager: false,
-                width:'1057',resizable:true
-            });
+
 
             var gridData_right = [
                 {id:'01',name:'北京科贸',status:'online'},
@@ -57,19 +46,19 @@
                 {id:'10',name:'中南大学演示',status:'offline'}
             ];
 
-            $("#rightGrid").css("width",$("#choiceContainer").width()-1050);
+
 
             grid_right = $("#rightGrid").ligerGrid({
                 columns:[
-                    {name:'id',display:'No',width:'50'},
-                    {name:'name',display:'采集仪',width:'120',
+                    {name:'id',display:'No',width:50},
+                    {name:'name',display:'采集仪',width:120,
                         render: function (rowdata, rowindex,item)
                         {
                             var h = "";
                             h += "<a style='color: #0000FF' href='javascript:endEdit(" + rowindex + ")'>"+item.valueOf('name')+"</a> ";
                             return h;
                         }},
-                    {name:'status',display:'状态',width:'50',render:function(item) {
+                    {name:'status',display:'状态',width:50,render:function(item) {
                         return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
                     }}
                 ],
@@ -78,10 +67,24 @@
                     $("#txtrowindex").val(rowindex);
                 },
                 enabledEdit: false,clickToEdit: false, isScroll: false, usePager: false,
-                data:{Rows:gridData_right},width:'auto',resizable:false
+                data:{Rows:gridData_right},width:'230',resizable:false
             });
 
+            var width =$("#choiceContainer").width()-240;
+            $("#mainGrid").css("width",width);
 
+            grid = $("#mainGrid").ligerGrid({
+                columns:[
+                    {name:'id',display:'序号',width:100},
+                    {name:'name',display:'采集仪/测点号/测点信息',width:300},
+                    {name:'type',display:'报警参数类型',width:200},
+                    {name:'data',display:'报警示意图',width:'auto'},
+                    {name:'position',display:'测点信息',width:'auto'},
+                    {name:'count',display:'报警次数',width:'auto'}
+                ],
+                data:{Rows: gridData},clickToEdit: false, isScroll: true, usePager: false,
+                width:width,resizable:true
+            });
         });
 
     </script>

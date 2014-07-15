@@ -153,9 +153,15 @@
             });
         }
         function getInfo(rowid){
-            var row=manager.getRow(rowid);
-            var jsonString= $.toJSON(row);
+            var row = manager.getRow(rowid);
+            var jsonString = $.toJSON(row);
+            $("#maingrid").css("display", "none");
+            $("#exportDeviceDiv").css("display", "block");
+            $("#panel1").css("display", "none")
             $("#taskShow").load($.URL.inspectReport.getInspectInfo,{"jsonString":jsonString,"type":"html"},getInspectInfoCallback,"json");
+        }
+
+        function getInspectInfoCallback(data) {
         }
 
     </script>
@@ -168,7 +174,14 @@
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="taskEndTime" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="taskSubmitBtn1" class="l-button l-button-submit" /></span></div>
 </div>
-
+<div class="exportDiv" id="exportDeviceDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text"
+                                                                                        id="exportDeviceType"></span>
+                 </span>
+    <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn"
+                                         class="l-button l-button-submit"/></span></span>
+</div>
 <div class="reportContent" id="taskShow"></div>
 </body>
 </html>

@@ -13,6 +13,8 @@ import org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecor
 import org.whut.inspectManagement.business.inspectResult.mapper.InspectTableRecordMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectChoiceMapper;
 import org.whut.inspectManagement.business.inspectTable.mapper.InspectTableMapper;
+import org.whut.inspectManagement.business.task.entity.InspectTask;
+import org.whut.inspectManagement.business.task.mapper.InspectTaskMapper;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
@@ -45,6 +47,9 @@ public class InspectTableRecordService {
     InspectTagMapper inspectTagMapper;
     @Autowired
     EmployeeMapper employeeMapper;
+    @Autowired
+    InspectTaskMapper inspectTaskMapper;
+
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","inspectItemRecordCollection");
     public int DomReadXml(Document document) {
         long appId= UserContext.currentUserAppId();
@@ -64,6 +69,7 @@ public class InspectTableRecordService {
         long inspectTableId=0;
         long inspectTagId = 0;
         long deviceId = 0;
+        long userId;//解析数据插入到InspectTableRecord
         String comment=null;
         List<InspectItemRecord> inspectItemRecords=new ArrayList<InspectItemRecord>();
         InspectTableRecord inspectTableRecord =new InspectTableRecord();
@@ -104,7 +110,7 @@ public class InspectTableRecordService {
             }catch (ParseException exception){
                 exception.printStackTrace();
             }
-            long userId;//解析数据插入到InspectTableRecord
+
             //此时根据员工的员工编号查出userId
             //userId=employeeMapper.getById(Long.parseLong(worknum)).getUserId();
             userId=Long.parseLong(worknum);
@@ -193,7 +199,28 @@ public class InspectTableRecordService {
             inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId,t,appId);
         }
         if(flag==5){
-        insertToInspectItemRecordCollection(inspectItemRecords);
+            insertToInspectItemRecordCollection(inspectItemRecords);
+
+
+            SimpleDateFormat taskDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            InspectTask inspectTask =  new InspectTask();
+            inspectTask.setInspectTableId(inspectTableId);
+            inspectTask.setUserId(userId);
+            inspectTask.setDeviceId(deviceId);
+            inspectTask.setAppId(appId);
+            try {
+                Date taskDate = taskDateFormat.parse(taskDateFormat.format(inspectTime));
+                inspectTask.setTaskDate(taskDate);
+            } catch (ParseException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            inspectTask.setTimeStart(inspectTime.getHours()+1);
+            inspectTask.setStatus(1);
+            inspectTask.setInspectTime(inspectTime);
+            inspectTask.setInspectTableRecordId(inspectTableRecord.getId());
+            inspectTask.setFaultCount(exceptionCount);
+            inspectTaskMapper.completeTask(inspectTask);
+
         }
         return flag;
     }

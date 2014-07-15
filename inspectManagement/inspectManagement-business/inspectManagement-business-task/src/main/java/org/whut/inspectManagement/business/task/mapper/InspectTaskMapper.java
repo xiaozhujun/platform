@@ -19,4 +19,5 @@ public interface InspectTaskMapper extends AbstractMapper<InspectTask>{
     public List<InspectTask> getDispatchTaskList(List<String> ruleCondition);
     public void dispatchTask(List<InspectTask> list);
     public List<Map<String,String>>getInspectTaskInfo(String appId);
+    public void completeTask(InspectTask inspectTask);
 }

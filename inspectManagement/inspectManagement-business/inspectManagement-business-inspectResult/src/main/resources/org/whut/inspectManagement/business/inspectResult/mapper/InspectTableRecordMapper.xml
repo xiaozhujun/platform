@@ -4,13 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectResult.mapper.InspectTableRecordMapper">
     <sql id="inspectTableRecord_fields">
-		ID,INSPECTTABLEID,USERID,CREATETIME,EXCEPTIONCOUNT,APPID,MONGOID,DEVICEID
+		ID,INSPECTTABLEID,USERID,INSPECTTIME,CREATETIME,EXCEPTIONCOUNT,APPID,MONGOID,DEVICEID
 	</sql>
 
     <resultMap id="inspectTableRecordResultMap" type="InspectTableRecord">
         <id property="id" column="ID" />
         <result property="inspectTableId" column="INSPECTTABLEID" />
         <result property="userId" column="USERID" />
+        <result property="inspectTime" column="INSPECTTIME"/>
         <result property="createTime" column="CREATETIME"/>
         <result property="exceptionCount" column="EXCEPTIONCOUNT"/>
         <result property="appId" column="APPID"/>
@@ -24,7 +25,7 @@
         inspecttablerecord(
         <include refid="inspectTableRecord_fields" />
         )
-        VALUES (#{id}, #{inspectTableId}, #{userId},#{createTime},#{exceptionCount},#{appId},#{mongoId},#{deviceId});
+        VALUES (#{id}, #{inspectTableId}, #{userId},#{inspectTime},#{createTime},#{exceptionCount},#{appId},#{mongoId},#{deviceId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -45,6 +46,7 @@
         <set>
             <if test="inspectTableId != null">INSPECTTABLEID=#{inspectTableId},</if>
             <if test="userId != null">USERID=#{userId},</if>
+            <if test="inspectTime != null">INSPECTTIME=#{inspectTime},</if>
             <if test="createTime != null">CREATETIME=#{createTime},</if>
             <if test="exceptionCount !=null">EXCEPTIONCOUNT=#{exceptionCount},</if>
             <if test="appId !=null">APPID=#{appId}</if>
@@ -85,7 +87,7 @@
         SELECT
         id
         FROM inspecttablerecord
-        WHERE createtime = #{createTime}
+        WHERE inspectTime = #{inspectTime}
         AND inspectTableId=#{inspectTableId}
         AND appId=#{appId}
     </select>

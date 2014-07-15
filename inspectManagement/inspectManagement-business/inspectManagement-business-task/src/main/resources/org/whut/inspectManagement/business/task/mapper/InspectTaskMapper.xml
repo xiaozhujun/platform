@@ -55,6 +55,25 @@
         </where>
     </update>
 
+    <update id="completeTask" parameterType="InspectTask">
+        update inspect_task
+        <set>
+            <if test="inspectTableRecordId!=null">INSPECTTABLERECORDID=#{inspectTableRecordId},</if>
+            <if test="faultCount!=null">FAULTCOUNT=#{faultCount},</if>
+            <if test="inspectTime!=null">INSPECTTIME=#{inspectTime},</if>
+            <if test="status!=null">STATUS=#{status},</if>
+        </set>
+        <where>
+            <if test="appId!=null">AND appId=#{appId}</if>
+            <if test="inspectTableId!=null"> AND inspectTableId=#{inspectTableId}</if>
+            <if test="userId!=null"> AND userId=#{userId}</if>
+            <if test="deviceId!=null"> AND deviceId=#{deviceId}</if>
+            <if test="taskDate!=null"> AND taskDate=#{taskDate}</if>
+            <if test="timeStart!=null"><![CDATA[ AND TIMESTART<=#{timeStart}]]></if>
+            <if test="timeStart!=null"><![CDATA[ AND TIMEEND>=#{timeStart}]]></if>
+        </where>
+    </update>
+
     <delete id="delete" parameterType="InspectTask">
         DELETE FROM inspect_task
         <where>

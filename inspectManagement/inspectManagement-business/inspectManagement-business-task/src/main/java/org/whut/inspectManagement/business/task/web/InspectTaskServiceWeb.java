@@ -11,7 +11,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +38,17 @@ public class InspectTaskServiceWeb {
         condition.setUserId(userId);
         condition.setDeviceId(deviceId);
         condition.setAppId(UserContext.currentUserAppId());
+        Date today = null;
+        try {
+            today = format.parse(format.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         try {
             if(sTime!=null&&!sTime.trim().equals("")){
                 condition.setStartDay(format.parse(sTime));
+            }else {
+                condition.setStartDay(today);
             }
             if(eTime!=null&&!eTime.trim().equals("")){
                 condition.setEndDay(format.parse(eTime));

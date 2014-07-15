@@ -41,7 +41,7 @@
  </select>
  <select id="getInspectTableRecordList" parameterType="java.lang.String" resultType="map">
   SELECT
-  itr.createtime,sum(itr.exceptioncount) exceptioncount,itr.mongoId,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName
+  itr.createtime,itr.inspectTime,itr.exceptioncount exceptioncount,itr.mongoId,itr.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName
   FROM
   inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt,employee em
   WHERE
@@ -55,11 +55,10 @@
   <if test='sTime!="" and eTime!=""'>
   AND  itr.createtime BETWEEN #{sTime} AND #{eTime}
   </if>
-  group by em.employeeRoleName,d.name
  </select>
  <select id="getInspectTableRecordListByBean" parameterType="map" resultMap="SearchReportBeanMap">
         SELECT
-        itr.createtime,sum(itr.exceptioncount) exceptioncount,itr.mongoId,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName
+        itr.createtime,itr.exceptioncount exceptioncount,itr.mongoId,u.id,u.name as username,u.role,t.id,t.name as tablename,d.name as devname,dt.name as typename,em.employeeRoleName
         FROM
         inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt,employee em
         WHERE
@@ -73,7 +72,6 @@
         <if test='sTime!="" and eTime!=""'>
             AND  itr.createtime BETWEEN #{sTime} AND #{eTime}
         </if>
-        group by em.employeeRoleName,d.name
 </select>
  <select id="getInfoByMongoDbObject" parameterType="map" resultType="map">
   SELECT

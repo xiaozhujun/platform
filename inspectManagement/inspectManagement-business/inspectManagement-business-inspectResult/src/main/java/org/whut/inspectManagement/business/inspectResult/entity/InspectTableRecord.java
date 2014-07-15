@@ -12,6 +12,7 @@ public class InspectTableRecord {
     private long id;
     private long inspectTableId;
     private long userId;
+    private Date inspectTime;
     private Date createTime;
     private long exceptionCount;
     private long appId;
@@ -79,5 +80,22 @@ public class InspectTableRecord {
 
     public void setDeviceId(long deviceId) {
         this.deviceId = deviceId;
+    }
+
+
+    public Date getInspectTime() {
+        return inspectTime;
+    }
+
+    public void setInspectTime(Date inspectTime) {
+        this.inspectTime = inspectTime;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

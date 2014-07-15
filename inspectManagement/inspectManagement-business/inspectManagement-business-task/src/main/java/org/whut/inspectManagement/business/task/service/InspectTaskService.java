@@ -104,6 +104,11 @@ public class InspectTaskService {
             }
         }
     }
+
+    public void completeTask(InspectTask inspectTask){
+        mapper.completeTask(inspectTask);
+    }
+
     public List<Map<String,String>>getInspectTaskInfo(String appId){
         return mapper.getInspectTaskInfo(appId);
     }

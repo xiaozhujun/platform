@@ -26,6 +26,10 @@
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
+        },
+        "area":{
+            "add":"rs/area/add",
+            "list":"rs/area/list"
         }
     }
 })(jQuery);

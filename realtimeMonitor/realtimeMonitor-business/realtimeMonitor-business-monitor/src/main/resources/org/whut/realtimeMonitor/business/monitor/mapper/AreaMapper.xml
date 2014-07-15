@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.monitor.business.monitor.mapper.AreaMapper">
+    <sql id="Area_fields">
+          ID,NAME,DESCRIPTION,CREATETIME,GROUPID,APPID
+    </sql>
+    <resultMap id="AreaResultMap" type="area">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="groupId" column="GROUPID"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="area"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        inspectchoice(
+        <include refid="Area_fields" />
+        )
+        VALUES (#{id}, #{name},#{description},#{groupId},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="update" parameterType="area">
+        UPDATE area
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="groupId!=null">GROUPID=#{groupId},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <delete id="delete" parameterType="InspectChoice">
+        DELETE FROM area
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="AreaResultMap">
+        SELECT *
+        FROM area
+        WHERE appId=#{appId}
+    </select>
+    <select id="getIdByChoiceValueAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM inspectchoice
+        WHERE choiceValue=#{choiceValue} AND appid=#{appId}
+    </select>
+    <select id="getChoiceValueById" parameterType="java.lang.Long" resultType="java.lang.String">
+         SELECT choicevalue
+         FROM inspectchoice
+         WHERE id=#{id}
+     </select>
+</mapper>

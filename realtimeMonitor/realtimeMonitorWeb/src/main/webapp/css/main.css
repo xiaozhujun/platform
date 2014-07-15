@@ -78,3 +78,18 @@
     margin-top: 32px;
     width: 6px;
 }
+
+#choiceContainer{
+    width: 100%;
+    margin-top: 5px;
+    float: left;
+}
+
+#mainGrid{
+    float: left;
+}
+
+#rightGrid{
+    float: right;
+}
+

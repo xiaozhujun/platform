@@ -46,5 +46,14 @@
         FROM area
         WHERE appId=#{appId}
     </select>
-
+    <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM area
+        WHERE name=#{name} and appId=#{appId}
+    </select>
+    <select id="getAreaByGroupId" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT area.name
+        FROM area
+        WHERE area.groupId=#{groupId}
+    </select>
 </mapper>

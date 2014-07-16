@@ -15,11 +15,13 @@
 
     <script type="text/javascript">
         $(function(){
-            $("#submitBtn").click(function(){
-                var groupData = {};
-                groupData.name = $("#name").val();
-                groupData.description = $("#description").val();
-                $.post($.URL.group.add,groupData,addCallBack,"json");
+            $("#submitBtn").ligerButton({
+                click:function() {
+                    var groupData = {};
+                    groupData.name = $("#name").val();
+                    groupData.description = $("#description").val();
+                    $.post($.URL.group.add,groupData,addCallBack,"json");
+                }
             });
         });
 
@@ -57,14 +59,16 @@
             <tr>
                 <td align="right" class="l-table-edit-td">描述：</td>
                 <td align="left" class="l-table-edit-td">
-                    <input name="description" id="description" type="text"/>
+                    <!--<input name="description" id="description" type="text"/>-->
+                    <textarea id="description" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
                 </td>
                 <td align="left"/>
             </tr>
 
         </table>
         <br/>
-        <input id="submitBtn" class="l-button-submit" type="button" value="提交"/>
+        <!--<input id="submitBtn" class="l-button-submit" type="button" value="提交"/>-->
+        <div id="submitBtn" class="l-button-submit">添加</div>
     </form>
 </body>
 </html>

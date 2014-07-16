@@ -36,7 +36,7 @@ public class GroupServiceWeb {
 //        long appId = UserContext.currentUserAppId();
         long appId = 1;
         Date date = new Date();
-        if(name.trim().equals("") || description.trim().equals("")) {
+        if(name.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
 
@@ -78,7 +78,7 @@ public class GroupServiceWeb {
         Group group = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Group.class);
         String name = group.getName();
         String description = group.getDescription();
-        if(name.trim().equals("") || description.trim().equals("")) {
+        if(name.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
 

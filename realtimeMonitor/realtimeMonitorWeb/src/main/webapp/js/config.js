@@ -30,6 +30,12 @@
         "area":{
             "add":"rs/area/add",
             "list":"rs/area/list"
+        },
+        "collector":{
+            "add":"rs/collector/add",
+            "list":"rs/collector/list",
+            "update":"rs/collector/update",
+            "delete":"rs/collector/delete"
         }
     }
 })(jQuery);

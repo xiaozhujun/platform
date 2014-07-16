@@ -16,6 +16,7 @@
 $(function(){
     $.post($.URL.collector.list,null,collectorListCallback,"json");
     $.post($.URL.area.list,null,areaListCallback,"json");
+    $.post($.URL.group.list,null,groupListCallback,"json");
 })
 var gridData = {};
 function collectorListCallback(data){
@@ -25,17 +26,26 @@ function collectorListCallback(data){
         f_initGrid();
     }
 }
+var groupData=[];
+function groupListCallback(data){
+    if(data.code==200){
+        $.each(data.data,function(index,content){
+            var j={};
+            j["text"]=content.name;
+            j["id"]=content.name;
+            groupData.push(j);
+        })
+    }
+}
 var areaData=[];
 function areaListCallback(data){
     if(data.code==200){
-        if(data.code==200){
-            $.each(data.data,function(index,content){
-                var j={};
-                j["text"]=content.name;
-                j["id"]=content.name;
-                areaData.push(j);
-            });
-        }
+        $.each(data.data,function(index,content){
+            var j={};
+            j["text"]=content.name;
+            j["id"]=content.name;
+            areaData.push(j);
+        })
     }
 }
 var manager, g;
@@ -44,42 +54,27 @@ function f_initGrid()
     g = manager = $("#maingrid").ligerGrid({
         columns: [
             { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-            { display: '采集仪名称',name: 'name', editor: { type: 'text'} },
-            { display: '编号',name: 'number',type:'string',editor: { type: 'text'}},
-            { display: '监测组',name: 'group',
-                editor: { type:'select',emptyText:null,data:null,valueField:'id',textField:'text'
-                },
+            { display: '采集仪名称',name: 'name',width:100, editor: { type: 'text'} },
+            { display: '编号',name: 'number',type:'string',width:100,editor: { type: 'text'}},
+            { display: '监测组',name: 'groupName', width:100,
+                editor: { type:'select',emptyText:null,data:groupData,valueField:'id',textField:'text'},
                 render:function(item){
                     return item.groupName;
                 }
             },
-            { display: '测量区域',name: 'area',
-                editor: { type:'select',emptyText:null,data:areaData,valueField:'id',textField:'text'
-                },
+            { display: '测量区域',name: 'area',width:100,
+                editor: { type:'select',emptyText:null,data:areaData,valueField:'id',textField:'text'},
                 render:function(item){
                     return item.area;
                 }
             },
-
-            { display: '最大频率',name: 'maxFrequency',  editor: { type:'text' } },
-            { display: '最小频率',name: 'minFrequency',type:'string',width:70,
-                editor: { type:'select',data:null,emptyText:null,valueField:'id',textField:'text'},
-                render:function(item){
-                    return item.minFrequency;
-                }
-            },
-            { display: '工作频率',name: 'workFrequency',type:'string',
-                editor: { type:'select',emptyText:null, data:null,valueField:'id',textField:'text',
-                    isMultiSelect:true,isShowCheckBox:true},
-                render:function(item){
-                    return item.workFrequency;
-                }
-            },
-            { display: '描述',name: 'description',
-                editor: { type: 'text'}
-            },
-            {display :"状态",name:'status',editor:{type:'text'}},
-            { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+            { display: '最大频率',name: 'maxFrequency', width:100,editor:{type:'text'}},
+            { display: '最小频率',name: 'minFrequency',width:100, editor:{type:'text'}},
+            { display: '工作频率',name: 'workFrequency',width:100,editor:{type:'text'}},
+            { display :"状态",name:'status',width:50,editor:{type:'text'}},
+            { display:"最后通信时间",name:'lastMessageTime',width:120,frozen:true},
+            { display: '描述',name: 'description',editor: { type: 'text'}},
+            { display: '操作', isSort: false, width: 100, render: function (rowdata, rowindex, value)
             {
                 var h = "";
                 if (!rowdata._editing)
@@ -121,19 +116,14 @@ function endEdit(rowid)
 
 function updateCallback(data){
     if(data.code==200){
-        $.post($.URL.collector.list,null,listCallback,"json");
-        $.ligerDialog.success("修改成功");
-
+        $.post($.URL.collector.list,null,collectorListCallback,"json");
+        $.ligerDialog.success(data.message);
     }
     else{
-        $.post($.URL.collector.list,null,listCallback,"json");
+        $.post($.URL.collector.list,null,collectorListCallback,"json");
         $.ligerDialog.warn(data.message);
     }
 }
-function listCallback(data){
-
-}
-
 function deleteRow(rowid)
 {
     if (confirm('确定删除?'))
@@ -144,7 +134,6 @@ function deleteRow(rowid)
         manager.deleteRow(rowid);
     }
 }
-
 function deleteCallback(data){
     if(data.code==200){
         $.ligerDialog.success("成功删除！");
@@ -152,7 +141,6 @@ function deleteCallback(data){
         $.ligerDialog.success("删除失败！");
     }
 }
-
 var newrowid = 100;
 function addNewRow()
 {
@@ -177,14 +165,9 @@ function addCallBack(data){
         $("#mainContainer").load("InspectTable/inspectItemList.html");
     }
 }
-
 $("#addSubmitBtn").click(function(){
     $("#mainContainer").load("InspectTable/addInspectItem.html");
 });
-
-
-
-
 </script>
 <style type="text/css">
     .l-table-edit {}

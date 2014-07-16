@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Collector;
 import org.whut.monitor.business.monitor.entity.SubCollector;
+import org.whut.monitor.business.monitor.service.AreaService;
 import org.whut.monitor.business.monitor.service.CollectorService;
+import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -34,6 +36,10 @@ import java.util.*;
 public class CollectorServiceWeb {
     @Autowired
     private CollectorService collectorService;
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private AreaService areaService;
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
@@ -73,15 +79,15 @@ public class CollectorServiceWeb {
                             collector.setName(subCollector.getName());
                             collector.setNumber(subCollector.getNumber());
                             collector.setDescription(subCollector.getDescription());
-                            collector.setAreaId(1);
-                            collector.setGroupId(1);
-                            collector.setAppId(appId);
+                            collector.setAreaId(areaService.getIDByNameAndAppId(subCollector.getArea(),appId));
+                            collector.setGroupId(groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId));
                             collector.setStatus(subCollector.getStatus());
                             collector.setMaxFrequency(subCollector.getMaxFrequency());
                             collector.setMinFrequency(subCollector.getMinFrequency());
                             collector.setWorkFrequency(subCollector.getWorkFrequency());
                             DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
                             collector.setLastMessageTime(format.parse(subCollector.getLastMessageTime()));
+                            collector.setAppId(appId);
                             collectorService.add(collector);
                             subCollector.setAddStatus("提交成功");
                         }
@@ -116,8 +122,8 @@ public class CollectorServiceWeb {
     public String update(@FormParam("jsonString") String jsonString) throws ParseException {
         long appId=1;
         SubCollector subCollector=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
-        if(subCollector.getName()==null||subCollector.getNumber()==null||subCollector.getStatus()==null||
-                subCollector.getMaxFrequency()==null||subCollector.getMinFrequency()==null||subCollector.getWorkFrequency()==null){
+        if(subCollector.getName()==""||subCollector.getNumber()==""||subCollector.getStatus()==""||
+                subCollector.getMaxFrequency()==""||subCollector.getMinFrequency()==""||subCollector.getWorkFrequency()==""){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long tempId;
@@ -133,11 +139,16 @@ public class CollectorServiceWeb {
         }
         //判断group和area能否对应得上
         Collector collector=new Collector();
+        collector.setAreaId(areaService.getIDByNameAndAppId(subCollector.getArea(),appId));
+        long groupId=groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
+        collector.setGroupId(groupId);
+        List<String> list=areaService.getAreaByGroupId(groupId);
+        if(!list.contains(subCollector.getArea())){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不包含该测量点！");
+        }
+        collector.setId(subCollector.getId());
         collector.setName(subCollector.getName());
         collector.setNumber(subCollector.getNumber());
-        collector.setAppId(appId);
-        collector.setAreaId(1);
-        collector.setGroupId(1);
         collector.setMaxFrequency(subCollector.getMaxFrequency());
         collector.setMinFrequency(subCollector.getMinFrequency());
         collector.setWorkFrequency(subCollector.getWorkFrequency());
@@ -145,6 +156,7 @@ public class CollectorServiceWeb {
         collector.setDescription(subCollector.getDescription());
         DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         collector.setLastMessageTime(format.parse(subCollector.getLastMessageTime()));
+        collector.setAppId(appId);
         collectorService.update(collector);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"修改成功");
     }

@@ -22,7 +22,7 @@
              "add":"rs/authority/add",
              "update":"rs/authority/update",
              "delete":"rs/authority/delete",
-            "list":"rs/authority/list"
+             "list":"rs/authority/list"
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"

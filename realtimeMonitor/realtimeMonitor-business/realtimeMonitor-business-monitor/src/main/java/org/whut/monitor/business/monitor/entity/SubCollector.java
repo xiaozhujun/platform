@@ -12,7 +12,7 @@ public class SubCollector {
     private String name;
     private String number;
     private String description;
-    private String group;
+    private String groupName;
     private String area;
     private String status;
     private String maxFrequency;
@@ -54,12 +54,12 @@ public class SubCollector {
         this.description = description;
     }
 
-    public String getGroup() {
-        return group;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getArea() {

@@ -73,7 +73,8 @@ public class GroupServiceWeb {
     @Path("update")
     @POST
     public String update(@FormParam("jsonString")String jsonString) {
-        long appId = UserContext.currentUserAppId();
+//        long appId = UserContext.currentUserAppId();
+        long appId = 1;
         Group group = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Group.class);
         String name = group.getName();
         String description = group.getDescription();
@@ -89,6 +90,7 @@ public class GroupServiceWeb {
         }
 
         if (id != 0) {
+            if(id != group.getId())
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"组已存在");
         }
 

@@ -6,14 +6,14 @@
     <sql id="Area_fields">
           ID,NAME,DESCRIPTION,CREATETIME,GROUPID,APPID
     </sql>
-    <resultMap id="AreaResultMap" type="area">
+    <resultMap id="AreaResultMap" type="Area">
         <id property="id" column="ID" />
         <result property="name" column="NAME"/>
         <result property="description" column="DESCRIPTION"/>
         <result property="groupId" column="GROUPID"/>
         <result property="appId" column="APPID"/>
     </resultMap>
-    <insert id="add" parameterType="area"  keyProperty="id"
+    <insert id="add" parameterType="Area"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
         inspectchoice(
@@ -25,7 +25,7 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-    <update id="update" parameterType="area">
+    <update id="update" parameterType="Area">
         UPDATE area
         <set>
             <if test="name!=null">NAME=#{name},</if>
@@ -35,7 +35,7 @@
         </set>
         WHERE ID=#{id}
     </update>
-    <delete id="delete" parameterType="InspectChoice">
+    <delete id="delete" parameterType="Area">
         DELETE FROM area
         <where>
             <if test="id!=null">ID=#{id}</if>
@@ -46,14 +46,5 @@
         FROM area
         WHERE appId=#{appId}
     </select>
-    <select id="getIdByChoiceValueAndAppId" parameterType="map" resultType="java.lang.Long">
-        SELECT id
-        FROM inspectchoice
-        WHERE choiceValue=#{choiceValue} AND appid=#{appId}
-    </select>
-    <select id="getChoiceValueById" parameterType="java.lang.Long" resultType="java.lang.String">
-         SELECT choicevalue
-         FROM inspectchoice
-         WHERE id=#{id}
-     </select>
+
 </mapper>

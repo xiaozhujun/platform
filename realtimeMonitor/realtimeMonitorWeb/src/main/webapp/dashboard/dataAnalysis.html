@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/search.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            var groupList = {code:200,data:[{id:1,name:'分组1'},{id:2,name:'分组2'},{id:3,name:'分组3'},{id:4,name:'分组4'}]};
+            groupListCallback(groupList);
+
+            $("#dataSubmitBtn1").click(function(){
+                getDataList();
+            });
+
+            var d=new Date();
+            var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            $("#startTime").ligerDateEditor({initValue: dd});
+            $("#endTime").ligerDateEditor({initValue: dd});
+        });
+        function groupListCallback(data){
+            if(data.code==200){
+                var groupData=[];
+                for(var i=0;i<data.data.length;i++){
+                    var d={};
+                    d['text']=data.data[i].name;
+                    d['id']=data.data[i].id;
+                    groupData.push(d);
+                }
+                $("#groupName").ligerComboBox({
+                    data:groupData,valueFieldID:"groupNameSelect"
+                });
+            }
+        }
+        function collectorListCallback(data){
+            if(data.code==200){
+                var collectorData=[];
+                for(var i=0;i<data.data.length;i++){
+                    var d={};
+                    d['text']=data.data[i].name;
+                    d['id']=data.data[i].id;
+                    collectorData.push(d);
+                }
+                $("#collectorName").ligerComboBox({
+                    data:collectorData,valueFieldID:"collectorNameSelect"
+                });
+            }
+        }
+
+        function getDataList(){
+            var group=$("#groupNameSelect").val();
+            var collector=$("#collectorNameSelect").val();
+            var monitor=$("#monitorNameSelect").val();
+            var sTime=$("#startTime").val();
+            var eTime=$("#endTime").val();
+            $.post($.URL.inspectTask.lastTaskByDeviceGroup,{"userId":user,"deviceId":device,"sTime":sTime,"eTime":eTime},getTaskByDeviceCallback,"json");
+        }
+
+    </script>
+</head>
+<body>
+<div class="searchContainer">
+    <div class="searchItem"><span class="item_font">监测组:</span><span class="item_input"><input id="groupName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">采集仪:</span><span class="item_input"><input id="collectorName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">传感器:</span><span class="item_input"><input id="monitorName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="startTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="endTime" type="text"></span></div>
+    <div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn1" class="l-button l-button-submit" /></span></div>
+</div>
+<div class="reportContent" id="dataShow"></div>
+</body>
+</html>

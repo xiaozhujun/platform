@@ -101,6 +101,7 @@
         LEFT JOIN devicetype type ON type.id=inarea.deviceTypeId
         LEFT JOIN inspectitem_choice _choice ON  _choice.inspectItemId=item.id
         LEFT JOIN inspectchoice choice ON _choice.inspectChoiceId=choice.id
+        WHERE item.appId=#{appId}
         GROUP BY item.id
     </select>
 </mapper>

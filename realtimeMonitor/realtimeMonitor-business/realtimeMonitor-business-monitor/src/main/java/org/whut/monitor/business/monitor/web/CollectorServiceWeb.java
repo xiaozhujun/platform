@@ -58,11 +58,11 @@ public class CollectorServiceWeb {
             for(int i=0;i<jsonArray.length();i++){
                 String jsonString=jsonArray.get(i).toString();
                 SubCollector subCollector=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
-                if(subCollector.getAddStatus().equals("已提交")){
+                if(subCollector.getAddStatus().equals("提交成功")){
                     successList.add(subCollector);
                 }else{
-                    if(subCollector.getName()==null||subCollector.getNumber()==null||subCollector.getStatus()==null||
-                            subCollector.getMaxFrequency()==null||subCollector.getMinFrequency()==null||subCollector.getWorkFrequency()==null){
+                    if(subCollector.getName()==""||subCollector.getNumber()==""||subCollector.getStatus()==""||
+                            subCollector.getMaxFrequency()==""||subCollector.getMinFrequency()==""||subCollector.getWorkFrequency()==""){
                         subCollector.setAddStatus("参数缺省");
                         errorList.add(subCollector);
                     }else{
@@ -139,11 +139,12 @@ public class CollectorServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"采集仪已存在");
             }
         }
-        //判断group和area能否对应得上
+
         Collector collector=new Collector();
         collector.setAreaId(areaService.getIDByNameAndAppId(subCollector.getArea(),appId));
         long groupId=groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
         collector.setGroupId(groupId);
+        //判断group和area能否对应得上
         long temp=areaService.getGroupIdByAreaNameAndAppId(subCollector.getArea(),appId);
         if(temp!=groupId){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不包含该测量点！");

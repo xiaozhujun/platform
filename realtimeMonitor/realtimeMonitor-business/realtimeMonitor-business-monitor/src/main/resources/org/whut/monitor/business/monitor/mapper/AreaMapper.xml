@@ -16,10 +16,10 @@
     <insert id="add" parameterType="Area"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
-        inspectchoice(
+        area(
         <include refid="Area_fields" />
         )
-        VALUES (#{id}, #{name},#{description},#{groupId},#{appId});
+        VALUES (#{id}, #{name},#{description},#{createtime},#{groupId},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -44,12 +44,12 @@
     <select id="getListByAppId" parameterType="java.lang.Long" resultMap="AreaResultMap">
         SELECT *
         FROM area
-        WHERE appId=#{appId}
+        WHERE APPID=#{appId}
     </select>
     <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
-        SELECT id
+        SELECT ID
         FROM area
-        WHERE name=#{name} and appId=#{appId}
+        WHERE NAME=#{name} and APPID=#{appId}
     </select>
     <select id="getAreaByGroupId" parameterType="java.lang.Long" resultMap="AreaResultMap">
         SELECT *

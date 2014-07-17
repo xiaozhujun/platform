@@ -34,7 +34,7 @@
                 $.each(data.data,function(index,content){
                     var j={};
                     j["text"]=content.name;
-                    j["type"]=content.name;
+                    j["id"]=content.name;
                     groupNameData.push(j);
                 })
             }
@@ -56,8 +56,8 @@
                     {display:'创建时间',name:'createtime',width:100
 
                     },
-                    { display: '组名', name: 'groupName', type: 'String',
-                        editor: { type: 'select', data: groupNameData, valueField: 'type'},
+                    { display: '组名', name: 'groupName',width:100,
+                        editor: { type: 'select',emptyText:null, data: groupNameData, valueField:'id',textField:'text'},
                         render:function(item){
                             return item.groupName;
                         }
@@ -141,8 +141,8 @@
 <div id="list">
     <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
     <div class="l-clear"></div>
-    <div id="areaGrid" style="margin-top:5px"></div> <br />
 </div>
+<div id="areaGrid" style="margin-top:5px"></div> <br />
 <div style="display:none;">
     <!-- g data total ttt -->
 </div>

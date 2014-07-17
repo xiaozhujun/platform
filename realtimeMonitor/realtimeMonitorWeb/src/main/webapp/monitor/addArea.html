@@ -49,8 +49,9 @@
                 columns: [
                     {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
                     {display:'区域名',name:'name',width:50,editor:{type:'text'}},
+                    {display:'描述',name:'description', width:115,type: 'text', editor: { type: 'text'}},
                     {display:'组名',name:'groupName',width:50,frozen:'true'},
-                    {display:'描述',name:'description', width:115,type: 'text', editor: { type: 'text'}}
+                    {display:'提交状态',name:'addStatus', width:80,frozen:true}
                 ],
                 onSelectRow: function (rowdata, rowindex)
                 {
@@ -58,7 +59,28 @@
                 },
                 enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
                 data:null,width:'100%'
-            });}
+            });
+
+            window.dialog = $.ligerDialog.open({
+                isResize: true,
+                isHidden: true,
+                target: $("<div id='message' class='message'></div>"),
+                buttons: [
+                    { text: '关闭', onclick: function (i, d) { d.hide(); } }
+                ]
+            });
+            dialog.hide();
+            window.alert = function (message) {
+                $("#message").html(message.toString());
+                dialog.show();
+            }
+        }
+
+        function deleteRow()
+        {
+            manager.deleteSelectedRow();
+        }
+
         var newRowID = 1;
         function addNewRow() {
             var groupName = $("#groupName").val();
@@ -72,9 +94,10 @@
                     var row = manager.getSelectedRow();
                     manager.addRow({
                         id: newRowID++,
-                        name:'',
-                        description:'',
-                        groupName:$("#groupName").val()
+                        name:$("#name").val(),
+                        description:$("#description").val(),
+                        groupName:$("#groupName").val(),
+                        addStatus:"未提交"
                     }, row, document.getElementById("checked").checked);
                 }
             }
@@ -106,7 +129,7 @@
 
         function returnBtn()
         {
-            $("#mainContainer").load("InspectTable/inspectItemList.html");
+            $("#mainContainer").load("monitor/areaList.html");
         }
         $("#delete").ligerButton({});
         $("#add").ligerButton({});

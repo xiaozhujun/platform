@@ -55,7 +55,7 @@ function f_initGrid()
         columns: [
             { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
             { display: '采集仪名称',name: 'name',width:100, editor: { type: 'text'} },
-            { display: '编号',name: 'number',type:'string',width:100,editor: { type: 'text'}},
+            { display: '编号',name: 'number',type:'string',width:80,editor: { type: 'text'}},
             { display: '监测组',name: 'groupName', width:100,
                 editor: { type:'select',emptyText:null,data:groupData,valueField:'id',textField:'text'},
                 render:function(item){
@@ -68,13 +68,13 @@ function f_initGrid()
                     return item.area;
                 }
             },
-            { display: '最大频率',name: 'maxFrequency', width:100,editor:{type:'text'}},
-            { display: '最小频率',name: 'minFrequency',width:100, editor:{type:'text'}},
-            { display: '工作频率',name: 'workFrequency',width:100,editor:{type:'text'}},
-            { display :"状态",name:'status',width:50,editor:{type:'text'}},
-            { display:"最后通信时间",name:'lastMessageTime',width:120,frozen:true},
+            { display: '最大频率',name: 'maxFrequency', width:80,editor:{type:'text'}},
+            { display: '最小频率',name: 'minFrequency',width:80, editor:{type:'text'}},
+            { display: '工作频率',name: 'workFrequency',width:80,editor:{type:'text'}},
+            { display :"工作状态",name:'status',width:100,frozen:true},
+            { display:"最后通信时间",name:'lastMessageTime',width:100,frozen:true},
             { display: '描述',name: 'description',editor: { type: 'text'}},
-            { display: '操作', isSort: false, width: 100, render: function (rowdata, rowindex, value)
+            { display: '操作', isSort: false, width: 80, render: function (rowdata, rowindex, value)
             {
                 var h = "";
                 if (!rowdata._editing)
@@ -146,27 +146,8 @@ function addNewRow()
 {
     manager.addEditRow();
 }
-$(function(){
-    $("#submitBtn").click(function(){
-        var data = {};
-        data.choiceValue = $("#inspectTable").val();
-        data.choiceValue = $("#deviceType").val();
-        data.choiceValue = $("#inspectArea").val();
-        $.post($.URL.collector.add,data,{"jsonStringList":data},"json") ;
-    });
-});
-function addCallBack(data){
-    if(data.code==200){
-        $.ligerDialog.success(data.message);
-        $("#mainContainer").load("InspectTable/inspectItemList.html");
-    }
-    else{
-        $.ligerDialog.warn(data.message);
-        $("#mainContainer").load("InspectTable/inspectItemList.html");
-    }
-}
 $("#addSubmitBtn").click(function(){
-    $("#mainContainer").load("InspectTable/addInspectItem.html");
+    $("#mainContainer").load("monitor/addCollector.html");
 });
 </script>
 <style type="text/css">
@@ -178,7 +159,9 @@ $("#addSubmitBtn").click(function(){
 </head>
 <body  style="padding:10px">
 <div id="list">
-    <div><input type="button" value="添加点检项" id="addSubmitBtn" class="l-button l-button-submit" /></div>
+    <div>
+        <input type="button" value="添加点检项" id="addSubmitBtn" class="l-button l-button-submit" />
+    </div>
     <div class="l-clear"></div>
     <div id="maingrid" style="margin-top:5px"></div> <br />
 </div>

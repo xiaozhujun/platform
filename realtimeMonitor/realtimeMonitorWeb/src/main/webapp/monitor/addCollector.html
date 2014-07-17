@@ -52,23 +52,29 @@ function groupListCallBack(data){
         })
     }
 }
-$(f_initGrid);
+var statusData=[{id:"0",text:"在线正常工作"},{id:"1",text:"位置或离线"},{id:"2",text:"在线异常"},{id:"3",text:"在线停止工作"},{id:"4",text:"手动采样中"}]
 var manager, g;
 function f_initGrid()
 {
     g =  manager = $("#maingrid").ligerGrid({
         columns: [
             {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
-            {display:'状态',name:'addStatus', width:80,frozen:true},
+            {display:'提交状态',name:'addStatus', width:80,frozen:true},
             {display:'所属监控组',name:'groupName',width:100,frozen:true},
             {display:'测量区域',name:'area',width:100,frozen:true},
             {display:'采集仪名称',name:'name',width:100,editor:{type:'text'}},
-            { display: '编号', name: 'number',width:100, editor: { type: 'text' }},
-            { display: '最大频率', name: 'maxFrequency', width: 100, type: 'text', editor: { type: 'text'} },
-            { display: '最小频率', name: 'minFrequency', width: 100, type: 'text', editor: { type: 'text'} },
-            { display: '工作频率', name: 'workFrequency', width: 100, type: 'text', editor: { type: 'text'} },
-            { display: '状态', name: 'status', width: 100, type: 'text', editor: { type: 'text'} },
-            {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
+            {display: '编号', name: 'number',width:100, editor: { type: 'text' }},
+            {display: '最大频率', name: 'maxFrequency', width: 100, type: 'text', editor: { type: 'text'} },
+            {display: '最小频率', name: 'minFrequency', width: 100, type: 'text', editor: { type: 'text'} },
+            {display: '工作频率', name: 'workFrequency', width: 100, type: 'text', editor: { type: 'text'} },
+            { display: '工作状态', width: 100, name: 'status',
+                editor: { type: 'select',emptyText:null, data: statusData, valueColumnName: 'text',displayColumnName:'text' },
+                render: function (item)
+                {
+                   return item.status;
+                }
+            },
+            {display: '描述',name:'description',type: 'text', editor: { type: 'text'}}
 
         ],
         onSelectRow: function (rowdata, rowindex)
@@ -101,23 +107,29 @@ function deleteRow()
 var newrowid = 1;
 function addNewRow()
 {
-    var row = manager.getSelectedRow();
-    //参数1:rowdata(非必填)
-    //参数2:插入的位置 Row Data
-    //参数3:之前或者之后(非必填)
-    manager.addRow({
-        id: newrowid++,
-        name:'',
-        number:'',
-        maxFrequency:'',
-        minFrequency:'',
-        workFrequency:'',
-        groupName:$("#CB_Group").val(),
-        area:$("#CB_Area").val(),
-        status:'',
-        description:'',
-        addStatus:"未提交"
-    }, row, document.getElementById("checked").checked);
+    if($("#CB_Area").val()==""){
+        $.ligerDialog.warn("测量区域不能为空！")
+    }else{
+        $("#maingrid").show();
+        $(f_initGrid);
+        var row = manager.getSelectedRow();
+        //参数1:rowdata(非必填)
+        //参数2:插入的位置 Row Data
+        //参数3:之前或者之后(非必填)
+        manager.addRow({
+            id: newrowid++,
+            name:'',
+            number:'',
+            maxFrequency:'',
+            minFrequency:'',
+            workFrequency:'',
+            groupName:$("#CB_Group").val(),
+            area:$("#CB_Area").val(),
+            status:'在线正常工作',
+            description:'',
+            addStatus:"未提交"
+        }, row, document.getElementById("checked").checked);
+    }
 }
 function submitBtn(){
     var data=JSON.stringify(manager.getData());
@@ -144,7 +156,7 @@ function addCallback(data){
 
 function returnBtn()
 {
-    $("#mainContainer").load("InspectTable/inspectItemList.html");
+    $("#mainContainer").load("monitor/collectorList.html");
 }
 $("#delete").ligerButton({});
 $("#add").ligerButton({});
@@ -176,7 +188,7 @@ $("#return").ligerButton({});
         </span>
 </div>
 <div class="l-clear"></div>
-<div id="maingrid" style="margin-top:5px"></div> <br />
+<div id="maingrid" style="margin-top:5px;display: none"></div> <br />
 <br />
 
 <div style="display:none;">

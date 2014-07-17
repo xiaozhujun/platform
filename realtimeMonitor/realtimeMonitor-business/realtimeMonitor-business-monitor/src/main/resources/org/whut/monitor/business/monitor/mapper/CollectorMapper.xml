@@ -65,4 +65,14 @@
         FROM `group`,area,collector AS c
         WHERE c.areaId=area.id AND c.groupId=`group`.id AND c.appId=#{appId}
     </select>
+    <select id="getCollectorByAreaId" parameterType="java.lang.Long" resultMap="CollectorResultMap">
+         SELECT *
+         FROM collector
+         WHERE areaId = #{areaId}
+    </select>
+    <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
+         SELECT id
+         FROM collector
+         WHERE name=#{name} AND appId=#{appId}
+    </select>
 </mapper>

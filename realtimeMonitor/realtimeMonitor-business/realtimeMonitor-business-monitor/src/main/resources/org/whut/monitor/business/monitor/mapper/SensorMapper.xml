@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.monitor.business.monitor.mapper.SensorMapper">
+    <sql id="sensor_fields">
+        ID,NAME,DESCRIPTION,NUMBER,GROUPID,AREAID,COLLECTORID,MAXFREQUENCY,MINFREQUENCY,WORKFREQUENCY,SHOULDWARN,WARNTYPE,WARNVALUE,WARNCOUNT,WARNSTATUS,APPID
+    </sql>
+
+    <resultMap id="SensorResultMap" type="Sensor">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="number" column="NUMBER"/>
+        <result property="groupId" column="GROUPID"/>
+        <result property="areaId" column="AREAID"/>
+        <result property="collectorId" column="COLLECTORID"/>
+        <result property="maxFrequency" column="MAXFREQUENCY"/>
+        <result property="minFrequency" column="MINFREQUENCY"/>
+        <result property="workFrequency" column="WORKFREQUENCY"/>
+        <result property="shouldWarn" column="SHOULDWARN"/>
+        <result property="warnType" column="WARNTYPE"/>
+        <result property="warnValue" column="WARNVALUE"/>
+        <result property="warnCount" column="WARNCOUNT"/>
+        <result property="warnStatus" column="WARNSTATUS"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Sensor" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        sensor(<include refid="sensor_fields"/>)
+        VALUES(#{id,#{name},#{description},#{number},#{groupId},#{areaId},,#{collectorId},#{maxFrequency},#{minFrequency},#{workFrequency},#{shouldWarn},#{warnType},#{warnValue},#{warnCount},#{warnStatus},#{appId})
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="getSensorIdByNameAndNumber" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM sensor
+        WHERE name=#{name} AND number=#{number} AND appId=#{appId}
+    </select>
+</mapper>

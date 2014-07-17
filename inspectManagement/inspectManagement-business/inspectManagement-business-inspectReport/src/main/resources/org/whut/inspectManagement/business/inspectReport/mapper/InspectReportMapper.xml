@@ -23,6 +23,9 @@
   itr.createtime as shijian
   FROM inspecttablerecord itr,device d
   WHERE itr.deviceId=d.id
+  <if test='appId!=0'>
+      AND  itr.appId=${appId}
+  </if>
   <if test='sTime!=""'>
   AND itr.createtime BETWEEN ${sTime}
   </if>
@@ -55,6 +58,9 @@
   <if test='sTime!="" and eTime!=""'>
   AND  itr.createtime BETWEEN #{sTime} AND #{eTime}
   </if>
+  <if test='appId!=0'>
+     AND  itr.appId=#{appId}
+  </if>
  </select>
  <select id="getInspectTableRecordListByBean" parameterType="map" resultMap="SearchReportBeanMap">
         SELECT
@@ -72,6 +78,9 @@
         <if test='sTime!="" and eTime!=""'>
             AND  itr.createtime BETWEEN #{sTime} AND #{eTime}
         </if>
+         <if test='appId!=0'>
+             AND  itr.appId=#{appId}
+         </if>
 </select>
  <select id="getInfoByMongoDbObject" parameterType="map" resultType="map">
   SELECT

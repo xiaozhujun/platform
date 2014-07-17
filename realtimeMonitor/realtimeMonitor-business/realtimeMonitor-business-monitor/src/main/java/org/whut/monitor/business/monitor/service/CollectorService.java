@@ -33,4 +33,10 @@ public class CollectorService {
     public long getCollectorId(String name,String number,long appId){
         return collectorMapper.getCollectorId(name,number,appId);
     }
+    public List<Collector> getCollectorByAreaId(long areaId){
+        return collectorMapper.getCollectorByAreaId(areaId);
+    }
+    public long getIdByNameAndAppId(String name,long appId){
+        return collectorMapper.getIdByNameAndAppId(name,appId);
+    }
 }

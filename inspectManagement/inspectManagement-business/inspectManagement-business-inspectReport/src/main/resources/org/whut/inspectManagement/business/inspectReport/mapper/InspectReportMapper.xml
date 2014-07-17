@@ -46,6 +46,9 @@
   inspecttablerecord itr,user u,inspecttable t,device d,devicetype dt,employee em
   WHERE
   itr.userId=u.id AND itr.inspectTableId=t.id AND itr.deviceId=d.id AND dt.id=d.deviceTypeId AND em.userId=u.id
+  <if test='appId!=0'>
+      AND  itr.appId=#{appId}
+  </if>
   <if test='userId!="null"'>
    AND itr.userId=#{userId}
   </if>
@@ -75,6 +78,9 @@
         <if test='sTime!="" and eTime!=""'>
             AND  itr.createtime BETWEEN #{sTime} AND #{eTime}
         </if>
+         <if test='appId!=0'>
+             AND  itr.appId=#{appId}
+         </if>
 </select>
  <select id="getInfoByMongoDbObject" parameterType="map" resultType="map">
   SELECT

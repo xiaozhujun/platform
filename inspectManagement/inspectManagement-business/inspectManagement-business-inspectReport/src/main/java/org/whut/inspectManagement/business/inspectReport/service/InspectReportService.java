@@ -24,10 +24,10 @@ public class InspectReportService {
     public Map<String,String>getInfoByMongoDbObject(Map<String,String> map){
         return mapper.getInfoByMongoDbObject(map);
     }
-    public List<SearchReportBean>getInspectTableRecordListByBean(String userId,String deviceId,String sTime,String eTime){
-        return mapper.getInspectTableRecordListByBean(userId,deviceId,sTime,eTime);
+    public List<SearchReportBean>getInspectTableRecordListByBean(String userId,String deviceId,String sTime,String eTime,long appId){
+        return mapper.getInspectTableRecordListByBean(userId,deviceId,sTime,eTime,appId);
     }
-    public List<SearchReportBean>getDeviceHistoryData(String sTime,String eTime,String deviceId){
-        return mapper.getDeviceHistoryData(sTime,eTime,deviceId);
+    public List<SearchReportBean>getDeviceHistoryData(String sTime,String eTime,String deviceId,long appId){
+        return mapper.getDeviceHistoryData(sTime,eTime,deviceId,appId);
     }
 }

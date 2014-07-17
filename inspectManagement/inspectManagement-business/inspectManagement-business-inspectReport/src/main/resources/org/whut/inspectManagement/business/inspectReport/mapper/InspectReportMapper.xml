@@ -55,6 +55,9 @@
   <if test='sTime!="" and eTime!=""'>
   AND  itr.createtime BETWEEN #{sTime} AND #{eTime}
   </if>
+  <if test='appId!=0'>
+     AND  itr.appId=#{appId}
+  </if>
  </select>
  <select id="getInspectTableRecordListByBean" parameterType="map" resultMap="SearchReportBeanMap">
         SELECT

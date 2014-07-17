@@ -1,7 +1,5 @@
 package org.whut.inspectManagement.business.inspectReport.service;
 
-import com.mongodb.DBObject;
-import org.apache.poi.util.LittleEndianInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.inspectReport.entity.SearchReportBean;
 import org.whut.inspectManagement.business.inspectReport.mapper.InspectReportMapper;
@@ -20,8 +18,8 @@ public class InspectReportService {
     @Autowired
     private InspectReportMapper mapper;
 
-    public List<Map<String,String>> getInspectTableRecordList(String userId,String deviceId,String sTime,String eTime){
-        return mapper.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+    public List<Map<String,String>> getInspectTableRecordList(String userId,String deviceId,String sTime,String eTime,long appId){
+        return mapper.getInspectTableRecordList(userId,deviceId,sTime,eTime,appId);
     }
     public Map<String,String>getInfoByMongoDbObject(Map<String,String> map){
         return mapper.getInfoByMongoDbObject(map);

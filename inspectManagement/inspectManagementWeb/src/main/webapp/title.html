@@ -38,7 +38,7 @@
             $("#userNameDiv").click(function(){
                 alert("test");
             });
-            if(data.data.role=="ROLE_ADMIN"){
+            if(data.data.role.indexOf("ROLE_ADMIN")>-1){
                 $("#adminLinkDiv").show();
             }
         }

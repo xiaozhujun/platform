@@ -12,6 +12,7 @@ import org.whut.inspectManagement.business.inspectReport.entity.SearchReportBean
 import org.whut.inspectManagement.business.inspectReport.service.InspectReportService;
 import org.whut.inspectManagement.business.inspectResult.entity.InspectTableRecord;
 import org.whut.inspectManagement.business.inspectResult.service.InspectTableRecordService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.report.PlatformReport;
@@ -158,7 +159,7 @@ public class inspectReportServiceWeb {
     public String getInspectTableRecordList(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
         String userId=String.valueOf(userService.getIdByName(userName));
         String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime,UserContext.currentUserAppId());
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 
@@ -168,7 +169,7 @@ public class inspectReportServiceWeb {
     public String getInspectTableRecordGroupByEmployer(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
         String userId=String.valueOf(userService.getIdByName(userName));
         String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime, UserContext.currentUserAppId());
         HashMap<String,List> data = new HashMap<String, List>();
         String key;
         for(Map<String,String> o:list){
@@ -190,7 +191,7 @@ public class inspectReportServiceWeb {
     public String getInspectTableRecordGroupByDevice(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
         String userId=String.valueOf(userService.getIdByName(userName));
         String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime,UserContext.currentUserAppId());
         HashMap<String,List> data = new HashMap<String, List>();
         String key;
         for(Map<String,String> o:list){

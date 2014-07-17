@@ -5,4 +5,5 @@
     <bean id="areaService" class="org.whut.monitor.business.monitor.service.AreaService" depends-on="mappers"/>
     <bean id="groupService" class="org.whut.monitor.business.monitor.service.GroupService" depends-on="mappers"/>
     <bean id="collectorService" class="org.whut.monitor.business.monitor.service.CollectorService" depends-on="mappers"/>
+    <bean id="sensorService" class="org.whut.monitor.business.monitor.service.SensorService" depends-on="mappers"/>
 </beans>

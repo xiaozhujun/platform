@@ -172,4 +172,12 @@ public class CollectorServiceWeb {
         List<Area> list=areaService.getAreaByGroupId(groupId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCollectorByAreaId")
+    @POST
+    public String getCollectorByAreaId(@FormParam("areaId") long areaId){
+       List<Collector> list= collectorService.getCollectorByAreaId(areaId);
+       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }

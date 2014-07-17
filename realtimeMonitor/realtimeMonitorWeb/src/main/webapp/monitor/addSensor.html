@@ -1,9 +1,229 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-</head>
-<body>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/core/inject.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.post($.URL.group.list,null,groupListCallBack,"json");
+        })
+        $("#monitorArea").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null,
+           width:180,valueField:'id',textField:'text',
+           onSelected:function(areaId){
+               if(areaId!=null){
+                   $.post($.URL.collector.getCollectorByAreaId,{"areaId":areaId},getCollectorCallback,"json");
+               }
+           }
+        });
+        function getCollectorCallback(data){
+            if(data.code==200){
+               var collectorData=[];
+                $.each(data.data,function(index,content){
+                    var c={};
+                    c["id"]=content.id;
+                    c["text"]=content.name;
+                    collectorData.push(c);
+                });
+                liger.get("collector").setData(collectorData);
+            }
+        }
+        $("#collector").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
+        function groupListCallBack(data){
+            if(data.code=200){
+                var groupData=[];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j['id']=content.id;
+                    j['text']=content.name;
+                    groupData.push(j);
+                })
+                $("#monitorGroup").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
+                    width:180,data:groupData,valueField:'id',textField:'text',valueFieldID:'groupSelect',
+                    onSelected:function(group){
+                        if(group!=null){
+                            $.post($.URL.collector.getAreaNames,{"groupId":group},function areaCallback(data){
+                                if(data.code==200){
+                                    var areaData=[];
+                                    $.each(data.data,function(index,content){
+                                        var j={};
+                                        j["text"]=content.name;
+                                        j["id"]=content.id;
+                                        areaData.push(j);
+                                    })
+                                    liger.get("monitorArea").setData(areaData);
+                                }
+                            },"json");
+                        }
+                    }
+                })
+            }
+        }
+        var shouldWarnData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
+        $(f_initGrid);
+        var manager, g;
+        function f_initGrid()
+        {
+            g =  manager = $("#mainGrid").ligerGrid({
+                columns: [
+                    {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
+                    {display:'状态',name:'addStatus', width:80,frozen:true},
+                    {display: '名称',name: 'name',width:100, type:'text', editor: { type: 'text'}},
+                    {display: '描述',name:'description',width:100,type:'text', editor: { type: 'text'}},
+                    {display: '编号',name:'number',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'监控组',name:'group',width:100,type:'text',frozen:true},
+                    {display:'监控区域',name:'area',width:100,type:'text',frozen:true},
+                    {display:'采集器',name:'collector',width:100,type:'text',frozen:true},
+                    {display:'最大频率',name:'maxFrequency',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'最小频率',name:'minFrequency',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'工作频率',name:'workFrequency',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'是否报警',name:'shouldWarn',width:100,type:'text',
+                        editor: { type: 'select',emptyText:null,data:shouldWarnData},
+                        render: function (item)
+                        {
+                           return item.shouldWarn;
+                        }
+                    },
+                    {display:'报警类型',name:'warnType',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'报警值',name:'warnValue',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'报警次数',name:'warnCount',width:100,type:'int', editor: { type: 'text'}},
+                    {display:'报警状态',name:'warnStatus',width:100,type:'text', editor: { type: 'text'}}
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
+                data:null
+            });
 
+            window.dialog = $.ligerDialog.open({
+                isResize: true,
+                isHidden: true,
+                target: $("<div id='message' class='message'></div>"),
+                buttons: [
+                    { text: '关闭', onclick: function (i, d) { d.hide(); } }
+                ]
+            });
+            dialog.hide();
+            window.alert = function (message) {
+                $("#message").html(message.toString());
+                dialog.show();
+            }
+        }
+
+        function deleteRow()
+        {
+            manager.deleteSelectedRow();
+        }
+        var newrowid = 1;
+        function addNewRow()
+        {
+            var row = manager.getSelectedRow();
+            //参数1:rowdata(非必填)
+            //参数2:插入的位置 Row Data
+            //参数3:之前或者之后(非必填)
+            manager.addRow({
+                id: newrowid++,
+                name:'',
+                description:'',
+                number:'',
+                group:$("#monitorGroup").val(),
+                area:$("#monitorArea").val(),
+                collector:$("#collector").val(),
+                maxFrequency:'',
+                minFrequency:'',
+                workFrequency:'',
+                shouldWarn:'',
+                warnType:'',
+                warnValue:'',
+                warnCount:'',
+                warnStatus:'',
+                addStatus:"未提交"
+            }, row, document.getElementById("checked").checked);
+        }
+        function submitBtn(){
+            var data=JSON.stringify(manager.getData());
+            $.post($.URL.sensor.add,{"jsonString":data},addCallback,"json");
+        }
+        function addCallback(data){
+            if(data.code==200){
+                var jsonObj1={};
+                jsonObj1.Rows=data.data;
+                manager.set({data:jsonObj1});
+                $.ligerDialog.success(data.message);
+            }else if(data.code==302){
+                var jsonObj2={};
+                jsonObj2.Rows=data.data;
+                manager.set({data:jsonObj2});
+                $.ligerDialog.warn(data.message);
+            }else if(data.code==500){
+                var jsonObj3={};
+                jsonObj3.Rows=data.data;
+                manager.set({data:jsonObj3});
+                $.ligerDialog.warn(data.message);
+            }
+        }
+
+        function returnBtn()
+        {
+            $("#mainContainer").load("InspectTable/inspectItemList.html");
+        }
+        $("#delete").ligerButton({});
+        $("#add").ligerButton({});
+        $("#submitBtn").ligerButton({});
+        $("#return").ligerButton({});
+    </script>
+    <style type="text/css">
+        .l-div {height: 30px;margin-top: 10px}
+        .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
+        .l-edit-com{width: 60px; margin-left: 10px; float: left;}
+    </style>
+</head>
+<body style="padding:10px">
+<div class="l-div">
+    <span class="l-span-edit-com">监控组：</span>
+            <span class="l-edit-com">
+                <input name="monitorGroup"  type="text" id="monitorGroup" />
+            </span>
+    <span style="margin-left: 150px;  width: 60px;float: left;margin-top: 2px">监控区域：</span>
+            <span style="width: 60px; margin-left: 10px; float: left;">
+                <input name="monitorArea" type="text" id="monitorArea"/>
+            </span>
+    <span style="margin-left: 150px; width: 60px; float: left; margin-top: 2px">采集器：</span>
+            <span style="width: 60px;margin-left: 10px;float: left">
+               <input name="collector" type="text" id = "collector">
+            </span>
+        <span>
+            <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">新增</div>
+            <div id="delete" style="width:100px; float: left;margin-left: 20px" onclick="deleteRow()">删除</div>
+            <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">添加</div>
+            <div id="return" style="width: 100px;float: left;margin-left: 20px" onclick="returnBtn()">返回列表</div>
+            <input type="checkbox" id="checked" style="display: none"/>
+        </span>
+</div>
+<div class="l-clear"></div>
+<div id="mainGrid" style="margin-top:5px"></div> <br />
+<br />
+
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
+
+<div style="display:none">
+    <!--  数据统计代码 --></div>
 </body>
 </html>

@@ -42,7 +42,14 @@
             "list":"rs/collector/list",
             "update":"rs/collector/update",
             "delete":"rs/collector/delete",
-            "getAreaNames":"rs/collector/getAreaNames"
+            "getAreaNames":"rs/collector/getAreaNames",
+            "getCollectorByAreaId":"rs/collector/getCollectorByAreaId"
+        },
+        "sensor":{
+            "add":"rs/sensor/add" ,
+            "list":"rs/sensor/list",
+            "update":"rs/sensor/update",
+            "delete":"rs/sensor/delete"
         }
     }
 })(jQuery);

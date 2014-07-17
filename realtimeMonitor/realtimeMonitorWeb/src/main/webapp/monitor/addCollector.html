@@ -1,9 +1,201 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
-</head>
-<body>
+<title></title>
+<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/core/inject.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+    $.post($.URL.group.list,null,groupListCallBack,"json");
+})
+$("#CB_Area").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
+function groupListCallBack(data){
+    if(data.code=200){
+        var groupData=[];
+        $.each(data.data,function(index,content){
+            var j={};
+            j['id']=content.id;
+            j['text']=content.name;
+            groupData.push(j);
+        })
+        $("#CB_Group").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
+            width:180,data:groupData,valueField:'id',textField:'text',valueFieldID:'groupSelect',
+            onSelected:function(group){
+                if(group!=null){
+                    $.post($.URL.collector.getAreaNames,{"groupId":group},function areaCallback(data){
+                        if(data.code==200){
+                            var areaData=[];
+                            $.each(data.data,function(index,content){
+                                var j={};
+                                j["text"]=content.name;
+                                j["id"]=content.id;
+                                areaData.push(j);
+                            })
+                            liger.get("CB_Area").setData(areaData);
+                        }
+                    },"json");
+                }
+            }
+        })
+    }
+}
+var statusData=[{id:"0",text:"在线正常工作"},{id:"1",text:"位置或离线"},{id:"2",text:"在线异常"},{id:"3",text:"在线停止工作"},{id:"4",text:"手动采样中"}]
+var manager, g;
+function f_initGrid()
+{
+    g =  manager = $("#maingrid").ligerGrid({
+        columns: [
+            {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
+            {display:'提交状态',name:'addStatus', width:80,frozen:true},
+            {display:'所属监控组',name:'groupName',width:100,frozen:true},
+            {display:'测量区域',name:'area',width:100,frozen:true},
+            {display:'采集仪名称',name:'name',width:100,editor:{type:'text'}},
+            {display: '编号', name: 'number',width:100, editor: { type: 'text' }},
+            {display: '最大频率', name: 'maxFrequency', width: 100, type: 'text', editor: { type: 'text'} },
+            {display: '最小频率', name: 'minFrequency', width: 100, type: 'text', editor: { type: 'text'} },
+            {display: '工作频率', name: 'workFrequency', width: 100, type: 'text', editor: { type: 'text'} },
+            { display: '工作状态', width: 100, name: 'status',
+                editor: { type: 'select',emptyText:null, data: statusData, valueColumnName: 'text',displayColumnName:'text' },
+                render: function (item)
+                {
+                   return item.status;
+                }
+            },
+            {display: '描述',name:'description',type: 'text', editor: { type: 'text'}}
 
+        ],
+        onSelectRow: function (rowdata, rowindex)
+        {
+            $("#txtrowindex").val(rowindex);
+        },
+        enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
+        data:null
+    });
+
+    window.dialog = $.ligerDialog.open({
+        isResize: true,
+        isHidden: true,
+        target: $("<div id='message' class='message'></div>"),
+        buttons: [
+            { text: '关闭', onclick: function (i, d) { d.hide(); } }
+        ]
+    });
+    dialog.hide();
+    window.alert = function (message) {
+        $("#message").html(message.toString());
+        dialog.show();
+    }
+}
+
+function deleteRow()
+{
+    manager.deleteSelectedRow();
+}
+var newrowid = 1;
+function addNewRow()
+{
+    if($("#CB_Area").val()==""){
+        $.ligerDialog.warn("测量区域不能为空！")
+    }else{
+        $("#maingrid").show();
+        $(f_initGrid);
+        var row = manager.getSelectedRow();
+        //参数1:rowdata(非必填)
+        //参数2:插入的位置 Row Data
+        //参数3:之前或者之后(非必填)
+        manager.addRow({
+            id: newrowid++,
+            name:'',
+            number:'',
+            maxFrequency:'',
+            minFrequency:'',
+            workFrequency:'',
+            groupName:$("#CB_Group").val(),
+            area:$("#CB_Area").val(),
+            status:'在线正常工作',
+            description:'',
+            addStatus:"未提交"
+        }, row, document.getElementById("checked").checked);
+    }
+}
+function submitBtn(){
+    var data=JSON.stringify(manager.getData());
+    $.post($.URL.collector.add,{"jsonStringList":data},addCallback,"json");
+}
+function addCallback(data){
+    if(data.code==200){
+        var jsonObj1={};
+        jsonObj1.Rows=data.data;
+        manager.set({data:jsonObj1});
+        $.ligerDialog.success(data.message);
+    }else if(data.code==302){
+        var jsonObj2={};
+        jsonObj2.Rows=data.data;
+        manager.set({data:jsonObj2});
+        $.ligerDialog.warn(data.message);
+    }else if(data.code==500){
+        var jsonObj3={};
+        jsonObj3.Rows=data.data;
+        manager.set({data:jsonObj3});
+        $.ligerDialog.warn(data.message);
+    }
+}
+
+function returnBtn()
+{
+    $("#mainContainer").load("monitor/collectorList.html");
+}
+$("#delete").ligerButton({});
+$("#add").ligerButton({});
+$("#submitBtn").ligerButton({});
+$("#return").ligerButton({});
+</script>
+<style type="text/css">
+    .l-div {height: 30px;margin-top: 10px}
+    .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
+    .l-edit-com{width: 60px; margin-left: 10px; float: left;}
+</style>
+</head>
+<body style="padding:10px">
+<div class="l-div">
+    <span class="l-span-edit-com">所属监控组:</span>
+            <span class="l-edit-com">
+                <input name="group"  type="text" id="CB_Group" />
+            </span>
+    <span style="margin-left: 150px;  width: 60px;float: left;margin-top: 2px">测量区域:</span>
+            <span style="width: 60px; margin-left: 10px; float: left;">
+                <input name="area" type="text" id="CB_Area"/>
+            </span>
+        <span>
+            <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">新增</div>
+            <div id="delete" style="width:100px; float: left;margin-left: 20px" onclick="deleteRow()">删除</div>
+            <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">添加</div>
+            <div id="return" style="width: 100px;float: left;margin-left: 20px" onclick="returnBtn()">返回列表</div>
+            <input type="checkbox" id="checked" style="display: none"/>
+        </span>
+</div>
+<div class="l-clear"></div>
+<div id="maingrid" style="margin-top:5px;display: none"></div> <br />
+<br />
+
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
+
+<div style="display:none">
+    <!--  数据统计代码 --></div>
 </body>
 </html>

@@ -32,7 +32,10 @@ public class AreaService {
     public long getIDByNameAndAppId(String name,long appId){
         return areaMapper.getIdByNameAndAppId(name, appId);
     }
-    public List<String> getAreaByGroupId(long groupId){
+    public List<Area> getAreaByGroupId(long groupId){
         return areaMapper.getAreaByGroupId(groupId);
+    }
+    public long getGroupIdByAreaNameAndAppId(String name,long appId){
+        return areaMapper.getGroupIdByNameAndAppId(name, appId);
     }
 }

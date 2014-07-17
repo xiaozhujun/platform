@@ -12,6 +12,7 @@ import org.whut.inspectManagement.business.inspectReport.entity.SearchReportBean
 import org.whut.inspectManagement.business.inspectReport.service.InspectReportService;
 import org.whut.inspectManagement.business.inspectResult.entity.InspectTableRecord;
 import org.whut.inspectManagement.business.inspectResult.service.InspectTableRecordService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.report.PlatformReport;
@@ -98,7 +99,7 @@ public class inspectReportServiceWeb {
         //根据sTime和eTime来查出相应的值,封装成list，到报表
         searchReportBeanList.clear();
         try{
-            searchReportBeanList=inspectReportService.getInspectTableRecordListByBean("null", "null", sTime, eTime);
+            searchReportBeanList=inspectReportService.getInspectTableRecordListByBean("null", "null", sTime, eTime,UserContext.currentUserAppId());
             String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceCountTemplate);
             exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){
@@ -110,7 +111,7 @@ public class inspectReportServiceWeb {
           try{
             //先根据条件拿到mongoId，然后根据mongoId来获取相应的mongo中的信息,将mongo中的信息以及拿出的Id组装成list，赋给jasperreport即可.
             String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean("null",deviceId,sTime,eTime);
+            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean("null",deviceId,sTime,eTime,UserContext.currentUserAppId());
             searchReportBeanList=getSearchReportListSourceByMongoId(list);
             String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceInfoTemplate);
             exportReport(reportTemplate,type,searchReportBeanList);
@@ -122,7 +123,7 @@ public class inspectReportServiceWeb {
         searchReportBeanList.clear();
         try{
             String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-            searchReportBeanList=inspectReportService.getInspectTableRecordListByBean("null", deviceId, sTime, eTime);
+            searchReportBeanList=inspectReportService.getInspectTableRecordListByBean("null", deviceId, sTime, eTime,UserContext.currentUserAppId());
             String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleCountTemplate);
             exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){
@@ -134,7 +135,7 @@ public class inspectReportServiceWeb {
         try{
             String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
             String userId=String.valueOf(userService.getIdByName(userName));
-            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean(userId,deviceId,sTime,eTime);
+            List<SearchReportBean> list=inspectReportService.getInspectTableRecordListByBean(userId,deviceId,sTime,eTime,UserContext.currentUserAppId());
             searchReportBeanList=getSearchReportListSourceByMongoId(list);
             String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.peopleInfoTemplate);
             exportReport(reportTemplate,type,searchReportBeanList);
@@ -145,7 +146,7 @@ public class inspectReportServiceWeb {
     public void deviceHistory(String sTime,String eTime,String deviceName,String type){
         try{
             String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-            searchReportBeanList=inspectReportService.getDeviceHistoryData(sTime,eTime,deviceId);
+            searchReportBeanList=inspectReportService.getDeviceHistoryData(sTime,eTime,deviceId,UserContext.currentUserAppId());
             String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceHistoryTemplate);
             exportReport(reportTemplate,type,searchReportBeanList);
         }catch(Exception e){
@@ -158,7 +159,7 @@ public class inspectReportServiceWeb {
     public String getInspectTableRecordList(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
         String userId=String.valueOf(userService.getIdByName(userName));
         String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime,UserContext.currentUserAppId());
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 
@@ -168,7 +169,7 @@ public class inspectReportServiceWeb {
     public String getInspectTableRecordGroupByEmployer(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
         String userId=String.valueOf(userService.getIdByName(userName));
         String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime, UserContext.currentUserAppId());
         HashMap<String,List> data = new HashMap<String, List>();
         String key;
         for(Map<String,String> o:list){
@@ -190,7 +191,7 @@ public class inspectReportServiceWeb {
     public String getInspectTableRecordGroupByDevice(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
         String userId=String.valueOf(userService.getIdByName(userName));
         String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
-        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime);
+        List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime,UserContext.currentUserAppId());
         HashMap<String,List> data = new HashMap<String, List>();
         String key;
         for(Map<String,String> o:list){

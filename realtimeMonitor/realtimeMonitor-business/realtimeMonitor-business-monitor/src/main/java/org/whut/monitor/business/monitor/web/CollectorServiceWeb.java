@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.monitor.business.monitor.entity.Area;
 import org.whut.monitor.business.monitor.entity.Collector;
 import org.whut.monitor.business.monitor.entity.SubCollector;
 import org.whut.monitor.business.monitor.service.AreaService;
@@ -43,7 +44,7 @@ public class CollectorServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("jsonStringList") String jsonStringList) throws ParseException {
+    public String add(@FormParam("jsonStringList") String jsonStringList){
         //long appId= UserContext.currentUserAppId();
         long appId=1;
         List<SubCollector> repeatList=new ArrayList<SubCollector>();
@@ -57,11 +58,11 @@ public class CollectorServiceWeb {
             for(int i=0;i<jsonArray.length();i++){
                 String jsonString=jsonArray.get(i).toString();
                 SubCollector subCollector=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
-                if(subCollector.getAddStatus().equals("已提交")){
+                if(subCollector.getAddStatus().equals("提交成功")){
                     successList.add(subCollector);
                 }else{
-                    if(subCollector.getName()==null||subCollector.getNumber()==null||subCollector.getStatus()==null||
-                            subCollector.getMaxFrequency()==null||subCollector.getMinFrequency()==null||subCollector.getWorkFrequency()==null){
+                    if(subCollector.getName()==""||subCollector.getNumber()==""||subCollector.getStatus()==""||
+                            subCollector.getMaxFrequency()==""||subCollector.getMinFrequency()==""||subCollector.getWorkFrequency()==""){
                         subCollector.setAddStatus("参数缺省");
                         errorList.add(subCollector);
                     }else{
@@ -85,11 +86,12 @@ public class CollectorServiceWeb {
                             collector.setMaxFrequency(subCollector.getMaxFrequency());
                             collector.setMinFrequency(subCollector.getMinFrequency());
                             collector.setWorkFrequency(subCollector.getWorkFrequency());
-                            DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-                            collector.setLastMessageTime(format.parse(subCollector.getLastMessageTime()));
+                            Date date=new Date();
+                            collector.setLastMessageTime(date);
                             collector.setAppId(appId);
                             collectorService.add(collector);
                             subCollector.setAddStatus("提交成功");
+                            successList.add(subCollector);
                         }
                     }
                 }
@@ -137,13 +139,14 @@ public class CollectorServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"采集仪已存在");
             }
         }
-        //判断group和area能否对应得上
+
         Collector collector=new Collector();
         collector.setAreaId(areaService.getIDByNameAndAppId(subCollector.getArea(),appId));
         long groupId=groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
         collector.setGroupId(groupId);
-        List<String> list=areaService.getAreaByGroupId(groupId);
-        if(!list.contains(subCollector.getArea())){
+        //判断group和area能否对应得上
+        long temp=areaService.getGroupIdByAreaNameAndAppId(subCollector.getArea(),appId);
+        if(temp!=groupId){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不包含该测量点！");
         }
         collector.setId(subCollector.getId());
@@ -162,5 +165,12 @@ public class CollectorServiceWeb {
     }
     public String delete(@FormParam("jsonString") String jsonString){
        return null;
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaNames")
+    @POST
+    public String getAreaNamesByGroupId(@FormParam("groupId") long groupId){
+        List<Area> list=areaService.getAreaByGroupId(groupId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

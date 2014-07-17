@@ -64,7 +64,7 @@ public class DeviceTypeServiceWeb {
     @Path("/list")
     @GET
     public String list(){
-        List<DeviceType> list = deviceTypeService.list();
+        List<DeviceType> list = deviceTypeService.getListByAppId(UserContext.currentUserAppId());
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

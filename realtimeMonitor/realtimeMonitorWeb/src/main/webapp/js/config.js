@@ -43,7 +43,8 @@
             "add":"rs/collector/add",
             "list":"rs/collector/list",
             "update":"rs/collector/update",
-            "delete":"rs/collector/delete"
+            "delete":"rs/collector/delete",
+            "getAreaNames":"rs/collector/getAreaNames"
         }
     }
 })(jQuery);

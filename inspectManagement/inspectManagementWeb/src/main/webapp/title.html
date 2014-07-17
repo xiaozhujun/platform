@@ -38,13 +38,13 @@
             $("#userNameDiv").click(function(){
                 alert("test");
             });
-            if(data.data.role=="ROLE_ADMIN"){
+            if(data.data.role.indexOf("ROLE_ADMIN")>-1){
                 $("#adminLinkDiv").show();
             }
         }
     }
 </script>
-<div id="title"><a href="index.html">物联智能点检平台</a></div>
+<div id="title"><a href="index.jsp">物联智能点检平台</a></div>
 <div id="userInfo">
     <div>欢迎您，</div>
     <div id="userNameDiv"></div>

@@ -77,7 +77,6 @@ public class GroupServiceWeb {
         long appId = 1;
         Group group = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Group.class);
         String name = group.getName();
-        String description = group.getDescription();
         if(name.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
@@ -105,5 +104,15 @@ public class GroupServiceWeb {
         Group group = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Group.class);
         groupService.delete(group);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("getIdByGroupName")
+    @POST
+    public String getIdByNameAndAppId(@FormParam("groupName")String groupName) {
+//        long appId = UserContext.currentUserAppId();
+        long appId = 1;
+        long groupId = groupService.getIdByNameAndAppId(groupName,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(groupId,JsonResultUtils.Code.SUCCESS);
     }
 }

@@ -11,7 +11,7 @@
     <http entry-point-ref="casAuthenticationEntryPoint" auto-config="true"><!-- 访问权限 -->
         <custom-filter position="CAS_FILTER" ref="casAuthenticationFilter"></custom-filter>
         <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter" />
-        <logout logout-url="/logout"/>
+        <logout logout-url="/logout" logout-success-url="http://www.cseicms.com/inspectCas/logout"/>
     </http>
 
     <!-- 配置过滤器 -->

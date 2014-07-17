@@ -29,13 +29,15 @@
         },
         "area":{
             "add":"rs/area/add",
-            "list":"rs/area/list"
+            "list":"rs/area/list",
+            "update":"rs/area/update"
         },
         "group":{
             "add":"rs/group/add",
             "list":"rs/group/getList",
             "update":"rs/group/update",
-            "delete":"rs/group/delete"
+            "delete":"rs/group/delete",
+            "getIdByGroupName":"rs/group/getIdByGroupName"
         },
         "collector":{
             "add":"rs/collector/add",

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <mapper namespace="org.whut.monitor.business.monitor.mapper.GroupMapper">
+    <sql id="Group_fields">
+        ID,NAME,DESCRIPTION,CREATETIME,APPID
+    </sql>
+
+    <resultMap id="GroupResultMap" type="Group">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Group" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO  `group` (<include refid="Group_fields"/>) VALUES (#{id},#{name},#{description},#{createtime},#{appId})
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Group">
+        UPDATE `group`
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Group">
+        DELETE FROM `group`
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="GroupResultMap">
+        SELECT * FROM `group` WHERE APPID=#{appId}
+    </select>
+
+    <select id="getIdByNameAndAppId" parameterType="map" resultType="long">
+        SELECT id FROM `group` WHERE NAME=#{name} AND APPID=#{appId}
+    </select>
+
+    <select id="getNameById" parameterType="long" resultType="java.lang.String">
+        SELECT name FROM `group` WHERE ID=#{id}
+    </select>
+
+</mapper>

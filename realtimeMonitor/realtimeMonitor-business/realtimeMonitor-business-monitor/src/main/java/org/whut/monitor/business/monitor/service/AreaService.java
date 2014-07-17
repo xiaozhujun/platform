@@ -29,4 +29,13 @@ public class AreaService {
     public int update(Area area){
         return areaMapper.update(area);
     }
+    public long getIDByNameAndAppId(String name,long appId){
+        return areaMapper.getIdByNameAndAppId(name, appId);
+    }
+    public List<Area> getAreaByGroupId(long groupId){
+        return areaMapper.getAreaByGroupId(groupId);
+    }
+    public long getGroupIdByAreaNameAndAppId(String name,long appId){
+        return areaMapper.getGroupIdByNameAndAppId(name, appId);
+    }
 }

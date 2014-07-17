@@ -1,6 +1,7 @@
 package org.whut.monitor.business.monitor.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Group;
 import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.platform.business.user.security.UserContext;
@@ -22,6 +23,8 @@ import java.util.List;
  * Time: 下午3:08
  * To change this template use File | Settings | File Templates.
  */
+@Component
+@Path("/group")
 public class GroupServiceWeb {
     @Autowired
     private GroupService groupService;
@@ -30,9 +33,10 @@ public class GroupServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name")String name,@FormParam("description")String description) {
-        long appId = UserContext.currentUserAppId();
+//        long appId = UserContext.currentUserAppId();
+        long appId = 1;
         Date date = new Date();
-        if(name.trim().equals("") || description.trim().equals("")) {
+        if(name.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
 
@@ -59,20 +63,22 @@ public class GroupServiceWeb {
     @Path("getList")
     @POST
     public String getList() {
-        long appId = UserContext.currentUserAppId();
+//        long appId = UserContext.currentUserAppId();
+        long appId = 1;
         List<Group> groupList = groupService.getListByAppId(appId);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getObjectResultByStringAsDefault(groupList, JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("update")
     @POST
     public String update(@FormParam("jsonString")String jsonString) {
-        long appId = UserContext.currentUserAppId();
+//        long appId = UserContext.currentUserAppId();
+        long appId = 1;
         Group group = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Group.class);
         String name = group.getName();
         String description = group.getDescription();
-        if(name.trim().equals("") || description.trim().equals("")) {
+        if(name.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
 
@@ -84,6 +90,7 @@ public class GroupServiceWeb {
         }
 
         if (id != 0) {
+            if(id != group.getId())
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"组已存在");
         }
 

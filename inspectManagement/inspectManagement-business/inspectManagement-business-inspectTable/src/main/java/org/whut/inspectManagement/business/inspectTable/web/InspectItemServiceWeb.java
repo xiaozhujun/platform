@@ -157,29 +157,6 @@ public class InspectItemServiceWeb {
     @POST
     public String list(){
         long appId=UserContext.currentUserAppId();
-        /*List<InspectItem> list=inspectItemService.getInspectItemListByAppId(appId);
-        List<SubInspectItem> subList=new ArrayList<SubInspectItem>();
-        for(InspectItem a:list){
-            SubInspectItem subInspectItem=new SubInspectItem();
-            subInspectItem.setId(a.getId());
-            subInspectItem.setName(a.getName());
-            subInspectItem.setNumber(a.getNumber());
-            subInspectItem.setCreatetime(a.getCreatetime());
-            subInspectItem.setDescription(a.getDescription());
-            subInspectItem.setInspectTable(inspectTableService.getNameById(a.getInspectTableId()));
-            subInspectItem.setInspectArea(inspectAreaService.getAreaById(a.getInspectAreaId()));
-            subInspectItem.setDeviceType(inspectAreaService.getDeviceTypeById(a.getInspectAreaId()));
-            if(a.getInput()==0){
-                subInspectItem.setInput("否");
-            }
-            else{
-                subInspectItem.setInput("是");
-            }
-            if(a.getInput()==0){
-                subInspectItem.setChoiceValue(inspectItemChoiceService.getChoiceValueByItemId(a.getId()));
-            }
-            subList.add(subInspectItem);
-        }*/
         List<Map<String,String>> list=inspectItemService.getInspectItemList(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
@@ -215,7 +192,7 @@ public class InspectItemServiceWeb {
         }
         if (id!=0){
             if(id!=subInspectItem.getId()) {
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检项名点检编号已存在");
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检项已存在");
             }
         }
 

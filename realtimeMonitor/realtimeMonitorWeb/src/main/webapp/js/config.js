@@ -22,7 +22,7 @@
              "add":"rs/authority/add",
              "update":"rs/authority/update",
              "delete":"rs/authority/delete",
-            "list":"rs/authority/list"
+             "list":"rs/authority/list"
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
@@ -30,6 +30,19 @@
         "area":{
             "add":"rs/area/add",
             "list":"rs/area/list"
+        },
+        "group":{
+            "add":"rs/group/add",
+            "list":"rs/group/getList",
+            "update":"rs/group/update",
+            "delete":"rs/group/delete"
+        },
+        "collector":{
+            "add":"rs/collector/add",
+            "list":"rs/collector/list",
+            "update":"rs/collector/update",
+            "delete":"rs/collector/delete",
+            "getAreaNames":"rs/collector/getAreaNames"
         }
     }
 })(jQuery);

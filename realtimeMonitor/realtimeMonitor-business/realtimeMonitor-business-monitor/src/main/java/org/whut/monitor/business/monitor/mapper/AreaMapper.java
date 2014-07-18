@@ -5,6 +5,7 @@ import org.whut.monitor.business.monitor.entity.Area;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +15,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface AreaMapper extends AbstractMapper<Area> {
-    public List<Area> getListByAppId(long appId);
+    public List<Map<String,String>> getListByAppId(long appId);
     public long getIdByNameAndAppId(@Param("name") String name,@Param("appId") long appId);
     public List<Area> getAreaByGroupId(long groupId);
     public long getGroupIdByNameAndAppId(@Param("name") String name,@Param("appId") long appId);

@@ -75,4 +75,11 @@
          FROM collector
          WHERE name=#{name} AND appId=#{appId}
     </select>
+
+    <select id="getIdByNameAndGroupIdAndAreaIdAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM collector
+        WHERE groupId = #{groupId} AND areaId = #{areaId} AND appId=#{appId} AND name=#{name}
+    </select>
+
 </mapper>

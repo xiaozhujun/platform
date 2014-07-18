@@ -68,4 +68,10 @@
         FROM area
         WHERE area.appId=#{appId} AND area.`name`=#{name}
     </select>
+
+    <select id="getIdByNameAndGroupIdAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT ID
+        FROM area
+        WHERE NAME=#{name} AND GROUPID=#{groupId} AND APPID=#{appId}
+    </select>
 </mapper>

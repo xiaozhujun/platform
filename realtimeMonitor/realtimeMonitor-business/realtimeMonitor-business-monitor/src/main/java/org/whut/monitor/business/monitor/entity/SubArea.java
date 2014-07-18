@@ -13,7 +13,7 @@ public class SubArea {
     private long id;
     private String name;
     private String description;
-    private Date createtime;
+    private String createtime;
     private String groupName;
     private String addStatus;
     private long appId;
@@ -42,11 +42,11 @@ public class SubArea {
         this.description = description;
     }
 
-    public Date getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Date createtime) {
+    public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
 

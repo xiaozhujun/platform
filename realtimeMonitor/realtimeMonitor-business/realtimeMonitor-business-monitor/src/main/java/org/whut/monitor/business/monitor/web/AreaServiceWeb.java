@@ -15,9 +15,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,8 +44,9 @@ public class AreaServiceWeb {
     public String list(){
         //long appId= UserContext.currentUserAppId();
         long appId=1;
-        List<Area> list=areaService.getAreaListByAppId(appId);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+//        List<Area> list=areaService.getAreaListByAppId(appId);
+        List<Map<String,String>> areaList=areaService.getAreaListByAppId(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(areaList,JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
@@ -53,7 +58,6 @@ public class AreaServiceWeb {
         List<SubArea> areaSuccessList = new ArrayList<SubArea>();
         List<SubArea> areaErrorList = new ArrayList<SubArea>();
         List<SubArea> areaRepeatList=new ArrayList<SubArea>();
-        Date date=new Date();
         try {
             JSONArray jsonArray = new JSONArray(jsonStringList);
             if(jsonArray.length()==0){
@@ -86,6 +90,7 @@ public class AreaServiceWeb {
                             area.setName(subArea.getName());
                             area.setDescription(subArea.getDescription());
                             area.setGroupId(groupService.getIdByNameAndAppId(subArea.getGroupName(),appId));
+                            Date date=new Date();
                             area.setCreatetime(date);
                             area.setAppId(appId);
                             areaService.add(area);
@@ -113,18 +118,19 @@ public class AreaServiceWeb {
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/update")
     @POST
-    public String update(@FormParam("jsonString")String jsonString) {
+    public String update(@FormParam("jsonString")String jsonString) throws ParseException {
 //        long appId = UserContext.currentUserAppId();
         long appId = 1;
         SubArea subArea = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubArea.class);
         String groupName = subArea.getGroupName();
         long groupId = groupService.getIdByNameAndAppId(groupName,appId);
         Area area = new Area();
-        area.setAppId(subArea.getAppId());
+        area.setAppId(appId);
         area.setDescription(subArea.getDescription());
         area.setGroupId(groupId);
         area.setId(subArea.getId());
-        area.setCreatetime(subArea.getCreatetime());
+        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        area.setCreatetime(format.parse(subArea.getCreatetime()));
         area.setName(subArea.getName());
         String areaName = area.getName();
         if (areaName.trim().equals("")) {

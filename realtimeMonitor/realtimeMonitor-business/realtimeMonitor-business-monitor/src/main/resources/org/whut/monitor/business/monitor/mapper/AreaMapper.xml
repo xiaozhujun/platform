@@ -10,6 +10,7 @@
         <id property="id" column="ID" />
         <result property="name" column="NAME"/>
         <result property="description" column="DESCRIPTION"/>
+        <result property="createtime" column="CREATETIME"/>
         <result property="groupId" column="GROUPID"/>
         <result property="appId" column="APPID"/>
     </resultMap>
@@ -42,10 +43,15 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="AreaResultMap">
-        SELECT *
-        FROM area
-        WHERE APPID=#{appId}
+    <!--<select id="getListByAppId" parameterType="java.lang.Long" resultMap="AreaResultMap">-->
+        <!--SELECT *-->
+        <!--FROM area-->
+        <!--WHERE APPID=#{appId}-->
+    <!--</select>-->
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+        SELECT c.id,c.`name`,c.description,c.createtime,`group`.`name` groupName
+        FROM `group`,area AS c
+        WHERE c.appId=#{appId} AND c.groupId=`group`.id
     </select>
     <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
         SELECT ID

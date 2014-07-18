@@ -5,6 +5,7 @@ import org.whut.monitor.business.monitor.entity.Area;
 import org.whut.monitor.business.monitor.mapper.AreaMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,7 @@ public class AreaService {
     public void add(Area area){
          areaMapper.add(area);
     }
-    public List<Area> getAreaListByAppId(long appId){
+    public List<Map<String,String>> getAreaListByAppId(long appId){
         return areaMapper.getListByAppId(appId);
     }
     public int delete(Area area){

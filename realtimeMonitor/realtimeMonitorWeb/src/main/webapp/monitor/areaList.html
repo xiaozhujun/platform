@@ -49,20 +49,23 @@
                 width:'100%',
 
                 columns:[
-                    {display:'主键',name:'id',width:50,type:'int',frozen:true} ,
-                    {display:'区域名',name:'name',
+                    {display:'主键',name:'id',width:'auto',type:'int',frozen:true} ,
+                    {display:'区域名',name:'name',width:'auto',
                         editor:{type:'text'}
                     } ,
-                    {display:'创建时间',name:'createtime',width:100
+                    {display:'描述',name:'description',width:'auto',
+                        editor:{type:'text'}
+                    } ,
+                    {display:'创建时间',name:'createtime',width:'auto',frozen:'true'
 
                     },
-                    { display: '组名', name: 'groupName',width:100,
+                    { display: '组名', name: 'groupName',width:'auto',
                         editor: { type: 'select',emptyText:null, data: groupNameData, valueField:'id',textField:'text'},
                         render:function(item){
                             return item.groupName;
                         }
                     },
-                    {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
+                    {display:'操作',isSort:false,width:'auto',render:function(rowdata,rowindex,value)
                     {
                         var h="";
                         if(!rowdata._editing)

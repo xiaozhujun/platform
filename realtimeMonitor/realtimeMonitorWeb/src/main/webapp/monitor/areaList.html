@@ -49,22 +49,22 @@
                 width:'100%',
 
                 columns:[
-                    {display:'主键',name:'id',width:'auto',type:'int',frozen:true} ,
-                    {display:'区域名',name:'name',width:'auto',
+                    {display:'主键',name:'id',width:80,type:'int',frozen:true} ,
+                    {display:'测量区域名',name:'name',width:180,
                         editor:{type:'text'}
                     } ,
-                    {display:'描述',name:'description',width:'auto',
-                        editor:{type:'text'}
-                    } ,
-                    {display:'创建时间',name:'createtime',width:'auto',frozen:'true'
-
-                    },
-                    { display: '组名', name: 'groupName',width:'auto',
+                    { display: '监测组', name: 'groupName',width:150,
                         editor: { type: 'select',emptyText:null, data: groupNameData, valueField:'id',textField:'text'},
                         render:function(item){
                             return item.groupName;
                         }
                     },
+                    {display:'创建时间',name:'createtime',width:100,frozen:'true'
+
+                    },
+                    {display:'描述',name:'description',width:450,
+                        editor:{type:'text'}
+                    } ,
                     {display:'操作',isSort:false,width:'auto',render:function(rowdata,rowindex,value)
                     {
                         var h="";
@@ -133,7 +133,7 @@
 
     </script>
     <style type="text/css">
-        .l-button-submit,{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-button-submit {width:80px; float:left; margin-left:10px; padding-bottom:2px;}
         {background:#E0EDFF; }
     </style>
 </head>

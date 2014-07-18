@@ -19,4 +19,5 @@ public interface AreaMapper extends AbstractMapper<Area> {
     public long getIdByNameAndAppId(@Param("name") String name,@Param("appId") long appId);
     public List<Area> getAreaByGroupId(long groupId);
     public long getGroupIdByNameAndAppId(@Param("name") String name,@Param("appId") long appId);
+    public long getIdByNameAndGroupIdAndAppId(@Param("name")String name,@Param("groupId")long groupId,@Param("appId")long appId);
 }

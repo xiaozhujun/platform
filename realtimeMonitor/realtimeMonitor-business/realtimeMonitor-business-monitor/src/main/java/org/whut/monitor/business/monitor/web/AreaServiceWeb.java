@@ -7,6 +7,7 @@ import org.whut.monitor.business.monitor.entity.Area;
 import org.whut.monitor.business.monitor.entity.SubArea;
 import org.whut.monitor.business.monitor.service.AreaService;
 import org.whut.monitor.business.monitor.service.GroupService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -42,9 +43,7 @@ public class AreaServiceWeb {
     @Path("/list")
     @POST
     public String list(){
-        //long appId= UserContext.currentUserAppId();
-        long appId=1;
-//        List<Area> list=areaService.getAreaListByAppId(appId);
+        long appId= UserContext.currentUserAppId();
         List<Map<String,String>> areaList=areaService.getAreaListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(areaList,JsonResultUtils.Code.SUCCESS);
     }
@@ -53,8 +52,7 @@ public class AreaServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("jsonStringList") String jsonStringList) {
-//        long appId=UserContext.currentUserAppId();
-        long appId=1;
+        long appId=UserContext.currentUserAppId();
         List<SubArea> areaSuccessList = new ArrayList<SubArea>();
         List<SubArea> areaErrorList = new ArrayList<SubArea>();
         List<SubArea> areaRepeatList=new ArrayList<SubArea>();
@@ -77,10 +75,12 @@ public class AreaServiceWeb {
                     else {
                         long tempId;
                         try {
-                            tempId = areaService.getIDByNameAndAppId(subArea.getName(), appId);
+                            tempId = areaService.getIdByNameAndGroupIdAndAppId(subArea.getName()
+                                    ,groupService.getIdByNameAndAppId(subArea.getGroupName(),appId),appId);
                         }catch (Exception e) {
                             tempId = 0;
                         }
+
                         if(tempId != 0){
                             subArea.setAddStatus("参数重复");
                             areaRepeatList.add(subArea);
@@ -119,8 +119,7 @@ public class AreaServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString")String jsonString) throws ParseException {
-//        long appId = UserContext.currentUserAppId();
-        long appId = 1;
+        long appId = UserContext.currentUserAppId();
         SubArea subArea = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubArea.class);
         String groupName = subArea.getGroupName();
         long groupId = groupService.getIdByNameAndAppId(groupName,appId);
@@ -139,14 +138,13 @@ public class AreaServiceWeb {
 
         long id;
         try {
-            id = areaService.getIDByNameAndAppId(areaName,appId);
+             id = areaService.getIdByNameAndGroupIdAndAppId(subArea.getName()
+                    ,groupService.getIdByNameAndAppId(subArea.getGroupName(),appId),appId);
         } catch (Exception e) {
             id = 0;
         }
         if (id != 0) {
-            if (id != area.getId()) {
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"区域已存在");
-            }
+             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"区域已存在");
         }
         areaService.update(area);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

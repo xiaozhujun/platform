@@ -39,4 +39,8 @@ public class AreaService {
     public long getGroupIdByAreaNameAndAppId(String name,long appId){
         return areaMapper.getGroupIdByNameAndAppId(name, appId);
     }
+
+    public long getIdByNameAndGroupIdAndAppId(String name,long groupId,long appId) {
+        return areaMapper.getIdByNameAndGroupIdAndAppId(name,groupId,appId);
+    }
 }

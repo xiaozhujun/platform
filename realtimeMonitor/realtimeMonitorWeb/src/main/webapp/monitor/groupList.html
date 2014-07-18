@@ -32,11 +32,11 @@
         function f_initGrid() {
             g=manager=$("#groupGrid").ligerGrid({
                         columns:[
-                            {name:'id',display:'主键',width:'auto',type:'int',frozen:'true'},
-                            {name:'name',display:'组名',width:'auto',editor:{type:'text'}},
+                            {name:'id',display:'主键',width:80,type:'int',frozen:'true'},
+                            {name:'name',display:'监测组名称',width:250,editor:{type:'text'}},
                             {name:'description',display:'描述',width:'auto',editor:{type:'text'}},
-                            {name:'createtime',display:'创建时间',width:'auto',frozen:'true'},
-                            {display:'操作',isSort:false,width:'auto',render:function(rowdata,rowindex,value){
+                            {name:'createtime',display:'创建时间',width:100,frozen:'true'},
+                            {display:'操作',isSort:false,width:200,render:function(rowdata,rowindex,value){
                                 var h = "";
                                 if(!rowdata._editing){
                                     h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a>"+" ";

@@ -33,8 +33,7 @@ public class GroupServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name")String name,@FormParam("description")String description) {
-//        long appId = UserContext.currentUserAppId();
-        long appId = 1;
+        long appId = UserContext.currentUserAppId();
         Date date = new Date();
         if(name.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
@@ -63,8 +62,7 @@ public class GroupServiceWeb {
     @Path("getList")
     @POST
     public String getList() {
-//        long appId = UserContext.currentUserAppId();
-        long appId = 1;
+        long appId = UserContext.currentUserAppId();
         List<Group> groupList = groupService.getListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(groupList, JsonResultUtils.Code.SUCCESS);
     }
@@ -73,8 +71,7 @@ public class GroupServiceWeb {
     @Path("update")
     @POST
     public String update(@FormParam("jsonString")String jsonString) {
-//        long appId = UserContext.currentUserAppId();
-        long appId = 1;
+        long appId = UserContext.currentUserAppId();
         Group group = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Group.class);
         String name = group.getName();
         if(name.trim().equals("")) {
@@ -110,8 +107,7 @@ public class GroupServiceWeb {
     @Path("getIdByGroupName")
     @POST
     public String getIdByNameAndAppId(@FormParam("groupName")String groupName) {
-//        long appId = UserContext.currentUserAppId();
-        long appId = 1;
+        long appId = UserContext.currentUserAppId();
         long groupId = groupService.getIdByNameAndAppId(groupName,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(groupId,JsonResultUtils.Code.SUCCESS);
     }

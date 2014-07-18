@@ -12,7 +12,7 @@ public class SubInspectItem {
     private long id;
     private String name;
     private String description;
-    private Date createtime;
+    private String createtime;
     private String inspectArea;
     private String number;
     private String inspectTable;
@@ -53,11 +53,11 @@ public class SubInspectItem {
         this.description = description;
     }
 
-    public Date getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Date createtime) {
+    public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
 

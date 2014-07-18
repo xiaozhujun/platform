@@ -45,8 +45,7 @@ public class CollectorServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("jsonStringList") String jsonStringList){
-        //long appId= UserContext.currentUserAppId();
-        long appId=1;
+        long appId= UserContext.currentUserAppId();
         List<SubCollector> repeatList=new ArrayList<SubCollector>();
         List<SubCollector> successList=new ArrayList<SubCollector>();
         List<SubCollector> errorList=new ArrayList<SubCollector>();
@@ -68,7 +67,11 @@ public class CollectorServiceWeb {
                     }else{
                         long tempId;
                         try{
-                           tempId=collectorService.getCollectorId(subCollector.getName(),subCollector.getNumber(),appId);
+//                           tempId=collectorService.getCollectorId(subCollector.getName(),subCollector.getNumber(),appId);
+                            long tempGroupId = groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
+                            long tempAreaId = areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),tempGroupId,appId);
+                            tempId = collectorService.getIdByNameAndGroupIdAndAreaIdAndAppId(
+                                    subCollector.getName(),tempGroupId,tempAreaId,appId);
                         }catch (Exception e){
                             tempId=0;
                         }
@@ -80,7 +83,8 @@ public class CollectorServiceWeb {
                             collector.setName(subCollector.getName());
                             collector.setNumber(subCollector.getNumber());
                             collector.setDescription(subCollector.getDescription());
-                            collector.setAreaId(areaService.getIDByNameAndAppId(subCollector.getArea(),appId));
+                            collector.setAreaId(areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),
+                                    groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId),appId));
                             collector.setGroupId(groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId));
                             collector.setStatus(subCollector.getStatus());
                             collector.setMaxFrequency(subCollector.getMaxFrequency());
@@ -114,7 +118,7 @@ public class CollectorServiceWeb {
     @Path("/list")
     @POST
     public String list(){
-        long appId=1;
+        long appId= UserContext.currentUserAppId();
         List<Map<String,String>> list=collectorService.getListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
@@ -122,7 +126,7 @@ public class CollectorServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString) throws ParseException {
-        long appId=1;
+        long appId= UserContext.currentUserAppId();
         SubCollector subCollector=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
         if(subCollector.getName()==""||subCollector.getNumber()==""||subCollector.getStatus()==""||
                 subCollector.getMaxFrequency()==""||subCollector.getMinFrequency()==""||subCollector.getWorkFrequency()==""){
@@ -130,7 +134,11 @@ public class CollectorServiceWeb {
         }
         long tempId;
         try{
-            tempId=collectorService.getCollectorId(subCollector.getName(),subCollector.getNumber(),appId);
+//            tempId=collectorService.getCollectorId(subCollector.getName(),subCollector.getNumber(),appId);
+            long tempGroupId = groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
+            long tempAreaId = areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),tempGroupId,appId);
+            tempId = collectorService.getIdByNameAndGroupIdAndAreaIdAndAppId(
+                    subCollector.getName(),tempGroupId,tempAreaId,appId);
         }catch (Exception e){
             tempId=0;
         }

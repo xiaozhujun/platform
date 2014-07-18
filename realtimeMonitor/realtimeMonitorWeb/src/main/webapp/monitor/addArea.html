@@ -47,11 +47,11 @@
         {
             g =  manager = $("#maingrid").ligerGrid({
                 columns: [
-                    {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
-                    {display:'区域名',name:'name',width:50,editor:{type:'text'}},
-                    {display:'描述',name:'description', width:115,type: 'text', editor: { type: 'text'}},
-                    {display:'组名',name:'groupName',width:50,frozen:'true'},
-                    {display:'提交状态',name:'addStatus', width:80,frozen:true}
+                    {display: '主键', name: 'id', width: 80, type: 'int',frozen:true },
+                    {display:'测量区域名',name:'name',width:200,editor:{type:'text'}},
+                    {display:'组名',name:'groupName',width:100,frozen:'true'},
+                    {display:'描述',name:'description', width:150,type: 'text', editor: { type: 'text'}},
+                    {display:'提交状态',name:'addStatus', width:'auto',frozen:true}
                 ],
                 onSelectRow: function (rowdata, rowindex)
                 {

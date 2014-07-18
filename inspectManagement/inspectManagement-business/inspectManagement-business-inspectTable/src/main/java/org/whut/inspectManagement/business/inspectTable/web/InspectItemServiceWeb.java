@@ -54,15 +54,16 @@ public class InspectItemServiceWeb {
     InspectChoiceService inspectChoiceService;
     @Autowired
     InspectAreaService inspectAreaService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
     public String add(@FormParam("jsonStringList") String jsonStringList){
         long appId=UserContext.currentUserAppId();
         List<InspectItemChoice> inspectItemChoiceList=new ArrayList<InspectItemChoice>();
-        List<SubInspectItem> list=new ArrayList<SubInspectItem>();
-        List<SubInspectItem> itemSuccessList=new ArrayList<SubInspectItem>();
-        List<SubInspectItem> itemErrorList=new ArrayList<SubInspectItem>();
+        List<SubInspectItem> repeatList=new ArrayList<SubInspectItem>();
+        List<SubInspectItem> successList=new ArrayList<SubInspectItem>();
+        List<SubInspectItem> errorList=new ArrayList<SubInspectItem>();
         Date date=new Date();
         try {
             JSONArray jsonArray=new JSONArray(jsonStringList);
@@ -72,64 +73,55 @@ public class InspectItemServiceWeb {
             for(int i=0;i<jsonArray.length();i++){
                 String jsonString= jsonArray.get(i).toString();
                 SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
-                InspectItem inspectItem=new InspectItem();
-                String input=subInspectItem.getInput();
-                String choices=subInspectItem.getChoiceValue();
-               long key=subInspectItem.getId();
-                subInspectItem.setId(key);
-                if(input.equals("1")&&(subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals(""))){
-                    subInspectItem.setStatus("信息空缺");
-                    itemErrorList.add(subInspectItem);
-                }else if(input.equals("0")&&(choices==null||choices.equals("null")||choices.equals("")||choices.contains("null")||subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals(""))){
-                    subInspectItem.setStatus("信息空缺");
-                    itemErrorList.add(subInspectItem);
-              }else{
-                    inspectItem.setName(subInspectItem.getName());
-                    inspectItem.setNumber(subInspectItem.getNumber());
-                    inspectItem.setCreatetime(date);
-              /*  JSONObject jsonObject= (JSONObject) jsonArray.get(i);
-                String input=jsonObject.getString("isInput");*/
-                    inspectItem.setInput(Integer.parseInt(subInspectItem.getInput()));
-                    inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
-                    inspectItem.setInspectAreaId(inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId));
-                    inspectItem.setDescription(subInspectItem.getDescription());
-                    inspectItem.setAppId(appId);
-
-                    if (subInspectItem.getStatus().equals("已提交")){
-
-                       itemSuccessList.add(subInspectItem);
-
+                if(subInspectItem.getStatus().equals("已提交")){
+                    successList.add(subInspectItem);
+                }else{
+                    InspectItem inspectItem=new InspectItem();
+                    String input=subInspectItem.getInput();
+                    String choices=subInspectItem.getChoiceValue();
+                    if(input.equals("1")&&(subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals(""))){
+                        subInspectItem.setStatus("信息空缺");
+                        errorList.add(subInspectItem);
+                    }else if(input.equals("0")&&(choices==null||choices.equals("null")||choices.equals("")||choices.contains("null")||subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals(""))){
+                        subInspectItem.setStatus("信息空缺");
+                        errorList.add(subInspectItem);
                     }else{
-
-                    long note;
-                    try {
-                        note=inspectItemService.getInspectItemIdByNameAndNumberAndAppId(subInspectItem.getName(),subInspectItem.getNumber(),appId);
-                    }catch (Exception e){
-                        note=0;
-                    }
-                    if(note==0){
-                        inspectItemService.add(inspectItem);
-                        subInspectItem.setStatus("已提交");
-
-                        itemSuccessList.add(subInspectItem);
-                        long inspectId=inspectItem.getId();
-                        if(input.equals("0")){
-                            String [] choiceList=choices.split(";");
-                            for(String choice:choiceList){
-                                InspectItemChoice inspectItemChoice=new InspectItemChoice();
-                                inspectItemChoice.setInspectItemId(inspectId);
-                                inspectItemChoice.setAppId(appId);
-                                inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValueAndAppId(choice,appId));
-                                inspectItemChoiceList.add(inspectItemChoice);
-                            }
+                        inspectItem.setName(subInspectItem.getName());
+                        inspectItem.setNumber(subInspectItem.getNumber());
+                        inspectItem.setCreatetime(date);
+                        inspectItem.setInput(Integer.parseInt(subInspectItem.getInput()));
+                        long tableId=inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId);
+                        inspectItem.setInspectTableId(tableId);
+                        long areaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
+                        inspectItem.setInspectAreaId(areaId);
+                        inspectItem.setDescription(subInspectItem.getDescription());
+                        inspectItem.setAppId(appId);
+                        long id;
+                        try {
+                            id=inspectItemService.getInspectItemId(subInspectItem.getName(), subInspectItem.getNumber(), tableId, areaId, appId);
+                        }catch (Exception e){
+                            id=0;
                         }
-                    }else{
-                        subInspectItem.setStatus("重复提交");
-
-
-                        list.add(subInspectItem);
+                        if(id==0){
+                            inspectItemService.add(inspectItem);
+                            subInspectItem.setStatus("已提交");
+                            successList.add(subInspectItem);
+                            long inspectId=inspectItem.getId();
+                            if(input.equals("0")){
+                                String [] choiceList=choices.split(";");
+                                for(String choice:choiceList){
+                                    InspectItemChoice inspectItemChoice=new InspectItemChoice();
+                                    inspectItemChoice.setInspectItemId(inspectId);
+                                    inspectItemChoice.setAppId(appId);
+                                    inspectItemChoice.setInspectChoiceId(inspectChoiceService.getIdByChoiceValueAndAppId(choice,appId));
+                                    inspectItemChoiceList.add(inspectItemChoice);
+                                }
+                            }
+                        }else{
+                            subInspectItem.setStatus("重复提交");
+                            repeatList.add(subInspectItem);
+                        }
                     }
-                   }
                 }
             }
         } catch (JSONException e) {
@@ -138,17 +130,15 @@ public class InspectItemServiceWeb {
         if(inspectItemChoiceList.size()!=0){
             inspectItemChoiceService.addList(inspectItemChoiceList);
         }
-        if (itemErrorList.size()!=0){
-            itemErrorList.addAll(list);
-            itemErrorList.addAll(itemSuccessList);
-            return JsonResultUtils.getObjectResultByStringAsDefault(itemErrorList,JsonResultUtils.Code.ERROR);
-        }else if(list.size()!=0){
-
-            list.addAll(itemSuccessList);
-            return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.DUPLICATE);
+        if (errorList.size()!=0){
+            errorList.addAll(repeatList);
+            errorList.addAll(successList);
+            return JsonResultUtils.getObjectResultByStringAsDefault(errorList,JsonResultUtils.Code.ERROR);
+        }else if(repeatList.size()!=0){
+            repeatList.addAll(successList);
+            return JsonResultUtils.getObjectResultByStringAsDefault(repeatList,JsonResultUtils.Code.DUPLICATE);
         }else {
-            return JsonResultUtils.getObjectResultByStringAsDefault(itemSuccessList,JsonResultUtils.Code.SUCCESS);
-            //return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"操作成功");
+            return JsonResultUtils.getObjectResultByStringAsDefault(successList,JsonResultUtils.Code.SUCCESS);
         }
     }
 
@@ -165,28 +155,15 @@ public class InspectItemServiceWeb {
     @POST
     public String update(@FormParam("jsonString") String jsonString) throws JSONException, ParseException {
         long appId=UserContext.currentUserAppId();
-        JSONObject jsonObject=new JSONObject(jsonString);
-        SubInspectItem subInspectItem=new SubInspectItem();
-        String itemId=jsonObject.getString("id");
-        subInspectItem.setId(Integer.parseInt(itemId));
-        subInspectItem.setName(jsonObject.getString("name"));
-        subInspectItem.setNumber(jsonObject.getString("number"));
-        subInspectItem.setChoiceValue(jsonObject.getString("choiceValue"));
-        subInspectItem.setInspectArea(jsonObject.getString("inspectArea"));
-        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        subInspectItem.setCreatetime(format.parse(jsonObject.getString("createtime")));
-        subInspectItem.setDeviceType(jsonObject.getString("deviceType"));
-        subInspectItem.setDescription(jsonObject.getString("description"));
-        subInspectItem.setInput(jsonObject.getString("input"));
-        subInspectItem.setInspectTable(jsonObject.getString("inspectTable"));
-
-        //SubInspectItem subInspectItem = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+        SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+        long tableId=inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId);
+        long areaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
         if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getInspectTable().equals("")||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long id;
         try {
-            id=inspectItemService.getInspectItemIdByNameAndNumberAndAppId(subInspectItem.getName(),subInspectItem.getNumber(),appId);
+            id=inspectItemService.getInspectItemId(subInspectItem.getName(),subInspectItem.getNumber(),tableId,areaId,appId);
         }catch (Exception e){
             id=0;
         }
@@ -195,7 +172,6 @@ public class InspectItemServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检项已存在");
             }
         }
-
         //更新inspectItem表
         int isInput=Integer.parseInt(subInspectItem.getInput());
         long inspectAreaId;
@@ -208,9 +184,6 @@ public class InspectItemServiceWeb {
         if(isInput==0&&subInspectItem.getChoiceValue().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"请选择点检选值");
         }
-//        if(isInput==1&&subInspectItem.getChoiceValue()!=null||!subInspectItem.getChoiceValue().equals("null")||!subInspectItem.getChoiceValue().equals("")||!subInspectItem.getChoiceValue().contains("null")){
-//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"输入模式下不能选择点检选值");
-//        }
         if(isInput==1&&!subInspectItem.getChoiceValue().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"输入模式下不能选择点检选值");
         }
@@ -218,30 +191,20 @@ public class InspectItemServiceWeb {
         inspectItem.setId(subInspectItem.getId());
         inspectItem.setName(subInspectItem.getName());
         inspectItem.setDescription(subInspectItem.getDescription());
-        inspectItem.setCreatetime(subInspectItem.getCreatetime());
+        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        inspectItem.setCreatetime(format.parse(subInspectItem.getCreatetime()));
         inspectItem.setInspectAreaId(inspectAreaId);
         inspectItem.setNumber(subInspectItem.getNumber());
         inspectItem.setInput(isInput);
         inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));
         inspectItem.setAppId(appId);
 
-
         inspectItemService.update(inspectItem);
 
         //更新inspectItem_choice表
      if(isInput==1){
           inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
-        }
-
-//        if(isInput==1&&(subInspectItem.getChoiceValue()==null||subInspectItem.getChoiceValue().equals("null")||subInspectItem.getChoiceValue().equals("")||subInspectItem.getChoiceValue().contains("null") )){
-//            inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
-//        }
-//        else
-//        if (isInput==1&&(subInspectItem.getChoiceValue()!=null||!subInspectItem.getChoiceValue().equals("null")||!subInspectItem.getChoiceValue().equals("")||!subInspectItem.getChoiceValue().contains("null"))){
-//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"该设备类型不存在此点检区域");
-
-//        }
-        else {
+     }else {
             List<InspectItemChoice> inspectItemChoicesList=new ArrayList<InspectItemChoice>();
             String[] choiceValueArray=subInspectItem.getChoiceValue().split(";");
             inspectItemChoiceService.deleteByInspectItemIdAndAppId(subInspectItem.getId(),appId);
@@ -252,7 +215,6 @@ public class InspectItemServiceWeb {
                 inspectItemChoice.setAppId(appId);
                 inspectItemChoicesList.add(inspectItemChoice);
             }
-
             if(!inspectItemChoicesList.isEmpty()) {
                 inspectItemChoiceService.addList(inspectItemChoicesList);
             }

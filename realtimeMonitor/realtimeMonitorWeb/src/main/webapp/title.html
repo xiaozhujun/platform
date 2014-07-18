@@ -10,7 +10,7 @@
         bottom: 0;
         right: 5px;
         font-size: 14px;
-
+        display: none;
     }
 
 
@@ -27,7 +27,7 @@
     }
 </style>
 <script>
-  /*  $(document).ready(function(){
+    $(document).ready(function(){
         $.get($.URL.user.currentUserInfo,null,userInfoCallback,"json");
     });
 
@@ -38,17 +38,17 @@
             $("#userNameDiv").click(function(){
                 alert("test");
             });
-            if(data.data.role=="ROLE_ADMIN"){
+            if(data.data.role.indexOf("ROLE_ADMIN")>-1){
                 $("#adminLinkDiv").show();
             }
         }
-    }*/
+    }
 </script>
-<div id="title"><a href="index.html">物联实时监控平台</a></div>
+<div id="title"><a href="index.jsp">物联实时监控平台</a></div>
 <div id="userInfo">
     <div>欢迎您，</div>
     <div id="userNameDiv"></div>
-    <div id="adminLinkDiv" >|<a href="admin.html">管理后台</a></div>
+    <div id="adminLinkDiv" style="display: none">|<a href="admin.html">管理后台</a></div>
     <div id="logoutDiv">|<a href="logout">安全退出</a></div>
 </div>
 

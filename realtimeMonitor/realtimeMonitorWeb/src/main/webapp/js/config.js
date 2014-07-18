@@ -38,6 +38,7 @@
             "update":"rs/group/update",
             "delete":"rs/group/delete",
             "getIdByGroupName":"rs/group/getIdByGroupName"
+
         },
         "collector":{
             "add":"rs/collector/add",

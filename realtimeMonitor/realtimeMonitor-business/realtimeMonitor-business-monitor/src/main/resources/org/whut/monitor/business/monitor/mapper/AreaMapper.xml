@@ -15,6 +15,7 @@
     </resultMap>
     <insert id="add" parameterType="Area"  keyProperty="id"
             useGeneratedKeys="true">
+
         INSERT INTO
         area(
         <include refid="Area_fields" />

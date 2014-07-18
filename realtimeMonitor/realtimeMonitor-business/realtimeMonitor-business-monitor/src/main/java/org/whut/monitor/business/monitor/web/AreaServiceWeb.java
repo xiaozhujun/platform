@@ -88,7 +88,6 @@ public class AreaServiceWeb {
                             area.setGroupId(groupService.getIdByNameAndAppId(subArea.getGroupName(),appId));
                             area.setCreatetime(date);
                             area.setAppId(appId);
-//                            area.setId(tempId);
                             areaService.add(area);
                             subArea.setAddStatus("提交成功");
                             areaSuccessList.add(subArea);

@@ -17,7 +17,7 @@ import java.util.Map;
 public interface InspectItemMapper extends AbstractMapper<InspectItem> {
     public List<InspectItem> findByCondition(Map<String,Object> map);
     public void addList(List<InspectItem> inspectItemList);
-    public long getInspectItemIdByNameAndNumberAndAppId(@Param("name") String name,@Param("number") String number,@Param("appId")long appId);
+    public long getInspectItemId(@Param("name") String name,@Param("number") String number,@Param("tableId") long tableId,@Param("areaId") long areaId,@Param("appId")long appId);
     public long findIdByCondition(InspectItem inspectItem);
     public long getInspectItemByNameAndNumber(@Param("name") String name,@Param("number") String number);
     public List<InspectItem> getInspectItemByInspectTableId(@Param("inspectTableId") long inspectTableId,@Param("appId") long appId);

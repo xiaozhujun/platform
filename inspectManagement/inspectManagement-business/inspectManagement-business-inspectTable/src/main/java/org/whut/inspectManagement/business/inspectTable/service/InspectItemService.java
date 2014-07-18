@@ -32,8 +32,8 @@ public class InspectItemService {
     public List<InspectItem> list(){
         return inspectItemMapper.findByCondition(new HashMap<String, Object>());
     }
-    public long getInspectItemIdByNameAndNumberAndAppId(String name,String number,long appId){
-        return inspectItemMapper.getInspectItemIdByNameAndNumberAndAppId(name,number,appId);
+    public long getInspectItemId(String name,String number,long tableId,long areaId,long appId){
+        return inspectItemMapper.getInspectItemId(name,number,tableId,areaId,appId);
     }
     public void addList(List<InspectItem> inspectItemList){
         inspectItemMapper.addList(inspectItemList);

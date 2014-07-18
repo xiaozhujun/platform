@@ -79,19 +79,19 @@
         {
             g =  manager = $("#mainGrid").ligerGrid({
                 columns: [
-                    {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
+                    {display: '主键', name: 'id', width: 50, type: 'int',frozen:true},
                     {display:'状态',name:'addStatus', width:80,frozen:true},
                     {display: '名称',name: 'name',width:100, type:'text', editor: { type: 'text'}},
                     {display: '描述',name:'description',width:100,type:'text', editor: { type: 'text'}},
                     {display: '编号',name:'number',width:100,type:'text', editor: { type: 'text'}},
-                    {display:'监控组',name:'group',width:100,type:'text',frozen:true},
-                    {display:'监控区域',name:'area',width:100,type:'text',frozen:true},
-                    {display:'采集器',name:'collector',width:100,type:'text',frozen:true},
+                    {display:'监控组',name:'groupName',width:100,type:'text',frozen:true},
+                    {display:'监控区域',name:'areaName',width:100,type:'text',frozen:true},
+                    {display:'采集器',name:'collectorName',width:100,type:'text',frozen:true},
                     {display:'最大频率',name:'maxFrequency',width:100,type:'text', editor: { type: 'text'}},
                     {display:'最小频率',name:'minFrequency',width:100,type:'text', editor: { type: 'text'}},
                     {display:'工作频率',name:'workFrequency',width:100,type:'text', editor: { type: 'text'}},
                     {display:'是否报警',name:'shouldWarn',width:100,type:'text',
-                        editor: { type: 'select',emptyText:null,data:shouldWarnData},
+                        editor: { type: 'select',emptyText:null,data:shouldWarnData,valueField:'text'},
                         render: function (item)
                         {
                            return item.shouldWarn;
@@ -106,7 +106,7 @@
                 {
                     $("#txtrowindex").val(rowindex);
                 },
-                enabledEdit: true, isScroll: false, checkbox:true,rownumbers:true,
+                enabledEdit: true,checkbox:true,rownumbers:true,
                 data:null
             });
 
@@ -133,6 +133,7 @@
         function addNewRow()
         {
             var row = manager.getSelectedRow();
+            $("#mainGrid").css("display","block");
             //参数1:rowdata(非必填)
             //参数2:插入的位置 Row Data
             //参数3:之前或者之后(非必填)
@@ -141,13 +142,13 @@
                 name:'',
                 description:'',
                 number:'',
-                group:$("#monitorGroup").val(),
-                area:$("#monitorArea").val(),
-                collector:$("#collector").val(),
+                groupName:$("#monitorGroup").val(),
+                areaName:$("#monitorArea").val(),
+                collectorName:$("#collector").val(),
                 maxFrequency:'',
                 minFrequency:'',
                 workFrequency:'',
-                shouldWarn:'',
+                shouldWarn:'是',
                 warnType:'',
                 warnValue:'',
                 warnCount:'',
@@ -180,7 +181,7 @@
 
         function returnBtn()
         {
-            $("#mainContainer").load("InspectTable/inspectItemList.html");
+            $("#mainContainer").load("monitor/SensorList.html");
         }
         $("#delete").ligerButton({});
         $("#add").ligerButton({});
@@ -203,7 +204,7 @@
             <span style="width: 60px; margin-left: 10px; float: left;">
                 <input name="monitorArea" type="text" id="monitorArea"/>
             </span>
-    <span style="margin-left: 150px; width: 60px; float: left; margin-top: 2px">采集器：</span>
+    <span style="margin-left: 150px; width: 60px; float: left; margin-top: 2px">采集仪：</span>
             <span style="width: 60px;margin-left: 10px;float: left">
                <input name="collector" type="text" id = "collector">
             </span>
@@ -216,7 +217,7 @@
         </span>
 </div>
 <div class="l-clear"></div>
-<div id="mainGrid" style="margin-top:5px"></div> <br />
+<div id="mainGrid" style="margin-top:5px;display: none"></div> <br />
 <br />
 
 <div style="display:none;">

@@ -71,8 +71,8 @@
          WHERE areaId = #{areaId}
     </select>
     <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
-         SELECT id
-         FROM collector
-         WHERE name=#{name} AND appId=#{appId}
+         SELECT c.id
+         FROM collector c,`group` g,area a
+         WHERE c.groupId=g.id AND c.areaId=a.id AND g.`name`=#{groupName} AND a.`name`=#{areaName} AND c.`name`=#{collectorName} AND c.appId=#{appId}
     </select>
 </mapper>

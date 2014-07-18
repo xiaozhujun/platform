@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.monitor.entity.Sensor;
 import org.whut.monitor.business.monitor.mapper.SensorMapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -19,5 +22,15 @@ public class SensorService {
     }
     public void add(Sensor sensor){
          sensorMapper.add(sensor);
+    }
+    public List<Map<String,String>> list(long appId){
+         return sensorMapper.list(appId);
+    }
+    public int deleteById(long id){
+       return sensorMapper.deleteById(id);
+    }
+
+    public int update(Sensor sensor){
+        return sensorMapper.update(sensor);
     }
 }

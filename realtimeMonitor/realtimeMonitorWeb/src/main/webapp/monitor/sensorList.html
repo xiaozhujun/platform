@@ -1,9 +1,203 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-</head>
-<body>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/json2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.post($.URL.sensor.list,null,sensorListCallback,"json");
+            $.post($.URL.collector.list,null,collectorListCallback,"json");
+            $.post($.URL.area.list,null,areaListCallback,"json");
+            $.post($.URL.group.list,null,groupListCallback,"json");
+        });
+       var gridData={};
+       function sensorListCallback(data){
+          if(data.code==200){
+              gridData.Rows=data.data;
+              gridData.Total=data.data.length;
+              f_initGrid()
+          }
+        }
+        var collectorData=[];
+        function collectorListCallback(data){
+            if(data.code=200){
+                $.each(data.data,function(index,content){
+                    var c ={};
+                    c["id"]=content.id;
+                    c["text"]=content.name;
+                    collectorData.push(c);
+                });
+            }
+        }
+        var groupData=[];
+        function groupListCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    groupData.push(j);
+                })
+            }
+        }
+        var areaData=[];
+        function areaListCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    areaData.push(j);
+                })
+            }
+        }
+        var shouldWarnData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
+        var manager, g;
+        function f_initGrid()
+        {
+            g = manager = $("#mainGrid").ligerGrid({
+                columns: [
+                    {display: '主键', name: 'id', width: 50, type: 'int',frozen:true},
+                    {display: '名称',name: 'name',width:100, type:'text', editor: { type: 'text'}},
+                    {display: '描述',name:'description',width:100,type:'text', editor: { type: 'text'}},
+                    {display: '编号',name:'number',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'监控组',name:'groupName',width:100,type:'text',
+                         editor:{type:'select', emptyText:null,data:groupData,valueField:'text'} ,
+                         render:function(item){
+                            return item.groupName;
+                         }
+                    },
+                    {display:'监控区域',name:'areaName',width:100,type:'text',
+                         editor:{type:'select',emptyText:null,data:areaData,valueField:'text'},
+                         render:function(item){
+                            return item.areaName;
+                         }
+                    },
+                    {display:'采集器',name:'collectorName',width:100,type:'text',
+                          editor:{type:'select',emptyText:null,data:collectorData,valueField:'text'},
+                         render:function(item){
+                             return item.collectorName;
+                         }
+                    },
+                    {display:'最大频率',name:'maxFrequency',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'最小频率',name:'minFrequency',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'工作频率',name:'workFrequency',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'是否报警',name:'shouldWarn',width:100,type:'text',
+                        editor: { type: 'select',emptyText:null,data:shouldWarnData,valueField:'text'},
+                        render: function (item)
+                        {
+                            return item.shouldWarn;
+                        }
+                    },
+                    {display:'报警类型',name:'warnType',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'报警值',name:'warnValue',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'报警次数',name:'warnCount',width:100,type:'int', editor: { type: 'text'}},
+                    {display:'报警状态',name:'warnStatus',width:100,type:'text', editor: { type: 'text'}},
+                    { display: '操作', isSort: false, width: 80, render: function (rowdata, rowindex, value)
+                    {
+                        var h = "";
+                        if (!rowdata._editing)
+                        {
+                            h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
+                            h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a> ";
+                        }
+                        else
+                        {
+                            h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
+                            h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
+                        }
+                        return h;
+                    }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false,
+                data: gridData,
+                width: '100%'
+            });
+        }
+        function beginEdit(rowid) {
+            manager.beginEdit(rowid);
+        }
+        function cancelEdit(rowid) {
+            manager.cancelEdit(rowid);
+        }
+        function endEdit(rowid)
+        {
+            manager.endEdit(rowid);
+            var row = manager.getRow(rowid);
+            var jsonString  = $.toJSON(row);
+            $.post($.URL.sensor.update,{"jsonString":jsonString},updateCallback,"json");
+        }
 
+        function updateCallback(data){
+            if(data.code==200){
+                $.post($.URL.sensor.list,null,collectorListCallback,"json");
+                $.ligerDialog.success(data.message);
+            }
+            else{
+                $.post($.URL.sensor.list,null,collectorListCallback,"json");
+                $.ligerDialog.warn(data.message);
+            }
+        }
+        function deleteRow(rowid)
+        {
+            if (confirm('确定删除?'))
+            {
+                var row = manager.getRow(rowid);
+                var jsonString  = $.toJSON(row);
+                $.post($.URL.sensor.delete,{"jsonString":jsonString},deleteCallback,"json");
+                manager.deleteRow(rowid);
+            }
+        }
+        function deleteCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("成功删除！");
+            }else{
+                $.ligerDialog.error("删除失败！");
+            }
+        }
+        var newrowid = 100;
+        function addNewRow()
+        {
+            manager.addEditRow();
+        }
+        $("#addSensorBtn").click(function(){
+            $("#mainContainer").load("monitor/addSensor.html");
+        });
+    </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF; }
+    </style>
+</head>
+<body  style="padding:10px">
+<div id="list">
+    <div>
+        <input type="button" value="添加传感器" id="addSensorBtn" class="l-button l-button-submit" />
+    </div>
+    <div class="l-clear"></div>
+    <div id="mainGrid" style="margin-top:5px"></div> <br />
+</div>
+<div class="l-clear"></div>
+<div id="main" style="margin-top:20px"></div> <br />
+
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
 </body>
 </html>

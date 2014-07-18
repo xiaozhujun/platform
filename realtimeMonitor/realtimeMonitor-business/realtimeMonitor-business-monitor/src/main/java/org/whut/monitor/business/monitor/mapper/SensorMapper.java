@@ -4,6 +4,9 @@ import org.apache.ibatis.annotations.Param;
 import org.whut.monitor.business.monitor.entity.Sensor;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -13,4 +16,6 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  */
 public interface SensorMapper extends AbstractMapper<Sensor>{
     public long getSensorIdByNameAndNumber(@Param("name") String name,@Param("number") String number,@Param("appId") long appId);
+    public List<Map<String,String>> list(long appId);
+    public int deleteById(long id);
 }

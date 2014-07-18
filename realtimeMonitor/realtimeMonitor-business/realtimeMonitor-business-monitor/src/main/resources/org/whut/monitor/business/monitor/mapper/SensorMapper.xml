@@ -29,7 +29,7 @@
     <insert id="add" parameterType="Sensor" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         sensor(<include refid="sensor_fields"/>)
-        VALUES(#{id,#{name},#{description},#{number},#{groupId},#{areaId},,#{collectorId},#{maxFrequency},#{minFrequency},#{workFrequency},#{shouldWarn},#{warnType},#{warnValue},#{warnCount},#{warnStatus},#{appId})
+        VALUES(#{id},#{name},#{description},#{number},#{groupId},#{areaId},#{collectorId},#{maxFrequency},#{minFrequency},#{workFrequency},#{shouldWarn},#{warnType},#{warnValue},#{warnCount},#{warnStatus},#{appId})
         <selectKey resultType="long" keyProperty="id">
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
@@ -40,4 +40,35 @@
         FROM sensor
         WHERE name=#{name} AND number=#{number} AND appId=#{appId}
     </select>
+
+    <select id="list" parameterType="java.lang.Long" resultType="map">
+        SELECT s.id,s.`name`,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
+        FROM `group` g,area a,collector c,sensor s
+        WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=1
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM sensor
+        WHERE id=#{id};
+    </delete>
+
+    <update id="update" parameterType="Sensor">
+       UPDATE sensor
+       <set>
+          <if test="name!=null">NAME=#{name},</if>
+          <if test="description!=null">DESCRIPTION=#{description},</if>
+          <if test="number!=null">NUMBER=#{number},</if>
+          <if test="groupId!=null">GROUPID=#{groupId},</if>
+          <if test="areaId!=null">AREAID=#{areaId},</if>
+          <if test="collectorId!=null">COLLECTORID=#{collectorId},</if>
+          <if test="maxFrequency!=null">MAXFREQUENCY=#{maxFrequency},</if>
+          <if test="minFrequency!=null">MINFREQUENCY=#{minFrequency},</if>
+          <if test="workFrequency!=null">WORKFREQUENCY=#{workFrequency},</if>
+          <if test="shouldWarn!=null">SHOULDWARN=#{shouldWarn},</if>
+          <if test="warnType!=null">WARNTYPE=#{warnType},</if>
+          <if test="warnValue!=null">WARNVALUE=#{warnValue},</if>
+          <if test="warnStatus!=null">WARNSTATUS=#{warnStatus}</if>
+       </set>
+       WHERE ID=#{id} AND APPID=#{appId}
+    </update>
 </mapper>

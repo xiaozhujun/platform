@@ -12,9 +12,9 @@ public class SubSensor {
     private String name;
     private String description;
     private String number;
-    private String group;
-    private String area;
-    private String collector;
+    private String groupName;
+    private String areaName;
+    private String collectorName;
     private String maxFrequency;
     private String minFrequency;
     private String workFrequency;
@@ -50,12 +50,12 @@ public class SubSensor {
         this.number = number;
     }
 
-    public String getGroup() {
-        return group;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getDescription() {
@@ -66,20 +66,20 @@ public class SubSensor {
         this.description = description;
     }
 
-    public String getArea() {
-        return area;
+    public String getAreaName() {
+        return areaName;
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setArea(String areaName) {
+        this.areaName = areaName;
     }
 
-    public String getCollector() {
-        return collector;
+    public String getCollectorName() {
+        return collectorName;
     }
 
-    public void setCollector(String collector) {
-        this.collector = collector;
+    public void setCollectorName(String collectorName) {
+        this.collectorName = collectorName;
     }
 
     public String getMaxFrequency() {

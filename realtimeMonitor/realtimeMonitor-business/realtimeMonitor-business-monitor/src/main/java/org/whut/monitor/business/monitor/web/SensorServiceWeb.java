@@ -161,7 +161,7 @@ public class SensorServiceWeb {
         long appId=subSensor.getAppId();
         Sensor sensor = new Sensor();
         long groupId = groupService.getIdByNameAndAppId(subSensor.getGroupName(), appId);
-        long areaId = areaService.getIDByNameAndAppId(subSensor.getAreaName(),appId);
+        long areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
         long collectorId = collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId);
         sensor.setId(subSensor.getId());
         sensor.setAppId(appId);

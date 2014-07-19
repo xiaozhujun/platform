@@ -11,6 +11,7 @@ import org.whut.monitor.business.monitor.service.AreaService;
 import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.monitor.business.monitor.service.SensorService;
+import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -19,6 +20,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,7 +50,7 @@ public class SensorServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("jsonString") String jsonString){
-        long appId=1;
+        long appId= UserContext.currentUserAppId();
         List<SubSensor> repeatList=new ArrayList<SubSensor>();
         List<SubSensor> successList=new ArrayList<SubSensor>();
         List<SubSensor> errorList=new ArrayList<SubSensor>();
@@ -63,13 +65,13 @@ public class SensorServiceWeb {
                 if(subSensor.getAddStatus().equals("已提交")){
                     successList.add(subSensor);
                 }else{
-                    if(subSensor.getShouldWarn().equals("1")&&subSensor.getName()==null||subSensor.getNumber()==null||subSensor.getMaxFrequency()==null||
+                    if(subSensor.getShouldWarn().equals("是")&&subSensor.getName()==null||subSensor.getNumber()==null||subSensor.getMaxFrequency()==null||
                         subSensor.getMinFrequency()==null||subSensor.getWorkFrequency()==null||subSensor.getWarnType()==null
                         ||subSensor.getWarnValue()==null||subSensor.getWarnStatus()==null){
                         subSensor.setAddStatus("参数缺省");
                         errorList.add(subSensor);
                     }
-                    else if(subSensor.getShouldWarn().equals("0")&&subSensor.getName()==null||subSensor.getNumber()==null||subSensor.getMaxFrequency()==null||
+                    else if(subSensor.getShouldWarn().equals("否")&&subSensor.getName()==null||subSensor.getNumber()==null||subSensor.getMaxFrequency()==null||
                             subSensor.getMinFrequency()==null||subSensor.getWorkFrequency()==null){
                         subSensor.setAddStatus("参数缺省");
                         errorList.add(subSensor);
@@ -90,13 +92,13 @@ public class SensorServiceWeb {
                             sensor.setDescription(subSensor.getDescription());
                             sensor.setNumber(subSensor.getNumber());
                             sensor.setAppId(appId);
-                            sensor.setGroupId(groupService.getIdByNameAndAppId(subSensor.getGroup(),appId));
-                            sensor.setAreaId(areaService.getIDByNameAndAppId(subSensor.getArea(),appId));
-                            sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getCollector(),appId));
+                            sensor.setGroupId(groupService.getIdByNameAndAppId(subSensor.getGroupName(),appId));
+                            sensor.setAreaId(areaService.getIDByNameAndAppId(subSensor.getAreaName(),appId));
+                            sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId));
                             sensor.setMaxFrequency(subSensor.getMaxFrequency());
                             sensor.setMinFrequency(subSensor.getMinFrequency());
                             sensor.setWorkFrequency(subSensor.getWorkFrequency());
-                            if(subSensor.getShouldWarn().equals("0")){
+                            if(subSensor.getShouldWarn().equals("否")){
                                 sensor.setShouldWarn("否");
                             }
                             else{
@@ -121,11 +123,74 @@ public class SensorServiceWeb {
             errorList.addAll(successList);
             return JsonResultUtils.getObjectResultByStringAsDefault(errorList,JsonResultUtils.Code.ERROR);
         }else if(repeatList.size()!=0){
-            repeatList.addAll(repeatList);
+            repeatList.addAll(successList);
             return JsonResultUtils.getObjectResultByStringAsDefault(repeatList,JsonResultUtils.Code.DUPLICATE);
         }else {
             return JsonResultUtils.getObjectResultByStringAsDefault(successList,JsonResultUtils.Code.SUCCESS);
         }
     }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("list")
+    @POST
+    public String list(){
+        long appId=UserContext.currentUserAppId();
+        List<Map<String,String>> list = sensorService.list(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("delete")
+    @POST
+    public String delete(@FormParam("jsonString") String jsonString){
+        SubSensor subSensor = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubSensor.class);
+        long id = subSensor.getId();
+        int deleted = sensorService.deleteById(id);
+        if(deleted>0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/update")
+    @POST
+    public String update(@FormParam("jsonString") String jsonString){
+        SubSensor subSensor = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubSensor.class);
+        long appId=subSensor.getAppId();
+        Sensor sensor = new Sensor();
+        long groupId = groupService.getIdByNameAndAppId(subSensor.getGroupName(), appId);
+        long areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
+        long collectorId = collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId);
+        sensor.setId(subSensor.getId());
+        sensor.setAppId(appId);
+        sensor.setName(subSensor.getName());
+        sensor.setNumber(subSensor.getNumber());
+        sensor.setDescription(subSensor.getDescription());
+        sensor.setGroupId(groupId);
+        sensor.setAreaId(areaId);
+        sensor.setCollectorId(collectorId);
+        sensor.setMaxFrequency(subSensor.getMaxFrequency());
+        sensor.setMinFrequency(subSensor.getMinFrequency());
+        sensor.setWorkFrequency(subSensor.getWorkFrequency());
+        String shouldWarn = subSensor.getShouldWarn();
+        if(shouldWarn.equals("否")){
+            sensor.setShouldWarn("否");
+        }
+        else{
+            sensor.setShouldWarn("是");
+            sensor.setWarnType(subSensor.getWarnType());
+            sensor.setWarnValue(subSensor.getWarnValue());
+            sensor.setWarnCount(subSensor.getWarnCount());
+            sensor.setWarnStatus(subSensor.getWarnStatus());
+        }
+        int updated = sensorService.update(sensor);
+        System.out.println("mmmmmmmm"+updated);
+        if(updated>0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+    }
 }

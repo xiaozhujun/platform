@@ -53,25 +53,27 @@
         FROM `group`,area AS c
         WHERE c.appId=#{appId} AND c.groupId=`group`.id
     </select>
-    <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
-        SELECT ID
-        FROM area
-        WHERE NAME=#{name} and APPID=#{appId}
-    </select>
+
     <select id="getAreaByGroupId" parameterType="java.lang.Long" resultMap="AreaResultMap">
         SELECT *
         FROM area
         WHERE area.groupId=#{groupId}
     </select>
-    <select id="getGroupIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
-        SELECT area.groupId
-        FROM area
-        WHERE area.appId=#{appId} AND area.`name`=#{name}
-    </select>
+
 
     <select id="getIdByNameAndGroupIdAndAppId" parameterType="map" resultType="java.lang.Long">
         SELECT ID
         FROM area
         WHERE NAME=#{name} AND GROUPID=#{groupId} AND APPID=#{appId}
+    </select>
+    <select id="getAreaNameListByAppId" parameterType="java.lang.Long" resultType="map">
+        SELECT DISTINCT(area.`name`)
+        FROM area
+        WHERE appId=#{appId}
+    </select>
+    <select id="getAreaNames" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT name
+        FROM area
+        WHERE groupId=#{groupId}
     </select>
 </mapper>

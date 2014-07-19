@@ -30,17 +30,16 @@ public class AreaService {
     public int update(Area area){
         return areaMapper.update(area);
     }
-    public long getIDByNameAndAppId(String name,long appId){
-        return areaMapper.getIdByNameAndAppId(name, appId);
-    }
     public List<Area> getAreaByGroupId(long groupId){
         return areaMapper.getAreaByGroupId(groupId);
     }
-    public long getGroupIdByAreaNameAndAppId(String name,long appId){
-        return areaMapper.getGroupIdByNameAndAppId(name, appId);
-    }
-
     public long getIdByNameAndGroupIdAndAppId(String name,long groupId,long appId) {
         return areaMapper.getIdByNameAndGroupIdAndAppId(name,groupId,appId);
+    }
+    public List<Map<String,String>> getAreaNameListByAppId(long appId){
+        return areaMapper.getAreaNameListByAppId(appId);
+    }
+    public List<String> getAreaNames(long groupId){
+        return areaMapper.getAreaNames(groupId);
     }
 }

@@ -30,7 +30,8 @@
         "area":{
             "add":"rs/area/add",
             "list":"rs/area/list",
-            "update":"rs/area/update"
+            "update":"rs/area/update",
+            "getAreaNameListByAppId":"rs/area/getAreaNameListByAppId"
         },
         "group":{
             "add":"rs/group/add",
@@ -38,7 +39,6 @@
             "update":"rs/group/update",
             "delete":"rs/group/delete",
             "getIdByGroupName":"rs/group/getIdByGroupName"
-
         },
         "collector":{
             "add":"rs/collector/add",
@@ -47,6 +47,7 @@
             "delete":"rs/collector/delete",
             "getAreaNames":"rs/collector/getAreaNames",
             "getCollectorByAreaId":"rs/collector/getCollectorByAreaId"
+
         },
         "sensor":{
             "add":"rs/sensor/add" ,

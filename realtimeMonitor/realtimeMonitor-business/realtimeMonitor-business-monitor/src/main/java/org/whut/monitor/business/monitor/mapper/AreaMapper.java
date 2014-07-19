@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public interface AreaMapper extends AbstractMapper<Area> {
     public List<Map<String,String>> getListByAppId(long appId);
-    public long getIdByNameAndAppId(@Param("name") String name,@Param("appId") long appId);
     public List<Area> getAreaByGroupId(long groupId);
-    public long getGroupIdByNameAndAppId(@Param("name") String name,@Param("appId") long appId);
+    public List<String> getAreaNames(long groupId);
     public long getIdByNameAndGroupIdAndAppId(@Param("name")String name,@Param("groupId")long groupId,@Param("appId")long appId);
+    public List<Map<String,String>> getAreaNameListByAppId(long appId);
 }

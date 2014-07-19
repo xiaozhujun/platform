@@ -20,4 +20,5 @@ public interface CollectorMapper extends AbstractMapper<Collector>{
     public List<Collector> getCollectorByAreaId(long areaId);
     public long getIdByNameAndAppId(@Param("groupName") String groupName,@Param("areaName") String areaName,@Param("collectorName") String collectorName,@Param("appId") long appId);
     public long getIdByNameAndGroupIdAndAreaIdAndAppId(@Param("name") String name,@Param("groupId") long groupId,@Param("areaId") long areaId,@Param("appId") long appId);
+    public List<String> getCollectorNameListByAppId(long appId);
 }

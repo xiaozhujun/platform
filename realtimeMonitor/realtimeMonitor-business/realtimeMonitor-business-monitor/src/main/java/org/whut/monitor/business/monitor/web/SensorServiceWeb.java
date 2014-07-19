@@ -2,7 +2,6 @@ package org.whut.monitor.business.monitor.web;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Sensor;
@@ -119,7 +118,6 @@ public class SensorServiceWeb {
             e.printStackTrace();
         }
         if (errorList.size()!=0){
-            errorList.addAll(errorList);
             errorList.addAll(successList);
             return JsonResultUtils.getObjectResultByStringAsDefault(errorList,JsonResultUtils.Code.ERROR);
         }else if(repeatList.size()!=0){
@@ -160,9 +158,36 @@ public class SensorServiceWeb {
         SubSensor subSensor = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubSensor.class);
         long appId=subSensor.getAppId();
         Sensor sensor = new Sensor();
-        long groupId = groupService.getIdByNameAndAppId(subSensor.getGroupName(), appId);
-        long areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
-        long collectorId = collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId);
+        long groupId = 0;
+        long areaId = 0 ;
+        long collectorId = 0;
+        try{
+            groupId = groupService.getIdByNameAndAppId(subSensor.getGroupName(), appId);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+        if(groupId==0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组不存在！");
+        }
+        try{
+            areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+        if(areaId==0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不存在该监控区域！");
+        }
+        try{
+            collectorId = collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+        if(collectorId==0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控区域中不存在该采集仪！");
+        }
         sensor.setId(subSensor.getId());
         sensor.setAppId(appId);
         sensor.setName(subSensor.getName());
@@ -177,13 +202,23 @@ public class SensorServiceWeb {
         String shouldWarn = subSensor.getShouldWarn();
         if(shouldWarn.equals("否")){
             sensor.setShouldWarn("否");
+            sensor.setWarnType("");
+            sensor.setWarnValue("");
         }
         else{
             sensor.setShouldWarn("是");
             sensor.setWarnType(subSensor.getWarnType());
             sensor.setWarnValue(subSensor.getWarnValue());
         }
-        int updated = sensorService.update(sensor);
+        int updated =0;
+        if(collectorId>0){
+           try{
+              updated = sensorService.update(sensor);
+           }catch(Exception e){
+               e.printStackTrace();
+               logger.error(e.getMessage());
+           }
+        }
         if(updated>0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }

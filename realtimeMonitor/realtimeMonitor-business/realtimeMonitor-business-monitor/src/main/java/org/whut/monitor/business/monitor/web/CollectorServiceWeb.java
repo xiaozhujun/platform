@@ -2,7 +2,6 @@ package org.whut.monitor.business.monitor.web;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Area;
@@ -182,6 +181,16 @@ public class CollectorServiceWeb {
     @POST
     public String getCollectorByAreaId(@FormParam("areaId") long areaId){
        List<Collector> list= collectorService.getCollectorByAreaId(areaId);
+       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCollectorNameListByAppId")
+    @POST
+    public String getCollectorNameListByAppId(){
+       long appId = UserContext.currentUserAppId();
+       List<String> list = collectorService.getCollectorNameListByAppId(appId);
+       System.out.println(list.size());
        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

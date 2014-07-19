@@ -46,8 +46,8 @@
             "update":"rs/collector/update",
             "delete":"rs/collector/delete",
             "getAreaNames":"rs/collector/getAreaNames",
-            "getCollectorByAreaId":"rs/collector/getCollectorByAreaId"
-
+            "getCollectorByAreaId":"rs/collector/getCollectorByAreaId",
+            "getCollectorNameListByAppId":"rs/collector/getCollectorNameListByAppId"
         },
         "sensor":{
             "add":"rs/sensor/add" ,

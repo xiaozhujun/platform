@@ -15,8 +15,8 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.sensor.list,null,sensorListCallback,"json");
-            $.post($.URL.collector.list,null,collectorListCallback,"json");
-            $.post($.URL.area.list,null,areaListCallback,"json");
+            $.post($.URL.collector.getCollectorNameListByAppId,null,getCollectorNameListByAppIdCallback,"json");
+            $.post($.URL.area.getAreaNameListByAppId,null,getAreaNameListByAppId,"json");
             $.post($.URL.group.list,null,groupListCallback,"json");
         });
        var gridData={};
@@ -28,12 +28,12 @@
           }
         }
         var collectorData=[];
-        function collectorListCallback(data){
+        function getCollectorNameListByAppIdCallback(data){
             if(data.code=200){
                 $.each(data.data,function(index,content){
                     var c ={};
-                    c["id"]=content.id;
-                    c["text"]=content.name;
+                    c["id"]=content;
+                    c["text"]=content;
                     collectorData.push(c);
                 });
             }
@@ -50,12 +50,12 @@
             }
         }
         var areaData=[];
-        function areaListCallback(data){
+        function getAreaNameListByAppId(data){
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var j={};
                     j["text"]=content.name;
-                    j["id"]=content.id;
+                    j["id"]=content.name;
                     areaData.push(j);
                 })
             }
@@ -144,11 +144,11 @@
 
         function updateCallback(data){
             if(data.code==200){
-                $.post($.URL.sensor.list,null,collectorListCallback,"json");
+                $.post($.URL.sensor.list,null,sensorListCallback,"json");
                 $.ligerDialog.success(data.message);
             }
             else{
-                $.post($.URL.sensor.list,null,collectorListCallback,"json");
+                $.post($.URL.sensor.list,null,sensorListCallback,"json");
                 $.ligerDialog.warn(data.message);
             }
         }

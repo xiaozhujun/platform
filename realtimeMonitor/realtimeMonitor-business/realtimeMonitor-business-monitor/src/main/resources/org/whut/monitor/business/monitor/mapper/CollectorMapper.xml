@@ -82,4 +82,9 @@
         WHERE groupId = #{groupId} AND areaId = #{areaId} AND appId=#{appId} AND name=#{name}
     </select>
 
+    <select id="getCollectorNameListByAppId" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT DISTINCT(`name`)
+        FROM collector
+        WHERE appId=#{appId}
+    </select>
 </mapper>

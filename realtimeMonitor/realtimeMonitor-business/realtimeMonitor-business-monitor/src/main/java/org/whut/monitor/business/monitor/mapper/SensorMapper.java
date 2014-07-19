@@ -15,7 +15,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface SensorMapper extends AbstractMapper<Sensor>{
-    public long getSensorIdByNameAndNumber(@Param("name") String name,@Param("number") String number,@Param("appId") long appId);
+    public long getSensorId(@Param("groupName") String groupName,@Param("areaName") String areaName,@Param("collectorName") String collectorName,@Param("name") String name,@Param("number") String number,@Param("appId") long appId);
     public List<Map<String,String>> list(long appId);
     public int deleteById(long id);
 }

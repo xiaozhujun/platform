@@ -65,21 +65,21 @@ public class SensorServiceWeb {
                 if(subSensor.getAddStatus().equals("已提交")){
                     successList.add(subSensor);
                 }else{
-                    if(subSensor.getShouldWarn().equals("是")&&subSensor.getName()==null||subSensor.getNumber()==null||subSensor.getMaxFrequency()==null||
-                        subSensor.getMinFrequency()==null||subSensor.getWorkFrequency()==null||subSensor.getWarnType()==null
-                        ||subSensor.getWarnValue()==null||subSensor.getWarnStatus()==null){
+                    if(subSensor.getShouldWarn().equals("是")&&subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
+                        subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")||subSensor.getWarnType().equals("")
+                        ||subSensor.getWarnValue().equals("")){
                         subSensor.setAddStatus("参数缺省");
                         errorList.add(subSensor);
                     }
-                    else if(subSensor.getShouldWarn().equals("否")&&subSensor.getName()==null||subSensor.getNumber()==null||subSensor.getMaxFrequency()==null||
-                            subSensor.getMinFrequency()==null||subSensor.getWorkFrequency()==null){
+                    else if(subSensor.getShouldWarn().equals("否")&&subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
+                            subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")){
                         subSensor.setAddStatus("参数缺省");
                         errorList.add(subSensor);
                     }
                     else{
                         long tempId;
                         try{
-                            tempId=sensorService.getSensorIdByNameAndNumber(subSensor.getName(), subSensor.getNumber(), appId);
+                            tempId=sensorService.getSensorId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),subSensor.getName(), subSensor.getNumber(), appId);
                         }catch (Exception e){
                             tempId=0;
                         }
@@ -92,8 +92,10 @@ public class SensorServiceWeb {
                             sensor.setDescription(subSensor.getDescription());
                             sensor.setNumber(subSensor.getNumber());
                             sensor.setAppId(appId);
-                            sensor.setGroupId(groupService.getIdByNameAndAppId(subSensor.getGroupName(),appId));
-                            sensor.setAreaId(areaService.getIDByNameAndAppId(subSensor.getAreaName(),appId));
+                            long groupId = groupService.getIdByNameAndAppId(subSensor.getGroupName(),appId);
+                            sensor.setGroupId(groupId);
+                            long areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
+                            sensor.setAreaId(areaId);
                             sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId));
                             sensor.setMaxFrequency(subSensor.getMaxFrequency());
                             sensor.setMinFrequency(subSensor.getMinFrequency());
@@ -105,8 +107,6 @@ public class SensorServiceWeb {
                                 sensor.setShouldWarn("是");
                                 sensor.setWarnType(subSensor.getWarnType());
                                 sensor.setWarnValue(subSensor.getWarnValue());
-                                sensor.setWarnCount(subSensor.getWarnCount());
-                                sensor.setWarnStatus(subSensor.getWarnStatus());
                             }
                             sensorService.add(sensor);
                             subSensor.setAddStatus("提交成功");
@@ -182,11 +182,8 @@ public class SensorServiceWeb {
             sensor.setShouldWarn("是");
             sensor.setWarnType(subSensor.getWarnType());
             sensor.setWarnValue(subSensor.getWarnValue());
-            sensor.setWarnCount(subSensor.getWarnCount());
-            sensor.setWarnStatus(subSensor.getWarnStatus());
         }
         int updated = sensorService.update(sensor);
-        System.out.println("mmmmmmmm"+updated);
         if(updated>0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }

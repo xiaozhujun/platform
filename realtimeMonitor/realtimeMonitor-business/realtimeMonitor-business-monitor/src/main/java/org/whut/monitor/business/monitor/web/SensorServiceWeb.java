@@ -92,8 +92,9 @@ public class SensorServiceWeb {
                             sensor.setDescription(subSensor.getDescription());
                             sensor.setNumber(subSensor.getNumber());
                             sensor.setAppId(appId);
-                            sensor.setGroupId(groupService.getIdByNameAndAppId(subSensor.getGroupName(),appId));
-                            //sensor.setAreaId(areaService.getIDByNameAndAppId(subSensor.getAreaName(),appId));
+                            long groupId=groupService.getIdByNameAndAppId(subSensor.getGroupName(),appId);
+                            sensor.setGroupId(groupId);
+                            sensor.setAreaId(areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId));
                             sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId));
                             sensor.setMaxFrequency(subSensor.getMaxFrequency());
                             sensor.setMinFrequency(subSensor.getMinFrequency());

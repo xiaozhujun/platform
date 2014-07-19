@@ -16,7 +16,7 @@
 
         $(function(){
             $.get($.URL.device.list,null,listDeviceCallBack,"json");
-            $.get($.URL.inspectArea.list,null,listInspectAreaCallBack,"json");
+            $.post($.URL.inspectArea.getAreaNameByAppId,null,listInspectAreaCallBack,"json");
             $.get($.URL.inspectTag.list,null,listCallBack,"json");
 
         }) ;

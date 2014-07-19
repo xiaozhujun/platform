@@ -15,7 +15,7 @@
 <script type="text/javascript">
 $(function(){
     $.post($.URL.collector.list,null,collectorListCallback,"json");
-    $.post($.URL.area.list,null,areaListCallback,"json");
+    $.post($.URL.area.getAreaNameListByAppId,null,areaListCallback,"json");
     $.post($.URL.group.list,null,groupListCallback,"json");
 })
 var gridData = {};

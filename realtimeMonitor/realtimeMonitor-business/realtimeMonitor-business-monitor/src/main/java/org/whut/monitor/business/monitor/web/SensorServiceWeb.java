@@ -61,7 +61,7 @@ public class SensorServiceWeb {
             for(int i=0;i<jsonArray.length();i++){
                 String js=jsonArray.get(i).toString();
                 SubSensor subSensor= JsonMapper.buildNonDefaultMapper().fromJson(js,SubSensor.class);
-                if(subSensor.getAddStatus().equals("已提交")){
+                if(subSensor.getAddStatus().equals("提交成功")){
                     successList.add(subSensor);
                 }else{
                     if(subSensor.getShouldWarn().equals("是")&&subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
@@ -119,6 +119,7 @@ public class SensorServiceWeb {
         }
         if (errorList.size()!=0){
             errorList.addAll(successList);
+            errorList.addAll(repeatList);
             return JsonResultUtils.getObjectResultByStringAsDefault(errorList,JsonResultUtils.Code.ERROR);
         }else if(repeatList.size()!=0){
             repeatList.addAll(successList);

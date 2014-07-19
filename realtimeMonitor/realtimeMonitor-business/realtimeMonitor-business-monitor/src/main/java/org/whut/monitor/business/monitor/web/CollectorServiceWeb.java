@@ -190,7 +190,6 @@ public class CollectorServiceWeb {
     public String getCollectorNameListByAppId(){
        long appId = UserContext.currentUserAppId();
        List<String> list = collectorService.getCollectorNameListByAppId(appId);
-       System.out.println(list.size());
        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

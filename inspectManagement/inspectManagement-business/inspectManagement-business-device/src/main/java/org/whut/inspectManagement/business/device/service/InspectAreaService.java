@@ -6,6 +6,7 @@ import org.whut.inspectManagement.business.device.mapper.InspectAreaMapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -62,5 +63,8 @@ public class InspectAreaService {
     public long getIdByName(String name,long appId)
     {
         return inspectAreaMapper.getIdByName(name,appId);
+    }
+    public List<Map<String,String>> getAreaNameByAppId(long appId){
+        return inspectAreaMapper.getAreaNameByAppId(appId);
     }
 }

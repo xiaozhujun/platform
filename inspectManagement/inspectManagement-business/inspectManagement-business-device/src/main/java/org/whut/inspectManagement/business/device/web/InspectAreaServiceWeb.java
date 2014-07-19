@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -121,5 +122,13 @@ public class InspectAreaServiceWeb {
         else {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaNameByAppId")
+    @POST
+    public String getAreaNameByAppId(){
+        long appId=UserContext.currentUserAppId();
+        List<Map<String,String>> list=inspectAreaService.getAreaNameByAppId(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

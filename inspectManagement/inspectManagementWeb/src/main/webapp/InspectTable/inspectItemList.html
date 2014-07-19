@@ -32,7 +32,7 @@
                 });
             }
         };
-        $.get($.URL.inspectArea.list,null,areaCallBack,"json");
+        $.post($.URL.inspectArea.getAreaNameByAppId,null,areaCallBack,"json");
         var areaData=[]
         function areaCallBack(data){
             if(data.code==200){

@@ -53,6 +53,7 @@ public class InspectTableRecordService {
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","inspectItemRecordCollection");
 
     public int DomReadXml(Document document) {
+        List<InspectItemRecord> exceptionRecordList = new ArrayList<InspectItemRecord>();
         long appId= UserContext.currentUserAppId();
         int flag = 0;
         String tname = null;
@@ -166,20 +167,26 @@ public class InspectTableRecordService {
                             System.out.println(">>>>>>>>>>>>>>>>>>"+inspectChoiceValue);
                             if(!(inspectChoiceValue.equals("正常"))){
                                 exceptionCount++;
+
+
+                                long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValueAndAppId(inspectChoiceValue,appId);
+                                inspectItemRecord.setInspectTableId(inspectTableId);
+                                inspectItemRecord.setInspectTagId(inspectTagId);
+                                inspectItemRecord.setInspectItemId(itemId1);
+                                inspectItemRecord.setInspectChoiceId(inspectChoiceId);
+                                inspectItemRecord.setInspectChoiceValue(inspectChoiceValue);
+                                //inspectItemRecord.setInspectTableRecordId(inspectTableRecordId);
+                                inspectItemRecord.setUserId(userId);
+                                inspectItemRecord.setDeviceId(deviceId);
+                                inspectItemRecord.setAppId(appId);
+                                inspectItemRecord.setCreateTime(new Date());
+                                inspectItemRecord.setInspectTime(inspectTime);
+                                //inspectItemRecordMapper.add(inspectItemRecord);
+                                inspectItemRecords.add(inspectItemRecord);
+                                System.out.println(tname + area + inspectTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
+                                exceptionRecordList.add(inspectItemRecord);
                             }
-                            long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValueAndAppId(inspectChoiceValue,appId);
-                            inspectItemRecord.setInspectTableId(inspectTableId);
-                            inspectItemRecord.setInspectTagId(inspectTagId);
-                            inspectItemRecord.setInspectItemId(itemId1);
-                            inspectItemRecord.setInspectChoiceId(inspectChoiceId);
-                            inspectItemRecord.setInspectChoiceValue(inspectChoiceValue);
-                            //inspectItemRecord.setInspectTableRecordId(inspectTableRecordId);
-                            inspectItemRecord.setUserId(userId);
-                            inspectItemRecord.setDeviceId(deviceId);
-                            inspectItemRecord.setAppId(appId);
-                            inspectItemRecordMapper.add(inspectItemRecord);
-                            inspectItemRecords.add(inspectItemRecord);
-                            System.out.println(tname + area + inspectTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
+
                         }
                     }
                 }
@@ -218,6 +225,11 @@ public class InspectTableRecordService {
                 inspectTask.setInspectTableRecordId(inspectTableRecord.getId());
                 inspectTask.setFaultCount(exceptionCount);
                 inspectTaskMapper.completeTask(inspectTask);
+
+                for (InspectItemRecord exceptionRecord:exceptionRecordList){
+                    exceptionRecord.setInspectTableRecordId(inspectTableRecord.getId());
+                    inspectItemRecordMapper.add(exceptionRecord);
+                }
 
                 flag=5;
             }

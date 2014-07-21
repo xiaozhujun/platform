@@ -1,5 +1,7 @@
 package org.whut.inspectManagement.business.inspectResult.entity;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -19,6 +21,8 @@ public class InspectItemRecord {
     private long deviceId;
     private long appId;
     private String note;
+    private Date createTime;
+    private Date inspectTime;
 
     public long getId() {
         return id;
@@ -105,5 +109,21 @@ public class InspectItemRecord {
 
     public void setNote(String note){
         this.note = note;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getInspectTime() {
+        return inspectTime;
+    }
+
+    public void setInspectTime(Date inspectTime) {
+        this.inspectTime = inspectTime;
     }
 }

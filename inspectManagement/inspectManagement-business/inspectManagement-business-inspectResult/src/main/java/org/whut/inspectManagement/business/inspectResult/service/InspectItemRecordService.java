@@ -1,5 +1,12 @@
 package org.whut.inspectManagement.business.inspectResult.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.inspectManagement.business.inspectResult.entity.SearchBean;
+import org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecordMapper;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: John
@@ -8,4 +15,11 @@ package org.whut.inspectManagement.business.inspectResult.service;
  * To change this template use File | Settings | File Templates.
  */
 public class InspectItemRecordService {
+
+    @Autowired
+    private InspectItemRecordMapper inspectItemRecordMapper;
+
+    public List<SearchBean> findByCondition(Map<String,Object> map){
+        return inspectItemRecordMapper.findByCondition(map);
+    }
 }

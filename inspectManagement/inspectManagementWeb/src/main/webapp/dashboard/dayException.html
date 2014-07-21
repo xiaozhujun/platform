@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/reportShow.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.get($.URL.user.list,null,userListCallback,"json");
+            $.get($.URL.device.list,null,deviceListCallback,"json");
+            getDayExceptionList();
+        });
+        function userListCallback(data){
+            if(data.code==200){
+                var userData=[];
+                for(var i=0;i<data.data.length;i++){
+                    var d={};
+                    d['text']=data.data[i].name;
+                    d['id']=data.data[i].id;
+                    userData.push(d);
+                }
+                $("#exceptionUserName").ligerComboBox({
+                    data:userData,valueFieldID:"exceptionUserNameSelect"
+                });
+            }
+        }
+        function deviceListCallback(data){
+            if(data.code==200){
+                var deviceData=[];
+                for(var i=0;i<data.data.length;i++){
+                    var d={};
+                    d['text']=data.data[i].name;
+                    d['id']=data.data[i].id;
+                    deviceData.push(d);
+                }
+                $("#exceptionDeviceName").ligerComboBox({
+                    data:deviceData,valueFieldID:"exceptionDeviceNameSelect"
+                });
+            }
+        }
+        var d=new Date();
+        var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+        $("#exceptionStartTime").ligerDateEditor({initValue: dd});
+        $("#exceptionEndTime").ligerDateEditor({initValue: dd});
+
+        function getDayExceptionList(){
+            var user=$("#exceptionUserNameSelect").val();
+            var device=$("#exceptionDeviceNameSelect").val();
+            var sTime=$("#exceptionStartTime").val();
+            var eTime=$("#exceptionEndTime").val();
+            $.post($.URL.inspectItemRecord.findByCondition,{"userId":user,"deviceId":device,"sTime":sTime,"eTime":eTime},getExceptionCallback,"json");
+        }
+
+        $("#exceptionSubmitBtn1").click(function(){
+            getDayExceptionList();
+        });
+
+        function getExceptionCallback(data){
+            if(data.code==200){
+                if(data.data==null){
+                    $.ligerDialog.alert("抱歉,记录不存在!");
+                }else{
+                    $("#exceptionShow").html("");
+                    showGrid(data.data);
+                }
+            }
+        }
+
+
+        var exceptionData={};
+        function showGrid(data){
+            var grid = $("<div id='exceptionGrid'></div>");
+            $("#exceptionShow").append(grid);
+            exceptionData.Rows=data;
+            f_peopleRecord(grid);
+        }
+        var manager, g;
+        function f_peopleRecord(grid)
+        {
+            g = manager = grid.ligerGrid({
+                columns: [
+                    { display: '点检人员', name: 'userName',
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检设备', name: 'deviceName',
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检项目', name: 'tableName', type: 'string',
+                        editor: { type: 'text' }
+                    },
+                    { display: '点检单元', name: 'itemName', type: 'string',
+                        editor: { type: 'text' }
+                    },
+                    { display: '汇报日期', name: 'createTime',
+                        editor: { type: 'text' }
+                    },
+                    { display: '状态', name: 'inspectChoiceValue',
+                        editor: { type: 'text' }
+                    },
+                    { display: '描述', name: 'note',
+                        editor: { type: 'text' }
+                    },
+                    { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
+                    {
+
+                        return "<a href='javascript:resolve(" + rowindex + ")'>处理</a> ";
+                    }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
+                data: exceptionData,
+                width: '100%'
+            });
+        }
+        function resolve(rowid){
+            var row = manager.getRow(rowid);
+            //var jsonString = $.toJSON(row);
+            $("#maingrid").css("display", "none");
+            $("#exportDeviceDiv").css("display", "block");
+            $("#panel1").css("display", "none");
+            $("#exceptionShow").load($.URL.inspectReport.getInspectInfo,{"id":row.inspectTableRecordId,"type":"html"},getInspectInfoCallback,"json");
+        }
+
+        function getInspectInfoCallback(data) {
+        }
+
+    </script>
+</head>
+<body>
+<div class="searchContainer">
+    <div class="searchItem"><span class="item_font">设备编号:</span><span class="item_input"><input id="exceptionDeviceName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">点检人员:</span><span class="item_input"><input id="exceptionUserName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="exceptionStartTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="exceptionEndTime" type="text"></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="exceptionSubmitBtn1" class="l-button l-button-submit" /></span></div>
+</div>
+<div class="exportDiv" id="exportDeviceDiv">
+                 <span class="exportType">
+                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text"
+                                                                                        id="exportDeviceType"></span>
+                 </span>
+    <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn"
+                                         class="l-button l-button-submit"/></span></span>
+</div>
+<div class="reportContent" id="exceptionShow"></div>
+</body>
+</html>

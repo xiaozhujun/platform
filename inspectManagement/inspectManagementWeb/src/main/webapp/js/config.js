@@ -139,12 +139,15 @@
              "getInspectLocateInfo":"rs/inspectLocate/getInspectLocateInfo",
             "receiveInspectLocateInfo":"rs/inspectLocate/receiveInspectLocateInfo"
         },
+        "inspectItemRecord":{
+          "findByCondition":"rs/inspectItemRecord/findByCondition"
+        },
         "absolutePath":{
-            "userList":"/sdiInspect/"+ "rs/user/list",
-            "deviceList":"/sdiInspect/"+ "rs/device/list",
-            "userPlanAdd":"/sdiInspect/"+ "rs/userInspectPlan/add",
-            "getTableList":"/sdiInspect/"+"rs/inspectTable/getList",
-            "updateTaskPlan":"/sdiInspect/"+"rs/taskPlan/update"
+            "userList":"/inspectManagement/"+ "rs/user/list",
+            "deviceList":"/inspectManagement/"+ "rs/device/list",
+            "userPlanAdd":"/inspectManagement/"+ "rs/userInspectPlan/add",
+            "getTableList":"/inspectManagement/"+"rs/inspectTable/getList",
+            "updateTaskPlan":"/inspectManagement/"+"rs/taskPlan/update"
 
         }
     }

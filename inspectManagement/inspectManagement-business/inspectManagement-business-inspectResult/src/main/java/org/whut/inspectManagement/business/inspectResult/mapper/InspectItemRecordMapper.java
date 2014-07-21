@@ -1,7 +1,11 @@
 package org.whut.inspectManagement.business.inspectResult.mapper;
 
 import org.whut.inspectManagement.business.inspectResult.entity.InspectItemRecord;
+import org.whut.inspectManagement.business.inspectResult.entity.SearchBean;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,4 +16,5 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  */
 public interface InspectItemRecordMapper extends AbstractMapper<InspectItemRecord>{
     public long getIdByName(String name);
+    public List<SearchBean> findByCondition(Map<String,Object> map);
 }

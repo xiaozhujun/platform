@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecordMapper">
     <sql id="inspectItemRecord_fields">
-		ID,INSPECTTABLEID,INSPECTTAGID,INSPECTITEMID,INSPECTCHOICEID,INSPECTCHOICEVALUE,INSPECTTABLERECORDID,USERID,DEVICEID,APPID,NOTE
+		ID,INSPECTTABLEID,INSPECTTAGID,INSPECTITEMID,INSPECTCHOICEID,INSPECTCHOICEVALUE,INSPECTTABLERECORDID,USERID,DEVICEID,APPID,NOTE,CREATETIME,INSPECTTIME
 	</sql>
 
     <resultMap id="inspectItemRecordResultMap" type="InspectItemRecord">
@@ -19,6 +19,20 @@
         <result property="deviceId" column="DEVICEID"/>
         <result property="appId" column="APPID"/>
         <result property="note" column="NOTE"/>
+        <result property="createTime" column="createTime"/>
+        <result property="inspectTime" column="inspectTime"/>
+    </resultMap>
+
+    <resultMap id="searchResultMap" type="SearchBean">
+        <id property="id" column="ID" />
+        <result property="userName" column="userName" />
+        <result property="itemName" column="itemName" />
+        <result property="tableName" column="tableName"/>
+        <result property="deviceName" column="deviceName"/>
+        <result property="inspectChoiceValue" column="inspectChoiceValue"/>
+        <result property="note" column="note"/>
+        <result property="createTime" column="createTime"/>
+        <result property="inspectTime" column="inspectTime"/>
     </resultMap>
 
     <insert id="add" parameterType="InspectItemRecord"  keyProperty="id"
@@ -27,7 +41,7 @@
         inspectitemrecord(
         <include refid="inspectItemRecord_fields" />
         )
-        VALUES (#{id}, #{inspectTableId}, #{inspectTagId},#{inspectItemId},#{inspectChoiceId},#{inspectChoiceValue},#{inspectTableRecordId},#{userId},#{deviceId},#{appId},#{note});
+        VALUES (#{id}, #{inspectTableId}, #{inspectTagId},#{inspectItemId},#{inspectChoiceId},#{inspectChoiceValue},#{inspectTableRecordId},#{userId},#{deviceId},#{appId},#{note},#{createTime},#{inspectTime});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -56,6 +70,8 @@
             <if test="deviceId !=null">DEVICEID=#{deviceId},</if>
             <if test="appId !=null">APPID=#{appId},</if>
             <if test="note !=null">NOTE=#{note}</if>
+            <if test="createTime !=null">CREATETIME=#{createTime}</if>
+            <if test="inspectTime !=null">INSPECTTIME=#{inspectTime}</if>
         </set>
         WHERE ID = #{id};
     </update>
@@ -79,5 +95,20 @@
         SELECT
          id
          FROM inspectitemrecord WHERE NAME=#{name}
+    </select>
+
+    <select id="findByCondition" parameterType="map" resultMap="searchResultMap">
+        SELECT
+        a.*,b.`name` as itemName,c.`name` as tableName,d.`name` as deviceName,e.name as userName
+        FROM inspectitemrecord a,inspectitem b,inspecttable c,device d,employee e
+        <where>
+            a.inspectItemId=b.id and a.inspectTableId=c.id and a.deviceId=d.id and a.userId=e.userId
+            <if test="appId!=null"> AND a.APPID=#{appId}</if>
+            <if test="userId!=null">AND a.userId=#{userId}</if>
+            <if test="deviceId!=null">AND a.deviceId=#{deviceId}</if>
+            <if test="startTime!=null"><![CDATA[ AND a.createTime>=#{startTime}]]></if>
+            <if test="endTime!=null"><![CDATA[ AND a.createTime<=#{endTime} ]]> </if>
+        </where>
+        order by createTime desc
     </select>
 </mapper>

@@ -66,8 +66,8 @@
             "add":"rs/inspectArea/add",
             "update":"rs/inspectArea/update",
             "delete":"rs/inspectArea/delete",
-            "list":"rs/inspectArea/list"
-
+            "list":"rs/inspectArea/list",
+            "getAreaNameByAppId":"rs/inspectArea/getAreaNameByAppId"
         },
         "inspectTag":{
             "add":"rs/inspectTag/add",

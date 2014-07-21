@@ -2,7 +2,6 @@ package org.whut.monitor.business.monitor.web;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Area;
@@ -133,12 +132,14 @@ public class CollectorServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long tempId;
+        long groupId=groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
+        List<String> list=areaService.getAreaNames(groupId);
+        if(!list.contains(subCollector.getArea())){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不包含该测量点！");
+        }
         try{
-//            tempId=collectorService.getCollectorId(subCollector.getName(),subCollector.getNumber(),appId);
-            long tempGroupId = groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
-            long tempAreaId = areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),tempGroupId,appId);
-            tempId = collectorService.getIdByNameAndGroupIdAndAreaIdAndAppId(
-                    subCollector.getName(),tempGroupId,tempAreaId,appId);
+            long areaId = areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),groupId,appId);
+            tempId = collectorService.getIdByNameAndGroupIdAndAreaIdAndAppId(subCollector.getName(),groupId,areaId,appId);
         }catch (Exception e){
             tempId=0;
         }
@@ -147,16 +148,9 @@ public class CollectorServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"采集仪已存在");
             }
         }
-
         Collector collector=new Collector();
-        collector.setAreaId(areaService.getIDByNameAndAppId(subCollector.getArea(),appId));
-        long groupId=groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
+        collector.setAreaId(areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),groupId,appId));
         collector.setGroupId(groupId);
-        //判断group和area能否对应得上
-        long temp=areaService.getGroupIdByAreaNameAndAppId(subCollector.getArea(),appId);
-        if(temp!=groupId){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不包含该测量点！");
-        }
         collector.setId(subCollector.getId());
         collector.setName(subCollector.getName());
         collector.setNumber(subCollector.getNumber());
@@ -187,6 +181,15 @@ public class CollectorServiceWeb {
     @POST
     public String getCollectorByAreaId(@FormParam("areaId") long areaId){
        List<Collector> list= collectorService.getCollectorByAreaId(areaId);
+       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCollectorNameListByAppId")
+    @POST
+    public String getCollectorNameListByAppId(){
+       long appId = UserContext.currentUserAppId();
+       List<String> list = collectorService.getCollectorNameListByAppId(appId);
        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

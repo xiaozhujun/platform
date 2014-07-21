@@ -144,9 +144,19 @@ public class AreaServiceWeb {
             id = 0;
         }
         if (id != 0) {
-             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"区域已存在");
+             if (id != area.getId()) {
+                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"区域已存在");
+             }
         }
         areaService.update(area);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaNameListByAppId")
+    @POST
+    public String getAreaNameListByAppId(){
+        long appId=UserContext.currentUserAppId();
+        List<Map<String,String>> list=areaService.getAreaNameListByAppId(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 }

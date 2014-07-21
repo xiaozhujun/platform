@@ -156,8 +156,14 @@ public class InspectItemServiceWeb {
     public String update(@FormParam("jsonString") String jsonString) throws JSONException, ParseException {
         long appId=UserContext.currentUserAppId();
         SubInspectItem subInspectItem=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubInspectItem.class);
+        long areaId;
+        try{
+            areaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
+        }
+        catch (Exception e){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"该设备类型不存在此点检区域");
+        }
         long tableId=inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId);
-        long areaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
         if(subInspectItem.getName()==null||subInspectItem.getInspectTable()==null||subInspectItem.getInspectTable().equals("")||subInspectItem.getNumber()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
@@ -174,13 +180,6 @@ public class InspectItemServiceWeb {
         }
         //更新inspectItem表
         int isInput=Integer.parseInt(subInspectItem.getInput());
-        long inspectAreaId;
-        try{
-            inspectAreaId=inspectAreaService.getInspectAreaIdByNames(subInspectItem.getInspectArea(),subInspectItem.getDeviceType(),appId);
-        }
-        catch (Exception e){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"该设备类型不存在此点检区域");
-        }
         if(isInput==0&&subInspectItem.getChoiceValue().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"请选择点检选值");
         }
@@ -193,7 +192,7 @@ public class InspectItemServiceWeb {
         inspectItem.setDescription(subInspectItem.getDescription());
         DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         inspectItem.setCreatetime(format.parse(subInspectItem.getCreatetime()));
-        inspectItem.setInspectAreaId(inspectAreaId);
+        inspectItem.setInspectAreaId(areaId);
         inspectItem.setNumber(subInspectItem.getNumber());
         inspectItem.setInput(isInput);
         inspectItem.setInspectTableId(inspectTableService.getIdByName(subInspectItem.getInspectTable(),appId));

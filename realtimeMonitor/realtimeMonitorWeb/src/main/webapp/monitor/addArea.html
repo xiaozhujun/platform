@@ -18,10 +18,7 @@
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
     <script type="text/javascript">
-
         $.post($.URL.group.list,null,listCallBack,"json");
-        $("#maingrid").hide();
-
         function listCallBack(data){
             if(data.code==200){
                 var myData=[];
@@ -41,17 +38,17 @@
             }
         }
 
-        $(f_initGrid);
+
         var manager, g;
         function f_initGrid()
         {
             g =  manager = $("#maingrid").ligerGrid({
                 columns: [
                     {display: '主键', name: 'id', width: 80, type: 'int',frozen:true },
-                    {display:'测量区域名',name:'name',width:200,editor:{type:'text'}},
-                    {display:'组名',name:'groupName',width:100,frozen:'true'},
-                    {display:'描述',name:'description', width:150,type: 'text', editor: { type: 'text'}},
-                    {display:'提交状态',name:'addStatus', width:'auto',frozen:true}
+                    {display:'提交状态',name:'addStatus', width:100,frozen:true},
+                    {display:'监控组组名称',name:'groupName',width:200,frozen:'true'},
+                    {display:'测量区域名称',name:'name',width:200,editor:{type:'text'}},
+                    {display:'描述',name:'description',type: 'text', editor: { type: 'text'}}
                 ],
                 onSelectRow: function (rowdata, rowindex)
                 {
@@ -85,30 +82,25 @@
         var newRowID = 1;
         function addNewRow() {
             var groupName = $("#groupName").val();
-            $.post($.URL.group.getIdByGroupName,{"groupName":groupName},areaCallBack,"json");
-            function areaCallBack(data) {
-                if(data.code == 500) {
-                    $.ligerDialog.warn(data.message);
-                }
-                if(data.code == 200) {
-                    $("#maingrid").show();
-                    var row = manager.getSelectedRow();
-                    manager.addRow({
-                        id: newRowID++,
-                        name:$("#name").val(),
-                        description:$("#description").val(),
-                        groupName:$("#groupName").val(),
-                        addStatus:"未提交"
-                    }, row, document.getElementById("checked").checked);
-                }
+            if(groupName==""){
+                $.ligerDialog.warn("请选择监控组名称");
+            }else{
+                $("#maingrid").show();
+                $(f_initGrid);
+                var row = manager.getSelectedRow();
+                manager.addRow({
+                    id: newRowID++,
+                    name:$("#name").val(),
+                    description:$("#description").val(),
+                    groupName:$("#groupName").val(),
+                    addStatus:"未提交"
+                }, row, document.getElementById("checked").checked);
             }
         }
-
         function submitBtn(){
             var data=JSON.stringify(manager.getData());
             $.post($.URL.area.add,{"jsonStringList":data},addCallback,"json");
         }
-
         function addCallback(data){
             if(data.code==200){
                 var jsonObj1={};
@@ -127,7 +119,6 @@
                 $.ligerDialog.warn("参数有误");
             }
         }
-
         function returnBtn()
         {
             $("#mainContainer").load("monitor/areaList.html");
@@ -152,17 +143,8 @@
             <span class="l-edit-com">
                 <input name="groupName"  type="text" id="groupName" />
             </span>
-    <span style="margin-left: 150px;  width: 60px;float: left;margin-top: 2px">区域名:</span>
-            <span style="width: 60px; margin-left: 10px; float: left;">
-                <input name="name" type="text" id="name"/>
-            </span>
-    <span style="margin-left: 130px;  width: 60px;float: left;margin-top: 2px">描述:</span>
-            <span style="width: 60px; margin-left: 10px; float: left;">
-                <input name="description" type="text" id="description" />
-            </span>
-
         <span>
-            <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">新增</div>
+            <div id="add" style="width:100px;float: left;margin-left: 180px" onclick="addNewRow()">新增</div>
             <div id="delete" style="width:100px; float: left;margin-left: 20px" onclick="deleteRow()">删除</div>
             <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">添加</div>
              <div id="return" style="width: 100px;float: left;margin-left: 20px" onclick="returnBtn()">返回列表</div>
@@ -170,7 +152,7 @@
         </span>
 </div>
 <div class="l-clear"></div>
-<div id="maingrid" style="margin-top:5px"></div> <br />
+<div id="maingrid" style="margin-top:5px;display: none"></div> <br />
 <br />
 </body>
 </html>

@@ -10,7 +10,7 @@
         $(document).ready(function(){
             $.initMap("中国",5);
             //取数据时,得按照app来分组
-            $.post($.URL.inspectLocate.getInspectLocateInfo,null,getInspectLocateInfoCallback,"json");
+            $.get($.URL.inspectLocate.getInspectLocateInfo,null,getInspectLocateInfoCallback,"json");
             /*var j={userId:"1",userName:"test",inspectStartTime:"2014-7-11",inspectEndTime:"2014-7-11",deviceId:"1",devName:"test",inspectTableId:"1",inspectTableName:"test",lng:"test",lat:"test",appId:"1",status:"0",address:"0"};
             var  jsonString= $.toJSON(j);
             $.post($.URL.inspectLocate.receiveInspectLocateInfo,{"jsonString":jsonString},receiveInspectLocateInfoCallback,"json");*/

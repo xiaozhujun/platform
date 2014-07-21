@@ -140,11 +140,11 @@
             "receiveInspectLocateInfo":"rs/inspectLocate/receiveInspectLocateInfo"
         },
         "absolutePath":{
-            "userList":"/inspectManagement/"+ "rs/user/list",
-            "deviceList":"/inspectManagement/"+ "rs/device/list",
-            "userPlanAdd":"/inspectManagement/"+ "rs/userInspectPlan/add",
-            "getTableList":"/inspectManagement/"+"rs/inspectTable/getList",
-            "updateTaskPlan":"/inspectManagement/"+"rs/taskPlan/update"
+            "userList":"/sdiInspect/"+ "rs/user/list",
+            "deviceList":"/sdiInspect/"+ "rs/device/list",
+            "userPlanAdd":"/sdiInspect/"+ "rs/userInspectPlan/add",
+            "getTableList":"/sdiInspect/"+"rs/inspectTable/getList",
+            "updateTaskPlan":"/sdiInspect/"+"rs/taskPlan/update"
 
         }
     }

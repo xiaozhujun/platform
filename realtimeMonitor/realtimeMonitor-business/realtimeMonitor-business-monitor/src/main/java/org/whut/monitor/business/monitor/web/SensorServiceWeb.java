@@ -64,14 +64,14 @@ public class SensorServiceWeb {
                 if(subSensor.getAddStatus().equals("提交成功")){
                     successList.add(subSensor);
                 }else{
-                    if(subSensor.getShouldWarn().equals("是")&&subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
+                    if(subSensor.getShouldWarn().equals("是")&&(subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
                         subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")||subSensor.getWarnType().equals("")
-                        ||subSensor.getWarnValue().equals("")){
+                        ||subSensor.getWarnValue().equals(""))){
                         subSensor.setAddStatus("参数缺省");
                         errorList.add(subSensor);
                     }
-                    else if(subSensor.getShouldWarn().equals("否")&&subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
-                            subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")){
+                    else if(subSensor.getShouldWarn().equals("否")&&(subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
+                            subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals(""))){
                         subSensor.setAddStatus("参数缺省");
                         errorList.add(subSensor);
                     }
@@ -157,7 +157,25 @@ public class SensorServiceWeb {
     @POST
     public String update(@FormParam("jsonString") String jsonString){
         SubSensor subSensor = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubSensor.class);
-        long appId=subSensor.getAppId();
+        if(subSensor.getShouldWarn().equals("是")&&(subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
+                subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")||subSensor.getWarnType().equals("")
+                ||subSensor.getWarnValue().equals(""))){
+           return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数缺省！");
+        }
+        else if(subSensor.getShouldWarn().equals("否")&&(subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
+                subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals(""))){
+           return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数缺省！");
+        }
+        long appId=UserContext.currentUserAppId();
+        long existId = 0;
+        try{
+            existId=sensorService.getSensorId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),subSensor.getName(), subSensor.getNumber(), appId);
+        }catch (Exception e){
+            existId=0;
+        }
+        if(existId!=0&&existId!=subSensor.getId()){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"传感器已存在！");
+        }
         Sensor sensor = new Sensor();
         long groupId = 0;
         long areaId = 0 ;

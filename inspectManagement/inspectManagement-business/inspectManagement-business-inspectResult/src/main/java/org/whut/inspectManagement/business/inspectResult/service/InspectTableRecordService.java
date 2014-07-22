@@ -168,24 +168,24 @@ public class InspectTableRecordService {
                             if(!(inspectChoiceValue.equals("正常"))){
                                 exceptionCount++;
 
-
-                                long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValueAndAppId(inspectChoiceValue,appId);
-                                inspectItemRecord.setInspectTableId(inspectTableId);
-                                inspectItemRecord.setInspectTagId(inspectTagId);
-                                inspectItemRecord.setInspectItemId(itemId1);
-                                inspectItemRecord.setInspectChoiceId(inspectChoiceId);
-                                inspectItemRecord.setInspectChoiceValue(inspectChoiceValue);
-                                //inspectItemRecord.setInspectTableRecordId(inspectTableRecordId);
-                                inspectItemRecord.setUserId(userId);
-                                inspectItemRecord.setDeviceId(deviceId);
-                                inspectItemRecord.setAppId(appId);
-                                inspectItemRecord.setCreateTime(new Date());
-                                inspectItemRecord.setInspectTime(inspectTime);
-                                //inspectItemRecordMapper.add(inspectItemRecord);
-                                inspectItemRecords.add(inspectItemRecord);
-                                System.out.println(tname + area + inspectTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
                                 exceptionRecordList.add(inspectItemRecord);
                             }
+
+                            long inspectChoiceId=inspectChoiceMapper.getIdByChoiceValueAndAppId(inspectChoiceValue,appId);
+                            inspectItemRecord.setInspectTableId(inspectTableId);
+                            inspectItemRecord.setInspectTagId(inspectTagId);
+                            inspectItemRecord.setInspectItemId(itemId1);
+                            inspectItemRecord.setInspectChoiceId(inspectChoiceId);
+                            inspectItemRecord.setInspectChoiceValue(inspectChoiceValue);
+                            //inspectItemRecord.setInspectTableRecordId(inspectTableRecordId);
+                            inspectItemRecord.setUserId(userId);
+                            inspectItemRecord.setDeviceId(deviceId);
+                            inspectItemRecord.setAppId(appId);
+                            inspectItemRecord.setCreateTime(new Date());
+                            inspectItemRecord.setInspectTime(inspectTime);
+                            //inspectItemRecordMapper.add(inspectItemRecord);
+                            inspectItemRecords.add(inspectItemRecord);
+                            System.out.println(tname + area + inspectTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
 
                         }
                     }

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>ajax Test</title>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#submitBtn").click(function(){
+//                alert("!");
+                var myURL = "rs/sensors/sensor/data/2100000000010000.htm";
+                $.ajax({
+                    url: myURL,
+                    async:false,
+                    dataType:'jsonp',
+                    jsonpCallback:'callback',
+                    success: function successCallBack(jsonp){
+                        alert(jsonp.data);
+                    },
+                    error: function errorCallBack() {
+                        alert("error");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        .l-edit-com{width: 60px; margin-left: 10px; float: left;}
+    </style>
+
+</head>
+<body>
+<div id="buttonContainer">
+    <input id="submitBtn" type="button" class="l-edit-com" value="测试"/>
+</div>
+</body>
+</html>

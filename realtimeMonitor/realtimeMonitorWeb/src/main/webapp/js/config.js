@@ -54,6 +54,9 @@
             "list":"rs/sensor/list",
             "update":"rs/sensor/update",
             "delete":"rs/sensor/delete"
+        },
+        "sensors":{
+            "getSensorDataArray":"rs/sensor/data/{id}.htm"
         }
     }
 })(jQuery);

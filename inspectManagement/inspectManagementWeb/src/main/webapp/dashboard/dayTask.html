@@ -19,6 +19,20 @@
     <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <style>
+        .red{
+            color: red;
+            font-weight: bold;
+        }
+        .green{
+            color: green;
+            font-weight: bold;
+        }
+        .yellow{
+            color: cornflowerblue;
+            font-weight: bold;
+        }
+    </style>
     <script type="text/javascript">
         $(function(){
             $.get($.URL.user.list,null,userListCallback,"json");
@@ -129,11 +143,16 @@
                         editor: { type: 'text' },
                         render:function(item){
                             if(item.status==0){
-                               return "待检";
+                                if(isTaskDelay(item.taskDate,item.timeEnd)){
+                                    return "<span class='red'>延误</span>";
+                                }else{
+                                    return "<span class='yellow'>待检</span>";
+                                }
+
                             }else if(item.status==1){
-                                return "完成";
+                                return "<span class='green'>完成</span>";
                             }
-                            return "延误";
+                            return "<span>状态未知</span>";
                         }
                     },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
@@ -168,6 +187,18 @@
         }
 
         function getInspectInfoCallback(data) {
+        }
+
+        function isTaskDelay(taskDate,endTime){
+            var lastInspectTimeStr = taskDate.substr(0,11)+endTime+":00:00";
+            var lastInspectTime=Date.parse(lastInspectTimeStr.replace(/-/g,"/"));
+            var now = new Date();
+            if(now>lastInspectTime)
+            {
+                return true;
+            }else{
+                return false;
+            }
         }
 
     </script>

@@ -23,6 +23,12 @@
         $(function(){
             $.get($.URL.user.list,null,userListCallback,"json");
             $.get($.URL.device.list,null,deviceListCallback,"json");
+
+            var d=new Date();
+            var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            $("#exceptionStartTime").ligerDateEditor({initValue: dd});
+            $("#exceptionEndTime").ligerDateEditor({initValue: dd});
+
             getDayExceptionList();
         });
         function userListCallback(data){
@@ -53,10 +59,7 @@
                 });
             }
         }
-        var d=new Date();
-        var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-        $("#exceptionStartTime").ligerDateEditor({initValue: dd});
-        $("#exceptionEndTime").ligerDateEditor({initValue: dd});
+
 
         function getDayExceptionList(){
             var user=$("#exceptionUserNameSelect").val();

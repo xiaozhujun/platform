@@ -17,8 +17,8 @@ import java.util.Map;
 public class InspectLocateService {
     @Autowired
     private InspectLocateMapper mapper;
-    public List<Map<String,String>> getInspectLocateInfoByAppId(long appId){
-        return mapper.getInspectLocateInfoByAppId(appId);
+    public List<Map<String,String>> findByCondition(Map<String,Object> map){
+        return mapper.findByCondition(map);
     }
     public Long validateIsExistRecord(long appId,long userId){
         return mapper.validateIsExistRecord(appId,userId);

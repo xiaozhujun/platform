@@ -47,7 +47,12 @@
                       inspectItemClick(this.id,this.id.substring(11,inspectItemId.length));
                 });
             }
-            inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
+            if(data.data.length>0){
+                inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
+            }else{
+                $("#rightshow").html("对不起，没有获取到在线的点检人员数据！");
+            }
+
         }
 
         function inspectItemClick(inspectItemId,inspectInfoId){

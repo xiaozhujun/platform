@@ -10,33 +10,35 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class InspectLocate {
-       private long id;
+    private long id;
 
-       private long userId;
+    private long userId;
 
-       private String userName;
+    private String userName;
 
-       private String inspectStartTime;
+    private String inspectStartTime;
 
-       private String inspectEndTime;
+    private String inspectEndTime;
 
-       private long deviceId;
+    private long deviceId;
 
-       private String devName;
+    private String devName;
 
-       private long inspectTableId;
+    private long inspectTableId;
 
-       private String inspectTableName;
+    private String inspectTableName;
 
-       private String lng;
+    private String lng;
 
-       private String lat;
+    private String lat;
 
-       private long appId;
+    private long appId;
 
-       private String status;
+    private String status;
 
-       private String address;
+    private String address;
+
+    private Date updateTime;
 
     public String getUserName() {
         return userName;
@@ -148,5 +150,13 @@ public class InspectLocate {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

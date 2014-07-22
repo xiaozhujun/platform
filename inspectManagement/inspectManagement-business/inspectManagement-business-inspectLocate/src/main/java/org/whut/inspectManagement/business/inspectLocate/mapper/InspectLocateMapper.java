@@ -14,7 +14,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface InspectLocateMapper extends AbstractMapper{
-    public List<Map<String,String>> getInspectLocateInfoByAppId(@Param("appId")long appId);
+    public List<Map<String,String>> findByCondition(Map<String,Object> map);
     public Long validateIsExistRecord(@Param("appId")long appId,@Param("userId")long userId);
 
 }

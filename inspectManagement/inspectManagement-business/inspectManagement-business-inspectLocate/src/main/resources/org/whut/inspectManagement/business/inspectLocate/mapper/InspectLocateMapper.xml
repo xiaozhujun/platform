@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectLocate.mapper.InspectLocateMapper">
     <sql id="inspectLocate_fields">
-       ID,USERID,USERNAME,INSPECTSTARTTIME,INSPECTENDTIME,DEVICEID,DEVNAME,INSPECTTABLEID,INSPECTTABLENAME,LNG,LAT,APPID,STATUS,ADDRESS
+       ID,USERID,USERNAME,INSPECTSTARTTIME,INSPECTENDTIME,DEVICEID,DEVNAME,INSPECTTABLEID,INSPECTTABLENAME,LNG,LAT,APPID,STATUS,ADDRESS,UPDATETIME
     </sql>
     <resultMap id="inspectLocateResultMap" type="InspectLocate">
         <id property="id" column="ID"/>
@@ -20,13 +20,14 @@
         <result property="appId" column="APPID"/>
         <result property="status" column="STATUS"/>
         <result property="address" column="ADDRESS"/>
+        <result property="updateTime" column="UPDATETIME"/>
     </resultMap>
     <insert id="add" parameterType="InspectLocate"  keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         inspect_locate(
         <include refid="inspectLocate_fields"/>
         )
-        VALUES (#{id},#{userId},#{userName},#{inspectStartTime},#{inspectEndTime},#{deviceId},#{devName},#{inspectTableId},#{inspectTableName},#{lng},#{lat},#{appId},#{status},#{address});
+        VALUES (#{id},#{userId},#{userName},#{inspectStartTime},#{inspectEndTime},#{deviceId},#{devName},#{inspectTableId},#{inspectTableName},#{lng},#{lat},#{appId},#{status},#{address},#{updateTime});
         <selectKey  resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -47,14 +48,18 @@
             <if test="lat!=null">LAT=#{lat},</if>
             <if test="appId!=null">APPID=#{appId},</if>
             <if test="status!=null">STATUS=#{status},</if>
-            <if test="address!=null">ADDRESS=#{address}</if>
+            <if test="address!=null">ADDRESS=#{address},</if>
+            <if test="address!=null">UPDATETIME=#{updateTime}</if>
         </set>
         WHERE ID=#{id}
     </update>
-    <select id="getInspectLocateInfoByAppId" parameterType="java.lang.Long" resultType="map">
+    <select id="findByCondition" parameterType="map" resultType="map">
        SELECT *
        FROM inspect_locate
-       WHERE appId=#{appId}
+       <where>
+           appId=#{appId}
+           <if test="updateTime!=null">and UPDATETIME>=#{updateTime}</if>
+       </where>
    </select>
     <select id="validateIsExistRecord" parameterType="map" resultType="java.lang.Long">
         SELECT id

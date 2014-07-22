@@ -9,6 +9,8 @@ import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,12 @@ public class InspectLocateServiceWeb {
      @Path("/getInspectLocateInfo")
      public String getInspectLocateInfo(){
          long appId=UserContext.currentUserAppId();
-         List<Map<String,String>>list=inspectLocateService.getInspectLocateInfoByAppId(appId);
+         Map<String,Object> condition = new HashMap<String, Object>();
+         Date now = new Date();
+         now.setTime(now.getTime()-60*60*1000);
+         condition.put("appId",appId);
+         condition.put("updateTime",now);
+         List<Map<String,String>>list=inspectLocateService.findByCondition(condition);
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
      }
      @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

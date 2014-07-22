@@ -64,6 +64,11 @@ public class InspectAreaService {
     {
         return inspectAreaMapper.getIdByName(name,appId);
     }
+    public long getIdByNumber(String number,long appId)
+    {
+        return inspectAreaMapper.getIdByNumber(number,appId);
+    }
+
     public List<Map<String,String>> getAreaNameByAppId(long appId){
         return inspectAreaMapper.getAreaNameByAppId(appId);
     }

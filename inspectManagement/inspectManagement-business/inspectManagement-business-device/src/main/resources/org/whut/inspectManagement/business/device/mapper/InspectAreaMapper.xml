@@ -113,6 +113,11 @@
         from inspectarea
         where NAME=#{name} and APPID=#{appId}
     </select>
+    <select id="getIdByNumber" parameterType="map" resultType="java.lang.Long">
+        select id
+        from inspectarea
+        where NUMBER=#{number} and APPID=#{appId}
+    </select>
     <select id="getAreaIdByName" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
         id

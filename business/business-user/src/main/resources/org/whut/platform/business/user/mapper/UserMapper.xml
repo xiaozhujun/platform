@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.platform.business.user.mapper.UserMapper">
     <sql id="user_fields">
-		ID,NAME,PASSWORD,SEX,ROLE,STATUS,APPID
+		ID,NAME,PASSWORD,SEX,ROLE,STATUS,APPID,IMAGE
 	</sql>
 
     <resultMap id="userResultMap" type="User">
@@ -15,6 +15,7 @@
         <result property="role" column="ROLE"/>
         <result property="status" column="STATUS"/>
         <result property="appId" column="APPID"/>
+        <result property="image" column="IMAGE"/>
     </resultMap>
 
     <insert id="add" parameterType="User"  keyProperty="id"
@@ -23,7 +24,7 @@
         user(
         <include refid="user_fields" />
         )
-        VALUES (#{id}, #{name}, #{password},#{sex},#{role},#{status},#{appId});
+        VALUES (#{id}, #{name}, #{password},#{sex},#{role},#{status},#{appId},#{image});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -48,6 +49,14 @@
             <if test="role !=null">ROLE=#{role},</if>
             <if test="status !=null">STATUS=#{status},</if>
             <if test="appId !=null">APPID=#{appId}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <update id="updateUserImage" parameterType="User">
+        UPDATE user
+        <set>
+            <if test="image != null">IMAGE=#{image}</if>
         </set>
         WHERE ID = #{id};
     </update>

@@ -65,4 +65,8 @@ public class UserService {
         MyUserDetail myUserDetail= (MyUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return myUserDetail;
     }
+
+    public void updateUserImage(User user){
+        userMapper.updateUserImage(user);
+    }
 }

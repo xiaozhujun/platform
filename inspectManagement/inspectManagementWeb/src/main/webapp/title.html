@@ -27,20 +27,29 @@
     }
 </style>
 <script>
+    var currentUser = null;
     $(document).ready(function(){
         $.get($.URL.user.currentUserInfo,null,userInfoCallback,"json");
     });
 
     function userInfoCallback(data){
         if(data!=null){
+
+            currentUser = data.data;
+
+            var userName = currentUser.name;
+            if(userName==null){
+                userName = currentUser.userName;
+            }
+
             $("#userInfo").show();
-            $("#userNameDiv").html(data.data.name);
-            $("#userNameDiv").click(function(){
-                alert("test");
-            });
-            if(data.data.role.indexOf("ROLE_ADMIN")>-1){
+            $("#userNameDiv").html('<a href="userUploadImage.jsp" target="_blank">'+userName+'</a>');
+
+            if(data.data.userRole.indexOf("ROLE_ADMIN")>-1){
                 $("#adminLinkDiv").show();
             }
+
+            $("#userImage").attr("src",currentUser.image);
         }
     }
 </script>

@@ -13,7 +13,7 @@
             "list":"rs/user/list",
             "getId":"rs/user/getIdByName" ,
             "currentUserId": "rs/user/currentUserId",
-            "currentUserInfo":"rs/user/currentUser"
+            "currentUserInfo":"rs/inspectUser/currentUser"
         },
         "authority":{
              "add":"rs/authority/add",

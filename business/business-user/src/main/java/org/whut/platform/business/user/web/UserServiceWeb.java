@@ -4,22 +4,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.whut.platform.business.app.service.AppService;
 import org.whut.platform.business.user.entity.SubUser;
 import org.whut.platform.business.user.entity.User;
+import org.whut.platform.business.user.entity.UserAuthority;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.business.user.service.AuthorityService;
+import org.whut.platform.business.user.service.UserAuthorityService;
 import org.whut.platform.business.user.service.UserService;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
-import org.whut.platform.business.user.entity.Authority;
-import org.whut.platform.business.user.service.AuthorityService;
-import org.whut.platform.business.user.entity.UserAuthority;
-import org.whut.platform.business.user.service.UserAuthorityService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -262,4 +269,63 @@ public class UserServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
     }
+
+    //上传用户图片
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/uploadImage")
+    @POST
+    public String uploadImage(@Context HttpServletRequest request){
+        if(request==null){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+        MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+        MultipartFile file = multipartRequest.getFile("filename");
+        String filename = file.getOriginalFilename();
+        String[] temp = filename.split("\\.");
+        String suffix = temp[temp.length-1];
+
+        //获得用户图片路径
+        String userImgRootPath =  FundamentalConfigProvider.get("user.img.root.path") ;
+        String userImgRelativePath =  FundamentalConfigProvider.get("user.img.relative.path") ;
+        String userName = UserContext.currentUserName();
+        long appId = UserContext.currentUserAppId();
+        String userImagePath =  userImgRootPath + userImgRelativePath+"/"+appId+"/"+userName+"."+suffix;
+        String userImageWebPath = userImgRelativePath+"/"+appId+"/"+userName+"."+suffix;
+
+        User currentUser = userService.getById(UserContext.currentUserId());
+
+        //如果文件存在则删除
+        File userImageFile = new File(userImagePath);
+        String oldImagePath = currentUser.getImage();
+        if(oldImagePath!=null){
+            File oldImage = new File(userImgRootPath+oldImagePath);
+            if(oldImage.exists()){
+                oldImage.delete();
+            }
+        }
+        if(userImageFile.exists()){
+            userImageFile.delete();
+        }else{
+            File imageDir = new File(userImgRootPath+"/"+userImgRelativePath+"/"+appId);
+            if(!imageDir.exists()){
+                imageDir.mkdirs();
+            }
+        }
+
+        //写用户图片文件到指定路径
+        try {
+            file.transferTo(userImageFile);
+            User user = new User();
+            user.setId(UserContext.currentUserId());
+            user.setImage(userImageWebPath);
+            userService.updateUserImage(user);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
+        return JsonResultUtils.getObjectResultByStringAsDefault(userImageWebPath,JsonResultUtils.Code.SUCCESS);
+    }
+
 }

@@ -18,6 +18,8 @@ public class User {
     private long appId;
     private String appName;
 
+    private String image;
+
     public String getAppName() {
         return appName;
     }
@@ -80,5 +82,13 @@ public class User {
 
     public void setRole(String role){
         this.role = role;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

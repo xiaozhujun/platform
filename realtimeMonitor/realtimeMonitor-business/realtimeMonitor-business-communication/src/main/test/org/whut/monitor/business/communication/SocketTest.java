@@ -17,8 +17,8 @@ import java.util.Date;
 public class SocketTest {
     public static void main(String[] args)  {
         //为了简单起见，所有的异常都直接往外抛
-        String host = "www.cseicms.com";  //要连接的服务端IP地址
-        //String host = "127.0.0.1";  //要连接的服务端IP地址
+//        String host = "www.cseicms.com";  //要连接的服务端IP地址
+        String host = "127.0.0.1";  //要连接的服务端IP地址
         int port = 38888;   //要连接的服务端对应的监听端口
         //与服务端建立连接
         Socket client = null;
@@ -42,7 +42,7 @@ public class SocketTest {
 
                 }
                 Date now = new Date();
-                String json = "{sensors:[{sNum:'2100000000010000',dataType:'Route',Time:'"+format.format(now)+"',Data:["+data+"]}]}";
+                String json = "{sensors:[{sensorNum:'2100000000010000',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);

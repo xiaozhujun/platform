@@ -61,6 +61,7 @@
   <if test='appId!=0'>
      AND  itr.appId=#{appId}
   </if>
+    order by itr.inspectTime desc
  </select>
  <select id="getInspectTableRecordListByBean" parameterType="map" resultMap="SearchReportBeanMap">
         SELECT

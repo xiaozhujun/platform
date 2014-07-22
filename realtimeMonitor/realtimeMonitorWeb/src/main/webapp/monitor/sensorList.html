@@ -149,7 +149,7 @@
             }
             else{
                 $.post($.URL.sensor.list,null,sensorListCallback,"json");
-                $.ligerDialog.warn(data.message);
+                $.ligerDialog.error(data.message);
             }
         }
         function deleteRow(rowid)

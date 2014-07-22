@@ -139,6 +139,9 @@
              "getInspectLocateInfo":"rs/inspectLocate/getInspectLocateInfo",
             "receiveInspectLocateInfo":"rs/inspectLocate/receiveInspectLocateInfo"
         },
+        "inspectItemRecord":{
+          "findByCondition":"rs/inspectItemRecord/findByCondition"
+        },
         "absolutePath":{
             "userList":"/inspectManagement/"+ "rs/user/list",
             "deviceList":"/inspectManagement/"+ "rs/device/list",

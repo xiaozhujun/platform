@@ -26,6 +26,8 @@
     function loadTabPage(tabid){
         if(tabid=="geoInfoTab"){
             $("#"+tabid).load("dashboard/geoInfo.html");
+        }else if(tabid=="dayExceptionTab"){
+            $("#"+tabid).load("dashboard/dayException.html");
         }else if(tabid=="dayWorkerTab"){
           $("#"+tabid).load("dashboard/dayWorker.html");
         }else if(tabid=="dayDeviceTab"){
@@ -42,7 +44,9 @@
 <style type="text/css">
 </style>
 <div id="tab" style="height: 100%;">
-    <div id="geoInfoTab" tabid="geoInfoTab" title="地理信息" style="height: 100%;">
+    <div id="geoInfoTab" tabid="geoInfoTab" title="人员定位" style="height: 100%;">
+    </div>
+    <div id="dayExceptionTab" tabid="dayExceptionTab" title="设备异常" style="height: 100%;">
     </div>
     <div id="dayWorkerTab" tabid="dayWorkerTab" title="人员日检" style="height: 100%;">
     </div>

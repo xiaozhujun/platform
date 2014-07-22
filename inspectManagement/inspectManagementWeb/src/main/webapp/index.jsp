@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>物联智能点检平台-首页</title>
+    <title>智能物联巡检平台-首页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery-1.10.2.js" type="text/javascript"></script>

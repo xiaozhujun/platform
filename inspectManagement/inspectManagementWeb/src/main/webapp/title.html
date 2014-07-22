@@ -37,10 +37,15 @@
 
             currentUser = data.data;
 
-            $("#userInfo").show();
-            $("#userNameDiv").html('<a href="userUploadImage.jsp" target="_blank">'+data.data.name+'</a>');
+            var userName = currentUser.name;
+            if(userName==null){
+                userName = currentUser.userName;
+            }
 
-            if(data.data.role.indexOf("ROLE_ADMIN")>-1){
+            $("#userInfo").show();
+            $("#userNameDiv").html('<a href="userUploadImage.jsp" target="_blank">'+userName+'</a>');
+
+            if(data.data.userRole.indexOf("ROLE_ADMIN")>-1){
                 $("#adminLinkDiv").show();
             }
 

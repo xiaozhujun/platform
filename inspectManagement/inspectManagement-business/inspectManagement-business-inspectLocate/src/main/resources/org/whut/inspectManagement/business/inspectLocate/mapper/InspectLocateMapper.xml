@@ -54,11 +54,11 @@
         WHERE ID=#{id}
     </update>
     <select id="findByCondition" parameterType="map" resultType="map">
-       SELECT *
-       FROM inspect_locate
+       SELECT a.userName,a.userId,a.devName,a.inspectTableName,a.address,a.lng,a.lat,b.image
+       FROM inspect_locate a,user b
        <where>
-           appId=#{appId}
-           <if test="updateTime!=null">and UPDATETIME>=#{updateTime}</if>
+           a.userId=b.id and a.appId=#{appId}
+           <if test="updateTime!=null">and a.UPDATETIME>=#{updateTime}</if>
        </where>
    </select>
     <select id="validateIsExistRecord" parameterType="map" resultType="java.lang.Long">

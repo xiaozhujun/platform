@@ -12,6 +12,11 @@ public class InspectUser {
     private String role;
     private long roleNum;
     private String name;
+    private String userName;
+    private long id;
+    private String image;
+    private String sex;
+    private String userRole;
 
     public String getName() {
         return name;
@@ -43,5 +48,45 @@ public class InspectUser {
 
     public void setRoleNum(long roleNum) {
         this.roleNum = roleNum;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

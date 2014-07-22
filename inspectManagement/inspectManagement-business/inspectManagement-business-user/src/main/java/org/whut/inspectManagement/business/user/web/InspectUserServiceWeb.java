@@ -72,6 +72,10 @@ public class InspectUserServiceWeb {
                 inspectUser.setRole(employee.getEmployeeRoleName());
             }
             inspectUser.setNumber(user.getId());
+            inspectUser.setUserName(user.getName());
+            inspectUser.setUserRole(user.getRole());
+            inspectUser.setId(user.getId());
+            inspectUser.setImage(user.getImage());
 
         } catch (Exception e) {
             e.printStackTrace();

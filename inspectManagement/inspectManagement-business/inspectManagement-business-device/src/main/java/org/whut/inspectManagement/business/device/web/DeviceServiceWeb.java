@@ -295,7 +295,7 @@ public class DeviceServiceWeb {
         try {
             file.transferTo(deviceImageFile);
             Device device1 = new Device();
-            device1.setId(UserContext.currentUserId());
+            device1.setId(device.getId());
             device1.setImage(deviceImageWebPath);
             deviceService.updateImage(device1);
         } catch (IOException e) {

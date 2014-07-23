@@ -2,7 +2,6 @@ package org.whut.inspectManagement.business.device.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.whut.inspectManagement.business.device.entity.Device;
-import org.whut.inspectManagement.business.device.entity.DeviceTypeTag;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 import java.util.List;
@@ -24,4 +23,6 @@ public interface DeviceMapper extends AbstractMapper<Device> {
     public List<Device> getListByAppId(long appId);
     public Long getIdByName(@Param("name") String name, @Param("appId") long appId);
     public List<Device> getInfoByCondition(@Param("name")String name,@Param("number")String number,@Param("deviceTypeId")long deviceTypeId,@Param("appId")long appId);
+    public void updateImage(Device device);
+    public Device get(long id);
 }

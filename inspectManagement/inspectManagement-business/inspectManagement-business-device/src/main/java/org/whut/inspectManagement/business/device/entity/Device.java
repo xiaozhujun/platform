@@ -14,6 +14,7 @@ public class Device {
     private String description;
     private long appId;
     private long deviceTypeId;
+    private String image;
 
     public long getId() {
         return id;
@@ -61,5 +62,13 @@ public class Device {
 
     public void setDeviceTypeId(long deviceTypeId) {
         this.deviceTypeId = deviceTypeId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

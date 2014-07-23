@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>File Upload</title>
+    <style>
+        body { padding: 30px }
+        form { display: block; margin: 20px auto; background: #eee; border-radius: 10px; padding: 15px }
+
+        .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+        .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+        .percent { position:absolute; display:inline-block; top:3px; left:48%; }
+    </style>
+    <link href="../task/cron/jquery-cron.css" rel="stylesheet" type="text/css" />
+    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="../js/jquery.json-2.4.min.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../js/config.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../task/cron/jquery-cron.js" type="text/javascript"></script>
+    <script src="../inspectResult/js/jquery.form.min.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+</head>
+<body>
+<div style="width:100%;margin-top: 26px;">
+    <div id="panel" style=" width:405px;margin: 0 auto;">
+        <div>
+            <img id="deviceImage"  width="100" src="../images/noPicture.jpg">
+        </div>
+        <form action="../rs/device/uploadImage" method="post" enctype="multipart/form-data" id="uploadForm">
+            <input type="file" id = "uploadFile" name="filename" class="fileUpload" multiple>
+            <input type="hidden" id="deviceId" name="deviceId" value="">
+            <div style="float: right">
+                <button id="px-submit" type="submit"  >上传</button>
+            </div>
+
+        </form>
+
+        <div class="progress">
+            <div class="bar"></div >
+            <div class="percent">0%</div >
+        </div>
+        <div id="status"></div>
+
+
+    </div>
+</div>
+
+<script>
+    var device;
+    $(function(){
+
+        device = frameElement.dialog.get("data").device;
+        $("#deviceId").val(device.id);
+        if(device.image!=null){
+            $("#deviceImage").attr("src",device.image);
+        }
+
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+
+        $('#uploadForm').ajaxForm({
+            beforeSend: function() {
+                status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+                //console.log(percentVal, position, total);
+            },
+            success: function() {
+                var percentVal = '100%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            complete: function(xhr) {
+                var data = JSON.parse(xhr.responseText);
+                if(data.code==200){
+                    status.html("上传成功！")
+                    $("#deviceImage").attr("src",data.data);
+                }
+                else{
+                    status.html(data.message);
+                    var percentVal = '0%';
+                    bar.width(percentVal)
+                    percent.html(percentVal);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
+
+

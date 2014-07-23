@@ -49,6 +49,7 @@
             "add":"rs/device/add" ,
             "list":"rs/device/list",
             "update":"rs/device/update",
+            "get":"rs/device/get",
             "delete":"rs/device/delete",
             "getId":"rs/device/getId",
             "getListByCondition":"rs/device/getListByCondition" ,

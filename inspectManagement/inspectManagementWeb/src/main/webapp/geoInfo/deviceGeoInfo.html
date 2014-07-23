@@ -21,7 +21,11 @@
             for(i=0;i<data.data.length;i++){
                 var hideField={"userId":data.data[i].userId,"userName":data.data[i].userName,"devName":data.data[i].devName,"inspectTableName":data.data[i].inspectTableName,"lng":data.data[i].lng,"lat":data.data[i].lat,"inspectStartTime":data.data[i].inspectStartTime,"address":data.data[i].address,"image":data.data[i].image};
                 var jsonH= $.toJSON(hideField);
-                var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].userId+"'><div class='inspectpic'><img src='images/qizhongji.jpg'/></div><span class='inspectcontent'><span class='inspectApp'>点检人员:"+data.data[i].userName+"</span><span class='inspectAddress'><span class='inspectFont'>点检设备:</span>"+data.data[i].devName+"</span><span class='hideField' id='hideField"+data.data[i].userId+"'>"+jsonH+"</span></span></span></div><div class='inspectInfoHide' id='inspectInfo"+data.data[i].userId+"'><span class='_infoTitle'><span class='_titleFont'>起重机智能点检平台</span></span><span class='infoImg'><img src='images/qizhongji.jpg'></span><span class='infoMsg'><span class='msgItem'><span class='msgItemFont'>点检人员:"+data.data[i].userName+"</span></span><span class='msgItem'><span class='msgItemFont'>点检设备:"+data.data[i].devName+"</span></span><span class='msgItem'><span class='msgItemFont'>点检表:"+data.data[i].inspectTableName+"</span></span><span class='msgItem'><span class='msgItemFont'>点检开始时间:"+data.data[i].inspectStartTime+"</span></span><span class='msgItem'><span class='msgItemFont'>点检结束时间:"+data.data[i].inspectEndTime+"</span></span><span class='msgItem'><span class='msgItemFont'>点检状态:"+data.data[i].status+"</span></span></span></div></div>";
+                var userImage = "images/userDefaultIcon.jpg";
+                if(data.data[i].hasOwnProperty("image")) {
+                    userImage = data.data[i].image;
+                }
+                var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].userId+"'><div class='inspectpic'><img src='"+userImage+"'/></div><span class='inspectcontent'><span class='inspectApp'>点检人员:"+data.data[i].userName+"</span><span class='inspectAddress'><span class='inspectFont'>点检设备:</span>"+data.data[i].devName+"</span><span class='inspectAddress'><span class='inspectFont'>点检项目:</span>"+data.data[i].inspectTableName+"</span><span class='hideField' id='hideField"+data.data[i].userId+"'>"+jsonH+"</span></span></span></div></div>";
                 $("#rightshow").append(inspectItem);
                 var inspectItemId="#inspectItem"+data.data[i].userId;
                 var inspectInfoId="#inspectInfo"+data.data[i].userId;
@@ -52,7 +56,7 @@
                 });
             }
             if(data.data.length>0){
-                inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
+                //inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
             }else{
                 $("#rightshow").html("对不起，没有获取到在线的点检人员数据！");
             }
@@ -61,10 +65,13 @@
 
         function inspectItemClick(inspectItemId,inspectInfoId){
             var inspectInfo="#inspectInfo"+inspectInfoId;
+
+            $(".inspectItemHover").removeClass("inspectItemHover");
+
             if($("#"+inspectItemId).hasClass("inspectItem")){
-                $("#"+inspectItemId).removeClass("inspectItem").addClass("inspectItemHover");
+                $("#"+inspectItemId).addClass("inspectItemHover");
             }else{
-                $("#"+inspectItemId).removeClass("inspectItemHover").addClass("inspectItem");
+                $("#"+inspectItemId).removeClass("inspectItemHover");
             }
             if($(inspectInfo).hasClass("inspectInfoHide")){
                 $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");

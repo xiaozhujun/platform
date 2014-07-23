@@ -34,8 +34,7 @@ public class DeviceTypeServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("number") String number, @FormParam("description") String description){
-        if(name==null||name.trim().equals("")||number.equals("")||description==null||description
-                .trim().equals("")) {
+        if(name==null||name.trim().equals("")||number.equals("")) {
             return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long appId= UserContext.currentUserAppId();

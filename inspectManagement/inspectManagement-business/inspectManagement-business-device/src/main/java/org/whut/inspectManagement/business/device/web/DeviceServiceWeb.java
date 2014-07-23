@@ -38,7 +38,7 @@ public class DeviceServiceWeb {
     public String add(@FormParam("name") String name,@FormParam("number") String number,@FormParam("description")String description,
                      @FormParam("deviceTypeId")long deviceTypeId
                       ){
-        if(name==null||number.equals("")||description==null||deviceTypeId==0||name.equals("")){
+        if(name==null||number.equals("")||deviceTypeId==0||name.equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
 

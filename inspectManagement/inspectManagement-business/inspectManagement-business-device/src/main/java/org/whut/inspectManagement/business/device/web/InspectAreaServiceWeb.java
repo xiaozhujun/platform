@@ -38,13 +38,13 @@ public class InspectAreaServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("number") String number,@FormParam("deviceTypeId") long deviceTypeId){
-        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number.equals("")||deviceTypeId==0){
+        if(name==null||name.trim().equals("")||number.equals("")||deviceTypeId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空！");
         }
         long appId= UserContext.currentUserAppId();
         long id;
         try{
-            id=deviceTypeService.getIdByName(name,appId);
+            id=inspectAreaService.getIdByNumber(number,appId);
         }
         catch (Exception e){
             id=0;
@@ -62,7 +62,7 @@ public class InspectAreaServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
         else{
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该设备类型！");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"已存在该设备区域！");
         }
     }
 

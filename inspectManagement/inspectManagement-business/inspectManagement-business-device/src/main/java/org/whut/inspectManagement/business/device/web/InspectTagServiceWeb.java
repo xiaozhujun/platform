@@ -36,7 +36,7 @@ public class InspectTagServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("description") String description,@FormParam("createtime") Date createtime,@FormParam("number") String number,@FormParam("inspectAreaId") long inspectAreaId,@FormParam("deviceId") long deviceId ){
-        if(name==null||name.trim().equals("")||description==null||description.trim().equals("")||number.equals("")||inspectAreaId==0||deviceId==0){
+        if(name==null||name.trim().equals("")||number.equals("")||inspectAreaId==0||deviceId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空！");
         }
         long appId= UserContext.currentUserAppId();

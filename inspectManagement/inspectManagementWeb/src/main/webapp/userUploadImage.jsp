@@ -18,7 +18,7 @@
         {
             $("#layout").ligerLayout();
             $("#titleContainer").load("title.html");
-            $("#mainContainer").load("user/uploadImage.html");
+            $("#mainContainer").load("user/selfUploadImage.html");
         });
 
     </script>

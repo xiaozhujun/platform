@@ -17,6 +17,7 @@ public class SubEmployee {
     long appId;
     String department;
     long userId;
+    String image;
 
     public String getEmployeeRoleName() {
         return employeeRoleName;
@@ -90,5 +91,11 @@ public class SubEmployee {
         this.userId = userId;
     }
 
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

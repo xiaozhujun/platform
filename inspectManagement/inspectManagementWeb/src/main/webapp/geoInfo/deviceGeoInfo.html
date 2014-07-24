@@ -25,7 +25,15 @@
                 if(data.data[i].hasOwnProperty("image")) {
                     userImage = data.data[i].image;
                 }
-                var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].userId+"'><div class='inspectpic'><img src='"+userImage+"'/></div><span class='inspectcontent'><span class='inspectApp'>点检人员:"+data.data[i].userName+"</span><span class='inspectAddress'><span class='inspectFont'>点检设备:</span>"+data.data[i].devName+"</span><span class='inspectAddress'><span class='inspectFont'>点检项目:</span>"+data.data[i].inspectTableName+"</span><span class='hideField' id='hideField"+data.data[i].userId+"'>"+jsonH+"</span></span></span></div></div>";
+                var device = data.data[i].devName;
+                var table = data.data[i].inspectTableName;
+                if(device==undefined){
+                    device = "未选择";
+                }
+                if(table==undefined){
+                    table="未选择";
+                }
+                var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].userId+"'><div class='inspectpic'><img src='"+userImage+"'/></div><span class='inspectcontent'><span class='inspectApp'>点检人员:"+data.data[i].userName+"</span><span class='inspectAddress'><span class='inspectFont'>点检设备:</span>"+device+"</span><span class='inspectAddress'><span class='inspectFont'>点检项目:</span>"+table+"</span><span class='inspectAddress'><span class='inspectFont'>当前位置:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].userId+"'>"+jsonH+"</span></span></span></div></div>";
                 $("#rightshow").append(inspectItem);
                 var inspectItemId="#inspectItem"+data.data[i].userId;
                 var inspectInfoId="#inspectInfo"+data.data[i].userId;
@@ -39,7 +47,16 @@
                     if(data.hasOwnProperty("image")){
                         userImage = data.image;
                     }
-                    var content="<div style='float: left;width: 300px;'><div style='float:left'><img width='80' height='100' src='"+userImage+"'></div><div style='float: right;width: 200px;'>点检设备:"+data.devName+"<br>点检表:"+data.inspectTableName+"<br>当前位置:"+data.address+"</div></div>";
+                    var device = data.devName;
+                    var table = data.inspectTableName;
+                    if(device==undefined){
+                        device = "未选择";
+                    }
+                    if(table==undefined){
+                        table="未选择";
+                    }
+
+                    var content="<div style='float: left;width: 300px;'><div style='float:left'><img width='80' height='100' src='"+userImage+"'></div><div style='float: right;width: 200px;'>点检设备:"+device+"<br>点检项目:"+table+"<br>当前位置:"+data.address+"</div></div>";
                     var point=data.lng+"|"+data.lat;
                     isOpen=0;
                     var icon={};

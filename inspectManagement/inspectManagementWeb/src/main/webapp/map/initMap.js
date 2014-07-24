@@ -185,7 +185,16 @@ $.extend({
                 userImage = data.data[i].image;
             }
 
-            item.content="<div style='float: left;width: 300px;'><div style='float:left'><img width='80' height='100' src='"+userImage+"'></div><div style='float: right;width: 200px;'>点检设备:"+data.data[i].devName+"<br>点检表:"+data.data[i].inspectTableName+"<br>当前位置:"+data.data[i].address+"</div></div>";
+            var device = data.data[i].devName;
+            var table = data.data[i].inspectTableName;
+            if(device==undefined){
+                device = "未选择";
+            }
+            if(table==undefined){
+                table="未选择";
+            }
+
+            item.content="<div style='float: left;width: 300px;'><div style='float:left'><img width='80' height='100' src='"+userImage+"'></div><div style='float: right;width: 200px;'>点检设备:"+device+"<br>点检项目:"+table+"<br>当前位置:"+data.data[i].address+"</div></div>";
             item.point=data.data[i].lng+"|"+data.data[i].lat;
             item.isOpen=0;
             /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/

@@ -34,11 +34,11 @@
 <div style="width:100%;margin-top: 26px;">
     <div id="panel" style=" width:405px;margin: 0 auto;">
         <div>
-            <img id="userImage"  width="100" src="../images/noPicture.jpg">
+            <img id="deviceImage"  width="100" src="../images/noPicture.jpg">
         </div>
-        <form action="../rs/user/uploadImage" method="post" enctype="multipart/form-data" id="uploadForm">
+        <form action="../rs/device/uploadImage" method="post" enctype="multipart/form-data" id="uploadForm">
             <input type="file" id = "uploadFile" name="filename" class="fileUpload" multiple>
-            <input type="hidden" id="userId" name="userId" value="">
+            <input type="hidden" id="deviceId" name="deviceId" value="">
             <div style="float: right">
                 <button id="px-submit" type="submit"  >上传</button>
             </div>
@@ -56,13 +56,13 @@
 </div>
 
 <script>
-    var user;
+    var device;
     $(function(){
 
-        user = frameElement.dialog.get("data").user;
-        $("#userId").val(user.userId);
-        if(user.image!=null){
-            $("#userImage").attr("src",user.image);
+        device = frameElement.dialog.get("data").device;
+        $("#deviceId").val(device.id);
+        if(device.image!=null){
+            $("#deviceImage").attr("src",device.image);
         }
 
         var bar = $('.bar');
@@ -91,7 +91,7 @@
                 var data = JSON.parse(xhr.responseText);
                 if(data.code==200){
                     status.html("上传成功！")
-                    $("#userImage").attr("src",data.data);
+                    $("#deviceImage").attr("src",data.data);
                 }
                 else{
                     status.html(data.message);

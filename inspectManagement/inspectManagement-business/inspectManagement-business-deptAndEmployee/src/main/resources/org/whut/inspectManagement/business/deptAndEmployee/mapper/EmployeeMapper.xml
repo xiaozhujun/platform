@@ -78,11 +78,10 @@
         </where>
     </select>
 
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="employeeResultMap">
-        select
-        <include refid="employee_fields"/>
-        from employee
-        where APPID=#{appId}
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select e.*,u.image
+        from employee e,user u
+        where e.userId=u.id and  e.APPID=#{appId}
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="employeeResultMap">

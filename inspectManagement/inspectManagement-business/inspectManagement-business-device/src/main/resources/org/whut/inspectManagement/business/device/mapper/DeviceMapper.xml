@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.device.mapper.DeviceMapper">
     <sql id="device_fields">
-          ID,NAME,NUMBER,DESCRIPTION,APPID,DEVICETYPEID
+          ID,NAME,NUMBER,DESCRIPTION,APPID,DEVICETYPEID,IMAGE
     </sql>
     <resultMap id="deviceResultMap" type="device">
         <id property="id" column="ID" />
@@ -13,6 +13,7 @@
         <result property="description" column="DESCRIPTION"/>
         <result property="appId" column="APPID"/>
         <result property="deviceTypeId" column="DEVICETYPEID"/>
+        <result property="image" column="IMAGE"/>
     </resultMap>
     <insert id="add" parameterType="device"  keyProperty="id"
             useGeneratedKeys="true">
@@ -20,12 +21,18 @@
         device(
         <include refid="device_fields" />
         )
-        VALUES (#{id}, #{name},#{number},#{description},#{appId},#{deviceTypeId});
+        VALUES (#{id}, #{name},#{number},#{description},#{appId},#{deviceTypeId},#{image});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+
+    <select id="get" parameterType="long" resultMap="deviceResultMap">
+        SELECT
+        <include refid="device_fields" />
+        FROM device WHERE ID=#{id}
+    </select>
 
     <select id="getIdByNumber"  parameterType="map" resultType="java.lang.Long">
         select   id
@@ -129,5 +136,13 @@
             <if test="appId !=null"> and APPID=#{appId}</if>
         </where>
     </select>
+
+    <update id="updateImage" parameterType="Device">
+        UPDATE device
+        <set>
+            <if test="image != null">IMAGE=#{image}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
 
 </mapper>

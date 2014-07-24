@@ -12,6 +12,11 @@
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <style type="text/css">
+        .l-grid-body-table div{
+            line-height: 50px;;
+        }
+    </style>
     <script type="text/javascript">
 
         $(function(){
@@ -64,9 +69,10 @@
                 enabledEdit:true,clickToEdit:false,isScroll:false,
                 data: gridData,
                 width:'100%',
+                rowHeight:50,
 
                 columns:[
-                    {display:'主键',name:'id',width:50,type:'int',frozen:true} ,
+                    {display:'主键',name:'id',width:50,height:80,type:'int',frozen:true} ,
                     {display:'设备名称',name:'name',
                         editor:{type:'text'}
                     } ,
@@ -84,6 +90,16 @@
                     {display:'设备描述',name:'description',
                         editor:{type:'text'}
                     } ,
+                    { display: '图片', name: 'image', type: 'text',
+                        editor: { type: 'select', data: myData, valueField: 'type'},
+                        render:function(item){
+                            if(item.image!=null){
+                                return "<img height='50' src='"+item.image+"'> "
+                            }else{
+                                return "<img height='50' src='images/noPicture.jpg'> "
+                            }
+                        }
+                    },
 
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {
@@ -92,6 +108,7 @@
                         {
                             h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
                             h +="<a href='javascript:deleteRow("+ rowindex +")'>删除</a> " ;
+                            h +="<a href='javascript:uploadImage("+ rowindex +")'>上传图片</a> " ;
                         }
                         else{
                             h +="<a href='javascript:endEdit("+ rowindex +")'>提交</a> "  ;
@@ -176,6 +193,26 @@
         function addNewRow()
         {
             manager.addEditRow();
+        }
+
+        function uploadImage(rowid){
+            var device = manager.getRow(rowid);
+            uploadDeviceImage(device);
+        }
+
+        function uploadDeviceImage(device){
+            $.ligerDialog.open({
+                height:500,
+                width: 800,
+                title : '上传图片',
+                url: 'device/uploadImage.html',
+                showMax: false,
+                showToggle: true,
+                showMin: false,
+                isResize: false,
+                slide: false,
+                data:{device: device}
+            });
         }
 
 

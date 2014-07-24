@@ -15,6 +15,7 @@ public class SubDevice {
     private String description;
     private long appId;
     private String deviceTypeName;
+    private String image;
 
     public long getId() {
         return id;
@@ -62,5 +63,13 @@ public class SubDevice {
 
     public void setDeviceTypeName(String deviceTypeName) {
         this.deviceTypeName = deviceTypeName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

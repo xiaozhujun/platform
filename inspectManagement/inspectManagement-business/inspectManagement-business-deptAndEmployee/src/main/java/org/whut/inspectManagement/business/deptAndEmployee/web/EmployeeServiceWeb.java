@@ -2,15 +2,15 @@ package org.whut.inspectManagement.business.deptAndEmployee.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whut.inspectManagement.business.deptAndEmployee.service.DepartmentService;
-import org.whut.platform.business.app.service.AppService;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.Employee;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeEmployeeRole;
-import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployee;
-import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeEmployeeRoleService;
-import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRole;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.SubEmployee;
+import org.whut.inspectManagement.business.deptAndEmployee.service.DepartmentService;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeEmployeeRoleService;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleService;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
+import org.whut.platform.business.app.service.AppService;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.entity.UserAuthority;
 import org.whut.platform.business.user.security.UserContext;
@@ -27,6 +27,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2014/5/19.
@@ -259,18 +260,25 @@ public class EmployeeServiceWeb {
     @POST
     public String list(){
         long appId= UserContext.currentUserAppId();
-        List<Employee> list=employeeService.getListByAppId(appId);
+        List<Map<String,Object>> list=employeeService.getListByAppId(appId);
         List<SubEmployee> subEmployeeList=new ArrayList<SubEmployee>();
-        for(Employee employee:list){
+        for(Map<String,Object> employee:list){
             SubEmployee subEmployee=new SubEmployee();
-            subEmployee.setStatus(employee.getStatus());
-            subEmployee.setEmployeeRoleName(employee.getEmployeeRoleName());
-            subEmployee.setId(employee.getId());
-            subEmployee.setName(employee.getName());
-            subEmployee.setPassword(employee.getPassword());
-            subEmployee.setSex(employee.getSex());
-            subEmployee.setAppId(employee.getAppId());
-            subEmployee.setDepartment(departmentService.getNameById(employee.getDepartmentId()));
+            subEmployee.setStatus((String)employee.get("status"));
+            subEmployee.setEmployeeRoleName((String)employee.get("employeeRoleName"));
+            subEmployee.setId((Long)employee.get("id"));
+            subEmployee.setUserId((Long)employee.get("userId"));
+            subEmployee.setName((String)employee.get("name"));
+            subEmployee.setPassword((String)employee.get("password"));
+            subEmployee.setSex((String)employee.get("sex"));
+            subEmployee.setImage((String)employee.get("image"));
+            if(employee.get("appId")!=null){
+                subEmployee.setAppId((Long)employee.get("appId"));
+            }
+            if(employee.get("departmentId")!=null){
+                subEmployee.setDepartment(departmentService.getNameById((Long)employee.get("departmentId")));
+            }
+
             subEmployeeList.add(subEmployee);
         }
 

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-07-22 21:11:52
+Date: 2014-07-23 13:48:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -210,22 +210,23 @@ CREATE TABLE `device` (
   `description` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   `deviceTypeId` bigint(20) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('13', '门座式起重机#01', 'menzuo001', '门座式起重机#01', '1', '11');
-INSERT INTO `device` VALUES ('14', '门座式起重机#02', 'menzuo002', '门座式起重机#02', '1', '11');
-INSERT INTO `device` VALUES ('15', '门座式起重机#03', 'menzuo003', '门座式起重机#03', '1', '11');
-INSERT INTO `device` VALUES ('16', '门座式起重机#04', 'menzuo004', '门座式起重机#04', '1', '11');
-INSERT INTO `device` VALUES ('17', '轮胎式集装箱门式起重机#01', 'luntai001', '轮胎式集装箱门式起重机#01', '1', '12');
-INSERT INTO `device` VALUES ('18', '轮胎式集装箱门式起重机#02', 'luntai002', '轮胎式集装箱门式起重机#02', '1', '12');
-INSERT INTO `device` VALUES ('19', '轮胎式集装箱门式起重机#03', 'luntai003', '轮胎式集装箱门式起重机#03', '1', '12');
-INSERT INTO `device` VALUES ('20', '岸边式集装箱起重机#01', 'anbian001', '岸边式集装箱起重机#01', '1', '13');
-INSERT INTO `device` VALUES ('21', '流动式起重机01', 'C_LDSQZJ01', '测试流动式起重机械', '1', '14');
-INSERT INTO `device` VALUES ('22', '测试用门式起重机', 'CSYMSQZJ001', '', '3', '18');
+INSERT INTO `device` VALUES ('13', '门座式起重机#01', 'menzuo001', '门座式起重机#01', '1', '11', '/inspectManagementResource/deviceImage/1/13.jpg');
+INSERT INTO `device` VALUES ('14', '门座式起重机#02', 'menzuo002', '门座式起重机#02', '1', '11', '/inspectManagementResource/deviceImage/1/14.jpg');
+INSERT INTO `device` VALUES ('15', '门座式起重机#03', 'menzuo003', '门座式起重机#03', '1', '11', null);
+INSERT INTO `device` VALUES ('16', '门座式起重机#04', 'menzuo004', '门座式起重机#04', '1', '11', null);
+INSERT INTO `device` VALUES ('17', '轮胎式集装箱门式起重机#01', 'luntai001', '轮胎式集装箱门式起重机#01', '1', '12', '/inspectManagementResource/deviceImage/1/17.jpg');
+INSERT INTO `device` VALUES ('18', '轮胎式集装箱门式起重机#02', 'luntai002', '轮胎式集装箱门式起重机#02', '1', '12', null);
+INSERT INTO `device` VALUES ('19', '轮胎式集装箱门式起重机#03', 'luntai003', '轮胎式集装箱门式起重机#03', '1', '12', null);
+INSERT INTO `device` VALUES ('20', '岸边式集装箱起重机#01', 'anbian001', '岸边式集装箱起重机#01', '1', '13', null);
+INSERT INTO `device` VALUES ('21', '流动式起重机01', 'C_LDSQZJ01', '测试流动式起重机械', '1', '14', null);
+INSERT INTO `device` VALUES ('22', '测试用门式起重机', 'CSYMSQZJ001', '', '3', '18', null);
 
 -- ----------------------------
 -- Table structure for devicetype
@@ -1157,7 +1158,7 @@ CREATE TABLE `inspectitemrecord` (
   `createTime` datetime DEFAULT NULL,
   `inspectTime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1309 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1312 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspectitemrecord
@@ -1180,6 +1181,9 @@ INSERT INTO `inspectitemrecord` VALUES ('1305', '1', '5', '23', '2', '异常', '
 INSERT INTO `inspectitemrecord` VALUES ('1306', '1', '6', '37', '2', '异常', '50', '6', '13', '1', null, '2014-07-22 10:50:03', '2014-07-22 10:45:53');
 INSERT INTO `inspectitemrecord` VALUES ('1307', '1', '7', '45', '2', '异常', '50', '6', '13', '1', null, '2014-07-22 10:50:03', '2014-07-22 10:45:53');
 INSERT INTO `inspectitemrecord` VALUES ('1308', '1', '5', '20', '2', '异常', '51', '6', '13', '1', null, '2014-07-22 20:12:57', '2014-07-22 20:12:49');
+INSERT INTO `inspectitemrecord` VALUES ('1309', '2', '5', '73', '2', '异常', '52', '6', '13', '1', '铁鞋松动，需要紧固', '2014-07-23 08:56:23', '2014-07-23 08:56:15');
+INSERT INTO `inspectitemrecord` VALUES ('1310', '2', '8', '178', '2', '异常', '52', '6', '13', '1', '有点异常，需要进一步查看！', '2014-07-23 08:56:23', '2014-07-23 08:56:15');
+INSERT INTO `inspectitemrecord` VALUES ('1311', '2', '6', '109', '2', '异常', '53', '6', '13', '1', null, '2014-07-23 11:01:37', '2014-07-23 11:01:29');
 
 -- ----------------------------
 -- Table structure for inspectitem_choice
@@ -2747,7 +2751,7 @@ CREATE TABLE `inspecttablerecord` (
   `deviceId` bigint(20) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspecttablerecord
@@ -2768,6 +2772,8 @@ INSERT INTO `inspecttablerecord` VALUES ('48', '1', '6', '2014-07-22 10:32:53', 
 INSERT INTO `inspecttablerecord` VALUES ('49', '1', '6', '2014-07-22 10:40:53', '2014-07-22', '3', '53cdd05e54c5898136d456d1', null, '13', '1');
 INSERT INTO `inspecttablerecord` VALUES ('50', '1', '6', '2014-07-22 10:45:53', '2014-07-22', '4', '53cdd15bf6baf16410f3eb68', null, '13', '1');
 INSERT INTO `inspecttablerecord` VALUES ('51', '1', '6', '2014-07-22 20:12:49', '2014-07-22', '1', '53ce5549f6ba067b2226bbaf', null, '13', '1');
+INSERT INTO `inspecttablerecord` VALUES ('52', '2', '6', '2014-07-23 08:56:15', '2014-07-23', '2', '53cf0837f6ba9fb8369944f1', null, '13', '1');
+INSERT INTO `inspecttablerecord` VALUES ('53', '2', '6', '2014-07-23 11:01:29', '2014-07-23', '1', '53cf2591f6ba9fb8369944f2', null, '13', '1');
 
 -- ----------------------------
 -- Table structure for inspecttag
@@ -2830,9 +2836,9 @@ CREATE TABLE `inspect_locate` (
 -- ----------------------------
 -- Records of inspect_locate
 -- ----------------------------
-INSERT INTO `inspect_locate` VALUES ('1', '14', 'xiaozhujun', '2014-07-11 09:18:41', '2014-07-11 10:18:52', '13', '门座式起重机#01', '1', '机修人员点检表', '114.380494', '30.507115', '1', '已完成', '武汉市武昌区烽火村郁馨花园', '2014-07-22 20:30:25');
-INSERT INTO `inspect_locate` VALUES ('2', '3', 'suihui', '2014-07-11 09:25:41', '2014-07-11 10:26:02', '14', '门座式起重机#02', '2', '门机司机日常点检表', '113.177633', '27.859618', '1', '已完成', '中国湖南株洲市荷塘区红旗中路伟大国际广场d座903号', null);
-INSERT INTO `inspect_locate` VALUES ('3', '6', '赵伟', '2014-07-11 09:27:50', '2014-07-11 10:27:55', '15', '门座式起重机#03', '3', '门机队机械技术员点检表', '114.26731', '30.603794', '1', '已完成', '罗家咀路5', '2014-07-22 20:30:25');
+INSERT INTO `inspect_locate` VALUES ('1', '14', 'xiaozhujun', '2014-07-11 09:18:41', '2014-07-11 10:18:52', '13', '门座式起重机#01', '1', '机修人员点检表', '114.380494', '30.507115', '1', '已完成', '武汉市武昌区烽火村郁馨花园', '2014-07-23 20:30:25');
+INSERT INTO `inspect_locate` VALUES ('2', '3', 'suihui', '2014-07-11 09:25:41', '2014-07-11 10:26:02', '14', '门座式起重机#02', '2', '门机司机日常点检表', '113.177633', '27.859618', '1', '已完成', '中国湖南株洲市荷塘区红旗中路伟大国际广场d座903号', '2014-07-23 20:30:25');
+INSERT INTO `inspect_locate` VALUES ('3', '6', '赵伟', '2014-07-11 09:27:50', '2014-07-11 10:27:55', '15', '门座式起重机#03', '3', '门机队机械技术员点检表', '114.26731', '30.603794', '1', '已完成', '罗家咀路5', '2014-07-23 20:30:25');
 
 -- ----------------------------
 -- Table structure for inspect_plan
@@ -2883,7 +2889,7 @@ CREATE TABLE `inspect_task` (
   `timeStart` int(11) DEFAULT NULL,
   `timeEnd` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inspect_task
@@ -2939,6 +2945,10 @@ INSERT INTO `inspect_task` VALUES ('61', '12', '2', '47', '6', '13', '4', '2014-
 INSERT INTO `inspect_task` VALUES ('62', '13', '4', '0', '7', '14', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
 INSERT INTO `inspect_task` VALUES ('63', '11', '3', '0', '8', '15', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
 INSERT INTO `inspect_task` VALUES ('64', '12', '2', '0', '10', '17', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('65', '12', '2', '53', '6', '13', '1', '2014-07-23 11:01:29', '2014-07-23 01:00:00', '1', '1', '2014-07-23 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('66', '13', '4', '0', '7', '14', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('67', '11', '3', '0', '8', '15', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('68', '12', '2', '0', '10', '17', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
 
 -- ----------------------------
 -- Table structure for menu
@@ -3043,7 +3053,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` VALUES ('3', 'sunhui', 'e68fa2bc61b75b8a06766e25905052c7', '男', 'ROLE_USER', '1', '启用', null);
 INSERT INTO `user` VALUES ('4', 'liujinxia', 'c99c1cbefe13019978d90cb442cb8f78', '女', 'ROLE_ADMIN', '1', '启用', null);
 INSERT INTO `user` VALUES ('6', 'zhaowei', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_ADMIN', '1', '启用', null);
-INSERT INTO `user` VALUES ('7', '王福明', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_ADMIN', '1', '启用', null);
+INSERT INTO `user` VALUES ('7', 'wangfuming', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_ADMIN', '1', '启用', null);
 INSERT INTO `user` VALUES ('8', '常建', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_USER', '1', '启用', null);
 INSERT INTO `user` VALUES ('9', '庞伟', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_USER', '1', '启用', null);
 INSERT INTO `user` VALUES ('10', '秦小娟', 'e10adc3949ba59abbe56e057f20f883e', '女', 'ROLE_USER', '1', '启用', null);

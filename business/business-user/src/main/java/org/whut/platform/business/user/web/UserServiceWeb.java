@@ -272,9 +272,9 @@ public class UserServiceWeb {
 
     //上传用户图片
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    @Path("/uploadImage")
+    @Path("/selfUploadImage")
     @POST
-    public String uploadImage(@Context HttpServletRequest request){
+    public String selfUploadImage(@Context HttpServletRequest request){
         if(request==null){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
@@ -320,6 +320,70 @@ public class UserServiceWeb {
             user.setId(UserContext.currentUserId());
             user.setImage(userImageWebPath);
             userService.updateUserImage(user);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
+        return JsonResultUtils.getObjectResultByStringAsDefault(userImageWebPath,JsonResultUtils.Code.SUCCESS);
+    }
+
+    //上传用户图片
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/uploadImage")
+    @POST
+    public String uploadImage(@Context HttpServletRequest request){
+        if(request==null){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+        MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+        MultipartFile file = multipartRequest.getFile("filename");
+        String filename = file.getOriginalFilename();
+        String[] temp = filename.split("\\.");
+        String suffix = temp[temp.length-1];
+
+        //获得用户图片路径
+        String userImgRootPath =  FundamentalConfigProvider.get("user.img.root.path") ;
+        String userImgRelativePath =  FundamentalConfigProvider.get("user.img.relative.path") ;
+        String userId = multipartRequest.getParameter("userId");
+        if(userId==null||userId.equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"用户编号不能为空！");
+        }
+
+        User user = userService.getById(Long.parseLong(userId));
+        String userName = user.getName();
+        long appId = UserContext.currentUserAppId();
+        String userImagePath =  userImgRootPath + userImgRelativePath+"/"+appId+"/"+userName+"."+suffix;
+        String userImageWebPath = userImgRelativePath+"/"+appId+"/"+userName+"."+suffix;
+
+        User currentUser = userService.getById(UserContext.currentUserId());
+
+        //如果文件存在则删除
+        File userImageFile = new File(userImagePath);
+        String oldImagePath = user.getImage();
+        if(oldImagePath!=null){
+            File oldImage = new File(userImgRootPath+oldImagePath);
+            if(oldImage.exists()){
+                oldImage.delete();
+            }
+        }
+        if(userImageFile.exists()){
+            userImageFile.delete();
+        }else{
+            File imageDir = new File(userImgRootPath+"/"+userImgRelativePath+"/"+appId);
+            if(!imageDir.exists()){
+                imageDir.mkdirs();
+            }
+        }
+
+        //写用户图片文件到指定路径
+        try {
+            file.transferTo(userImageFile);
+            User user1 = new User();
+            user1.setId(user.getId());
+            user1.setImage(userImageWebPath);
+            userService.updateUserImage(user1);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

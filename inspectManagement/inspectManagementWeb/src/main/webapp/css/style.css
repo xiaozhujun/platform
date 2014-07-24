@@ -106,39 +106,41 @@
     right:0px;
     float: left;
     overflow: auto;
+    padding-top: 1px;
 }
 .inspectItem{
+   border-bottom: 1px solid #BED5F3;
    width: 385px;
-   height: 70px;
-   margin-top: 1px;
+   /*height: 70px;*/
+   padding: 1px;
    cursor: pointer;
    float: left;
 }
 .inspectItemHover{
     width: 385px;
-    height: 70px;
-    margin-top: 1px;
+    /*height: 70px;*/
+    padding: 1px;
     background-color: highlight;
     color: #ffffff;
     float: left;
 }
 .inspectItem:hover{
     width: 385px;
-    height: 70px;
-    margin-top: 1px;
+    /*height: 70px;*/
+    padding: 1px;
     background-color: highlight;
     color: #ffffff;
     float: left;
 }
 .inspectpic{
-    height: 65px;
+    /*height: 65px;*//*height: 65px;*/
     width: 100px;
     float: left;
     margin-left: 2px;
     margin-top: 2px;
 }
 .inspectpic img{
-    height: 64px;
+    /*height: 64px;*/
     width: 100px;
 }
 .inspectcontent{
@@ -155,7 +157,6 @@
 }
 .inspectAddress{
     width: 280px;
-    height: 42px;
     float: left;
 }
 .inspectFont{

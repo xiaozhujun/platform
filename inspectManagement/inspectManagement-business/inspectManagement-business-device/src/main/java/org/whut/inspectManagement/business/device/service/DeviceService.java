@@ -1,9 +1,7 @@
 package org.whut.inspectManagement.business.device.service;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.device.entity.Device;
-import org.whut.inspectManagement.business.device.entity.DeviceTypeTag;
 import org.whut.inspectManagement.business.device.mapper.DeviceMapper;
 
 import java.util.HashMap;
@@ -34,6 +32,10 @@ public class DeviceService {
         return deviceMapper.getListByAppId(appId);
     }
 
+    public Device get(long id){
+        return deviceMapper.get(id);
+    }
+
     public void update(Device device){
         deviceMapper.update(device);
     }
@@ -62,5 +64,9 @@ public class DeviceService {
     }
     public List<Device> getInfoByCondition(String name,String number,long deviceTypeId,long appId){
         return  deviceMapper.getInfoByCondition(name,number,deviceTypeId,appId);
+    }
+
+    public void updateImage(Device device){
+         deviceMapper.updateImage(device);
     }
 }

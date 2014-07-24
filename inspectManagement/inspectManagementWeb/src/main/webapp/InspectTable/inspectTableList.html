@@ -92,6 +92,7 @@
         $("#addSubmitBtn").click(function(){
             f_show();
             $("#addTableList input[name]").val("");
+            $("#adddescription").val("");
             $.ligerDialog.open({isDrag: true,title:'添加点检表', target: $("#addTableList")});
         });
         function f_show(){
@@ -116,7 +117,6 @@
                // $("#mainContainer").load("InspectTable/inspectTableList.html");
                 //$.post($.URL.inspectTable.getList,null,listCallback,"json");
                  $.ligerDialog.warn(data.message);
-
             }
         }
 

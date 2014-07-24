@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.inspectLocate.entity.InspectLocate;
 import org.whut.inspectManagement.business.inspectLocate.service.InspectLocateService;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -24,6 +25,9 @@ import java.util.Map;
 @Component
 @Path("/inspectLocate")
 public class InspectLocateServiceWeb {
+
+    public static final PlatformLogger logger = PlatformLogger.getLogger(InspectLocateServiceWeb.class);
+
      @Autowired
      private InspectLocateService inspectLocateService;
      @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -47,15 +51,21 @@ public class InspectLocateServiceWeb {
          inspectLocate=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,InspectLocate.class);
          long appId=UserContext.currentUserAppId();
          long userId = UserContext.currentUserId();
+         inspectLocate.setUserName(UserContext.currentUserName());
+         inspectLocate.setUpdateTime(new Date());
+         logger.info(jsonString);
          if(userId==inspectLocate.getUserId()){
              inspectLocate.setAppId(appId);
              Long id=inspectLocateService.validateIsExistRecord(appId,inspectLocate.getUserId());
 
              if(id!=null){
                  //用户已存在,update即可
+                 inspectLocate.setId(id);
+                 logger.info("update location info-id "+id);
                  inspectLocateService.update(inspectLocate);
              }else{
                  //用户不存在,insert即可
+                 logger.info("add location for "+inspectLocate.getUserName());
                  inspectLocateService.add(inspectLocate);
              }
              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

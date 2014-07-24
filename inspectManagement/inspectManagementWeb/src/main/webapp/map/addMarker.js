@@ -95,7 +95,8 @@ $.extend({
     ,myMouseover:function myMouseover(id){
         var inspectInfo="#inspectInfo"+id;
         var riskcontentId="#inspectItem"+id;
-        $(riskcontentId).removeClass("inspectItem").addClass("inspectItemHover");
+        $(".inspectItemHover").removeClass("inspectItemHover");
+        $(riskcontentId).addClass("inspectItemHover");
         $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
     }
 });

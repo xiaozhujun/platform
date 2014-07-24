@@ -117,6 +117,7 @@
    float: left;
 }
 .inspectItemHover{
+    border-bottom: 1px solid #BED5F3;
     width: 385px;
     /*height: 70px;*/
     padding: 1px;
@@ -125,6 +126,7 @@
     float: left;
 }
 .inspectItem:hover{
+    border-bottom: 1px solid #BED5F3;
     width: 385px;
     /*height: 70px;*/
     padding: 1px;

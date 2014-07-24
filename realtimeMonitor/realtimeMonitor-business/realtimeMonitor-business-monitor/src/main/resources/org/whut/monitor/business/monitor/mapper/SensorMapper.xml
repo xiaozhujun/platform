@@ -71,4 +71,10 @@
        </set>
        WHERE ID=#{id} AND APPID=#{appId}
     </update>
+
+    <select id="getSensorsByCollectorId" parameterType="map" resultMap="SensorResultMap">
+        SELECT *
+        FROM sensor
+        WHERE collectorId=#{collectorId} AND appId=#{appId}
+    </select>
 </mapper>

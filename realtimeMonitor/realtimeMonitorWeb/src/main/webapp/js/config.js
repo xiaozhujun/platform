@@ -47,13 +47,15 @@
             "delete":"rs/collector/delete",
             "getAreaNames":"rs/collector/getAreaNames",
             "getCollectorByAreaId":"rs/collector/getCollectorByAreaId",
-            "getCollectorNameListByAppId":"rs/collector/getCollectorNameListByAppId"
+            "getCollectorNameListByAppId":"rs/collector/getCollectorNameListByAppId",
+            "getCollectorByGroupId":"rs/collector/getCollectorByGroupId"
         },
         "sensor":{
             "add":"rs/sensor/add" ,
             "list":"rs/sensor/list",
             "update":"rs/sensor/update",
-            "delete":"rs/sensor/delete"
+            "delete":"rs/sensor/delete",
+            "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensor/data/{id}.htm"

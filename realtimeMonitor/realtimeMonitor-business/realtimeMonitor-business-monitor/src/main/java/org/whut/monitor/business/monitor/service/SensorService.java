@@ -33,4 +33,8 @@ public class SensorService {
     public int update(Sensor sensor){
         return sensorMapper.update(sensor);
     }
+
+    public List<Sensor> getSensorsByCollectorId(long collectorId,long appId){
+        return sensorMapper.getSensorsByCollectorId(collectorId,appId);
+    }
 }

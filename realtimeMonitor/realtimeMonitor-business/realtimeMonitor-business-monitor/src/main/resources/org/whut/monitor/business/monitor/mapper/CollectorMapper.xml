@@ -87,4 +87,10 @@
         FROM collector
         WHERE appId=#{appId}
     </select>
+
+    <select id="getCollectorNamesByGroupName" parameterType="map" resultMap="CollectorResultMap">
+        SELECT *
+        FROM collector c
+        WHERE c.groupId=#{groupId} AND appId=#{appId}
+    </select>
 </mapper>

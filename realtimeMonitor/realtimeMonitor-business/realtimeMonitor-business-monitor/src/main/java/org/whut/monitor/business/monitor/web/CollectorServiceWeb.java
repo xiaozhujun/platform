@@ -192,4 +192,13 @@ public class CollectorServiceWeb {
        List<String> list = collectorService.getCollectorNameListByAppId(appId);
        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCollectorByGroupId")
+    @POST
+    public String getCollectorByGroupId(@FormParam("groupId") long groupId){
+       long appId=UserContext.currentUserAppId();
+       List<Collector> list = collectorService.getCollectorNamesByGroupName(groupId,appId);
+       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }

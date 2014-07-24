@@ -47,4 +47,8 @@ public class CollectorService {
     public List<String> getCollectorNameListByAppId(long appId){
         return collectorMapper.getCollectorNameListByAppId(appId);
     }
+
+    public List<Collector> getCollectorNamesByGroupName(long groupId, long appId){
+        return collectorMapper.getCollectorNamesByGroupName(groupId, appId);
+    }
 }

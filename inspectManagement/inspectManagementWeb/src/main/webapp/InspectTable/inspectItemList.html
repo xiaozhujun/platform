@@ -1,212 +1,203 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
-    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <script src="lib/json2.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<title></title>
+<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css"/>
+<script src="lib/json2.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function () {
+    $.post($.URL.inspectItem.list, null, itemListCallback, "json");
+    $.post($.URL.inspectTable.getList, null, tableListCallBack, "json");
+    $.post($.URL.inspectChoice.getList, null, choiceListCallBack, "json");
+})
+var myData = [];
+function tableListCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j["text"] = content.name;
+            j["id"] = content.name;
+            myData.push(j);
+        });
+    }
+};
+$.post($.URL.inspectArea.getAreaNameByAppId, null, areaCallBack, "json");
+var areaData = []
+function areaCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j["text"] = content.name;
+            j["id"] = content.name;
+            areaData.push(j);
+        });
+    }
+}
+$.get($.URL.deviceType.list, null, deviceCallback, "json");
+var deviceData = [];
+function deviceCallback(data) {
+    if (data.code = 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j['id'] = content.name;
+            j['text'] = content.name;
+            deviceData.push(j);
+        });
+    }
+}
+var gridData = {};
+function itemListCallback(data) {
+    if (data.code == 200) {
+        gridData.Rows = data.data;
 
-    <script type="text/javascript">
-
-
-        $(function(){
-            $.post($.URL.inspectItem.list,null,itemListCallback,"json");
-            $.post($.URL.inspectTable.getList,null,tableListCallBack,"json");
-            $.post($.URL.inspectChoice.getList,null,choiceListCallBack,"json");
+        gridData.Total = data.data.length;
+        f_initGrid();
+    }
+}
+var inputData = [
+    { id: "0", text: '否' },
+    { id: "1", text: '是'}
+];
+var choiceData = [];
+function choiceListCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j["text"] = content.choiceValue;
+            j["id"] = content.choiceValue;
+            choiceData.push(j);
         })
-        var myData=[];
-        function tableListCallBack(data){
-            if(data.code==200){
-                $.each(data.data,function(index,content){
-                    var j={};
-                    j["text"]=content.name;
-                    j["id"]=content.name;
-                    myData.push(j);
-                });
-            }
-        };
-        $.post($.URL.inspectArea.getAreaNameByAppId,null,areaCallBack,"json");
-        var areaData=[]
-        function areaCallBack(data){
-            if(data.code==200){
-                $.each(data.data,function(index,content){
-                    var j={};
-                    j["text"]=content.name;
-                    j["id"]=content.name;
-                   areaData.push(j);
-                });
-            }
-        }
-        $.get($.URL.deviceType.list,null,deviceCallback,"json");
-        var deviceData=[];
-         function deviceCallback(data){
-            if(data.code=200){
-                $.each(data.data,function(index,content){
-                     var j={};
-                     j['id']=content.name;
-                     j['text']=content.name;
-                     deviceData.push(j);
-                });
-            }
-         }
-        var gridData = {};
-        function itemListCallback(data){
-            if(data.code==200){
-                gridData.Rows = data.data;
-
-                gridData.Total = data.data.length;
-                f_initGrid();
-            }
-        }
-        var inputData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
-        var choiceData =[];
-        function choiceListCallBack(data){
-            if(data.code==200){
-                $.each(data.data,function(index,content){
-                    var j={};
-                    j["text"]=content.choiceValue;
-                    j["id"]=content.choiceValue;
-                    choiceData.push(j);
-                })
-            }
-        }
-       var manager, g;
-        function f_initGrid()
-        {
-            g = manager = $("#maingrid").ligerGrid({
-                columns: [
-                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '点检项名',name: 'name',
-                        editor: { type: 'text'}
-                    },
-                    { display: '编号',name: 'number',type:'string',
-                        editor: { type: 'text'}
-                    },
-                    { display: '点检表',name: 'inspectTable',
-                        editor: { type:'select',emptyText:null,data:myData,valueField:'id',textField:'text'
-                        },
-                        render:function(item){
-                            return item.inspectTable;
-                        }
-                    },
-                    { display: '设备类型',name: 'deviceType',
-                        editor: { type:'select',emptyText:null,data:deviceData,valueField:'id',textField:'text'
-                        },
-                        render:function(item){
-                            return item.deviceType;
-                        }
-                    },
-
-                    { display: '点检区域',name: 'inspectArea',
-                        editor: { type:'select',emptyText:null,data:areaData,valueField:'id',textField:'text'
-                        },
-                        render:function(item){
-                            return item.inspectArea;
-                        }
-                    },
-                    { display: '是否输入',name: 'input',type:'string',width:70,
-                        editor: { type:'select',data:inputData,emptyText:null,valueField:'id',textField:'text'},
-                        render:function(item){
-                            if (parseInt(item.input) == 0) return '否';
-                            return '是';
-                        }
-                    },
-                    { display: '选值',name: 'choiceValue',type:'string',
-                        editor: { type:'select',emptyText:null, data:choiceData,valueField:'id',textField:'text',
-                            isMultiSelect:true,isShowCheckBox:true},
-                        render:function(item){
-                            return item.choiceValue;
-                        }
-                    },
-                    { display: '描述',name: 'description',
-                        editor: { type: 'text'}
-                    },
-                    { display: '创建时间',name: 'createtime',width:100},
-                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
-                    {
-                        var h = "";
-                        if (!rowdata._editing)
-                        {
-                            h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
-                            h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a> ";
-                        }
-                        else
-                        {
-                            h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
-                            h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
-                        }
-                        return h;
-                    }
-                    }
-                ],
-                onSelectRow: function (rowdata, rowindex)
-                {
-                    $("#txtrowindex").val(rowindex);
+    }
+}
+var manager, g;
+function f_initGrid() {
+    g = manager = $("#maingrid").ligerGrid({
+        columns: [
+            { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+            { display: '点检项名', name: 'name',
+                editor: { type: 'text'}
+            },
+            { display: '编号', name: 'number', type: 'string',
+                editor: { type: 'text'}
+            },
+            { display: '点检表', name: 'inspectTable',
+                editor: { type: 'select', emptyText: null, data: myData, valueField: 'id', textField: 'text'
                 },
-                enabledEdit: true,clickToEdit:false, isScroll: false,
-                data: gridData,
-                width: '100%'
-            });
-        }
-        function beginEdit(rowid) {
-            manager.beginEdit(rowid);
-        }
-        function cancelEdit(rowid) {
-            manager.cancelEdit(rowid);
-        }
-        function endEdit(rowid)
-        {
-            manager.endEdit(rowid);
-            var row = manager.getRow(rowid);
-            var jsonString  = $.toJSON(row);
-            $.post($.URL.inspectItem.update,{"jsonString":jsonString},updateCallback,"json");
-        }
+                render: function (item) {
+                    return item.inspectTable;
+                }
+            },
+            { display: '设备类型', name: 'deviceType',
+                editor: { type: 'select', emptyText: null, data: deviceData, valueField: 'id', textField: 'text'
+                },
+                render: function (item) {
+                    return item.deviceType;
+                }
+            },
 
-        function updateCallback(data){
-            if(data.code==200){
-                $.post($.URL.inspectItem.list,null,itemListCallback,"json");
-                $.ligerDialog.success("修改成功");
-
+            { display: '点检区域', name: 'inspectArea',
+                editor: { type: 'select', emptyText: null, data: areaData, valueField: 'id', textField: 'text'
+                },
+                render: function (item) {
+                    return item.inspectArea;
+                }
+            },
+            { display: '是否输入', name: 'input', type: 'string', width: 70,
+                editor: { type: 'select', data: inputData, emptyText: null, valueField: 'id', textField: 'text'},
+                render: function (item) {
+                    if (parseInt(item.input) == 0) return '否';
+                    return '是';
+                }
+            },
+            { display: '选值', name: 'choiceValue', type: 'string',
+                editor: { type: 'select', emptyText: null, data: choiceData, valueField: 'id', textField: 'text',
+                    isMultiSelect: true, isShowCheckBox: true},
+                render: function (item) {
+                    return item.choiceValue;
+                }
+            },
+            { display: '描述', name: 'description',
+                editor: { type: 'text'}
+            },
+            { display: '创建时间', name: 'createtime', width: 100},
+            { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value) {
+                var h = "";
+                if (!rowdata._editing) {
+                    h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
+                    h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a> ";
+                }
+                else {
+                    h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
+                    h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
+                }
+                return h;
             }
-            else{
-                $.post($.URL.inspectItem.list,null,itemListCallback,"json");
-               // $("#mainContainer").load("InspectTable/inspectItemList.html");
-                $.ligerDialog.warn(data.message);
             }
-        }
+        ],
+        onSelectRow: function (rowdata, rowindex) {
+            $("#txtrowindex").val(rowindex);
+        },
+        enabledEdit: true, clickToEdit: false, isScroll: false,
+        data: gridData,
+        width: '100%'
+    });
+}
+function beginEdit(rowid) {
+    manager.beginEdit(rowid);
+}
+function cancelEdit(rowid) {
+    manager.cancelEdit(rowid);
+}
+function endEdit(rowid) {
+    manager.endEdit(rowid);
+    var row = manager.getRow(rowid);
+    var jsonString = $.toJSON(row);
+    $.post($.URL.inspectItem.update, {"jsonString": jsonString}, updateCallback, "json");
+}
 
-        function deleteRow(rowid)
-        {
-            if (confirm('确定删除?'))
-            {
-                var row = manager.getRow(rowid);
-                var jsonString  = $.toJSON(row);
-                $.post($.URL.inspectItem.delete,{"jsonString":jsonString},deleteCallback,"json");
-                manager.deleteRow(rowid);
-            }
-        }
+function updateCallback(data) {
+    if (data.code == 200) {
+        $.post($.URL.inspectItem.list, null, itemListCallback, "json");
+        $.ligerDialog.success("修改成功");
 
-        function deleteCallback(data){
-            if(data.code==200){
-                $.ligerDialog.success("成功删除！");
-            }else{
-                $.ligerDialog.success("删除失败！");
-            }
-        }
+    }
+    else {
+        $.post($.URL.inspectItem.list, null, itemListCallback, "json");
+        // $("#mainContainer").load("InspectTable/inspectItemList.html");
+        $.ligerDialog.warn(data.message);
+    }
+}
 
-        var newrowid = 100;
-        function addNewRow()
-        {
-            manager.addEditRow();
-        }
-  //弹出框实现方法
+function deleteRow(rowid) {
+    if (confirm('确定删除?')) {
+        var row = manager.getRow(rowid);
+        var jsonString = $.toJSON(row);
+        $.post($.URL.inspectItem.delete, {"jsonString": jsonString}, deleteCallback, "json");
+        manager.deleteRow(rowid);
+    }
+}
+
+function deleteCallback(data) {
+    if (data.code == 200) {
+        $.ligerDialog.success("成功删除！");
+    } else {
+        $.ligerDialog.success("删除失败！");
+    }
+}
+var newrowid = 100;
+function addNewRow() {
+    manager.addEditRow();
+}
+//弹出框实现方法
 //        $("#addSubmitBtn").click(function(){
 //            f_show();
 //            $.ligerDialog.open({showMin: true,title:'添加点检项', target: $("#add")});
@@ -214,58 +205,56 @@
 //        function f_show(){
 //            $('#add').css({opacity:0.8});
 //        }
-
-        $(function(){
-            $("#submitBtn").click(function(){
-                var data = {};
-                data.choiceValue = $("#inspectTable").val();
-                data.choiceValue = $("#deviceType").val();
-                data.choiceValue = $("#inspectArea").val();
-                $.post($.URL.inspectItem.add,data,{"jsonStringList":data},"json") ;
-            });
-        });
-        function addCallBack(data){
-            if(data.code==200){
-                $.ligerDialog.success(data.message);
-                $("#mainContainer").load("InspectTable/inspectItemList.html");
-            }
-            else{
-                $.ligerDialog.warn(data.message);
-                $("#mainContainer").load("InspectTable/inspectItemList.html");
-            }
-        }
-
-        $("#addSubmitBtn").click(function(){
-            $("#mainContainer").load("InspectTable/addInspectItem.html");
-        });
-
-
-
-
-    </script>
-    <style type="text/css">
-        .l-table-edit {}
-        .l-table-edit-td{ padding:4px;}
-        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
-        .l-dialog-tc{background:#E0EDFF; }
-    </style>
+$(function () {
+    $("#submitBtn").click(function () {
+        var data = {};
+        data.choiceValue = $("#inspectTable").val();
+        data.choiceValue = $("#deviceType").val();
+        data.choiceValue = $("#inspectArea").val();
+        $.post($.URL.inspectItem.add, data, {"jsonStringList": data}, "json");
+    });
+});
+function addCallBack(data) {
+    if (data.code == 200) {
+        $.ligerDialog.success(data.message);
+        $("#mainContainer").load("InspectTable/inspectItemList.html");
+    }
+    else {
+        $.ligerDialog.warn(data.message);
+        $("#mainContainer").load("InspectTable/inspectItemList.html");
+    }
+}
+$("#addSubmitBtn").click(function () {
+    $("#mainContainer").load("InspectTable/addInspectItem.html");
+});
+</script>
+<style type="text/css">
+    .l-table-edit {
+    }
+    .l-table-edit-td {
+        padding: 4px;
+    }
+    .l-button-submit, .l-button-reset {
+        width: 80px;
+        float: left;
+        margin-left: 10px;
+        padding-bottom: 2px;
+    }
+    .l-dialog-tc {
+        background: #E0EDFF;
+    }
+</style>
 </head>
-<body  style="padding:10px">
-
-
+<body style="padding:10px">
 <div id="list">
-    <div><input type="button" value="添加点检项" id="addSubmitBtn" class="l-button l-button-submit" /></div>
+    <div><input type="button" value="添加点检项" id="addSubmitBtn" class="l-button l-button-submit"/></div>
     <div class="l-clear"></div>
-    <div id="maingrid" style="margin-top:5px"></div> <br />
+    <div id="maingrid" style="margin-top:5px"></div>
+    <br/>
 </div>
-
-
-
-
-
 <div class="l-clear"></div>
-<div id="maingrid" style="margin-top:20px"></div> <br />
-
+<div id="maingrid" style="margin-top:20px"></div>
+<br/>
 <div style="display:none;">
     <!-- g data total ttt -->
 </div>

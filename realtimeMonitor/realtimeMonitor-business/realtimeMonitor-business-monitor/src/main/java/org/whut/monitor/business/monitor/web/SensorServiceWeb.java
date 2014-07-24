@@ -244,4 +244,13 @@ public class SensorServiceWeb {
         else
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getSensorsByCollectorId")
+    @POST
+    public String getSensorsByCollectorId(@FormParam("collectorId") long collectorId){
+        long appId=UserContext.currentUserAppId();
+        List<Sensor> list=sensorService.getSensorsByCollectorId(collectorId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }

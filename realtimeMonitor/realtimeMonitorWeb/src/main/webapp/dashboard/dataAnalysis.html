@@ -20,9 +20,9 @@
     <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
-            var groupList = {code:200,data:[{id:1,name:'分组1'},{id:2,name:'分组2'},{id:3,name:'分组3'},{id:4,name:'分组4'}]};
-            groupListCallback(groupList);
-
+            $.post($.URL.group.list,null,groupListCallback,"json");
+            //var groupList = {code:200,data:[{id:1,name:'分组1'},{id:2,name:'分组2'},{id:3,name:'分组3'},{id:4,name:'分组4'}]};
+            //groupListCallback(groupList);
             $("#dataSubmitBtn1").click(function(){
                 getDataList();
             });
@@ -31,6 +31,15 @@
             var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
             $("#startTime").ligerDateEditor({initValue: dd});
             $("#endTime").ligerDateEditor({initValue: dd});
+            $("#collectorName").ligerComboBox({
+                data:null,valueFieldID:"collectorNameSelect",emptyText:null,
+                onSelected:function(collectorId){
+                    $.post($.URL.sensor.getSensorsByCollectorId,{"collectorId":collectorId},getSensorsByCollectorIdCallback,"json");
+                }
+            });
+            $("#monitorName").ligerComboBox({
+                data:null,valueFieldId:"sensorNameSelect",emptyText:null
+            });
         });
         function groupListCallback(data){
             if(data.code==200){
@@ -42,27 +51,42 @@
                     groupData.push(d);
                 }
                 $("#groupName").ligerComboBox({
-                    data:groupData,valueFieldID:"groupNameSelect"
+                    data:groupData,valueFieldID:"groupNameSelect",emptyText:null,
+                    onSelected:function(groupId){
+                        if(groupId!=null){
+                            $.post($.URL.collector.getCollectorByGroupId,{"groupId":groupId},function getCollectorByGroupIdCallback(data){
+                                if(data.code==200){
+                                    var collectorData=[];
+                                    $.each(data.data,function(index,content){
+                                        var j={};
+                                        j["text"]=content.name;
+                                        j["id"]=content.id;
+                                        collectorData.push(j);
+                                    })
+                                    liger.get("collectorName").setData(collectorData);
+                                }
+                            },"json");
+                        }
+                    }
                 });
             }
         }
-        function collectorListCallback(data){
+        function getSensorsByCollectorIdCallback(data){
             if(data.code==200){
-                var collectorData=[];
+                var sensorData=[];
                 for(var i=0;i<data.data.length;i++){
                     var d={};
                     d['text']=data.data[i].name;
                     d['id']=data.data[i].id;
-                    collectorData.push(d);
+                    sensorData.push(d);
                 }
-                $("#collectorName").ligerComboBox({
-                    data:collectorData,valueFieldID:"collectorNameSelect"
-                });
+                liger.get("monitorName").setData(sensorData);
             }
         }
 
         function getDataList(){
             var group=$("#groupNameSelect").val();
+            alert(group);
             var collector=$("#collectorNameSelect").val();
             var monitor=$("#monitorNameSelect").val();
             var sTime=$("#startTime").val();

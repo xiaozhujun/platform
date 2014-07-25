@@ -55,6 +55,7 @@
             "list":"rs/sensor/list",
             "update":"rs/sensor/update",
             "delete":"rs/sensor/delete",
+            "getMongoDataList":"rs/sensor/getMongoDataList",
             "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId"
         },
         "sensors":{

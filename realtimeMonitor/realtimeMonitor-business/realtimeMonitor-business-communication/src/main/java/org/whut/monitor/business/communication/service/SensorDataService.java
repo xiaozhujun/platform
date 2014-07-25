@@ -45,8 +45,9 @@ public class SensorDataService {
                 curSensor = (DBObject)sensors.get(i);
                 String sensor = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")).toString();
                 //long timestamp = new Date().getTime();
-
+                System.out.println(curSensor+"jjjjjjjjjjjjjjjj");
                 String temp = mongoConnector.insertDocumentObject(curSensor);
+
                 if(objectID!=null){
                     if(redisConnector.set(sensor,keyExpireTime,temp)){
                         objectID+=temp + " ";

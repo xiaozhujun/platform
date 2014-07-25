@@ -1,5 +1,6 @@
 package org.whut.monitor.business.monitor.web;
 
+import com.mongodb.DBObject;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,14 @@ import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.monitor.business.monitor.service.SensorService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.logger.PlatformLogger;
+import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
-import javax.ws.rs.*;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
@@ -253,4 +258,21 @@ public class SensorServiceWeb {
         List<Sensor> list=sensorService.getSensorsByCollectorId(collectorId,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getMongoDataList")
+    @POST
+    public String getMongoDataList(){
+        MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
+        getList=mongoConnector.getDbArrayListFromMongo2();
+        List a=new ArrayList();
+        for(int i=0;i<getList.size();i++){
+            for(int j=0;j<getList.get(i).size();j++){
+                a.add(getList.get(i).get(j));
+            }}
+        return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
+    }
 }
+

@@ -21,12 +21,10 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.group.list,null,groupListCallback,"json");
-            //var groupList = {code:200,data:[{id:1,name:'分组1'},{id:2,name:'分组2'},{id:3,name:'分组3'},{id:4,name:'分组4'}]};
-            //groupListCallback(groupList);
             $("#dataSubmitBtn1").click(function(){
+                $.post($.URL.sensor.list,null,sensorListCallback,"json");
                 getDataList();
             });
-
             var d=new Date();
             var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
             $("#startTime").ligerDateEditor({initValue: dd});
@@ -41,6 +39,14 @@
                 data:null,valueFieldId:"sensorNameSelect",emptyText:null
             });
         });
+        var gridData = {};
+        function sensorListCallback(data){
+            if(data.code==200){
+               gridData.Rows = data.data;
+               gridData.Total = data.data.length;
+               f_initGrid();
+            }
+        }
         function groupListCallback(data){
             if(data.code==200){
                 var groupData=[];
@@ -83,7 +89,32 @@
                 liger.get("monitorName").setData(sensorData);
             }
         }
-
+        var currentMonitor,grid;
+        function f_initGrid()
+        {
+            grid = $("#maingrid").ligerGrid({
+                columns: [
+                    { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
+                    { display: '测量组', name: 'groupName' },
+                    { display: '采集仪名称', width: 50, name: 'collectorName'},
+                    { display: '传感器名称', name: 'name' },
+                    { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
+                    {
+                        var h = "";
+                        h += "<a href='javascript:getInfo(" + rowindex + ")'>查看</a> ";
+                        return h;
+                    }
+                    }
+                ],
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: gridData,
+                width: '100%'
+            });
+        }
+        function getInfo(rowindex){
+            currentMonitor = grid.getRow(rowindex);
+            $("#maingrid").load("dashboard/allData.html");
+        }
         function getDataList(){
             var group=$("#groupNameSelect").val();
             alert(group);
@@ -101,10 +132,11 @@
     <div class="searchItem"><span class="item_font">监测组:</span><span class="item_input"><input id="groupName" type="text"></span></div>
     <div class="searchItem"><span class="item_font">采集仪:</span><span class="item_input"><input id="collectorName" type="text"></span></div>
     <div class="searchItem"><span class="item_font">传感器:</span><span class="item_input"><input id="monitorName" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="startTime" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="endTime" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn1" class="l-button l-button-submit" /></span></div>
 </div>
-<div class="reportContent" id="dataShow"></div>
+<div id="maingrid" class="reportContent" ></div>
+<div id="dataShow" class="reportContent" >
+
+</div>
 </body>
 </html>

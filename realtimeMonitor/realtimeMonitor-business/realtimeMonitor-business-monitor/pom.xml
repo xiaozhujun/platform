@@ -37,6 +37,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
         </dependency>
@@ -62,6 +68,12 @@
         <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-orm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>fundamental-mongoConnector</artifactId>
             <version>${project.version}</version>
         </dependency>
 

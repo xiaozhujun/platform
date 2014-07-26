@@ -47,7 +47,8 @@
             "delete":"rs/collector/delete",
             "getAreaNames":"rs/collector/getAreaNames",
             "getCollectorByAreaId":"rs/collector/getCollectorByAreaId",
-            "getCollectorNameListByAppId":"rs/collector/getCollectorNameListByAppId"
+            "getCollectorNameListByAppId":"rs/collector/getCollectorNameListByAppId",
+            "getCollectorByGroupId":"rs/collector/getCollectorByGroupId"
         },
         "sensor":{
             "add":"rs/sensor/add" ,
@@ -59,6 +60,10 @@
         },
         "algorithm":{
             "meanVarianceValue":"rs/algorithm/meanVarianceValue/"
+            "delete":"rs/sensor/delete",
+            "getMongoDataList":"rs/sensor/getMongoDataList",
+            "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
+            "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensor/data/{id}.htm"

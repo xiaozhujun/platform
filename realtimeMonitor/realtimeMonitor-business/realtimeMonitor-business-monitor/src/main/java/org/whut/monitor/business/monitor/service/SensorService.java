@@ -26,12 +26,20 @@ public class SensorService {
     public List<Map<String,String>> list(long appId){
          return sensorMapper.list(appId);
     }
+    public List<Map<String,String>> listByGroupCollectionAndMonitor(long appId,String group,String collector,String monitor){
+        return sensorMapper.listByGroupCollectionAndMonitor(appId,group,collector,monitor);
+    }
+
     public int deleteById(long id){
        return sensorMapper.deleteById(id);
     }
 
     public int update(Sensor sensor){
         return sensorMapper.update(sensor);
+    }
+
+    public List<Sensor> getSensorsByCollectorId(long collectorId,long appId){
+        return sensorMapper.getSensorsByCollectorId(collectorId,appId);
     }
 
     public List<Map<String,String>> homePageList(long appId) {

@@ -240,21 +240,21 @@ public class InspectTableRecordService {
     }
       public String insertToInspectItemRecordCollection(List<InspectItemRecord> inspectItemRecords){
           int len=inspectItemRecords.size();
-          String mongoString="{inspectitemrecords:[";
+          String mongoString="{\"inspectitemrecords\":[";
           for(int i=0;i<len;i++){
               String mongoId=inspectItemRecords.get(i).getUserId()+""+inspectItemRecords.get(i).getDeviceId()+""+inspectItemRecords.get(i).getInspectTableId();
-              mongoString+="{'inspectTableId':'"+inspectItemRecords.get(i).getInspectTableId()+
-                      "','inspectTagId':'"+inspectItemRecords.get(i).getInspectTagId()+"','inspectItemId':'"+inspectItemRecords.get(i).getInspectItemId()+
-                      "','inspectChoiceId':'"+inspectItemRecords.get(i).getInspectChoiceId()+"','inspectChoiceValue':'"+inspectItemRecords.get(i).getInspectChoiceValue()+
-                      "','inspectTableRecordId':'"+inspectItemRecords.get(i).getInspectTableRecordId()+"','userId':'"+inspectItemRecords.get(i).getUserId()+
-                      "','deviceId':'"+inspectItemRecords.get(i).getDeviceId()+"','appId':'"+inspectItemRecords.get(i).getAppId()+"','note':'"+inspectItemRecords.get(i).getNote()+"'},";
-            if(i+1==len){
-                mongoString+="{'inspectTableId':'"+inspectItemRecords.get(i).getInspectTableId()+
-                        "','inspectTagId':'"+inspectItemRecords.get(i).getInspectTagId()+"','inspectItemId':'"+inspectItemRecords.get(i).getInspectItemId()+
-                        "','inspectChoiceId':'"+inspectItemRecords.get(i).getInspectChoiceId()+"','inspectChoiceValue':'"+inspectItemRecords.get(i).getInspectChoiceValue()+
-                        "','inspectTableRecordId':'"+inspectItemRecords.get(i).getInspectTableRecordId()+"','userId':'"+inspectItemRecords.get(i).getUserId()+
-                        "','deviceId':'"+inspectItemRecords.get(i).getDeviceId()+"','appId':'"+inspectItemRecords.get(i).getAppId()+"','note':'"+inspectItemRecords.get(i).getNote()+"'}";
-            }
+              mongoString+="{\"inspectTableId\":\""+inspectItemRecords.get(i).getInspectTableId()+
+                      "\",\"inspectTagId\":\""+inspectItemRecords.get(i).getInspectTagId()+"\",\"inspectItemId\":\""+inspectItemRecords.get(i).getInspectItemId()+
+                      "\",\"inspectChoiceId\":\""+inspectItemRecords.get(i).getInspectChoiceId()+"\",\"inspectChoiceValue\":\""+inspectItemRecords.get(i).getInspectChoiceValue()+
+                      "\",\"inspectTableRecordId\":\""+inspectItemRecords.get(i).getInspectTableRecordId()+"\",\"userId\":\""+inspectItemRecords.get(i).getUserId()+
+                      "\",\"deviceId\":\""+inspectItemRecords.get(i).getDeviceId()+"\",\"appId\":\""+inspectItemRecords.get(i).getAppId()+"\",\"note\":\""+inspectItemRecords.get(i).getNote()+"\"},";
+              if(i+1==len){
+                  mongoString+="{\"inspectTableId\":\""+inspectItemRecords.get(i).getInspectTableId()+
+                          "\",\"inspectTagId\":\""+inspectItemRecords.get(i).getInspectTagId()+"\",\"inspectItemId\":\""+inspectItemRecords.get(i).getInspectItemId()+
+                          "\",\"inspectChoiceId\":\""+inspectItemRecords.get(i).getInspectChoiceId()+"\",\"inspectChoiceValue\":\""+inspectItemRecords.get(i).getInspectChoiceValue()+
+                          "\",\"inspectTableRecordId\":\""+inspectItemRecords.get(i).getInspectTableRecordId()+"\",\"userId\":\""+inspectItemRecords.get(i).getUserId()+
+                          "\",\"deviceId\":\""+inspectItemRecords.get(i).getDeviceId()+"\",\"appId\":\""+inspectItemRecords.get(i).getAppId()+"\",\"note\":\""+inspectItemRecords.get(i).getNote()+"\"}";
+              }
           }
           mongoString+="]}";
           return mongoConnector.insertDocument(mongoString);

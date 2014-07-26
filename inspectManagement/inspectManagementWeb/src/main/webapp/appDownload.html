@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>智能物联巡检平台-手机版</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <style type="text/css">
+        body{ padding:10px; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
+        #layout{  width:100%; margin:0;  height:100%; padding:0;}
+        #main{margin: 0 auto; width: 800px;position: relative;}
+        #main ul{height: 300px;overflow: visible;margin-top: 20px;}
+        #main ul li{height: 200px;padding: 0;float: left;padding: 10px;}
+        #main ul li span{color: #787878;font-size: 25px;font-family: 宋体;line-height: 50px;height: 50px;margin: 0;padding: 0;float: right;}
+        #main ul li p{ color: #787878;font-family: Arial,Helvetica,sans-serif;font-size: 15px;line-height: 18px;}
+        #qrcode-des{text-align: center;}
+        #linkLi{background: url("app/dashline.jpg") repeat-y scroll right 10px rgba(0, 0, 0, 0);}
+        #linkLi div img{float: left;}
+    </style>
+</head>
+<body>
+<div id="layout">
+    <div id="mainContainer" position="center" title="">
+        <div id="main">
+            <ul>
+                <li id="linkLi">
+                    <div>
+                        <img height="50px" src="app/android.jpg">
+                        <span>下载Android客户端</span>
+                    </div>
+                    <a href="app/inspect-android.apk"><img src="app/download.jpg"></a>
+                    <p>版本：内测版<br>适用：Android 2.1以上<br>发布日期：2014-05-15</p>
+
+                </li>
+                <li>
+                    <div>
+                        <img height="150px" src="app/android_qrcode.png">
+                    </div>
+                    <p id="qrcode-des">
+                        使用手机上的二维码
+                        <br>
+                        软件扫描下载
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="titleContainer" position="top"></div>
+</div>
+<div style="display:none;">
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#layout").ligerLayout({leftWidth:200});
+        $("#titleContainer").load("title.html");
+    });
+</script>
+</body>
+</html>

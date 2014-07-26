@@ -48,6 +48,21 @@
         WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=#{appId}
     </select>
 
+    <select id="listByGroupCollectionAndMonitor" parameterType="map" resultType="map">
+        SELECT s.id,s.`name` AS sensorName,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
+        FROM `group` g,area a,collector c,sensor s
+        WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=#{appId}
+        <if test='group!="null"'>
+            AND  g.`name`=#{group}
+        </if>
+        <if test='collector!="null"'>
+            AND  c.`name`=#{collector}
+        </if>
+        <if test='monitor!="null"'>
+            AND  s.`name`=#{monitor}
+        </if>
+    </select>
+
     <delete id="deleteById" parameterType="java.lang.Long">
         DELETE FROM sensor
         WHERE id=#{id};
@@ -85,4 +100,10 @@
         </set>
         WHERE id=#{id} AND appId=#{appId}
     </update>
+
+    <select id="getSensorsByCollectorId" parameterType="map" resultMap="SensorResultMap">
+        SELECT *
+        FROM sensor
+        WHERE collectorId=#{collectorId} AND appId=#{appId}
+    </select>
 </mapper>

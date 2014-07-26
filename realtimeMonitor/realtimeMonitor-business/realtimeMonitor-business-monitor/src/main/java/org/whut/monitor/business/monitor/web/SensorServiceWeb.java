@@ -1,5 +1,6 @@
 package org.whut.monitor.business.monitor.web;
 
+import com.mongodb.DBObject;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -13,10 +14,14 @@ import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.monitor.business.monitor.service.SensorService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.logger.PlatformLogger;
+import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
-import javax.ws.rs.*;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -277,4 +282,40 @@ public class SensorServiceWeb {
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getSensorsByCollectorId")
+    @POST
+    public String getSensorsByCollectorId(@FormParam("collectorId") long collectorId){
+        long appId=UserContext.currentUserAppId();
+        List<Sensor> list=sensorService.getSensorsByCollectorId(collectorId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getMongoDataList")
+    @POST
+    public String getMongoDataList(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+       //System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime);
+        MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
+        getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime);
+        List a=new ArrayList();
+        for(int i=0;i<getList.size();i++){
+            for(int j=0;j<getList.get(i).size();j++){
+                a.add(getList.get(i).get(j));
+            }}
+        return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getListByGroupCollectionAndMonitor")
+    @POST
+    public String getListByGroupCollectionAndMonitor(@FormParam("groupName")String groupName,@FormParam("collectorName")String collectorName,@FormParam("monitorName")String monitorName){
+        //System.out.println(groupName+"dddddddddddddddddddddddddddddd"+collectorName+"jjjjjjjjjjjjjjjjjjjjjj"+monitorName);
+        long appId=UserContext.currentUserAppId();
+        List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.listByGroupCollectionAndMonitor(appId,groupName,collectorName,monitorName);
+        return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupCollectionAndMonitor, JsonResultUtils.Code.SUCCESS);
+    }
 }
+

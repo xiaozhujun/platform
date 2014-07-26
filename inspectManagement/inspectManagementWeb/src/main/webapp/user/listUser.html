@@ -56,6 +56,7 @@
         function f_initGrid()
         {
             g = manager = $("#maingrid").ligerGrid({
+                rowHeight:50,
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '用户名',name: 'name',
@@ -85,6 +86,16 @@
                         }
 
                     },
+                    { display: '图片', name: 'image', type: 'text',
+                        editor: { type: 'select', data: myData, valueField: 'type'},
+                        render:function(item){
+                            if(item.image!=null){
+                                return "<img height='50' src='"+item.image+"'> "
+                            }else{
+                                return "<img height='50' src='images/userDefaultIcon.jpg'> "
+                            }
+                        }
+                    },
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -92,6 +103,7 @@
                         {
                             h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
                             h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a> ";
+                            h +="<a href='javascript:uploadImage("+ rowindex +")'>上传图片</a> " ;
                         }
                         else
                         {
@@ -157,6 +169,26 @@
         function addNewRow()
         {
             manager.addEditRow();
+        }
+
+        function uploadImage(rowid){
+            var user = manager.getRow(rowid);
+            uploadUserImage(user);
+        }
+
+        function uploadUserImage(user){
+            $.ligerDialog.open({
+                height:500,
+                width: 800,
+                title : '上传图片',
+                url: 'user/uploadImage.html',
+                showMax: false,
+                showToggle: true,
+                showMin: false,
+                isResize: false,
+                slide: false,
+                data:{user: user}
+            });
         }
 
     </script>

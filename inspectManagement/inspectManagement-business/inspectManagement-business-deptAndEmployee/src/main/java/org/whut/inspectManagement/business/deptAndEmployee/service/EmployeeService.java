@@ -6,6 +6,7 @@ import org.whut.inspectManagement.business.deptAndEmployee.mapper.EmployeeMapper
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2014/5/19.
@@ -35,7 +36,7 @@ public class EmployeeService {
         return employeeMapper.getByUserId(id);
     }
 
-    public List<Employee> getListByAppId(long appId)
+    public List<Map<String,Object>> getListByAppId(long appId)
     {
         return employeeMapper.getListByAppId(appId);
     }

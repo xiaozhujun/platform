@@ -84,6 +84,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>realtimeMonitor</groupId>
+            <artifactId>realtimeMonitor-business-algorithm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

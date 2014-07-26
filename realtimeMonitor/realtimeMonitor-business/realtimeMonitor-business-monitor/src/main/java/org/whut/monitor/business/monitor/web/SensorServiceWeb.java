@@ -2,6 +2,7 @@ package org.whut.monitor.business.monitor.web;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Sensor;
@@ -17,6 +18,7 @@ import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -243,5 +245,36 @@ public class SensorServiceWeb {
         }
         else
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/homePageList")
+    @POST
+    public String homePageList() {
+        long appId = UserContext.currentUserAppId();
+        List<Map<String,String>> homePageList = sensorService.homePageList(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(homePageList, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/updateWarnCount")
+    @POST
+    public String updateWarnCount(@FormParam("count") long count,@FormParam("groupName") String groupName,@FormParam("areaName")String areaName,
+                                  @FormParam("name")String name,@FormParam("collectorName")String collectorName,@FormParam("number")String number){
+        long sensorWarnCount =count;
+        long appId = UserContext.currentUserAppId();
+        long id;
+        try {
+            id = sensorService.getSensorId(groupName,areaName,collectorName,name,number,appId);
+        } catch (Exception e) {
+            id = 0;
+        }
+        if (id != 0) {
+            sensorService.updateWarnCount(sensorWarnCount,id,appId);
+        }
+        else {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"采集仪不存在");
+        }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

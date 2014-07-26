@@ -53,7 +53,12 @@
             "add":"rs/sensor/add" ,
             "list":"rs/sensor/list",
             "update":"rs/sensor/update",
-            "delete":"rs/sensor/delete"
+            "delete":"rs/sensor/delete",
+            "homePage":"rs/sensor/homePageList",
+            "updateWarnCount":"rs/sensor/updateWarnCount"
+        },
+        "algorithm":{
+            "meanVarianceValue":"rs/algorithm/meanVarianceValue/"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensor/data/{id}.htm"

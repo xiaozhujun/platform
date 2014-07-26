@@ -33,4 +33,12 @@ public class SensorService {
     public int update(Sensor sensor){
         return sensorMapper.update(sensor);
     }
+
+    public List<Map<String,String>> homePageList(long appId) {
+        return sensorMapper.homePageList(appId);
+    }
+
+    public void updateWarnCount(long warnCount,long id,long appId) {
+        sensorMapper.updateWarnCount(warnCount,id,appId);
+    }
 }

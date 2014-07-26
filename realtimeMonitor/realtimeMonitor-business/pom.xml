@@ -15,6 +15,7 @@
         <module>realtimeMonitor-business-report</module>
         <module>realtimeMonitor-business-communication</module>
         <module>realtimeMonitor-business-monitor</module>
+        <module>realtimeMonitor-business-algorithm</module>
     </modules>
 
 </project>

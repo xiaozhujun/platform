@@ -19,5 +19,7 @@ public interface SensorMapper extends AbstractMapper<Sensor>{
     public List<Map<String,String>> list(long appId);
     public List<Map<String,String>> listByGroupCollectionAndMonitor(@Param("appId") long appId,@Param("group") String group,@Param("collector") String collector,@Param("monitor") String monitor);
     public int deleteById(long id);
+    public List<Map<String,String>> homePageList(long appId);
+    public void updateWarnCount(@Param("warnCount")long warnCount,@Param("id")long id,@Param("appId")long appId);
     public List<Sensor> getSensorsByCollectorId(@Param("collectorId") long collectorId,@Param("appId") long appId);
 }

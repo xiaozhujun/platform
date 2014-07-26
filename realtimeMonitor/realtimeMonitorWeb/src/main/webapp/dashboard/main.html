@@ -15,77 +15,158 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        var tempURL = $.URL.algorithm.meanVarianceValue;
+        $(document).ready(function() {
+            $.post($.URL.sensor.homePage,null,gridCallback,"json");
+        });
+        var gridData = {};
+//        var gridData_right={};
+        function gridCallback(data) {
+            if(data.code == 200) {
+                gridData.Rows = data.data;
+                gridData.Total = data.length;
+//                $.each(data.data,function(index,content){
+//                    var j={};
+//                    j["status"]=content.status;
+//                    alert(content.status);
+//                    j["collectorName"]=content.collectorName;
+//                   gridData_right.push(j);
+//                });
+               f_initGrid();
+                f_initRightGrid();
+            }
+        }
+        var grid;
+        var h = "";
+        var meanVarianceValue = "";
+        var sensorJumpName = [];
 
-            var grid,grid_right;
-            var gridData = [
-                {id:'01',name:'北京科贸╱1╱垂直',type:'均方差(um/s)',data:'20.754',position:'垂直',count:'27',area:'设备1'},
-                {id:'02',name:'北京科贸╱2╱南北',type:'均方差(um/s)',data:'28.217',position:'南北',count:'119',area:'设备1'},
-                {id:'03',name:'北京科贸╱3╱东西',type:'均方差(um/s)',data:'24.161',position:'东西',count:'471',area:'设备1'},
-                {id:'04',name:'北京科实╱1╱',type:'均方差(um/s)',data:'0.096',position:'',count:'7',area:'设备1'},
-                {id:'05',name:'北京科实╱2╱',type:'均方差(um/s)',data:'0.119',position:'',count:'',area:'设备1'},
-                {id:'06',name:'北京科实╱3╱2',type:'均方差(um/s)',data:'0.094',position:'2',count:'',area:'设备1'},
-                {id:'07',name:'西安╱1╱垂直',type:'均方差(um/s)',data:'0.096',position:'垂直',count:'',area:'设备2'},
-                {id:'08',name:'西安╱2╱南北',type:'均方差(um/s)',data:'5.84',position:'南北',count:'145',area:'设备2'},
-                {id:'09',name:'西安╱3╱东西',type:'均方差(um/s)',data:'0.096',position:'东西',count:'2',area:'设备2'},
-                {id:'10',name:'成都╱1╱垂直',type:'均方差(um/s)',data:'0.897',position:'垂直',count:'8',area:'设备3'}
-            ];
-
-
-
-            var gridData_right = [
-                {id:'01',name:'北京科贸',status:'online'},
-                {id:'02',name:'噪声监测-2',status:'offline'},
-                {id:'03',name:'噪声监测-3',status:'offline'},
-                {id:'04',name:'噪声监测-4',status:'offline'},
-                {id:'05',name:'北京科实',status:'offline'},
-                {id:'06',name:'西安',status:'offline'},
-                {id:'07',name:'成都',status:'offline'},
-                {id:'08',name:'北京科实2',status:'online'},
-                {id:'09',name:'华电集团演示',status:'offline'},
-                {id:'10',name:'中南大学演示',status:'offline'}
-            ];
-
-
-
-            grid_right = $("#rightGrid").ligerGrid({
-                columns:[
-                    {name:'id',display:'No',width:50},
-                    {name:'name',display:'采集仪',width:120,
-                        render: function (rowdata, rowindex,item)
-                        {
-                            var h = "";
-                            h += "<a style='color: #0000FF' href='javascript:endEdit(" + rowindex + ")'>"+item.valueOf('name')+"</a> ";
-                            return h;
-                        }},
-                    {name:'status',display:'状态',width:50,render:function(item) {
-                        return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
-                    }}
-                ],
-                onSelectRow: function (rowdata, rowindex)
-                {
-                    $("#txtrowindex").val(rowindex);
-                },
-                enabledEdit: false,clickToEdit: false, isScroll: false, usePager: false,
-                data:{Rows:gridData_right},width:'230',resizable:false
-            });
-
-            var width =$("#choiceContainer").width()-240;
-            $("#mainGrid").css("width",width);
-
+        function f_initGrid() {
             grid = $("#mainGrid").ligerGrid({
                 columns:[
-                    {name:'id',display:'序号',width:100},
-                    {name:'name',display:'采集仪/测点号/测点信息',width:300},
-                    {name:'type',display:'报警参数类型',width:200},
-                    {name:'data',display:'报警示意图',width:'auto'},
-                    {name:'position',display:'测点信息',width:'auto'},
-                    {name:'count',display:'报警次数',width:'auto'}
+                    {display:'序号',name:'id',width:50},
+                    {display:'传感器',name:'name',width:70},
+                    {display:'监测组',name:'groupName',width:70},
+                    {display:'测量区域',name:'areaName',width:70},
+                    {display:'采集仪',name:'collectorName',width:70},
+                    {display:'编号',name:'number',width:70},
+                    {display:'报警参数类型',name:'warnType',width:70},
+                    {display:'报警值',name:'warnValue',width:70},
+                    {display:'采集仪状态',name:'status',width:70},
+                    {display:'当前数值',width:70,render:function(item){
+                        var sensorId = item.number;
+                        var myURL = tempURL + sensorId;
+                        $.ajax({
+                            url: myURL,
+                            async:false,
+                            dataType:'json',
+                            success: function meanVarianceCallback(data) {
+                                h = "";
+                                if(data.code == 200) {
+                                    meanVarianceValue = data.data;
+                                    h += meanVarianceValue;
+                                }
+                                else {
+                                    h = "0";
+                                }
+                            }
+                        });
+                        return returnCurSensor();
+                    }},
+                    {display:'报警次数',name:'warnCount',width:70
+//                        ,render:function(item){
+//                        var curValue = returnCurSensor();
+//                        var warnSensorValue = item.warnValue;
+//                        var warnSensorCount = parseInt(item.warnCount);
+//                        if(parseInt(curValue) > parseInt(warnSensorValue)) {
+//                            warnSensorCount++;
+//                            return warnSensorCount.toString();
+//                        }
+//                    }
+                        ,render:function(item,rowindex) {
+                        var count = parseInt(item.warnCount);
+                       // alert(count);
+                        var curValue = returnCurSensor();
+                        var warnSensorValue = item.warnValue;
+                        var groupName = item.groupName;
+                        var areaName = item.areaName;
+                        var name = item.name;
+                        var collectorName = item.collectorName;
+                        var number = item.number;
+                        if(parseInt(curValue) > parseInt(warnSensorValue)) {
+                            count++;
+                            $.ajax({
+                                type:'POST',
+                                url: $.URL.sensor.updateWarnCount,
+                                data:{count:parseInt(count),groupName:groupName.toString(),
+                                areaName:areaName.toString(),name:name.toString(),collectorName:collectorName.toString(),
+                                number:number.toString()},
+                                async:false,
+                                dataType:'json'
+                            });
+                        }
+                        return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + count.toString() + "</a>"
+                    }
+                    }
                 ],
-                data:{Rows: gridData},clickToEdit: false, isScroll: true, usePager: false,
-                width:width,resizable:true
+                data:gridData,
+                 width:'auto',
+                usePager:false,
+                onSelected:function(rowdata,rowindex) {
+                    $("#txtrowindex").val(rowindex);
+                }
             });
-        });
+        }
+
+   function jump(rowid) {
+            var row = grid.getRow(rowid);
+            var jsonString  = $.toJSON(row);
+//            $.each(jsonString.data,function(index,content){
+//                var j={};
+//                j["text"]=content.name;
+//                j["id"]=content.name;
+//                sensorJumpName.push(j);
+//            });
+//            alert(sensorJumpName);
+            $("#choiceContainer").load("dashboard/mainLink.html?name="+sensorJumpName);
+        }
+        function returnCurSensor() {
+
+            return h;
+        }
+//        var gridData_right = [
+//            {id:'01',name:'北京科贸',status:'online'}
+//        ];
+        function f_initRightGrid(){
+        var grid_right = $("#rightGrid").ligerGrid({
+            columns:[
+//                {name:'id',display:'No',width:50},
+                {name:'collectorName',display:'采集仪',width:70
+//                    render: function (rowdata, rowindex,item)
+//                    {
+//                        var h = "";
+//                        h += "<a style='color: #0000FF' href='javascript:endEdit(" + rowindex + ")'>"+item.valueOf('name')+"</a> ";
+//                        return h;
+//                    }
+                },
+                {name:'status',display:'状态',width:50
+                    ,render:function(item) {
+                    return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
+                }
+                }
+            ],
+            onSelectRow: function (rowdata, rowindex)
+            {
+                $("#txtrowindex").val(rowindex);
+            },
+            rownumbers: true,    // 显示序号
+            rownumbersColWidth:60,// 显示序号宽度
+            frozenRownumbers:true,   // 行序号是否在固定列中
+            enabledEdit: false,clickToEdit: false, isScroll: false, usePager: false,
+            data:gridData,width:200,resizable:false
+        }); }
+        var width =$("#choiceContainer").width()-240;
+        $("#mainGrid").css("width",width);
 
     </script>
 

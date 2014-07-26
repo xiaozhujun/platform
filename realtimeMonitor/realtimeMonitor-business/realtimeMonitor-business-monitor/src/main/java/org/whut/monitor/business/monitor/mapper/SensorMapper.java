@@ -17,6 +17,7 @@ import java.util.Map;
 public interface SensorMapper extends AbstractMapper<Sensor>{
     public long getSensorId(@Param("groupName") String groupName,@Param("areaName") String areaName,@Param("collectorName") String collectorName,@Param("name") String name,@Param("number") String number,@Param("appId") long appId);
     public List<Map<String,String>> list(long appId);
+    public List<Map<String,String>> listByGroupCollectionAndMonitor(@Param("appId") long appId,@Param("group") String group,@Param("collector") String collector,@Param("monitor") String monitor);
     public int deleteById(long id);
     public List<Sensor> getSensorsByCollectorId(@Param("collectorId") long collectorId,@Param("appId") long appId);
 }

@@ -23,7 +23,9 @@
             $("#startTime").ligerDateEditor({initValue: dd});
             $("#endTime").ligerDateEditor({initValue: dd});
             $("#dataSubmitBtn2").click(function(){
-                $.post($.URL.sensor.getMongoDataList,null,sensorListCallback,"json");
+                var sTime=$("#startTime").val();
+                var eTime=$("#endTime").val();
+                $.post($.URL.sensor.getMongoDataList,{"sTime":sTime,"eTime":eTime},sensorListCallback,"json");
                 getDataList();
             });
         });

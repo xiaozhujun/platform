@@ -164,11 +164,19 @@ public class MongoConnector {
         }
         return d;
     }
-    public List<List<DBObject>> getDbArrayListFromMongo2(){
+    public List<List<DBObject>> getDbArrayListFromMongo2(String sTime,String eTime){
         //从mongo中拿出所有的记录
         DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
-        DBCursor dbCursor=collection.find();
+//      DBCursor dbCursor=collection.find();
+
+        BasicDBObject query =new BasicDBObject();
+        query.put("time", new BasicDBObject("$gt", sTime).append("$lt", eTime));
+        DBCursor dbCursor = collection.find(query);
+//        while(cursor.hasNext()){
+//            System.out.println(cursor.next());
+//        }
+
         List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
         List<DBObject> d=new ArrayList<DBObject>();
         while (dbCursor.hasNext()){

@@ -263,16 +263,26 @@ public class SensorServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataList")
     @POST
-    public String getMongoDataList(){
+    public String getMongoDataList(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+       //System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime);
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
         List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
-        getList=mongoConnector.getDbArrayListFromMongo2();
+        getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime);
         List a=new ArrayList();
         for(int i=0;i<getList.size();i++){
             for(int j=0;j<getList.get(i).size();j++){
                 a.add(getList.get(i).get(j));
             }}
         return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getListByGroupCollectionAndMonitor")
+    @POST
+    public String getListByGroupCollectionAndMonitor(@FormParam("groupName")String groupName,@FormParam("collectorName")String collectorName,@FormParam("monitorName")String monitorName){
+        //System.out.println(groupName+"dddddddddddddddddddddddddddddd"+collectorName+"jjjjjjjjjjjjjjjjjjjjjj"+monitorName);
+        long appId=UserContext.currentUserAppId();
+        List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.listByGroupCollectionAndMonitor(appId,groupName,collectorName,monitorName);
+        return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupCollectionAndMonitor, JsonResultUtils.Code.SUCCESS);
     }
 }
 

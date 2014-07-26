@@ -22,7 +22,6 @@
         $(function(){
             $.post($.URL.group.list,null,groupListCallback,"json");
             $("#dataSubmitBtn1").click(function(){
-                $.post($.URL.sensor.list,null,sensorListCallback,"json");
                 getDataList();
             });
             var d=new Date();
@@ -97,7 +96,7 @@
                     { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
                     { display: '测量组', name: 'groupName' },
                     { display: '采集仪名称', width: 50, name: 'collectorName'},
-                    { display: '传感器名称', name: 'name' },
+                    { display: '传感器名称', name: 'sensorName' },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -116,13 +115,11 @@
             $("#maingrid").load("dashboard/allData.html");
         }
         function getDataList(){
-            var group=$("#groupNameSelect").val();
-            alert(group);
-            var collector=$("#collectorNameSelect").val();
-            var monitor=$("#monitorNameSelect").val();
-            var sTime=$("#startTime").val();
-            var eTime=$("#endTime").val();
-            $.post($.URL.inspectTask.lastTaskByDeviceGroup,{"userId":user,"deviceId":device,"sTime":sTime,"eTime":eTime},getTaskByDeviceCallback,"json");
+            var groupName=$("#groupName").val();
+            var collectorName=$("#collectorName").val();
+            var monitorName=$("#monitorName").val();
+            alert(groupName+"    "+collectorName+"   "+monitorName);
+            $.post($.URL.sensor.getListByGroupCollectionAndMonitor,{"groupName":groupName,"collectorName":collectorName,"monitorName":monitorName},sensorListCallback,"json");
         }
 
     </script>

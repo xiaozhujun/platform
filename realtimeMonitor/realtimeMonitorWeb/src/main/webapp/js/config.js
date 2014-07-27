@@ -55,10 +55,15 @@
             "list":"rs/sensor/list",
             "update":"rs/sensor/update",
             "delete":"rs/sensor/delete",
+            "homePage":"rs/sensor/homePageList",
+            "updateWarnCount":"rs/sensor/updateWarnCount",
             "getMongoDataList":"rs/sensor/getMongoDataList",
             "getMongoDataList2":"rs/sensor/getMongoDataList2",
             "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
             "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor"
+        },
+        "algorithm":{
+            "meanVarianceValue":"rs/algorithm/meanVarianceValue/"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensor/data/{id}.htm"

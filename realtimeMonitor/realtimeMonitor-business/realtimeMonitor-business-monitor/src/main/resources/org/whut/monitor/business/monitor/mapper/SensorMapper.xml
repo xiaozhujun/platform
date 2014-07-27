@@ -87,6 +87,20 @@
        WHERE ID=#{id} AND APPID=#{appId}
     </update>
 
+    <select id="homePageList" parameterType="java.lang.Long" resultType="map">
+        SELECT s.id,s.name,g.`name` AS groupName,a.`name` AS areaName,s.warnType,s.warnValue,s.warnCount,c.status AS status,c.`name` AS collectorName,s.number
+        FROM `group` g,area a,collector c,sensor s
+        WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=#{appId}
+    </select>
+
+    <update id="updateWarnCount" parameterType="map">
+        UPDATE sensor
+        <set>
+            <if test="warnCount!=null">WARNCOUNT=#{warnCount}</if>
+        </set>
+        WHERE id=#{id} AND appId=#{appId}
+    </update>
+
     <select id="getSensorsByCollectorId" parameterType="map" resultMap="SensorResultMap">
         SELECT *
         FROM sensor

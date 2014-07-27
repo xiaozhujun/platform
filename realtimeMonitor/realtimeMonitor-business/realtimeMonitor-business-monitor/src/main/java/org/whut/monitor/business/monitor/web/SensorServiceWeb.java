@@ -3,7 +3,6 @@ package org.whut.monitor.business.monitor.web;
 import com.mongodb.DBObject;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Sensor;
@@ -23,7 +22,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -296,11 +294,11 @@ public class SensorServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataList")
     @POST
-    public String getMongoDataList(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
-       //System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime);
+    public String getMongoDataList(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number){
+       System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime+"sssssssssssss"+number);
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
         List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
-        getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime);
+        getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime,number);
         List a=new ArrayList();
         int data2=0,p=0;Object data;
         for(int i=0;i<getList.size();i++){
@@ -323,11 +321,11 @@ public class SensorServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataList2")
     @POST
-    public String getMongoDataList2(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
-        //System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime);
+    public String getMongoDataList2(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number){
+        System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime+"sssssssssssss"+number);
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
         List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
-        getList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime);
+        getList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime,number);
         List a=new ArrayList();
         for(int i=0;i<getList.size();i=i+30){
              Object b=getList.get(i);

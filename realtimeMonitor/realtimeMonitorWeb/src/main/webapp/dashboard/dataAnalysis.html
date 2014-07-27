@@ -18,16 +18,50 @@
     <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/highcharts.js"></script>
+    <script type="text/javascript" src="js/chartTool1.js"></script>
     <script type="text/javascript">
         $(function(){
-            $.post($.URL.group.list,null,groupListCallback,"json");
-            $("#dataSubmitBtn1").click(function(){
-                getDataList();
-            });
             var d=new Date();
             var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
             $("#startTime").ligerDateEditor({initValue: dd});
             $("#endTime").ligerDateEditor({initValue: dd});
+            $("#dataSubmitBtn2").click(function(){
+                getDataList2();
+            });
+        });
+        var data1;
+        function sensorListCallback1(data){
+            if(data.code==200){
+                data1=data.data;
+            }
+        }
+        var data2;
+        function sensorListCallback2(data){
+            if(data.code==200){
+                data2=data.data;
+            }
+        }
+        function getDataList2(){
+            var sTime=$("#startTime").val();
+            var eTime=$("#endTime").val();
+            $.post($.URL.sensor.getMongoDataList,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback1,"json");
+            $.post($.URL.sensor.getMongoDataList2,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback2,"json");
+            var data =data1;
+            var categoriesData= data2
+            drawChart("#dataContainer", data,categoriesData, "mV"); }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+              $("#dataShow").hide();
+        });
+        $(function(){
+            $.post($.URL.group.list,null,groupListCallback,"json");
+            $("#dataSubmitBtn1").click(function(){
+               $("#dataShow").hide();
+                $("#maingrid").show();
+                getDataList();
+            });
             $("#collectorName").ligerComboBox({
                 data:null,valueFieldID:"collectorNameSelect",emptyText:null,
                 onSelected:function(collectorId){
@@ -89,8 +123,7 @@
             }
         }
         var currentMonitor,grid;
-        function f_initGrid()
-        {
+        function f_initGrid() {
             grid = $("#maingrid").ligerGrid({
                 columns: [
                     { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
@@ -110,9 +143,16 @@
                 width: '100%'
             });
         }
+        var number;
         function getInfo(rowindex){
             currentMonitor = grid.getRow(rowindex);
-            $("#maingrid").load("dashboard/allData.html");
+            var jsonString  = $.toJSON(currentMonitor);
+           // alert(jsonString);
+            number = $.evalJSON(jsonString).number;
+           // alert(d) ;
+            $("#maingrid").hide();
+            $("#dataShow").show();
+           //$("#dataShow").load("dashboard/allData.html?number="+number);
         }
         function getDataList(){
             var groupName=$("#groupName").val();
@@ -133,7 +173,19 @@
 </div>
 <div id="maingrid" class="reportContent" ></div>
 <div id="dataShow" class="reportContent" >
-
+    <div id="allDataContainer">
+        <div id="monitorContainer">
+            <table>
+                <tr>
+                    <td> <div ><span class="item_font">起始时间:</span><span class="item_input"><input id="startTime" type="text"></span></div></td>
+                    <td><div ><span class="item_font">终止时间:</span><span class="item_input"><input id="endTime" type="text"></span></div></td>
+                    <td><div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn2" class="l-button l-button-submit" /></span></div></td>
+                </tr>
+            </table>
+        </div>
+        <div id="dataContainer" style="min-width:700px;height:400px"></div>
+    </div>
+</div>
 </div>
 </body>
 </html>

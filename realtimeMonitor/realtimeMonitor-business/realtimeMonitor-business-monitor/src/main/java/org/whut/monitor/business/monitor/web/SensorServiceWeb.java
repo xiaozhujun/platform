@@ -269,12 +269,40 @@ public class SensorServiceWeb {
         List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
         getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime);
         List a=new ArrayList();
+        int data2=0,p=0;Object data;
         for(int i=0;i<getList.size();i++){
             for(int j=0;j<getList.get(i).size();j++){
-                a.add(getList.get(i).get(j));
-            }}
+                data=getList.get(i).get(j);
+                data2=data2+Integer.parseInt(data.toString());
+                p++;
+            }
+            if ((i+1)%30==0)         //取一个小时的数据
+            {
+              data2=data2/p;
+              System.out.println(data2);
+              a.add(data2);
+              data2=0; p=0;
+            }
+        }
         return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getMongoDataList2")
+    @POST
+    public String getMongoDataList2(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        //System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime);
+        MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
+        getList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime);
+        List a=new ArrayList();
+        for(int i=0;i<getList.size();i=i+30){
+             Object b=getList.get(i);
+             a.add(b);
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
+    }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getListByGroupCollectionAndMonitor")
     @POST

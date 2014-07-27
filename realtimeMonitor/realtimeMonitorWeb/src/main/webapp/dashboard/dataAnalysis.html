@@ -118,8 +118,8 @@
             var groupName=$("#groupName").val();
             var collectorName=$("#collectorName").val();
             var monitorName=$("#monitorName").val();
-            alert(groupName+"    "+collectorName+"   "+monitorName);
             $.post($.URL.sensor.getListByGroupCollectionAndMonitor,{"groupName":groupName,"collectorName":collectorName,"monitorName":monitorName},sensorListCallback,"json");
+
         }
 
     </script>

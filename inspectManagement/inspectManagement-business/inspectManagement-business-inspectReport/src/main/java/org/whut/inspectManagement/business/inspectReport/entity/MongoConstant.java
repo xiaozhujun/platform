@@ -33,4 +33,5 @@ public class MongoConstant {
         public static final String inspectItemRecordCollection="inspectItemRecordCollection";
         public static final String tableName="tablename";
         public static final String reportCreateTime="createTime";
+        public static final String abnormal="异常";
 }

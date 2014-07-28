@@ -79,10 +79,10 @@ public class InspectItemServiceWeb {
                     InspectItem inspectItem=new InspectItem();
                     String input=subInspectItem.getInput();
                     String choices=subInspectItem.getChoiceValue();
-                    if(input.equals("1")&&(subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals(""))){
+                    if(input.equals("1")&&(subInspectItem.getName()==null||subInspectItem.getName().equals(""))){
                         subInspectItem.setStatus("信息空缺");
                         errorList.add(subInspectItem);
-                    }else if(input.equals("0")&&(choices==null||choices.equals("null")||choices.equals("")||choices.contains("null")||subInspectItem.getName()==null||subInspectItem.getName().equals("")||subInspectItem.getNumber()==null||subInspectItem.getNumber().equals(""))){
+                    }else if(input.equals("0")&&(choices==null||choices.equals("null")||choices.equals("")||choices.contains("null")||subInspectItem.getName()==null||subInspectItem.getName().equals(""))){
                         subInspectItem.setStatus("信息空缺");
                         errorList.add(subInspectItem);
                     }else{

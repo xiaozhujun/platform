@@ -58,7 +58,7 @@
             "homePage":"rs/sensor/homePageList",
             "updateWarnCount":"rs/sensor/updateWarnCount",
             "getMongoDataList":"rs/sensor/getMongoDataList",
-            "getMongoDataList2":"rs/sensor/getMongoDataList2",
+            "getMongoDataLastList":"rs/sensor/getMongoDataLastList",
             "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
             "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor"
         },

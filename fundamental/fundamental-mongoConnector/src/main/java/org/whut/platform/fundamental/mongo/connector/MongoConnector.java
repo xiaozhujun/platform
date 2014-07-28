@@ -184,6 +184,34 @@ public class MongoConnector {
         return dd;
     }
 
+    public List<List<DBObject>> getDbArrayLastListFromMongo(){
+        //从mongo中拿出所有的记录
+        DB db = getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        BasicDBObject query =new BasicDBObject();
+        DBCursor dbCursor = collection.find();
+        List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
+        List<DBObject> d=new ArrayList<DBObject>();
+        while (dbCursor.hasNext()){
+            d=(ArrayList<DBObject>)dbCursor.next().get("data");
+        }
+        dd.add(d);
+        return dd;
+    }
+    public List<List<DBObject>> getDbArrayLastListFromMongo2(){
+        //从mongo中拿出所有的记录
+        DB db = getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        BasicDBObject query =new BasicDBObject();
+        DBCursor dbCursor = collection.find();
+        List dd=new ArrayList();
+        Object list=null;
+        while (dbCursor.hasNext()){
+            list=dbCursor.next().get("time");
+        }
+        dd.add(list);
+        return dd;
+    }
     public List<List<DBObject>> getDbArrayListFromMongo3(String sTime,String eTime,String sensorNum){
         //从mongo中拿出所有的记录
         DB db = getDB(dbName);

@@ -30,26 +30,20 @@
                 getDataList2();
             });
         });
-        var data1;
+        var data1,data2;
         function sensorListCallback1(data){
             if(data.code==200){
-                data1=data.data;
+                data1=data.data.data;
+                data2=data.data.time;
+                drawChart("#dataContainer", data1,data2, "mV");
             }
         }
-        var data2;
-        function sensorListCallback2(data){
-            if(data.code==200){
-                data2=data.data;
-            }
-        }
+
         function getDataList2(){
             var sTime=$("#startTime").val();
             var eTime=$("#endTime").val();
             $.post($.URL.sensor.getMongoDataList,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback1,"json");
-            $.post($.URL.sensor.getMongoDataList2,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback2,"json");
-            var data =data1;
-            var categoriesData= data2
-            drawChart("#dataContainer", data,categoriesData, "mV"); }
+        }
     </script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -147,12 +141,9 @@
         function getInfo(rowindex){
             currentMonitor = grid.getRow(rowindex);
             var jsonString  = $.toJSON(currentMonitor);
-           // alert(jsonString);
             number = $.evalJSON(jsonString).number;
-           // alert(d) ;
             $("#maingrid").hide();
             $("#dataShow").show();
-           //$("#dataShow").load("dashboard/allData.html?number="+number);
         }
         function getDataList(){
             var groupName=$("#groupName").val();

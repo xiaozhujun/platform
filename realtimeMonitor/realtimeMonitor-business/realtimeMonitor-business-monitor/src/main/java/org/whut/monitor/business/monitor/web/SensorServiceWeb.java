@@ -23,6 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -295,7 +296,7 @@ public class SensorServiceWeb {
     @Path("/getMongoDataList")
     @POST
     public String getMongoDataList(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number){
-       System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime+"sssssssssssss"+number);
+
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
         List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
         getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime,number);
@@ -307,31 +308,39 @@ public class SensorServiceWeb {
                 data2=data2+Integer.parseInt(data.toString());
                 p++;
             }
-            if ((i+1)%30==0)         //取一个小时的数据
+            if ((i+1)%30==0)         //取一分钟的数据
             {
               data2=data2/p;
-              System.out.println(data2);
               a.add(data2);
               data2=0; p=0;
             }
         }
-        return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
+        List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
+        getTimeList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime,number);
+        List time=new ArrayList();
+        for(int i=0;i<getTimeList.size();i=i+30){
+            Object b=getTimeList.get(i);
+            time.add(b);
+        }
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("data",a);
+        map.put("time",time);
+        return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getMongoDataList2")
+    @Path("/getMongoDataLastList")
     @POST
-    public String getMongoDataList2(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number){
-        System.out.println(sTime+"dddddddddddddddddddddddddddddd"+eTime+"sssssssssssss"+number);
+    public String getMongoDataLastList(){
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
-        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
-        getList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime,number);
-        List a=new ArrayList();
-        for(int i=0;i<getList.size();i=i+30){
-             Object b=getList.get(i);
-             a.add(b);
-        }
-        return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
+        List<List<DBObject>> getDataList=new ArrayList<List<DBObject>>();
+        getDataList=mongoConnector.getDbArrayLastListFromMongo();
+        List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
+        getTimeList=mongoConnector.getDbArrayLastListFromMongo2();
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("data",getDataList);
+        map.put("time",getTimeList);
+        return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

@@ -25,21 +25,13 @@
             if(data.code == 200) {
                 gridData.Rows = data.data;
                 gridData.Total = data.length;
-//                $.each(data.data,function(index,content){
-//                    var j={};
-//                    j["status"]=content.status;
-//                    alert(content.status);
-//                    j["collectorName"]=content.collectorName;
-//                   gridData_right.push(j);
-//                });
-               f_initGrid();
+                f_initGrid();
                 f_initRightGrid();
             }
         }
         var grid;
         var h = "";
         var meanVarianceValue = "";
-        var sensorJumpName = [];
 
         function f_initGrid() {
             grid = $("#mainGrid").ligerGrid({
@@ -74,18 +66,8 @@
                         return returnCurSensor();
                     }},
                     {display:'报警次数',name:'warnCount',width:70
-//                        ,render:function(item){
-//                        var curValue = returnCurSensor();
-//                        var warnSensorValue = item.warnValue;
-//                        var warnSensorCount = parseInt(item.warnCount);
-//                        if(parseInt(curValue) > parseInt(warnSensorValue)) {
-//                            warnSensorCount++;
-//                            return warnSensorCount.toString();
-//                        }
-//                    }
                         ,render:function(item,rowindex) {
                         var count = parseInt(item.warnCount);
-                       // alert(count);
                         var curValue = returnCurSensor();
                         var warnSensorValue = item.warnValue;
                         var groupName = item.groupName;
@@ -118,37 +100,23 @@
             });
         }
 
-   function jump(rowid) {
+        function jump(rowid) {
             var row = grid.getRow(rowid);
             var jsonString  = $.toJSON(row);
-//            $.each(jsonString.data,function(index,content){
-//                var j={};
-//                j["text"]=content.name;
-//                j["id"]=content.name;
-//                sensorJumpName.push(j);
-//            });
+//            alert(jsonString);
+            var sensorJumpName = $.evalJSON(jsonString).name;
 //            alert(sensorJumpName);
-            $("#choiceContainer").load("dashboard/mainLink.html?name="+sensorJumpName);
+            $("#choiceContainer").load("dashboard/mainLink.html");
         }
         function returnCurSensor() {
 
             return h;
         }
-//        var gridData_right = [
-//            {id:'01',name:'北京科贸',status:'online'}
-//        ];
+
         function f_initRightGrid(){
         var grid_right = $("#rightGrid").ligerGrid({
             columns:[
-//                {name:'id',display:'No',width:50},
-                {name:'collectorName',display:'采集仪',width:70
-//                    render: function (rowdata, rowindex,item)
-//                    {
-//                        var h = "";
-//                        h += "<a style='color: #0000FF' href='javascript:endEdit(" + rowindex + ")'>"+item.valueOf('name')+"</a> ";
-//                        return h;
-//                    }
-                },
+                {name:'collectorName',display:'采集仪',width:70},
                 {name:'status',display:'状态',width:50
                     ,render:function(item) {
                     if(item.status.toString()=="在线正常工作")   {

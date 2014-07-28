@@ -164,24 +164,43 @@ public class MongoConnector {
         }
         return d;
     }
-    public List<List<DBObject>> getDbArrayListFromMongo2(String sTime,String eTime){
+    public List<List<DBObject>> getDbArrayListFromMongo2(String sTime,String eTime,String sensorNum){
         //从mongo中拿出所有的记录
         DB db = getDB(dbName);
         DBCollection collection = db.getCollection(collectionName);
-//      DBCursor dbCursor=collection.find();
 
         BasicDBObject query =new BasicDBObject();
         query.put("time", new BasicDBObject("$gt", sTime).append("$lt", eTime));
+        query.put("sensorNum", sensorNum);
+        System.out.println("eeeeeeeeeeeeeeee"+query);
         DBCursor dbCursor = collection.find(query);
-//        while(cursor.hasNext()){
-//            System.out.println(cursor.next());
-//        }
 
         List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
         List<DBObject> d=new ArrayList<DBObject>();
         while (dbCursor.hasNext()){
             d=(ArrayList<DBObject>)dbCursor.next().get("data");
             dd.add(d);
+        }
+        return dd;
+    }
+
+    public List<List<DBObject>> getDbArrayListFromMongo3(String sTime,String eTime,String sensorNum){
+        //从mongo中拿出所有的记录
+        DB db = getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+//      DBCursor dbCursor=collection.find();
+
+        BasicDBObject query =new BasicDBObject();
+
+        query.put("time", new BasicDBObject("$gt", sTime).append("$lt", eTime));
+        query.put("sensorNum", sensorNum);
+        DBCursor dbCursor = collection.find(query);
+       // DBCursor dbCursor = collection.find({"time": { "$gte":sTime ,"$lt":eTime} ,"sensorNum":sensorNum});
+        List dd=new ArrayList();
+        Object list;
+        while (dbCursor.hasNext()){
+            list=dbCursor.next().get("time");
+            dd.add(list);
         }
         return dd;
     }

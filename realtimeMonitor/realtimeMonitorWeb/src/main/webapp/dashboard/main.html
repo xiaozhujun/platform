@@ -119,7 +119,13 @@
                 {name:'collectorName',display:'采集仪',width:70},
                 {name:'status',display:'状态',width:50
                     ,render:function(item) {
-                    return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
+                    if(item.status.toString()=="在线正常工作")   {
+                        // return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
+                        return "<img style='width: 20px' src=images/online.png />";
+                    }
+                    else {
+                        return "<img style='width: 20px' src=images/offline.png />";
+                    }
                 }
                 }
             ],

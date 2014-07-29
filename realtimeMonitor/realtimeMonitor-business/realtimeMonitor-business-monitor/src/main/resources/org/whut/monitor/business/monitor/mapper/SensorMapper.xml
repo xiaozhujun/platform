@@ -91,6 +91,7 @@
         SELECT s.id,s.name,g.`name` AS groupName,a.`name` AS areaName,s.warnType,s.warnValue,s.warnCount,c.status AS status,c.`name` AS collectorName,s.number
         FROM `group` g,area a,collector c,sensor s
         WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=#{appId}
+        <if test="fStatus!=''">AND status='在线正常工作'</if>
     </select>
 
     <update id="updateWarnCount" parameterType="map">

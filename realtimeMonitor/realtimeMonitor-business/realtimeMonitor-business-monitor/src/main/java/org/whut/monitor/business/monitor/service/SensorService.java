@@ -42,8 +42,8 @@ public class SensorService {
         return sensorMapper.getSensorsByCollectorId(collectorId,appId);
     }
 
-    public List<Map<String,String>> homePageList(long appId) {
-        return sensorMapper.homePageList(appId);
+    public List<Map<String,String>> homePageList(String fStatus,long appId) {
+        return sensorMapper.homePageList(fStatus,appId);
     }
 
     public void updateWarnCount(long warnCount,long id,long appId) {

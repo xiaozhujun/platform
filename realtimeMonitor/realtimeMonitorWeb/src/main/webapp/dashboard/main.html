@@ -17,15 +17,23 @@
     <script type="text/javascript">
         var tempURL = $.URL.algorithm.meanVarianceValue;
         $(document).ready(function() {
-            $.post($.URL.sensor.homePage,null,gridCallback,"json");
+            $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
+            $.post($.URL.sensor.homePage,{"fStatus":"false"},rightGridCallback,"json");
         });
         var gridData = {};
-//        var gridData_right={};
+        var rightGridData = {};
         function gridCallback(data) {
             if(data.code == 200) {
                 gridData.Rows = data.data;
                 gridData.Total = data.length;
                 f_initGrid();
+            }
+        }
+
+        function rightGridCallback(data) {
+            if(data.code == 200) {
+                rightGridData.Rows = data.data;
+                rightGridData.Total = data.length;
                 f_initRightGrid();
             }
         }
@@ -106,15 +114,31 @@
 //            alert(jsonString);
             var sensorJumpName = $.evalJSON(jsonString).name;
 //            alert(sensorJumpName);
-            $("#choiceContainer").load("dashboard/mainLink.html");
+            $("#choiceContainer").load("dashboard/mainLink.html",{},jumpCallback);
         }
-        function returnCurSensor() {
 
+        function returnCurSensor() {
             return h;
         }
 
+        function jumpCallback() {
+            var warnCountGrid = $("#warnCountGrid").ligerGrid({
+                columns:[
+                    {name:'name',display:'传感器',width:'auto'},
+                    {name:'groupName',display:'监测组',width:'auto'},
+                    {name:'areaName',display:'测量区域',width:'auto'},
+                    {name:'number',display:'编号',width:'auto'},
+                    {name:'warnType',display:'报警参数类型',width:'auto'},
+                    {name:'warnTime',display:'报警时间',width:'auto'},
+                    {name:'warnValue',display:'报警值',width:'auto'}
+                ],
+                usePager:false
+            });
+        }
+
+        var rightGrid;
         function f_initRightGrid(){
-        var grid_right = $("#rightGrid").ligerGrid({
+            rightGrid = $("#rightGrid").ligerGrid({
             columns:[
                 {name:'collectorName',display:'采集仪',width:70},
                 {name:'status',display:'状态',width:50
@@ -137,7 +161,7 @@
             rownumbersColWidth:60,// 显示序号宽度
             frozenRownumbers:true,   // 行序号是否在固定列中
             enabledEdit: false,clickToEdit: false, isScroll: false, usePager: false,
-            data:gridData,width:200,resizable:false
+            data:rightGridData,width:200,resizable:false
         }); }
         var width =$("#choiceContainer").width()-240;
         $("#mainGrid").css("width",width);

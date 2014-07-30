@@ -15,8 +15,8 @@ public class WarnRecord {
     String areaName;
     String collectorName;
     String sensorName;
-    String number;
     Date warnTime;
+    String number;
     long curWarnValue;
     long appId;
 

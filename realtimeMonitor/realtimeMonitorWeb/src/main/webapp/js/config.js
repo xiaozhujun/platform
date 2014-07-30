@@ -67,6 +67,10 @@
         },
         "sensors":{
             "getSensorDataArray":"rs/sensor/data/{id}.htm"
+        },
+        "warnRecord":{
+            "add":"rs/warnRecord/add",
+            "list":"rs/warnRecord/list"
         }
     }
 })(jQuery);

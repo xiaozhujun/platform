@@ -92,7 +92,51 @@
             width:100,
             valueField:'id',
             textField:'text'
+//            ，onSelected:function(collector) {
+//                if(collector!=null) {
+//                    $.post($.URL.sensor.getSensorsByCollectorId,{"collectorId":collector},function sensorCallback(data){
+//                        if(data.code == 200) {
+//                            var sensorName = [];
+//                            $.each(data.data,function(index,content){
+//                                var c={};
+//                                c["id"]=content.id;
+//                                c["text"]=content.name;
+//                                sensorName.push(c);
+//                            });
+//                            liger.get("sensorSelect").setData(sensorName);
+//                        }
+//                    },"json");
+//                }
+//            }
         });
+
+//        $("#sensorSelect").ligerComboBox({
+//            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
+//            width:100,
+//            valueField:'id',
+//            textField:'text',
+//            onSelected:function(collector) {
+//                var number;
+//                $.post($.URL.sensor.list,null,function(data){
+//                    if(data.code == 200) {
+//                        $.each(data.data,function(index,content){
+//                            var j = {};
+//                            j["text"] = content.number;
+//                            j["id"] = content.number;
+//                            number.push(j);
+//                        });
+//                        liger.get("sensorSelect").setData(number);
+//                    }
+//                },"json");
+//            }
+//        });
+//
+//        $("#numberSelect").ligerComboBox({
+//            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
+//            width:100,
+//            valueField:'id',
+//            textField:'text'
+//        });
 
         var d=new Date();
         var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
@@ -109,18 +153,17 @@
             var groupName = $("#groupSelect").val();
             var areaName = $("#areaSelect").val();
             var collectorName = $("#collectorSelect").val();
+            var sensorName = $("#sensorSelect").val();
+            var number = $("#numberSelect").val();
             var startTime = $("#startTimeSelect").val();
             var endTime = $("#endTimeSelect").val();
+//            $.post($.URL.warnRecord.list,{groupName:groupName.toString(),
+//                areaName:areaName.toString(),collectorName:collectorName.toString(),
+//                sensorName:sensorName.toString(),number:number.toString()},warnRecordGridCallback,"json");
         }
 
-//        var sensorJumpName = getUrlParam('name');
-//        alert(sensorJumpName);
-//        alert(window.location.href);
+//        function warnRecordGridCallback() {
 //
-//        function getUrlParam(name) {
-//            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-//            var r = window.location.search.substr(1).match(reg);
-//            if (r!=null) return unescape(r[2]); return null;
 //        }
 
     </script>
@@ -155,6 +198,16 @@
         <input name="collectorSelect" id="collectorSelect" type="text">
     </span>
 
+    <!--<span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">传感器：</span>-->
+    <!--<span class="l-show-com">-->
+        <!--<input name="sensorSelect" id="sensorSelect" type="text">-->
+    <!--</span>-->
+
+    <!--<span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">编号：</span>-->
+    <!--<span class="l-show-com">-->
+        <!--<input name="numberSelect" id="numberSelect" type="text">-->
+    <!--</span>-->
+
     <span style="margin-left: 80px;  width: 60px;float: left;margin-top: 2px">起始时间：</span>
     <span class="l-show-com">
         <input name="startTimeSelect" id="startTimeSelect" type="text">
@@ -173,6 +226,6 @@
 
 </div>
 
-<div id="warnCountGrid"></div>
+<div id="warnRecordGrid"></div>
  </body>
 </html>

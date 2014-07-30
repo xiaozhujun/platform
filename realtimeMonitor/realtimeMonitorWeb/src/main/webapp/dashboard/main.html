@@ -47,16 +47,16 @@
         function f_initGrid() {
             grid = $("#mainGrid").ligerGrid({
                 columns:[
-                    {display:'序号',name:'id',width:50},
-                    {display:'传感器',name:'name',width:70},
-                    {display:'监测组',name:'groupName',width:70},
-                    {display:'测量区域',name:'areaName',width:70},
-                    {display:'采集仪',name:'collectorName',width:70},
-                    {display:'编号',name:'number',width:70},
-                    {display:'报警参数类型',name:'warnType',width:70},
-                    {display:'报警值',name:'warnValue',width:70},
-                    {display:'采集仪状态',name:'status',width:70},
-                    {display:'当前数值',name:'curSensorValue',width:70,render:function(item){
+                    {display:'序号',name:'id',width:60},
+                    {display:'传感器',name:'name',width:100},
+                    {display:'监测组',name:'groupName',width:100},
+                    {display:'测量区域',name:'areaName',width:100},
+                    {display:'采集仪',name:'collectorName',width:100},
+                    {display:'编号',name:'number',width:90},
+                    {display:'报警参数类型',name:'warnType',width:100},
+                    {display:'报警值',name:'warnValue',width:100},
+                    {display:'采集仪状态',name:'status',width:140},
+                    {display:'当前数值',name:'curSensorValue',width:90,render:function(item){
                         var sensorId = item.number;
                         var myURL = tempURL + sensorId;
                         $.ajax({
@@ -76,7 +76,7 @@
                         });
                         return returnCurSensor();
                     }},
-                    {display:'报警次数',name:'warnCount',width:70
+                    {display:'报警次数',name:'warnCount',width:90
                         ,render:function(item,rowindex) {
                         var count = parseInt(item.warnCount);
                         tempCount[rowindex]=count;
@@ -106,7 +106,7 @@
                     }
                 ],
                 data:gridData,
-                 width:'auto',
+                 width:width,
                 usePager:false,
                 onSelected:function(rowdata,rowindex) {
                     $("#txtrowindex").val(rowindex);
@@ -145,8 +145,8 @@
         function f_initRightGrid(){
             rightGrid = $("#rightGrid").ligerGrid({
             columns:[
-                {name:'collectorName',display:'采集仪',width:70},
-                {name:'status',display:'状态',width:50
+                {name:'collectorName',display:'采集仪',width:100},
+                {name:'status',display:'状态',width:55
                     ,render:function(item) {
                     if(item.status.toString()=="在线正常工作")   {
                         // return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
@@ -166,7 +166,7 @@
             rownumbersColWidth:60,// 显示序号宽度
             frozenRownumbers:true,   // 行序号是否在固定列中
             enabledEdit: false,clickToEdit: false, isScroll: false, usePager: false,
-            data:rightGridData,width:200,resizable:false
+            data:rightGridData,width:230,resizable:false
         }); }
         var width =$("#choiceContainer").width()-240;
         $("#mainGrid").css("width",width);

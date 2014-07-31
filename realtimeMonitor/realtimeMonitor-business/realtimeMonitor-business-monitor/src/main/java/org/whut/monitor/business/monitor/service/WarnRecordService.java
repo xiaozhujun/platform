@@ -1,7 +1,6 @@
 package org.whut.monitor.business.monitor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.whut.monitor.business.monitor.entity.WarnRecord;
 import org.whut.monitor.business.monitor.mapper.WarnRecordMapper;
 
 import java.util.List;

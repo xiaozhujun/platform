@@ -1,7 +1,6 @@
 package org.whut.monitor.business.monitor.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import org.whut.monitor.business.monitor.entity.WarnRecord;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
 import java.util.List;

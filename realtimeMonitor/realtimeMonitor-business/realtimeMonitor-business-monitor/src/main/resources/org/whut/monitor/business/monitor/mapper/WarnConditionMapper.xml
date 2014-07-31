@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        <mapper namespace="org.whut.monitor.business.monitor.mapper.WarnRecordMapper">
-        <sql id="WarnRecord_fields">
+        <mapper namespace="org.whut.monitor.business.monitor.mapper.WarnConditionMapper">
+    <sql id="WarnCondition_fields">
           ID,GROUPNAME,AREANAME,COLLECTORNAME,SENSORNAME,NUMBER,WARNTIME,CURWARNVALUE,APPID
         </sql>
-    <resultMap id="WarnRecordResultMap" type="WarnRecord">
+    <resultMap id="WarnConditionResultMap" type="WarnCondition">
         <id property="id" column="ID"/>
         <result property="groupName" column="GROUPNAME"/>
         <result property="areaName" column="AREANAME"/>
@@ -18,15 +18,15 @@
         <result property="appId" column="APPID"/>
     </resultMap>
 
-    <insert id="add" parameterType="WarnRecord" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO warn_record(<include refid="WarnRecord_fields"/>)
+    <insert id="add" parameterType="WarnCondition" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO warn_record(<include refid="WarnCondition_fields"/>)
         VALUES (#{id},#{groupName},#{areaName},#{collectorName},#{sensorName},#{number},#{warnTime},#{curWarnValue},#{appId})
         <selectKey resultType="long" keyProperty="id">
             SELECT LAST_INSERT_ID() AS ID
         </selectKey>
     </insert>
 
-    <select id="getListByAppId" parameterType="map" resultMap="WarnRecordResultMap">
+    <select id="getListByAppId" parameterType="map" resultMap="WarnConditionResultMap">
         SELECT * FROM warn_record WHERE GROUPNAME=#{groupName} AND AREANAME=#{areaName}
         AND COLLECTORNAME=#{collectorName} AND SENSORNAME=#{sensorName} AND NUMBER=#{number} AND APPID=#{appId}
     </select>

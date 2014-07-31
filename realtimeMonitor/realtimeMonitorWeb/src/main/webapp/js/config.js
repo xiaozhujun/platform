@@ -68,9 +68,9 @@
         "sensors":{
             "getSensorDataArray":"rs/sensor/data/{id}.htm"
         },
-        "warnRecord":{
-            "add":"rs/warnRecord/add",
-            "list":"rs/warnRecord/list"
+        "warnCondition":{
+            "add":"rs/warnCondition/add",
+            "list":"rs/warnCondition/list"
         }
     }
 })(jQuery);

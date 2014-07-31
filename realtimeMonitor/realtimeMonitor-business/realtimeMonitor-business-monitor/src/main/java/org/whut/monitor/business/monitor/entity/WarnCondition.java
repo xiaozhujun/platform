@@ -5,11 +5,11 @@ import java.util.Date;
 /**
  * Created with IntelliJ IDEA.
  * User: yangyang
- * Date: 14-7-30
- * Time: 下午11:46
+ * Date: 14-7-31
+ * Time: 上午9:11
  * To change this template use File | Settings | File Templates.
  */
-public class WarnRecord {
+public class WarnCondition {
     long id;
     String groupName;
     String areaName;
@@ -19,10 +19,6 @@ public class WarnRecord {
     String number;
     long curWarnValue;
     long appId;
-
-
-
-
 
     public long getId() {
         return id;

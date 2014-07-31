@@ -102,7 +102,7 @@
                                 dataType:'json'
                             });
 
-                            $.post($.URL.warnRecord.add,{groupName:groupName.toString(),
+                            $.post($.URL.warnCondition.add,{groupName:groupName.toString(),
                             areaName:areaName.toString(),collectorName:collectorName.toString(),sensorName:name.toString(),
                                 number:number.toString(),curWarnValue:parseInt(curValue)},"json");
                         }
@@ -126,7 +126,7 @@
             var collectorJumpName = $.evalJSON(jsonString).collectorName;
             var areaJumpName = $.evalJSON(jsonString).areaName;
             var jumpNumber = $.evalJSON(jsonString).number;
-            $.post($.URL.warnRecord.list,{groupName:groupJumpName.toString(),
+            $.post($.URL.warnCondition.list,{groupName:groupJumpName.toString(),
                 areaName:areaJumpName.toString(),collectorName:collectorJumpName.toString(),
                 sensorName:sensorJumpName.toString(),number:jumpNumber.toString()},warnRecordCallback,"json");
             $("#choiceContainer").load("dashboard/mainLink.html",{},jumpCallback);

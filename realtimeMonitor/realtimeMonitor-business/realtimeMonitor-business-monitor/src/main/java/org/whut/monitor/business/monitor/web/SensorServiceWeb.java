@@ -359,5 +359,14 @@ public class SensorServiceWeb {
         List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.listByGroupCollectionAndMonitor(appId,groupName,collectorName,monitorName);
         return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupCollectionAndMonitor, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getNumberBySensorId")
+    @POST
+    public String getNumberBySensorId(@FormParam("sensorId")long sensorId) {
+        long appId = UserContext.currentUserAppId();
+        List<String> numberList = sensorService.getNumberBySensorId(sensorId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(numberList, JsonResultUtils.Code.SUCCESS);
+    }
 }
 

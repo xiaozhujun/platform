@@ -92,51 +92,53 @@
             width:100,
             valueField:'id',
             textField:'text'
-//            ，onSelected:function(collector) {
-//                if(collector!=null) {
-//                    $.post($.URL.sensor.getSensorsByCollectorId,{"collectorId":collector},function sensorCallback(data){
-//                        if(data.code == 200) {
-//                            var sensorName = [];
-//                            $.each(data.data,function(index,content){
-//                                var c={};
-//                                c["id"]=content.id;
-//                                c["text"]=content.name;
-//                                sensorName.push(c);
-//                            });
-//                            liger.get("sensorSelect").setData(sensorName);
-//                        }
-//                    },"json");
-//                }
-//            }
+            ,onSelected:function(collector) {
+                if(collector!=null) {
+                    $.post($.URL.sensor.getSensorsByCollectorId,{"collectorId":collector},function sensorCallback(data){
+                        if(data.code == 200) {
+                            var sensorName = [];
+                            $.each(data.data,function(index,content){
+                                var c={};
+                                c["id"]=content.id;
+                                c["text"]=content.name;
+                                sensorName.push(c);
+                            });
+                            liger.get("sensorSelect").setData(sensorName);
+                        }
+                    },"json");
+                }
+            }
         });
 
-//        $("#sensorSelect").ligerComboBox({
-//            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
-//            width:100,
-//            valueField:'id',
-//            textField:'text',
-//            onSelected:function(collector) {
-//                var number;
-//                $.post($.URL.sensor.list,null,function(data){
-//                    if(data.code == 200) {
-//                        $.each(data.data,function(index,content){
-//                            var j = {};
-//                            j["text"] = content.number;
-//                            j["id"] = content.number;
-//                            number.push(j);
-//                        });
-//                        liger.get("sensorSelect").setData(number);
-//                    }
-//                },"json");
-//            }
-//        });
-//
-//        $("#numberSelect").ligerComboBox({
-//            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
-//            width:100,
-//            valueField:'id',
-//            textField:'text'
-//        });
+        $("#sensorSelect").ligerComboBox({
+            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
+            width:100,
+            valueField:'id',
+            textField:'text',
+            onSelected:function(sensor) {
+                if(sensor != null) {
+                    var number = [];
+                    $.post($.URL.sensor.getNumberBySensorId,{"sensorId":sensor},function(data){
+                        if(data.code == 200) {
+                            $.each(data.data,function(index,content){
+                                var j = {};
+                                j["text"] = content.number;
+                                j["id"] = content.number;
+                                number.push(j);
+                            });
+                            liger.get("numberSelect").setData(number);
+                        }
+                    },"json");
+                }
+            }
+        });
+
+        $("#numberSelect").ligerComboBox({
+            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
+            width:100,
+            valueField:'id',
+            textField:'text'
+        });
 
         var d=new Date();
         var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
@@ -157,14 +159,36 @@
             var number = $("#numberSelect").val();
             var startTime = $("#startTimeSelect").val();
             var endTime = $("#endTimeSelect").val();
-//            $.post($.URL.warnRecord.list,{groupName:groupName.toString(),
-//                areaName:areaName.toString(),collectorName:collectorName.toString(),
-//                sensorName:sensorName.toString(),number:number.toString()},warnRecordGridCallback,"json");
+            $.post($.URL.warnCondition.list,{groupName:groupName.toString(),
+                areaName:areaName.toString(),collectorName:collectorName.toString(),
+                sensorName:sensorName.toString(),number:number.toString(),sTime:startTime,eTime:endTime},warnRecordGridCallback,"json");
+        }
+        var warnConditionGrid;
+        var warnConditionData = {};
+        function warnRecordGridCallback(data) {
+            if(data.code == 200) {
+                warnConditionData.Rows = data.data;
+                warnConditionData.Total = data.length;
+                f_initWarnConditionGrid();
+            }
         }
 
-//        function warnRecordGridCallback() {
-//
-//        }
+        function f_initWarnConditionGrid() {
+            warnConditionGrid = $("#warnRecordGrid").ligerGrid({
+                columns:[
+                    {name:'id',display:'序号',width:'auto'},
+                    {name:'sensorName',display:'传感器',width:'auto'},
+                    {name:'groupName',display:'监测组',width:'auto'},
+                    {name:'areaName',display:'测量区域',width:'auto'},
+                    {name:'collectorName',display:'采集仪',width:'auto'},
+                    {name:'warnTime',display:'报警时间',width:'auto'},
+                    {name:'curWarnValue',display:'报警值',width:'auto'}
+                ],
+                data:warnConditionData,
+                width:'auto',
+                usePager:true
+            });
+        }
 
     </script>
 
@@ -198,15 +222,15 @@
         <input name="collectorSelect" id="collectorSelect" type="text">
     </span>
 
-    <!--<span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">传感器：</span>-->
-    <!--<span class="l-show-com">-->
-        <!--<input name="sensorSelect" id="sensorSelect" type="text">-->
-    <!--</span>-->
+    <span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">传感器：</span>
+    <span class="l-show-com">
+        <input name="sensorSelect" id="sensorSelect" type="text">
+    </span>
 
-    <!--<span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">编号：</span>-->
-    <!--<span class="l-show-com">-->
-        <!--<input name="numberSelect" id="numberSelect" type="text">-->
-    <!--</span>-->
+    <span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">编号：</span>
+    <span class="l-show-com">
+        <input name="numberSelect" id="numberSelect" type="text">
+    </span><br><br><br>
 
     <span style="margin-left: 80px;  width: 60px;float: left;margin-top: 2px">起始时间：</span>
     <span class="l-show-com">
@@ -223,9 +247,7 @@
             <input id="submitBtn" type="button" value="查询">
         </span>
     </span>
-
-</div>
-
+</div><br><br><br>
 <div id="warnRecordGrid"></div>
  </body>
 </html>

@@ -17,5 +17,5 @@ public interface WarnConditionMapper extends AbstractMapper<WarnCondition>{
     public List<WarnCondition> getListByAppId(@Param("groupName")String groupName,@Param("areaName")String
             areaName,@Param("collectorName")String collectorName,
                                            @Param("sensorName")String sensorName,@Param("number")String
-            number,@Param("appId")long appId);
+            number,@Param("sTime")String sTime,@Param("eTime")String eTime,@Param("appId")long appId);
 }

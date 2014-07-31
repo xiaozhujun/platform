@@ -58,10 +58,10 @@ public class WarnConditionServiceWeb {
     @POST
     public String list(@FormParam("groupName")String groupName,@FormParam("areaName")String
             areaName,@FormParam("collectorName")String collectorName,
-                       @FormParam("sensorName")String sensorName,@FormParam("number")String number) {
+                       @FormParam("sensorName")String sensorName,@FormParam("number")String number
+            ,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime) {
         long appId = UserContext.currentUserAppId();
-        List<WarnCondition> list = warnConditionService.getListByAppId
-                (groupName,areaName,collectorName,sensorName,number,appId);
+        List<WarnCondition> list = warnConditionService.getListByAppId(groupName,areaName,collectorName,sensorName,number,sTime,eTime,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

@@ -29,5 +29,6 @@
     <select id="getListByAppId" parameterType="map" resultMap="WarnConditionResultMap">
         SELECT * FROM warn_record WHERE GROUPNAME=#{groupName} AND AREANAME=#{areaName}
         AND COLLECTORNAME=#{collectorName} AND SENSORNAME=#{sensorName} AND NUMBER=#{number} AND APPID=#{appId}
+        AND WARNTIME BETWEEN #{sTime} AND #{eTime}
     </select>
 </mapper>

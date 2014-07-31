@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 下午3:07
  * To change this template use File | Settings | File Templates.
  */
-public interface GroupMapper extends AbstractMapper {
+public interface GroupMapper extends AbstractMapper<Group> {
     public long getIdByNameAndAppId(@Param("name") String name, @Param("appId") long appId);
     public List<Group> getListByAppId(long appId);
     public String getNameById(long id);

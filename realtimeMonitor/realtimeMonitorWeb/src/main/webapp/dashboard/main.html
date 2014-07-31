@@ -126,9 +126,12 @@
             var collectorJumpName = $.evalJSON(jsonString).collectorName;
             var areaJumpName = $.evalJSON(jsonString).areaName;
             var jumpNumber = $.evalJSON(jsonString).number;
+            var myDate = new Date();
+            alert(myDate.toLocaleDateString());
             $.post($.URL.warnCondition.list,{groupName:groupJumpName.toString(),
                 areaName:areaJumpName.toString(),collectorName:collectorJumpName.toString(),
-                sensorName:sensorJumpName.toString(),number:jumpNumber.toString()},warnRecordCallback,"json");
+                sensorName:sensorJumpName.toString(),number:jumpNumber.toString(),
+                sTime:myDate.toLocaleDateString(),eTime:myDate.toLocaleDateString()},warnRecordCallback,"json");
             $("#choiceContainer").load("dashboard/mainLink.html",{},jumpCallback);
         }
 
@@ -157,7 +160,7 @@
                 ],
                 data:warnRecordData,
                 width:'auto',
-                usePager:false
+                usePager:true
             });
         }
 

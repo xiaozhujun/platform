@@ -60,7 +60,8 @@
             "getMongoDataList":"rs/sensor/getMongoDataList",
             "getMongoDataLastList":"rs/sensor/getMongoDataLastList",
             "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
-            "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor"
+            "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor",
+            "getNumberBySensorId":"rs/sensor/getNumberBySensorId"
         },
         "algorithm":{
             "meanVarianceValue":"rs/algorithm/meanVarianceValue/"

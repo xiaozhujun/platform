@@ -49,4 +49,9 @@ public class SensorService {
     public void updateWarnCount(long warnCount,long id,long appId) {
         sensorMapper.updateWarnCount(warnCount,id,appId);
     }
+
+    public List<String> getNumberBySensorId(long sensorId,long appId) {
+        return sensorMapper.getNumberBySensorId(sensorId,appId);
+    }
+
 }

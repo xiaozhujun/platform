@@ -107,4 +107,10 @@
         FROM sensor
         WHERE collectorId=#{collectorId} AND appId=#{appId}
     </select>
+
+    <select id="getNumberBySensorId" parameterType="map" resultType="map">
+        SELECT number
+        FROM  sensor
+        WHERE id=#{sensorId} AND appId=#{appId}
+    </select>
 </mapper>

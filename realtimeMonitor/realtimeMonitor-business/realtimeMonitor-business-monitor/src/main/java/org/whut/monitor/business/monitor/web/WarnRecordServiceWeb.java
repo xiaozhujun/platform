@@ -2,6 +2,7 @@ package org.whut.monitor.business.monitor.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.monitor.business.monitor.entity.WarnRecord;
 import org.whut.monitor.business.monitor.service.WarnRecordService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;

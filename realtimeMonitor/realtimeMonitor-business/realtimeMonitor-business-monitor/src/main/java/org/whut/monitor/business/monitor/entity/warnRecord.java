@@ -20,6 +20,10 @@ public class WarnRecord {
     long curWarnValue;
     long appId;
 
+
+
+
+
     public long getId() {
         return id;
     }

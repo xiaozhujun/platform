@@ -254,9 +254,16 @@ public class SensorServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/homePageList")
     @POST
-    public String homePageList() {
+    public String homePageList(@FormParam("fStatus")String fStatus) {
         long appId = UserContext.currentUserAppId();
-        List<Map<String,String>> homePageList = sensorService.homePageList(appId);
+        String tempStatus;
+        if (fStatus.equals("false")) {
+            tempStatus = "";
+        }
+        else {
+            tempStatus = "true";
+        }
+        List<Map<String,String>> homePageList = sensorService.homePageList(tempStatus,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(homePageList, JsonResultUtils.Code.SUCCESS);
     }
 
@@ -351,6 +358,15 @@ public class SensorServiceWeb {
         long appId=UserContext.currentUserAppId();
         List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.listByGroupCollectionAndMonitor(appId,groupName,collectorName,monitorName);
         return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupCollectionAndMonitor, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getNumberBySensorId")
+    @POST
+    public String getNumberBySensorId(@FormParam("sensorId")long sensorId) {
+        long appId = UserContext.currentUserAppId();
+        List<String> numberList = sensorService.getNumberBySensorId(sensorId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(numberList, JsonResultUtils.Code.SUCCESS);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : platform
+Source Server         : yy
 Source Server Version : 50151
 Source Host           : localhost:3306
 Source Database       : realtimemonitor
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50151
 File Encoding         : 65001
 
-Date: 2014-07-13 16:06:09
+Date: 2014-07-30 21:13:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,11 +45,18 @@ CREATE TABLE `area` (
   `groupId` bigint(20) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of area
 -- ----------------------------
+INSERT INTO `area` VALUES ('10', 'q1', '', '2014-07-18', '1', '1');
+INSERT INTO `area` VALUES ('11', 'q2', '', '2014-07-18', '1', '1');
+INSERT INTO `area` VALUES ('12', 'q1', '', '2014-07-18', '2', '1');
+INSERT INTO `area` VALUES ('13', 'q2', '', '2014-07-18', '2', '1');
+INSERT INTO `area` VALUES ('14', 'q3', '', '2014-07-18', '2', '1');
+INSERT INTO `area` VALUES ('15', 'd', '', '2014-07-18', '1', '1');
+INSERT INTO `area` VALUES ('16', '测量组1', null, '2014-07-19', '2', '1');
 
 -- ----------------------------
 -- Table structure for `authority`
@@ -80,53 +87,15 @@ CREATE TABLE `authority_menu` (
   `menuId` bigint(20) DEFAULT NULL,
   `menuName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authority_menu
 -- ----------------------------
-INSERT INTO `authority_menu` VALUES ('76', '1', 'ROLE_USER', '1', '部门管理');
-INSERT INTO `authority_menu` VALUES ('77', '1', 'ROLE_USER', '2', '添加部门');
-INSERT INTO `authority_menu` VALUES ('78', '1', 'ROLE_USER', '6', '部门列表');
-INSERT INTO `authority_menu` VALUES ('79', '1', 'ROLE_USER', '7', '添加员工类型');
-INSERT INTO `authority_menu` VALUES ('80', '1', 'ROLE_USER', '8', '员工类型列表');
-INSERT INTO `authority_menu` VALUES ('81', '1', 'ROLE_USER', '9', '添加员工');
-INSERT INTO `authority_menu` VALUES ('82', '1', 'ROLE_USER', '10', '员工列表');
-INSERT INTO `authority_menu` VALUES ('83', '1', 'ROLE_USER', '3', '设备管理');
-INSERT INTO `authority_menu` VALUES ('84', '1', 'ROLE_USER', '11', '添加设备类型');
-INSERT INTO `authority_menu` VALUES ('85', '1', 'ROLE_USER', '12', '设备类型列表');
-INSERT INTO `authority_menu` VALUES ('86', '1', 'ROLE_USER', '13', '添加设备区域');
-INSERT INTO `authority_menu` VALUES ('87', '1', 'ROLE_USER', '14', '设备类型区域列表');
-INSERT INTO `authority_menu` VALUES ('88', '1', 'ROLE_USER', '15', '添加设备');
-INSERT INTO `authority_menu` VALUES ('89', '1', 'ROLE_USER', '16', '设备列表');
-INSERT INTO `authority_menu` VALUES ('90', '1', 'ROLE_USER', '17', '添加设备标签');
-INSERT INTO `authority_menu` VALUES ('91', '1', 'ROLE_USER', '18', '设备标签列表');
-INSERT INTO `authority_menu` VALUES ('92', '1', 'ROLE_USER', '4', '点检表管理');
-INSERT INTO `authority_menu` VALUES ('93', '1', 'ROLE_USER', '19', '添加点检表');
-INSERT INTO `authority_menu` VALUES ('94', '1', 'ROLE_USER', '20', '点检表列表');
-INSERT INTO `authority_menu` VALUES ('95', '1', 'ROLE_USER', '21', '添加点检项');
-INSERT INTO `authority_menu` VALUES ('96', '1', 'ROLE_USER', '22', '点检项列表');
-INSERT INTO `authority_menu` VALUES ('97', '1', 'ROLE_USER', '23', '点检选值添加');
-INSERT INTO `authority_menu` VALUES ('98', '1', 'ROLE_USER', '24', '点检选值列表');
-INSERT INTO `authority_menu` VALUES ('99', '2', 'ROLE_ADMIN', '5', '数据管理');
-INSERT INTO `authority_menu` VALUES ('100', '2', 'ROLE_ADMIN', '25', '点检结果上传');
-INSERT INTO `authority_menu` VALUES ('101', '2', 'ROLE_ADMIN', '26', '人员配置查询');
-INSERT INTO `authority_menu` VALUES ('102', '2', 'ROLE_ADMIN', '27', '设备配置查询');
-INSERT INTO `authority_menu` VALUES ('103', '2', 'ROLE_ADMIN', '28', '点检表下载');
-INSERT INTO `authority_menu` VALUES ('104', '2', 'ROLE_ADMIN', '29', '人员与点检项目表下载');
-INSERT INTO `authority_menu` VALUES ('105', '2', 'ROLE_ADMIN', '4', '点检表管理');
-INSERT INTO `authority_menu` VALUES ('106', '2', 'ROLE_ADMIN', '19', '添加点检表');
-INSERT INTO `authority_menu` VALUES ('107', '2', 'ROLE_ADMIN', '20', '点检表列表');
-INSERT INTO `authority_menu` VALUES ('108', '2', 'ROLE_ADMIN', '21', '添加点检项');
-INSERT INTO `authority_menu` VALUES ('109', '2', 'ROLE_ADMIN', '22', '点检项列表');
-INSERT INTO `authority_menu` VALUES ('110', '2', 'ROLE_ADMIN', '23', '点检选值添加');
-INSERT INTO `authority_menu` VALUES ('111', '2', 'ROLE_ADMIN', '24', '点检选值列表');
-INSERT INTO `authority_menu` VALUES ('112', '2', 'ROLE_ADMIN', '5', '数据管理');
-INSERT INTO `authority_menu` VALUES ('113', '2', 'ROLE_ADMIN', '25', '点检结果上传');
-INSERT INTO `authority_menu` VALUES ('114', '2', 'ROLE_ADMIN', '26', '人员配置查询');
-INSERT INTO `authority_menu` VALUES ('115', '2', 'ROLE_ADMIN', '27', '设备配置查询');
-INSERT INTO `authority_menu` VALUES ('116', '2', 'ROLE_ADMIN', '28', '点检表下载');
-INSERT INTO `authority_menu` VALUES ('117', '2', 'ROLE_ADMIN', '29', '人员与点检项目表下载');
+INSERT INTO `authority_menu` VALUES ('1', '1', 'ROLE_USER', '1', '组管理');
+INSERT INTO `authority_menu` VALUES ('2', '1', 'ROLE_USER', '2', '添加组');
+INSERT INTO `authority_menu` VALUES ('3', '1', 'ROLE_USER', '3', '组列表');
+INSERT INTO `authority_menu` VALUES ('4', '1', 'ROLE_USER', '4', '区域管理');
 
 -- ----------------------------
 -- Table structure for `authority_power`
@@ -145,11 +114,11 @@ CREATE TABLE `authority_power` (
 -- Records of authority_power
 -- ----------------------------
 INSERT INTO `authority_power` VALUES ('1', '1', '1', '/rs/**', 'ROLE_USER');
-INSERT INTO `authority_power` VALUES ('2', '1', '4', '/index.html', 'ROLE_USER');
+INSERT INTO `authority_power` VALUES ('2', '1', '4', '/index.jsp', 'ROLE_USER');
 INSERT INTO `authority_power` VALUES ('4', '2', '1', '/rs/**', 'ROLE_ADMIN');
 INSERT INTO `authority_power` VALUES ('5', '2', '2', '/user.html', 'ROLE_ADMIN');
 INSERT INTO `authority_power` VALUES ('6', '2', '3', '/admin.html', 'ROLE_ADMIN');
-INSERT INTO `authority_power` VALUES ('7', '2', '4', '/index.html', 'ROLE_ADMIN');
+INSERT INTO `authority_power` VALUES ('7', '2', '4', '/index.jsp', 'ROLE_ADMIN');
 INSERT INTO `authority_power` VALUES ('8', '2', '15', 'cas/**', 'ROLE_ADMIN');
 
 -- ----------------------------
@@ -170,11 +139,13 @@ CREATE TABLE `collector` (
   `workFrequency` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of collector
 -- ----------------------------
+INSERT INTO `collector` VALUES ('20', 'c1', '无', '01', '1', '10', '在线正常工作', '2014-07-23', '1000', '100', '700', '1');
+INSERT INTO `collector` VALUES ('21', 'c2', '无', '02', '1', '10', '位置或离线', '2014-07-23', '1000', '100', '700', '1');
 
 -- ----------------------------
 -- Table structure for `group`
@@ -187,11 +158,13 @@ CREATE TABLE `group` (
   `createtime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of group
 -- ----------------------------
+INSERT INTO `group` VALUES ('1', '组1', '无', '2014-07-18', '1');
+INSERT INTO `group` VALUES ('2', '组2', '无', '2014-07-18', '1');
 
 -- ----------------------------
 -- Table structure for `menu`
@@ -205,40 +178,23 @@ CREATE TABLE `menu` (
   `url` varchar(255) DEFAULT NULL,
   `parentname` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES ('1', '0', '部门管理', '1', '', '菜单');
-INSERT INTO `menu` VALUES ('2', '1', '添加部门', '2', 'department/add.html', '部门管理');
-INSERT INTO `menu` VALUES ('3', '0', '设备管理', '1', '', '菜单');
-INSERT INTO `menu` VALUES ('4', '0', '点检表管理', '1', '', '菜单');
-INSERT INTO `menu` VALUES ('5', '0', '数据管理', '1', '', '菜单');
-INSERT INTO `menu` VALUES ('6', '1', '部门列表', '2', 'department/list.html', '部门管理');
-INSERT INTO `menu` VALUES ('7', '1', '添加员工类型', '2', 'employeeRole/add.html', '部门管理');
-INSERT INTO `menu` VALUES ('8', '1', '员工类型列表', '2', 'employeeRole/employeeRolelist.html', '部门管理');
-INSERT INTO `menu` VALUES ('9', '1', '添加员工', '2', 'employee/addemployee.html', '部门管理');
-INSERT INTO `menu` VALUES ('10', '1', '员工列表', '2', 'employee/employeeList.html', '部门管理');
-INSERT INTO `menu` VALUES ('11', '3', '添加设备类型', '2', 'device/addDeviceType.html', '设备管理');
-INSERT INTO `menu` VALUES ('12', '3', '设备类型列表', '2', 'device/listDeviceType.html', '设备管理');
-INSERT INTO `menu` VALUES ('13', '3', '添加设备区域', '2', 'device/addInspectArea.html', '设备管理');
-INSERT INTO `menu` VALUES ('14', '3', '设备类型区域列表', '2', 'device/listInspectArea.html', '设备管理');
-INSERT INTO `menu` VALUES ('15', '3', '添加设备', '2', 'device/addDevice.html', '设备管理');
-INSERT INTO `menu` VALUES ('16', '3', '设备列表', '2', 'device/listDevice.html', '设备管理');
-INSERT INTO `menu` VALUES ('17', '3', '添加设备标签', '2', 'device/addInspectTag.html', '设备管理');
-INSERT INTO `menu` VALUES ('18', '3', '设备标签列表', '2', 'device/listInspectTag.html', '设备管理');
-INSERT INTO `menu` VALUES ('19', '4', '添加点检表', '2', 'InspectTable/addInspectTable.html', '点检表管理');
-INSERT INTO `menu` VALUES ('20', '4', '点检表列表', '2', 'InspectTable/inspectTableList.html', '点检表管理');
-INSERT INTO `menu` VALUES ('21', '4', '添加点检项', '2', 'InspectTable/addInspectItem.html', '点检表管理');
-INSERT INTO `menu` VALUES ('22', '4', '点检项列表', '2', 'InspectTable/inspectItemList.html', '点检表管理');
-INSERT INTO `menu` VALUES ('23', '4', '点检选值添加', '2', 'InspectTable/addInspectChoice.html', '点检表管理');
-INSERT INTO `menu` VALUES ('24', '4', '点检选值列表', '2', 'InspectTable/inspectChoiceList.html', '点检表管理');
-INSERT INTO `menu` VALUES ('25', '5', '点检结果上传', '2', 'inspectResult/inspectResultUpload.html', '数据管理');
-INSERT INTO `menu` VALUES ('26', '5', '人员配置查询', '2', 'configuration/personnelConfiguration.html', '数据管理');
-INSERT INTO `menu` VALUES ('27', '5', '设备配置查询', '2', 'configuration/deviceConfiguration.html', '数据管理');
-INSERT INTO `menu` VALUES ('28', '5', '点检表下载', '2', 'configuration/inspectTableDownload.html', '数据管理');
-INSERT INTO `menu` VALUES ('29', '5', '人员与点检项目表下载', '2', 'configuration/rolesTableDownload.html', '数据管理');
+INSERT INTO `menu` VALUES ('1', '0', '组管理', '1', null, '菜单');
+INSERT INTO `menu` VALUES ('2', '1', '添加组', '2', 'monitor/addGroup.html', '组管理');
+INSERT INTO `menu` VALUES ('3', '1', '组列表', '2', 'monitor/groupList.html', '组管理');
+INSERT INTO `menu` VALUES ('4', '0', '区域管理', '1', null, '菜单');
+INSERT INTO `menu` VALUES ('5', '4', '添加区域', '2', 'monitor/addArea.html', '区域管理');
+INSERT INTO `menu` VALUES ('6', '4', '区域列表', '2', 'monitor/areaList.html', '区域管理');
+INSERT INTO `menu` VALUES ('7', '0', '采集仪管理', '1', null, '菜单');
+INSERT INTO `menu` VALUES ('8', '7', '添加采集仪', '2', 'monitor/addCollector.html', '采集仪管理');
+INSERT INTO `menu` VALUES ('9', '7', '采集仪列表', '2', 'monitor/collectorList.html', '采集仪管理');
+INSERT INTO `menu` VALUES ('10', '0', '传感器管理', '1', null, '菜单');
+INSERT INTO `menu` VALUES ('11', '10', '添加传感器', '2', 'monitor/addSensor.html', '传感器管理');
+INSERT INTO `menu` VALUES ('12', '10', '传感器列表', '2', 'monitor/sensorList.html', '传感器管理');
 
 -- ----------------------------
 -- Table structure for `power`
@@ -258,7 +214,7 @@ CREATE TABLE `power` (
 INSERT INTO `power` VALUES ('1', '/rs/**', 'resource', '所有rest服务');
 INSERT INTO `power` VALUES ('2', '/user.html', 'url', null);
 INSERT INTO `power` VALUES ('3', '/admin.html', 'url', null);
-INSERT INTO `power` VALUES ('4', '/index.html', 'url', null);
+INSERT INTO `power` VALUES ('4', '/index.jsp', 'url', null);
 INSERT INTO `power` VALUES ('15', 'cas/**', 'service', 'cas client test from android');
 
 -- ----------------------------
@@ -283,11 +239,15 @@ CREATE TABLE `sensor` (
   `warnStatus` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sensor
 -- ----------------------------
+INSERT INTO `sensor` VALUES ('11', 's1', '无', '01', '1', '10', '20', '1000', '100', '700', '是', '均方差', '70', '0', null, '1');
+INSERT INTO `sensor` VALUES ('12', 's2', '无', '02', '1', '10', '21', '1000', '100', '700', '是', '均方差', '70', '0', null, '1');
+INSERT INTO `sensor` VALUES ('13', 's3', '无', '03', '1', '10', '20', '1000', '100', '700', '是', '均方差', '150', '0', null, '1');
+INSERT INTO `sensor` VALUES ('14', 's1', '无', '2100000000010000', '1', '10', '20', '1000', '100', '700', '是', '均方差', '130', '24', null, '1');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -301,16 +261,17 @@ CREATE TABLE `user` (
   `role` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT '1',
   `status` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'xiaozhujun', 'e10adc3949ba59abbe56e057f20f883e', '男', 'admin', '1', '启用');
-INSERT INTO `user` VALUES ('2', 'zhangsan', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_USER', '1', '启用');
-INSERT INTO `user` VALUES ('3', 'sunhui', 'e68fa2bc61b75b8a06766e25905052c7', '男', 'ROLE_USER', '1', '启用');
-INSERT INTO `user` VALUES ('4', 'liujinxia', 'c99c1cbefe13019978d90cb442cb8f78', '女', 'ROLE_ADMIN', '1', '启用');
+INSERT INTO `user` VALUES ('1', 'xiaozhujun', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_USER;ROLE_ADMIN', '1', '启用', null);
+INSERT INTO `user` VALUES ('2', 'zhangsan', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_USER', '1', '启用', null);
+INSERT INTO `user` VALUES ('3', 'sunhui', 'e68fa2bc61b75b8a06766e25905052c7', '男', 'ROLE_USER', '1', '启用', null);
+INSERT INTO `user` VALUES ('4', 'liujinxia', 'c99c1cbefe13019978d90cb442cb8f78', '女', 'ROLE_ADMIN', '1', '启用', null);
 
 -- ----------------------------
 -- Table structure for `user_authority`
@@ -333,3 +294,48 @@ INSERT INTO `user_authority` VALUES ('2', '1', '2', 'xiaozhujun', 'ROLE_ADMIN');
 INSERT INTO `user_authority` VALUES ('5', '2', '1', 'zhangsan', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('6', '3', '1', 'sunhui', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('7', '4', '2', 'liujinxia', 'ROLE_ADMIN');
+
+-- ----------------------------
+-- Table structure for `warn_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `warn_record`;
+CREATE TABLE `warn_record` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `groupName` varchar(255) DEFAULT NULL,
+  `areaName` varchar(255) DEFAULT NULL,
+  `collectorName` varchar(255) DEFAULT NULL,
+  `sensorName` varchar(255) DEFAULT NULL,
+  `number` varchar(255) DEFAULT NULL,
+  `warnTime` date DEFAULT NULL,
+  `curWarnValue` bigint(20) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of warn_record
+-- ----------------------------
+INSERT INTO `warn_record` VALUES ('51', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '152', '1');
+INSERT INTO `warn_record` VALUES ('52', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '134', '1');
+INSERT INTO `warn_record` VALUES ('53', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '133', '1');
+INSERT INTO `warn_record` VALUES ('54', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '143', '1');
+INSERT INTO `warn_record` VALUES ('55', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '143', '1');
+INSERT INTO `warn_record` VALUES ('56', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '136', '1');
+INSERT INTO `warn_record` VALUES ('57', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '147', '1');
+INSERT INTO `warn_record` VALUES ('58', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '152', '1');
+INSERT INTO `warn_record` VALUES ('59', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '148', '1');
+INSERT INTO `warn_record` VALUES ('60', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '134', '1');
+INSERT INTO `warn_record` VALUES ('61', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '151', '1');
+INSERT INTO `warn_record` VALUES ('62', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '146', '1');
+INSERT INTO `warn_record` VALUES ('63', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '153', '1');
+INSERT INTO `warn_record` VALUES ('64', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '144', '1');
+INSERT INTO `warn_record` VALUES ('65', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '145', '1');
+INSERT INTO `warn_record` VALUES ('66', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '149', '1');
+INSERT INTO `warn_record` VALUES ('67', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '134', '1');
+INSERT INTO `warn_record` VALUES ('68', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '134', '1');
+INSERT INTO `warn_record` VALUES ('69', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '144', '1');
+INSERT INTO `warn_record` VALUES ('70', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '144', '1');
+INSERT INTO `warn_record` VALUES ('71', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '138', '1');
+INSERT INTO `warn_record` VALUES ('72', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '138', '1');
+INSERT INTO `warn_record` VALUES ('73', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '145', '1');
+INSERT INTO `warn_record` VALUES ('74', '组1', 'q1', 'c1', 's1', '2100000000010000', '2014-07-30', '153', '1');

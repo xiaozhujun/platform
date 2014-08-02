@@ -46,7 +46,7 @@ public class ReportServiceWeb {
         try {
             start = format.parse(startTime);
             end = format.parse(endTime);
-            List<DBObject> list =  reportService.queryDocuments(start.getTime(), end.getTime(), sensorNum);
+            List<DBObject> list =  reportService.queryDocuments(startTime, endTime, sensorNum);
             StringBuffer buffer =  new StringBuffer("");
             for(DBObject object:list){
 

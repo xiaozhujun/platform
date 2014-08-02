@@ -60,13 +60,18 @@
             "getMongoDataList":"rs/sensor/getMongoDataList",
             "getMongoDataLastList":"rs/sensor/getMongoDataLastList",
             "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
-            "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor"
+            "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor",
+            "getNumberBySensorId":"rs/sensor/getNumberBySensorId"
         },
         "algorithm":{
             "meanVarianceValue":"rs/algorithm/meanVarianceValue/"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensor/data/{id}.htm"
+        },
+        "warnCondition":{
+            "add":"rs/warnCondition/add",
+            "list":"rs/warnCondition/list"
         }
     }
 })(jQuery);

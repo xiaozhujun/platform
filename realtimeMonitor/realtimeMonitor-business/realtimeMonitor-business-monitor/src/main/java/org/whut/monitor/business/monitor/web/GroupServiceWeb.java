@@ -59,7 +59,7 @@ public class GroupServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("getList")
+    @Path("/getList")
     @POST
     public String getList() {
         long appId = UserContext.currentUserAppId();
@@ -68,7 +68,7 @@ public class GroupServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("update")
+    @Path("/update")
     @POST
     public String update(@FormParam("jsonString")String jsonString) {
         long appId = UserContext.currentUserAppId();
@@ -95,7 +95,7 @@ public class GroupServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("delete")
+    @Path("/delete")
     @POST
       public String delete(@FormParam("jsonString")String jsonString) {
         Group group = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Group.class);
@@ -104,7 +104,7 @@ public class GroupServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("getIdByGroupName")
+    @Path("/getIdByGroupName")
     @POST
     public String getIdByNameAndAppId(@FormParam("groupName")String groupName) {
         long appId = UserContext.currentUserAppId();

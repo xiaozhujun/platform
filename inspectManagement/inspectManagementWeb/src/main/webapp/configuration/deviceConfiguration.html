@@ -96,7 +96,9 @@
         }
 
         $("#exportBtn").click(function(){
-
+            if(g==undefined){
+                $.ligerDialog.warn("抱歉,未查询！");
+            }else{
             var selectedRows =  g.getCheckedRows();
             if(selectedRows.length==0||selectedRows==undefined){
                 $.ligerDialog.warn("未选择行！");
@@ -109,7 +111,7 @@
                 var data = str.substring(0,str.length-1);
                 window.location.href="rs/deviceConfiguration/importDeviceConfiguration/"+encodeURI(data);
             }
-
+            }
         });
     </script>
     <style type="text/css">

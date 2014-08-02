@@ -89,4 +89,21 @@ public class ReportService {
         BasicDBObject condition = new BasicDBObject(QueryOperators.AND,query);
         return mongoConnector.getDocumentList(condition);
     }
+
+    //获取指定传感器在时间段内的数据
+    public List<DBObject> queryDocuments(String startTime,String endTime,String sensorNum){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ArrayList<BasicDBObject> query = new ArrayList<BasicDBObject>();
+        if(startTime!=null){
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$gte", startTime)));
+        }
+        if(endTime!=null){
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time"), new BasicDBObject("$lte", endTime)));
+        }
+        if(sensorNum!=null){
+            query.add(new BasicDBObject(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id"), sensorNum));
+        }
+        BasicDBObject condition = new BasicDBObject(QueryOperators.AND,query);
+        return mongoConnector.getDocumentList(condition);
+    }
 }

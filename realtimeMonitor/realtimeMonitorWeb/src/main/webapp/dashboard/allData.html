@@ -14,7 +14,7 @@
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/highcharts.js"></script>
+    <script type="text/javascript" src="js/highstock.js"></script>
     <script type="text/javascript" src="js/chartTool1.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -26,55 +26,38 @@
                 getDataList();
             });
         });
-        var data1;
+        var data1,data2;
         function sensorListCallback1(data){
             if(data.code==200){
-                  data1=data.data;
-                }
-        }
-        var data2;
-        function sensorListCallback2(data){
-            if(data.code==200){
-                data2=data.data;
+                data1=data.data.data;
+                data2=data.data.time;
+                drawChart("#dataContainer", data1,data2, "mV");
             }
         }
         function getDataList(){
             var sTime=$("#startTime").val();
             var eTime=$("#endTime").val();
-            $.post($.URL.sensor.getMongoDataList,{"sTime":sTime,"eTime":eTime},sensorListCallback1,"json");
-            $.post($.URL.sensor.getMongoDataList2,{"sTime":sTime,"eTime":eTime},sensorListCallback2,"json");
-            var data =data1;
-            var categoriesData= data2
-            drawChart("#dataContainer", data,categoriesData, "mV"); }
+            var jsonString  = $.toJSON(currentMonitor);
+            var number = $.evalJSON(jsonString).number;
+            $.post($.URL.sensor.getMongoDataList,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback1,"json");
+        }
     </script>
 
 </head>
 <body>
-<div id="allDataContainer">
-  <div id="monitorContainer">
+<div id="monitorContainer">
     <table>
         <tr>
-            <td> <div ><span class="item_font">起始时间:</span><span class="item_input"><input id="startTime" type="text"></span></div></td>
-            <td><div ><span class="item_font">终止时间:</span><span class="item_input"><input id="endTime" type="text"></span></div></td>
-            <td><div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn2" class="l-button l-button-submit" /></span></div></td>
+            <td><div class="searchItem"><span class="item_font">起始时间:</span></div></td>
+            <td><span class="item_input"><input id="startTime" type="text"></span></td>
+            <td><div class="searchItem"><span class="item_font">终止时间:</span></div></td>
+            <td><span class="item_input"><input id="endTime" type="text"></span></td>
+           <td><div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn2" class="l-button l-button-submit" /></span></div></td>
         </tr>
     </table>
-  </div>
-  <div id="dataContainer" style="min-width:700px;height:400px"></div>
 </div>
+<div id="dataContainer" style="min-width:700px;height:400px"></div>
 
-
-
-
-<!--<div id="allDataContainer">-->
-    <!--<div id="monitorContainer">-->
-            <!--<div ><span class="item_font">起始时间:</span><span class="item_input"><input id="startTime" type="text"></span></div>-->
-            <!--<div ><span class="item_font">终止时间:</span><span class="item_input"><input id="endTime" type="text"></span></div>-->
-            <!--<div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn2" class="l-button l-button-submit" /></span></div>-->
-    <!--</div>-->
-    <!--<br/>-->
-    <!--<div id="dataContainer" style="min-width:700px;height:400px"></div>-->
-<!--</div>-->
 <br/>
 
 </body>

@@ -18,42 +18,13 @@
     <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/highcharts.js"></script>
+    <!--<script type="text/javascript" src="js/highcharts.js"></script>-->
+    <script type="text/javascript" src="js/highstock.js"></script>
     <script type="text/javascript" src="js/chartTool1.js"></script>
     <script type="text/javascript">
         $(function(){
-            var d=new Date();
-            var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-            $("#startTime").ligerDateEditor({initValue: dd});
-            $("#endTime").ligerDateEditor({initValue: dd});
-            $("#dataSubmitBtn2").click(function(){
-                getDataList2();
-            });
-        });
-        var data1,data2;
-        function sensorListCallback1(data){
-            if(data.code==200){
-                data1=data.data.data;
-                data2=data.data.time;
-                drawChart("#dataContainer", data1,data2, "mV");
-            }
-        }
-
-        function getDataList2(){
-            var sTime=$("#startTime").val();
-            var eTime=$("#endTime").val();
-            $.post($.URL.sensor.getMongoDataList,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback1,"json");
-        }
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-              $("#dataShow").hide();
-        });
-        $(function(){
             $.post($.URL.group.list,null,groupListCallback,"json");
             $("#dataSubmitBtn1").click(function(){
-               $("#dataShow").hide();
-                $("#maingrid").show();
                 getDataList();
             });
             $("#collectorName").ligerComboBox({
@@ -96,7 +67,8 @@
                                         j["id"]=content.id;
                                         collectorData.push(j);
                                     })
-                                    liger.get("collectorName").setData(collectorData);
+                                    //liger.get("collectorName").setData(collectorData);
+                                    $("#collectorName").ligerComboBox({data:collectorData})  ;
                                 }
                             },"json");
                         }
@@ -113,7 +85,8 @@
                     d['id']=data.data[i].id;
                     sensorData.push(d);
                 }
-                liger.get("monitorName").setData(sensorData);
+                $("#monitorName").ligerComboBox({data:sensorData})  ;
+               // liger.get("monitorName").setData(sensorData);
             }
         }
         var currentMonitor,grid;
@@ -140,10 +113,14 @@
         var number;
         function getInfo(rowindex){
             currentMonitor = grid.getRow(rowindex);
-            var jsonString  = $.toJSON(currentMonitor);
-            number = $.evalJSON(jsonString).number;
-            $("#maingrid").hide();
-            $("#dataShow").show();
+            $("#dataAnalysisTab").load("dashboard/allData.html");
+//            var jsonString  = $.toJSON(currentMonitor);
+//            number = $.evalJSON(jsonString).number;
+//            var cName = $.evalJSON(jsonString).collectorName;
+//            var sName=  $.evalJSON(jsonString).sensorName;
+//            $("#collectorName").ligerComboBox({textField:cName});
+//            $("#monitorName").ligerComboBox({textField:sName});
+
         }
         function getDataList(){
             var groupName=$("#groupName").val();
@@ -163,20 +140,5 @@
     <div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn1" class="l-button l-button-submit" /></span></div>
 </div>
 <div id="maingrid" class="reportContent" ></div>
-<div id="dataShow" class="reportContent" >
-    <div id="allDataContainer">
-        <div id="monitorContainer">
-            <table>
-                <tr>
-                    <td> <div ><span class="item_font">起始时间:</span><span class="item_input"><input id="startTime" type="text"></span></div></td>
-                    <td><div ><span class="item_font">终止时间:</span><span class="item_input"><input id="endTime" type="text"></span></div></td>
-                    <td><div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn2" class="l-button l-button-submit" /></span></div></td>
-                </tr>
-            </table>
-        </div>
-        <div id="dataContainer" style="min-width:700px;height:400px"></div>
-    </div>
-</div>
-</div>
 </body>
 </html>

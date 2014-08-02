@@ -114,12 +114,6 @@
         function getInfo(rowindex){
             currentMonitor = grid.getRow(rowindex);
             $("#dataAnalysisTab").load("dashboard/allData.html");
-//            var jsonString  = $.toJSON(currentMonitor);
-//            number = $.evalJSON(jsonString).number;
-//            var cName = $.evalJSON(jsonString).collectorName;
-//            var sName=  $.evalJSON(jsonString).sensorName;
-//            $("#collectorName").ligerComboBox({textField:cName});
-//            $("#monitorName").ligerComboBox({textField:sName});
 
         }
         function getDataList(){
@@ -129,7 +123,6 @@
             $.post($.URL.sensor.getListByGroupCollectionAndMonitor,{"groupName":groupName,"collectorName":collectorName,"monitorName":monitorName},sensorListCallback,"json");
 
         }
-
     </script>
 </head>
 <body>

@@ -1,14 +1,20 @@
 function drawChart(container,data,categoriesData,unit){
-    $(container).highcharts({
+    $(container).highcharts('StockChart',{
         chart: {
-            defaultSeriesType: 'line',
+            //  defaultSeriesType: 'line',
             marginRight: 20,
             marginBottom: 30,
             borderRadius:0,
-            animation:false
+            animation:false,
+            zoomType:"x"
+        },
+        scrollbar:{
+            enabled:true //是否产生滚动条
         },
         xAxis: {
-            categories:categoriesData ,
+            //  categories:categoriesData ,
+            min:0,
+            max:10,
             title: {
                 text: '(xUnit)',
                 align: "high",
@@ -51,7 +57,7 @@ function drawChart(container,data,categoriesData,unit){
         tooltip: {
             enabled: true,
             formatter: function() {
-                var s = 'value:<b>'+ this.y+ unit +' '+'时间:'+this.x+ '</b>';
+                var s = 'value:<b>'+ this.y+ unit +'  '+'time:'+this.x+ '</b>';
                 return s;
             }
         },
@@ -74,7 +80,7 @@ function drawChart(container,data,categoriesData,unit){
                         }
                     }
                 },
-                pointInterval: 1 // one hour
+                pointInterval: 1  // one hour
             },
             series: {
                 animation: false,
@@ -83,7 +89,11 @@ function drawChart(container,data,categoriesData,unit){
         },
         series : [{
             data: data
+
         }],
+        rangeSelector:{
+            enabled:false
+        },
         credits: {
             enabled: false
         }

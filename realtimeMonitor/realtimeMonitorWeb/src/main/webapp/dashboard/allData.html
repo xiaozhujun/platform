@@ -26,12 +26,11 @@
                 getDataList();
             });
         });
-        var data1,data2;
+        var data1;
         function sensorListCallback1(data){
             if(data.code==200){
-                data1=data.data.data;
-                data2=data.data.time;
-                drawChart("#dataContainer", data1,data2, "mV");
+                data1=data.data;
+                drawChart2("#dataContainer", data1, "mV");
             }
         }
         function getDataList(){
@@ -39,7 +38,7 @@
             var eTime=$("#endTime").val();
             var jsonString  = $.toJSON(currentMonitor);
             var number = $.evalJSON(jsonString).number;
-            $.post($.URL.sensor.getMongoDataList,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback1,"json");
+            $.post($.URL.sensor.getMongoDataListInJson,{"sTime":sTime,"eTime":eTime,"number":number},sensorListCallback1,"json");
         }
     </script>
 

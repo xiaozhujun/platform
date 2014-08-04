@@ -338,6 +338,8 @@ public class SensorServiceWeb {
     @POST
     public String getMongoDataListInJson(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number){
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+        sTime=sTime+" "+"00:00:00";
+        eTime=eTime+" "+"23:59:59";
         List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
         getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime,number);
         List a=new ArrayList();

@@ -19,12 +19,15 @@
         $(document).ready(function() {
             $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
         });
-
+        $.ajaxSetup({
+            async: false
+        });
         var  number;
         var gridData = {};
         function gridCallback(data){
             gridData.Rows = data.data;
             gridData.Total = data.length;
+            number=data.data.number;
             f_initGrid();
         }
         function f_initGrid(){
@@ -34,7 +37,28 @@
                     {name:'name',display:'传感器',width:'auto'},
                     {name:'groupName',display:'监测组',width:'auto'},
                     {name:'collectorName',display:'采集仪名称',width:'auto'},
-                    {name:'lastMessageTime',display:'最后通信时间',width:'auto'},
+                    {name:'lastMessageTime',display:'最后通信时间',width:'auto'
+                       ,render:function(item){
+                        $.post($.URL.sensor.getMongoDataLastTimeByNumber,{"number":"number"},lastTimeCallback,"json");
+//                        $.ajax({
+//                            url: $.URL.sensor.getMongoDataLastList,
+//                            async:false,
+//                            type:'POST',
+//                            dataType:'json',
+//                            success:
+                           function lastTimeCallback(data) {
+                                if (data.code == 200) {
+                                    lastTime = data.data.time;
+                                }
+//                            }
+//                        })
+                        return lastTime;
+                   }
+                    }
+                    },
+
+
+
                     { display: '状态', name: 'sensorStatus',width:'auto'  },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {

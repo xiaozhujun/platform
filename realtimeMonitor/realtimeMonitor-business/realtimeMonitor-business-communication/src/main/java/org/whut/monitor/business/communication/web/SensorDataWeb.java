@@ -55,7 +55,7 @@ public class SensorDataWeb {
         Map map = new HashMap();
         if (warnCondition != null) {
             String[] tempArray = warnCondition.split("\\|");
-            String[] tempName = {"curWarnValue","warnCount"};
+            String[] tempName = {"curWarnValue","warnCount","LastData"};
             for (int i=0;i<tempArray.length;i++) {
                 map.put(tempName[i],tempArray[i]);
             }
@@ -64,6 +64,7 @@ public class SensorDataWeb {
             map.put("curWarnValue","0");
             map.put("warnCount","暂无数据");
         }
+        System.out.println(map.get("LastData"));
         return getJsonp(map,request.getParameter("callback"));
     }
 

@@ -444,6 +444,31 @@ public class SensorServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getMongoDataLastTimeByNumber")
+    @POST
+    public String getMongoDataLastTimeByNumber(@FormParam("number")String num){
+        System.out.println(num);
+        MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+//        List<List<DBObject>> getDataList=new ArrayList<List<DBObject>>();
+       //getDataList=mongoConnector.getDbArrayLastListFromMongo(num);
+//        List a=new ArrayList();
+//        int data2=0,p=getDataList.size()-1;Object data;
+//        for(int j=0;j<getDataList.get(p).size();j++){
+//            data=getDataList.get(p).get(j);
+//            data2=Integer.parseInt(data.toString());
+//            a.add(data2);
+//        }
+        List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
+        getTimeList=mongoConnector.getDbArrayLastListFromMongo2(num);
+        System.out.println(getTimeList);
+        Map<String,Object> map=new HashMap<String, Object>();
+//        map.put("data",a);
+        map.put("time",getTimeList);
+        return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
+    }
+
+
 
 }
 

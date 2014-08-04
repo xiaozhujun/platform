@@ -18,21 +18,42 @@
     <script type="text/javascript" src="js/chartTool.js"></script>
     <script type="text/javascript">
         var num= currentMonitor.number;
+        var tempURL = $.URL.sensors.getSensorDataArray;
+        var myURL = tempURL + num.toString();
+//        alert(myURL);
         $(document).ready(function () {
             $("#groupTD").html(currentMonitor.number);
             $("#monitorTD").html(currentMonitor.groupName);
             refrash();
         });
         function refrash(){
-            $.post($.URL.sensor.getMongoDataLastListByNumber,{"num":num},sensorListCallback1,"json");
+//            $.post($.URL.sensor.getMongoDataLastListByNumber,{"num":num},sensorListCallback1,"json");
+            $.get(myURL+".htm",null,sensorListCallback,"jsonp") ;
+//            $.ajax({
+//                url: myURL+".htm",
+//                async:false,
+//                dataType:'jsonp',
+//                jsonpCallback:'callback',
+//                success: function meanVarianceCallback(result) {
+//                    h = result["curWarnValue"].toString();
+//                    count = result["warnCount"].toString();
+//                }
+//            });
         }
         var data1,data2;
-        function sensorListCallback1(data){
-            if(data.code==200){
-                data1=data.data.data;
-                //data2=data.data.time;
-                drawChart("#waveContainer", data1, "mV");
-            }
+        function sensorListCallback(result){
+//            alert( result.data);
+       data1 = result.data;
+//            alert(data1);
+            drawChart("#waveContainer", data1, "mV");
+
+//        function callback(data){
+//            if(data.code==200){
+//                alert(data);
+//                data1=data.data.data;
+//                //data2=data.data.time;
+//                drawChart("#waveContainer", data1, "mV");
+//            }
             var refrashTime=$("#mySelect").val();
             setTimeout(refrash,refrashTime*1000);
         }

@@ -227,6 +227,21 @@ public class MongoConnector {
         dd.add(list);
         return dd;
     }
+    public List<List<DBObject>> getDbArrayLastListFromMongo2(String num){
+        //从mongo中拿出所有的记录
+        DB db = getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        BasicDBObject query =new BasicDBObject();
+        query.put("sensorNum", num);
+        DBCursor dbCursor = collection.find(query);
+        List dd=new ArrayList();
+        Object list=null;
+        while (dbCursor.hasNext()){
+            list=dbCursor.next().get("time");
+        }
+        dd.add(list);
+        return dd;
+    }
     public List<List<DBObject>> getDbArrayListFromMongo3(String sTime,String eTime,String sensorNum){
         //从mongo中拿出所有的记录
         DB db = getDB(dbName);

@@ -60,13 +60,14 @@
             "getMongoDataList":"rs/sensor/getMongoDataList",
             "getMongoDataListInJson":"rs/sensor/getMongoDataListInJson",
             "getMongoDataLastList":"rs/sensor/getMongoDataLastList",
+            "getMongoDataLastTimeByNumber":"rs/sensor/getMongoDataLastTimeByNumber",
             "getMongoDataLastListByNumber":"rs/sensor/getMongoDataLastListByNumber",
             "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
             "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor",
             "getNumberBySensorId":"rs/sensor/getNumberBySensorId"
         },
         "sensors":{
-            "getSensorDataArray":"rs/sensors/sensor/data/{id}.htm",
+            "getSensorDataArray":"rs/sensors/sensor/data/",
             "getWarnCondition":"rs/sensors/sensor/warnCondition/"
         },
         "warnCondition":{

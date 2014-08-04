@@ -14,8 +14,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface WarnConditionMapper extends AbstractMapper<WarnCondition>{
-    public List<WarnCondition> getListByAppId(@Param("groupName")String groupName,@Param("areaName")String
-            areaName,@Param("collectorName")String collectorName,
-                                           @Param("sensorName")String sensorName,@Param("number")String
-            number,@Param("sTime")String sTime,@Param("eTime")String eTime,@Param("appId")long appId);
+    public List<WarnCondition> getListByAppId(@Param("groupName")String groupName,@Param("areaName")String areaName,@Param("collectorName")String collectorName,@Param("sensorName")String sensorName,
+                                              @Param("number")String number,@Param("sTime")String sTime,@Param("eTime")String eTime);
 }

@@ -17,9 +17,8 @@ public class WarnConditionService {
     @Autowired
     private WarnConditionMapper warnConditionMapper;
 
-    public List<WarnCondition> getListByAppId(String groupName,String areaName,String collectorName,String
-            sensorName,String number,String sTime,String eTime,long appId) {
-        return warnConditionMapper.getListByAppId(groupName,areaName,collectorName,sensorName,number,sTime,eTime,appId);
+    public List<WarnCondition> getListByAppId(String groupName,String areaName,String collectorName,String sensorName,String number,String sTime,String eTime) {
+        return warnConditionMapper.getListByAppId(groupName,areaName,collectorName,sensorName,number,sTime,eTime);
     }
 
     public void add(WarnCondition warnCondition) {

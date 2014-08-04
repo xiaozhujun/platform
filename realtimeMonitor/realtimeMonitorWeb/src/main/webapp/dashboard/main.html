@@ -49,15 +49,15 @@
         function f_initGrid() {
             grid = $("#mainGrid").ligerGrid({
                 columns:[
-                    {display:'序号',name:'id',width:60},
+//                    {display:'序号',name:'id',width:60},
+                    {display:'编号',name:'number',width:90},
                     {display:'传感器',name:'name',width:100},
                     {display:'监测组',name:'groupName',width:100},
                     {display:'测量区域',name:'areaName',width:100},
                     {display:'采集仪',name:'collectorName',width:100},
-                    {display:'编号',name:'number',width:90},
                     {display:'报警参数类型',name:'warnType',width:100},
                     {display:'报警值',name:'warnValue',width:100},
-                    {display:'采集仪状态',name:'status',width:140},
+//                    {display:'采集仪状态',name:'status',width:140},
                     {display:'当前数值',name:'curSensorValue',width:90,render:function(item){
                         var sensorId = item.number;
                         var myURL = tempURL + sensorId;
@@ -73,7 +73,7 @@
                         });
                         return returnCurSensor();
                     }},
-                    {display:'报警次数',name:'warnCount',width:90
+                    {display:'报警次数',name:'warnCount',width:'auto'
                         ,render:function(item,rowindex) {
                         rowInf = rowindex;
 //                        var sensorId = item.number;
@@ -153,7 +153,7 @@
             rightGrid = $("#rightGrid").ligerGrid({
             columns:[
                 {name:'collectorName',display:'采集仪',width:100},
-                {name:'status',display:'状态',width:55
+                {name:'status',display:'状态',width:'auto'
                     ,render:function(item) {
                     if(item.status.toString()=="在线正常工作")   {
                         // return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";

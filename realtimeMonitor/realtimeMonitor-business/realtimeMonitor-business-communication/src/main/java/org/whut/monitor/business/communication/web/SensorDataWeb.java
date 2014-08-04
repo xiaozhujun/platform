@@ -62,7 +62,7 @@ public class SensorDataWeb {
         }
         else {
             map.put("curWarnValue","0");
-            map.put("warnCount","0");
+            map.put("warnCount","暂无数据");
         }
         return getJsonp(map,request.getParameter("callback"));
     }

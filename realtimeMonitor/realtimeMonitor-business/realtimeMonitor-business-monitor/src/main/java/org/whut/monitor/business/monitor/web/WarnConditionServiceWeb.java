@@ -60,8 +60,10 @@ public class WarnConditionServiceWeb {
             areaName,@FormParam("collectorName")String collectorName,
                        @FormParam("sensorName")String sensorName,@FormParam("number")String number
             ,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime) {
-        long appId = UserContext.currentUserAppId();
-        List<WarnCondition> list = warnConditionService.getListByAppId(groupName,areaName,collectorName,sensorName,number,sTime,eTime,appId);
+        List<WarnCondition> list = warnConditionService.getListByAppId(groupName,areaName,collectorName,sensorName,number,sTime,eTime);
+        if (list == null) {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"列表为空");
+        }
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

@@ -17,11 +17,14 @@
     <script type="text/javascript" src="js/highstock.js"></script>
     <script type="text/javascript" src="js/chartTool1.js"></script>
     <script type="text/javascript">
-        $(function(){
+        $(document).ready(function () {
             var d=new Date();
             var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
             $("#startTime").ligerDateEditor({initValue: dd});
             $("#endTime").ligerDateEditor({initValue: dd});
+            getDataList();
+        });
+        $(function(){
             $("#dataSubmitBtn2").click(function(){
                 getDataList();
             });

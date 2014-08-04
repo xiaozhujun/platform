@@ -60,6 +60,7 @@
             "getMongoDataList":"rs/sensor/getMongoDataList",
             "getMongoDataListInJson":"rs/sensor/getMongoDataListInJson",
             "getMongoDataLastList":"rs/sensor/getMongoDataLastList",
+            "getMongoDataLastListByNumber":"rs/sensor/getMongoDataLastListByNumber",
             "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
             "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor",
             "getNumberBySensorId":"rs/sensor/getNumberBySensorId"

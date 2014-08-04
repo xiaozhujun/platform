@@ -16,45 +16,52 @@
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
+            $.post($.URL.collector.list,null,collectorListCallback,"json");
+            $.post($.URL.sensor.getMongoDataLastList,null,lastTimeCallback,"json");
+        });
+        var gridData =[];
+        var lastTime="";
+        function collectorListCallback(data){
+            if(data.code=200){
+                gridData.Rows=data.data;
+                gridData.Total=data.length;
+                f_initGrid();
+            }
+        }
+        function lastTimeCallback(data){
 
-            var grid,grid_right;
-            var gridData = [
-                {id:'01',group:'测量组1',name:'采集仪001',description:'采集仪001',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'02',group:'测量组1',name:'采集仪002',description:'采集仪002',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'03',group:'测量组2',name:'采集仪003',description:'采集仪003',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'04',group:'测量组2',name:'采集仪004',description:'采集仪004',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'05',group:'测量组3',name:'采集仪005',description:'采集仪005',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'06',group:'测量组3',name:'采集仪006',description:'采集仪006',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'07',group:'测量组3',name:'采集仪007',description:'采集仪007',lastMessageTime:'2014-07-15',status:'0'}
+            if (data.code == 200) {
+                lastTime = data.data.time;
+//                alert(lastTime);
+            }    }
 
-            ];
 
+
+        var grid;
+        function f_initGrid(){
             grid = $("#collectorGrid").ligerGrid({
                 columns:[
                     {name:'id',display:'序号',width:'auto'},
-                    {name:'group',display:'测量组',width:'auto'},
+                    {name:'groupName',display:'测量组',width:'auto'},
                     {name:'name',display:'采集仪名称',width:'auto'},
                     {name:'description',display:'采集仪描述',width:'auto'},
-                    {name:'lastMessageTime',display:'最后通信时间',width:'auto'},
-                    { display: '状态', name: 'status',width:'auto',
-                        editor: { type: 'text' },
-                        render:function(item){
-                            if(item.status==0){
-                                return "离线";
-                            }else if(item.status==1){
-                                return "在线";
-                            }
+                    {name:'lastTime',display:'最后通信时间',width:'auto',
+                        render:function(){
+//                            $.post($.URL.sensor.getMongoDataLastList,null,lastTimeCallback,"json");
+                            return lastTime;
+
                         }
-                    }
+                    },
+                    { display: '状态', name: 'status',width:'auto' }
                 ],
-                data:{Rows: gridData},clickToEdit: false, isScroll: true, usePager: false,
+                data:gridData,clickToEdit: false, isScroll: true, usePager: false,
                 width:'auto',resizable:true
-            });
+            }); }
 
 
 
 
-        });
+
 
     </script>
 

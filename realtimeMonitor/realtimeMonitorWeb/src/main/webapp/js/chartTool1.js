@@ -1,14 +1,24 @@
-function drawChart(container,data,categoriesData,unit){
-    $(container).highcharts({
+function drawChart2(container,data,unit){
+    function getLocalTime(nS) {
+        return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
+    }
+    $(container).highcharts('StockChart',{
         chart: {
-            defaultSeriesType: 'line',
             marginRight: 20,
             marginBottom: 30,
             borderRadius:0,
             animation:false
         },
         xAxis: {
-            categories:categoriesData ,
+            dateTimeLabelFormats: {
+                second: '%Y-%m-%d<br/>%H:%M:%S',
+                minute: '%Y-%m-%d<br/>%H:%M',
+                hour: '%Y-%m-%d<br/>%H:%M',
+                day: '%Y<br/>%m-%d',
+                week: '%Y<br/>%m-%d',
+                month: '%Y-%m',
+                year: '%Y'
+            },
             title: {
                 text: '(xUnit)',
                 align: "high",
@@ -51,7 +61,7 @@ function drawChart(container,data,categoriesData,unit){
         tooltip: {
             enabled: true,
             formatter: function() {
-                var s = 'value:<b>'+ this.y+ unit +' '+'时间:'+this.x+ '</b>';
+                var s = 'value:<b>'+ this.y+ unit +'  '+'time:'+getLocalTime(this.x)+ '</b>';
                 return s;
             }
         },
@@ -74,16 +84,19 @@ function drawChart(container,data,categoriesData,unit){
                         }
                     }
                 },
-                pointInterval: 1 // one hour
+                pointInterval: 1  // one hour
             },
             series: {
                 animation: false,
                 shadow: false
             }
         },
-        series : [{
-            data: data
-        }],
+        series: [{
+            data:data
+        }] ,
+        rangeSelector:{
+            enabled:false
+        },
         credits: {
             enabled: false
         }

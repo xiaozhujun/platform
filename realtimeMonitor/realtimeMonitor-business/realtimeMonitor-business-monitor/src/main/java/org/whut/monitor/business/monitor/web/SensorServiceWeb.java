@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whut.monitor.business.monitor.entity.MessageBean;
 import org.whut.monitor.business.monitor.entity.Sensor;
 import org.whut.monitor.business.monitor.entity.SubSensor;
 import org.whut.monitor.business.monitor.service.AreaService;
@@ -22,10 +23,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -71,8 +70,8 @@ public class SensorServiceWeb {
                     successList.add(subSensor);
                 }else{
                     if(subSensor.getShouldWarn().equals("是")&&(subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
-                        subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")||subSensor.getWarnType().equals("")
-                        ||subSensor.getWarnValue().equals(""))){
+                            subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")||subSensor.getWarnType().equals("")
+                            ||subSensor.getWarnValue().equals(""))){
                         subSensor.setAddStatus("参数缺省");
                         errorList.add(subSensor);
                     }
@@ -166,11 +165,11 @@ public class SensorServiceWeb {
         if(subSensor.getShouldWarn().equals("是")&&(subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
                 subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals("")||subSensor.getWarnType().equals("")
                 ||subSensor.getWarnValue().equals(""))){
-           return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数缺省！");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数缺省！");
         }
         else if(subSensor.getShouldWarn().equals("否")&&(subSensor.getName().equals("")||subSensor.getNumber().equals("")||subSensor.getMaxFrequency().equals("")||
                 subSensor.getMinFrequency().equals("")||subSensor.getWorkFrequency().equals(""))){
-           return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数缺省！");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数缺省！");
         }
         long appId=UserContext.currentUserAppId();
         long existId = 0;
@@ -237,12 +236,12 @@ public class SensorServiceWeb {
         }
         int updated =0;
         if(collectorId>0){
-           try{
-              updated = sensorService.update(sensor);
-           }catch(Exception e){
-               e.printStackTrace();
-               logger.error(e.getMessage());
-           }
+            try{
+                updated = sensorService.update(sensor);
+            }catch(Exception e){
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
         }
         if(updated>0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -317,9 +316,9 @@ public class SensorServiceWeb {
             }
             if ((i+1)%30==0)         //取一分钟的数据
             {
-              data2=data2/p;
-              a.add(data2);
-              data2=0; p=0;
+                data2=data2/p;
+                a.add(data2);
+                data2=0; p=0;
             }
         }
         List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
@@ -334,7 +333,53 @@ public class SensorServiceWeb {
         map.put("time",time);
         return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getMongoDataListInJson")
+    @POST
+    public String getMongoDataListInJson(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number){
+        MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
+        getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime,number);
+        List a=new ArrayList();
+        int data2=0,p=0;Object data;
+        for(int i=0;i<getList.size();i++){
+            for(int j=0;j<getList.get(i).size();j++){
+                data=getList.get(i).get(j);
+                data2=data2+Integer.parseInt(data.toString());
+                p++;
+            }
+            if ((i+1)%30==0)         //取一分钟的数据
+            {
+                data2=data2/p;
+                a.add(data2);
+                data2=0; p=0;
+            }
+        }
+        List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
+        getTimeList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime,number);
+        List time=new ArrayList();
+        for(int i=0;i<getTimeList.size();i=i+30){
+            Object b=getTimeList.get(i);
+            time.add(b);
+        }
+        Map<String,Object> map=new HashMap<String, Object>();
+        SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+        List<MessageBean> list=new ArrayList<MessageBean>();
+        for(int i=0;i<a.size();i++){
+            String s1=time.get(i).toString();
+            MessageBean messageBean=new MessageBean();
+            try{
+                Date date = format.parse(s1);
+                messageBean.setX(date.getTime());
+                messageBean.setY(Integer.parseInt(a.get(i).toString()));
+                list.add(messageBean);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+       // System.out.println(list);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataLastList")
     @POST
@@ -342,13 +387,21 @@ public class SensorServiceWeb {
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
         List<List<DBObject>> getDataList=new ArrayList<List<DBObject>>();
         getDataList=mongoConnector.getDbArrayLastListFromMongo();
+        List a=new ArrayList();
+        int data2=0,p=getDataList.size()-1;Object data;
+        for(int j=0;j<getDataList.get(p).size();j++){
+            data=getDataList.get(p).get(j);
+            data2=Integer.parseInt(data.toString());
+            a.add(data2);
+        }
         List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
         getTimeList=mongoConnector.getDbArrayLastListFromMongo2();
         Map<String,Object> map=new HashMap<String, Object>();
-        map.put("data",getDataList);
+        map.put("data",a);
         map.put("time",getTimeList);
         return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
+
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getListByGroupCollectionAndMonitor")
@@ -368,5 +421,29 @@ public class SensorServiceWeb {
         List<String> numberList = sensorService.getNumberBySensorId(sensorId,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(numberList, JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getMongoDataLastListByNumber")
+    @POST
+    public String getMongoDataLastListByNumber(@FormParam("num")String num){
+        System.out.println(num);
+        MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+        List<List<DBObject>> getDataList=new ArrayList<List<DBObject>>();
+        getDataList=mongoConnector.getDbArrayLastListFromMongo(num);
+        List a=new ArrayList();
+        int data2=0,p=getDataList.size()-1;Object data;
+        for(int j=0;j<getDataList.get(p).size();j++){
+            data=getDataList.get(p).get(j);
+            data2=Integer.parseInt(data.toString());
+            a.add(data2);
+        }
+        List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
+        getTimeList=mongoConnector.getDbArrayLastListFromMongo2();
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("data",a);
+        map.put("time",getTimeList);
+        return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
+    }
+
+
 }
 

@@ -43,7 +43,7 @@ public class MongoConnector {
     }
 
     public static Mongo getMongo(){
-         return mongo;
+        return mongo;
     }
 
     //传感器数据舒服构造函数
@@ -103,11 +103,11 @@ public class MongoConnector {
         DBCursor dbCursor=collection.find();
         while (dbCursor.hasNext()){
             List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
-           for(DBObject dd:d){
-               if(dd.get("reportnumber").equals(reportNuumber)){
-                   return dd;
-               };
-           }
+            for(DBObject dd:d){
+                if(dd.get("reportnumber").equals(reportNuumber)){
+                    return dd;
+                };
+            }
         }
         return null;
     }
@@ -126,14 +126,14 @@ public class MongoConnector {
         DBCursor dbCursor=collection.find();
         List<String> list=new ArrayList<String>();
         while (dbCursor.hasNext()){
-               List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
-               for(String equipment:equipmentVariety){
-               for(DBObject dd:d){
-                   if(dd.get("equipmentvariety").equals(equipment)){
-                       list.add((String)dd.get(column));
-                   }
-               }
-               }
+            List<DBObject> d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+            for(String equipment:equipmentVariety){
+                for(DBObject dd:d){
+                    if(dd.get("equipmentvariety").equals(equipment)){
+                        list.add((String)dd.get(column));
+                    }
+                }
+            }
         }
         return list;
     }
@@ -159,8 +159,8 @@ public class MongoConnector {
         List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
         List<DBObject> d=new ArrayList<DBObject>();
         while (dbCursor.hasNext()){
-             d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
-             dd.add(d);
+            d=(ArrayList<DBObject>)dbCursor.next().get("craneinspectreports");
+            dd.add(d);
         }
         return d;
     }
@@ -198,6 +198,21 @@ public class MongoConnector {
         dd.add(d);
         return dd;
     }
+    public List<List<DBObject>> getDbArrayLastListFromMongo(String num){
+        //从mongo中拿出所有的记录
+        DB db = getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+        BasicDBObject query =new BasicDBObject();
+        query.put("sensorNum", num);
+        DBCursor dbCursor = collection.find(query);
+        List<List<DBObject>> dd=new ArrayList<List<DBObject>>();
+        List<DBObject> d=new ArrayList<DBObject>();
+        while (dbCursor.hasNext()){
+            d=(ArrayList<DBObject>)dbCursor.next().get("data");
+        }
+        dd.add(d);
+        return dd;
+    }
     public List<List<DBObject>> getDbArrayLastListFromMongo2(){
         //从mongo中拿出所有的记录
         DB db = getDB(dbName);
@@ -223,7 +238,7 @@ public class MongoConnector {
         query.put("time", new BasicDBObject("$gt", sTime).append("$lt", eTime));
         query.put("sensorNum", sensorNum);
         DBCursor dbCursor = collection.find(query);
-       // DBCursor dbCursor = collection.find({"time": { "$gte":sTime ,"$lt":eTime} ,"sensorNum":sensorNum});
+        // DBCursor dbCursor = collection.find({"time": { "$gte":sTime ,"$lt":eTime} ,"sensorNum":sensorNum});
         List dd=new ArrayList();
         Object list;
         while (dbCursor.hasNext()){

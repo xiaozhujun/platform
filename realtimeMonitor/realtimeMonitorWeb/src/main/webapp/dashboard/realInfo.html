@@ -16,36 +16,26 @@
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
         var currentMonitor,grid;
-        $(document).ready(function(){
+        $(document).ready(function() {
+            $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
+        });
 
-            var gridData = [
-                {id:'01',group:'测量组1',collector:'采集仪001',monitor:'振动测点1',lastMessageTime:'2014-07-15',status:'1'},
-                {id:'02',group:'测量组1',collector:'采集仪002',monitor:'振动测点2',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'03',group:'测量组2',collector:'采集仪003',monitor:'振动测点3',lastMessageTime:'2014-07-15',status:'1'},
-                {id:'04',group:'测量组2',collector:'采集仪004',monitor:'振动测点4',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'05',group:'测量组3',collector:'采集仪005',monitor:'振动测点5',lastMessageTime:'2014-07-15',status:'0'},
-                {id:'06',group:'测量组3',collector:'采集仪006',monitor:'振动测点6',lastMessageTime:'2014-07-15',status:'1'},
-                {id:'07',group:'测量组3',collector:'采集仪007',monitor:'振动测点7',lastMessageTime:'2014-07-15',status:'0'}
-
-            ];
-
+        var  number;
+        var gridData = {};
+        function gridCallback(data){
+            gridData.Rows = data.data;
+            gridData.Total = data.length;
+            f_initGrid();
+        }
+        function f_initGrid(){
             grid = $("#monitorGrid").ligerGrid({
                 columns:[
-                    {name:'id',display:'序号',width:'auto'},
-                    {name:'group',display:'测量组',width:'auto'},
-                    {name:'collector',display:'采集仪名称',width:'auto'},
-                    {name:'monitor',display:'测点',width:'auto'},
+                    {name:'number',display:'编号',width:'auto'},
+                    {name:'name',display:'传感器',width:'auto'},
+                    {name:'groupName',display:'监测组',width:'auto'},
+                    {name:'collectorName',display:'采集仪名称',width:'auto'},
                     {name:'lastMessageTime',display:'最后通信时间',width:'auto'},
-                    { display: '状态', name: 'status',width:'auto',
-                        editor: { type: 'text' },
-                        render:function(item){
-                            if(item.status==0){
-                                return "离线";
-                            }else if(item.status==1){
-                                return "在线";
-                            }
-                        }
-                    },
+                    { display: '状态', name: 'sensorStatus',width:'auto'  },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -54,14 +44,17 @@
                     }
                     }
                 ],
-                data:{Rows: gridData},clickToEdit: false, isScroll: true, usePager: false,
+                data:gridData,clickToEdit: false, isScroll: true, usePager: false,
                 width:'auto',resizable:true
             });
+        }
 
-        });
 
         function getInfo(rowindex){
             currentMonitor = grid.getRow(rowindex);
+//            var jsonString  = $.toJSON(currentMonitor);
+//            number = $.evalJSON(jsonString).number;
+            //  alert( currentMonitor.number);
             $("#realInfoTab").load("dashboard/realData.html");
         }
 

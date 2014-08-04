@@ -4,6 +4,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.monitor.business.communication.service.SensorDataService;
+import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @Path("/sensors")
@@ -22,6 +24,7 @@ public class SensorDataWeb {
 
     @Autowired
     private SensorDataService sensorDataService;
+    private RedisConnector redisConnector = new RedisConnector();
 
     private String getJsonp(Object obj,String prefix){
         ObjectMapper mapper = new ObjectMapper();
@@ -41,6 +44,26 @@ public class SensorDataWeb {
         ArrayList dataArray = sensorDataService.getCurrentSensorDataArray(id);
         HashMap map = new HashMap();
         map.put("data",dataArray);
+        return getJsonp(map,request.getParameter("callback"));
+    }
+
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/sensor/warnCondition/{id}.html")
+    @GET
+    public String getWarnCondition(@Context HttpServletRequest request,@PathParam("id")String id) {
+        String warnCondition = redisConnector.get(id+"warnCondition");
+        Map map = new HashMap();
+        if (warnCondition != null) {
+            String[] tempArray = warnCondition.split("\\|");
+            String[] tempName = {"curWarnValue","warnCount"};
+            for (int i=0;i<tempArray.length;i++) {
+                map.put(tempName[i],tempArray[i]);
+            }
+        }
+        else {
+            map.put("curWarnValue","0");
+            map.put("warnCount","0");
+        }
         return getJsonp(map,request.getParameter("callback"));
     }
 

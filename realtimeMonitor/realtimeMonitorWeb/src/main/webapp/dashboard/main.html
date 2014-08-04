@@ -15,7 +15,7 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
-        var tempURL = $.URL.algorithm.meanVarianceValue;
+        var tempURL = $.URL.sensors.getWarnCondition;
         $(document).ready(function() {
             $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
             $.post($.URL.sensor.homePage,{"fStatus":"false"},rightGridCallback,"json");
@@ -41,6 +41,7 @@
         }
         var grid;
         var h = "";
+        var count = "";
         var meanVarianceValue = "";
         var tempCount = new Array();
         var rowInf;
@@ -61,51 +62,34 @@
                         var sensorId = item.number;
                         var myURL = tempURL + sensorId;
                         $.ajax({
-                            url: myURL,
+                            url: myURL+".html",
                             async:false,
-                            dataType:'json',
-                            success: function meanVarianceCallback(data) {
-                                h = "";
-                                if(data.code == 200) {
-                                    meanVarianceValue = data.data;
-                                    h += meanVarianceValue;
-                                }
-                                else {
-                                    h = "0";
-                                }
+                            dataType:'jsonp',
+                            jsonpCallback:'callback',
+                            success: function meanVarianceCallback(result) {
+                                h = result["curWarnValue"].toString();
+                                count = result["warnCount"].toString();
                             }
                         });
                         return returnCurSensor();
                     }},
                     {display:'报警次数',name:'warnCount',width:90
                         ,render:function(item,rowindex) {
-                        var count = parseInt(item.warnCount);
-                        tempCount[rowindex]=count;
-                        var curValue = returnCurSensor();
-                        var warnSensorValue = item.warnValue;
-                        var groupName = item.groupName;
-                        var areaName = item.areaName;
-                        var name = item.name;
-                        var collectorName = item.collectorName;
-                        var number = item.number;
                         rowInf = rowindex;
-                        if(parseInt(curValue) > parseInt(warnSensorValue)) {
-                            count++;
-                            tempCount[rowindex]=count;
-                            $.ajax({
-                                type:'POST',
-                                url: $.URL.sensor.updateWarnCount,
-                                data:{count:parseInt(count),groupName:groupName.toString(),
-                                areaName:areaName.toString(),name:name.toString(),collectorName:collectorName.toString(),
-                                number:number.toString()},
-                                async:false,
-                                dataType:'json'
-                            });
-
-                            $.post($.URL.warnCondition.add,{groupName:groupName.toString(),
-                            areaName:areaName.toString(),collectorName:collectorName.toString(),sensorName:name.toString(),
-                                number:number.toString(),curWarnValue:parseInt(curValue)},"json");
-                        }
+//                        var sensorId = item.number;
+//                        var myURL = tempURL + sensorId;
+//                        $.ajax({
+//                            url: myURL+".html",
+//                            async:false,
+//                            dataType:'jsonp',
+//                            jsonpCallback:'callback',
+//                            success: function meanVarianceCallback(result) {
+////                                alert(result["warnCount"]);
+//                                count = result["warnCount"].toString();
+//                                tempCount[rowindex] = count;
+//                            }
+//                        });
+                        tempCount[rowindex] = count;
                         return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + count.toString() + "</a>"
                     }
                     }
@@ -200,7 +184,7 @@
             for (var i=0;i<=tempRowInf;i++)
             {
 //                alert(tempRowInf);
-//                alert(tempCount);
+//                alert(tempCount[i]);
                 f_updateCurDataCell(i,h);
                 f_updateWarnCount(i,tempCount[i]);
             }

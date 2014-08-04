@@ -54,4 +54,16 @@ public class SensorService {
         return sensorMapper.getNumberBySensorId(sensorId,appId);
     }
 
+    public Map getWarnConditionByNumber(String number) {
+        return sensorMapper.getWarnConditionByNumber(number);
+    }
+
+    public void updateWarnCountByNumber(String number,long warnCount) {
+        sensorMapper.updateWarnCountByNumber(number,warnCount);
+    }
+
+    public Map findByNumber(String number) {
+        return sensorMapper.findByNumber(number);
+    }
+
 }

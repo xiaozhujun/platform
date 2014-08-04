@@ -86,7 +86,7 @@
         </dependency>
         <dependency>
             <groupId>realtimeMonitor</groupId>
-            <artifactId>realtimeMonitor-business-communication</artifactId>
+            <artifactId>realtimeMonitor-business-monitor</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>

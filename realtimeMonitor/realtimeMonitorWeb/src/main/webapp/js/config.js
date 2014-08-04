@@ -63,11 +63,9 @@
             "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor",
             "getNumberBySensorId":"rs/sensor/getNumberBySensorId"
         },
-        "algorithm":{
-            "meanVarianceValue":"rs/algorithm/meanVarianceValue/"
-        },
         "sensors":{
-            "getSensorDataArray":"rs/sensor/data/{id}.htm"
+            "getSensorDataArray":"rs/sensors/sensor/data/{id}.htm",
+            "getWarnCondition":"rs/sensors/sensor/warnCondition/"
         },
         "warnCondition":{
             "add":"rs/warnCondition/add",

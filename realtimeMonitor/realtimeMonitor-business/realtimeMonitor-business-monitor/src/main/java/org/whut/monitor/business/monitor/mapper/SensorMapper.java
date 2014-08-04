@@ -23,4 +23,7 @@ public interface SensorMapper extends AbstractMapper<Sensor>{
     public void updateWarnCount(@Param("warnCount")long warnCount,@Param("id")long id,@Param("appId")long appId);
     public List<Sensor> getSensorsByCollectorId(@Param("collectorId") long collectorId,@Param("appId") long appId);
     public List<String> getNumberBySensorId(@Param("sensorId")long sensorId,@Param("appId")long appId);
+    public Map getWarnConditionByNumber(@Param("number")String number);
+    public void updateWarnCountByNumber(@Param("number")String number,@Param("warnCount")long warnCount);
+    public Map findByNumber(String number);
 }

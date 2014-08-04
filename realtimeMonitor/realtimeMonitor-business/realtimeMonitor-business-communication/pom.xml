@@ -59,6 +59,23 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+        <groupId>realtimeMonitor</groupId>
+        <artifactId>realtimeMonitor-business-algorithm</artifactId>
+        <version>${parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>realtimeMonitor</groupId>
+            <artifactId>realtimeMonitor-business-monitor</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>fundamental-redisConnector</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 

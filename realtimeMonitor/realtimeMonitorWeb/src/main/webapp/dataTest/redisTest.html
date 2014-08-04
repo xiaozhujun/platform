@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+//        function f_click() {
+//            var tempURL = $.URL.sensors.getWarnCondition;
+//            var sensorNum = "2100000000010000";
+//            $.get(tempURL+sensorNum+".htm",null,listCallback,"json");
+//        }
+        $(function(){
+            $("#test").click(function(){
+                var myURL = "rs/sensors/sensor/warnCondition/2100000000010000.html";
+                $.ajax({
+                    url: myURL,
+                    async:false,
+                    dataType:'jsonp',
+                    jsonpCallback:'callback',
+                    success: function successCallBack(result){
+                        for(var i in result) {
+                            alert(i+":"+result[i]);
+                        }
+                    },
+                    error: function errorCallBack() {
+                        alert("error");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <input id="test" type="button" value="缓存测试">
+    </div>
+</body>
+</html>

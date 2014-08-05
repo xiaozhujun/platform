@@ -8,7 +8,7 @@
     <script type="text/javascript" src="lib/json2.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $.initMap("中国",5);
+            //$.initMap("中国",20);
             //取数据时,得按照app来分组
             $.get($.URL.inspectLocate.getInspectLocateInfo,null,getInspectLocateInfoCallback,"json");
             /*var j={userId:"1",userName:"test",inspectStartTime:"2014-7-11",inspectEndTime:"2014-7-11",deviceId:"1",devName:"test",inspectTableId:"1",inspectTableName:"test",lng:"test",lat:"test",appId:"1",status:"0",address:"0"};
@@ -16,6 +16,10 @@
             $.post($.URL.inspectLocate.receiveInspectLocateInfo,{"jsonString":jsonString},receiveInspectLocateInfoCallback,"json");*/
         });
         function getInspectLocateInfoCallback(data){
+            if(data.data[0]==undefined){
+            $.initMap("中国",10);
+            }else{
+            $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
             $.addMyMark(data);
             $("#rightshow").html("");
             for(i=0;i<data.data.length;i++){
@@ -77,7 +81,7 @@
             }else{
                 $("#rightshow").html("对不起，没有获取到在线的点检人员数据！");
             }
-
+        }
         }
 
         function inspectItemClick(inspectItemId,inspectInfoId){

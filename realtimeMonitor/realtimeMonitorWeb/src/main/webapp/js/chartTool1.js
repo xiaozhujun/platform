@@ -1,8 +1,5 @@
 function drawChart2(container,data,unit){
-    function getLocalTime(nS) {
-        return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
-    }
-    $(container).highcharts('StockChart',{
+ var h=$(container).highcharts('StockChart',{
         chart: {
             marginRight: 20,
             marginBottom: 30,
@@ -95,10 +92,13 @@ function drawChart2(container,data,unit){
             data:data
         }] ,
         rangeSelector:{
-            enabled:false
+          //  enabled:false
         },
         credits: {
             enabled: false
         }
     });
+}
+function getLocalTime(nS) {
+    return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
 }

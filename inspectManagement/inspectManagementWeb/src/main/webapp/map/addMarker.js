@@ -95,8 +95,15 @@ $.extend({
     ,myMouseover:function myMouseover(id){
         var inspectInfo="#inspectInfo"+id;
         var riskcontentId="#inspectItem"+id;
-        $(".inspectItemHover").removeClass("inspectItemHover");
+        $(".inspectItemHover").removeClass("inspectItem");
         $(riskcontentId).addClass("inspectItemHover");
+        $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
+    },
+    myMouseout:function myMouseover(id){
+        var inspectInfo="#inspectInfo"+id;
+        var riskcontentId="#inspectItem"+id;
+        $(".inspectItemHover").removeClass("inspectItemHover");
+        $(riskcontentId).addClass("inspectItem");
         $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
     }
 });

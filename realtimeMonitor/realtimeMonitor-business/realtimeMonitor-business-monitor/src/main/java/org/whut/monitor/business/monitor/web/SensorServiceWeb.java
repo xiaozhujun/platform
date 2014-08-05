@@ -336,11 +336,16 @@ public class SensorServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataListInJson")
     @POST
-    public String getMongoDataListInJson(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number){
+    public String getMongoDataListInJson(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number,@FormParam("mySelect")String mySelect){
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
+        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
         sTime=sTime+" "+"00:00:00";
         eTime=eTime+" "+"23:59:59";
-        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
+        int t=Integer.parseInt(mySelect);
+        int s=1;
+        if(t!=0){
+            s=t*30;
+        }
         getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime,number);
         List a=new ArrayList();
         int data2=0,p=0;Object data;
@@ -350,7 +355,7 @@ public class SensorServiceWeb {
                 data2=data2+Integer.parseInt(data.toString());
                 p++;
             }
-            if ((i+1)%30==0)         //取一分钟的数据
+            if ((i+1)%(s)==0)         //取一分钟的数据
             {
                 data2=data2/p;
                 a.add(data2);
@@ -360,7 +365,7 @@ public class SensorServiceWeb {
         List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
         getTimeList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime,number);
         List time=new ArrayList();
-        for(int i=0;i<getTimeList.size();i=i+30){
+        for(int i=0;i<getTimeList.size();i=i+s){
             Object b=getTimeList.get(i);
             time.add(b);
         }
@@ -379,7 +384,6 @@ public class SensorServiceWeb {
                 System.out.println(e.getMessage());
             }
         }
-       // System.out.println(list);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

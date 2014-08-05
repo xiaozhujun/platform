@@ -15,9 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,12 +39,14 @@ public class ReportServiceWeb {
     @GET
     public String sensorReport(@Context HttpServletResponse response,@PathParam("startTime") String startTime,@PathParam("endTime") String endTime,@PathParam("sensorNum") String sensorNum){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date start = null;
-        Date end = null;
+        String start = null;
+        String end = null;
         try {
-            start = format.parse(startTime);
-            end = format.parse(endTime);
-            List<DBObject> list =  reportService.queryDocuments(startTime, endTime, sensorNum);
+           // start = format.parse(startTime);
+           // end = format.parse(endTime);
+             start= startTime+" "+"00:00:00";
+            end= endTime+" "+"23:59:59";
+            List<DBObject> list =  reportService.queryDocuments(start, end, sensorNum);
             StringBuffer buffer =  new StringBuffer("");
             for(DBObject object:list){
 
@@ -62,7 +62,7 @@ public class ReportServiceWeb {
             }
             response.setHeader("Content-Disposition", "attachment;filename=" + sensorNum + ".txt");
             return  buffer.toString();
-        } catch (ParseException e) {
+        } catch (Exception e) {
            logger.error(e.getMessage());
            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }

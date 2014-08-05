@@ -73,6 +73,9 @@
         "warnCondition":{
             "add":"rs/warnCondition/add",
             "list":"rs/warnCondition/list"
+        } ,
+        "report":{
+            "query":"rs/report/query/"
         }
     }
 })(jQuery);

@@ -90,16 +90,23 @@
                 var row = manager.getSelectedRow();
                 manager.addRow({
                     id: newRowID++,
-                    name:$("#name").val(),
-                    description:$("#description").val(),
+//                    name:$("#name").val(),
+//                    description:$("#description").val(),
+                    name:'',
+                    description:'',
                     groupName:$("#groupName").val(),
                     addStatus:"未提交"
                 }, row, document.getElementById("checked").checked);
             }
         }
         function submitBtn(){
-            var data=JSON.stringify(manager.getData());
-            $.post($.URL.area.add,{"jsonStringList":data},addCallback,"json");
+            if(undefined == manager) {
+                $.ligerDialog.warn("请选择监控组");
+            }
+            else {
+                var data=JSON.stringify(manager.getData());
+                $.post($.URL.area.add,{"jsonStringList":data},addCallback,"json");
+            }
         }
         function addCallback(data){
             if(data.code==200){

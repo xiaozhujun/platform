@@ -43,7 +43,7 @@
     </select>
 
     <select id="list" parameterType="java.lang.Long" resultType="map">
-        SELECT s.id,s.`name`,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
+        SELECT s.id,s.`name`,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,c.`number` AS collectorNumber,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
         FROM `group` g,area a,collector c,sensor s
         WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=#{appId}
     </select>

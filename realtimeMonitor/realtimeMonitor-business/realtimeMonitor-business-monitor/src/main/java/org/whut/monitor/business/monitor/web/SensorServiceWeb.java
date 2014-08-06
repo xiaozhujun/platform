@@ -100,7 +100,7 @@ public class SensorServiceWeb {
                             sensor.setGroupId(groupId);
                             long areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
                             sensor.setAreaId(areaId);
-                            sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getCollectorName(),appId));
+                            sensor.setCollectorId(collectorService.getIdByNumberAndAppId(subSensor.getCollectorNumber(),appId));
                             sensor.setMaxFrequency(subSensor.getMaxFrequency());
                             sensor.setMinFrequency(subSensor.getMinFrequency());
                             sensor.setWorkFrequency(subSensor.getWorkFrequency());
@@ -185,6 +185,7 @@ public class SensorServiceWeb {
         long groupId = 0;
         long areaId = 0 ;
         long collectorId = 0;
+        String tempName = "";
         try{
             groupId = groupService.getIdByNameAndAppId(subSensor.getGroupName(), appId);
         }catch(Exception e){
@@ -204,7 +205,7 @@ public class SensorServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不存在该监控区域！");
         }
         try{
-            collectorId = collectorService.getIdByNameAndAppId(subSensor.getCollectorName(),appId);
+            collectorId = collectorService.getIdByNumberAndAppId(subSensor.getCollectorNumber(),appId);
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -212,9 +213,23 @@ public class SensorServiceWeb {
         if(collectorId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控区域中不存在该采集仪！");
         }
+
+        try{
+            tempName=collectorService.getCollectNameById(collectorId);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+        if(tempName.equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控区域中不存在该采集仪名！");
+        }
+        if(tempName.equals(subSensor.getCollectorName())){
+
+
+
         sensor.setId(subSensor.getId());
         sensor.setAppId(appId);
-        sensor.setName(subSensor.getCollectorName());
+        sensor.setName(subSensor.getName());
         sensor.setNumber(subSensor.getNumber());
         sensor.setDescription(subSensor.getDescription());
         sensor.setGroupId(groupId);
@@ -248,6 +263,7 @@ public class SensorServiceWeb {
         }
         else
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+    }        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"请确认采集仪名与采集仪编号匹配！");
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

@@ -68,7 +68,7 @@ public class AreaServiceWeb {
                     areaSuccessList.add(subArea);
                 }
                 else {
-                    if (subArea.getName() == "" || subArea.getGroupName() == "") {
+                    if (subArea.getName().equals("") || subArea.getName()==null || subArea.getGroupName().equals("") || subArea.getGroupName()==null) {
                         subArea.setAddStatus("参数缺省");
                         areaErrorList.add(subArea);
                     }

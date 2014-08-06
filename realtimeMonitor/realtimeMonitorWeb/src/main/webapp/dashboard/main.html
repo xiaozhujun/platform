@@ -67,6 +67,7 @@
                             dataType:'jsonp',
                             jsonpCallback:'callback',
                             success: function meanVarianceCallback(result) {
+//                                alert(result["curWarnValue"]);
                                 h = result["curWarnValue"].toString();
                                 count = result["warnCount"].toString();
                             }

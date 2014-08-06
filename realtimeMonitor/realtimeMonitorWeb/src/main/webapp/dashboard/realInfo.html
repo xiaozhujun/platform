@@ -16,6 +16,7 @@
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
         var currentMonitor,grid;
+       var  sensorTime=" ";
         $(document).ready(function() {
             $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
         });
@@ -39,27 +40,37 @@
                     {name:'collectorName',display:'采集仪名称',width:'auto'},
                     {name:'lastMessageTime',display:'最后通信时间',width:'auto'
                        ,render:function(item){
-                        $.post($.URL.sensor.getMongoDataLastTimeByNumber,{"number":"number"},lastTimeCallback,"json");
+                            var num =item.number;
+                        var tempURL = $.URL.sensors.getWarnCondition;
+                        var myURL = tempURL + num.toString();
+                        $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
+//                        $.post($.URL.sensor.getMongoDataLastTimeByNumber,{"number":"number"},lastTimeCallback,"json");
 //                        $.ajax({
 //                            url: $.URL.sensor.getMongoDataLastList,
 //                            async:false,
 //                            type:'POST',
 //                            dataType:'json',
 //                            success:
-                           function lastTimeCallback(data) {
-                                if (data.code == 200) {
-                                    lastTime = data.data.time;
-                                }
+                           function lastTimeCallback(result) {
+//                               alert(result["LastData"]);
+                          sensorTime = result["LastData"].toString();
 //                            }
 //                        })
-                        return lastTime;
+//                        return sensorTime;
+
                    }
+                        return curDateCallback();
                     }
                     },
 
 
 
-                    { display: '状态', name: 'sensorStatus',width:'auto'  },
+                    { display: '状态', name: 'sensorStatus',width:'auto'
+//                        ,render: function{
+//                        //日期转换
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
+//                    Date dateStr = sdf.parse(dateString);}
+                    },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -71,6 +82,10 @@
                 data:gridData,clickToEdit: false, isScroll: true, usePager: false,
                 width:'auto',resizable:true
             });
+        }
+
+        function curDateCallback() {
+            return sensorTime;
         }
 
 

@@ -159,4 +159,13 @@ public class AreaServiceWeb {
         List<Map<String,String>> list=areaService.getAreaNameListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaByGroupId")
+    @POST
+    public String getAreaByGroupId(@FormParam("groupId")long groupId){
+        long appId=UserContext.currentUserAppId();
+        List<Area>list =areaService.getAreaByGroupId(groupId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }

@@ -15,8 +15,6 @@
 <script type="text/javascript">
 $(function(){
     $.post($.URL.collector.list,null,collectorListCallback,"json");
-    $.post($.URL.area.getAreaNameListByAppId,null,areaListCallback,"json");
-    $.post($.URL.group.list,null,groupListCallback,"json");
 })
 var gridData = {};
 function collectorListCallback(data){
@@ -26,28 +24,8 @@ function collectorListCallback(data){
         f_initGrid();
     }
 }
-var groupData=[];
-function groupListCallback(data){
-    if(data.code==200){
-        $.each(data.data,function(index,content){
-            var j={};
-            j["text"]=content.name;
-            j["id"]=content.name;
-            groupData.push(j);
-        })
-    }
-}
-var areaData=[];
-function areaListCallback(data){
-    if(data.code==200){
-        $.each(data.data,function(index,content){
-            var j={};
-            j["text"]=content.name;
-            j["id"]=content.name;
-            areaData.push(j);
-        })
-    }
-}
+
+
 var manager, g;
 function f_initGrid()
 {
@@ -56,18 +34,6 @@ function f_initGrid()
             { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
             { display: '采集仪名称',name: 'name',width:100, editor: { type: 'text'} },
             { display: '编号',name: 'number',type:'string',width:80,editor: { type: 'text'}},
-            { display: '监测组',name: 'groupName', width:100,
-                editor: { type:'select',emptyText:null,data:groupData,valueField:'id',textField:'text'},
-                render:function(item){
-                    return item.groupName;
-                }
-            },
-            { display: '测量区域',name: 'area',width:100,
-                editor: { type:'select',emptyText:null,data:areaData,valueField:'id',textField:'text'},
-                render:function(item){
-                    return item.area;
-                }
-            },
             { display: '最大频率',name: 'maxFrequency', width:80,editor:{type:'text'}},
             { display: '最小频率',name: 'minFrequency',width:80, editor:{type:'text'}},
             { display: '工作频率',name: 'workFrequency',width:80,editor:{type:'text'}},
@@ -155,11 +121,12 @@ $("#addSubmitBtn").click(function(){
     .l-table-edit-td{ padding:4px;}
     .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
     .l-dialog-tc{background:#E0EDFF; }
+    .l-div {height: 30px;margin-top: 10px}
 </style>
 </head>
 <body  style="padding:10px">
 <div id="list">
-    <div>
+    <div class="l-div">
         <input type="button" value="添加采集仪" id="addSubmitBtn" class="l-button l-button-submit" />
     </div>
     <div class="l-clear"></div>

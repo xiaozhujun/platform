@@ -31,7 +31,8 @@
             "add":"rs/area/add",
             "list":"rs/area/list",
             "update":"rs/area/update",
-            "getAreaNameListByAppId":"rs/area/getAreaNameListByAppId"
+            "getAreaNameListByAppId":"rs/area/getAreaNameListByAppId" ,
+            "getAreaByGroupId":"rs/area/getAreaByGroupId"
         },
         "group":{
             "add":"rs/group/add",
@@ -48,7 +49,8 @@
             "getAreaNames":"rs/collector/getAreaNames",
             "getCollectorByAreaId":"rs/collector/getCollectorByAreaId",
             "getCollectorNameListByAppId":"rs/collector/getCollectorNameListByAppId",
-            "getCollectorByGroupId":"rs/collector/getCollectorByGroupId"
+            "getCollectorByGroupId":"rs/collector/getCollectorByGroupId",
+            "getCollectorNameByAppId":"rs/collector/getCollectorNameByAppId"
         },
         "sensor":{
             "add":"rs/sensor/add" ,

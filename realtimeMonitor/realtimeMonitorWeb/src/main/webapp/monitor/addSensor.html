@@ -21,17 +21,13 @@
         $(function(){
             $.post($.URL.group.list,null,groupListCallBack,"json");
         })
+        $.post($.URL.collector.list,null,collectorCallback,"json");
         $("#monitorArea").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null,
-           width:180,valueField:'id',textField:'text',
-           onSelected:function(areaId){
-               if(areaId!=null){
-                   $.post($.URL.collector.getCollectorByAreaId,{"areaId":areaId},getCollectorCallback,"json");
-               }
-           }
-        });
-        function getCollectorCallback(data){
+           width:180,valueField:'id',textField:'text'});
+        $("#collector").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
+        function collectorCallback(data){
             if(data.code==200){
-               var collectorData=[];
+                var collectorData=[];
                 $.each(data.data,function(index,content){
                     var c={};
                     c["id"]=content.id;
@@ -41,7 +37,6 @@
                 liger.get("collector").setData(collectorData);
             }
         }
-        $("#collector").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
         function groupListCallBack(data){
             if(data.code=200){
                 var groupData=[];
@@ -55,7 +50,7 @@
                     width:180,data:groupData,valueField:'id',textField:'text',valueFieldID:'groupSelect',
                     onSelected:function(group){
                         if(group!=null){
-                            $.post($.URL.collector.getAreaNames,{"groupId":group},function areaCallback(data){
+                            $.post($.URL.area.getAreaByGroupId,{"groupId":group},function areaCallback(data){
                                 if(data.code==200){
                                     var areaData=[];
                                     $.each(data.data,function(index,content){
@@ -67,7 +62,7 @@
                                     liger.get("monitorArea").setData(areaData);
                                 }
                             },"json");
-                        }
+                         }
                     }
                 })
             }
@@ -197,6 +192,20 @@
         $("#return").ligerButton({});
     </script>
     <style type="text/css">
+        .l-table-edit {
+        }
+        .l-table-edit-td {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-dialog-tc {
+            background: #E0EDFF;
+        }
         .l-div {height: 30px;margin-top: 10px}
         .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
         .l-edit-com{width: 60px; margin-left: 10px; float: left;}

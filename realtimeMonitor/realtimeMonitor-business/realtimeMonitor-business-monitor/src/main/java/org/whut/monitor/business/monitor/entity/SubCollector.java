@@ -12,8 +12,6 @@ public class SubCollector {
     private String name;
     private String number;
     private String description;
-    private String groupName;
-    private String area;
     private String status;
     private String maxFrequency;
     private String minFrequency;
@@ -30,13 +28,6 @@ public class SubCollector {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getNumber() {
         return number;
@@ -52,22 +43,6 @@ public class SubCollector {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
     }
 
     public String getStatus() {
@@ -124,5 +99,13 @@ public class SubCollector {
 
     public void setAddStatus(String addStatus) {
         this.addStatus = addStatus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

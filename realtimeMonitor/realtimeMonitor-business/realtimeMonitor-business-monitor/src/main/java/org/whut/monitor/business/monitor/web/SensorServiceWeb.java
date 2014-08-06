@@ -83,7 +83,7 @@ public class SensorServiceWeb {
                     else{
                         long tempId;
                         try{
-                            tempId=sensorService.getSensorId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),subSensor.getName(), subSensor.getNumber(), appId);
+                            tempId=sensorService.getSensorId( subSensor.getNumber(), appId);
                         }catch (Exception e){
                             tempId=0;
                         }
@@ -100,7 +100,7 @@ public class SensorServiceWeb {
                             sensor.setGroupId(groupId);
                             long areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
                             sensor.setAreaId(areaId);
-                            sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId));
+                            sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getCollectorName(),appId));
                             sensor.setMaxFrequency(subSensor.getMaxFrequency());
                             sensor.setMinFrequency(subSensor.getMinFrequency());
                             sensor.setWorkFrequency(subSensor.getWorkFrequency());
@@ -174,7 +174,7 @@ public class SensorServiceWeb {
         long appId=UserContext.currentUserAppId();
         long existId = 0;
         try{
-            existId=sensorService.getSensorId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),subSensor.getName(), subSensor.getNumber(), appId);
+            existId=sensorService.getSensorId( subSensor.getNumber(), appId);
         }catch (Exception e){
             existId=0;
         }
@@ -204,7 +204,7 @@ public class SensorServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不存在该监控区域！");
         }
         try{
-            collectorId = collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId);
+            collectorId = collectorService.getIdByNameAndAppId(subSensor.getCollectorName(),appId);
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -214,7 +214,7 @@ public class SensorServiceWeb {
         }
         sensor.setId(subSensor.getId());
         sensor.setAppId(appId);
-        sensor.setName(subSensor.getName());
+        sensor.setName(subSensor.getCollectorName());
         sensor.setNumber(subSensor.getNumber());
         sensor.setDescription(subSensor.getDescription());
         sensor.setGroupId(groupId);
@@ -275,7 +275,7 @@ public class SensorServiceWeb {
         long appId = UserContext.currentUserAppId();
         long id;
         try {
-            id = sensorService.getSensorId(groupName,areaName,collectorName,name,number,appId);
+            id = sensorService.getSensorId(number,appId);
         } catch (Exception e) {
             id = 0;
         }

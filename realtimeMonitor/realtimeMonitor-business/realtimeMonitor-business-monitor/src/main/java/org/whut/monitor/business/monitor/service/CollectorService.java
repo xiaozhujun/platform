@@ -18,37 +18,36 @@ public class CollectorService {
     @Autowired
     private CollectorMapper collectorMapper;
 
-    public void add(Collector collector){
+    public void add(Collector collector) {
         collectorMapper.add(collector);
     }
-    public List<Map<String,String>> getListByAppId(long appId){
+
+    public List<Map<String,String>> getCollectorListByAppId(long appId) {
         return collectorMapper.getListByAppId(appId);
+    }
+
+    public int delete(Collector collector){
+        return collectorMapper.delete(collector);
     }
     public int update(Collector collector){
         return collectorMapper.update(collector);
     }
-    public int delete(Collector collector){
-        return collectorMapper.delete(collector);
+    public List<Collector> getCollector(){
+        return collectorMapper.getCollector();
     }
-    public long getCollectorId(String name,String number,long appId){
-        return collectorMapper.getCollectorId(name,number,appId);
+    public long getIdByNameAndAppId(String name,long appId) {
+        return collectorMapper.getIdByNameAndAppId(name,appId);
     }
-    public List<Collector> getCollectorByAreaId(long areaId){
-        return collectorMapper.getCollectorByAreaId(areaId);
-    }
-    public long getIdByNameAndAppId(String groupName,String areaName,String collectorName,long appId){
-        return collectorMapper.getIdByNameAndAppId(groupName,areaName,collectorName,appId);
-    }
-
-    public long getIdByNameAndGroupIdAndAreaIdAndAppId(String name,long groupId,long areaId,long appId) {
-        return collectorMapper.getIdByNameAndGroupIdAndAreaIdAndAppId(name,groupId,areaId,appId);
-    }
-
     public List<String> getCollectorNameListByAppId(long appId){
         return collectorMapper.getCollectorNameListByAppId(appId);
     }
-
-    public List<Collector> getCollectorNamesByGroupName(long groupId, long appId){
-        return collectorMapper.getCollectorNamesByGroupName(groupId, appId);
+    public List<String> getCollectorNames(long appId){
+        return collectorMapper.getCollectorNames(appId);
+    }
+    public void deleteById(long Id){
+        collectorMapper.deleteById(Id);
+    }
+    public List<Map<String,String>> getCollectorNameByAppId(long appId){
+        return collectorMapper.getCollectorNameByAppId(appId);
     }
 }

@@ -71,10 +71,10 @@
          SELECT *
          FROM collector
     </select>
-    <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
+    <select id="getIdByNumberAndAppId" parameterType="map" resultType="java.lang.Long">
         SELECT id
         FROM collector
-        WHERE appId=#{appId} AND name=#{name}
+        WHERE appId=#{appId} AND number=#{number}
     </select>
     <select id="getCollectorNameListByAppId" parameterType="java.lang.Long" resultType="String">
         SELECT DISTINCT(`name`)
@@ -87,4 +87,9 @@
         WHERE appId=#{appId}
     </select>
 
+    <select id="getCollectNameById" parameterType="java.lang.Long" resultType="String">
+        SELECT `name`
+        FROM collector
+        WHERE ID=#{id}
+    </select>
 </mapper>

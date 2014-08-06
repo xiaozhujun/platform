@@ -6,11 +6,9 @@ import org.springframework.stereotype.Component;
 import org.whut.monitor.business.monitor.entity.Collector;
 import org.whut.monitor.business.monitor.entity.SubCollector;
 import org.whut.monitor.business.monitor.service.CollectorService;
-import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
-
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -36,8 +34,7 @@ import java.util.Map;
 public class CollectorServiceWeb {
     @Autowired
     private CollectorService collectorService;
-    @Autowired
-    private GroupService groupService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
@@ -64,9 +61,11 @@ public class CollectorServiceWeb {
                         subCollector.setAddStatus("参数缺省");
                         collectorErrorList.add(subCollector);
                     }else{
+
+
                     long tempId;
                     try {
-                        tempId = collectorService.getIdByNameAndAppId(subCollector.getName(),appId);
+                        tempId = collectorService.getIdByNumberAndAppId(subCollector.getNumber(),appId);
                     }catch (Exception e) {
                         tempId = 0;
                     }
@@ -143,7 +142,7 @@ public class CollectorServiceWeb {
         }
         long tempId;
         try{
-            tempId = collectorService.getIdByNameAndAppId(subCollector.getName(),appId);
+            tempId = collectorService.getIdByNumberAndAppId(subCollector.getNumber(),appId);
         }catch (Exception e){
             tempId=0;
         }

@@ -30,7 +30,7 @@
                 var collectorData=[];
                 $.each(data.data,function(index,content){
                     var c={};
-                    c["id"]=content.id;
+                    c["id"]=content.number;
                     c["text"]=content.name;
                     collectorData.push(c);
                 });
@@ -78,6 +78,7 @@
                     {display:'监控组',name:'groupName',width:80,type:'text',frozen:true},
                     {display:'监控区域',name:'areaName',width:80,type:'text',frozen:true},
                     {display:'采集器',name:'collectorName',width:80,type:'text',frozen:true},
+                    {display:'采集器编号',name:'collectorNumber',width:80,type:'text',frozen:true},
                     {display: '名称',name: 'name',width:100, type:'text', editor: { type: 'text'}},
                     {display: '编号',name:'number',width:100,type:'text', editor: { type: 'text'}},
                     {display:'最大频率',name:'maxFrequency',width:80,type:'text', editor: { type: 'text'}},
@@ -126,6 +127,7 @@
             var groupName=$("#monitorGroup").val();
             var areaName=$("#monitorArea").val();
             var collectorName=$("#collector").val();
+
             if(groupName==""){
                 $.ligerDialog.question("未选择监控组?");
             }
@@ -149,6 +151,7 @@
                     groupName:$("#monitorGroup").val(),
                     areaName:$("#monitorArea").val(),
                     collectorName:$("#collector").val(),
+                    collectorNumber:$("#collector").ligerComboBox().getValue(),
                     maxFrequency:'',
                     minFrequency:'',
                     workFrequency:'',

@@ -5,6 +5,7 @@
     <title></title>
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/search.css">
     <script src="lib/json2.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
@@ -16,6 +17,7 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/highstock.js"></script>
     <script type="text/javascript" src="js/chartTool1.js"></script>
+    <script type="text/javascript" src="js/exporting.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             var d=new Date();
@@ -36,7 +38,7 @@
         function sensorListCallback1(data){
             if(data.code==200){
                 data1=data.data;
-                drawChart2("#dataContainer", data1, "mV");
+              drawChart2("#dataContainer", data1, "mV");
             }
         }
         function  downLoad(){
@@ -45,6 +47,7 @@
             var jsonString  = $.toJSON(currentMonitor);
             var number = $.evalJSON(jsonString).number;
             var myURL=$.URL.report.query;
+           // alert(this.x1);   alert(x2);
             location.href="rs/report/query/"+sTime+"/"+eTime+"/"+number;
         }
         function getDataList(){
@@ -62,13 +65,13 @@
 <div id="monitorContainer">
     <table>
         <tr>
-            <td><div class="searchItem"><span class="item_font">起始时间:</span></div></td>
-            <td><span class="item_input"><input id="startTime" type="text"></span></td>
-            <td><div class="searchItem"><span class="item_font">终止时间:</span></div></td>
-            <td><span class="item_input"><input id="endTime" type="text"></span></td>
-            <td><div >采样周期：</div></td>
+            <td><div class="btn"><span class="item_font">起始时间:</span></div></td>
+            <td><span class="btn"><input id="startTime" type="text"></span></td>
+            <td><div class="btn"><span class="item_font">终止时间:</span></div></td>
+            <td><span class="btn"><input id="endTime" type="text"></span></td>
+            <td><div class="btn" >采样周期：</div></td>
             <td>
-                <select id="mySelect">
+                <select id="mySelect" class="btn">
                     <option value="0">0</option>
                     <option value="1">1分钟</option>
                     <option value="10">10分钟</option>
@@ -78,12 +81,11 @@
                     <option value="43200">1月</option>
                 </select>
             </td>
-           <td><div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn2" class="l-button l-button-submit" /></span></div></td>
-        </tr>
-        <tr>
+            <td><div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn2" class="l-button l-button-submit" /></span></div></td>
             <td><div class="btn"><span><input type="button" value="下载" id="dataSubmitBtn3" class="l-button l-button-submit" /></span></div></td>
-
         </tr>
+
+
     </table>
 </div>
 <div id="dataContainer" style="min-width:700px;height:400px"></div>

@@ -268,6 +268,7 @@ public class inspectReportServiceWeb {
         List<Map<String,String>> l=getInfoByMongoDbObject(d);
         for(Map<String,String> m:l){
             if(m!=null){
+                if(m.get(MongoConstant.inspectChoiceValue).equals(MongoConstant.abnormal)){
                 SearchReportBean searchReportBean=new SearchReportBean();
                 searchReportBean.setUserName(m.get(MongoConstant.userName));
                 searchReportBean.setTagName(m.get(MongoConstant.tagName));
@@ -277,6 +278,7 @@ public class inspectReportServiceWeb {
                 searchReportBean.setInspectChoiceValue(m.get(MongoConstant.inspectChoiceValue));
                 searchReportBean.setExceptioncount(map.getExceptioncount());
                 reportInfoList.add(searchReportBean);
+                }
             }
         }
         }

@@ -12,6 +12,12 @@ $.extend({
         map.centerAndZoom(address,size);//设定地图的中心点和坐标并将地图显示在地图容器中
         window.map = map;//将map变量存储在全局
     },
+    createMapByLat:function createMapByLat(lng,lat,size){
+        var map = new BMap.Map("container");//在百度地图容器中创建一个地图
+        var point = new BMap.Point(lat,lng);
+        map.centerAndZoom(point,size);
+        window.map = map;//将map变量存储在全局
+    },
     clearAllMarker:function clearAllMarker(){
         window.map.clearOverlays();
     },
@@ -36,6 +42,11 @@ $.extend({
     },
     initMap:function initMap(address,size){
         $.createMap(address,size);//创建地图
+        $.setMapEvent();//设置地图事件
+        $.addMapControl();//向地图添加控件
+    },
+    initMapByLat:function initMapByLat(lng,lat,size){
+        $.createMapByLat(lng,lat,size);
         $.setMapEvent();//设置地图事件
         $.addMapControl();//向地图添加控件
     },

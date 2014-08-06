@@ -5,6 +5,7 @@
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="css/report.css">
     <link rel="stylesheet" href="css/reportShow.css">
+    <link rel="stylesheet" href="css/waterfall.css">
     <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -70,38 +71,48 @@
         });
 
         function getInspectTableRecordListCallback(data) {
-            if (data.code == 200) {
-                if (data.data == null) {
+            if(data.code==200){
+                if(data.data==null){
                     $.ligerDialog.alert("抱歉,记录不存在!");
-                } else {
-                    $("#deviceShow").html("");
+                }else{
+                    $("#deviceShowUlLeft").html("");
+                    $("#deviceShowUlRight").html("");
                     showData(data.data);
                 }
             }
         }
 
-        function showData(data) {
-            for (var p in data) {
+        function showData(data){
+            var index = 1;
+            for(var p in data){
                 // 方法
-                if (typeof(data[p]) == "function") {
-                } else {
-                    showGrid(p, data[p]);
+                if(typeof(data[p])=="function"){
+                }else{
+                    showGrid(p,data[p],index);
+                    index++;
                 }
             }
         }
         var peopleData = {};
-        function showGrid(name, data) {
+        function showGrid(name,data,index){
+            var waterfallBlock = $("<li class='waterfallLi'></li>");
             var reportBlock = $("<div class='reportBlock'></div>");
             var reportPanel = $("<div></div>");
             var grid = $("<div></div>");
             reportPanel.append(grid);
             reportBlock.append(reportPanel);
-            $("#deviceShow").append(reportBlock);
-            peopleData.Rows = data;
+            waterfallBlock.append(reportBlock);
+            if(index%2==0){
+                $("#deviceShowUlRight").append(waterfallBlock);
+            }else{
+                $("#deviceShowUlLeft").append(waterfallBlock);
+            }
+
+            peopleData.Rows=data;
             f_peopleRecord(grid);
             reportPanel.ligerPanel({
-                title: name,
-                width: '100%'
+                title:name,
+                width:'100%'
             });
         }
         var manager, g;
@@ -195,6 +206,9 @@
     <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn"
                                          class="l-button l-button-submit"/></span></span>
 </div>
-<div class="reportContent" id="deviceShow"></div>
+<div class="reportContent" id="deviceShow">
+    <ul id="deviceShowUlLeft" class="waterfallUl"></ul>
+    <ul id="deviceShowUlRight" class="waterfallUl"></ul>
+</div>
 </body>
 </html>

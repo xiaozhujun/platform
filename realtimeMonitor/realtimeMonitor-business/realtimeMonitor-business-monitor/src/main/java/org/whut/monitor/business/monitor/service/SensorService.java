@@ -65,5 +65,11 @@ public class SensorService {
     public Map findByNumber(String number) {
         return sensorMapper.findByNumber(number);
     }
+    public List<Map<String,String>> getSensorIdAndNumbersByName(String name){
+        return sensorMapper.getSensorIdAndNumbersByName(name);
+    }
+    public List<Map<String,String>> getCollectorNameBySensorNumber(long number){
+        return sensorMapper.getCollectorNameBySensorNumber(number);
+    }
 
 }

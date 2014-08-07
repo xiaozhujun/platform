@@ -18,7 +18,7 @@
         var tempURL = $.URL.sensors.getWarnCondition;
         $(document).ready(function() {
             $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
-            $.post($.URL.sensor.homePage,{"fStatus":"false"},rightGridCallback,"json");
+            $.post($.URL.collector.list,null,rightGridCallback,"json");
 //            $.post($.URL.warnRecord.list,null,warnRecordCallback,"json");
         });
 
@@ -153,7 +153,7 @@
         function f_initRightGrid(){
             rightGrid = $("#rightGrid").ligerGrid({
             columns:[
-                {name:'collectorName',display:'采集仪',width:100},
+                {name:'name',display:'采集仪',width:100},
                 {name:'status',display:'状态',width:'auto'
                     ,render:function(item) {
                     if(item.status.toString()=="在线正常工作")   {

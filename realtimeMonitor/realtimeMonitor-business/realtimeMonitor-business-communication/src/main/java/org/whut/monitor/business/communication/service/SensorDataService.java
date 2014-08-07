@@ -116,7 +116,7 @@ public class SensorDataService {
                     warnCondition.setCurWarnValue((long)meanValue);
                     warnCondition.setNumber(sensor);
                     warnConditionService.add(warnCondition);
-                    String dateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+                    String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 
                  if (redisConnector.set(sensor+"warnCondition",keyExpireTime,curWarnValue+"|"+Long.toString(count)+"|"+dateString)) {
                         redisConnector.set(sensor+"Condition",keyExpireTime,Double.toString(warnValue)+"|"+Long.toString(count));

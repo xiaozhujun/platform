@@ -64,8 +64,8 @@
             "getMongoDataLastList":"rs/sensor/getMongoDataLastList",
             "getMongoDataLastTimeByNumber":"rs/sensor/getMongoDataLastTimeByNumber",
             "getMongoDataLastListByNumber":"rs/sensor/getMongoDataLastListByNumber",
-            "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
-            "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor",
+            "getSensorsByAreaId":"rs/sensor/getSensorsByAreaId",
+            "getListByGroupAreaAndMonitor":"rs/sensor/getListByGroupAreaAndMonitor",
             "getNumberBySensorId":"rs/sensor/getNumberBySensorId"
         },
         "sensors":{

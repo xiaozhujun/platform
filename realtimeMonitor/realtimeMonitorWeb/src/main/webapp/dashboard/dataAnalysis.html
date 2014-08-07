@@ -27,10 +27,10 @@
             $("#dataSubmitBtn1").click(function(){
                 getDataList();
             });
-            $("#collectorName").ligerComboBox({
+            $("#areaName").ligerComboBox({
                 data:null,valueFieldID:"collectorNameSelect",emptyText:null,
-                onSelected:function(collectorId){
-                    $.post($.URL.sensor.getSensorsByCollectorId,{"collectorId":collectorId},getSensorsByCollectorIdCallback,"json");
+                onSelected:function(areaId){
+                    $.post($.URL.sensor.getSensorsByAreaId,{"areaId":areaId},getSensorsByAreaIdCallback,"json");
                 }
             });
             $("#monitorName").ligerComboBox({
@@ -58,17 +58,17 @@
                     data:groupData,valueFieldID:"groupNameSelect",emptyText:null,
                     onSelected:function(groupId){
                         if(groupId!=null){
-                            $.post($.URL.collector.getCollectorByGroupId,{"groupId":groupId},function getCollectorByGroupIdCallback(data){
+                            $.post($.URL.area.getAreaByGroupId,{"groupId":groupId},function getCollectorByGroupIdCallback(data){
                                 if(data.code==200){
-                                    var collectorData=[];
+                                    var areaData=[];
                                     $.each(data.data,function(index,content){
                                         var j={};
                                         j["text"]=content.name;
                                         j["id"]=content.id;
-                                        collectorData.push(j);
+                                        areaData.push(j);
                                     })
-                                    //liger.get("collectorName").setData(collectorData);
-                                    $("#collectorName").ligerComboBox({data:collectorData})  ;
+                                    //liger.get("areaData").setData(areaData);
+                                    $("#areaName").ligerComboBox({data:areaData})  ;
                                 }
                             },"json");
                         }
@@ -76,7 +76,7 @@
                 });
             }
         }
-        function getSensorsByCollectorIdCallback(data){
+        function getSensorsByAreaIdCallback(data){
             if(data.code==200){
                 var sensorData=[];
                 for(var i=0;i<data.data.length;i++){
@@ -93,11 +93,12 @@
         function f_initGrid() {
             grid = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
-                    { display: '测量组', name: 'groupName' },
-                    { display: '采集仪名称', width: 50, name: 'collectorName'},
-                    { display: '传感器名称', name: 'sensorName' },
-                    { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
+                    //{ display: '主键', name: 'ID', width: 50, type: 'int', frozen: true },
+                    { display: '传感器编号', name: 'number', type: 'int', frozen: true,width:'auto' },
+                    { display: '测量组', name: 'groupName',width:'auto' },
+                    { display: '监测区域名称', name: 'areaName',width:'auto'},
+                    { display: '传感器名称', name: 'sensorName' ,width:'auto'},
+                    { display: '操作', isSort: false, width:'auto', render: function (rowdata, rowindex, value)
                     {
                         var h = "";
                         h += "<a href='javascript:getInfo(" + rowindex + ")'>查看</a> ";
@@ -106,8 +107,8 @@
                     }
                 ],
                 enabledEdit: true,clickToEdit:false, isScroll: false,
-                data: gridData,
-                width: '100%'
+                data: gridData
+
             });
         }
         var number;
@@ -118,9 +119,9 @@
         }
         function getDataList(){
             var groupName=$("#groupName").val();
-            var collectorName=$("#collectorName").val();
+            var areaName=$("#areaName").val();
             var monitorName=$("#monitorName").val();
-            $.post($.URL.sensor.getListByGroupCollectionAndMonitor,{"groupName":groupName,"collectorName":collectorName,"monitorName":monitorName},sensorListCallback,"json");
+            $.post($.URL.sensor.getListByGroupAreaAndMonitor,{"groupName":groupName,"areaName":areaName,"monitorName":monitorName},sensorListCallback,"json");
 
         }
     </script>
@@ -128,7 +129,7 @@
 <body>
 <div class="searchContainer">
     <div class="searchItem"><span class="item_font">监测组:</span><span class="item_input"><input id="groupName" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">采集仪:</span><span class="item_input"><input id="collectorName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">监测区域:</span><span class="item_input"><input id="areaName" type="text"></span></div>
     <div class="searchItem"><span class="item_font">传感器:</span><span class="item_input"><input id="monitorName" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn1" class="l-button l-button-submit" /></span></div>
 </div>

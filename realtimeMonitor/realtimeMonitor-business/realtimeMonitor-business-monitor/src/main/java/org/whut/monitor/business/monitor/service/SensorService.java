@@ -26,8 +26,8 @@ public class SensorService {
     public List<Map<String,String>> list(long appId){
          return sensorMapper.list(appId);
     }
-    public List<Map<String,String>> listByGroupCollectionAndMonitor(long appId,String group,String collector,String monitor){
-        return sensorMapper.listByGroupCollectionAndMonitor(appId,group,collector,monitor);
+    public List<Map<String,String>> getListByGroupAreaAndMonitor(long appId,String group,String areaName,String monitor){
+        return sensorMapper.getListByGroupAreaAndMonitor(appId,group,areaName,monitor);
     }
 
     public int deleteById(long id){
@@ -38,8 +38,8 @@ public class SensorService {
         return sensorMapper.update(sensor);
     }
 
-    public List<Sensor> getSensorsByCollectorId(long collectorId,long appId){
-        return sensorMapper.getSensorsByCollectorId(collectorId,appId);
+    public List<Sensor>getSensorsByAreaId(long areaId,long appId){
+        return sensorMapper.getSensorsByAreaId(areaId,appId);
     }
 
     public List<Map<String,String>> homePageList(String fStatus,long appId) {

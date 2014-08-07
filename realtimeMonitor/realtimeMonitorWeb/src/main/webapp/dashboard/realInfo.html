@@ -37,6 +37,7 @@
                     {name:'number',display:'编号',width:'auto'},
                     {name:'name',display:'传感器',width:'auto'},
                     {name:'groupName',display:'监测组',width:'auto'},
+                    {name:'areaName',display:'监测区域',width:'auto'},
                     {name:'collectorName',display:'采集仪名称',width:'auto'},
                     {name:'lastMessageTime',display:'最后通信时间',width:'auto'
                        ,render:function(item){
@@ -67,9 +68,15 @@
 
                     { display: '状态', name: 'sensorStatus',width:'auto'
 //                        ,render: function{
-//                        //日期转换
-//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
-//                    Date dateStr = sdf.parse(dateString);}
+////                        //日期转换
+////                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
+//
+//                        var dt = Date.parse(sensorTime.replace(/-/g,"/"));
+//                        dt = new Date(dt);
+//                        var nowdt=new Date();
+//                        alert(dt);  alert(nowdtdt);
+//                  // Date dateStr = sdf.parse(dateString);
+//                    }
                     },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {

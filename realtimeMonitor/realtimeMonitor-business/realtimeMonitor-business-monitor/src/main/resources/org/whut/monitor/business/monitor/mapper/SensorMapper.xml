@@ -134,4 +134,16 @@
         FROM sensor AS s,`group` AS g,area AS a,collector AS c
         WHERE s.number=#{number} AND g.id=s.groupId AND c.id=s.collectorId AND a.id=s.areaId
     </select>
+    
+    <select id="getSensorIdAndNumbersByName" parameterType="java.lang.String" resultType="map">
+        SELECT id,`number`
+        FROM sensor
+        WHERE `name`=#{name}
+    </select>
+
+    <select id="getCollectorNameBySensorNumber" parameterType="java.lang.Long" resultType="map">
+        SELECT c.`name`,c.id
+        FROM collector AS c,sensor AS s
+        WHERE c.id=s.collectorId AND s.`number`=#{number}
+    </select>
 </mapper>

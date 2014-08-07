@@ -48,7 +48,7 @@
                     textField:'text',
                     onSelected:function(group) {
                         if(group != null) {
-                            $.post($.URL.collector.getAreaNames,{"groupId":group},function areaCallback(data){
+                            $.post($.URL.area.getAreaByGroupId,{"groupId":group},function areaCallback(data){
                                 if(data.code == 200) {
                                     var areaName = [];
                                     $.each(data.data,function(index,content){
@@ -72,34 +72,12 @@
             textField:'text',
             onSelected:function(area) {
                 if(area != null) {
-                    $.post($.URL.collector.getCollectorByAreaId,{"areaId":area},function collectorCallback(data){
+                    $.post($.URL.sensor.getSensorsByAreaId,{"areaId":area},function collectorCallback(data){
                         if(data.code==200){
-                            var collectorName=[];
+                            var sensorName=[];
                             $.each(data.data,function(index,content){
                                 var c={};
-                                c["id"]=content.id;
-                                c["text"]=content.name;
-                                collectorName.push(c);
-                            });
-                            liger.get("collectorSelect").setData(collectorName);
-                        }
-                    },"json");
-                }
-            }
-        });
-
-        $("#collectorSelect").ligerComboBox({isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
-            width:100,
-            valueField:'id',
-            textField:'text'
-            ,onSelected:function(collector) {
-                if(collector!=null) {
-                    $.post($.URL.sensor.getSensorsByCollectorId,{"collectorId":collector},function sensorCallback(data){
-                        if(data.code == 200) {
-                            var sensorName = [];
-                            $.each(data.data,function(index,content){
-                                var c={};
-                                c["id"]=content.id;
+                                c["id"]=content.name;
                                 c["text"]=content.name;
                                 sensorName.push(c);
                             });
@@ -110,6 +88,8 @@
             }
         });
 
+
+
         $("#sensorSelect").ligerComboBox({
             isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
             width:100,
@@ -118,7 +98,7 @@
             onSelected:function(sensor) {
                 if(sensor != null) {
                     var number = [];
-                    $.post($.URL.sensor.getNumberBySensorId,{"sensorId":sensor},function(data){
+                    $.post($.URL.sensor.getSensorIdAndNumbersByName,{"sensorName":sensor},function(data){
                         if(data.code == 200) {
                             $.each(data.data,function(index,content){
                                 var j = {};
@@ -132,12 +112,25 @@
                 }
             }
         });
-
+        var collectorName;
         $("#numberSelect").ligerComboBox({
             isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
             width:100,
             valueField:'id',
-            textField:'text'
+            textField:'text',onSelected:function(number){
+                if(number != null) {
+                    $.post($.URL.sensor.getCollectorNameBySensorNumber,{"number":number},function(data){
+                        if(data.code == 200) {
+                            $.each(data.data,function(index,content){
+
+
+                                collectorName= content.name;
+
+                        })
+                    }
+                    },"json");
+                }
+            }
         });
 
         var d=new Date();
@@ -154,7 +147,7 @@
             var warnType = $("#warnTypeSelect").val();
             var groupName = $("#groupSelect").val();
             var areaName = $("#areaSelect").val();
-            var collectorName = $("#collectorSelect").val();
+
             var sensorName = $("#sensorSelect").val();
             var number = $("#numberSelect").val();
             var startTime = $("#startTimeSelect").val();
@@ -215,11 +208,6 @@
     <span style="margin-left: 60px;  width: 60px;float: left;margin-top: 2px">测量区域：</span>
     <span class="l-show-com">
         <input name="areaSelect" id="areaSelect" type="text">
-    </span>
-
-    <span style="margin-left: 60px;  width: 50px;float: left;margin-top: 2px">采集仪：</span>
-    <span class="l-show-com">
-        <input name="collectorSelect" id="collectorSelect" type="text">
     </span>
 
     <span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">传感器：</span>

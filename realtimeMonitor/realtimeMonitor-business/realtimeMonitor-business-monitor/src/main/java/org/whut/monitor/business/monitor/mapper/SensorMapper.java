@@ -26,4 +26,7 @@ public interface SensorMapper extends AbstractMapper<Sensor>{
     public Map getWarnConditionByNumber(@Param("number")String number);
     public void updateWarnCountByNumber(@Param("number")String number,@Param("warnCount")long warnCount);
     public Map findByNumber(String number);
+
+    public List<Map<String,String>> getSensorIdAndNumbersByName(@Param("name")String name);   //名字可重复，故用复数
+    public List<Map<String,String>> getCollectorNameBySensorNumber(@Param("number")long number);
 }

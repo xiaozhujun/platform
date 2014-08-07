@@ -85,7 +85,8 @@ function drawChart2(container,data,unit){
             },
             series: {
                 animation: false,
-                shadow: false
+                shadow: false,
+                turboThreshold:0
             }
         },
         series: [{
@@ -98,6 +99,7 @@ function drawChart2(container,data,unit){
             enabled: false
         }
     });
+    alert(h.plotLeft);
 }
 function getLocalTime(nS) {
     return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');

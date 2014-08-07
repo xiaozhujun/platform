@@ -386,6 +386,7 @@ public class SensorServiceWeb {
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataLastList")
     @POST

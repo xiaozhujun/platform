@@ -305,11 +305,11 @@ public class SensorServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getSensorsByCollectorId")
+    @Path("/getSensorsByAreaId")
     @POST
-    public String getSensorsByCollectorId(@FormParam("collectorId") long collectorId){
+    public String getSensorsByAreaId(@FormParam("areaId") long areaId){
         long appId=UserContext.currentUserAppId();
-        List<Sensor> list=sensorService.getSensorsByCollectorId(collectorId,appId);
+        List<Sensor> list=sensorService.getSensorsByAreaId(areaId,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 
@@ -426,12 +426,12 @@ public class SensorServiceWeb {
 
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getListByGroupCollectionAndMonitor")
+    @Path("/getListByGroupAreaAndMonitor")
     @POST
-    public String getListByGroupCollectionAndMonitor(@FormParam("groupName")String groupName,@FormParam("collectorName")String collectorName,@FormParam("monitorName")String monitorName){
+    public String getListByGroupAreaAndMonitor(@FormParam("groupName")String groupName,@FormParam("areaName")String areaName,@FormParam("monitorName")String monitorName){
         //System.out.println(groupName+"dddddddddddddddddddddddddddddd"+collectorName+"jjjjjjjjjjjjjjjjjjjjjj"+monitorName);
         long appId=UserContext.currentUserAppId();
-        List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.listByGroupCollectionAndMonitor(appId,groupName,collectorName,monitorName);
+        List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.getListByGroupAreaAndMonitor(appId,groupName,areaName,monitorName);
         return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupCollectionAndMonitor, JsonResultUtils.Code.SUCCESS);
     }
 

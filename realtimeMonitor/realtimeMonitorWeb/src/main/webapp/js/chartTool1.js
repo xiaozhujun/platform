@@ -99,7 +99,6 @@ function drawChart2(container,data,unit){
             enabled: false
         }
     });
-    alert(h.plotLeft);
 }
 function getLocalTime(nS) {
     return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');

@@ -312,7 +312,20 @@ public class SensorServiceWeb {
         List<Sensor> list=sensorService.getSensorsByAreaId(areaId,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getSensorIdAndNumbersByName")
+    @POST
+    public String getSensorIdAndNumbersByName(@FormParam("sensorName")String sensorName){
+        List<Map<String,String>> list=sensorService.getSensorIdAndNumbersByName(sensorName);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCollectorNameBySensorNumber")
+    @POST
+    public String getCollectorNameBySensorNumber(@FormParam("number")long number){
+        List<Map<String,String>> list=sensorService.getCollectorNameBySensorNumber(number);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataList")

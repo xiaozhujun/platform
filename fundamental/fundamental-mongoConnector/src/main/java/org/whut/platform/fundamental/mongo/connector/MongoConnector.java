@@ -172,7 +172,6 @@ public class MongoConnector {
         BasicDBObject query =new BasicDBObject();
         query.put("time", new BasicDBObject("$gt", sTime).append("$lt", eTime));
         query.put("sensorNum", sensorNum);
-        System.out.println("eeeeeeeeeeeeeeee"+query);
         DBCursor dbCursor = collection.find(query);
 
         List<List<DBObject>> dd=new ArrayList<List<DBObject>>();

@@ -83,7 +83,7 @@ public class SensorServiceWeb {
                     else{
                         long tempId;
                         try{
-                            tempId=sensorService.getSensorId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),subSensor.getName(), subSensor.getNumber(), appId);
+                            tempId=sensorService.getSensorId( subSensor.getNumber(), appId);
                         }catch (Exception e){
                             tempId=0;
                         }
@@ -100,7 +100,7 @@ public class SensorServiceWeb {
                             sensor.setGroupId(groupId);
                             long areaId = areaService.getIdByNameAndGroupIdAndAppId(subSensor.getAreaName(),groupId,appId);
                             sensor.setAreaId(areaId);
-                            sensor.setCollectorId(collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId));
+                            sensor.setCollectorId(collectorService.getIdByNumberAndAppId(subSensor.getCollectorNumber(),appId));
                             sensor.setMaxFrequency(subSensor.getMaxFrequency());
                             sensor.setMinFrequency(subSensor.getMinFrequency());
                             sensor.setWorkFrequency(subSensor.getWorkFrequency());
@@ -174,7 +174,7 @@ public class SensorServiceWeb {
         long appId=UserContext.currentUserAppId();
         long existId = 0;
         try{
-            existId=sensorService.getSensorId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),subSensor.getName(), subSensor.getNumber(), appId);
+            existId=sensorService.getSensorId( subSensor.getNumber(), appId);
         }catch (Exception e){
             existId=0;
         }
@@ -185,6 +185,7 @@ public class SensorServiceWeb {
         long groupId = 0;
         long areaId = 0 ;
         long collectorId = 0;
+        String tempName = "";
         try{
             groupId = groupService.getIdByNameAndAppId(subSensor.getGroupName(), appId);
         }catch(Exception e){
@@ -204,7 +205,7 @@ public class SensorServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不存在该监控区域！");
         }
         try{
-            collectorId = collectorService.getIdByNameAndAppId(subSensor.getGroupName(),subSensor.getAreaName(),subSensor.getCollectorName(),appId);
+            collectorId = collectorService.getIdByNumberAndAppId(subSensor.getCollectorNumber(),appId);
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -212,6 +213,20 @@ public class SensorServiceWeb {
         if(collectorId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控区域中不存在该采集仪！");
         }
+
+        try{
+            tempName=collectorService.getCollectNameById(collectorId);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+        if(tempName.equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控区域中不存在该采集仪名！");
+        }
+        if(tempName.equals(subSensor.getCollectorName())){
+
+
+
         sensor.setId(subSensor.getId());
         sensor.setAppId(appId);
         sensor.setName(subSensor.getName());
@@ -248,6 +263,7 @@ public class SensorServiceWeb {
         }
         else
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+    }        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"请确认采集仪名与采集仪编号匹配！");
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -275,7 +291,7 @@ public class SensorServiceWeb {
         long appId = UserContext.currentUserAppId();
         long id;
         try {
-            id = sensorService.getSensorId(groupName,areaName,collectorName,name,number,appId);
+            id = sensorService.getSensorId(number,appId);
         } catch (Exception e) {
             id = 0;
         }
@@ -289,14 +305,27 @@ public class SensorServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getSensorsByCollectorId")
+    @Path("/getSensorsByAreaId")
     @POST
-    public String getSensorsByCollectorId(@FormParam("collectorId") long collectorId){
+    public String getSensorsByAreaId(@FormParam("areaId") long areaId){
         long appId=UserContext.currentUserAppId();
-        List<Sensor> list=sensorService.getSensorsByCollectorId(collectorId,appId);
+        List<Sensor> list=sensorService.getSensorsByAreaId(areaId,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getSensorIdAndNumbersByName")
+    @POST
+    public String getSensorIdAndNumbersByName(@FormParam("sensorName")String sensorName){
+        List<Map<String,String>> list=sensorService.getSensorIdAndNumbersByName(sensorName);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCollectorNameBySensorNumber")
+    @POST
+    public String getCollectorNameBySensorNumber(@FormParam("number")long number){
+        List<Map<String,String>> list=sensorService.getCollectorNameBySensorNumber(number);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataList")
@@ -386,6 +415,7 @@ public class SensorServiceWeb {
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getMongoDataLastList")
     @POST
@@ -410,12 +440,12 @@ public class SensorServiceWeb {
 
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getListByGroupCollectionAndMonitor")
+    @Path("/getListByGroupAreaAndMonitor")
     @POST
-    public String getListByGroupCollectionAndMonitor(@FormParam("groupName")String groupName,@FormParam("collectorName")String collectorName,@FormParam("monitorName")String monitorName){
+    public String getListByGroupAreaAndMonitor(@FormParam("groupName")String groupName,@FormParam("areaName")String areaName,@FormParam("monitorName")String monitorName){
         //System.out.println(groupName+"dddddddddddddddddddddddddddddd"+collectorName+"jjjjjjjjjjjjjjjjjjjjjj"+monitorName);
         long appId=UserContext.currentUserAppId();
-        List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.listByGroupCollectionAndMonitor(appId,groupName,collectorName,monitorName);
+        List<Map<String,String>> listByGroupCollectionAndMonitor = sensorService.getListByGroupAreaAndMonitor(appId,groupName,areaName,monitorName);
         return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupCollectionAndMonitor, JsonResultUtils.Code.SUCCESS);
     }
 

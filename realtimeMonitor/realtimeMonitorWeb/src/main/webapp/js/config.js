@@ -31,7 +31,8 @@
             "add":"rs/area/add",
             "list":"rs/area/list",
             "update":"rs/area/update",
-            "getAreaNameListByAppId":"rs/area/getAreaNameListByAppId"
+            "getAreaNameListByAppId":"rs/area/getAreaNameListByAppId" ,
+            "getAreaByGroupId":"rs/area/getAreaByGroupId"
         },
         "group":{
             "add":"rs/group/add",
@@ -47,8 +48,9 @@
             "delete":"rs/collector/delete",
             "getAreaNames":"rs/collector/getAreaNames",
             "getCollectorByAreaId":"rs/collector/getCollectorByAreaId",
-            "getCollectorNameListByAppId":"rs/collector/getCollectorNameListByAppId",
-            "getCollectorByGroupId":"rs/collector/getCollectorByGroupId"
+            "getCollectorByGroupId":"rs/collector/getCollectorByGroupId",
+            "getCollectorNameByAppId":"rs/collector/getCollectorNameByAppId" ,
+            "getListByAppId": "rs/collector/rs/collector/getListByAppId"
         },
         "sensor":{
             "add":"rs/sensor/add" ,
@@ -62,9 +64,11 @@
             "getMongoDataLastList":"rs/sensor/getMongoDataLastList",
             "getMongoDataLastTimeByNumber":"rs/sensor/getMongoDataLastTimeByNumber",
             "getMongoDataLastListByNumber":"rs/sensor/getMongoDataLastListByNumber",
-            "getSensorsByCollectorId":"rs/sensor/getSensorsByCollectorId",
-            "getListByGroupCollectionAndMonitor":"rs/sensor/getListByGroupCollectionAndMonitor",
-            "getNumberBySensorId":"rs/sensor/getNumberBySensorId"
+            "getSensorsByAreaId":"rs/sensor/getSensorsByAreaId",
+            "getListByGroupAreaAndMonitor":"rs/sensor/getListByGroupAreaAndMonitor",
+            "getNumberBySensorId":"rs/sensor/getNumberBySensorId",
+            "getSensorIdAndNumbersByName":"rs/sensor/getSensorIdAndNumbersByName",
+            "getCollectorNameBySensorNumber":"rs/sensor/getCollectorNameBySensorNumber"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensors/sensor/data/",

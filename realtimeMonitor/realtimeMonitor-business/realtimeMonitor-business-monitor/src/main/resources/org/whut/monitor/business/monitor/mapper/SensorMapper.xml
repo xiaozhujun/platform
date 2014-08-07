@@ -37,26 +37,26 @@
 
     <select id="getSensorId" parameterType="map" resultType="java.lang.Long">
         SELECT s.id
-        FROM `group` g,area a,collector c,sensor s
-        WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id
-        AND g.`name`=#{groupName} AND a.`name`= #{areaName} AND c.`name`= #{collectorName} AND s.`name`= #{name} AND s.number=#{number} AND s.appId=#{appId}
+        FROM  sensor s
+        WHERE
+           s.number=#{number} AND s.appId=#{appId}
     </select>
 
     <select id="list" parameterType="java.lang.Long" resultType="map">
-        SELECT s.id,s.`name`,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
+        SELECT s.id,s.`name`,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,c.`number` AS collectorNumber,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
         FROM `group` g,area a,collector c,sensor s
         WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=#{appId}
     </select>
 
-    <select id="listByGroupCollectionAndMonitor" parameterType="map" resultType="map">
+    <select id="getListByGroupAreaAndMonitor" parameterType="map" resultType="map">
         SELECT s.id,s.`name` AS sensorName,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
         FROM `group` g,area a,collector c,sensor s
         WHERE s.groupId=g.id AND s.areaId=a.id AND s.collectorId=c.id AND s.appId=#{appId}
         <if test='group!=""'>
             AND  g.`name`=#{group}
         </if>
-        <if test='collector!=""'>
-            AND  c.`name`=#{collector}
+        <if test='areaName!=""'>
+            AND  a.`name`=#{areaName}
         </if>
         <if test='monitor!=""'>
             AND  s.`name`=#{monitor}
@@ -102,10 +102,11 @@
         WHERE id=#{id} AND appId=#{appId}
     </update>
 
-    <select id="getSensorsByCollectorId" parameterType="map" resultMap="SensorResultMap">
+    <select id="getSensorsByAreaId" parameterType="map" resultMap="SensorResultMap">
         SELECT *
         FROM sensor
-        WHERE collectorId=#{collectorId} AND appId=#{appId}
+        WHERE areaId=#{areaId} AND appId=#{appId}
+        GROUP BY `name`
     </select>
 
     <select id="getNumberBySensorId" parameterType="map" resultType="map">
@@ -132,5 +133,17 @@
         SELECT s.`name`,g.name groupName,a.name areaName,c.name collectorName
         FROM sensor AS s,`group` AS g,area AS a,collector AS c
         WHERE s.number=#{number} AND g.id=s.groupId AND c.id=s.collectorId AND a.id=s.areaId
+    </select>
+    
+    <select id="getSensorIdAndNumbersByName" parameterType="java.lang.String" resultType="map">
+        SELECT id,`number`
+        FROM sensor
+        WHERE `name`=#{name}
+    </select>
+
+    <select id="getCollectorNameBySensorNumber" parameterType="java.lang.Long" resultType="map">
+        SELECT c.`name`,c.id
+        FROM collector AS c,sensor AS s
+        WHERE c.id=s.collectorId AND s.`number`=#{number}
     </select>
 </mapper>

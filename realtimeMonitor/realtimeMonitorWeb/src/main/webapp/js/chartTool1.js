@@ -85,7 +85,8 @@ function drawChart2(container,data,unit){
             },
             series: {
                 animation: false,
-                shadow: false
+                shadow: false,
+                turboThreshold:0
             }
         },
         series: [{

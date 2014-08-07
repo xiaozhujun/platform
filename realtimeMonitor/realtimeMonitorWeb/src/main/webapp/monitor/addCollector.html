@@ -18,40 +18,8 @@
 <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
 <script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 <script type="text/javascript">
-$(function(){
-    $.post($.URL.group.list,null,groupListCallBack,"json");
-})
-$("#CB_Area").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
-function groupListCallBack(data){
-    if(data.code=200){
-        var groupData=[];
-        $.each(data.data,function(index,content){
-            var j={};
-            j['id']=content.id;
-            j['text']=content.name;
-            groupData.push(j);
-        })
-        $("#CB_Group").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
-            width:180,data:groupData,valueField:'id',textField:'text',valueFieldID:'groupSelect',
-            onSelected:function(group){
-                if(group!=null){
-                    $.post($.URL.collector.getAreaNames,{"groupId":group},function areaCallback(data){
-                        if(data.code==200){
-                            var areaData=[];
-                            $.each(data.data,function(index,content){
-                                var j={};
-                                j["text"]=content.name;
-                                j["id"]=content.id;
-                                areaData.push(j);
-                            })
-                            liger.get("CB_Area").setData(areaData);
-                        }
-                    },"json");
-                }
-            }
-        })
-    }
-}
+
+    $('#submitBtn').hide();$('#delete').hide();
 var statusData=[{id:"0",text:"在线正常工作"},{id:"1",text:"位置或离线"},{id:"2",text:"在线异常"},{id:"3",text:"在线停止工作"},{id:"4",text:"手动采样中"}]
 var manager, g;
 function f_initGrid()
@@ -60,8 +28,6 @@ function f_initGrid()
         columns: [
             {display: '主键', name: 'id', width: 50, type: 'int',frozen:true },
             {display:'提交状态',name:'addStatus', width:80,frozen:true},
-            {display:'所属监控组',name:'groupName',width:100,frozen:true},
-            {display:'测量区域',name:'area',width:100,frozen:true},
             {display:'采集仪名称',name:'name',width:100,editor:{type:'text'}},
             {display: '编号', name: 'number',width:100, editor: { type: 'text' }},
             {display: '最大频率', name: 'maxFrequency', width: 100, type: 'text', editor: { type: 'text'} },
@@ -107,9 +73,7 @@ function deleteRow()
 var newrowid = 1;
 function addNewRow()
 {
-    if($("#CB_Area").val()==""){
-        $.ligerDialog.warn("测量区域不能为空！")
-    }else{
+    $('#submitBtn').show();$('#delete').show();
         $("#maingrid").show();
         $(f_initGrid);
         var row = manager.getSelectedRow();
@@ -123,13 +87,11 @@ function addNewRow()
             maxFrequency:'',
             minFrequency:'',
             workFrequency:'',
-            groupName:$("#CB_Group").val(),
-            area:$("#CB_Area").val(),
             status:'在线正常工作',
             description:'',
             addStatus:"未提交"
         }, row, document.getElementById("checked").checked);
-    }
+
 }
 function submitBtn(){
     var data=JSON.stringify(manager.getData());
@@ -168,22 +130,28 @@ $("#return").ligerButton({});
     .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
     .l-edit-com{width: 60px; margin-left: 10px; float: left;}
 </style>
+    <style type="text/css">
+        .l-table-edit {
+        }
+        .l-div {height: 30px;margin-top: 10px}
+        .l-table-edit-td {
+            padding: 4px;
+        }
+        .l-button-submit {
+            width:100px;float: left;margin-left: 100px;
+        }
+        .l-dialog-tc {
+            background: #E0EDFF;
+        }
+    </style>
 </head>
 <body style="padding:10px">
 <div class="l-div">
-    <span class="l-span-edit-com">所属监控组:</span>
-            <span class="l-edit-com">
-                <input name="group"  type="text" id="CB_Group" />
-            </span>
-    <span style="margin-left: 150px;  width: 60px;float: left;margin-top: 2px">测量区域:</span>
-            <span style="width: 60px; margin-left: 10px; float: left;">
-                <input name="area" type="text" id="CB_Area"/>
-            </span>
         <span>
-            <div id="add" style="width:100px;float: left;margin-left: 100px" onclick="addNewRow()">新增</div>
-            <div id="delete" style="width:100px; float: left;margin-left: 20px" onclick="deleteRow()">删除</div>
-            <div id="submitBtn" style="width: 100px;float: left;margin-left: 20px" onclick="submitBtn()">添加</div>
-            <div id="return" style="width: 100px;float: left;margin-left: 20px" onclick="returnBtn()">返回列表</div>
+            <div  id="return"style="width:100px;float: left;margin-left: 10px" onclick="returnBtn()">返回列表</div>
+            <div  id="add" style="width:100px;float: left;margin-left: 10px" onclick="addNewRow()">新增</div>
+            <div  id="delete"style="width:100px;float: left;margin-left: 10px" onclick="deleteRow()">删除</div>
+            <div  id="submitBtn" style="width:100px;float: left;margin-left: 10px" onclick="submitBtn()">添加</div>
             <input type="checkbox" id="checked" style="display: none"/>
         </span>
 </div>

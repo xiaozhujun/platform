@@ -15,6 +15,7 @@ public class SubSensor {
     private String groupName;
     private String areaName;
     private String collectorName;
+    private String collectorNumber;
     private String maxFrequency;
     private String minFrequency;
     private String workFrequency;
@@ -160,5 +161,13 @@ public class SubSensor {
 
     public void setAddStatus(String addStatus){
         this.addStatus=addStatus;
+    }
+
+    public String getCollectorNumber() {
+        return collectorNumber;
+    }
+
+    public void setCollectorNumber(String collectorNumber) {
+        this.collectorNumber = collectorNumber;
     }
 }

@@ -17,8 +17,8 @@ import java.util.Map;
 public class SensorService {
     @Autowired
     private SensorMapper sensorMapper;
-    public long getSensorId(String groupName,String areaName,String collectorName,String name,String number,long appId){
-         return sensorMapper.getSensorId(groupName,areaName,collectorName,name,number,appId);
+    public long getSensorId(String number,long appId){
+         return sensorMapper.getSensorId(number,appId);
     }
     public void add(Sensor sensor){
          sensorMapper.add(sensor);
@@ -26,8 +26,8 @@ public class SensorService {
     public List<Map<String,String>> list(long appId){
          return sensorMapper.list(appId);
     }
-    public List<Map<String,String>> listByGroupCollectionAndMonitor(long appId,String group,String collector,String monitor){
-        return sensorMapper.listByGroupCollectionAndMonitor(appId,group,collector,monitor);
+    public List<Map<String,String>> getListByGroupAreaAndMonitor(long appId,String group,String areaName,String monitor){
+        return sensorMapper.getListByGroupAreaAndMonitor(appId,group,areaName,monitor);
     }
 
     public int deleteById(long id){
@@ -38,8 +38,8 @@ public class SensorService {
         return sensorMapper.update(sensor);
     }
 
-    public List<Sensor> getSensorsByCollectorId(long collectorId,long appId){
-        return sensorMapper.getSensorsByCollectorId(collectorId,appId);
+    public List<Sensor>getSensorsByAreaId(long areaId,long appId){
+        return sensorMapper.getSensorsByAreaId(areaId,appId);
     }
 
     public List<Map<String,String>> homePageList(String fStatus,long appId) {
@@ -64,6 +64,12 @@ public class SensorService {
 
     public Map findByNumber(String number) {
         return sensorMapper.findByNumber(number);
+    }
+    public List<Map<String,String>> getSensorIdAndNumbersByName(String name){
+        return sensorMapper.getSensorIdAndNumbersByName(name);
+    }
+    public List<Map<String,String>> getCollectorNameBySensorNumber(long number){
+        return sensorMapper.getCollectorNameBySensorNumber(number);
     }
 
 }

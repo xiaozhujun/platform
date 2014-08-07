@@ -14,8 +14,8 @@ public class Collector {
     private String name;
     private String number;
     private String description;
-    private long groupId;
-    private long areaId;
+//    private long groupId;
+//    private long areaId;
     private String status;
     private Date lastMessageTime;
     private String maxFrequency;
@@ -79,22 +79,22 @@ public class Collector {
         this.status = status;
     }
 
-    public long getAreaId() {
-        return areaId;
-    }
+//    public long getAreaId() {
+//        return areaId;
+//    }
+//
+//    public void setAreaId(long areaId) {
+//        this.areaId = areaId;
+//    }
 
-    public void setAreaId(long areaId) {
-        this.areaId = areaId;
-    }
-
-    public long getGroupId() {
+/*    public long getGroupId() {
         return groupId;
     }
 
     public void setGroupId(long groupId) {
         this.groupId = groupId;
     }
-
+ */
     public String getDescription() {
         return description;
     }

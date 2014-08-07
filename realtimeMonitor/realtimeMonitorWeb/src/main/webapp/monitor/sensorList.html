@@ -15,7 +15,7 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.sensor.list,null,sensorListCallback,"json");
-            $.post($.URL.collector.getCollectorNameListByAppId,null,getCollectorNameListByAppIdCallback,"json");
+            $.post($.URL.collector.list,null,getCollectorNameAndNumberListCallback,"json");
             $.post($.URL.area.getAreaNameListByAppId,null,getAreaNameListByAppId,"json");
             $.post($.URL.group.list,null,groupListCallback,"json");
         });
@@ -27,14 +27,21 @@
               f_initGrid()
           }
         }
-        var collectorData=[];
-        function getCollectorNameListByAppIdCallback(data){
+        var collectorNumberData=[];
+        var collectorNameData=[];
+        function getCollectorNameAndNumberListCallback(data){
             if(data.code=200){
                 $.each(data.data,function(index,content){
                     var c ={};
-                    c["id"]=content;
-                    c["text"]=content;
-                    collectorData.push(c);
+                    c["id"]=content.id;
+                    c["text"]=content.number;
+                    collectorNumberData.push(c);
+                });
+                $.each(data.data,function(index,content){
+                    var d ={};
+                    d["id"]=content.id;
+                    d["text"]=content.name;
+                    collectorNameData.push(d);
                 });
             }
         }
@@ -82,11 +89,17 @@
                             return item.areaName;
                          }
                     },
+                    {display:'采集器编号',name:'collectorNumber',width:100,type:'text',
+                        editor:{type:'select',emptyText:null,data:collectorNumberData,valueField:'text'},
+                        render:function(item){
+                            return item.collectorNumber;
+                        }
+                    },
                     {display:'采集器',name:'collectorName',width:100,type:'text',
-                          editor:{type:'select',emptyText:null,data:collectorData,valueField:'text'},
-                         render:function(item){
-                             return item.collectorName;
-                         }
+                        editor:{type:'select',emptyText:null,data:collectorNameData,valueField:'text'},
+                        render:function(item){
+                            return item.collectorName;
+                        }
                     },
                     {display:'最大频率',name:'maxFrequency',width:100,type:'text', editor: { type: 'text'}},
                     {display:'最小频率',name:'minFrequency',width:100,type:'text', editor: { type: 'text'}},
@@ -183,11 +196,12 @@
         .l-table-edit-td{ padding:4px;}
         .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
         .l-dialog-tc{background:#E0EDFF; }
+        .l-div {height: 30px;margin-top: 10px}
     </style>
 </head>
 <body  style="padding:10px">
 <div id="list">
-    <div>
+    <div class="l-div">
         <input type="button" value="添加传感器" id="addSensorBtn" class="l-button l-button-submit" />
     </div>
     <div class="l-clear"></div>

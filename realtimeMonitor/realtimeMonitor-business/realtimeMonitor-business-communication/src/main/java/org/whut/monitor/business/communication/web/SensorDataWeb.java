@@ -14,7 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,12 +62,23 @@ public class SensorDataWeb {
             for (int i=0;i<tempArray.length;i++) {
                 map.put(tempName[i],tempArray[i]);
             }
+//            String tempDate = (String)map.remove("LastData");
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
+//            Date  dateStr = sdf.parse(tempDate);
+//            try {
+//                Date  dateStr = sdf.parse(tempDate);
+//                map.put("LastData",dataStr);
+//            } catch (ParseException e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
+
         }
         else {
             map.put("curWarnValue","0");
             map.put("warnCount","暂无数据");
+            map.put("LastData","暂无数据");
         }
-        System.out.println(map.get("LastData"));
+        System.out.println("redis"+map.get("LastData"));
         return getJsonp(map,request.getParameter("callback"));
     }
 

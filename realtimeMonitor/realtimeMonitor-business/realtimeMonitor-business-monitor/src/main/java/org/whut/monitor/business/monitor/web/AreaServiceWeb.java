@@ -68,7 +68,7 @@ public class AreaServiceWeb {
                     areaSuccessList.add(subArea);
                 }
                 else {
-                    if (subArea.getName() == "" || subArea.getGroupName() == "") {
+                    if (subArea.getName().equals("") || subArea.getName()==null || subArea.getGroupName().equals("") || subArea.getGroupName()==null) {
                         subArea.setAddStatus("参数缺省");
                         areaErrorList.add(subArea);
                     }
@@ -158,5 +158,14 @@ public class AreaServiceWeb {
         long appId=UserContext.currentUserAppId();
         List<Map<String,String>> list=areaService.getAreaNameListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaByGroupId")
+    @POST
+    public String getAreaByGroupId(@FormParam("groupId")long groupId){
+        long appId=UserContext.currentUserAppId();
+        List<Area>list =areaService.getAreaByGroupId(groupId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

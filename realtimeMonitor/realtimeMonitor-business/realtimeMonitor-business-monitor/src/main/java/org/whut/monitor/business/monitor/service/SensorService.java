@@ -17,8 +17,8 @@ import java.util.Map;
 public class SensorService {
     @Autowired
     private SensorMapper sensorMapper;
-    public long getSensorId(String groupName,String areaName,String collectorName,String name,String number,long appId){
-         return sensorMapper.getSensorId(groupName,areaName,collectorName,name,number,appId);
+    public long getSensorId(String number,long appId){
+         return sensorMapper.getSensorId(number,appId);
     }
     public void add(Sensor sensor){
          sensorMapper.add(sensor);

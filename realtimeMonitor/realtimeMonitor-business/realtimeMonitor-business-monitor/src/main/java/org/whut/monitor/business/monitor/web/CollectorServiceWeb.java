@@ -1,15 +1,11 @@
 package org.whut.monitor.business.monitor.web;
 
 import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whut.monitor.business.monitor.entity.Area;
 import org.whut.monitor.business.monitor.entity.Collector;
 import org.whut.monitor.business.monitor.entity.SubCollector;
-import org.whut.monitor.business.monitor.service.AreaService;
 import org.whut.monitor.business.monitor.service.CollectorService;
-import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -19,10 +15,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,110 +34,115 @@ import java.util.*;
 public class CollectorServiceWeb {
     @Autowired
     private CollectorService collectorService;
-    @Autowired
-    private GroupService groupService;
-    @Autowired
-    private AreaService areaService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("jsonStringList") String jsonStringList){
+    public String add(@FormParam("jsonStringList")String jsonStringList) {
         long appId= UserContext.currentUserAppId();
-        List<SubCollector> repeatList=new ArrayList<SubCollector>();
-        List<SubCollector> successList=new ArrayList<SubCollector>();
-        List<SubCollector> errorList=new ArrayList<SubCollector>();
+        List<SubCollector> collectorSuccessList = new ArrayList<SubCollector>();
+        List<SubCollector> collectorErrorList = new ArrayList<SubCollector>();
+        List<SubCollector> collectorRepeatList=new ArrayList<SubCollector>();
+
         try {
-            JSONArray jsonArray=new JSONArray(jsonStringList);
+            JSONArray jsonArray = new JSONArray(jsonStringList);
             if(jsonArray.length()==0){
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
             }
             for(int i=0;i<jsonArray.length();i++){
-                String jsonString=jsonArray.get(i).toString();
-                SubCollector subCollector=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
+                String jsonString= jsonArray.get(i).toString();
+                SubCollector subCollector = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
                 if(subCollector.getAddStatus().equals("提交成功")){
-                    successList.add(subCollector);
-                }else{
+                    collectorSuccessList.add(subCollector);
+                }
+                else {
                     if(subCollector.getName()==""||subCollector.getNumber()==""||subCollector.getStatus()==""||
                             subCollector.getMaxFrequency()==""||subCollector.getMinFrequency()==""||subCollector.getWorkFrequency()==""){
                         subCollector.setAddStatus("参数缺省");
-                        errorList.add(subCollector);
+                        collectorErrorList.add(subCollector);
                     }else{
-                        long tempId;
-                        try{
-//                           tempId=collectorService.getCollectorId(subCollector.getName(),subCollector.getNumber(),appId);
-                            long tempGroupId = groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
-                            long tempAreaId = areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),tempGroupId,appId);
-                            tempId = collectorService.getIdByNameAndGroupIdAndAreaIdAndAppId(
-                                    subCollector.getName(),tempGroupId,tempAreaId,appId);
-                        }catch (Exception e){
-                            tempId=0;
-                        }
-                        if(tempId!=0){
-                            subCollector.setAddStatus("参数重复");
-                            repeatList.add(subCollector);
-                        }else{
-                            Collector collector=new Collector();
-                            collector.setName(subCollector.getName());
-                            collector.setNumber(subCollector.getNumber());
-                            collector.setDescription(subCollector.getDescription());
-                            collector.setAreaId(areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),
-                                    groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId),appId));
-                            collector.setGroupId(groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId));
-                            collector.setStatus(subCollector.getStatus());
-                            collector.setMaxFrequency(subCollector.getMaxFrequency());
-                            collector.setMinFrequency(subCollector.getMinFrequency());
-                            collector.setWorkFrequency(subCollector.getWorkFrequency());
-                            Date date=new Date();
-                            collector.setLastMessageTime(date);
-                            collector.setAppId(appId);
-                            collectorService.add(collector);
-                            subCollector.setAddStatus("提交成功");
-                            successList.add(subCollector);
-                        }
+
+
+                    long tempId;
+                    try {
+                        tempId = collectorService.getIdByNumberAndAppId(subCollector.getNumber(),appId);
+                    }catch (Exception e) {
+                        tempId = 0;
+                    }
+                    if (tempId != 0) {
+                        subCollector.setAddStatus("参数重复");
+                        collectorRepeatList.add(subCollector);
+                    }
+                    else {
+                        Collector collector = new Collector();
+                        collector.setAppId(appId);
+                        collector.setName(subCollector.getName());
+                        if (subCollector.getDescription()=="") {collector.setDescription("无");}
+                            else{collector.setDescription(subCollector.getDescription());}
+                        collector.setStatus(subCollector.getStatus());
+                        Date date = new Date();
+                        collector.setLastMessageTime(date);
+                        collector.setMaxFrequency(subCollector.getMaxFrequency());
+                        collector.setMinFrequency(subCollector.getMinFrequency());
+                        collector.setWorkFrequency(subCollector.getWorkFrequency());
+                        collector.setNumber(subCollector.getNumber());
+                        collectorService.add(collector);
+                        subCollector.setAddStatus("提交成功");
+                        collectorSuccessList.add(subCollector);
                     }
                 }
+                }
             }
-        } catch (JSONException e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
-        if (errorList.size()!=0){
-            errorList.addAll(repeatList);
-            errorList.addAll(successList);
-            return JsonResultUtils.getObjectResultByStringAsDefault(errorList,JsonResultUtils.Code.ERROR);
-        }else if(repeatList.size()!=0){
-            repeatList.addAll(successList);
-            return JsonResultUtils.getObjectResultByStringAsDefault(repeatList,JsonResultUtils.Code.DUPLICATE);
-        }else {
-            return JsonResultUtils.getObjectResultByStringAsDefault(successList,JsonResultUtils.Code.SUCCESS);
+        if (collectorErrorList.size()!=0) {
+            collectorErrorList.addAll(collectorRepeatList);
+            collectorErrorList.addAll(collectorSuccessList);
+            return JsonResultUtils.getObjectResultByStringAsDefault(collectorErrorList,JsonResultUtils.Code.ERROR);
+        }
+        else if (collectorRepeatList.size()!=0) {
+            collectorRepeatList.addAll(collectorSuccessList);
+            return JsonResultUtils.getObjectResultByStringAsDefault(collectorRepeatList, JsonResultUtils.Code.DUPLICATE);
+        }
+        else {
+            return JsonResultUtils.getObjectResultByStringAsDefault(collectorSuccessList,JsonResultUtils.Code.SUCCESS);
         }
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/delete")
+    @POST
+    public String delete(@FormParam("jsonString")String jsonString) {
+        SubCollector subCollector = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
+        long collectorId=subCollector.getId();
+        collectorService.deleteById(collectorId);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")
     @POST
-    public String list(){
+    public String list() {
         long appId= UserContext.currentUserAppId();
-        List<Map<String,String>> list=collectorService.getListByAppId(appId);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+        List<Map<String,String>> collectorList = collectorService.getCollectorListByAppId(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(collectorList, JsonResultUtils.Code.SUCCESS);
     }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/update")
     @POST
-    public String update(@FormParam("jsonString") String jsonString) throws ParseException {
-        long appId= UserContext.currentUserAppId();
-        SubCollector subCollector=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubCollector.class);
+    public String update(@FormParam("jsonString")String jsonString) throws ParseException {
+        long appId = UserContext.currentUserAppId();
+        SubCollector subCollector = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, SubCollector.class);
         if(subCollector.getName()==""||subCollector.getNumber()==""||subCollector.getStatus()==""||
                 subCollector.getMaxFrequency()==""||subCollector.getMinFrequency()==""||subCollector.getWorkFrequency()==""){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         long tempId;
-        long groupId=groupService.getIdByNameAndAppId(subCollector.getGroupName(),appId);
-        List<String> list=areaService.getAreaNames(groupId);
-        if(!list.contains(subCollector.getArea())){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"监控组中不包含该测量点！");
-        }
         try{
-            long areaId = areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),groupId,appId);
-            tempId = collectorService.getIdByNameAndGroupIdAndAreaIdAndAppId(subCollector.getName(),groupId,areaId,appId);
+            tempId = collectorService.getIdByNumberAndAppId(subCollector.getNumber(),appId);
         }catch (Exception e){
             tempId=0;
         }
@@ -148,57 +151,31 @@ public class CollectorServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"采集仪已存在");
             }
         }
-        Collector collector=new Collector();
-        collector.setAreaId(areaService.getIdByNameAndGroupIdAndAppId(subCollector.getArea(),groupId,appId));
-        collector.setGroupId(groupId);
+        Collector collector = new Collector();
+        collector.setAppId(appId);
+        collector.setDescription(subCollector.getDescription());
         collector.setId(subCollector.getId());
+        collector.setStatus(subCollector.getStatus());
+        Date date=new Date();
+        collector.setLastMessageTime(date);
+
         collector.setName(subCollector.getName());
         collector.setNumber(subCollector.getNumber());
         collector.setMaxFrequency(subCollector.getMaxFrequency());
         collector.setMinFrequency(subCollector.getMinFrequency());
         collector.setWorkFrequency(subCollector.getWorkFrequency());
-        collector.setStatus(subCollector.getStatus());
-        collector.setDescription(subCollector.getDescription());
-        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        collector.setLastMessageTime(format.parse(subCollector.getLastMessageTime()));
-        collector.setAppId(appId);
+
         collectorService.update(collector);
-        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"修改成功");
+
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-    public String delete(@FormParam("jsonString") String jsonString){
-       return null;
-    }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getAreaNames")
+    @Path("/getCollectorNameByAppId")
     @POST
-    public String getAreaNamesByGroupId(@FormParam("groupId") long groupId){
-        List<Area> list=areaService.getAreaByGroupId(groupId);
+    public String getCollectorNameByAppId() {
+        long appId=UserContext.currentUserAppId();
+        List<Map<String,String>> list=collectorService.getCollectorNameByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
-    }
-
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getCollectorByAreaId")
-    @POST
-    public String getCollectorByAreaId(@FormParam("areaId") long areaId){
-       List<Collector> list= collectorService.getCollectorByAreaId(areaId);
-       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
-    }
-
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getCollectorNameListByAppId")
-    @POST
-    public String getCollectorNameListByAppId(){
-       long appId = UserContext.currentUserAppId();
-       List<String> list = collectorService.getCollectorNameListByAppId(appId);
-       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
-    }
-
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getCollectorByGroupId")
-    @POST
-    public String getCollectorByGroupId(@FormParam("groupId") long groupId){
-       long appId=UserContext.currentUserAppId();
-       List<Collector> list = collectorService.getCollectorNamesByGroupName(groupId,appId);
-       return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

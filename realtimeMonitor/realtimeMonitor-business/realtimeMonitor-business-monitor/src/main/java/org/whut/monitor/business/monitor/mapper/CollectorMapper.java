@@ -16,10 +16,11 @@ import java.util.Map;
  */
 public interface CollectorMapper extends AbstractMapper<Collector>{
     public List<Map<String,String>> getListByAppId(long appId);
-    public long getCollectorId(@Param("name") String name,@Param("number") String number,@Param("appId")long appId);
-    public List<Collector> getCollectorByAreaId(long areaId);
-    public long getIdByNameAndAppId(@Param("groupName") String groupName,@Param("areaName") String areaName,@Param("collectorName") String collectorName,@Param("appId") long appId);
-    public long getIdByNameAndGroupIdAndAreaIdAndAppId(@Param("name") String name,@Param("groupId") long groupId,@Param("areaId") long areaId,@Param("appId") long appId);
+    public List<Collector> getCollector();
+    public List<String> getCollectorNames(long appId);
+    public long getIdByNumberAndAppId(@Param("number")String number,@Param("appId")long appId);
     public List<String> getCollectorNameListByAppId(long appId);
-    public List<Collector> getCollectorNamesByGroupName(@Param("groupId") long groupId,@Param("appId") long appId);
+    public void deleteById(long Id);
+    public List<Map<String,String>> getCollectorNameByAppId(long appId);
+    public String getCollectNameById(long id);
 }

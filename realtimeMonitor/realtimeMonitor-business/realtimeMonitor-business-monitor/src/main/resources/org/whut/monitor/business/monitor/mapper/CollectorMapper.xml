@@ -4,15 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.monitor.business.monitor.mapper.CollectorMapper">
     <sql id="collector_fields">
-          ID,NAME,DESCRIPTION,NUMBER,GROUPID,AREAID,STATUS,LASTMESSAGETIME,MAXFREQUENCY,MINFREQUENCY,WORKFREQUENCY,APPID
+          ID,NAME,DESCRIPTION,NUMBER,STATUS,LASTMESSAGETIME,MAXFREQUENCY,MINFREQUENCY,WORKFREQUENCY,APPID
     </sql>
     <resultMap id="CollectorResultMap" type="Collector">
         <id property="id" column="ID" />
         <result property="name" column="NAME" />
         <result property="description" column="DESCRIPTION"/>
         <result property="number" column="NUMBER" />
-        <result property="groupId" column="GROUPID" />
-        <result property="areaId" column="AREAID" />
         <result property="status" column="STATUS" />
         <result property="lastMessageTime" column="LASTMESSAGETIME" />
         <result property="maxFrequency" column="MAXFREQUENCY" />
@@ -20,13 +18,14 @@
         <result property="workFrequency" column="WORKFREQUENCY"/>
         <result property="appId" column="APPID"/>
     </resultMap>
+
     <insert id="add" parameterType="Collector"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
         collector(
         <include refid="collector_fields" />
         )
-        VALUES (#{id},#{name},#{description},#{number},#{groupId},#{areaId},#{status},#{lastMessageTime},#{maxFrequency},#{minFrequency},#{workFrequency},#{appId});
+        VALUES (#{id},#{name},#{description},#{number},#{status},#{lastMessageTime},#{maxFrequency},#{minFrequency},#{workFrequency},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -38,8 +37,6 @@
             <if test="name!=null">NAME=#{name},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
             <if test="number!=null"> NUMBER=#{number},</if>
-            <if test="groupId!=null">GROUPID=#{groupId},</if>
-            <if test="areaId!=null"> AREAID=#{areaId},</if>
             <if test="status!=null">STATUS=#{status},</if>
             <if test="lastMessageTime!=null">LASTMESSAGETIME=#{lastMessageTime},</if>
             <if test="maxFrequency!=null">MAXFREQUENCY=#{maxFrequency},</if>
@@ -49,48 +46,50 @@
         </set>
         WHERE ID=#{id}
     </update>
+
     <delete id="delete" parameterType="Collector">
         DELETE FROM collector
         <where>
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
-    <select id="getCollectorId" parameterType="map" resultType="java.lang.Long">
-        SELECT id
-        FROM collector
-        WHERE name=#{name} AND number=#{number} AND appId=#{appId}
-    </select>
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM collector
+        WHERE ID=#{id}
+    </delete>
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
-        SELECT c.id,c.`name`,c.number,`group`.`name` groupName,area.`name` area,c.maxFrequency,c.minFrequency,c.workFrequency,c.lastMessageTime,c.`status`,c.description
-        FROM `group`,area,collector AS c
-        WHERE c.areaId=area.id AND c.groupId=`group`.id AND c.appId=#{appId}
+        SELECT c.id,c.`name`,c.number,c.maxFrequency,c.minFrequency,c.workFrequency,c.lastMessageTime,c.`status`,c.description
+        FROM collector AS c
+        WHERE c.appId=#{appId}
     </select>
-    <select id="getCollectorByAreaId" parameterType="java.lang.Long" resultMap="CollectorResultMap">
+    <select id="getCollectorNameByAppId" parameterType="java.lang.Long" resultType="map">
+        SELECT c.id,c.`name`AS collectorName
+        FROM collector AS c
+        WHERE c.appId=#{appId}
+    </select>
+    <select id="getCollector" parameterType="java.lang.Long" resultMap="CollectorResultMap">
          SELECT *
          FROM collector
-         WHERE areaId = #{areaId}
     </select>
-    <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
-         SELECT c.id
-         FROM collector c,`group` g,area a
-         WHERE c.groupId=g.id AND c.areaId=a.id AND g.`name`=#{groupName} AND a.`name`=#{areaName} AND c.`name`=#{collectorName} AND c.appId=#{appId}
-    </select>
-
-    <select id="getIdByNameAndGroupIdAndAreaIdAndAppId" parameterType="map" resultType="java.lang.Long">
+    <select id="getIdByNumberAndAppId" parameterType="map" resultType="java.lang.Long">
         SELECT id
         FROM collector
-        WHERE groupId = #{groupId} AND areaId = #{areaId} AND appId=#{appId} AND name=#{name}
+        WHERE appId=#{appId} AND number=#{number}
     </select>
-
-    <select id="getCollectorNameListByAppId" parameterType="java.lang.Long" resultType="java.lang.String">
+    <select id="getCollectorNameListByAppId" parameterType="java.lang.Long" resultType="String">
         SELECT DISTINCT(`name`)
         FROM collector
         WHERE appId=#{appId}
     </select>
+    <select id="getCollectorNames" parameterType="java.lang.Long" resultType="String">
+        SELECT `name`
+        FROM collector
+        WHERE appId=#{appId}
+    </select>
 
-    <select id="getCollectorNamesByGroupName" parameterType="map" resultMap="CollectorResultMap">
-        SELECT *
-        FROM collector c
-        WHERE c.groupId=#{groupId} AND appId=#{appId}
+    <select id="getCollectNameById" parameterType="java.lang.Long" resultType="String">
+        SELECT `name`
+        FROM collector
+        WHERE ID=#{id}
     </select>
 </mapper>

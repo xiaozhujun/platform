@@ -19,6 +19,7 @@
             if(data.data[0]==undefined){
             $.initMap("中国",10);
             }else{
+            $("#container").css("display","block");
             $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
             $.addMyMark(data);
             $("#rightshow").html("");
@@ -83,7 +84,6 @@
             }
         }
         }
-
         function inspectItemClick(inspectItemId,inspectInfoId){
             var inspectInfo="#inspectInfo"+inspectInfoId;
 
@@ -107,11 +107,12 @@
     <style type="text/css">
         #container{
             width: 100%;
-            min-height:500px;
+           /* min-height:500px;*/
+            height:100%;
         }
     </style>
 </head>
 <body>
-    <div id="container" style="height:100%;"></div>
+    <div id="container"></div>
 </body>
 </html>

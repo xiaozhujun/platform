@@ -245,7 +245,6 @@ public class inspectReportServiceWeb {
         List<Map<String,String>> reportInfoList=new ArrayList<Map<String,String>>();
         for(Map<String,String> m:l){
             if(m!=null){
-                if(m.get(MongoConstant.inspectChoiceValue).equals(MongoConstant.abnormal)){
                 Map<String,String> reportInfoMap=new HashMap<String, String>();
                 reportInfoMap.put(MongoConstant.userName,m.get(MongoConstant.userName));
                 reportInfoMap.put(MongoConstant.tagName, m.get(MongoConstant.tagName));
@@ -255,7 +254,6 @@ public class inspectReportServiceWeb {
                 reportInfoMap.put(MongoConstant.itemName,m.get(MongoConstant.itemName));
                 reportInfoMap.put(MongoConstant.inspectChoiceValue,m.get(MongoConstant.inspectChoiceValue));
                 reportInfoList.add(reportInfoMap);
-                }
             }
         }
         return reportInfoList;

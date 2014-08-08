@@ -1,6 +1,7 @@
 <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
 <script>
     var navtab = null;
+    var checkRefresh;
     $(document).ready(function () {
         $("#tab").ligerTab();
         navtab = $("#tab").ligerGetTabManager();
@@ -12,6 +13,7 @@
         loadTabPage('mainTab');
     });
     function loadTabPage(tabid){
+        checkRefresh=0;
         if(tabid=="mainTab"){
             $("#"+tabid).load("dashboard/main.html");
         }else if(tabid=="collectorTab"){

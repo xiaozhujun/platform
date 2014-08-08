@@ -20,15 +20,17 @@
         var num= currentMonitor.number;
         var tempURL = $.URL.sensors.getSensorDataArray;
         var myURL = tempURL + num.toString();
+        checkRefresh=1;
 //        alert(myURL);
         $(document).ready(function () {
             $("#groupTD").html(currentMonitor.number);
             $("#monitorTD").html(currentMonitor.groupName);
-            refrash();
+            refresh();
         });
-        function refrash(){
+        function refresh(){
 //            $.post($.URL.sensor.getMongoDataLastListByNumber,{"num":num},sensorListCallback1,"json");
-            $.get(myURL+".htm",null,sensorListCallback,"jsonp") ;
+            if(checkRefresh){
+            $.get(myURL+".htm",null,sensorListCallback,"jsonp") ; }
 //            $.ajax({
 //                url: myURL+".htm",
 //                async:false,
@@ -54,8 +56,8 @@
 //                //data2=data.data.time;
 //                drawChart("#waveContainer", data1, "mV");
 //            }
-            var refrashTime=$("#mySelect").val();
-            setTimeout(refrash,refrashTime*1000);
+            var refreshTime=$("#mySelect").val();
+            setTimeout(refresh,refreshTime*1000);
         }
     </script>
 

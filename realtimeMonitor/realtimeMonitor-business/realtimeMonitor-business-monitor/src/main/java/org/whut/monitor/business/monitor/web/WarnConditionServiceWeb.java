@@ -33,7 +33,7 @@ public class WarnConditionServiceWeb {
     public String add(@FormParam("groupName")String groupName,@FormParam("areaName")String areaName,@FormParam
             ("collectorName")String collectorName,
                       @FormParam("sensorName")String sensorName,@FormParam("number")String number,@FormParam
-            ("curWarnValue")long curWarnValue) {
+            ("curWarnValue")double curWarnValue) {
         long appId = UserContext.currentUserAppId();
         if (groupName.trim().equals("") || areaName.trim().equals("") || collectorName.trim().equals("") ||
                 sensorName.trim().equals("") || number.trim().equals("") || curWarnValue == 0) {

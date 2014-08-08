@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <script src="lib/json2.js" type="text/javascript"></script>
@@ -12,6 +13,7 @@
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript">
+
         $(document).ready(function(){
             $.post($.URL.group.list,null,groupCallback,"json");
         });
@@ -48,47 +50,50 @@
                     textField:'text',
                     onSelected:function(group) {
                         if(group != null) {
-                            $.post($.URL.area.getAreaByGroupId,{"groupId":group},function areaCallback(data){
-                                if(data.code == 200) {
-                                    var areaName = [];
-                                    $.each(data.data,function(index,content){
-                                        var j={};
-                                        j["text"]=content.name;
-                                        j["id"]=content.id;
-                                        areaName.push(j);
-                                    })
-                                    liger.get("areaSelect").setData(areaName);
-                                }
-                            },"json");
+                            $.post($.URL.area.getAreaByGroupId,{"groupId":group},areaCallback,"json");
+
                         }
                     }
                 });
             }
         }
 
+        function areaCallback(data){
+            if(data.code == 200) {
+                var areaName = [];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    areaName.push(j);
+                })
+                $("#areaSelect").ligerComboBox({data:areaName});
+            }
+        }
         $("#areaSelect").ligerComboBox({isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
             width:100,
             valueField:'id',
             textField:'text',
             onSelected:function(area) {
                 if(area != null) {
-                    $.post($.URL.sensor.getSensorsByAreaId,{"areaId":area},function collectorCallback(data){
-                        if(data.code==200){
-                            var sensorName=[];
-                            $.each(data.data,function(index,content){
-                                var c={};
-                                c["id"]=content.name;
-                                c["text"]=content.name;
-                                sensorName.push(c);
-                            });
-                            liger.get("sensorSelect").setData(sensorName);
-                        }
-                    },"json");
+                    $.post($.URL.sensor.getSensorsByAreaId,{"areaId":area},collectorCallback,"json");
                 }
             }
         });
 
 
+        function collectorCallback(data){
+            if(data.code==200){
+                var sensorName=[];
+                $.each(data.data,function(index,content){
+                    var c={};
+                    c["id"]=content.name;
+                    c["text"]=content.name;
+                    sensorName.push(c);
+                });
+                $("#sensorSelect").ligerComboBox({data:sensorName});
+            }
+        }
 
         $("#sensorSelect").ligerComboBox({
             isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
@@ -106,7 +111,7 @@
                                 j["id"] = content.number;
                                 number.push(j);
                             });
-                            liger.get("numberSelect").setData(number);
+                            $("#numberSelect").ligerComboBox({data:number});
                         }
                     },"json");
                 }
@@ -122,12 +127,9 @@
                     $.post($.URL.sensor.getCollectorNameBySensorNumber,{"number":number},function(data){
                         if(data.code == 200) {
                             $.each(data.data,function(index,content){
-
-
                                 collectorName= content.name;
-
-                        })
-                    }
+                            })
+                        }else collectorName="";
                     },"json");
                 }
             }
@@ -237,5 +239,5 @@
     </span>
 </div><br><br><br>
 <div id="warnRecordGrid"></div>
- </body>
+</body>
 </html>

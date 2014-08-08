@@ -46,7 +46,12 @@
                         var myURL = tempURL + num.toString();
                         $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
                            function lastTimeCallback(result) {
-                          sensorTime = result["LastData"].toString();
+//                               alert(result["LastData"]);
+                          sensorTime = result["lastDate"].toString();
+//                            }
+//                        })
+//                        return sensorTime;
+
                    }
                         return curDateCallback();
                     }
@@ -73,10 +78,7 @@
                            return"在线";
                         }
                         }
-
-                    }
-
-                    },
+                    }},
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
                         var h = "";

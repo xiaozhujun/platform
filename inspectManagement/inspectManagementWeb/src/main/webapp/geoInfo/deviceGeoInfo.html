@@ -17,9 +17,11 @@
         });
         function getInspectLocateInfoCallback(data){
             if(data.data[0]==undefined){
-            $.initMap("中国",10);
+                $.initMap("中国",10);
             }else{
+            $("#container").css("display","block");
             $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
+
             $.addMyMark(data);
             $("#rightshow").html("");
             for(i=0;i<data.data.length;i++){
@@ -77,13 +79,16 @@
                 });
             }
             if(data.data.length>0){
+                setTimeout(function(){
+                    window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),17);
+                },1000);
+
                 //inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
             }else{
                 $("#rightshow").html("对不起，没有获取到在线的点检人员数据！");
             }
         }
         }
-
         function inspectItemClick(inspectItemId,inspectInfoId){
             var inspectInfo="#inspectInfo"+inspectInfoId;
 
@@ -107,11 +112,12 @@
     <style type="text/css">
         #container{
             width: 100%;
-            min-height:500px;
+           /* min-height:500px;*/
+            height:100%;
         }
     </style>
 </head>
 <body>
-    <div id="container" style="height:100%;"></div>
+    <div id="container"></div>
 </body>
 </html>

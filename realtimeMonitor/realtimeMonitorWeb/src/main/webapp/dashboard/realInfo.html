@@ -45,13 +45,6 @@
                         var tempURL = $.URL.sensors.getWarnCondition;
                         var myURL = tempURL + num.toString();
                         $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
-//                        $.post($.URL.sensor.getMongoDataLastTimeByNumber,{"number":"number"},lastTimeCallback,"json");
-//                        $.ajax({
-//                            url: $.URL.sensor.getMongoDataLastList,
-//                            async:false,
-//                            type:'POST',
-//                            dataType:'json',
-//                            success:
                            function lastTimeCallback(result) {
 //                               alert(result["LastData"]);
                           sensorTime = result["lastDate"].toString();
@@ -63,7 +56,28 @@
                         return curDateCallback();
                     }
                     },
+                    { display: '状态', name: 'sensorStatus',width:'auto'
+                       ,render: function() {
+                        if   (sensorTime=="暂无数据" ) {
+                            return "暂无数据"  ;
+                        }
+                        else{
+                        //要计算的日期字符串
+                        sensorTime = sensorTime.replace(/-/g,"/");
+                          //要计算的日期
+                        var date = new Date(sensorTime);
+                           //当前日期
+                        var currDate = new Date();
+                        var dif = (currDate.getTime()-date.getTime())/(1000*3600);
+//                            alert(dif);
 
+                        if(dif>1){
+                           return"离线";
+                        }
+                        else{
+                           return"在线";
+                        }
+                        }
 
 
                     { display: '状态', name: 'sensorStatus',width:'auto'

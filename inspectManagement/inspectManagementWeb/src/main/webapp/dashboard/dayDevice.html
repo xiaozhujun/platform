@@ -162,7 +162,8 @@
             $("#panel2").css("display", "none")
             $("#devReportShow").load($.URL.inspectReport.getInspectInfo, {"jsonString": jsonString, "type": "html"}, getInspectInfoCallback, "json");
         }
-        function getInspectInfoCallback(data) {
+        function getInspectInfoCallback(responseText, textStatus, jqXHR) {
+            $("span:contains(异常)").css({"color":"red","font-weight":"bold","font-size":16});
         }
         $("#exportDeviceBtn").click(function () {
             var type = $("#exportDeviceType").val();

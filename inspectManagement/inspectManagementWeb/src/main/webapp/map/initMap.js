@@ -196,12 +196,12 @@ $.extend({
                 userImage = data.data[i].image;
             }
 
-            var device = data.data[i].devName;
+            var device = data.data[i].deviceNum;
             var table = data.data[i].inspectTableName;
-            if(device==undefined){
+            if(device==undefined||device=="null"||device==""){
                 device = "未选择";
             }
-            if(table==undefined){
+            if(table==undefined||table=="null"||table==""){
                 table="未选择";
             }
 

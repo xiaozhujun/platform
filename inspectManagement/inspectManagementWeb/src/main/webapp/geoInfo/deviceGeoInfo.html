@@ -17,7 +17,7 @@
         });
         function getInspectLocateInfoCallback(data){
             if(data.data[0]==undefined){
-                $.initMap("中国",10);
+                $.initMap("中国",5);
             }else{
             $("#container").css("display","block");
             $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
@@ -31,12 +31,12 @@
                 if(data.data[i].hasOwnProperty("image")) {
                     userImage = data.data[i].image;
                 }
-                var device = data.data[i].devName;
+                var device = data.data[i].deviceNum;
                 var table = data.data[i].inspectTableName;
-                if(device==undefined){
+                if(device==undefined||device=="null"||device==""){
                     device = "未选择";
                 }
-                if(table==undefined){
+                if(table==undefined||table=="null"||table==""){
                     table="未选择";
                 }
                 var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].userId+"'><div class='inspectpic'><img src='"+userImage+"'/></div><span class='inspectcontent'><span class='inspectApp'>点检人员:"+data.data[i].userName+"</span><span class='inspectAddress'><span class='inspectFont'>点检设备:</span>"+device+"</span><span class='inspectAddress'><span class='inspectFont'>点检项目:</span>"+table+"</span><span class='inspectAddress'><span class='inspectFont'>当前位置:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].userId+"'>"+jsonH+"</span></span></span></div></div>";
@@ -53,12 +53,12 @@
                     if(data.hasOwnProperty("image")){
                         userImage = data.image;
                     }
-                    var device = data.devName;
+                    var device = data.deviceNum;
                     var table = data.inspectTableName;
-                    if(device==undefined){
+                    if(device==undefined||device=="null"||device==""){
                         device = "未选择";
                     }
-                    if(table==undefined){
+                    if(table==undefined||table=="null"||table==""){
                         table="未选择";
                     }
 
@@ -78,6 +78,8 @@
                       inspectItemClick(this.id,this.id.substring(11,inspectItemId.length));
                 });
             }
+
+        }
             if(data.data.length>0){
                 setTimeout(function(){
                     window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),17);
@@ -85,9 +87,8 @@
 
                 //inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
             }else{
-                $("#rightshow").html("对不起，没有获取到在线的点检人员数据！");
+                $("#rightshow").html("没有在线的点检人员！");
             }
-        }
         }
         function inspectItemClick(inspectItemId,inspectInfoId){
             var inspectInfo="#inspectInfo"+inspectInfoId;

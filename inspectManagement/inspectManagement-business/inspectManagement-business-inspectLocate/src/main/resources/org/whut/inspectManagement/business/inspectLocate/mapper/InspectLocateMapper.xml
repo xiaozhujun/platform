@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectLocate.mapper.InspectLocateMapper">
     <sql id="inspectLocate_fields">
-       ID,USERID,USERNAME,INSPECTSTARTTIME,INSPECTENDTIME,DEVICEID,DEVNAME,INSPECTTABLEID,INSPECTTABLENAME,LNG,LAT,APPID,STATUS,ADDRESS,UPDATETIME
+       ID,USERID,USERNAME,INSPECTSTARTTIME,INSPECTENDTIME,DEVICEID,DEVICENUM,DEVNAME,INSPECTTABLEID,INSPECTTABLENAME,LNG,LAT,APPID,STATUS,ADDRESS,UPDATETIME
     </sql>
     <resultMap id="inspectLocateResultMap" type="InspectLocate">
         <id property="id" column="ID"/>
@@ -12,6 +12,7 @@
         <result property="inspectStartTime" column="INSPECTSTARTTIME" />
         <result property="inspectEndTime" column="INSPECTENDTIME"/>
         <result property="deviceId" column="DEVICEID"/>
+        <result property="deviceNum" column="DEVICENUM"/>
         <result property="devName" column="DEVNAME"/>
         <result property="inspectTableId" column="INSPECTTABLEID"/>
         <result property="inspectTableName" column="INSPECTTABLENAME"/>
@@ -27,7 +28,7 @@
         inspect_locate(
         <include refid="inspectLocate_fields"/>
         )
-        VALUES (#{id},#{userId},#{userName},#{inspectStartTime},#{inspectEndTime},#{deviceId},#{devName},#{inspectTableId},#{inspectTableName},#{lng},#{lat},#{appId},#{status},#{address},#{updateTime});
+        VALUES (#{id},#{userId},#{userName},#{inspectStartTime},#{inspectEndTime},#{deviceId},#{deviceNum},#{devName},#{inspectTableId},#{inspectTableName},#{lng},#{lat},#{appId},#{status},#{address},#{updateTime});
         <selectKey  resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -36,25 +37,25 @@
     <update id="update" parameterType="InspectLocate">
         UPDATE inspect_locate
         <set>
-            <if test="userId!=null">USERID=#{userId},</if>
-            <if test="userName!=null">USERNAME=#{userName},</if>
+            <if test="userId!=null">USERID=#{userId},USERNAME=#{userName},DEVICEID=#{deviceId},DEVNAME=#{devName},deviceNum=#{deviceNum},INSPECTTABLEID=#{inspectTableId},INSPECTTABLENAME=#{inspectTableName},LNG=#{lng},LAT=#{lat},ADDRESS=#{address},</if>
+           <!-- <if test="userName!=null"></if>-->
             <if test="inspectStartTime!=null">INSPECTSTARTTIME=#{inspectStartTime},</if>
             <if test="inspectEndTime!=null">INSPECTENDTIME=#{inspectEndTime},</if>
-            <if test="deviceId!=null">DEVICEID=#{deviceId},</if>
-            <if test="devName!=null">DEVNAME=#{devName},</if>
-            <if test="inspectTableId!=null">INSPECTTABLEID=#{inspectTableId},</if>
-            <if test="inspectTableName!=null">INSPECTTABLENAME=#{inspectTableName},</if>
-            <if test="lng!=null">LNG=#{lng},</if>
-            <if test="lat!=null">LAT=#{lat},</if>
+            <!--<if test="deviceId!=null"></if>
+            <if test="devName!=null"></if>
+            <if test="inspectTableId!=null"></if>
+            <if test="inspectTableName!=null"></if>
+            <if test="lng!=null"></if>
+            <if test="lat!=null"></if>-->
             <if test="appId!=null">APPID=#{appId},</if>
             <if test="status!=null">STATUS=#{status},</if>
-            <if test="address!=null">ADDRESS=#{address},</if>
+            <!--<if test="address!=null"></if>-->
             <if test="address!=null">UPDATETIME=#{updateTime}</if>
         </set>
         WHERE ID=#{id}
     </update>
     <select id="findByCondition" parameterType="map" resultType="map">
-       SELECT a.userName,a.userId,a.devName,a.inspectTableName,a.address,a.lng,a.lat,b.image
+       SELECT a.userName,a.userId,a.deviceId,a.deviceNum,a.devName,a.inspectTableName,a.address,a.lng,a.lat,b.image
        FROM inspect_locate a,user b
        <where>
            a.userId=b.id and a.appId=#{appId}

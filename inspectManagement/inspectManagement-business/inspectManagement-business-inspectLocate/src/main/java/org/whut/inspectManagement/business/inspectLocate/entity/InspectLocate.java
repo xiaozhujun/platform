@@ -24,6 +24,8 @@ public class InspectLocate {
 
     private String devName;
 
+    private String deviceNum;
+
     private long inspectTableId;
 
     private String inspectTableName;
@@ -158,5 +160,13 @@ public class InspectLocate {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getDeviceNum() {
+        return deviceNum;
+    }
+
+    public void setDeviceNum(String deviceNum) {
+        this.deviceNum = deviceNum;
     }
 }

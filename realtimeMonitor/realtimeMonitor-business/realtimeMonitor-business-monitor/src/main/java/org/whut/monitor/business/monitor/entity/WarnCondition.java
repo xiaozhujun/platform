@@ -17,7 +17,7 @@ public class WarnCondition {
     String sensorName;
     Date warnTime;
     String number;
-    long curWarnValue;
+    double curWarnValue;
     long appId;
 
     public long getId() {
@@ -76,11 +76,11 @@ public class WarnCondition {
         this.number = number;
     }
 
-    public long getCurWarnValue() {
+    public double getCurWarnValue() {
         return curWarnValue;
     }
 
-    public void setCurWarnValue(long curWarnValue) {
+    public void setCurWarnValue(double curWarnValue) {
         this.curWarnValue = curWarnValue;
     }
 

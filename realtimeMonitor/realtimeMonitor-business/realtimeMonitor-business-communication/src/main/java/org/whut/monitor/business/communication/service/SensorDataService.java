@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.whut.monitor.business.algorithm.factory.AlgorithmServiceFactory;
 import org.whut.monitor.business.algorithm.service.AlgorithmService;
 import org.whut.monitor.business.monitor.entity.WarnCondition;
+import org.whut.monitor.business.monitor.entity.WarnConditionFactory;
 import org.whut.monitor.business.monitor.service.SensorService;
 import org.whut.monitor.business.monitor.service.WarnConditionService;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
@@ -72,58 +73,25 @@ public class SensorDataService {
                 }
                 ArrayList data = (ArrayList)curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
                 AlgorithmService algorithmService = AlgorithmServiceFactory.create();
-                double meanValue = algorithmService.meanVariance(data);
-                String curWarnValue =  Double.toString(meanValue);
-                double warnValue;
-                long count;
-                String warnCount;
-                Map map = new HashMap();
-                if (redisConnector.get(sensor+"Condition") == null) {
-                    map = sensorService.getWarnConditionByNumber(sensor);
-                    redisConnector.set(sensor+"Condition",keyExpireTime,map.get("warnValue")+"|"+map.get("warnCount"));
+                if (redisConnector.get("sensor:{"+sensor+"}:warnType") == null) {
+                    Map map = sensorService.getWarnConditionByNumber(sensor);
+                    redisConnector.set("sensor:{"+sensor+"}:warnType",map.get("warnType").toString());
+                    redisConnector.set("sensor:{"+sensor+"}:warnValue",map.get("warnValue").toString());
+                    redisConnector.set("sensor:{"+sensor+"}:warnCount",map.get("warnCount").toString());
+                }
+                String curData = Double.toString(algorithmService.calculate(redisConnector.get("sensor:{"+sensor+"}:warnType"),data));
+                redisConnector.set("sensor:{"+sensor+"}:value",keyExpireTime,curData);
+                String warnValue = redisConnector.get("sensor:{"+sensor+"}:warnValue");
+                long count = Long.parseLong(redisConnector.get("sensor:{"+sensor+"}:warnCount"));
+                Date date = new Date();
+                String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+                redisConnector.set("sensor:{"+sensor+"}:lastDate",keyExpireTime,dateString);
+                if (algorithmService.compare(Double.parseDouble(curData),Double.parseDouble(warnValue))) {
+                    System.out.println("执行更新操作");
+                    updateWarnCondition(sensor,curData,count+1,date);
                 }
                 else {
-                    if (map.get("warnValue") == null || map.get("warnCount") == null) {
-                        String sensorCondition = redisConnector.get(sensor+"Condition");
-                        if (sensorCondition != null) {
-                            String[] tempArray = sensorCondition.split("\\|");
-                            String[] tempName = {"warnValue","warnCount"};
-                            for (int k=0;k<tempArray.length;k++) {
-                                map.put(tempName[k],tempArray[k]);
-                            }
-                        }
-                    }
-                }
-                warnValue = Double.parseDouble(map.get("warnValue").toString());
-                warnCount = map.get("warnCount").toString();
-                count = (long)Double.parseDouble(warnCount);
-                if (algorithmService.compare(meanValue,warnValue)) {
-                    count++;
-                    sensorService.updateWarnCountByNumber(sensor,count);
-                    String groupName,areaName,collectorName,sensorName;
-                    Map tempMap = sensorService.findByNumber(sensor);
-                    groupName = tempMap.get("groupName").toString();
-                    areaName = tempMap.get("areaName").toString();
-                    collectorName = tempMap.get("collectorName").toString();
-                    sensorName = tempMap.get("name").toString();
-                    Date date = new Date();
-                    WarnCondition warnCondition = new WarnCondition();
-                    warnCondition.setGroupName(groupName);
-                    warnCondition.setAreaName(areaName);
-                    warnCondition.setCollectorName(collectorName);
-                    warnCondition.setSensorName(sensorName);
-                    warnCondition.setWarnTime(date);
-                    warnCondition.setCurWarnValue((long)meanValue);
-                    warnCondition.setNumber(sensor);
-                    warnConditionService.add(warnCondition);
-                    String dateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
-
-                 if (redisConnector.set(sensor+"warnCondition",keyExpireTime,curWarnValue+"|"+Long.toString(count)+"|"+dateString)) {
-                        redisConnector.set(sensor+"Condition",keyExpireTime,Double.toString(warnValue)+"|"+Long.toString(count));
-                        System.out.println("OK!");
-                        System.out.println(redisConnector.get(sensor+"warnCondition"));
-                        System.out.println(redisConnector.get(sensor+"Condition"));
-                    }
+                    System.out.println("没有执行更新操作");
                 }
             }
         }catch (Exception e){
@@ -148,5 +116,15 @@ public class SensorDataService {
             return null;
         }
         return (ArrayList)dbObject.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
+    }
+
+    public void updateWarnCondition(String id,String curData,long count,Date date) {
+        System.out.println("执行更新操作");
+        sensorService.updateWarnCountByNumber(id,count+1);
+        redisConnector.set("sensor:{"+id+"}:warnCount",Long.toString(count+1));
+        Map tempMap = sensorService.findByNumber(id);
+        WarnCondition warnCondition = WarnConditionFactory.create(tempMap.get("groupName").toString(),tempMap.get("areaName").toString(),
+                tempMap.get("collectorName").toString(),tempMap.get("name").toString(),date,id,Double.parseDouble(curData));
+        warnConditionService.add(warnCondition);
     }
 }

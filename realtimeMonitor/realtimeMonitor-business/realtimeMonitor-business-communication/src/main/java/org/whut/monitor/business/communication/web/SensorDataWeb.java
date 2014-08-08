@@ -54,31 +54,21 @@ public class SensorDataWeb {
     @Path("/sensor/warnCondition/{id}.html")
     @GET
     public String getWarnCondition(@Context HttpServletRequest request,@PathParam("id")String id) {
-        String warnCondition = redisConnector.get(id+"warnCondition");
+        String curWarnValue = redisConnector.get("sensor:{"+id+"}:value");
+        String warnCount = redisConnector.get("sensor:{"+id+"}:warnCount");
+        String lastDate = redisConnector.get("sensor:{"+id+"}:lastDate");
         Map map = new HashMap();
-        if (warnCondition != null) {
-            String[] tempArray = warnCondition.split("\\|");
-            String[] tempName = {"curWarnValue","warnCount","LastData"};
-            for (int i=0;i<tempArray.length;i++) {
-                map.put(tempName[i],tempArray[i]);
-            }
-//            String tempDate = (String)map.remove("LastData");
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
-//            Date  dateStr = sdf.parse(tempDate);
-//            try {
-//                Date  dateStr = sdf.parse(tempDate);
-//                map.put("LastData",dataStr);
-//            } catch (ParseException e) {
-//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//            }
-
+        if (curWarnValue != null) {
+            map.put("curWarnValue",curWarnValue);
+            map.put("warnCount",warnCount);
+            map.put("lastDate",lastDate);
         }
         else {
             map.put("curWarnValue","0");
             map.put("warnCount","暂无数据");
-            map.put("LastData","暂无数据");
+            map.put("lastDate","暂无数据");
         }
-        System.out.println("redis"+map.get("LastData"));
+//        System.out.println("redis"+map.get("LastData"));
         return getJsonp(map,request.getParameter("callback"));
     }
 

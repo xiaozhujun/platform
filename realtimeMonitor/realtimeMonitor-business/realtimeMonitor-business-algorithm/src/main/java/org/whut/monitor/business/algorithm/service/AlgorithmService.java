@@ -18,8 +18,8 @@ import static java.lang.Math.sqrt;
  * To change this template use File | Settings | File Templates.
  */
 public class AlgorithmService {
-    @Autowired
-    private SensorService sensorService;
+//    @Autowired
+//    private SensorService sensorService;
 
     public double meanVariance(ArrayList sensorDataArray) {
         Double[] sensorData = new Double[sensorDataArray.size()];
@@ -46,5 +46,30 @@ public class AlgorithmService {
         else {
             return false;
         }
+    }
+
+    public int getNum(String warnType) {
+        if (warnType.equals("均方差")) {
+            return 0;
+        }
+        else if (warnType.equals("最大值")) {
+            return 1;
+        }
+        else if (warnType.equals("最小值")){
+            return 2;
+        }
+        return -1;
+    }
+
+    public double calculate(String type,ArrayList data) {
+        int warnType;
+        warnType = getNum(type);
+        switch (warnType) {
+            case -1: return 0;
+            case 0: return meanVariance(data);
+            case 1:System.out.println("计算最大值");break;
+            case 2:System.out.println("计算最大值");break;
+        }
+        return 0;
     }
 }

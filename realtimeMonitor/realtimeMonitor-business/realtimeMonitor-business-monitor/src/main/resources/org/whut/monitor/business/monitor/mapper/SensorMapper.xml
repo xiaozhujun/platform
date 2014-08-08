@@ -116,7 +116,7 @@
     </select>
 
     <select id="getWarnConditionByNumber" parameterType="java.lang.String" resultType="map">
-        SELECT warnValue,warnCount
+        SELECT warnValue,warnCount,warnType
         FROM sensor
         WHERE `number`=#{number}
     </select>

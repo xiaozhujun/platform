@@ -1,5 +1,5 @@
 function drawChart2(container,data,unit){
- var h=$(container).highcharts('StockChart',{
+  $(container).highcharts('StockChart',{
         chart: {
             marginRight: 20,
             marginBottom: 30,

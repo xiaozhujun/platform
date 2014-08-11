@@ -5,7 +5,6 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whut.monitor.business.monitor.entity.MessageBean;
 import org.whut.monitor.business.monitor.entity.Sensor;
 import org.whut.monitor.business.monitor.entity.SubSensor;
 import org.whut.monitor.business.monitor.service.AreaService;
@@ -23,8 +22,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -367,7 +368,6 @@ public class SensorServiceWeb {
     @POST
     public String getMongoDataListInJson(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("number")String number,@FormParam("mySelect")String mySelect){
         MongoConnector mongoConnector=new MongoConnector("sensorDB","sensorCollection");
-        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
         sTime=sTime+" "+"00:00:00";
         eTime=eTime+" "+"23:59:59";
         int t=Integer.parseInt(mySelect);
@@ -375,45 +375,22 @@ public class SensorServiceWeb {
         if(t!=0){
             s=t*30;
         }
+        List<List<DBObject>> getList=new ArrayList<List<DBObject>>();
         getList=mongoConnector.getDbArrayListFromMongo2(sTime,eTime,number);
-        List a=new ArrayList();
-        int data2=0,p=0;Object data;
-        for(int i=0;i<getList.size();i++){
-            for(int j=0;j<getList.get(i).size();j++){
-                data=getList.get(i).get(j);
-                data2=data2+Integer.parseInt(data.toString());
-                p++;
-            }
-            if ((i+1)%(s)==0)         //取一分钟的数据
-            {
-                data2=data2/p;
-                a.add(data2);
-                data2=0; p=0;
-            }
+        List b=new  ArrayList();
+        for(int i=0;i<getList.size();i=i+s){
+            b.add(getList.get(i));
         }
         List<List<DBObject>> getTimeList=new ArrayList<List<DBObject>>();
         getTimeList=mongoConnector.getDbArrayListFromMongo3(sTime,eTime,number);
-        List time=new ArrayList();
+        List a=new  ArrayList();
         for(int i=0;i<getTimeList.size();i=i+s){
-            Object b=getTimeList.get(i);
-            time.add(b);
+            a.add(getTimeList.get(i));
         }
         Map<String,Object> map=new HashMap<String, Object>();
-        SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-        List<MessageBean> list=new ArrayList<MessageBean>();
-        for(int i=0;i<a.size();i++){
-            String s1=time.get(i).toString();
-            MessageBean messageBean=new MessageBean();
-            try{
-                Date date = format.parse(s1);
-                messageBean.setX(date.getTime());
-                messageBean.setY(Integer.parseInt(a.get(i).toString()));
-                list.add(messageBean);
-            }catch (Exception e){
-                System.out.println(e.getMessage());
-            }
-        }
-        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+        map.put("data",b);
+        map.put("time",a);
+        return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

@@ -118,11 +118,15 @@
                     { display: '描述', name: 'note',
                         editor: { type: 'text' }
                     },
+                    { display: '异常快照', name:'abnormalPicture', editor:{type:'text'},
+                        render:function(rowdata,rowindex,value){
+                            return "<a href='javascript:abnormal(" + rowindex+ ")'>快照</a> ";
+                        }
+                    },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
-                    {
-
-                        return "<a href='javascript:resolve(" + rowindex + ")'>处理</a> ";
-                    }
+                        {
+                         return "<a href='javascript:resolve(" + rowindex + ")'>处理</a> ";
+                        }
                     }
                 ],
                 onSelectRow: function (rowdata, rowindex)
@@ -134,16 +138,43 @@
                 width: '100%'
             });
         }
-        function resolve(rowid){
-            var row = manager.getRow(rowid);
-            //var jsonString = $.toJSON(row);
-            $("#maingrid").css("display", "none");
-            $("#exportDeviceDiv").css("display", "block");
-            $("#panel1").css("display", "none");
-            $("#exceptionShow").load($.URL.inspectReport.getInspectInfo,{"id":row.inspectTableRecordId,"type":"html"},getInspectInfoCallback,"json");
+
+        function abnormal(rowid){
+            var rowPicture = manager.getRow(rowid);
+            showAbnormalPic(rowPicture);
+        }
+        function showAbnormalPic(rowPicture){
+            $.ligerDialog.open({
+                width:500,
+                height:500,
+                title:'异常快照',
+                url:'abnormalupload/uploadPicture.html',
+                showMax: false,
+                showToggle: true,
+                showMin: false,
+                isResize: false,
+                slide: false,
+                data:{rowPicture:rowPicture}
+            });
         }
 
-        function getInspectInfoCallback(data) {
+        function resolve(rowid){
+            var rowInfo = manager.getRow(rowid);
+            showAbnormalInfo(rowInfo);
+            }
+        function showAbnormalInfo(rowInfo){
+            $.ligerDialog.open({
+                width: 300,
+                height: 400,
+                title:'处理描述',
+                url: 'abnormalupload/uploadInfo.html',
+                showMax: false,
+                showToggle: true,
+                showMin: false,
+                isResize: false,
+                slide: false,
+                data: {rowInfo:rowInfo}
+            });
         }
 
     </script>
@@ -158,11 +189,10 @@
 </div>
 <div class="exportDiv" id="exportDeviceDiv">
                  <span class="exportType">
-                    <span class="type_font">导出类型:</span><span class="type_input"><input type="text"
-                                                                                        id="exportDeviceType"></span>
+                    <span class="type_font">导出类型:</span>
+                     <span class="type_input"><input type="text" id="exportDeviceType"></span>
                  </span>
-    <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn"
-                                         class="l-button l-button-submit"/></span></span>
+    <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn"  class="l-button l-button-submit"/></span></span>
 </div>
 <div class="reportContent" id="exceptionShow"></div>
 </body>

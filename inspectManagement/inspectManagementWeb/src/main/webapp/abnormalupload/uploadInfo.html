@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>File Upload</title>
+    <style>
+        body { padding: 30px }
+    </style>
+    <link href="../task/cron/jquery-cron.css" rel="stylesheet" type="text/css" /><!--链接外部样式表-->
+    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="../js/jquery.json-2.4.min.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../js/config.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../task/cron/jquery-cron.js" type="text/javascript"></script>
+    <script src="../inspectResult/js/jquery.form.min.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div style="width:100%;margin-top: 26px;">   <!--这个div被加载到了listDevice.html弹出框中-->
+    <div id="panel" >
+          <div style="clear: both">
+            <div style="float: left;">点检人员:</div>
+            <div style="float: left;" id="Name"></div>
+          </div>
+          <div style="clear: both">
+            <div style="float: left;">点检设备:</div>
+            <div style="float: left;" id="Device"></div>
+          </div>
+          <div style="clear: both" >
+            <div style="float: left;">点检项目:</div>
+            <div style="float: left;" id="Item"></div>
+          </div>
+          <div style="clear: both">
+            <div style="float: left">点检单元:</div>
+            <div style="float: left" id="Unit"></div>
+          </div>
+          <div style="clear: both">
+              <div style="float: left">点检建议:</div>
+              <div style="float: left"><textarea rows="6" cols="40"></textarea></div>
+          </div>
+          <div align="right">
+              <input type="button" class="l-button l-button-submit" value="提交"/>
+          </div>
+    </div>
+</div>
+
+<script>
+    var rowInfo;
+    $(function(){
+        rowInfo=frameElement.dialog.get("data").rowInfo; //获得行信息
+        $("#Name").text(rowInfo.userName);
+        $("#Device").text(rowInfo.deviceName);
+        $("#Item").text(rowInfo.tableName);
+        $("#Unit").text(rowInfo.itemName);
+    });
+</script>
+
+</body>
+</html>

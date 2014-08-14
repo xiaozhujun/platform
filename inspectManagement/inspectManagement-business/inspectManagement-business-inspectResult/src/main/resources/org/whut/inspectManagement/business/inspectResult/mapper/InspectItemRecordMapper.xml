@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecordMapper">
     <sql id="inspectItemRecord_fields">
-		ID,INSPECTTABLEID,INSPECTTAGID,INSPECTITEMID,INSPECTCHOICEID,INSPECTCHOICEVALUE,INSPECTTABLERECORDID,USERID,DEVICEID,APPID,NOTE,CREATETIME,INSPECTTIME
+		ID,INSPECTTABLEID,INSPECTTAGID,INSPECTITEMID,INSPECTCHOICEID,INSPECTCHOICEVALUE,INSPECTTABLERECORDID,USERID,DEVICEID,APPID,NOTE,CREATETIME,INSPECTTIME,MAINTAINID,MAINTAINSUGGEST
 	</sql>
 
     <resultMap id="inspectItemRecordResultMap" type="InspectItemRecord">
@@ -21,10 +21,13 @@
         <result property="note" column="NOTE"/>
         <result property="createTime" column="createTime"/>
         <result property="inspectTime" column="inspectTime"/>
+        <result property="maintainId" column="MAINTAINID"/>
+        <result property="maintainSuggest" column="MAINTAINSUGGEST"/>
     </resultMap>
 
     <resultMap id="searchResultMap" type="SearchBean">
         <id property="id" column="ID" />
+        <id property="itemId" column="ITEMID"/>
         <result property="userName" column="userName" />
         <result property="itemName" column="itemName" />
         <result property="tableName" column="tableName"/>
@@ -33,6 +36,8 @@
         <result property="note" column="note"/>
         <result property="createTime" column="createTime"/>
         <result property="inspectTime" column="inspectTime"/>
+        <result property="maintainId" column="MAINTAINID"/>
+        <result property="maintainSuggest" column="MAINTAINSUGGEST"/>
     </resultMap>
 
     <insert id="add" parameterType="InspectItemRecord"  keyProperty="id"
@@ -41,7 +46,7 @@
         inspectitemrecord(
         <include refid="inspectItemRecord_fields" />
         )
-        VALUES (#{id}, #{inspectTableId}, #{inspectTagId},#{inspectItemId},#{inspectChoiceId},#{inspectChoiceValue},#{inspectTableRecordId},#{userId},#{deviceId},#{appId},#{note},#{createTime},#{inspectTime});
+        VALUES (#{id}, #{inspectTableId}, #{inspectTagId},#{inspectItemId},#{inspectChoiceId},#{inspectChoiceValue},#{inspectTableRecordId},#{userId},#{deviceId},#{appId},#{note},#{createTime},#{inspectTime},#{maintainId},#{maintainSuggest});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -69,18 +74,30 @@
             <if test="userId !=null">USERID=#{userId},</if>
             <if test="deviceId !=null">DEVICEID=#{deviceId},</if>
             <if test="appId !=null">APPID=#{appId},</if>
-            <if test="note !=null">NOTE=#{note}</if>
-            <if test="createTime !=null">CREATETIME=#{createTime}</if>
-            <if test="inspectTime !=null">INSPECTTIME=#{inspectTime}</if>
+            <if test="note !=null">NOTE=#{note},</if>
+            <if test="createTime !=null">CREATETIME=#{createTime},</if>
+            <if test="inspectTime !=null">INSPECTTIME=#{inspectTime},</if>
+            <if test="maintainId !=null">MAINTAINID=#{maintainId},</if>
+            <if test="maintainSuggest !=null">MAINTAINSUGGEST=#{maintainSuggest}</if>
         </set>
-        WHERE ID = #{id};
+        WHERE ID=#{id}
+    </update>
+
+    <update id="updateMaintainIdAndSuggest" parameterType="map">    /*新增,更新维修id和维修建议*/
+        update inspectitemrecord
+        <set>
+            <if test="inspectChoiceValue !=null">INSPECTCHOICEVALUE=#{inspectChoiceValue},</if>
+            <if test="maintainId !=null">MAINTAINID=#{maintainId},</if>
+            <if test="maintainSuggest !=null">MAINTAINSUGGEST=#{maintainSuggest}</if>
+
+        </set>
+        where DEVICEID=#{deviceId} AND INSPECTTABLEID=#{inspectTableId} AND INSPECTTABLERECORDID=#{inspectTableRecordId} AND APPID=#{appId} AND INSPECTITEMID=#{inspectItemId}
     </update>
 
     <delete id="delete" parameterType="InspectItemRecord">
         DELETE FROM inspectitemrecord
         <where>
             <if test="id != null">ID=#{id}</if>
-
             <if test="inspectTableId != null"> AND INSPECTTABLEID=#{inspectTableId}</if>
         </where>
     </delete>
@@ -99,7 +116,7 @@
 
     <select id="findByCondition" parameterType="map" resultMap="searchResultMap">
         SELECT
-        a.*,b.`name` as itemName,c.`name` as tableName,d.`name` as deviceName,e.name as userName
+        a.*,b.`name` as itemName,c.`name` as tableName,d.`name` as deviceName,e.name as userName,b.id as itemId,a.maintainId,a.maintainSuggest   /*新增itemId*/
         FROM inspectitemrecord a,inspectitem b,inspecttable c,device d,employee e
         <where>
             a.inspectItemId=b.id and a.inspectTableId=c.id and a.deviceId=d.id and a.userId=e.userId
@@ -111,4 +128,5 @@
         </where>
         order by createTime desc
     </select>
+
 </mapper>

@@ -18,6 +18,7 @@ public class InspectTableRecord {
     private long appId;
     private String mongoId;
     private long deviceId;
+
     public long getId() {
         return id;
     }

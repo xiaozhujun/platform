@@ -81,9 +81,12 @@
             "add":"rs/employee/add",
             "update":"rs/employee/update",
             "delete":"rs/employee/delete",
+            "getById":"rs/employee/getById",
+            "getTelById":"rs/employee/getTelById",
             "list":"rs/employee/list",
             "listEmployeeRoleByNameAndRole":"rs/employee/listEmployeeRoleByNameAndRole",
-            "listEmployeeByNameDepartmentAndRole":"rs/employee/listEmployeeByNameDepartmentAndRole"
+            "listEmployeeByNameDepartmentAndRole":"rs/employee/listEmployeeByNameDepartmentAndRole",
+            "canUseList":"rs/employee/canUseList"
         },
         "employeeRole":{
             "add":"rs/employeeRole/add",
@@ -141,7 +144,8 @@
             "receiveInspectLocateInfo":"rs/inspectLocate/receiveInspectLocateInfo"
         },
         "inspectItemRecord":{
-          "findByCondition":"rs/inspectItemRecord/findByCondition"
+          "findByCondition":"rs/inspectItemRecord/findByCondition",
+          "updateMaintainIdAndSuggest":"rs/inspectItemRecord/updateMaintainIdAndSuggest"
         },
         "absolutePath":{
             "userList":"/inspectManagement/"+ "rs/user/list",
@@ -149,7 +153,10 @@
             "userPlanAdd":"/inspectManagement/"+ "rs/userInspectPlan/add",
             "getTableList":"/inspectManagement/"+"rs/inspectTable/getList",
             "updateTaskPlan":"/inspectManagement/"+"rs/taskPlan/update"
-
+        },
+        "imageUpload":{
+            "upload":"rs/imageUpload/upload",
+            "getImageByNames":"rs/imageUpload/getImageByNames"
         }
     }
 })(jQuery);

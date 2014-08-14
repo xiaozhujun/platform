@@ -22,4 +22,8 @@ public class InspectItemRecordService {
     public List<SearchBean> findByCondition(Map<String,Object> map){
         return inspectItemRecordMapper.findByCondition(map);
     }
+
+    public void updateMaintainIdAndSuggest(Map<String,Object>map){
+        inspectItemRecordMapper.updateMaintainIdAndSuggest(map);
+    }
 }

@@ -28,4 +28,5 @@
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
     <bean id="inspectItemRecordService" class="org.whut.inspectManagement.business.inspectResult.service.InspectItemRecordService" depends-on="mappers"/>
     <bean id="inspectTableRecordService" class="org.whut.inspectManagement.business.inspectResult.service.InspectTableRecordService" depends-on="mappers"/>
+    <bean id="imageUploadService" class="org.whut.inspectManagement.business.inspectResult.service.ImageUploadService" depends-on="mappers"/>
 </beans>

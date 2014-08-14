@@ -13,12 +13,25 @@ public class SearchBean {
     private long id;
     private String userName;
     private String itemName;
+    private long itemId;
     private String tableName;
     private String deviceName;
     private String inspectChoiceValue;
     private String note;
     private Date createTime;
     private Date inspectTime;
+    private long maintainId;
+    private String maintainSuggest;
+
+
+
+    public long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(long itemId) {
+        this.itemId = itemId;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -90,5 +103,21 @@ public class SearchBean {
 
     public void setInspectTime(Date inspectTime) {
         this.inspectTime = inspectTime;
+    }
+
+    public long getMaintainId() {
+        return maintainId;
+    }
+
+    public void setMaintainId(long maintainId) {
+        this.maintainId = maintainId;
+    }
+
+    public String getMaintainSuggest() {
+        return maintainSuggest;
+    }
+
+    public void setMaintainSuggest(String maintainSuggest) {
+        this.maintainSuggest = maintainSuggest;
     }
 }

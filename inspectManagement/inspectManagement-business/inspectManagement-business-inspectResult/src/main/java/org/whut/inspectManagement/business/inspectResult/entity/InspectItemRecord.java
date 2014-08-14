@@ -23,6 +23,24 @@ public class InspectItemRecord {
     private String note;
     private Date createTime;
     private Date inspectTime;
+    private long maintainId;
+    private String maintainSuggest;
+
+    public long getMaintainId() {
+        return maintainId;
+    }
+
+    public void setMaintainId(long maintainId) {
+        this.maintainId = maintainId;
+    }
+
+    public String getMaintainSuggest() {
+        return maintainSuggest;
+    }
+
+    public void setMaintainSuggest(String maintainSuggest) {
+        this.maintainSuggest = maintainSuggest;
+    }
 
     public long getId() {
         return id;

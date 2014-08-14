@@ -17,4 +17,5 @@ import java.util.Map;
 public interface InspectItemRecordMapper extends AbstractMapper<InspectItemRecord>{
     public long getIdByName(String name);
     public List<SearchBean> findByCondition(Map<String,Object> map);
+    public void updateMaintainIdAndSuggest(Map<String,Object> map); //新增更新
 }

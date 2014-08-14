@@ -24,47 +24,88 @@
     <script src="../task/cron/jquery-cron.js" type="text/javascript"></script>
     <script src="../inspectResult/js/jquery.form.min.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
-
-</head>
-<body>
-<div style="width:100%;margin-top: 26px;">   <!--这个div被加载到了listDevice.html弹出框中-->
-    <div id="panel" >
-          <div style="clear: both">
-            <div style="float: left;">点检人员:</div>
-            <div style="float: left;" id="Name"></div>
-          </div>
-          <div style="clear: both">
-            <div style="float: left;">点检设备:</div>
-            <div style="float: left;" id="Device"></div>
-          </div>
-          <div style="clear: both" >
-            <div style="float: left;">点检项目:</div>
-            <div style="float: left;" id="Item"></div>
-          </div>
-          <div style="clear: both">
-            <div style="float: left">点检单元:</div>
-            <div style="float: left" id="Unit"></div>
-          </div>
-          <div style="clear: both">
-              <div style="float: left">点检建议:</div>
-              <div style="float: left"><textarea rows="6" cols="40"></textarea></div>
-          </div>
-          <div align="right">
-              <input type="button" class="l-button l-button-submit" value="提交"/>
-          </div>
-    </div>
-</div>
-
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF; }
+    </style>
 <script>
     var rowInfo;
     $(function(){
         rowInfo=frameElement.dialog.get("data").rowInfo; //获得行信息
-        $("#Name").text(rowInfo.userName);
-        $("#Device").text(rowInfo.deviceName);
-        $("#Item").text(rowInfo.tableName);
-        $("#Unit").text(rowInfo.itemName);
-    });
-</script>
+        $("#Device").val(rowInfo.deviceName);
+        $("#Item").val(rowInfo.tableName);
+        $("#Unit").val(rowInfo.itemName);
+        $.post($.URL.employee.canUseList,null,employeeCallback,"json");
 
+        $("#submitBtn").click(function(){
+            var data = {};
+            data.Name = $("#Name").val();
+            data.PhoneNumber = $("#Name").ligerComboBox().getValue(),
+            data.Device = $("#Device").val();
+            data.Item = $("#Item").val();
+            data.Unit = $("#Unit").val();
+            data.Suggestion = $("#Suggestion").val();
+            $.post($.URL.xxxx.update,data,updateCallback,"json") ;  //修改
+        });
+    });
+    $("#Name").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
+    function employeeCallback(data){
+        if(data.code==200){
+            var employeeData=[];
+            $.each(data.data,function(index,content){
+                var c={};
+                c["id"]=content.tel;
+                c["text"]=content.name;
+                employeeData.push(c);
+            });
+            liger.get("Name").setData(employeeData);
+        }
+    }
+
+    function updateCallback(data){
+        if(data.code==200){
+            $.ligerDialog.success("提交成功");
+        }
+        else{
+            $.ligerDialog.warn(data.message);
+        }
+    }
+</script>
+</head>
+<body>
+<form name="form1" method="post" action="" id="form1"  >
+    <div>
+    </div>
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">点检人员:</td>
+            <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="Name"  /></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">点检设备:</td>
+            <td align="left" class="l-table-edit-td"><input name="Device" type="text" id="Device" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">点检项目:</td>
+            <td align="left" class="l-table-edit-td"><input name="Item" type="text" id="Item" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">点检单元:</td>
+            <td align="left" class="l-table-edit-td"><input name="Unit" type="text" id="Unit" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">点检建议:</td>
+            <td align="left" class="l-table-edit-td">
+                <textarea id="Suggestion" class="l-textarea" name="Suggestion" cols="40" rows="6" style="width:130px">
+                </textarea>
+            <td align="left"></td>
+        </tr>
+    </table>
+    <br />
+    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+
+</form>
 </body>
 </html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.inspectResult.mapper.ImageUploadMapper">
+    <sql id="imageUpload_fields">
+        ID,TABLERECORDID,ITEMRECORDID,ITEMID,CREATETIME,APPID,IMAGE
+    </sql>
+
+    <resultMap id="imageUploadResultMap" type="ImageUpload">
+        <id property="id" column="ID"/>
+        <id property="tableRecordId" column="TABLERECORDID"/>
+        <id property="itemRecordId" column="ITEMRECORDID"/>
+        <id property="itemId" column="ITEMID"/>
+        <id property="createTime" column="CREATETIME"/>
+        <id property="appId" column="APPID"/>
+        <id property="image" column="IMAGE"/>
+    </resultMap>
+
+    <insert id="add" parameterType="ImageUpload" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO image_upload(
+        <include refid="imageUpload_fields"/>
+        )
+        VALUES (#{id},#{tableRecordId},#{itemRecordId},#{itemId},#{createTime},#{appId},#{image});
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="getImageByNames" parameterType="map" resultType="java.lang.String">
+        SELECT a.image,d.userId,a.tableRecordId
+        FROM image_upload AS a,employee AS b,device AS c,inspecttablerecord AS d
+        WHERE b.`name`=#{userName} AND b.userId=d.userId AND c.`name`=#{deviceName} AND c.id=d.deviceId AND a.itemId=#{itemId} AND a.itemRecordId=#{itemRecordId} AND a.appId=#{appId}
+    </select>
+</mapper>

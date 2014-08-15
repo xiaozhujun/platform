@@ -43,4 +43,12 @@ public class EmployeeService {
     public List<Employee> getByNameDepartmentAndRole(String name,String departmentId,String employeeRoleName,long appId){
         return  employeeMapper.getByNameDepartmentAndRole(name,departmentId,employeeRoleName,appId);
     }
+
+    public List<Map<String,String>> getNameAndTelListByAppId(long appId){
+        return employeeMapper.getNameAndTelListByAppId(appId);
+    }
+
+    public long getTelById(long Id){
+        return employeeMapper.getTelById(Id);
+    }
 }

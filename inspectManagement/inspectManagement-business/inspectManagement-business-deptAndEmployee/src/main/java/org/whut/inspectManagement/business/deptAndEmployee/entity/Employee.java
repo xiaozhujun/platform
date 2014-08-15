@@ -13,6 +13,7 @@ public class Employee {
     long appId;
     long departmentId;
     long userId;
+    long tel;
 
     public String getStatus() {
         return status;
@@ -84,5 +85,13 @@ public class Employee {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public long getTel() {
+        return tel;
+    }
+
+    public void setTel(long tel) {
+        this.tel = tel;
     }
 }

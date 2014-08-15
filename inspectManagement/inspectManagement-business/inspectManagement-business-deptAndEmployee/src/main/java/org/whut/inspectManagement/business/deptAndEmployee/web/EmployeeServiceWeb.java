@@ -359,6 +359,29 @@ public class EmployeeServiceWeb {
 
 
     }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/canUseList")
+    @POST
+    public String getNameAndTelListByAppId(){
+        long appId = UserContext.currentUserAppId();
+        List<Map<String,String>> list = employeeService.getNameAndTelListByAppId(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getById")
+    @POST
+    public String getById(@FormParam("employeeId")long id){
+        Employee employee=employeeService.getById(id);
+        return JsonResultUtils.getObjectResultByStringAsDefault(employee, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getTelById")
+    @POST
+    public String getTelById(@FormParam("employeeId")long Id){
+        long tel=employeeService.getTelById(Id);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(tel,JsonResultUtils.Code.SUCCESS);
+    }
 }
 
 

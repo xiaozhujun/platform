@@ -69,12 +69,6 @@
         FROM inspecttablerecord WHERE ID=#{id}
     </select>
 
-    <select id="getIdByTableId" parameterType="java.lang.Long" resultType="java.lang.Long">
-        SELECT
-        id
-        FROM inspecttablerecord WHERE inspectTableId=#{tableId}
-    </select>
-
     <update id="updateTableRecord" parameterType="map">
         UPDATE inspecttablerecord
         SET exceptioncount=#{exceptionCount}
@@ -96,5 +90,11 @@
         SELECT id
         FROM inspecttablerecord
         WHERE inspectTableId=#{inspectTableId} AND userId=#{userId} AND mongoId=#{mongoId} AND deviceId=#{deviceId} AND appId=#{appId}
+    </select>
+
+    <select id="getTableIdByTableRecordId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT b.id
+        FROM inspecttablerecord AS a,inspecttable AS b
+        WHERE a.id=#{tableRecordId} AND b.id=a.inspectTableId
     </select>
 </mapper>

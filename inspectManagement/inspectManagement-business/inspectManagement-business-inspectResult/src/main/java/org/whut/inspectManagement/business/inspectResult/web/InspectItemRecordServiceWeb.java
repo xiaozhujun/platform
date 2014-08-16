@@ -87,12 +87,13 @@ public class InspectItemRecordServiceWeb {
         String TableName = (String) MessageMap.get("Item");
         String maintainSuggest = (String) MessageMap.get("Suggestion");
         String ItemId = (String) MessageMap.get("ItemId");
+        long itemRecordId = Long.parseLong(MessageMap.get("itemRecordId").toString());
         long inspectItemId = Long.parseLong(ItemId);
         long maintainId = employeeService.getIdByName(EmployeeName);
 
         long deviceId = deviceService.getIdByName(DeviceName,appId);
-        long inspectTableId = inspectTableService.getIdByName(TableName,appId);
-        long inspectTableRecordId = inspectTableRecordService.getIdByTableId(inspectTableId);
+        long inspectTableRecordId = inspectItemRecordService.getTableRecordIdByItemRecordId(itemRecordId);
+        long inspectTableId = inspectTableRecordService.getTableIdByTableRecordId(inspectTableRecordId);
 
         Map<String,Object> condition = new HashMap<String,Object>();
         condition.put("deviceId",deviceId);

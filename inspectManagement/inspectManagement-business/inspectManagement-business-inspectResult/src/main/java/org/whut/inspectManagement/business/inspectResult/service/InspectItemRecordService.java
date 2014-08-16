@@ -26,4 +26,8 @@ public class InspectItemRecordService {
     public void updateMaintainIdAndSuggest(Map<String,Object>map){
         inspectItemRecordMapper.updateMaintainIdAndSuggest(map);
     }
+
+    public long getTableRecordIdByItemRecordId(long itemRecordId) {
+        return inspectItemRecordMapper.getTableRecordIdByItemRecordId(itemRecordId);
+    }
 }

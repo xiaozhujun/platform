@@ -17,7 +17,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface InspectItemRecordMapper extends AbstractMapper<InspectItemRecord>{
-    public long getIdByName(String name);
+    public Long getTableRecordIdByItemRecordId(long itemRecordId);
     public List<SearchBean> findByCondition(Map<String,Object> map);
     public void updateMaintainIdAndSuggest(Map<String,Object> map); //新增更新
     public Long getIdByCondition(@Param("inspectTableId")long inspectTableId,@Param("inspectTagId")long inspectTagId,@Param("inspectItemId")long inspectItemId,

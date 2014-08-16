@@ -108,10 +108,10 @@
         FROM inspectitemrecord WHERE ID=#{id}
     </select>
 
-    <select id="getIdByName" parameterType="InspectItemRecord" resultMap="inspectItemRecordResultMap">
-        SELECT
-         id
-         FROM inspectitemrecord WHERE NAME=#{name}
+    <select id="getTableRecordIdByItemRecordId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT b.id
+        FROM inspectitemrecord AS a,inspecttablerecord AS b
+        WHERE a.id=#{itemRecordId} AND b.id=a.inspectTableRecordId
     </select>
 
     <select id="findByCondition" parameterType="map" resultMap="searchResultMap">

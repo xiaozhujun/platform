@@ -29,8 +29,9 @@
 
     <select id="getImageByNames" parameterType="map" resultType="java.lang.String">
         SELECT a.image,d.userId,a.tableRecordId
-        FROM image_upload AS a,employee AS b,device AS c,inspecttablerecord AS d
-        WHERE b.`name`=#{userName} AND b.userId=d.userId AND c.`name`=#{deviceName} AND c.id=d.deviceId AND a.itemId=#{itemId} AND a.itemRecordId=#{itemRecordId} AND a.appId=#{appId}
+        FROM image_upload AS a,employee AS b,device AS c,inspecttablerecord AS d,inspectitemrecord AS e
+        WHERE b.`name`=#{userName} AND b.userId=d.userId AND c.`name`=#{deviceName} AND c.id=d.deviceId
+        AND a.itemId=#{itemId} AND a.itemRecordId=#{itemRecordId} AND a.itemRecordId=e.id AND e.inspectTableRecordId=d.id AND a.appId=#{appId}
     </select>
 
     <select id="getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId" parameterType="map" resultType="java.lang.Long">

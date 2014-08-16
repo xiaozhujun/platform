@@ -177,8 +177,11 @@ function showAbnormalPic(rowPicture){
     $.ligerDialog.open({isDrag: true,title:'处理描述', target: $("#uploadInfo"),width:400,height:640,isResize:true});
 }
 
+var tempItemRecordId;
 function resolve(rowid){
     var rowInfo = manager.getRow(rowid);
+    var jsonString  = $.toJSON(rowInfo);
+    tempItemRecordId = $.evalJSON(jsonString).id;
 
     showAbnormalInfo(rowInfo);
 }
@@ -187,7 +190,7 @@ function showAbnormalInfo(rowInfo){
     $("#submitBtn1").removeAttr("hidden");
     $("#suggestionTr").removeAttr("hidden");
 
-    if(rowInfo.inspectChoiceValue=="无"){
+    if(rowInfo.inspectChoiceValue=="正常"){
         $("#Suggestion").attr("readonly","readonly");
 
         $("#NameTr").attr("hidden","true");
@@ -264,6 +267,7 @@ $("#submitBtn1").click(function(){
     data.Choice=$("Choice").val();
     data.Unit = $("#Unit").text();
     data.Suggestion = $("#Suggestion").val();
+    data.itemRecordId = tempItemRecordId;
     var d= $.toJSON(data);
     $.post($.URL.inspectItemRecord.updateMaintainIdAndSuggest,{"jsonString":d},addCallBack,"json") ;
     }

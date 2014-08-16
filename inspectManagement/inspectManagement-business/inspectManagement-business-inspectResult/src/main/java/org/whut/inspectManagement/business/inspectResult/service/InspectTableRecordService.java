@@ -293,8 +293,9 @@ public class InspectTableRecordService {
         return inspectTableRecordMapper.get(inspectTableRecord);
     }
 
-    public long getIdByTableId(long inspectTableId) {
-        return inspectTableRecordMapper.getIdByTableId(inspectTableId);
+    public long getTableIdByTableRecordId(long tableRecordId) {
+        return inspectTableRecordMapper.getTableIdByTableRecordId(tableRecordId);
     }
+
 }
 

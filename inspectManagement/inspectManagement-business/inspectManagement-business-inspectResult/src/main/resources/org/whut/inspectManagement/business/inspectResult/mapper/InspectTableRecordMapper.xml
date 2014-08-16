@@ -91,4 +91,10 @@
         AND inspectTableId=#{inspectTableId}
         AND appId=#{appId}
     </select>
+
+    <select id="getIdByCondition" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM inspecttablerecord
+        WHERE inspectTableId=#{inspectTableId} AND userId=#{userId} AND mongoId=#{mongoId} AND deviceId=#{deviceId} AND appId=#{appId}
+    </select>
 </mapper>

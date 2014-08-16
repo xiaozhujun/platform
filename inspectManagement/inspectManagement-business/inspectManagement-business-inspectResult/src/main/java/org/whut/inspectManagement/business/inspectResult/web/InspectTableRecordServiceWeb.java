@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.whut.inspectManagement.business.inspectResult.entity.ImageBean;
 import org.whut.inspectManagement.business.inspectResult.service.InspectTableRecordService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -20,6 +21,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,19 +62,24 @@ public class InspectTableRecordServiceWeb {
                 Document document = sr.read(inputStream);
                 Element root = document.getRootElement();
                 // System.out.println(">>>>>>>>>"+root.getName());
-                int flag =  inspectTableRecordService.DomReadXml(document);
-                if(flag==3){
+                Map map = new HashMap();
+                map = inspectTableRecordService.DomReadXml(document);
+                System.out.println(map.get("flag").toString());
+                if(Long.parseLong(map.get("flag").toString())==3){
                     return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检表不存在！");
                 }
-                else if(flag==2){
+                else if(Long.parseLong(map.get("flag").toString())==2){
                     System.out.println("文件内容不合法！");
                     return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"文件内容不合法！");
                 }
-                else if(flag==1){
+                else if(Long.parseLong(map.get("flag").toString())==1){
                     return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"点检结果已存在！");
                 }
                 else{
-                    return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"上传成功！");
+                    List<ImageBean> tempList = new ArrayList<ImageBean>();
+                    tempList = (ArrayList<ImageBean>)map.get("list");
+//                    return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"上传成功！");
+                    return JsonResultUtils.getObjectResultByStringAsDefault(tempList, JsonResultUtils.Code.SUCCESS);
                 }
             } else {
                 System.out.println("文件格式有误！");

@@ -15,4 +15,5 @@ public interface InspectTableRecordMapper extends AbstractMapper<InspectTableRec
     public long getIdByTableId(long tableId);
     public int updateTableRecord(@Param("exceptionCount") int exceptionCount,@Param("tableId") long tableId,@Param("createTime") String createTime,@Param("appId") long appId);
     public Long getInspectTableId(@Param("inspectTime") String inspectTime,@Param("inspectTableId") long inspectTableId,@Param("appId") long appId);
+    public Long getIdByCondition(@Param("inspectTableId")long inspectTableId,@Param("userId")long userId,@Param("mongoId")String mongoId,@Param("deviceId")long deviceId,@Param("appId")long appId);
 }

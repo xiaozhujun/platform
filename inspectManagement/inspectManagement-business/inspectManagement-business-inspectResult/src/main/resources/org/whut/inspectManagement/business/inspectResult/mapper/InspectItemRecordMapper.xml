@@ -129,4 +129,18 @@
         order by createTime desc
     </select>
 
+    <select id="getIdByCondition" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM inspectitemrecord
+        WHERE inspectTableId=#{inspectTableId} AND inspectTagId=#{inspectTagId} AND inspectItemId=#{inspectItemId}
+        AND inspectChoiceId=#{inspectChoiceId} AND createTime=#{date} AND userId=#{userId}
+        AND deviceId=#{deviceId} AND appId=#{appId}
+    </select>
+
+    <update id="updateTableRecordId" parameterType="map">
+        UPDATE inspectitemrecord
+        SET inspectTableRecordId=#{tableRecordId}
+        WHERE id=#{id}
+    </update>
+
 </mapper>

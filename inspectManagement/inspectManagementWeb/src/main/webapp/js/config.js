@@ -157,6 +157,9 @@
         "imageUpload":{
             "upload":"rs/imageUpload/upload",
             "getImageByNames":"rs/imageUpload/getImageByNames"
+        },
+        "inspectResult":{
+            "upload":"rs/inspectResult/upload"
         }
     }
 })(jQuery);

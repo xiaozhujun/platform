@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.whut.inspectManagement.business.inspectResult.entity.ImageUpload;
 import org.whut.inspectManagement.business.inspectResult.service.ImageUploadService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.logger.PlatformLogger;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,12 +50,26 @@ public class ImageUploadServiceWeb {
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
         try {
-            request.setCharacterEncoding("UTF-8");
             MultipartFile file = multipartRequest.getFile("filename");
             String filename = file.getOriginalFilename();
             String [] s = filename.split("\\.");
             String realPath = request.getSession().getServletContext().getRealPath("/");
             String image = realPath+"uploadTest\\"+filename;
+            long itemId = Long.parseLong(multipartRequest.getParameter("itemId"));
+            long itemRecordId = Long.parseLong(multipartRequest.getParameter("itemRecordId"));
+            long tableRecordId = Long.parseLong(multipartRequest.getParameter("tableRecordId"));
+
+            long appId = UserContext.currentUserAppId();
+            long id = 0;
+            try {
+                id = imageUploadService.getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId(itemId,itemRecordId,tableRecordId,appId);
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+            if (id != 0) {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"该图片已上传");
+            }
             if (s[s.length - 1].equals("jpg")) {
                 InputStream inputStream = file.getInputStream();
                 byte[] bs = new byte[1024 * 2];
@@ -65,16 +81,15 @@ public class ImageUploadServiceWeb {
                 }
                 outputStream.close();
                 inputStream.close();
-//                ImageUpload imageUpload = new ImageUpload();
-//                long appId = UserContext.currentUserAppId();
-//                Date date = new Date();
-//                imageUpload.setAppId(appId);
-//                imageUpload.setCreateTime(date);
-//                imageUpload.setImage(image);
-//                imageUpload.setItemId(itemId);
-//                imageUpload.setItemRecordId(itemRecordId);
-//                imageUpload.setTableRecordId(tableRecordId);
-//                imageUploadService.add(imageUpload);
+                ImageUpload imageUpload = new ImageUpload();
+                Date date = new Date();
+                imageUpload.setAppId(appId);
+                imageUpload.setCreateTime(date);
+                imageUpload.setImage(image);
+                imageUpload.setItemId(itemId);
+                imageUpload.setItemRecordId(itemRecordId);
+                imageUpload.setTableRecordId(tableRecordId);
+                imageUploadService.add(imageUpload);
             }
             else {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "图片格式错误，请上传JPG格式文件");

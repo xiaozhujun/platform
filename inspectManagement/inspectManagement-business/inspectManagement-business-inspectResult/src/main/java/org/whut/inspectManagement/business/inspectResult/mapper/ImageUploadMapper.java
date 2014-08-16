@@ -13,4 +13,5 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
  */
 public interface ImageUploadMapper extends AbstractMapper<ImageUpload> {
     public String getImageByNames(@Param("userName") String userName, @Param("deviceName") String deviceName, @Param("itemRecordId") long itemRecordId, @Param("itemId") long itemId, @Param("appId") long appId);
+    public Long getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId(@Param("itemId")long itemId,@Param("itemRecordId")long itemRecordId,@Param("tableRecordId")long tableRecordId,@Param("appId")long appId);
 }

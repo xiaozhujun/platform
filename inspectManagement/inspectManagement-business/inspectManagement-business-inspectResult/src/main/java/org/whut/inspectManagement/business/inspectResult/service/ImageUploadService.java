@@ -22,4 +22,8 @@ public class ImageUploadService {
     public String getImageByNames(String userName,String deviceName,long itemRecordId,long itemId,long appId) {
         return imageUploadMapper.getImageByNames(userName,deviceName,itemRecordId,itemId,appId);
     }
+
+    public Long getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId(long itemId,long itemRecordId,long tableRecordId,long appId) {
+        return imageUploadMapper.getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId(itemId, itemRecordId, tableRecordId, appId);
+    }
 }

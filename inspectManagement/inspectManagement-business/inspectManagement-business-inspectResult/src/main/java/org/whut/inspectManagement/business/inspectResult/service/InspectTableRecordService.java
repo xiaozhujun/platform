@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.deptAndEmployee.mapper.EmployeeMapper;
 import org.whut.inspectManagement.business.device.mapper.DeviceMapper;
 import org.whut.inspectManagement.business.device.mapper.InspectTagMapper;
+import org.whut.inspectManagement.business.inspectResult.entity.ImageBean;
 import org.whut.inspectManagement.business.inspectResult.entity.InspectItemRecord;
 import org.whut.inspectManagement.business.inspectResult.entity.InspectTableRecord;
 import org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecordMapper;
@@ -20,10 +21,7 @@ import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,8 +50,10 @@ public class InspectTableRecordService {
 
     private MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","inspectItemRecordCollection");
 
-    public int DomReadXml(Document document) {
+    public Map DomReadXml(Document document) {
         List<InspectItemRecord> exceptionRecordList = new ArrayList<InspectItemRecord>();
+        List<ImageBean> imageArrayList = new ArrayList<ImageBean>();
+        Map map = new HashMap();
         long appId= UserContext.currentUserAppId();
         int flag = 0;
         String tname = null;
@@ -79,7 +79,8 @@ public class InspectTableRecordService {
         Element root = document.getRootElement();
         if(root.getName()!="check"){
             flag = 2;
-            return flag;
+            map.put("flag",flag);
+            return map;
         }
         else{
             tname = root.attribute("inspecttype").getValue();
@@ -89,7 +90,8 @@ public class InspectTableRecordService {
             dnum=root.attribute("devicenumber").getValue();
             if(tname.equals("")||t.equals("")||worknum.equals("")||dnum.equals("")){
                 flag = 2;
-                return  flag;
+                map.put("flag",flag);
+                return  map;
             }
             try{
                 inspectTableId=inspectTableMapper.getIdByNameAndAppId(tname,appId);
@@ -101,7 +103,8 @@ public class InspectTableRecordService {
             if(inspectTableId==0)
             {
                 flag = 3;
-                return flag;
+                map.put("flag",flag);
+                return map;
             }
 
             deviceId = deviceMapper.getIdByNumber(dnum,appId);
@@ -118,17 +121,18 @@ public class InspectTableRecordService {
 
             long checkedTableId = 0;
             if(inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId)!=null){
-            try{
-                checkedTableId = inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+                try{
+                    checkedTableId = inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             if(checkedTableId>0){
                 System.out.println("点检结果已存在!");
                 flag  =1 ;
-                return flag;
+                map.put("flag",flag);
+                return map;
             }
             else if(inspectTableRecordMapper.getInspectTableId(t,inspectTableId,appId)==null){
 
@@ -183,10 +187,14 @@ public class InspectTableRecordService {
                             inspectItemRecord.setAppId(appId);
                             inspectItemRecord.setCreateTime(new Date());
                             inspectItemRecord.setInspectTime(inspectTime);
-                            //inspectItemRecordMapper.add(inspectItemRecord);
+                            inspectItemRecordMapper.add(inspectItemRecord);
                             inspectItemRecords.add(inspectItemRecord);
                             System.out.println(tname + area + inspectTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
-
+                            long tempItemRecordId = inspectItemRecordMapper.getIdByCondition(inspectTableId,inspectTagId,itemId1,inspectChoiceId,inspectItemRecord.getCreateTime(),userId,deviceId,appId);
+                            ImageBean imageBean = new ImageBean();
+                            imageBean.setItemRecordId(tempItemRecordId);
+                            imageBean.setItemId(itemId1);
+                            imageArrayList.add(imageBean);
                         }
                     }
                 }
@@ -205,6 +213,12 @@ public class InspectTableRecordService {
                 inspectTableRecord.setDeviceId(deviceId);
                 inspectTableRecord.setAppId(appId);
                 inspectTableRecordMapper.add(inspectTableRecord);
+                long tempTableRecordId = inspectTableRecordMapper.getIdByCondition(inspectTableId,userId,mongoId,deviceId,appId);
+
+                for (int i=0;i<imageArrayList.size();i++) {
+                    imageArrayList.get(i).setTableRecordId(tempTableRecordId);
+                    inspectItemRecordMapper.updateTableRecordId(tempTableRecordId,imageArrayList.get(i).getItemRecordId());
+                }
 
                 //根据点检结果更新任务状态
                 SimpleDateFormat taskDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -232,34 +246,35 @@ public class InspectTableRecordService {
                 }
 
                 flag=5;
-            }
+                map.put("flag",flag);
+                map.put("list",imageArrayList);            }
             //inspectTableRecordMapper.updateTableRecord(exceptionCount,inspectTableId,t,appId);
         }
 
-        return flag;
+        return map;
     }
-      public String insertToInspectItemRecordCollection(List<InspectItemRecord> inspectItemRecords){
-          int len=inspectItemRecords.size();
-          String mongoString="{\"inspectitemrecords\":[";
-          for(int i=0;i<len;i++){
-              String mongoId=inspectItemRecords.get(i).getUserId()+""+inspectItemRecords.get(i).getDeviceId()+""+inspectItemRecords.get(i).getInspectTableId();
-              mongoString+="{\"inspectTableId\":\""+inspectItemRecords.get(i).getInspectTableId()+
-                      "\",\"inspectTagId\":\""+inspectItemRecords.get(i).getInspectTagId()+"\",\"inspectItemId\":\""+inspectItemRecords.get(i).getInspectItemId()+
-                      "\",\"inspectChoiceId\":\""+inspectItemRecords.get(i).getInspectChoiceId()+"\",\"inspectChoiceValue\":\""+inspectItemRecords.get(i).getInspectChoiceValue()+
-                      "\",\"inspectTableRecordId\":\""+inspectItemRecords.get(i).getInspectTableRecordId()+"\",\"userId\":\""+inspectItemRecords.get(i).getUserId()+
-                      "\",\"deviceId\":\""+inspectItemRecords.get(i).getDeviceId()+"\",\"appId\":\""+inspectItemRecords.get(i).getAppId()+"\",\"note\":\""+inspectItemRecords.get(i).getNote()+"\"},";
-              if(i+1==len){
-                  mongoString+="{\"inspectTableId\":\""+inspectItemRecords.get(i).getInspectTableId()+
-                          "\",\"inspectTagId\":\""+inspectItemRecords.get(i).getInspectTagId()+"\",\"inspectItemId\":\""+inspectItemRecords.get(i).getInspectItemId()+
-                          "\",\"inspectChoiceId\":\""+inspectItemRecords.get(i).getInspectChoiceId()+"\",\"inspectChoiceValue\":\""+inspectItemRecords.get(i).getInspectChoiceValue()+
-                          "\",\"inspectTableRecordId\":\""+inspectItemRecords.get(i).getInspectTableRecordId()+"\",\"userId\":\""+inspectItemRecords.get(i).getUserId()+
-                          "\",\"deviceId\":\""+inspectItemRecords.get(i).getDeviceId()+"\",\"appId\":\""+inspectItemRecords.get(i).getAppId()+"\",\"note\":\""+inspectItemRecords.get(i).getNote()+"\"}";
-              }
-          }
-          mongoString+="]}";
-          return mongoConnector.insertDocument(mongoString);
-      }
-      public String filterDateString(String d){
+    public String insertToInspectItemRecordCollection(List<InspectItemRecord> inspectItemRecords){
+        int len=inspectItemRecords.size();
+        String mongoString="{\"inspectitemrecords\":[";
+        for(int i=0;i<len;i++){
+            String mongoId=inspectItemRecords.get(i).getUserId()+""+inspectItemRecords.get(i).getDeviceId()+""+inspectItemRecords.get(i).getInspectTableId();
+            mongoString+="{\"inspectTableId\":\""+inspectItemRecords.get(i).getInspectTableId()+
+                    "\",\"inspectTagId\":\""+inspectItemRecords.get(i).getInspectTagId()+"\",\"inspectItemId\":\""+inspectItemRecords.get(i).getInspectItemId()+
+                    "\",\"inspectChoiceId\":\""+inspectItemRecords.get(i).getInspectChoiceId()+"\",\"inspectChoiceValue\":\""+inspectItemRecords.get(i).getInspectChoiceValue()+
+                    "\",\"inspectTableRecordId\":\""+inspectItemRecords.get(i).getInspectTableRecordId()+"\",\"userId\":\""+inspectItemRecords.get(i).getUserId()+
+                    "\",\"deviceId\":\""+inspectItemRecords.get(i).getDeviceId()+"\",\"appId\":\""+inspectItemRecords.get(i).getAppId()+"\",\"note\":\""+inspectItemRecords.get(i).getNote()+"\"},";
+            if(i+1==len){
+                mongoString+="{\"inspectTableId\":\""+inspectItemRecords.get(i).getInspectTableId()+
+                        "\",\"inspectTagId\":\""+inspectItemRecords.get(i).getInspectTagId()+"\",\"inspectItemId\":\""+inspectItemRecords.get(i).getInspectItemId()+
+                        "\",\"inspectChoiceId\":\""+inspectItemRecords.get(i).getInspectChoiceId()+"\",\"inspectChoiceValue\":\""+inspectItemRecords.get(i).getInspectChoiceValue()+
+                        "\",\"inspectTableRecordId\":\""+inspectItemRecords.get(i).getInspectTableRecordId()+"\",\"userId\":\""+inspectItemRecords.get(i).getUserId()+
+                        "\",\"deviceId\":\""+inspectItemRecords.get(i).getDeviceId()+"\",\"appId\":\""+inspectItemRecords.get(i).getAppId()+"\",\"note\":\""+inspectItemRecords.get(i).getNote()+"\"}";
+            }
+        }
+        mongoString+="]}";
+        return mongoConnector.insertDocument(mongoString);
+    }
+    public String filterDateString(String d){
           /*String s=null;
           try{
               SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -269,8 +284,8 @@ public class InspectTableRecordService {
               e.printStackTrace();
           }
           return s;*/
-          return d;
-      }
+        return d;
+    }
 
     public InspectTableRecord getById(long id){
         InspectTableRecord inspectTableRecord = new InspectTableRecord();
@@ -278,8 +293,8 @@ public class InspectTableRecordService {
         return inspectTableRecordMapper.get(inspectTableRecord);
     }
 
-    public long getIdByTableId(long tableId){
-        return inspectTableRecordMapper.getIdByTableId(tableId);
+    public long getIdByTableId(long inspectTableId) {
+        return inspectTableRecordMapper.getIdByTableId(inspectTableId);
     }
 }
 

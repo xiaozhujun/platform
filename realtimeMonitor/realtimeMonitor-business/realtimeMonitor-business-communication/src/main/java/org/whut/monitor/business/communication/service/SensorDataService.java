@@ -85,7 +85,7 @@ public class SensorDataService {
                 long count = Long.parseLong(redisConnector.get("sensor:{"+sensor+"}:warnCount"));
                 Date date = new Date();
                 String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-                redisConnector.set("sensor:{"+sensor+"}:lastDate",keyExpireTime,dateString);
+                redisConnector.set("sensor:{"+sensor+"}:lastDate",dateString);
                 if (algorithmService.compare(Double.parseDouble(curData),Double.parseDouble(warnValue))) {
                     System.out.println("执行更新操作");
                     updateWarnCondition(sensor,curData,count+1,date);

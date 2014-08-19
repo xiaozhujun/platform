@@ -23,4 +23,7 @@ public interface CollectorMapper extends AbstractMapper<Collector>{
     public void deleteById(long Id);
     public List<Map<String,String>> getCollectorNameByAppId(long appId);
     public String getCollectNameById(long id);
+    public String getCollectNumberBySensorNumber(String number);
+    public  void updateStatusByNumber(@Param("number")String number,@Param("status")String status);
+    public  void  updateTimeByNumber(@Param("number")String number,@Param("lastMessageTime")String lastMessageTime);
 }

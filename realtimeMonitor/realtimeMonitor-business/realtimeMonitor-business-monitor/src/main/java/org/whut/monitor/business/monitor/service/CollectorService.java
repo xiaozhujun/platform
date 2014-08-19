@@ -53,4 +53,15 @@ public class CollectorService {
     public String getCollectNameById (long Id){
         return collectorMapper.getCollectNameById(Id);
     }
+    public String getCollectNumberBySensorNumber (String number){
+        return collectorMapper.getCollectNumberBySensorNumber(number);
+    }
+
+    public void updateStatusByNumber (String number,String status){
+        collectorMapper.updateStatusByNumber(number,status);
+    }
+
+    public void updateTimeByNumber (String number,String lastMessageTime){
+        collectorMapper.updateTimeByNumber(number,lastMessageTime);
+    }
 }

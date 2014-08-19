@@ -27,6 +27,7 @@
         <module>fundamental-map</module>
         <module>fundamental-message</module>
         <module>fundamental-communication</module>
+        <module>fundamental-sms</module>
     </modules>
 
 

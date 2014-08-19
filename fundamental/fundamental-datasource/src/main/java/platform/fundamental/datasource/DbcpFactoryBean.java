@@ -60,8 +60,8 @@ public class DbcpFactoryBean implements FactoryBean<BasicDataSource>,
 	}
 
 	public void setDbname(String dbname) {
-		this.dbname = dbname;
-	}
+        this.dbname = dbname;
+    }
 
 	protected void tryToSetProperties() {
 		String configPrefix = "dbcp.";

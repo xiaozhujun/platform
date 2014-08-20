@@ -34,9 +34,9 @@
         AND a.itemId=#{itemId} AND a.itemRecordId=#{itemRecordId} AND a.itemRecordId=e.id AND e.inspectTableRecordId=d.id AND a.appId=#{appId}
     </select>
 
-    <select id="getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId" parameterType="map" resultType="java.lang.Long">
+    <select id="getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppIdAndPath" parameterType="map" resultType="java.lang.Long">
         SELECT id
         FROM image_upload
-        WHERE itemId=#{itemId} AND itemRecordId=#{itemRecordId} AND tableRecordId=#{tableRecordId} AND appId=#{appId}
+        WHERE itemId=#{itemId} AND itemRecordId=#{itemRecordId} AND tableRecordId=#{tableRecordId} AND appId=#{appId} AND image=#{imagePath}
     </select>
 </mapper>

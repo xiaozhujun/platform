@@ -23,7 +23,7 @@ public class ImageUploadService {
         return imageUploadMapper.getImageByNames(userName,deviceName,itemRecordId,itemId,appId);
     }
 
-    public Long getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId(long itemId,long itemRecordId,long tableRecordId,long appId) {
-        return imageUploadMapper.getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId(itemId, itemRecordId, tableRecordId, appId);
+    public Long getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppIdAndPath(long itemId,long itemRecordId,long tableRecordId,long appId,String imagePath) {
+        return imageUploadMapper.getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppIdAndPath(itemId, itemRecordId, tableRecordId, appId,imagePath);
     }
 }

@@ -1,12 +1,15 @@
 package org.whut.monitor.business.algorithm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.monitor.business.algorithm.entity.Complex;
+import org.whut.monitor.business.algorithm.entity.FFT;
 import org.whut.monitor.business.monitor.service.SensorService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
@@ -20,7 +23,7 @@ import static java.lang.Math.sqrt;
 public class AlgorithmService {
 //    @Autowired
 //    private SensorService sensorService;
-
+    //均方差
     public double meanVariance(ArrayList sensorDataArray) {
         Double[] sensorData = new Double[sensorDataArray.size()];
         for(int i=0;i<sensorDataArray.size();i++){
@@ -67,9 +70,38 @@ public class AlgorithmService {
         switch (warnType) {
             case -1: return 0;
             case 0: return meanVariance(data);
-            case 1:System.out.println("计算最大值");break;
-            case 2:System.out.println("计算最大值");break;
+            case 1:return MaxValue(data);
+            case 2:return MinValue(data);
         }
         return 0;
     }
+
+    //最大值
+    public double MaxValue(ArrayList sensorDataArray) {
+        Double[] sensorData = new Double[sensorDataArray.size()];
+        for(int i=0;i<sensorDataArray.size();i++){
+            sensorData[i] = Double.parseDouble(sensorDataArray.get(i).toString());
+        }
+        double maxValue=sensorData[0];
+        for(int i=0; i<sensorDataArray.size(); i++) {
+            if(maxValue<sensorData[i])  maxValue=sensorData[i];
+        }
+        return maxValue;
+    }
+
+    //最小值
+    public double MinValue(ArrayList sensorDataArray) {
+        Double[] sensorData = new Double[sensorDataArray.size()];
+        for(int i=0;i<sensorDataArray.size();i++){
+            sensorData[i] = Double.parseDouble(sensorDataArray.get(i).toString());
+        }
+        double minValue=sensorData[0];
+        for(int i=0; i<sensorDataArray.size(); i++) {
+            if(minValue>sensorData[i])  minValue=sensorData[i];
+        }
+        return minValue;
+    }
+
+
+
 }

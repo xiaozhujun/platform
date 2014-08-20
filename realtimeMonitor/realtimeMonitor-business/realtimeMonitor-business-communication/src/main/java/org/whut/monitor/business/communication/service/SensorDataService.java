@@ -73,7 +73,7 @@ public class SensorDataService {
                 }
                 ArrayList data = (ArrayList)curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
                 AlgorithmService algorithmService = AlgorithmServiceFactory.create();
-                if (redisConnector.get("sensor:{"+sensor+"}:warnType") == null) {
+                if (redisConnector.get("sensor:{"+sensor+"}:warnType") == null || !redisConnector.get("sensor:{"+sensor+"}:warnType").equals(redisConnector.get("sensor:{"+sensor+"}:warnTypeChanged"))) {
                     Map map = sensorService.getWarnConditionByNumber(sensor);
                     redisConnector.set("sensor:{"+sensor+"}:warnType",map.get("warnType").toString());
                     redisConnector.set("sensor:{"+sensor+"}:warnValue",map.get("warnValue").toString());

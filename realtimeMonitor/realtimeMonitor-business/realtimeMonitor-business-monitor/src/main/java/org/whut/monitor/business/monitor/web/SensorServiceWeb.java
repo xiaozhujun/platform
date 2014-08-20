@@ -14,6 +14,7 @@ import org.whut.monitor.business.monitor.service.SensorService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
+import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -254,6 +255,8 @@ public class SensorServiceWeb {
         if(collectorId>0){
             try{
                 updated = sensorService.update(sensor);
+                RedisConnector redisConnector = new RedisConnector();
+                redisConnector.set("sensor:{"+sensor+"}:warnTypeChanged",sensor.getWarnType());
             }catch(Exception e){
                 e.printStackTrace();
                 logger.error(e.getMessage());

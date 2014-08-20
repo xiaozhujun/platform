@@ -19,6 +19,9 @@
             $.post($.URL.collector.list,null,collectorListCallback,"json");
             $.post($.URL.sensor.getMongoDataLastList,null,lastTimeCallback,"json");
         });
+        $.ajaxSetup({
+            async: false
+        });
         var gridData =[];
         var lastTime="";
         function collectorListCallback(data){
@@ -41,16 +44,24 @@
         function f_initGrid(){
             grid = $("#collectorGrid").ligerGrid({
                 columns:[
+                    {name:'number',display:'编号',width:'auto'},
                     {name:'id',display:'序号',width:'auto'},
               //    {name:'groupName',display:'测量组',width:'auto'},
                     {name:'name',display:'采集仪名称',width:'auto'},
                     {name:'description',display:'采集仪描述',width:'auto'},
-                    {name:'lastTime',display:'最后通信时间',width:'auto',
-                        render:function(){
-//                            $.post($.URL.sensor.getMongoDataLastList,null,lastTimeCallback,"json");
-                            return lastTime;
-
+                    {name:'lastMessageTime',display:'最后通信时间',width:'auto'
+                        ,render:function(item){
+                        var num =item.number;
+                        var tempURL = $.URL.sensors.getCollectorStatus;
+                        var myURL = tempURL + num.toString();
+//                        alert(myURL);
+                        $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
+                        function lastTimeCallback(result) {
+//                            alert(result["lastDate"].toString());
+                            sensorTime = result["lastDate"].toString();
                         }
+                        return sensorTime;
+                    }
                     },
                     { display: '状态', name: 'status',width:'auto' }
                 ],

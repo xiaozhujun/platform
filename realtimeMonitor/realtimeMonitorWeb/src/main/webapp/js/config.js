@@ -72,7 +72,8 @@
         },
         "sensors":{
             "getSensorDataArray":"rs/sensors/sensor/data/",
-            "getWarnCondition":"rs/sensors/sensor/warnCondition/"
+            "getWarnCondition":"rs/sensors/sensor/warnCondition/" ,
+            "getCollectorStatus":"rs/sensors/sensor/collectorStatus/"
         },
         "warnCondition":{
             "add":"rs/warnCondition/add",

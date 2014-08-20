@@ -8,9 +8,11 @@ package org.whut.platform.fundamental.communication.server;
  * To change this template use File | Settings | File Templates.
  */
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
+import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -41,6 +43,11 @@ public class NIOServer implements Runnable{
 
     @Autowired
     private MessageDispatcher messageDispatcher;
+
+    @Autowired
+    private CollectorService collectorService;
+
+    private RedisConnector redisConnector = new RedisConnector();
 
     public MessageDispatcher getMessageDispatcher() {
         return messageDispatcher;
@@ -135,6 +142,10 @@ public class NIOServer implements Runnable{
         }catch (Exception e){
             if(e instanceof IOException){
                 try {
+                    String sensorNum = redisConnector.get("sensorNum");
+                    System.out.println(sensorNum);
+                    collectorService.updateTimeByNumber(redisConnector.get("sensor:{"+sensorNum+"}:collector"),redisConnector.get("sensor:{"+sensorNum+"}:lastDate"));
+                    collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+sensorNum+"}:collector"),"离线或异常");
                     client.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

@@ -71,6 +71,22 @@ public class SensorDataWeb {
 //        System.out.println("redis"+map.get("LastData"));
         return getJsonp(map,request.getParameter("callback"));
     }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/sensor/collectorStatus/{collectorNum}.html")
+    @GET
+    public String collectorStatus(@Context HttpServletRequest request,@PathParam("collectorNum")String collectorNum) {
+        String lastDate=redisConnector.get("sensor:{"+collectorNum+"}:collectorTime");
+        System.out.print("lastDate测试结果："+lastDate);
+        Map map = new HashMap();
+        if (lastDate!= null) {
+            map.put("lastDate", lastDate);
+        }
+        else {
+            map.put("lastDate","暂无数据");
+        }
+//        System.out.println("redis"+map.get("LastData"));
+        return getJsonp(map,request.getParameter("callback"));
+    }
 
     //将数组列表转换为数据对象
     private float[] getDataArray(ArrayList dataArray){

@@ -92,4 +92,25 @@
         FROM collector
         WHERE ID=#{id}
     </select>
+    <select id="getCollectNumberBySensorNumber" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT c.number
+        FROM collector c,sensor  s
+        WHERE s.number=#{number} AND s.collectorId=c.id
+    </select>
+
+    <update id="updateStatusByNumber" parameterType="map">
+        UPDATE collector
+        <set>
+            <if test="status!=null">status=#{status}</if>
+        </set>
+        WHERE `number`=#{number}
+    </update>
+
+    <update id="updateTimeByNumber" parameterType="map">
+        UPDATE collector
+        <set>
+            <if test="lastMessageTime!=null">lastMessageTime=#{lastMessageTime}</if>
+        </set>
+        WHERE `number`=#{number}
+    </update>
 </mapper>

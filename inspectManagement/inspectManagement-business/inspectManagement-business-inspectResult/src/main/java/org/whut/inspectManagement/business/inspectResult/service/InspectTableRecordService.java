@@ -240,10 +240,10 @@ public class InspectTableRecordService {
                 inspectTask.setFaultCount(exceptionCount);
                 inspectTaskMapper.completeTask(inspectTask);
 
-                for (InspectItemRecord exceptionRecord:exceptionRecordList){
-                    exceptionRecord.setInspectTableRecordId(inspectTableRecord.getId());
-                    inspectItemRecordMapper.add(exceptionRecord);
-                }
+//                for (InspectItemRecord exceptionRecord:exceptionRecordList){
+//                    exceptionRecord.setInspectTableRecordId(inspectTableRecord.getId());
+//                    inspectItemRecordMapper.add(exceptionRecord);
+//                }
 
                 flag=5;
                 map.put("flag",flag);

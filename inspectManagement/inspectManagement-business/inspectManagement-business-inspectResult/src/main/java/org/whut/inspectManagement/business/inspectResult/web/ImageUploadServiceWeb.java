@@ -62,10 +62,9 @@ public class ImageUploadServiceWeb {
             long appId = UserContext.currentUserAppId();
             long id = 0;
             try {
-                id = imageUploadService.getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppId(itemId,itemRecordId,tableRecordId,appId);
+                id = imageUploadService.getIdByItemIdAndItemRecordIdAndTableRecordIdAndAppIdAndPath(itemId,itemRecordId,tableRecordId,appId,image);
             } catch (Exception e) {
-                e.printStackTrace();
-                logger.error(e.getMessage());
+                id = 0;
             }
             if (id != 0) {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"该图片已上传");

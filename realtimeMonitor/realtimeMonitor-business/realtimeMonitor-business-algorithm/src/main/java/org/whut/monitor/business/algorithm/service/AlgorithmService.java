@@ -1,8 +1,6 @@
 package org.whut.monitor.business.algorithm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.whut.monitor.business.algorithm.entity.Complex;
-import org.whut.monitor.business.algorithm.entity.FFT;
 import org.whut.monitor.business.monitor.service.SensorService;
 
 import java.util.ArrayList;

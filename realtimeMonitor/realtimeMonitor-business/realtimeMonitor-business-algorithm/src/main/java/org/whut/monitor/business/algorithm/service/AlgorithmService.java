@@ -2,7 +2,6 @@ package org.whut.monitor.business.algorithm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.monitor.service.SensorService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

@@ -28,6 +28,8 @@ public class SearchReportBean {
 
     private String shijian;
 
+    private String note;
+
     public String getCreatetime() {
         return createtime;
     }
@@ -106,5 +108,13 @@ public class SearchReportBean {
 
     public void setShijian(String shijian) {
         this.shijian = shijian;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

@@ -58,6 +58,7 @@
             var eTime=$("#endTime").val();
             var mySelect=$("#mySelect").val();
             var jsonString  = $.toJSON(currentMonitor);
+            console.log(jsonString);
             var number = $.evalJSON(jsonString).number;
             $.post($.URL.sensor.getMongoDataListInJson,{"sTime":sTime,"eTime":eTime,"number":number,"mySelect":mySelect},sensorListCallback1,"json");
         }

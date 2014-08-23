@@ -32,7 +32,7 @@
             }
             else{
                 alert("on");
-                refresh();}
+                refrash();}
         });
         function refresh(){
 //            $.post($.URL.sensor.getMongoDataLastListByNumber,{"num":num},sensorListCallback1,"json");
@@ -104,6 +104,42 @@
             margin-top: 5px;
         }
     </style>
+    <script type="text/javascript">
+        var  ws=null;
+        var num= currentMonitor.number;
+        var tempURL = $.URL.sensors.getSensorDataArray;
+        var myURL = tempURL + num.toString();
+        $(document).ready(function () {
+            $("#number").html(currentMonitor.number);
+            $("#group").html(currentMonitor.groupName);
+            if(currentMonitor.status=="暂无数据")  {
+                alert("暂无数据");
+            }
+            else{
+                connect();
+            }
+        });
+        function connect() {
+            var url="ws://localhost:8080/realtimeMonitor/websocket/hello";
+            ws = (url.indexOf('sockjs') != -1) ? new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);
+            ws.onopen = function () {
+                console.log('Info: connection opened.');
+                ws.send(currentMonitor.number);
+            ws.onmessage = function (event) {
+                console.log ("收到消息！"+event.data);
+                var sensorJumpName=eval("(" +event.data+ ")");
+                var number=sensorJumpName.sensors[0].sensorNum;
+                var data1=sensorJumpName.sensors[0].data;
+            if(currentMonitor.number==number){
+                  drawChart("#waveContainer", data1, "mV");
+                }
+            };
+            ws.onclose = function (event) {
+                console.log('Info: connection closed.');
+                console.log(event);			};
+            }
+        }
+    </script>
 </head>
 <body>
 <div id="realDataContainer">
@@ -113,15 +149,7 @@
                 <td><div class="lableTD">传感器编号:</div></td>
                 <td id="number" class="valueTD"></td>
                 <td><div class="lableTD">监测组:</div></td>
-                <td id="" class="valueTD"></td>
-                <td><div class="lableTD">刷新时间：</div></td>
-                <td>
-                    <select id="mySelect">
-                        <option value="2">2秒</option>
-                        <option value="5">5秒</option>
-                        <option value="10">10秒</option>
-                    </select>
-                </td>
+                <td id="group" class="valueTD"></td>
             </tr>
         </table>
     </div>

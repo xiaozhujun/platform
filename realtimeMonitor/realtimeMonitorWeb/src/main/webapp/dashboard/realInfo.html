@@ -46,11 +46,7 @@
                         var myURL = tempURL + num.toString();
                         $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
                            function lastTimeCallback(result) {
-//                               alert(result["LastData"]);
                           sensorTime = result["lastDate"].toString();
-//                            }
-//                        })
-//                        return sensorTime;
 
                    }
                         return curDateCallback();
@@ -69,7 +65,7 @@
                            //当前日期
                         var currDate = new Date();
                         var dif = (currDate.getTime()-date.getTime())/(1000*3600);
-//                            alert(dif);
+
 
                         if(dif>1){
                            return"离线";
@@ -99,9 +95,6 @@
 
         function getInfo(rowindex){
             currentMonitor = grid.getRow(rowindex);
-//            var jsonString  = $.toJSON(currentMonitor);
-//            number = $.evalJSON(jsonString).number;
-            //  alert( currentMonitor.number);
             $("#realInfoTab").load("dashboard/realData.html");
         }
 

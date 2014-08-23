@@ -253,6 +253,7 @@ public class inspectReportServiceWeb {
                 reportInfoMap.put(MongoConstant.reportCreateTime, map.get(MongoConstant.inspectTime));
                 reportInfoMap.put(MongoConstant.itemName,m.get(MongoConstant.itemName));
                 reportInfoMap.put(MongoConstant.inspectChoiceValue,m.get(MongoConstant.inspectChoiceValue));
+                reportInfoMap.put(MongoConstant.note,m.get(MongoConstant.note));
                 reportInfoList.add(reportInfoMap);
             }
         }
@@ -275,6 +276,7 @@ public class inspectReportServiceWeb {
                 searchReportBean.setItemName(m.get(MongoConstant.itemName));
                 searchReportBean.setInspectChoiceValue(m.get(MongoConstant.inspectChoiceValue));
                 searchReportBean.setExceptioncount(map.getExceptioncount());
+                searchReportBean.setNote(m.get(MongoConstant.note));
                 reportInfoList.add(searchReportBean);
                 }
             }

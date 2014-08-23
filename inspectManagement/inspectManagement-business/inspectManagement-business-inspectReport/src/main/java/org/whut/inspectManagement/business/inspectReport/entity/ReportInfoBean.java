@@ -22,6 +22,8 @@ public class ReportInfoBean {
 
     private String inspectChoiceValue;
 
+    private String note;
+
     public String gettName() {
         return tName;
     }
@@ -76,5 +78,13 @@ public class ReportInfoBean {
 
     public void setInspectChoiceValue(String inspectChoiceValue) {
         this.inspectChoiceValue = inspectChoiceValue;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

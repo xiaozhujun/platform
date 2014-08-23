@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/reportShow.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $.post($.URL.employee.list,null,userIdCallback,"json");
+        });
+
+        function userIdCallback(data) {
+            if(data.code==200){
+                var userData=[];
+                for(var i=0;i<data.data.length;i++){
+                    var d={};
+                    d['text']=data.data[i].name;
+                    d['id']=data.data[i].id;
+                    userData.push(d);
+                }
+                $("#employeeId").ligerComboBox({
+                    data:userData,valueFieldID:"exceptionUserNameSelect" ,
+                    onSelected:userSelectCallback
+                });
+            }
+        }
+
+        function userSelectCallback() {
+            var user=$("#exceptionUserNameSelect").val();
+            $.post($.URL.employee.getTelById,{"employeeId":user},telSelectCallback,"json");
+        }
+
+        function telSelectCallback(data) {
+            $("#mobile").val(data.data);
+        }
+    </script>
+</head>
+<body>
+    <!--<h2>短信测试</h2>-->
+    <div>
+        姓名：<input id="employeeId" value="" type="text">
+    </div>
+
+    <div id="formContainer">
+        <form action="http://sms.106vip.com/sms.aspx" method="post" id="smsForm">
+            企业id：<input id="userId" value="" type="text" name="userId"><br>
+            发送用户帐号：<input id="account" value="" type="text" name="account"><br>
+            发送帐号密码：<input id="password" value="" type="text" name="password"><br>
+            全部被叫号码：<input id="mobile" value="" type="text" name="mobile"><br>
+            发送内容：<input id="content" value="" type="text" name="content"><br>
+            定时发送时间：<input id="sendTime" value="" type="text" name="sendTime"><br>
+            发送任务命令：<input id="action" value="send" type="text" name="action"><br>
+            是否检查内容包含非法关键字：<input id="checkcontent" value="" type="text" name="checkcontent"><br>
+            任务名称：<input id="taskName" value="" type="text" name="taskName"><br>
+            号码总数量：<input id="countnumber" value="" type="text" name="countnumber"><br>
+            手机号码数量：<input id="mobilenumber" value="" type="text" name="mobilenumber"><br>
+            小灵通或座机号码数：<input id="telephonenumber" value="" type="text" name="telephonenumber"><br>
+            <div>
+                <button id="px-submit" type="submit">上传</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

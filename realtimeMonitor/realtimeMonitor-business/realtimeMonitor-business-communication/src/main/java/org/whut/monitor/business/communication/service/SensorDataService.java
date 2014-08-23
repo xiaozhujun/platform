@@ -14,11 +14,9 @@ import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -63,7 +61,6 @@ public class SensorDataService {
                 curSensor = (DBObject)sensors.get(i);
                 String sensor = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")).toString();
                 //long timestamp = new Date().getTime();
-                System.out.println(curSensor+"jjjjjjjjjjjjjjjj");
                 String temp = mongoConnector.insertDocumentObject(curSensor);
 
                 if(objectID!=null){

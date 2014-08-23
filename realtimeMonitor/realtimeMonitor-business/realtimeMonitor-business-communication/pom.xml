@@ -18,53 +18,31 @@
             <artifactId>fundamental-message</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-communication</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-util</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-mongoConnector</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-redisConnector</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-logger</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
-        <groupId>realtimeMonitor</groupId>
-        <artifactId>realtimeMonitor-business-algorithm</artifactId>
-        <version>${parent.version}</version>
+            <groupId>realtimeMonitor</groupId>
+            <artifactId>realtimeMonitor-business-algorithm</artifactId>
+            <version>${parent.version}</version>
         </dependency>
-
         <dependency>
             <groupId>realtimeMonitor</groupId>
             <artifactId>realtimeMonitor-business-monitor</artifactId>
@@ -74,6 +52,78 @@
             <groupId>platform</groupId>
             <artifactId>fundamental-redisConnector</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>4.0.2.RELEASE</version>
+        </dependency>
+        <!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <!-- spring核心包 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
     </dependencies>

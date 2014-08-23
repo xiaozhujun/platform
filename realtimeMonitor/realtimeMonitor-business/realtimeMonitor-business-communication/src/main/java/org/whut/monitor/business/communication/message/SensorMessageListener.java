@@ -6,6 +6,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.communication.service.SensorDataService;
+import org.whut.monitor.business.communication.websocket.WebsocketEndPoint;
 import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
@@ -16,7 +17,6 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
@@ -44,11 +44,20 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
         int keyExpireTime = Integer.parseInt(FundamentalConfigProvider.get("redis.key.expire"));
         String number = "";
         String lastDate = "";
+        String sensorData="";
+        String sensorNum="";
         //String collectorNum="";
         if (message instanceof ActiveMQTextMessage){
             try {
                 String messageText = ((ActiveMQTextMessage) message).getText();
                 logger.info("onMessage data: "+messageText);
+                try {
+                    WebsocketEndPoint webSocket = new WebsocketEndPoint();
+                    String sNum=webSocket.getTempMessage();
+                    webSocket.sendMessage(messageText);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
                 sensorDataService.saveMessage(messageText);
                 try{
                     JSONObject dataJson=new JSONObject(messageText);

@@ -21,15 +21,18 @@
   -
   - $Id$
   -->
-<web-app version="2.4"
-         xmlns="http://java.sun.com/xml/ns/j2ee"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-  <context-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/applicationContext.xml,classpath*:META-INF/spring/*-applicationContext.xml</param-value>
-  </context-param>
-  <!-- Servlet Filters ================================================ -->
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml,classpath*:META-INF/spring/*-applicationContext.xml</param-value>
+    </context-param>
+    <!-- Servlet Filters ================================================ -->
     <context-param>
         <param-name>logbackConfigLocation</param-name>
         <param-value>WEB-INF/logback.xml</param-value>
@@ -37,25 +40,25 @@
     <listener>
         <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
     </listener>
-  <!-- Filter mappings ================================================ -->
-
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-
-  <!--
-    - Declare Spring request listener which sets up the required RequestAttributes
-    - to support Springs and Cocoon custom bean scopes like the request scope or the
-    - session scope.
-    -->
-  <listener>
-    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-  </listener>
+    <!-- Filter mappings ================================================ -->
 
     <listener>
-    <description>Socket服务随web启动而启动</description>
-    <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
-</listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--
+      - Declare Spring request listener which sets up the required RequestAttributes
+      - to support Springs and Cocoon custom bean scopes like the request scope or the
+      - session scope.
+      -->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+    <listener>
+        <description>Socket服务随web启动而启动</description>
+        <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
+    </listener>
 
     <!-- Spring FilterChain(security) -->
     <filter>
@@ -66,7 +69,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <servlet>
         <servlet-name>jerseyServlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -74,12 +76,27 @@
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>org.whut.monitor.business,org.whut.platform.business</param-value>
         </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>jerseyServlet</servlet-name>
         <url-pattern>/rs/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>websocketServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:META-INF/spring/websocketmessage-applicationContext.xml</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>websocketServlet</servlet-name>
+        <url-pattern>/websocket/*</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>JasperReportImageServlet</servlet-name>
         <servlet-class>

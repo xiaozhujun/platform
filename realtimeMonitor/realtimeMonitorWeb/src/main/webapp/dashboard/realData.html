@@ -16,58 +16,6 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/highcharts.js"></script>
     <script type="text/javascript" src="js/chartTool.js"></script>
-    <script type="text/javascript">
-        var num= currentMonitor.number;
-        var tempURL = $.URL.sensors.getSensorDataArray;
-        var myURL = tempURL + num.toString();
-        checkRefresh=1;
-//        alert(myURL);
-        $(document).ready(function () {
-            $("#number").html(currentMonitor.number);
-            $("#group").html(currentMonitor.groupName);
-            alert(currentMonitor.status);
-            if(currentMonitor.status=="暂无数据")  {
-                alert("if");
-                drawChart("#waveContainer", data1, "mV");
-            }
-            else{
-                alert("on");
-                refrash();}
-        });
-        function refresh(){
-//            $.post($.URL.sensor.getMongoDataLastListByNumber,{"num":num},sensorListCallback1,"json");
-            if(checkRefresh){
-            $.get(myURL+".htm",null,sensorListCallback,"jsonp") ; }
-//            $.ajax({
-//                url: myURL+".htm",
-//                async:false,
-//                dataType:'jsonp',
-//                jsonpCallback:'callback',
-//                success: function meanVarianceCallback(result) {
-//                    h = result["curWarnValue"].toString();
-//                    count = result["warnCount"].toString();
-//                }
-//            });
-        }
-        var data1,data2;
-        function sensorListCallback(result){
-//            alert( result.data);
-       data1 = result.data;
-//            alert(data1);
-            drawChart("#waveContainer", data1, "mV");
-
-//        function callback(data){
-//            if(data.code==200){
-//                alert(data);
-//                data1=data.data.data;
-//                //data2=data.data.time;
-//                drawChart("#waveContainer", data1, "mV");
-//            }
-            var refreshTime=$("#mySelect").val();
-            setTimeout(refresh,refreshTime*1000);
-        }
-    </script>
-
     <style type="text/css">
         .l-div {
             height: 30px;
@@ -104,6 +52,42 @@
             margin-top: 5px;
         }
     </style>
+    <script type="text/javascript">
+        var  ws=null;
+        var num= currentMonitor.number;
+        var tempURL = $.URL.sensors.getSensorDataArray;
+        var myURL = tempURL + num.toString();
+        $(document).ready(function () {
+            $("#number").html(currentMonitor.number);
+            $("#group").html(currentMonitor.groupName);
+            if(currentMonitor.status=="暂无数据")  {
+                alert("暂无数据");
+            }
+            else{
+                connect();
+            }
+        });
+        function connect() {
+            var url="ws://localhost:8080/realtimeMonitor/websocket/hello";
+            ws = (url.indexOf('sockjs') != -1) ? new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);
+            ws.onopen = function () {
+                console.log('Info: connection opened.');
+                ws.send(currentMonitor.number);
+            ws.onmessage = function (event) {
+                console.log ("收到消息！"+event.data);
+                var sensorJumpName=eval("(" +event.data+ ")");
+                var number=sensorJumpName.sensors[0].sensorNum;
+                var data1=sensorJumpName.sensors[0].data;
+            if(currentMonitor.number==number){
+                  drawChart("#waveContainer", data1, "mV");
+                }
+            };
+            ws.onclose = function (event) {
+                console.log('Info: connection closed.');
+                console.log(event);			};
+            }
+        }
+    </script>
 </head>
 <body>
 <div id="realDataContainer">
@@ -113,15 +97,7 @@
                 <td><div class="lableTD">传感器编号:</div></td>
                 <td id="number" class="valueTD"></td>
                 <td><div class="lableTD">监测组:</div></td>
-                <td id="" class="valueTD"></td>
-                <td><div class="lableTD">刷新时间：</div></td>
-                <td>
-                    <select id="mySelect">
-                        <option value="2">2秒</option>
-                        <option value="5">5秒</option>
-                        <option value="10">10秒</option>
-                    </select>
-                </td>
+                <td id="group" class="valueTD"></td>
             </tr>
         </table>
     </div>

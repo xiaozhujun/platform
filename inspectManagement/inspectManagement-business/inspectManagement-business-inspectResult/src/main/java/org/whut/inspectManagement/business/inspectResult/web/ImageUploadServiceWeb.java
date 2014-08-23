@@ -111,7 +111,8 @@ public class ImageUploadServiceWeb {
             image = imageUploadService.getImageByNames(userName,deviceName,itemRecordId,itemId,appId);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e.getMessage());
+        }
+        if (image == null) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "该图片不存在");
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(image, JsonResultUtils.Code.SUCCESS);

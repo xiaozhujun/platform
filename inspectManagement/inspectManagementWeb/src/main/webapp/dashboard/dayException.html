@@ -95,6 +95,7 @@ function showGrid(data){
     f_peopleRecord(grid);
 }
 var manager, g;
+var h = "";
 function f_peopleRecord(grid)
 {
     g = manager = grid.ligerGrid({
@@ -114,15 +115,53 @@ function f_peopleRecord(grid)
             { display: '汇报日期', name: 'createTime',
                 editor: { type: 'text' }
             },
-            { display: '状态', name: 'inspectChoiceValue',
+            { display: '状态', name: 'inspectChoiceValue',width:'auto',
                 editor: { type: 'text' }
             },
             { display: '描述', name: 'note',
                 editor: { type: 'text' }
             },
-            { display: '异常快照', name:'abnormalPicture', editor:{type:'text'},
-                render:function(rowdata,rowindex,value){
-                    return "<a href='javascript:abnormal(" + rowindex+ ")'>快照</a> ";
+            { display: '异常拍照', name:'abnormalPicture', editor:{type:'text'},
+                render:function(rowdata, rowindex, value){
+                    var userName = rowdata.userName;
+                    var deviceName = rowdata.deviceName;
+                    var itemRecordId = rowdata.id;
+                    var itemId = rowdata.itemId;
+//                    $.post($.URL.imageUpload.getImageByNames,{"userName":userName,"deviceName":deviceName,"itemRecordId":itemRecordId,"itemId":itemId}
+//                            ,function imageCallback(data) {
+//                                if(data.code == 200) {
+//                                    alert("成功");
+//                                    h = "查看";
+//                                    alert(h);
+//                                }
+//                                else {
+//                                    h = "无";
+//                                }
+//                            },"json");
+                        $.ajax({
+                            url: $.URL.imageUpload.getImageByNames,
+                            async:false,
+                            type:'POST',
+                            dataType:'json',
+                            data:{"userName":userName,"deviceName":deviceName,"itemRecordId":itemRecordId,"itemId":itemId},
+                            success: function meanVarianceCallback(data) {
+                                alert(data.code);
+                                if(data.code == 200) {
+                                    alert("成功");
+                                    h = "查看";
+                                    alert(h);
+                                }
+                                else {
+                                    h = "无";
+                                }
+                            }
+                        });
+                    if(h == "查看") {
+                        return "<a href='javascript:abnormal(" + rowindex+ ")'>查看</a> ";
+                    }
+                    else {
+                        return "无";
+                    }
                 }
             },
             { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)

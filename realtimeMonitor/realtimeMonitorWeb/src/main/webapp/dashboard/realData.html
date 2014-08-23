@@ -16,58 +16,6 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/highcharts.js"></script>
     <script type="text/javascript" src="js/chartTool.js"></script>
-    <script type="text/javascript">
-        var num= currentMonitor.number;
-        var tempURL = $.URL.sensors.getSensorDataArray;
-        var myURL = tempURL + num.toString();
-        checkRefresh=1;
-//        alert(myURL);
-        $(document).ready(function () {
-            $("#number").html(currentMonitor.number);
-            $("#group").html(currentMonitor.groupName);
-            alert(currentMonitor.status);
-            if(currentMonitor.status=="暂无数据")  {
-                alert("if");
-                drawChart("#waveContainer", data1, "mV");
-            }
-            else{
-                alert("on");
-                refrash();}
-        });
-        function refresh(){
-//            $.post($.URL.sensor.getMongoDataLastListByNumber,{"num":num},sensorListCallback1,"json");
-            if(checkRefresh){
-            $.get(myURL+".htm",null,sensorListCallback,"jsonp") ; }
-//            $.ajax({
-//                url: myURL+".htm",
-//                async:false,
-//                dataType:'jsonp',
-//                jsonpCallback:'callback',
-//                success: function meanVarianceCallback(result) {
-//                    h = result["curWarnValue"].toString();
-//                    count = result["warnCount"].toString();
-//                }
-//            });
-        }
-        var data1,data2;
-        function sensorListCallback(result){
-//            alert( result.data);
-       data1 = result.data;
-//            alert(data1);
-            drawChart("#waveContainer", data1, "mV");
-
-//        function callback(data){
-//            if(data.code==200){
-//                alert(data);
-//                data1=data.data.data;
-//                //data2=data.data.time;
-//                drawChart("#waveContainer", data1, "mV");
-//            }
-            var refreshTime=$("#mySelect").val();
-            setTimeout(refresh,refreshTime*1000);
-        }
-    </script>
-
     <style type="text/css">
         .l-div {
             height: 30px;

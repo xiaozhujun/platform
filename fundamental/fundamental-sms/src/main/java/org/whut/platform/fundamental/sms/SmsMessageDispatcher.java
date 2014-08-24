@@ -38,4 +38,9 @@ public class SmsMessageDispatcher implements MessageDispatcher{
            }
        }
     }
+
+    @Override
+    public void exceptionProcess() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

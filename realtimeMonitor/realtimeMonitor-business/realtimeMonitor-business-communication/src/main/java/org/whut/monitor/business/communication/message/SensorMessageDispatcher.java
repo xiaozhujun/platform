@@ -2,9 +2,11 @@ package org.whut.monitor.business.communication.message;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
+import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
 import javax.jms.MessageNotWriteableException;
 
@@ -23,6 +25,10 @@ public class SensorMessageDispatcher implements MessageDispatcher {
 
     @Autowired
     private PlatformMessageProducer platformMessageProducer;
+
+    @Autowired
+    private CollectorService collectorService;
+    private RedisConnector redisConnector = new RedisConnector();
 
     @Override
     public void dispatchMessage(String messageBody) {
@@ -47,4 +53,11 @@ public class SensorMessageDispatcher implements MessageDispatcher {
         this.platformMessageProducer = platformMessageProducer;
     }
 
+    @Override
+    public void exceptionProcess() {
+        String sensorNum = redisConnector.get("sensorNum");
+        System.out.println(sensorNum);
+        collectorService.updateTimeByNumber(redisConnector.get("sensor:{"+sensorNum+"}:collector"),redisConnector.get("sensor:{"+sensorNum+"}:lastDate"));
+        collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+sensorNum+"}:collector"),"离线或异常");
+    }
 }

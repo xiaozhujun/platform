@@ -35,18 +35,6 @@
             <artifactId>fundamental-config</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>realtimeMonitor</groupId>
-            <artifactId>realtimeMonitor-business-monitor</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-redisConnector</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
 
     </dependencies>
 

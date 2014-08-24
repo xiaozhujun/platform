@@ -9,4 +9,5 @@ package org.whut.platform.fundamental.communication.api;
  */
 public interface MessageDispatcher {
     void dispatchMessage(String messageBody);
+    void exceptionProcess();
 }

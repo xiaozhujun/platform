@@ -14,11 +14,9 @@ import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -63,7 +61,6 @@ public class SensorDataService {
                 curSensor = (DBObject)sensors.get(i);
                 String sensor = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")).toString();
                 //long timestamp = new Date().getTime();
-                System.out.println(curSensor+"jjjjjjjjjjjjjjjj");
                 String temp = mongoConnector.insertDocumentObject(curSensor);
 
                 if(objectID!=null){
@@ -73,7 +70,7 @@ public class SensorDataService {
                 }
                 ArrayList data = (ArrayList)curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
                 AlgorithmService algorithmService = AlgorithmServiceFactory.create();
-                if (redisConnector.get("sensor:{"+sensor+"}:warnType") == null) {
+                if (redisConnector.get("sensor:{"+sensor+"}:warnType") == null || !redisConnector.get("sensor:{"+sensor+"}:warnType").equals(redisConnector.get("sensor:{"+sensor+"}:warnTypeChanged"))) {
                     Map map = sensorService.getWarnConditionByNumber(sensor);
                     redisConnector.set("sensor:{"+sensor+"}:warnType",map.get("warnType").toString());
                     redisConnector.set("sensor:{"+sensor+"}:warnValue",map.get("warnValue").toString());

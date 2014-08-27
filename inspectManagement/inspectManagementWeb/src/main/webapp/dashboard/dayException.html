@@ -299,16 +299,19 @@ $("#submitBtn1").click(function(){
       if(data.Name==null){
           $.ligerDialog.warn("请选择维修人员！");
       }else{
-    data.tel = $("#Name").ligerComboBox().getValue(),
-    data.Device = $("#Device").text();
-    data.Item = $("#Item").text();
-    data.ItemId = $("#ItemId").val();
-    data.Choice=$("Choice").val();
-    data.Unit = $("#Unit").text();
-    data.Suggestion = $("#Suggestion").val();
-    data.itemRecordId = tempItemRecordId;
-    var d= $.toJSON(data);
-    $.post($.URL.inspectItemRecord.updateMaintainIdAndSuggest,{"jsonString":d},addCallBack,"json") ;
+           data.tel = $("#Name").ligerComboBox().getValue(),
+           data.Device = $("#Device").text();
+           data.Item = $("#Item").text();
+           data.ItemId = $("#ItemId").val();
+           data.Choice=$("Choice").val();
+           data.Unit = $("#Unit").text();
+           data.Suggestion = $("#Suggestion").val();
+           data.itemRecordId = tempItemRecordId;
+           var d= $.toJSON(data);
+           $.post($.URL.inspectItemRecord.updateMaintainIdAndSuggest,{"jsonString":d},addCallBack,"json") ;
+           $("#mobile").val(data.tel);
+           $("#content").val(data.Suggestion);
+           $("#px-submit").trigger("click");
     }
 });
 function addCallBack(data){
@@ -388,6 +391,26 @@ function addCallBack(data){
         <input type="button" value="提交" hidden="true" id="submitBtn1" class="l-button l-button-submit" />
         <img id="image" hidden="true" src="" width="320" height="480">
     </form>
+
+    <div id="formContainer"style="display: none">
+       <form action="http://sms.106vip.com/sms.aspx" method="post" id="smsForm">
+            企业id：<input id="userId" value="21604" type="text" name="userId"><br>
+            发送用户帐号：<input id="account" value="yang19921116" type="text" name="account"><br>
+            发送帐号密码：<input id="password" value="19921116" type="text" name="password"><br>
+            全部被叫号码：<input id="mobile" value="" type="text" name="mobile"><br>
+            发送内容：<input id="content" value="" type="text" name="content"><br>
+            定时发送时间：<input id="sendTime" value="" type="text" name="sendTime"><br>
+            发送任务命令：<input id="action" value="send" type="text" name="action"><br>
+            是否检查内容包含非法关键字：<input id="checkcontent" value="1" type="text" name="checkcontent"><br>
+            任务名称：<input id="taskName" value="发送维修信息" type="text" name="taskName"><br>
+            号码总数量：<input id="countnumber" value="1" type="text" name="countnumber"><br>
+            手机号码数量：<input id="mobilenumber" value="1" type="text" name="mobilenumber"><br>
+            小灵通或座机号码数：<input id="telephonenumber" value="0" type="text" name="telephonenumber"><br>
+            <div>
+                <button id="px-submit" type="submit">上传</button>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

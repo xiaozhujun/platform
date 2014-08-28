@@ -22,6 +22,7 @@ public class SearchBean {
     private Date inspectTime;
     private long maintainId;
     private String maintainSuggest;
+    private String image;
 
 
 
@@ -119,5 +120,13 @@ public class SearchBean {
 
     public void setMaintainSuggest(String maintainSuggest) {
         this.maintainSuggest = maintainSuggest;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

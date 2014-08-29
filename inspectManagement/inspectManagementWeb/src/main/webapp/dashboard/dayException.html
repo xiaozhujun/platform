@@ -277,9 +277,9 @@ $("#submitBtn1").click(function(){
            data.itemRecordId = tempItemRecordId;
            var d= $.toJSON(data);
            $.post($.URL.inspectItemRecord.updateMaintainIdAndSuggest,{"jsonString":d},addCallBack,"json") ;
-           $("#mobile").val(data.tel);
-           $("#content").val(data.Suggestion);
-           $("#px-submit").trigger("click");
+//           $("#mobile").val(data.tel);
+//           $("#content").val(data.Suggestion);
+//           $("#px-submit").trigger("click");
     }
 });
 function addCallBack(data){

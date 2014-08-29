@@ -123,40 +123,8 @@ function f_peopleRecord(grid)
             },
             { display: '异常拍照', name:'abnormalPicture', editor:{type:'text'},
                 render:function(rowdata, rowindex, value){
-                    var userName = rowdata.userName;
-                    var deviceName = rowdata.deviceName;
-                    var itemRecordId = rowdata.id;
-                    var itemId = rowdata.itemId;
-//                    $.post($.URL.imageUpload.getImageByNames,{"userName":userName,"deviceName":deviceName,"itemRecordId":itemRecordId,"itemId":itemId}
-//                            ,function imageCallback(data) {
-//                                if(data.code == 200) {
-//                                    alert("成功");
-//                                    h = "查看";
-//                                    alert(h);
-//                                }
-//                                else {
-//                                    h = "无";
-//                                }
-//                            },"json");
-                        $.ajax({
-                            url: $.URL.imageUpload.getImageByNames,
-                            async:false,
-                            type:'POST',
-                            dataType:'json',
-                            data:{"userName":userName,"deviceName":deviceName,"itemRecordId":itemRecordId,"itemId":itemId},
-                            success: function meanVarianceCallback(data) {
-//                                alert(data.code);
-                                if(data.code == 200) {
-//                                    alert("成功");
-                                    h = "查看";
-//                                    alert(h);
-                                }
-                                else {
-                                    h = "无";
-                                }
-                            }
-                        });
-                    if(h == "查看") {
+                    var image = rowdata.image;
+                    if(rowdata.image != null) {
                         return "<a href='javascript:abnormal(" + rowindex+ ")'>查看</a> ";
                     }
                     else {
@@ -229,7 +197,7 @@ function showAbnormalInfo(rowInfo){
     $("#submitBtn1").removeAttr("hidden");
     $("#suggestionTr").removeAttr("hidden");
 
-    if(rowInfo.inspectChoiceValue=="正常"){
+    if(rowInfo.inspectChoiceValue=="正常"){        //正常时点击处理
         $("#Suggestion").attr("readonly","readonly");
 
         $("#NameTr").attr("hidden","true");
@@ -266,14 +234,14 @@ function showAbnormalInfo(rowInfo){
         $("#ItemId").val(rowInfo.itemId);
         $("#Suggestion").val("");
 
-        if (rowInfo.inspectChoiceValue!="异常")
+        if (rowInfo.inspectChoiceValue!="异常") //处理中时点击，下拉框选中当先人员
         {
         $("#Suggestion").val(rowInfo.maintainSuggest);
         $.post($.URL.employee.getTelById,{"employeeId":rowInfo.maintainId},function selectname(data){
             $("#Name").ligerGetComboBoxManager().selectValue(data.data);
 
         },"json");
-        }else
+        }else   //异常中点击，下拉框置空
         { $("#Name").ligerGetComboBoxManager().selectValue();
         }
     }
@@ -309,9 +277,9 @@ $("#submitBtn1").click(function(){
            data.itemRecordId = tempItemRecordId;
            var d= $.toJSON(data);
            $.post($.URL.inspectItemRecord.updateMaintainIdAndSuggest,{"jsonString":d},addCallBack,"json") ;
-//           $("#mobile").val(data.tel);
-//           $("#content").val(data.Suggestion);
-//           $("#px-submit").trigger("click");
+           $("#mobile").val(data.tel);
+           $("#content").val(data.Suggestion);
+           $("#px-submit").trigger("click");
     }
 });
 function addCallBack(data){

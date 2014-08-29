@@ -12,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
@@ -219,7 +220,7 @@ public class CasClient
         return null;
     }
 
-    //发送 GET 请求
+    //发送 POST 请求
     public String doPost(String service,HashMap<String,String> params){
         HttpPost httpPost = new HttpPost (service);
         try
@@ -228,7 +229,7 @@ public class CasClient
             for(String key:params.keySet()){
                 nvps.add(new BasicNameValuePair (key, params.get(key)));
             }
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
             HttpResponse response = httpClient.execute(httpPost);
             String responseBody = getResponseBody(response);
@@ -251,7 +252,7 @@ public class CasClient
         return null;
     }
 
-
+    //预先设置post编码并发送post请求
 
     /**
      * 从cas server 退出

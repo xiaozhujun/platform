@@ -1,5 +1,6 @@
 package org.whut.inspectManagement.business.inspectResult.web;
 
+import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
@@ -13,10 +14,12 @@ import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
@@ -79,13 +82,16 @@ public class InspectItemRecordServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/updateMaintainIdAndSuggest")
     @POST
-    public String updateMaintainIdAndSuggest(@FormParam("jsonString") String jsonString){
+    public String updateMaintainIdAndSuggest(@FormParam("jsonString") String jsonString) throws DocumentException {
         long appId= UserContext.currentUserAppId();
         Map MessageMap = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, Map.class);
         String DeviceName =(String) MessageMap.get("Device");
         String EmployeeName = (String) MessageMap.get("Name");
-        String TableName = (String) MessageMap.get("Item");
+//        String TableName = (String) MessageMap.get("Item");
+        String telNumber = (String) MessageMap.get("tel");
         String maintainSuggest = (String) MessageMap.get("Suggestion");
+        String returnStatus = inspectItemRecordService.sendMessage(telNumber,maintainSuggest);
+        System.out.println("短信发送状态为：" + returnStatus);
         String ItemId = (String) MessageMap.get("ItemId");
         long itemRecordId = Long.parseLong(MessageMap.get("itemRecordId").toString());
         long inspectItemId = Long.parseLong(ItemId);

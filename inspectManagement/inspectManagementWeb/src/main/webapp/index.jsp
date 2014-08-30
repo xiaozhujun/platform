@@ -17,23 +17,20 @@
     <script type="text/javascript">
         $(function ()
         {
-            $("#layout").ligerLayout();
+            $("#layout").ligerLayout({topHeight:68});
             $("#titleContainer").load("title.html");
             $("#mainContainer").load("dashboard/layout.html");
         });
 
     </script>
     <style type="text/css">
-        body{ padding:10px; margin:0;}
-        #layout1{  width:100%; margin:40px;  height:400px;
-            margin:0; padding:0;}
-        #accordion1 { height:270px;}
+        body{ padding:0px; margin:0;overflow: hidden;}
         h4{ margin:20px;}
     </style>
 </head>
-<body style="padding:10px">
-<div id="layout">
-    <div id="mainContainer" position="center" title="" style="overflow-x: scroll; overflow-y: scroll;">
+<body style="padding:0px">
+<div id="layout" scroll="auto">
+    <div id="mainContainer" position="center" title="" style="overflow:auto;">
     </div>
     <!--<div position="right"></div>-->
     <div id="titleContainer" position="top"></div>

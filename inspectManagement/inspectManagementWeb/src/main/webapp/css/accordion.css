@@ -1,4 +1,4 @@
-body{ padding:20px; margin:0;}
+body{ padding:0px; margin:0;}
 .dataShow{width: 100%;overflow: hidden}
 .accordion{width: 14%;min-height:500px;overflow:hidden;float:left;height: 100%;}
 .accordion li{cursor: pointer;}

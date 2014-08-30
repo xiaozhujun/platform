@@ -52,11 +52,15 @@
                 $("#adminLinkDiv").show();
             }
 
+            if(data.data.appName!=null && data.data.appName!=""){
+               $("#titleLink").html(data.data.appName);
+            }
+
             $("#userImage").attr("src",currentUser.image);
         }
     }
 </script>
-<div id="title"><a href="index.jsp">智能物联巡检平台</a></div>
+<div id="title"><a href="index.jsp" id="titleLink">智能物联巡检平台</a></div>
 <div id="userInfo">
     <div>欢迎您，</div>
     <div id="userNameDiv"></div>

@@ -101,6 +101,7 @@ public class InspectTableDownloadService {
                item.addAttribute(ConfigureParameter.itemId, String.valueOf(iti.getId()));
                item.addAttribute(ConfigureParameter.isInput,iti.getInput());
                item.addAttribute(ConfigureParameter.util,"");
+               item.addAttribute(ConfigureParameter.description,iti.getDescription());
                if(iti.getInput().equals("false")){
                    Iterator it1 = iti.getValues().iterator();
                    while(it1.hasNext()){

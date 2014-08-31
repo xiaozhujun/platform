@@ -33,6 +33,7 @@ public class ConfigureParameter {
      public static String itemId="itemId";
      public static String isInput="isInput";
      public static String util="util";
+     public static String description = "description";
      public static String value="value";
      //人员配置.xml
      public static String employers="employers";

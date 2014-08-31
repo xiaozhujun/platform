@@ -9,6 +9,7 @@ import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRole;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleService;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
 import org.whut.inspectManagement.business.user.bean.InspectUser;
+import org.whut.platform.business.app.service.AppService;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.UserService;
@@ -33,6 +34,9 @@ public class InspectUserServiceWeb {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AppService appService;
 
     @Autowired
     private EmployeeService employeeService;
@@ -76,6 +80,7 @@ public class InspectUserServiceWeb {
             inspectUser.setUserRole(user.getRole());
             inspectUser.setId(user.getId());
             inspectUser.setImage(user.getImage());
+            inspectUser.setAppName(appService.getNameById(user.getAppId()));
 
         } catch (Exception e) {
             e.printStackTrace();

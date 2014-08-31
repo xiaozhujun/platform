@@ -17,6 +17,15 @@ public class InspectUser {
     private String image;
     private String sex;
     private String userRole;
+    private String appName;
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 
     public String getName() {
         return name;

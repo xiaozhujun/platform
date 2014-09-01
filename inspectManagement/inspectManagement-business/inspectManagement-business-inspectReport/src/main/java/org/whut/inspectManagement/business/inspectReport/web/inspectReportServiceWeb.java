@@ -156,9 +156,12 @@ public class inspectReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getInspectTableRecordList")
-    public String getInspectTableRecordList(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+    public String getInspectTableRecordList(@FormParam("userId")String userName,@FormParam("deviceId")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        if (userName == null || userName.equals("") || deviceName == null || deviceName.equals("")) {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空！");
+        }
         String userId=String.valueOf(userService.getIdByName(userName));
-        String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
+        String deviceId=String.valueOf(deviceService.getIdByName(deviceName,UserContext.currentUserAppId()));
         List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime,UserContext.currentUserAppId());
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
@@ -168,7 +171,7 @@ public class inspectReportServiceWeb {
     @Path("/getInspectTableRecordGroupByEmployer")
     public String getInspectTableRecordGroupByEmployer(@FormParam("userName")String userName,@FormParam("deviceName")String deviceName,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
         String userId=String.valueOf(userService.getIdByName(userName));
-        String deviceId=String.valueOf(deviceService.getIdByName(deviceName,0L));
+        String deviceId=String.valueOf(deviceService.getIdByName(deviceName,UserContext.currentUserAppId()));
         List<Map<String,String>> list=inspectReportService.getInspectTableRecordList(userId,deviceId,sTime,eTime, UserContext.currentUserAppId());
         HashMap<String,List> data = new HashMap<String, List>();
         String key;

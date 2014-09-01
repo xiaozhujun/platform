@@ -55,15 +55,15 @@ public class DeviceServiceWeb {
         }
 
         long appId= UserContext.currentUserAppId();
-        long id;
+         Long id;
 
         try{
                id=deviceService.getIdByNumber(number,appId);
         }
         catch(Exception e){
-              id=0;
+              id=null;
         }
-        if(id==0) {
+        if(id==null) {
             Device device=new Device();
             device.setName(name);
             device.setNumber(number);
@@ -218,12 +218,14 @@ public class DeviceServiceWeb {
         long appId = UserContext.currentUserAppId();
         name="%"+name+"%";
         number="%"+number+"%";
-        long  deviceTypeId=0;
+        Long  deviceTypeId=null;
         if(deviceTypeName!=null){
            deviceTypeId=deviceTypeService.getIdByName(deviceTypeName,appId);
         }
-
-        List<Device> list =deviceService.getInfoByCondition(name,number,deviceTypeId,appId);
+        List<Device> list=new ArrayList<Device>();
+        if(deviceTypeId!=null){
+        list=deviceService.getInfoByCondition(name,number,deviceTypeId,appId);
+        }
         List<SubDevice> subDevicesList=new ArrayList<SubDevice>();
         for (Device device:list){
             SubDevice subDevice=new SubDevice();

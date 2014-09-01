@@ -1,19 +1,15 @@
 package org.whut.inspectManagement.business.inspectResult.service;
 
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.protocol.HTTP;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.inspectManagement.business.inspectResult.entity.SearchBean;
 import org.whut.inspectManagement.business.inspectResult.mapper.InspectItemRecordMapper;
 import org.whut.platform.fundamental.android.cas.CasClient;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 
-import javax.xml.ws.spi.http.HttpContext;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;

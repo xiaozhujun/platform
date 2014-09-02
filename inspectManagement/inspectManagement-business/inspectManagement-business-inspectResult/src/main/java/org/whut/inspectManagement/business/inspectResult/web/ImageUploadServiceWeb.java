@@ -9,6 +9,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.whut.inspectManagement.business.inspectResult.entity.ImageUpload;
 import org.whut.inspectManagement.business.inspectResult.service.ImageUploadService;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -53,8 +54,13 @@ public class ImageUploadServiceWeb {
             MultipartFile file = multipartRequest.getFile("filename");
             String filename = file.getOriginalFilename();
             String [] s = filename.split("\\.");
-            String realPath = request.getSession().getServletContext().getRealPath("/");
-            String image = realPath+"uploadTest\\"+filename;
+//            String realPath = request.getSession().getServletContext().getRealPath("/");
+//            System.out.println(request.getSession().getServletContext().getRealPath("../upload"));
+//            String image = realPath+"\\test\\"+filename;
+            String userImgRootPath =  FundamentalConfigProvider.get("inspectException.img.root.path") ;
+            String userImgRelativePath =  FundamentalConfigProvider.get("inspectException.img.relative.path") ;
+            String image = userImgRelativePath + "/" + filename;
+            String imagePath = userImgRootPath + image;
             long itemId = Long.parseLong(multipartRequest.getParameter("itemId"));
             long itemRecordId = Long.parseLong(multipartRequest.getParameter("itemRecordId"));
             long tableRecordId = Long.parseLong(multipartRequest.getParameter("tableRecordId"));
@@ -74,7 +80,7 @@ public class ImageUploadServiceWeb {
                 byte[] bs = new byte[1024 * 2];
                 int len;
 //                OutputStream outputStream = new FileOutputStream("D://a.jpg");
-                OutputStream outputStream = new FileOutputStream(image);
+                OutputStream outputStream = new FileOutputStream(imagePath);
                 while ((len = inputStream.read(bs)) != -1) {
                     outputStream.write(bs,0,len);
                 }

@@ -22,6 +22,8 @@
             $("#"+tabid).load("dashboard/realInfo.html");
         }else if(tabid=="dataAnalysisTab"){
             $("#"+tabid).load("dashboard/dataAnalysis.html");
+        }else if(tabid=="sensorsTab"){
+            $("#"+tabid).load("dashboard/sensors.html");
         }
     }
 </script>
@@ -35,5 +37,7 @@
     <div id="realInfoTab" tabid="realInfoTab" title="实时波形" style="height: 100%;">
     </div>
     <div id="dataAnalysisTab" tabid="dataAnalysisTab" title="数据查询" style="height: 100%;">
+    </div>
+    <div id="sensorsTab" tabid="sensorsTab" title="传感器" style="height: 100%;">
     </div>
 </div>

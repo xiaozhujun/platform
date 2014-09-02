@@ -146,4 +146,10 @@
         FROM collector AS c,sensor AS s
         WHERE c.id=s.collectorId AND s.`number`=#{number}
     </select>
+
+    <select id="getDataTypeByIdAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT dataType
+        FROM sensor
+        WHERE id=#{id} AND appId=#{appId}
+    </select>
 </mapper>

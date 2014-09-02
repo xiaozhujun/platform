@@ -51,9 +51,9 @@
         <!--config for web www.cseicms.com test -->
         <!--<beans:property name="service" value="http://www.cseicms.com/inspectManagement/j_spring_cas_security_check"></beans:property>-->
         <!-- config for local test -->
-        <!--<beans:property name="service" value="http://localhost:8080/inspectManagement/j_spring_cas_security_check"></beans:property>-->
+        <beans:property name="service" value="http://localhost:8080/inspectManagement/j_spring_cas_security_check"></beans:property>
         <!--config for android test -->
-        <beans:property name="service" value="http://www.cseicms.com/inspectinspectManagement/j_spring_cas_security_check"></beans:property>
+        <!--<beans:property name="service" value="http://www.cseicms.com/inspectinspectManagement/j_spring_cas_security_check"></beans:property>-->
         <beans:property name="sendRenew" value="false"></beans:property>
     </beans:bean>
 

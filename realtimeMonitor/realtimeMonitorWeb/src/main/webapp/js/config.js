@@ -68,7 +68,8 @@
             "getListByGroupAreaAndMonitor":"rs/sensor/getListByGroupAreaAndMonitor",
             "getNumberBySensorId":"rs/sensor/getNumberBySensorId",
             "getSensorIdAndNumbersByName":"rs/sensor/getSensorIdAndNumbersByName",
-            "getCollectorNameBySensorNumber":"rs/sensor/getCollectorNameBySensorNumber"
+            "getCollectorNameBySensorNumber":"rs/sensor/getCollectorNameBySensorNumber",
+            "getDataTypeByIdAndAppId":"rs/sensor/getDataTypeByIdAndAppId"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensors/sensor/data/",

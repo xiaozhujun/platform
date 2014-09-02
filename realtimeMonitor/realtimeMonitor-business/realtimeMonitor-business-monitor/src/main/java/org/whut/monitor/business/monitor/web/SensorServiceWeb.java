@@ -484,7 +484,17 @@ public class SensorServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getDataTypeByIdAndAppId")
+    @POST
+    public String getDataTypeByIdAndAppId(@FormParam("id")long id) {
+        long appId = UserContext.currentUserAppId();
+        if (id <= 0) {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"传感器不存在！");
+        }
 
-
+        long dataType = sensorService.getDataTypeByIdAndAppId(id,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(dataType, JsonResultUtils.Code.SUCCESS);
+    }
 }
 

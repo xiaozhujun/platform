@@ -41,6 +41,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////
 function groupMenuCallback(data){
     if(data.code==200){
+        leftMenuData=[];
         for(var i=0;i<data.data.length;i++){
             var g={};
             g['pid']=0;
@@ -91,7 +92,7 @@ function sensorMenuCallback(data){
 function onClickLeaf(node){
     if(!isNaN(node.data.id)){
         var sensorId = parseInt(node.data.id);
-        alert("sensorId:"+node.data.id);
+        //alert("sensorId:"+node.data.id);
        // alert("sensorId:"+node.data.name);
 
         //alert("sensorId:"+node.data.number);
@@ -158,9 +159,9 @@ function onClickLeaf(node){
 </head>
 <body>
 <!--<p>测试页面是否正常</p>-->
-<div id="treeMenu">
+<div id="treeMenu" style="width: 100%;height: 100%;">
     <div position="left"><ul class="l-tree" id="tree1"></ul></div>
-    <div position="center" title="标题" id="mainGrid" style="width: 100%;">
+    <div position="center" id="mainGrid">
     </div>
     <!--div position="right" id="rightGrid"></div-->
 </div>

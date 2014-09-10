@@ -15,23 +15,23 @@
     <script type="text/javascript">
         $(function ()
         {
-            $("#layout1").ligerLayout({leftWidth:200});
+            $("#layout1").ligerLayout({topHeight:68});
             $("#titleContainer").load("title.html");
             $("#mainContainer").load("dashboard/layout.html");
         });
 
     </script>
     <style type="text/css">
-        body{ padding:10px; margin:0;}
+        body{ padding:0px; margin:0;overflow: hidden;}
         #layout1{  width:100%; margin:40px;  height:400px;
             margin:0; padding:0;}
         #accordion1 { height:270px;}
         h4{ margin:20px;}
     </style>
 </head>
-<body style="padding:10px">
+<body>
 <div id="layout1">
-    <div id="mainContainer" position="center" title="" style="overflow-x: scroll; overflow-y: scroll;">
+    <div id="mainContainer" position="center" title="" style="overflow: auto;">
         <h4>$("#layout1").ligerLayout(); </h4>
         默认为固定layout的高度百分一百
     </div>

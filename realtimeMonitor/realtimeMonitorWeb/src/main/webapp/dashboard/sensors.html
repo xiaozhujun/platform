@@ -19,7 +19,7 @@
     $("#choiceContainer").ligerLayout({rightWidth:220});
     $(document).ready(function() {
 
-        $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
+        $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
         $.post($.URL.collector.list,null,rightGridCallback,"json");
 //            $.post($.URL.warnRecord.list,null,warnRecordCallback,"json");
     });
@@ -92,6 +92,7 @@
 //                                tempCount[rowindex] = count;
 //                            }
 //                        });
+//                    alert(tempCount);
                     tempCount[rowindex] = count;
                     return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + count.toString() + "</a>"
                 }

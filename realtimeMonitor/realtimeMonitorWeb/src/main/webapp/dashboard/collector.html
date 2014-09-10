@@ -17,11 +17,11 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $.post($.URL.collector.list,null,collectorListCallback,"json");
-            $.post($.URL.sensor.getMongoDataLastList,null,lastTimeCallback,"json");
+//            $.post($.URL.sensor.getMongoDataLastList,null,lastTimeCallback,"json");
         });
-        $.ajaxSetup({
-            async: false
-        });
+//        $.ajaxSetup({
+//            async: false
+//        });
         var gridData =[];
         var lastTime="";
         function collectorListCallback(data){
@@ -31,16 +31,17 @@
                 f_initGrid();
             }
         }
-        function lastTimeCallback(data){
-
-            if (data.code == 200) {
-                lastTime = data.data.time;
-//                alert(lastTime);
-            }    }
+//        function lastTimeCallback(data){
+//
+//            if (data.code == 200) {
+//                lastTime = data.data.time;
+////                alert(lastTime);
+//            }    }
 
 
 
         var grid;
+        var sensorTime;
         function f_initGrid(){
             grid = $("#collectorGrid").ligerGrid({
                 columns:[
@@ -55,11 +56,19 @@
                         var tempURL = $.URL.sensors.getCollectorStatus;
                         var myURL = tempURL + num.toString();
 //                        alert(myURL);
-                        $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
-                        function lastTimeCallback(result) {
-//                            alert(result["lastDate"].toString());
-                            sensorTime = result["lastDate"].toString();
-                        }
+//                        $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
+//                        function lastTimeCallback(result) {
+////                            alert(result["lastDate"].toString());
+//                            sensorTime = result["lastDate"].toString();
+//                        }
+                        $.ajax({
+                            url: myURL+".html",
+                            async:false,
+                            dataType:'jsonp',
+                            success:(function(result){
+                                sensorTime = result["lastDate"].toString();
+                            })
+                        });
                         return sensorTime;
                     }
                     },

@@ -18,11 +18,11 @@
         var currentMonitor,grid;
        var  sensorTime=" ";
         $(document).ready(function() {
-            $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
+            $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
         });
-        $.ajaxSetup({
-            async: false
-        });
+//        $.ajaxSetup({
+//            async: false
+//        });
         var  number;
         var gridData = {};
         function gridCallback(data){
@@ -44,12 +44,21 @@
                             var num =item.number;
                         var tempURL = $.URL.sensors.getWarnCondition;
                         var myURL = tempURL + num.toString();
-                        $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
-                           function lastTimeCallback(result) {
-                          sensorTime = result["lastDate"].toString();
-
-                   }
-                        return curDateCallback();
+//                        $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
+//                           function lastTimeCallback(result) {
+//                          sensorTime = result["lastDate"].toString();
+//
+//                   }
+                        $.ajax({
+                            url: myURL+".html",
+                            async:false,
+                            dataType:'jsonp',
+                            success: function(result) {
+//                                alert(result["lastDate"]);
+                                sensorTime = result["lastDate"].toString();
+                            }
+                        });
+                        return sensorTime;
                     }
                     },
                     { display: '状态', name: 'sensorStatus',width:'auto'

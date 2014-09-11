@@ -19,7 +19,7 @@
     $("#choiceContainer").ligerLayout();
     $(document).ready(function() {
 
-        $.post($.URL.sensor.homePage,{"fStatus":"true"},gridCallback,"json");
+        $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
         $.post($.URL.collector.list,null,rightGridCallback,"json");
 //            $.post($.URL.warnRecord.list,null,warnRecordCallback,"json");
     });
@@ -198,7 +198,7 @@
 <style type="text/css">
 
 
-    #choiceContainer{  width:100%;margin-top:5px; padding:0;  }
+    #choiceContainer{  width:100%;margin:0; padding:0;  }
 
 </style>
 </head>
@@ -206,8 +206,8 @@
 
 <div id="choiceContainer">
     <!--div position="left"><ul class="l-tree" id="tree1"></ul></div-->
-    <div position="center" id="centerGrid"></div>
-    <!--<div position="right" id="rightGrid"></div>-->
+    <div position="center" title="传感器" id="centerGrid"></div>
+    <div position="right" id="rightGrid"></div>
 </div>
 <br/>
 <div>

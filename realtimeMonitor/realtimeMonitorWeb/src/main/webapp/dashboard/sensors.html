@@ -23,6 +23,12 @@
         $.post($.URL.collector.list,null,rightGridCallback,"json");
         connect();
     });
+    $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+        if (ws != null) {
+            ws.close();
+            ws = null;
+        }
+    }});
     var MaxValue=new Array();
     var MinValue=new Array();
     var meanVariance=new Array();

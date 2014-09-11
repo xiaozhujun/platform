@@ -16,7 +16,7 @@
 <script type="text/javascript" src="js/rightHidePanel.js"></script>
 <script type="text/javascript">
     var tempURL = $.URL.sensors.getWarnCondition;
-    $("#choiceContainer").ligerLayout({rightWidth:220});
+    $("#choiceContainer").ligerLayout();
     $(document).ready(function() {
 
         $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
@@ -38,7 +38,7 @@
         if(data.code == 200) {
             rightGridData.Rows = data.data;
             rightGridData.Total = data.length;
-            f_initRightGrid();
+            //f_initRightGrid();
         }
     }
     var grid;
@@ -79,20 +79,6 @@
                 {display:'报警次数',name:'warnCount',width:'auto'
                     ,render:function(item,rowindex) {
                     rowInf = rowindex;
-//                        var sensorId = item.number;
-//                        var myURL = tempURL + sensorId;
-//                        $.ajax({
-//                            url: myURL+".html",
-//                            async:false,
-//                            dataType:'jsonp',
-//                            jsonpCallback:'callback',
-//                            success: function meanVarianceCallback(result) {
-////                                alert(result["warnCount"]);
-//                                count = result["warnCount"].toString();
-//                                tempCount[rowindex] = count;
-//                            }
-//                        });
-//                    alert(tempCount);
                     tempCount[rowindex] = count;
                     return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + count.toString() + "</a>"
                 }

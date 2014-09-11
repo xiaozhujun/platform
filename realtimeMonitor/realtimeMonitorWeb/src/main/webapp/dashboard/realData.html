@@ -68,7 +68,7 @@
             }
         });
         function connect() {
-            var url="ws://localhost:8080/realtimeMonitor/websocket/hello";
+            var url="ws://www.cseicms.com/realtimeMonitor/websocket/hello";
             ws = (url.indexOf('sockjs') != -1) ? new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);
             ws.onopen = function () {
                 console.log('Info: connection opened.');

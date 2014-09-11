@@ -120,7 +120,7 @@
         a.*,b.`name` as itemName,c.`name` as tableName,d.`name` as deviceName,e.name as userName,b.id as itemId,a.maintainId,a.maintainSuggest  /*新增itemId,image*/
         FROM (select inspectitemrecord.*,image_upload.image from inspectitemrecord left join image_upload on inspectitemrecord.inspectItemId=image_upload.itemId)as a,inspectitem b,inspecttable c,device d,employee e
         <where>
-            a.inspectItemId=b.id and a.inspectTableId=c.id and a.deviceId=d.id and a.userId=e.userId AND a.inspectChoiceId=2
+            a.inspectItemId=b.id and a.inspectTableId=c.id and a.deviceId=d.id and a.userId=e.userId AND a.inspectChoiceValue='异常'
             <if test="appId!=null"> AND a.APPID=#{appId}</if>
             <if test="userId!=null">AND a.userId=#{userId}</if>
             <if test="deviceId!=null">AND a.deviceId=#{deviceId}</if>

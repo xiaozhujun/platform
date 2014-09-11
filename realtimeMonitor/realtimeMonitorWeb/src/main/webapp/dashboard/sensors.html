@@ -16,18 +16,49 @@
 <script type="text/javascript" src="js/rightHidePanel.js"></script>
 <script type="text/javascript">
     var tempURL = $.URL.sensors.getWarnCondition;
+    var sNumList= new Array();
     $("#choiceContainer").ligerLayout();
     $(document).ready(function() {
-
         $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
         $.post($.URL.collector.list,null,rightGridCallback,"json");
-//            $.post($.URL.warnRecord.list,null,warnRecordCallback,"json");
+        connect();
     });
-
+    var MaxValue=new Array();
+    var MinValue=new Array();
+    var meanVariance=new Array();
+    var warnCount=new Array();
+    function connect() {
+        var url="ws://localhost:8080/realtimeMonitor/websocket/hello";
+        var s="all"+"|"+2;
+        ws =  new WebSocket(url);
+        ws.onopen = function () {
+            console.log('Info: connection opened.');
+            ws.send(s);
+            ws.onclose = function (event) {
+                console.log('Info: connection closed.');
+                console.log(event);			};
+        } ;
+        ws.onmessage = function (event) {
+            console.log ("收到消息！"+event.data);
+            var jsonData = eval("(" +event.data+ ")");
+            number=jsonData.sensors[0].sensorNum;
+            for(var i=0;i<sNumList.length;i++){
+                if(number==sNumList[i]){
+                    MaxValue[i]=jsonData.sensors[0].MaxValue;
+                    MinValue[i]=jsonData.sensors[0].MinValue;
+                    meanVariance[i]=jsonData.sensors[0].meanVariance;
+                    warnCount[i]=jsonData.sensors[0].warnCount;
+                }
+            }
+        };
+    }
     var gridData = {};
     var rightGridData = {};
     function gridCallback(data) {
         if(data.code == 200) {
+            for(var i=0;i<data.data.length;i++)  {
+                sNumList[i]=data.data[i].number;
+            }
             gridData.Rows = data.data;
             gridData.Total = data.length;
             f_initGrid();
@@ -51,7 +82,6 @@
     function f_initGrid() {
         grid = $("#centerGrid").ligerGrid({
             columns:[
-//                    {display:'序号',name:'id',width:60},
                 {display:'编号',name:'number',width:150},
                 {display:'传感器',name:'name',width:'auto'},
                 {display:'监测组',name:'groupName',width:'auto'},
@@ -59,30 +89,20 @@
                 {display:'采集仪',name:'collectorName',width:'auto'},
                 {display:'报警参数类型',name:'warnType',width:'auto'},
                 {display:'报警值',name:'warnValue',width:'auto'},
-//                    {display:'采集仪状态',name:'status',width:140},
-                {display:'当前数值',name:'curSensorValue',width:180,render:function(item){
-                    var sensorId = item.number;
-                    var myURL = tempURL + sensorId;
-                    $.ajax({
-                        url: myURL+".html",
-                        async:false,
-                        dataType:'jsonp',
-                        jsonpCallback:'callback',
-                        success: function meanVarianceCallback(result) {
-//                                alert(result["curWarnValue"]);
-                            h = result["curWarnValue"].toString();
-                            count = result["warnCount"].toString();
-                        }
-                    });
-                    return returnCurSensor();
+                {display:'当前数值',name:'curSensorValue',width:180 ,render:function(item,rowindex) {
+                    if(meanVariance[rowindex]==null) {
+                        return  "0"
+                    }
+                    else
+                        return meanVariance[rowindex]
                 }},
-                {display:'报警次数',name:'warnCount',width:'auto'
-                    ,render:function(item,rowindex) {
-                    rowInf = rowindex;
-                    tempCount[rowindex] = count;
-                    return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + count.toString() + "</a>"
-                }
-                }
+                {display:'报警次数',name:'warnCount',width:'auto' ,render:function(item,rowindex) {
+                    if(warnCount[rowindex]==null) {
+                        return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + "暂无数据" + "</a>"
+                    }
+                    else
+                        return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + warnCount[rowindex] + "</a>"
+                } }
             ],
             data:gridData,
             width:'100%',
@@ -171,27 +191,15 @@
             resizable:false
         });
     }
-
-
     $("#curDataFlush").click(f_click);
     function f_click(){
-        var tempRowInf = rowInf;
-        for (var i=0;i<=tempRowInf;i++)
+        for (var i=0;i<sNumList.length;i++)
         {
-//                alert(tempRowInf);
-//                alert(tempCount[i]);
-            f_updateCurDataCell(i,h);
-            f_updateWarnCount(i,tempCount[i]);
+            grid.updateCell('curSensorValue',meanVariance[i],i);
+            grid.updateCell('warnCount',warnCount[i],i);
         }
     }
-    function f_updateCurDataCell(rowInf,updateValue) {
-        grid.updateCell('curSensorValue',updateValue,rowInf);
-    }
-
-    function f_updateWarnCount(rowInf,updateValue) {
-        grid.updateCell('warnCount',updateValue,rowInf);
-    }
-    setInterval('$("#curDataFlush").trigger("click")',10000);
+    setInterval('$("#curDataFlush").trigger("click")',1000);
 
 </script>
 

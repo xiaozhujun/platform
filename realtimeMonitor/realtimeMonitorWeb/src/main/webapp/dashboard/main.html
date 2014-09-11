@@ -38,7 +38,6 @@ $(document).ready(function() {
 });
 $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
     if (ws != null) {
-        console.log(1234344) ;
         ws.close();
         ws = null;
     }

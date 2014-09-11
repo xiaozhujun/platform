@@ -1,22 +1,37 @@
 package org.whut.monitor.business.communication.message;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.whut.monitor.business.algorithm.service.AlgorithmService;
 import org.whut.monitor.business.communication.service.SensorDataService;
-import org.whut.monitor.business.communication.websocket.WebsocketEndPoint;
 import org.whut.monitor.business.monitor.service.CollectorService;
+import org.whut.monitor.business.monitor.service.SensorService;
+import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.communication.api.MessageDispatcher;
+import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
+import org.whut.platform.fundamental.util.json.JsonResultUtils;
+import org.whut.platform.fundamental.websocket.WebsocketMessageDispatcher;
+import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
@@ -30,8 +45,19 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
 
     @Autowired
     private SensorDataService sensorDataService;
+
+    @Autowired
+    private SensorService sensorService;
+    @Autowired
+    private AlgorithmService algorithmService;
+
     @Autowired
     private CollectorService collectorService;
+
+    @Autowired
+    private WsMessageDispatcher wsMessageDispatcher;
+
+
     private RedisConnector redisConnector = new RedisConnector();
 
     @Override
@@ -39,31 +65,42 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
         return Constants.SENSOR_QUEUE_DESTINATION;
     }
 
+
     @Override
     public void onMessage(Message message) {
+        ArrayList arrayList=new ArrayList();
         int keyExpireTime = Integer.parseInt(FundamentalConfigProvider.get("redis.key.expire"));
         String number = "";
         String lastDate = "";
         String sensorData="";
         String sensorNum="";
         //String collectorNum="";
+
         if (message instanceof ActiveMQTextMessage){
             try {
                 String messageText = ((ActiveMQTextMessage) message).getText();
                 logger.info("onMessage data: "+messageText);
-                try {
-                    WebsocketEndPoint webSocket = new WebsocketEndPoint();
-                    String sNum=webSocket.getTempMessage();
-                    webSocket.sendMessage(messageText);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
                 sensorDataService.saveMessage(messageText);
                 try{
                     JSONObject dataJson=new JSONObject(messageText);
                     JSONArray data= dataJson.getJSONArray("sensors");
                     JSONObject info=data.getJSONObject(0);
                     number=info.getString("sensorNum");
+                    JSONArray originalData=info.getJSONArray("data");
+                    System.out.println(originalData);
+                    for(int i=0;i<originalData.length();i++){
+                        arrayList.add(originalData.get(i));
+                    }
+                    double meanVariance= algorithmService.meanVariance(arrayList);
+                    double MaxValue= algorithmService.MaxValue(arrayList);
+                    double MinValue= algorithmService.MinValue(arrayList);
+                    String warnCount = redisConnector.get("sensor:{"+number+"}:warnCount");
+                    String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount;
+                    int endIndex = messageText.indexOf("}]}");
+                    System.out.println(messageText.substring(0,endIndex));
+                    String s2= messageText.substring(0,endIndex)+","+s+"}]}";
+                    System.out.println(s2);
+                    wsMessageDispatcher.dispatchMessage(s2);
                     redisConnector.set("sensorNum",number);
                     System.out.println("number:"+number);
                     lastDate = redisConnector.get("sensor:{"+number+"}:lastDate");
@@ -88,6 +125,7 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
             logger.error("message not text,but "+message.getClass().getName());
         }
     }
+
     public int isNormal(String number,String lastDate){
 //        String lastDate = redisConnector.get("sensor:{"+number+"}:lastDate");
         int flag=0;
@@ -123,5 +161,17 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
             //collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+number+"}collector"),"暂无数据");
         }
         return flag;
+    }
+
+    public static void main(String[] args) {
+//       NIOServer server = new NIOServer();
+//       server.listen();
+        String s1=" {sensors:[{sensorNum:'2100000000010000',dataType:'Route',time:'2014-09-04 15:58:18',data:[1,150,4360,225,131]   }]} ";
+        String s="id:1,"+"meanVariance:"+1+","+"MaxValue:"+2+"," +"MinValue:"+3;
+
+        int endIndex = s1.indexOf("}]}");
+        System.out.println(s1.substring(0,endIndex));
+        String s2= s1.substring(0,endIndex)+","+s+"}]}";
+        System.out.println(s2);
     }
 }

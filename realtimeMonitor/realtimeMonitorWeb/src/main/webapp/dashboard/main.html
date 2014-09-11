@@ -30,15 +30,48 @@ var leftMenuData=[];
 var treeManager=null;
 var data1=[];
 var dt=1;
+var ws;
+var sNumList= new Array();
 $(document).ready(function() {
     $("#treeMenu").ligerLayout({leftWidth: 250});
-
-//            $.post($.URL.warnRecord.list,null,warnRecordCallback,"json");
-    //           initializeLeftMenu(); //初始化左选单
-
+    connect();
 });
-
-////////////////////////////////////////////
+$("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+    if (ws != null) {
+        console.log(1234344) ;
+        ws.close();
+        ws = null;
+    }
+}});
+var MaxValue=new Array();
+var MinValue=new Array();
+var meanVariance=new Array();
+var warnCount=new Array();
+function connect() {
+    var url="ws://localhost:8080/realtimeMonitor/websocket/hello";
+    var s="all"+"|"+2;
+    ws =  new WebSocket(url);
+    ws.onopen = function () {
+        console.log('Info: connection opened.');
+        ws.send(s);
+        ws.onclose = function (event) {
+            console.log('Info: connection closed.');
+            console.log(event);			};
+    } ;
+    ws.onmessage = function (event) {
+        console.log ("收到消息！"+event.data);
+        var jsonData = eval("(" +event.data+ ")");
+        number=jsonData.sensors[0].sensorNum;
+        for(var i=0;i<sNumList.length;i++){
+            if(number==sNumList[i]){
+                MaxValue[i]=jsonData.sensors[0].MaxValue;
+                MinValue[i]=jsonData.sensors[0].MinValue;
+                meanVariance[i]=jsonData.sensors[0].meanVariance;
+                warnCount[i]=jsonData.sensors[0].warnCount;
+            }
+        }
+    };
+}
 function groupMenuCallback(data){
     if(data.code==200){
         leftMenuData=[];
@@ -92,21 +125,6 @@ function sensorMenuCallback(data){
 function onClickLeaf(node){
     if(!isNaN(node.data.id)){
         var sensorId = parseInt(node.data.id);
-        //alert("sensorId:"+node.data.id);
-       // alert("sensorId:"+node.data.name);
-
-        //alert("sensorId:"+node.data.number);
-//        $.post($.URL.sensor.getNumberBySensorId,{"sensorId":sensorId},function(data) {
-//            if(data.code == 200) {
-////                alert(data.data);
-//                //alert($.parseJSON(data.data));
-////                alert(data.data.number)
-////                alert(data.data[0].number);
-//                num = data.data[0].number;
-//                alert(num);
-//                myURL = tempURL + num;
-//            }
-//       },"json");
         $.ajax({
             url:$.URL.sensor.getNumberBySensorId,
             async:false,
@@ -118,7 +136,6 @@ function onClickLeaf(node){
             }
         });
         $.post($.URL.sensor.getDataTypeByIdAndAppId,{"id":sensorId},dataTypeCallback,"json");
-//        num=2100000000010000;
         myURL = tempURL + num;
         refresh();
     }
@@ -127,7 +144,6 @@ function onClickLeaf(node){
     function dataTypeCallback(data) {
         if(data.code == 200) {
             dt=data.data;
-             //alert(dt);
         }
         else {
             alert("出错！");

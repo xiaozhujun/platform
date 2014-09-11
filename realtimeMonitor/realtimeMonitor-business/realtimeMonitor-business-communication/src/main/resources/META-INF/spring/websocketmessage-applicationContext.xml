@@ -6,12 +6,10 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
-
-    <bean id="websocket" class="org.whut.monitor.business.communication.websocket.WebsocketEndPoint"/>
     <websocket:handlers>
-        <websocket:mapping path="/hello" handler="websocket"/>
+        <websocket:mapping path="/hello" handler="websocketEndPoint"/>
         <websocket:handshake-interceptors>
-            <bean class="org.whut.monitor.business.communication.websocket.HandshakeInterceptor"/>
+            <bean class="org.whut.platform.fundamental.websocket.handler.HandshakeInterceptor"/>
         </websocket:handshake-interceptors>
     </websocket:handlers>
     <!-- 定义跳转的文件的前后缀 -->

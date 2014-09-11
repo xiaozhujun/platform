@@ -28,6 +28,7 @@
         <module>fundamental-message</module>
         <module>fundamental-communication</module>
         <module>fundamental-sms</module>
+        <module>fundamental-websocket</module>
     </modules>
 
 

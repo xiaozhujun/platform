@@ -57,13 +57,16 @@ public class ImageUploadServiceWeb {
 //            String realPath = request.getSession().getServletContext().getRealPath("/");
 //            System.out.println(request.getSession().getServletContext().getRealPath("../upload"));
 //            String image = realPath+"\\test\\"+filename;
-            String userImgRootPath =  FundamentalConfigProvider.get("inspectException.img.root.path") ;
-            String userImgRelativePath =  FundamentalConfigProvider.get("inspectException.img.relative.path") ;
-            String image = userImgRelativePath + "/" + filename;
-            String imagePath = userImgRootPath + image;
+
             long itemId = Long.parseLong(multipartRequest.getParameter("itemId"));
             long itemRecordId = Long.parseLong(multipartRequest.getParameter("itemRecordId"));
             long tableRecordId = Long.parseLong(multipartRequest.getParameter("tableRecordId"));
+
+            String userImgRootPath =  FundamentalConfigProvider.get("inspectException.img.root.path") ;
+            String userImgRelativePath =  FundamentalConfigProvider.get("inspectException.img.relative.path") ;
+            String image = userImgRelativePath + "/" + tableRecordId +"_"+ filename;
+            String imagePath = userImgRootPath + image;
+
 
             long appId = UserContext.currentUserAppId();
             long id = 0;

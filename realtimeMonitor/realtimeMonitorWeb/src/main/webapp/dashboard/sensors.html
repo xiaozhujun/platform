@@ -75,7 +75,7 @@
         if(data.code == 200) {
             rightGridData.Rows = data.data;
             rightGridData.Total = data.length;
-            //f_initRightGrid();
+           f_initRightGrid();
         }
     }
     var grid;
@@ -127,7 +127,6 @@
         var areaJumpName = $.evalJSON(jsonString).areaName;
         var jumpNumber = $.evalJSON(jsonString).number;
         var myDate = new Date();
-//            alert(myDate.toLocaleDateString());
         $.post($.URL.warnCondition.list,{groupName:groupJumpName.toString(),
             areaName:areaJumpName.toString(),collectorName:collectorJumpName.toString(),
             sensorName:sensorJumpName.toString(),number:jumpNumber.toString(),
@@ -172,7 +171,6 @@
                 {name:'status',display:'状态',width:'auto'
                     ,render:function(item) {
                     if(item.status.toString()=="在线正常工作")   {
-                        // return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
                         return "<img style='width: 20px' src=images/online.png />";
                     }
                     else {

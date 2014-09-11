@@ -31,6 +31,7 @@ var treeManager=null;
 var data1=[];
 var dt=1;
 var ws;
+var wsData;
 var sNumList= new Array();
 $(document).ready(function() {
     $("#treeMenu").ligerLayout({leftWidth: 250});
@@ -42,10 +43,7 @@ $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失�
         ws = null;
     }
 }});
-var MaxValue=new Array();
-var MinValue=new Array();
-var meanVariance=new Array();
-var warnCount=new Array();
+
 function connect() {
     var url="ws://localhost:8080/realtimeMonitor/websocket/hello";
     var s="all"+"|"+2;
@@ -60,15 +58,7 @@ function connect() {
     ws.onmessage = function (event) {
         console.log ("收到消息！"+event.data);
         var jsonData = eval("(" +event.data+ ")");
-        number=jsonData.sensors[0].sensorNum;
-        for(var i=0;i<sNumList.length;i++){
-            if(number==sNumList[i]){
-                MaxValue[i]=jsonData.sensors[0].MaxValue;
-                MinValue[i]=jsonData.sensors[0].MinValue;
-                meanVariance[i]=jsonData.sensors[0].meanVariance;
-                warnCount[i]=jsonData.sensors[0].warnCount;
-            }
-        }
+        wsData=jsonData.sensors[0].data;
     };
 }
 function groupMenuCallback(data){
@@ -135,33 +125,28 @@ function onClickLeaf(node){
             }
         });
         $.post($.URL.sensor.getDataTypeByIdAndAppId,{"id":sensorId},dataTypeCallback,"json");
-        myURL = tempURL + num;
-        refresh();
+        ws.onmessage = function (event) {
+            console.log ("收到消息！"+event.data);
+            var jsonData = eval("(" +event.data+ ")");
+            wsData=jsonData.sensors[0].data;
+            console.log(wsData);
+            var sensorNum=jsonData.sensors[0].sensorNum;
+            if(num==sensorNum){
+                if(dt==1)drawChart("#mainGrid", wsData, "mV");
+                else if(dt==2) drawChart2("#mainGrid", wsData, "mV");
+                else if(dt==3) drawChart3("#mainGrid", wsData, "mV");
+                else if(dt==4) drawChart4("#mainGrid", wsData, "mV");
+            }
+        };
     }
 }
-
-    function dataTypeCallback(data) {
+function dataTypeCallback(data) {
         if(data.code == 200) {
             dt=data.data;
         }
         else {
             alert("出错！");
         }
-    }
-
-    function refresh(){
-        $.get(myURL+".htm",null,sensorListCallback,"jsonp") ;
-    }
-
-    function sensorListCallback(result){
-        data1 = result.data;
-        //alert(data1);
-        if(dt==1)drawChart("#mainGrid", data1, "mV");
-        else if(dt==2) drawChart2("#mainGrid", data1, "mV");
-        else if(dt==3) drawChart3("#mainGrid", data1, "mV");
-        else if(dt==4) drawChart4("#mainGrid", data1, "mV");
-         var refreshTime=2;
-        setTimeout(refresh,refreshTime*1000);
     }
 </script>
 

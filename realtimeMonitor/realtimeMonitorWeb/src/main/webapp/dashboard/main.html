@@ -132,10 +132,10 @@ function onClickLeaf(node){
             console.log(wsData);
             var sensorNum=jsonData.sensors[0].sensorNum;
             if(num==sensorNum){
-                if(dt==1)drawChart("#mainGrid", wsData, "mV");
-                else if(dt==2) drawChart2("#mainGrid", wsData, "mV");
-                else if(dt==3) drawChart3("#mainGrid", wsData, "mV");
-                else if(dt==4) drawChart4("#mainGrid", wsData, "mV");
+                if(dt==1)drawChart("#waveCanvas", wsData, "mV");
+                else if(dt==2) drawChart2("#waveCanvas", wsData, "mV");
+                else if(dt==3) drawChart3("#waveCanvas", wsData, "mV");
+                else if(dt==4) drawChart4("#waveCanvas", wsData, "mV");
             }
         };
     }
@@ -154,7 +154,6 @@ function dataTypeCallback(data) {
     .l-div {height: 30px;margin-top: 10px}
     .l-span-edit-com{margin-left: 10px;  width: 70px;float: left;margin-top:2px}
     .l-edit-com{width: 60px; margin-left: 10px; float: left;}
-    #mainGrid{ width: 100%;  }
 </style>
 </head>
 <body>
@@ -162,6 +161,8 @@ function dataTypeCallback(data) {
 <div id="treeMenu" style="width: 100%;height: 100%;">
     <div position="left"><ul class="l-tree" id="tree1"></ul></div>
     <div position="center" id="mainGrid">
+        <div position="center" id="waveCanvas" style="min-width:700px;height:400px">
+        </div>
     </div>
     <!--div position="right" id="rightGrid"></div-->
 </div>

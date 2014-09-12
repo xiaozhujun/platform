@@ -95,9 +95,6 @@
                     console.log(event);			};
             }
         }
-        function disconnect() {
-            ws.close();
-        }
         function reconnect() {
             connect();
         }
@@ -112,7 +109,6 @@
                 <td id="number" class="valueTD"></td>
                 <td><div class="lableTD">监测组:</div></td>
                 <td id="group" class="valueTD"></td>
-                <td align="right"> <button onclick="disconnect()">关闭连接</button></td>
             </tr>
         </table>
     </div>

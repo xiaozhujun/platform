@@ -13,6 +13,7 @@ import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
 
 import javax.jms.Message;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +29,6 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
 
     @Autowired
     private WebsocketEndPoint webSocket;
-    private RedisConnector redisConnector = new RedisConnector();
     @Override
     public String getMessageName() {
         return Constants.WWBSOCKEY_QUEUE_DESTINATION;  //To change body of implemented methods use File | Settings | File Templates.
@@ -57,23 +57,27 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
         }
     }
     public void sendMsg(String number,String messageText){
-        Map<WebSocketSession,String> tempMap=webSocket.getTempMessage();
+        Map<String,List<WebSocketSession>> tempMap=webSocket.getTempMessage();
         TextMessage returnMessage = new TextMessage(messageText);
         try {
-            for(WebSocketSession key : tempMap.keySet()){
-                String s=  tempMap.get(key);
-                String s1[]=s.split("\\|");
+            for(String key : tempMap.keySet()){
+                String s1[]=key.split("\\|");
                 String sNum=s1[0];
                 String page=s1[1];
+                List<WebSocketSession> wSSList=tempMap.get(key);
                 if(page.equals("1")) {
                     if(number.equals(sNum)){
-                        key.sendMessage(returnMessage);
-                        System.out.println("aaaaaaaaaaaaaaaaa"+messageText);
+                        for(int i=0;i<wSSList.size();i++){
+                           wSSList.get(i).sendMessage(returnMessage);
+                          System.out.println("向1发数据"+messageText);
+                      }
                     }
                 }
                 else if(page.equals("2")){
-                    key.sendMessage(returnMessage);
-                    System.out.println("成功！+“qqqqqqqqqqqqqqqqq”");
+                    for(int i=0;i<wSSList.size();i++){
+                        wSSList.get(i).sendMessage(returnMessage);
+                        System.out.println("向2发数据"+messageText);
+                    }
                 }
             }
 

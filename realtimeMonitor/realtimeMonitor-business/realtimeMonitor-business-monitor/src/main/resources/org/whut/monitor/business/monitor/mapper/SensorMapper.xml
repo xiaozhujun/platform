@@ -42,6 +42,8 @@
            s.number=#{number} AND s.appId=#{appId}
     </select>
 
+
+
     <select id="list" parameterType="java.lang.Long" resultType="map">
         SELECT s.id,s.`name`,s.description,s.number,g.`name` AS groupName,a.`name` AS areaName,c.`name` AS collectorName,c.`number` AS collectorNumber,s.maxFrequency,s.minFrequency,s.workFrequency,s.shouldWarn,s.warnType,s.warnValue,s.warnCount,s.warnStatus,s.appId
         FROM `group` g,area a,collector c,sensor s

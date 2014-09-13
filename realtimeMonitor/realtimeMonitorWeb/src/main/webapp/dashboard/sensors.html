@@ -97,10 +97,10 @@
                 {display:'报警值',name:'warnValue',width:'auto'},
                 {display:'当前数值',name:'curSensorValue',width:180 ,render:function(item,rowindex) {
                     if(meanVariance[rowindex]==null) {
-                        return  "0"
+                        return  "0" ;
                     }
                     else
-                        return meanVariance[rowindex]
+                        return meanVariance[rowindex]  ;
                 }},
                 {display:'报警次数',name:'warnCount',width:'auto' ,render:function(item,rowindex) {
                     if(warnCount[rowindex]==null) {

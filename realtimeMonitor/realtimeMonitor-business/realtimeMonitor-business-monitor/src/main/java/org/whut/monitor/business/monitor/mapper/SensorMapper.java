@@ -30,4 +30,5 @@ public interface SensorMapper extends AbstractMapper<Sensor>{
     public List<Map<String,String>> getSensorIdAndNumbersByName(@Param("name") String name);   //名字可重复，故用复数
     public List<Map<String,String>> getCollectorNameBySensorNumber(@Param("number") long number);
     public Long getDataTypeByIdAndAppId(@Param("id") long id, @Param("appId") long appId);
+
 }

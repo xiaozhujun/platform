@@ -75,4 +75,5 @@ public class SensorService {
     public long getDataTypeByIdAndAppId(long id,long appId) {
         return sensorMapper.getDataTypeByIdAndAppId(id, appId);
     }
+
 }

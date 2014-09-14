@@ -40,7 +40,19 @@
                     if(number==cNumList[i]){
                         collectLastDate[i]=jsonData.sensors[0].lastCommunicateTime;
                         grid.updateCell('lastMessageTime',collectLastDate[i],i);
-                        console.log("ssssssssssssssssssss"+collectLastDate[i]);
+                        //要计算的日期字符串
+                       var  collectLD = collectLastDate[i].replace(/-/g,"/");
+                        //要计算的日期
+                        var date = new Date(collectLD);
+                        //当前日期
+                        var currDate = new Date();
+                        var dif = (currDate.getTime()-date.getTime())/(1000*3600);
+                        if(dif>1){
+                            grid.updateCell('status',"离线或异常",i);
+                        }
+                        else{
+                            grid.updateCell('status',"在线正常工作",i);
+                        }
                     }
                 }
             };

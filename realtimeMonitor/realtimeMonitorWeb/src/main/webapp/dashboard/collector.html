@@ -15,14 +15,50 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
+        var cNumList= new Array();
+        var collectLastDate=new Array();
         $(document).ready(function(){
             $.post($.URL.collector.list,null,collectorListCallback,"json");
+            connect();
         });
-
+        function connect() {
+            var url= $.URL.websocket.register;
+            var s="all"+"|"+2;
+            ws =  new WebSocket(url);
+            ws.onopen = function () {
+                console.log('Info: connection opened.');
+                ws.send(s);
+                ws.onclose = function (event) {
+                    console.log('Info: connection closed.');
+                    console.log(event);			};
+            } ;
+            ws.onmessage = function (event) {
+                console.log ("收到消息！"+event.data);
+                var jsonData = eval("(" +event.data+ ")");
+                number=jsonData.sensors[0].collectorNum;
+                for(var i=0;i<cNumList.length;i++){
+                    if(number==cNumList[i]){
+                        collectLastDate[i]=jsonData.sensors[0].lastCommunicateTime;
+                        grid.updateCell('lastMessageTime',collectLastDate[i],i);
+                        console.log("ssssssssssssssssssss"+collectLastDate[i]);
+                    }
+                }
+            };
+        }
+        $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+            if (ws != null) {
+                ws.close();
+                ws = null;
+            }
+        }});
         var gridData =[];
         var lastTime="";
         function collectorListCallback(data){
             if(data.code=200){
+                for(var i=0;i<data.data.length;i++)  {
+                    cNumList[i]=data.data[i].number;
+                }
+                console.log("aaaaaaaaaaaaaa"+cNumList);
                 gridData.Rows=data.data;
                 gridData.Total=data.length;
                 f_initGrid();

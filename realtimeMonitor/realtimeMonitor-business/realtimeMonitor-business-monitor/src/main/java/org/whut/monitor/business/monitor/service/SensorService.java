@@ -75,5 +75,7 @@ public class SensorService {
     public long getDataTypeByIdAndAppId(long id,long appId) {
         return sensorMapper.getDataTypeByIdAndAppId(id, appId);
     }
-
+    public String getCNumBySNum(String sNum){
+        return sensorMapper.getCNumBySNum(sNum);
+    }
 }

@@ -79,7 +79,7 @@ function areaMenuCallback(data){
         for(var i=0;i<data.data.length;i++){
             var g={};
             g['pid']=data.data[i].groupName;
-            g['id']=data.data[i].name;
+            g['id']=data.data[i].groupName+data.data[i].name;
             g['text']=data.data[i].name;
             leftMenuData.push({ id: g.id, pid: g.pid, text: g.text });
         }
@@ -90,7 +90,7 @@ function sensorMenuCallback(data){
     if(data.code==200){
         for(var i=0;i<data.data.length;i++){
             var g={};
-            g['pid']=data.data[i].areaName;
+            g['pid']=data.data[i].groupName+data.data[i].areaName;
             g['id']=data.data[i].id;
             g['text']=data.data[i].name+' 编号：'+data.data[i].number;
             //于此设置图标表示offline。以不同的childIcon参数实现。

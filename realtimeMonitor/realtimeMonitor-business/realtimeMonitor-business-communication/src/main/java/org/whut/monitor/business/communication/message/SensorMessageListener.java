@@ -48,6 +48,9 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
 
     @Autowired
     private SensorService sensorService;
+
+
+
     @Autowired
     private AlgorithmService algorithmService;
 
@@ -74,7 +77,6 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
         String lastDate = "";
         String sensorData="";
         String sensorNum="";
-        //String collectorNum="";
 
         if (message instanceof ActiveMQTextMessage){
             try {
@@ -95,7 +97,11 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
                     double MaxValue= algorithmService.MaxValue(arrayList);
                     double MinValue= algorithmService.MinValue(arrayList);
                     String warnCount = redisConnector.get("sensor:{"+number+"}:warnCount");
-                    String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount;
+                    String lastCommunicateTime = redisConnector.get("sensor:{"+number+"}:lastDate");
+                    String collectorNum=sensorService.getCNumBySNum(number) ;
+                    System.out.println("aaaaaaaaaaaa"+collectorNum);
+
+                    String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:"+collectorNum+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"'";
                     int endIndex = messageText.indexOf("}]}");
                     System.out.println(messageText.substring(0,endIndex));
                     String s2= messageText.substring(0,endIndex)+","+s+"}]}";

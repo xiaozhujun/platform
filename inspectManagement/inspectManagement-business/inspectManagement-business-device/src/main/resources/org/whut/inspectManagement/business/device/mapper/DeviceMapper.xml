@@ -91,11 +91,12 @@
 
     <select id="getListByTagId" parameterType="java.lang.Long" resultType="map">
         select
-        dt.name as deviceType,dt.number as deviceTypeNumber,d.number as deviceNumber,t.name as tagName,t.id as tagId,t.number as tagNumber
-        from device d,devicetype dt,inspecttag t
+        dt.name as deviceType,dt.number as deviceTypeNumber,d.number as deviceNumber,t.name as tagName,t.id as tagId,t.number as tagNumber,ta.name as tagAreaName,ta.id as tagAreaId
+        from device d,devicetype dt,inspecttag t,inspectarea ta
         <where>
             d.deviceTypeId=dt.id
             and t.deviceId = d.id
+            and t.inspectAreaId=ta.id
             <if test="_parameter!=null">and t.id=#{_parameter}</if>
         </where>
     </select>

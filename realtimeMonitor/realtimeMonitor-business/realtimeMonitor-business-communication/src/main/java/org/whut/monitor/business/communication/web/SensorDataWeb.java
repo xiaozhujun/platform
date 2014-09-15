@@ -58,17 +58,9 @@ public class SensorDataWeb {
         String warnCount = redisConnector.get("sensor:{"+id+"}:warnCount");
         String lastDate = redisConnector.get("sensor:{"+id+"}:lastDate");
         Map map = new HashMap();
-        if (curWarnValue != null) {
-            map.put("curWarnValue",curWarnValue);
-            map.put("warnCount",warnCount);
-            map.put("lastDate",lastDate);
-        }
-        else {
-            map.put("curWarnValue","0");
-            map.put("warnCount","暂无数据");
-            map.put("lastDate","暂无数据");
-        }
-//        System.out.println("redis"+map.get("LastData"));
+        map.put("curWarnValue",curWarnValue);
+        map.put("warnCount",warnCount);
+        map.put("lastDate",lastDate);
         return getJsonp(map,request.getParameter("callback"));
     }
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")

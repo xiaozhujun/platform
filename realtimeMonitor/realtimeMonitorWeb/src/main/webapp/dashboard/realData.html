@@ -55,6 +55,7 @@
     <script type="text/javascript">
         var  ws=null;
         var num= currentMonitor.number;
+        var s=currentMonitor.number+"|"+1;
         var tempURL = $.URL.sensors.getSensorDataArray;
         var myURL = tempURL + num.toString();
         $(document).ready(function () {
@@ -67,25 +68,35 @@
                 connect();
             }
         });
+        $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+            if (ws != null) {
+                console.log(1234344) ;
+                ws.close();
+                ws = null;
+            }
+        } });
         function connect() {
-            var url="ws://www.cseicms.com/realtimeMonitor/websocket/hello";
-            ws = (url.indexOf('sockjs') != -1) ? new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);
+            var url= $.URL.websocket.register;
+            ws =  new WebSocket(url);
             ws.onopen = function () {
                 console.log('Info: connection opened.');
-                ws.send(currentMonitor.number);
-            ws.onmessage = function (event) {
-                console.log ("收到消息！"+event.data);
-                var sensorJumpName=eval("(" +event.data+ ")");
-                var number=sensorJumpName.sensors[0].sensorNum;
-                var data1=sensorJumpName.sensors[0].data;
-            if(currentMonitor.number==number){
-                  drawChart("#waveContainer", data1, "mV");
-                }
-            };
-            ws.onclose = function (event) {
-                console.log('Info: connection closed.');
-                console.log(event);			};
+                ws.send(s);
+                ws.onmessage = function (event) {
+                    console.log ("收到消息！"+event.data);
+                    var sensorJumpName=eval("(" +event.data+ ")");
+                    var number=sensorJumpName.sensors[0].sensorNum;
+                    var data1=sensorJumpName.sensors[0].data;
+                    if(currentMonitor.number==number){
+                        drawChart("#waveContainer", data1, "mV");
+                    }
+                };
+                ws.onclose = function (event) {
+                    console.log('Info: connection closed.');
+                    console.log(event);			};
             }
+        }
+        function reconnect() {
+            connect();
         }
     </script>
 </head>

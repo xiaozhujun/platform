@@ -60,6 +60,11 @@
         <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
     </listener>
 
+    <listener>
+        <description>服务随web启动而启动</description>
+        <listener-class>org.whut.platform.fundamental.websocket.WsStartListener</listener-class>
+    </listener>
+
     <!-- Spring FilterChain(security) -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>

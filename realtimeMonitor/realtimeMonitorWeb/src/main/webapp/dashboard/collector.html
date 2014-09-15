@@ -15,30 +15,67 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/rightHidePanel.js"></script>
     <script type="text/javascript">
+        var cNumList= new Array();
+        var collectLastDate=new Array();
         $(document).ready(function(){
             $.post($.URL.collector.list,null,collectorListCallback,"json");
-//            $.post($.URL.sensor.getMongoDataLastList,null,lastTimeCallback,"json");
+            connect();
         });
-//        $.ajaxSetup({
-//            async: false
-//        });
+        function connect() {
+            var url= $.URL.websocket.register;
+            var s="all"+"|"+2;
+            ws =  new WebSocket(url);
+            ws.onopen = function () {
+                console.log('Info: connection opened.');
+                ws.send(s);
+                ws.onclose = function (event) {
+                    console.log('Info: connection closed.');
+                    console.log(event);			};
+            } ;
+            ws.onmessage = function (event) {
+                console.log ("收到消息！"+event.data);
+                var jsonData = eval("(" +event.data+ ")");
+                number=jsonData.sensors[0].collectorNum;
+                for(var i=0;i<cNumList.length;i++){
+                    if(number==cNumList[i]){
+                        collectLastDate[i]=jsonData.sensors[0].lastCommunicateTime;
+                        grid.updateCell('lastMessageTime',collectLastDate[i],i);
+                        //要计算的日期字符串
+                       var  collectLD = collectLastDate[i].replace(/-/g,"/");
+                        //要计算的日期
+                        var date = new Date(collectLD);
+                        //当前日期
+                        var currDate = new Date();
+                        var dif = (currDate.getTime()-date.getTime())/(1000*3600);
+                        if(dif>1){
+                            grid.updateCell('status',"离线或异常",i);
+                        }
+                        else{
+                            grid.updateCell('status',"在线正常工作",i);
+                        }
+                    }
+                }
+            };
+        }
+        $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+            if (ws != null) {
+                ws.close();
+                ws = null;
+            }
+        }});
         var gridData =[];
         var lastTime="";
         function collectorListCallback(data){
             if(data.code=200){
+                for(var i=0;i<data.data.length;i++)  {
+                    cNumList[i]=data.data[i].number;
+                }
+                console.log("aaaaaaaaaaaaaa"+cNumList);
                 gridData.Rows=data.data;
                 gridData.Total=data.length;
                 f_initGrid();
             }
         }
-//        function lastTimeCallback(data){
-//
-//            if (data.code == 200) {
-//                lastTime = data.data.time;
-////                alert(lastTime);
-//            }    }
-
-
 
         var grid;
         var sensorTime;
@@ -47,7 +84,6 @@
                 columns:[
                     {name:'number',display:'编号',width:'auto'},
                     {name:'id',display:'序号',width:'auto'},
-              //    {name:'groupName',display:'测量组',width:'auto'},
                     {name:'name',display:'采集仪名称',width:'auto'},
                     {name:'description',display:'采集仪描述',width:'auto'},
                     {name:'lastMessageTime',display:'最后通信时间',width:'auto'
@@ -55,12 +91,6 @@
                         var num =item.number;
                         var tempURL = $.URL.sensors.getCollectorStatus;
                         var myURL = tempURL + num.toString();
-//                        alert(myURL);
-//                        $.get(myURL+".html",null,lastTimeCallback,"jsonp") ;
-//                        function lastTimeCallback(result) {
-////                            alert(result["lastDate"].toString());
-//                            sensorTime = result["lastDate"].toString();
-//                        }
                         $.ajax({
                             url: myURL+".html",
                             async:false,
@@ -77,12 +107,6 @@
                 data:gridData,clickToEdit: false, isScroll: true, usePager: false,
                 width:'auto',resizable:true
             }); }
-
-
-
-
-
-
     </script>
 
     <style type="text/css">

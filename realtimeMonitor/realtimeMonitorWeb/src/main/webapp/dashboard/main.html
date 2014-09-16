@@ -33,6 +33,7 @@ var dt=1;
 var ws;
 var wsData;
 var sNumList= new Array();
+var initSNum = 0;
 $(document).ready(function() {
     $("#treeMenu").ligerLayout({leftWidth: 250});
     connect();
@@ -76,12 +77,18 @@ function groupMenuCallback(data){
 }
 function areaMenuCallback(data){
     if(data.code==200){
-        for(var i=0;i<data.data.length;i++){
+        var g={};
+        g['pid']=data.data[0].groupName;
+        g['id']=data.data[0].groupName+data.data[0].name;
+        g['text']=data.data[0].name;
+        leftMenuData.push({ id: g.id, pid: g.pid, text: g.text ,isExpand:true});
+        for(var i=1;i<data.data.length;i++){
             var g={};
             g['pid']=data.data[i].groupName;
             g['id']=data.data[i].groupName+data.data[i].name;
             g['text']=data.data[i].name;
-            leftMenuData.push({ id: g.id, pid: g.pid, text: g.text });
+            leftMenuData.push({ id: g.id, pid: g.pid, text: g.text});
+
         }
         $.post($.URL.sensor.list,null,sensorMenuCallback,"json");
     }
@@ -97,6 +104,7 @@ function sensorMenuCallback(data){
             leftMenuData.push({ id: g.id, pid: g.pid, text: g.text });
         }
     }
+    leftMenuData[0].isExpand=true;
     $("#tree1").ligerTree({
         data:leftMenuData,
         idFieldName :'id',
@@ -106,11 +114,55 @@ function sensorMenuCallback(data){
         parentIcon: null,
         nodeWidth:180,
         childIcon: null,
+        isExpand:false,
         onclick:onClickLeaf
     });
     treeManager = $("#tree1").ligerGetTreeManager();
-    treeManager.collapseAll();
+//    treeManager.collapseAll();
+    if(treeManager.hasChildren(leftMenuData[0])) {
+        if(treeManager.hasChildren(leftMenuData[0].children[0])) {
+            initSNum = leftMenuData[0].children[0].children[0].id;
+                init(initSNum);
+        }
+        else {
+            console.log("没有传感器");
+        }
+    }
+    else {
+        console.log("没有检测组");
+    }
 }
+
+function init(a) {
+    if(a) {
+        var sensorId = parseInt(a);
+        $.ajax({
+            url:$.URL.sensor.getNumberBySensorId,
+            async:false,
+            type:'POST',
+            dataType:'json',
+            data:{"sensorId":sensorId},
+            success:function sensorNumberCallback(data){
+                num = data.data[0].number;
+            }
+        });
+        $.post($.URL.sensor.getDataTypeByIdAndAppId,{"id":sensorId},dataTypeCallback,"json");
+        ws.onmessage = function (event) {
+            console.log ("收到消息！"+event.data);
+            var jsonData = eval("(" +event.data+ ")");
+            wsData=jsonData.sensors[0].data;
+            console.log(wsData);
+            var sensorNum=jsonData.sensors[0].sensorNum;
+            if(num==sensorNum){
+                if(dt==1)drawChart("#waveCanvas", wsData, "mV");
+                else if(dt==2) drawChart2("#waveCanvas", wsData, "mV");
+                else if(dt==3) drawChart3("#waveCanvas", wsData, "mV");
+                else if(dt==4) drawChart4("#waveCanvas", wsData, "mV");
+            }
+        };
+    }
+}
+
 function onClickLeaf(node){
     if(!isNaN(node.data.id)){
         var sensorId = parseInt(node.data.id);

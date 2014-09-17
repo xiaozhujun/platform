@@ -15,6 +15,24 @@ public class DeviceTypeTag {
     private String tagName;
     private long tagId;
     private String tagNumber;
+    private String tagAreaName;
+    private String tagAreaId;
+
+    public String getTagAreaId() {
+        return tagAreaId;
+    }
+
+    public void setTagAreaId(String tagAreaId) {
+        this.tagAreaId = tagAreaId;
+    }
+
+    public String getTagAreaName() {
+        return tagAreaName;
+    }
+
+    public void setTagAreaName(String tagAreaName) {
+        this.tagAreaName = tagAreaName;
+    }
 
     public String getDeviceType() {
         return deviceType;

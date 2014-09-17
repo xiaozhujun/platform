@@ -1,8 +1,5 @@
 package org.whut.inspectManagement.business.configuration.web;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.configuration.entity.ConfigureParameter;
@@ -48,15 +45,15 @@ public class DeviceConfigurationServiceWeb {
         String[] tagIds = data.split(",");
         for(String s:tagIds){
             long tagId  = Long.parseLong(s);
-            List<Map<String,String>> mapList = deviceService.getListByTagId(tagId);
-            for(Map<String,String> map:mapList){
+            List<Map<String,Object>> mapList = deviceService.getListByTagId(tagId);
+            for(Map<String,Object> map:mapList){
                 DeviceTypeTag dtt = new DeviceTypeTag();
-                dtt.setDeviceNumber(map.get("deviceNumber"));
-                dtt.setDeviceType(map.get("deviceType"));
-                dtt.setDeviceTypeNumber(map.get("deviceTypeNumber"));;
+                dtt.setDeviceNumber((String)map.get("deviceNumber"));
+                dtt.setDeviceType((String)map.get("deviceType"));
+                dtt.setDeviceTypeNumber((String)map.get("deviceTypeNumber"));;
                 dtt.setTagId(tagId);
-                dtt.setTagName(map.get("tagName"));
-                dtt.setTagNumber(map.get("tagNumber"));
+                dtt.setTagAreaName((String)map.get("tagAreaName"));
+                dtt.setTagAreaId(map.get("tagAreaId").toString());
                 deviceList.add(dtt);
             }
         }

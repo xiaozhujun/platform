@@ -237,6 +237,7 @@ public class inspectReportServiceWeb {
            for(DBObject dd:dList){
                Map<String,String> d=dd.toMap();
                Map<String,String> map=inspectReportService.getInfoByMongoDbObject(d);
+               map.put(MongoConstant.note,d.get(MongoConstant.note));
                mapList.add(map);
            }
            return mapList;

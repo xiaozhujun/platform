@@ -159,7 +159,12 @@ function abnormal(rowid){
     showAbnormalPic(rowPicture);
 }
 function showImage(data){
-    $("#image").attr("src",data.data);
+    if(data.code==500){
+        $("#image").attr("src","");
+    }else{
+        $("#image").attr("src",data.data);
+    }
+
 }
 function showAbnormalPic(rowPicture){
     if(rowPicture.inspectChoiceValue!="异常"){

@@ -1,4 +1,4 @@
-package org.whut.monitor.business.communication.websocket;
+package org.whut.platform.fundamental.websocket.handler;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;

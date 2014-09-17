@@ -16,18 +16,55 @@
 <script type="text/javascript" src="js/rightHidePanel.js"></script>
 <script type="text/javascript">
     var tempURL = $.URL.sensors.getWarnCondition;
-    $("#choiceContainer").ligerLayout({rightWidth:220});
+    var sNumList= new Array();
+    $("#choiceContainer").ligerLayout();
     $(document).ready(function() {
-
         $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
         $.post($.URL.collector.list,null,rightGridCallback,"json");
-//            $.post($.URL.warnRecord.list,null,warnRecordCallback,"json");
+        connect();
     });
-
+    $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+        if (ws != null) {
+            ws.close();
+            ws = null;
+        }
+    }});
+    var MaxValue=new Array();
+    var MinValue=new Array();
+    var meanVariance=new Array();
+    var warnCount=new Array();
+    function connect() {
+        var url= $.URL.websocket.register;
+        var s="all"+"|"+2;
+        ws =  new WebSocket(url);
+        ws.onopen = function () {
+            console.log('Info: connection opened.');
+            ws.send(s);
+            ws.onclose = function (event) {
+                console.log('Info: connection closed.');
+                console.log(event);			};
+        } ;
+        ws.onmessage = function (event) {
+            console.log ("收到消息！"+event.data);
+            var jsonData = eval("(" +event.data+ ")");
+            number=jsonData.sensors[0].sensorNum;
+            for(var i=0;i<sNumList.length;i++){
+                if(number==sNumList[i]){
+                    MaxValue[i]=jsonData.sensors[0].MaxValue;
+                    MinValue[i]=jsonData.sensors[0].MinValue;
+                    meanVariance[i]=jsonData.sensors[0].meanVariance;
+                    warnCount[i]=jsonData.sensors[0].warnCount;
+                }
+            }
+        };
+    }
     var gridData = {};
     var rightGridData = {};
     function gridCallback(data) {
         if(data.code == 200) {
+            for(var i=0;i<data.data.length;i++)  {
+                sNumList[i]=data.data[i].number;
+            }
             gridData.Rows = data.data;
             gridData.Total = data.length;
             f_initGrid();
@@ -38,7 +75,7 @@
         if(data.code == 200) {
             rightGridData.Rows = data.data;
             rightGridData.Total = data.length;
-            f_initRightGrid();
+           f_initRightGrid();
         }
     }
     var grid;
@@ -51,7 +88,6 @@
     function f_initGrid() {
         grid = $("#centerGrid").ligerGrid({
             columns:[
-//                    {display:'序号',name:'id',width:60},
                 {display:'编号',name:'number',width:150},
                 {display:'传感器',name:'name',width:'auto'},
                 {display:'监测组',name:'groupName',width:'auto'},
@@ -59,44 +95,20 @@
                 {display:'采集仪',name:'collectorName',width:'auto'},
                 {display:'报警参数类型',name:'warnType',width:'auto'},
                 {display:'报警值',name:'warnValue',width:'auto'},
-//                    {display:'采集仪状态',name:'status',width:140},
-                {display:'当前数值',name:'curSensorValue',width:180,render:function(item){
-                    var sensorId = item.number;
-                    var myURL = tempURL + sensorId;
-                    $.ajax({
-                        url: myURL+".html",
-                        async:false,
-                        dataType:'jsonp',
-                        jsonpCallback:'callback',
-                        success: function meanVarianceCallback(result) {
-//                                alert(result["curWarnValue"]);
-                            h = result["curWarnValue"].toString();
-                            count = result["warnCount"].toString();
-                        }
-                    });
-                    return returnCurSensor();
+                {display:'当前数值',name:'curSensorValue',width:180 ,render:function(item,rowindex) {
+                    if(meanVariance[rowindex]==null) {
+                        return  "0" ;
+                    }
+                    else
+                        return meanVariance[rowindex]  ;
                 }},
-                {display:'报警次数',name:'warnCount',width:'auto'
-                    ,render:function(item,rowindex) {
-                    rowInf = rowindex;
-//                        var sensorId = item.number;
-//                        var myURL = tempURL + sensorId;
-//                        $.ajax({
-//                            url: myURL+".html",
-//                            async:false,
-//                            dataType:'jsonp',
-//                            jsonpCallback:'callback',
-//                            success: function meanVarianceCallback(result) {
-////                                alert(result["warnCount"]);
-//                                count = result["warnCount"].toString();
-//                                tempCount[rowindex] = count;
-//                            }
-//                        });
-//                    alert(tempCount);
-                    tempCount[rowindex] = count;
-                    return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + count.toString() + "</a>"
-                }
-                }
+                {display:'报警次数',name:'warnCount',width:'auto' ,render:function(item,rowindex) {
+                    if(warnCount[rowindex]==null) {
+                        return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + "暂无数据" + "</a>"
+                    }
+                    else
+                        return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + warnCount[rowindex] + "</a>"
+                } }
             ],
             data:gridData,
             width:'100%',
@@ -115,7 +127,6 @@
         var areaJumpName = $.evalJSON(jsonString).areaName;
         var jumpNumber = $.evalJSON(jsonString).number;
         var myDate = new Date();
-//            alert(myDate.toLocaleDateString());
         $.post($.URL.warnCondition.list,{groupName:groupJumpName.toString(),
             areaName:areaJumpName.toString(),collectorName:collectorJumpName.toString(),
             sensorName:sensorJumpName.toString(),number:jumpNumber.toString(),
@@ -160,7 +171,6 @@
                 {name:'status',display:'状态',width:'auto'
                     ,render:function(item) {
                     if(item.status.toString()=="在线正常工作")   {
-                        // return "<img style='width: 20px' src="+"images/"+item.status+".png></img>";
                         return "<img style='width: 20px' src=images/online.png />";
                     }
                     else {
@@ -185,27 +195,15 @@
             resizable:false
         });
     }
-
-
     $("#curDataFlush").click(f_click);
     function f_click(){
-        var tempRowInf = rowInf;
-        for (var i=0;i<=tempRowInf;i++)
+        for (var i=0;i<sNumList.length;i++)
         {
-//                alert(tempRowInf);
-//                alert(tempCount[i]);
-            f_updateCurDataCell(i,h);
-            f_updateWarnCount(i,tempCount[i]);
+            grid.updateCell('curSensorValue',meanVariance[i],i);
+            grid.updateCell('warnCount',warnCount[i],i);
         }
     }
-    function f_updateCurDataCell(rowInf,updateValue) {
-        grid.updateCell('curSensorValue',updateValue,rowInf);
-    }
-
-    function f_updateWarnCount(rowInf,updateValue) {
-        grid.updateCell('warnCount',updateValue,rowInf);
-    }
-    setInterval('$("#curDataFlush").trigger("click")',10000);
+    setInterval('$("#curDataFlush").trigger("click")',1000);
 
 </script>
 
@@ -220,8 +218,8 @@
 
 <div id="choiceContainer">
     <!--div position="left"><ul class="l-tree" id="tree1"></ul></div-->
-    <div position="center" title="传感器" id="centerGrid"></div>
-    <div position="right" id="rightGrid"></div>
+    <div position="center"  id="centerGrid"></div>
+    <!--<div position="right" id="rightGrid"></div>-->
 </div>
 <br/>
 <div>

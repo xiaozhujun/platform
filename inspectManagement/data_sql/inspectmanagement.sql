@@ -1,15 +1,22 @@
 /*
-MySQL Data Transfer
-Source Host: localhost
-Source Database: inspectmanagement
-Target Host: localhost
-Target Database: inspectmanagement
-Date: 2014/8/30 21:35:11
+Navicat MySQL Data Transfer
+
+Source Server         : yy
+Source Server Version : 50151
+Source Host           : localhost:3306
+Source Database       : inspectmanagement
+
+Target Server Type    : MYSQL
+Target Server Version : 50151
+File Encoding         : 65001
+
+Date: 2014-09-17 14:47:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
 -- ----------------------------
--- Table structure for app
+-- Table structure for `app`
 -- ----------------------------
 DROP TABLE IF EXISTS `app`;
 CREATE TABLE `app` (
@@ -22,7 +29,14 @@ CREATE TABLE `app` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for authority
+-- Records of app
+-- ----------------------------
+INSERT INTO `app` VALUES ('1', '企业1', '1', '启用', '2014-05-28');
+INSERT INTO `app` VALUES ('2', '深圳市洲智电子有限公司', '深圳市洲智电子有限公司\n', '启用', '2014-07-17');
+INSERT INTO `app` VALUES ('3', '起重机定检测试', '起重机定检测试', '启用', '2014-07-21');
+
+-- ----------------------------
+-- Table structure for `authority`
 -- ----------------------------
 DROP TABLE IF EXISTS `authority`;
 CREATE TABLE `authority` (
@@ -34,7 +48,13 @@ CREATE TABLE `authority` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for authority_menu
+-- Records of authority
+-- ----------------------------
+INSERT INTO `authority` VALUES ('1', 'ROLE_USER', '用户', '1');
+INSERT INTO `authority` VALUES ('2', 'ROLE_ADMIN', '管理员', '1');
+
+-- ----------------------------
+-- Table structure for `authority_menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `authority_menu`;
 CREATE TABLE `authority_menu` (
@@ -44,458 +64,11 @@ CREATE TABLE `authority_menu` (
   `menuId` bigint(20) DEFAULT NULL,
   `menuName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=325 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=327 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for authority_power
+-- Records of authority_menu
 -- ----------------------------
-DROP TABLE IF EXISTS `authority_power`;
-CREATE TABLE `authority_power` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `authorityId` bigint(20) DEFAULT NULL,
-  `powerId` bigint(20) DEFAULT NULL,
-  `powerResource` varchar(255) DEFAULT NULL,
-  `authorityName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for department
--- ----------------------------
-DROP TABLE IF EXISTS `department`;
-CREATE TABLE `department` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for device
--- ----------------------------
-DROP TABLE IF EXISTS `device`;
-CREATE TABLE `device` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `number` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  `deviceTypeId` bigint(20) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for devicetype
--- ----------------------------
-DROP TABLE IF EXISTS `devicetype`;
-CREATE TABLE `devicetype` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `number` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for employee
--- ----------------------------
-DROP TABLE IF EXISTS `employee`;
-CREATE TABLE `employee` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `sex` varchar(255) DEFAULT NULL,
-  `employeeRoleName` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  `departmentId` bigint(20) DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `tel` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for employee_employeerole
--- ----------------------------
-DROP TABLE IF EXISTS `employee_employeerole`;
-CREATE TABLE `employee_employeerole` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `employeeId` bigint(20) DEFAULT NULL,
-  `employeeName` varchar(255) DEFAULT NULL,
-  `employeeRoleId` bigint(20) DEFAULT NULL,
-  `employeeRoleName` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for employeerole
--- ----------------------------
-DROP TABLE IF EXISTS `employeerole`;
-CREATE TABLE `employeerole` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  `authorityId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for employeerole_inspecttable
--- ----------------------------
-DROP TABLE IF EXISTS `employeerole_inspecttable`;
-CREATE TABLE `employeerole_inspecttable` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `employeeRoleId` bigint(20) DEFAULT NULL,
-  `employeeRoleName` varchar(255) DEFAULT NULL,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `inspectTableName` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for exception
--- ----------------------------
-DROP TABLE IF EXISTS `exception`;
-CREATE TABLE `exception` (
-  `id` bigint(20) NOT NULL DEFAULT '0',
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for image_upload
--- ----------------------------
-DROP TABLE IF EXISTS `image_upload`;
-CREATE TABLE `image_upload` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `tableRecordId` bigint(20) NOT NULL,
-  `itemRecordId` bigint(20) NOT NULL,
-  `itemId` bigint(20) NOT NULL,
-  `createTime` datetime NOT NULL,
-  `appId` bigint(20) NOT NULL,
-  `image` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspect_locate
--- ----------------------------
-DROP TABLE IF EXISTS `inspect_locate`;
-CREATE TABLE `inspect_locate` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `userId` bigint(20) DEFAULT NULL,
-  `userName` varchar(255) DEFAULT NULL,
-  `inspectStartTime` datetime DEFAULT NULL,
-  `inspectEndTime` datetime DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `devName` varchar(255) DEFAULT NULL,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `inspectTableName` varchar(255) DEFAULT NULL,
-  `lng` varchar(255) DEFAULT NULL,
-  `lat` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `deviceNum` varchar(255) DEFAULT NULL,
-  `updateTime` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspect_plan
--- ----------------------------
-DROP TABLE IF EXISTS `inspect_plan`;
-CREATE TABLE `inspect_plan` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `rule` varchar(255) DEFAULT NULL,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `dayStart` date DEFAULT NULL,
-  `dayEnd` date DEFAULT NULL,
-  `timeStart` varchar(255) DEFAULT NULL,
-  `timeEnd` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspect_task
--- ----------------------------
-DROP TABLE IF EXISTS `inspect_task`;
-CREATE TABLE `inspect_task` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `inspectPlanId` bigint(20) DEFAULT NULL,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `inspectTableRecordId` bigint(20) DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `faultCount` int(11) DEFAULT NULL,
-  `inspectTime` datetime DEFAULT NULL,
-  `createtime` datetime DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  `taskDate` datetime DEFAULT NULL,
-  `timeStart` int(11) DEFAULT NULL,
-  `timeEnd` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspectaccount
--- ----------------------------
-DROP TABLE IF EXISTS `inspectaccount`;
-CREATE TABLE `inspectaccount` (
-  `id` bigint(20) NOT NULL,
-  `inspectTaskId` bigint(20) DEFAULT NULL,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `inspectTableRecordId` bigint(20) DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `exceptioncount` bigint(20) DEFAULT NULL,
-  `inspectTime` date DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Table structure for inspectarea
--- ----------------------------
-DROP TABLE IF EXISTS `inspectarea`;
-CREATE TABLE `inspectarea` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `number` varchar(255) DEFAULT NULL,
-  `deviceTypeId` bigint(20) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspectchoice
--- ----------------------------
-DROP TABLE IF EXISTS `inspectchoice`;
-CREATE TABLE `inspectchoice` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `choiceValue` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspectitem
--- ----------------------------
-DROP TABLE IF EXISTS `inspectitem`;
-CREATE TABLE `inspectitem` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `inspectAreaId` bigint(20) DEFAULT NULL,
-  `number` varchar(255) DEFAULT NULL,
-  `isInput` tinyint(4) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1082 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspectitem_choice
--- ----------------------------
-DROP TABLE IF EXISTS `inspectitem_choice`;
-CREATE TABLE `inspectitem_choice` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `inspectItemId` bigint(20) DEFAULT NULL,
-  `inspectChoiceId` bigint(20) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2808 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspectitemrecord
--- ----------------------------
-DROP TABLE IF EXISTS `inspectitemrecord`;
-CREATE TABLE `inspectitemrecord` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `inspectTagId` bigint(20) DEFAULT NULL,
-  `inspectItemId` bigint(20) DEFAULT NULL,
-  `inspectChoiceId` bigint(20) DEFAULT NULL,
-  `inspectChoiceValue` varchar(20) DEFAULT NULL,
-  `inspectTableRecordId` bigint(20) DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  `note` varchar(255) DEFAULT NULL,
-  `createTime` datetime DEFAULT NULL,
-  `inspectTime` datetime DEFAULT NULL,
-  `maintainId` bigint(20) DEFAULT NULL,
-  `maintainSuggest` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1571 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspecttable
--- ----------------------------
-DROP TABLE IF EXISTS `inspecttable`;
-CREATE TABLE `inspecttable` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspecttablerecord
--- ----------------------------
-DROP TABLE IF EXISTS `inspecttablerecord`;
-CREATE TABLE `inspecttablerecord` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `inspectTime` datetime DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `exceptioncount` bigint(20) DEFAULT NULL,
-  `mongoId` varchar(255) DEFAULT NULL,
-  `exceptionId` bigint(20) DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspecttag
--- ----------------------------
-DROP TABLE IF EXISTS `inspecttag`;
-CREATE TABLE `inspecttag` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `number` varchar(20) DEFAULT NULL,
-  `inspectAreaId` bigint(20) DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for inspecttask
--- ----------------------------
-DROP TABLE IF EXISTS `inspecttask`;
-CREATE TABLE `inspecttask` (
-  `id` bigint(20) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `inspectTableId` bigint(20) DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `dayStart` date DEFAULT NULL,
-  `dayEnd` date DEFAULT NULL,
-  `timeStart` varchar(255) DEFAULT NULL,
-  `timeEnd` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Table structure for menu
--- ----------------------------
-DROP TABLE IF EXISTS `menu`;
-CREATE TABLE `menu` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `pid` bigint(20) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `level` bigint(20) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
-  `parentname` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for power
--- ----------------------------
-DROP TABLE IF EXISTS `power`;
-CREATE TABLE `power` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `resource` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `sex` varchar(255) DEFAULT NULL,
-  `role` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT '1',
-  `status` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for user_authority
--- ----------------------------
-DROP TABLE IF EXISTS `user_authority`;
-CREATE TABLE `user_authority` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `userId` bigint(20) DEFAULT NULL,
-  `authorityId` bigint(20) DEFAULT NULL,
-  `userName` varchar(255) DEFAULT NULL,
-  `authorityName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for user_inspect_plan
--- ----------------------------
-DROP TABLE IF EXISTS `user_inspect_plan`;
-CREATE TABLE `user_inspect_plan` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `userId` bigint(20) DEFAULT NULL,
-  `deviceId` bigint(20) DEFAULT NULL,
-  `inspectPlanId` bigint(20) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `createtime` date DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records 
--- ----------------------------
-INSERT INTO `app` VALUES ('1', '企业1', '1', '启用', '2014-05-28');
-INSERT INTO `app` VALUES ('2', '深圳市洲智电子有限公司', '深圳市洲智电子有限公司\n', '启用', '2014-07-17');
-INSERT INTO `app` VALUES ('3', '起重机定检测试', '起重机定检测试', '启用', '2014-07-21');
-INSERT INTO `authority` VALUES ('1', 'ROLE_USER', '用户', '1');
-INSERT INTO `authority` VALUES ('2', 'ROLE_ADMIN', '管理员', '1');
 INSERT INTO `authority_menu` VALUES ('242', '2', 'ROLE_ADMIN', '1', '部门管理');
 INSERT INTO `authority_menu` VALUES ('243', '2', 'ROLE_ADMIN', '2', '添加部门');
 INSERT INTO `authority_menu` VALUES ('244', '2', 'ROLE_ADMIN', '6', '部门列表');
@@ -578,7 +151,26 @@ INSERT INTO `authority_menu` VALUES ('320', '1', 'ROLE_USER', '40', '任务管�
 INSERT INTO `authority_menu` VALUES ('321', '1', 'ROLE_USER', '41', '添加计划');
 INSERT INTO `authority_menu` VALUES ('322', '1', 'ROLE_USER', '42', '计划列表');
 INSERT INTO `authority_menu` VALUES ('323', '1', 'ROLE_USER', '43', '任务派发');
-INSERT INTO `authority_menu` VALUES ('324', '1', 'ROLE_USER', '44', '上传测试');
+INSERT INTO `authority_menu` VALUES ('324', '1', 'ROLE_ADMIN', '44', '图片上传测试');
+INSERT INTO `authority_menu` VALUES ('325', '1', 'ROLE_USER', '44', '图片上传测试');
+INSERT INTO `authority_menu` VALUES ('326', '1', 'ROLE_ADMIN', '45', '获取版本');
+
+-- ----------------------------
+-- Table structure for `authority_power`
+-- ----------------------------
+DROP TABLE IF EXISTS `authority_power`;
+CREATE TABLE `authority_power` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `authorityId` bigint(20) DEFAULT NULL,
+  `powerId` bigint(20) DEFAULT NULL,
+  `powerResource` varchar(255) DEFAULT NULL,
+  `authorityName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of authority_power
+-- ----------------------------
 INSERT INTO `authority_power` VALUES ('4', '2', '1', '/rs/**', 'ROLE_ADMIN');
 INSERT INTO `authority_power` VALUES ('5', '2', '2', '/user.html', 'ROLE_ADMIN');
 INSERT INTO `authority_power` VALUES ('6', '2', '3', '/admin.html', 'ROLE_ADMIN');
@@ -587,11 +179,49 @@ INSERT INTO `authority_power` VALUES ('8', '2', '15', 'cas/**', 'ROLE_ADMIN');
 INSERT INTO `authority_power` VALUES ('9', '1', '1', '/rs/**', 'ROLE_USER');
 INSERT INTO `authority_power` VALUES ('10', '1', '4', '/index.html', 'ROLE_USER');
 INSERT INTO `authority_power` VALUES ('11', '1', '16', '/index.jsp', 'ROLE_USER');
+
+-- ----------------------------
+-- Table structure for `department`
+-- ----------------------------
+DROP TABLE IF EXISTS `department`;
+CREATE TABLE `department` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of department
+-- ----------------------------
 INSERT INTO `department` VALUES ('1', '1', '1', '2014-05-19', '启用', '1');
 INSERT INTO `department` VALUES ('2', '设备部', '设备部描述', '2014-06-21', '启用', '1');
 INSERT INTO `department` VALUES ('3', '检验部', '', '2014-06-21', '启用', '1');
 INSERT INTO `department` VALUES ('4', '检查部门', '检查部门', '2014-07-21', '启用', '3');
-INSERT INTO `device` VALUES ('13', '门座式起重机#01', 'menzuo001', '门座式起重机#01', '1', '11', '/inspectManagementResource/deviceImage/1/13.png');
+INSERT INTO `department` VALUES ('5', 'sdcfaewcf', 'dsd', '2014-08-23', '启用', '1');
+
+-- ----------------------------
+-- Table structure for `device`
+-- ----------------------------
+DROP TABLE IF EXISTS `device`;
+CREATE TABLE `device` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `number` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  `deviceTypeId` bigint(20) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of device
+-- ----------------------------
+INSERT INTO `device` VALUES ('13', '门座式起重机#01', 'menzuo001', '门座式起重机#01', '1', '11', '/inspectManagementResource/deviceImage/1/13.jpg');
 INSERT INTO `device` VALUES ('15', '门座式起重机#03', 'menzuo003', '门座式起重机#03', '1', '11', null);
 INSERT INTO `device` VALUES ('16', '门座式起重机#04', 'menzuo004', '门座式起重机#04', '1', '11', null);
 INSERT INTO `device` VALUES ('17', '轮胎式集装箱门式起重机#01', 'luntai001', '轮胎式集装箱门式起重机#01', '1', '12', '/inspectManagementResource/deviceImage/1/17.jpg');
@@ -600,6 +230,24 @@ INSERT INTO `device` VALUES ('19', '轮胎式集装箱门式起重机#03', 'lunt
 INSERT INTO `device` VALUES ('20', '岸边式集装箱起重机#01', 'anbian001', '岸边式集装箱起重机#01', '1', '13', null);
 INSERT INTO `device` VALUES ('21', '流动式起重机01', 'C_LDSQZJ01', '测试流动式起重机械', '1', '14', null);
 INSERT INTO `device` VALUES ('22', '测试用门式起重机', 'CSYMSQZJ001', '', '3', '18', null);
+INSERT INTO `device` VALUES ('23', 'dvz', 'v', 'zdsv', '1', '11', null);
+
+-- ----------------------------
+-- Table structure for `devicetype`
+-- ----------------------------
+DROP TABLE IF EXISTS `devicetype`;
+CREATE TABLE `devicetype` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `number` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of devicetype
+-- ----------------------------
 INSERT INTO `devicetype` VALUES ('11', '门座式起重机', 'menzuo001', '门座式起重机', '1');
 INSERT INTO `devicetype` VALUES ('12', '轮胎式集装箱门式起重机', 'luntai001', '轮胎式集装箱门式起重机', '1');
 INSERT INTO `devicetype` VALUES ('13', '岸边式集装箱起重机', 'anbian001', '岸边式集装箱起重机', '1');
@@ -607,28 +255,57 @@ INSERT INTO `devicetype` VALUES ('14', '流动式起重机械', 'LDSQZJX', '流�
 INSERT INTO `devicetype` VALUES ('15', '客、载货梯', 'KHT', '客、载货梯', '2');
 INSERT INTO `devicetype` VALUES ('18', '门座式起重机', 'MZSQZJ', '门座式起重机', '3');
 INSERT INTO `devicetype` VALUES ('20', '测试2', '2', '222', '1');
-INSERT INTO `employee` VALUES ('4', '赵伟', '123456', '男', '机修人员', '启用', '1', '2', '6', null);
-INSERT INTO `employee` VALUES ('5', '王福明', '123456', '男', '门机司机', '启用', '1', '2', '7', null);
-INSERT INTO `employee` VALUES ('6', '常建', '123456', '男', '机械技术员', '启用', '1', '2', '8', null);
-INSERT INTO `employee` VALUES ('7', '庞伟', '123456', '男', '电气技术员', '启用', '1', '3', '9', null);
-INSERT INTO `employee` VALUES ('8', '秦小娟', '123456', '女', '电气技术员', '启用', '1', '3', '10', null);
-INSERT INTO `employee` VALUES ('9', '孙伟', '111', '男', '定保员', '启用', '1', '3', '11', null);
-INSERT INTO `employee` VALUES ('10', '晋中', '123456', '男', '减速机点检员', '启用', '1', '3', '12', null);
-INSERT INTO `employee` VALUES ('11', '测试刘', '123456', '男', 'LDS01', '启用', '1', '2', '15', null);
-INSERT INTO `employee` VALUES ('12', '测试刘B', '654321', '男', 'LDS02', '启用', '1', '3', '16', null);
-INSERT INTO `employee` VALUES ('13', 'manager', '123456', '男', '点检管理员', '启用', '1', '2', '17', null);
-INSERT INTO `employee` VALUES ('14', '刘点检', '1', '男', '点检员', '启用', '3', '4', '20', null);
-INSERT INTO `employee_employeerole` VALUES ('3', '4', '赵伟', '1', '机修人员', '1');
-INSERT INTO `employee_employeerole` VALUES ('4', '5', '王福明', '2', '门机司机', '1');
-INSERT INTO `employee_employeerole` VALUES ('5', '6', '常建', '3', '机械技术员', '1');
-INSERT INTO `employee_employeerole` VALUES ('6', '7', '庞伟', '4', '电气技术员', '1');
-INSERT INTO `employee_employeerole` VALUES ('7', '8', '秦小娟', '4', '电气技术员', '1');
-INSERT INTO `employee_employeerole` VALUES ('8', '9', '孙伟', '5', '定保员', '1');
-INSERT INTO `employee_employeerole` VALUES ('9', '10', '晋中', '6', '减速机点检员', '1');
-INSERT INTO `employee_employeerole` VALUES ('10', '11', '测试刘', '7', 'LDS01', '1');
-INSERT INTO `employee_employeerole` VALUES ('11', '12', '测试刘B', '8', 'LDS02', '1');
-INSERT INTO `employee_employeerole` VALUES ('12', '13', 'manager', '9', '点检管理员', '1');
-INSERT INTO `employee_employeerole` VALUES ('13', '14', '刘点检', '10', '点检员', '3');
+
+-- ----------------------------
+-- Table structure for `employee`
+-- ----------------------------
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE `employee` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `employeeRoleName` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  `departmentId` bigint(20) DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `tel` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of employee
+-- ----------------------------
+INSERT INTO `employee` VALUES ('4', '赵伟', '123456', '男', '机修人员', '启用', '1', '2', '6', '15527370289');
+INSERT INTO `employee` VALUES ('5', '王福明', '123456', '男', '门机司机', '启用', '1', '2', '7', '15527370289');
+INSERT INTO `employee` VALUES ('6', '常建', '123456', '男', '机械技术员', '启用', '1', '2', '8', '15527370289');
+INSERT INTO `employee` VALUES ('7', '庞伟', '123456', '男', '电气技术员', '启用', '1', '3', '9', '15527370289');
+INSERT INTO `employee` VALUES ('8', '秦小娟', '123456', '女', '电气技术员', '启用', '1', '3', '10', '15527370289');
+INSERT INTO `employee` VALUES ('9', '孙伟', '111', '男', '定保员', '启用', '1', '3', '11', '15527370289');
+INSERT INTO `employee` VALUES ('10', '晋中', '123456', '男', '减速机点检员', '启用', '1', '3', '12', '15527370289');
+INSERT INTO `employee` VALUES ('11', '测试刘', '123456', '男', 'LDS01', '启用', '1', '2', '15', '15527370289');
+INSERT INTO `employee` VALUES ('12', '测试刘B', '654321', '男', 'LDS02', '启用', '1', '3', '16', '15527370289');
+INSERT INTO `employee` VALUES ('13', 'manager', '123456', '男', '点检管理员', '启用', '1', '2', '17', '15527370289');
+INSERT INTO `employee` VALUES ('14', '刘点检', '1', '男', '点检员', '启用', '3', '4', '20', '15527370289');
+
+-- ----------------------------
+-- Table structure for `employeerole`
+-- ----------------------------
+DROP TABLE IF EXISTS `employeerole`;
+CREATE TABLE `employeerole` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  `authorityId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of employeerole
+-- ----------------------------
 INSERT INTO `employeerole` VALUES ('1', '机修人员', '', '启用', '1', '2');
 INSERT INTO `employeerole` VALUES ('2', '门机司机', '', '启用', '1', '2');
 INSERT INTO `employeerole` VALUES ('3', '机械技术员', '机械技术员描述', '启用', '1', '1');
@@ -639,6 +316,24 @@ INSERT INTO `employeerole` VALUES ('7', 'LDS01', '', '启用', '1', '1');
 INSERT INTO `employeerole` VALUES ('8', 'LDS02', '', '启用', '1', '2');
 INSERT INTO `employeerole` VALUES ('9', '点检管理员', '', '启用', '1', '1');
 INSERT INTO `employeerole` VALUES ('10', '点检员', '点检员', '启用', '3', '1');
+
+-- ----------------------------
+-- Table structure for `employeerole_inspecttable`
+-- ----------------------------
+DROP TABLE IF EXISTS `employeerole_inspecttable`;
+CREATE TABLE `employeerole_inspecttable` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `employeeRoleId` bigint(20) DEFAULT NULL,
+  `employeeRoleName` varchar(255) DEFAULT NULL,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `inspectTableName` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of employeerole_inspecttable
+-- ----------------------------
 INSERT INTO `employeerole_inspecttable` VALUES ('1', '1', '机修人员', '1', '机修人员点检表', '1');
 INSERT INTO `employeerole_inspecttable` VALUES ('2', '2', '门机司机', '2', '门机司机点检表', '1');
 INSERT INTO `employeerole_inspecttable` VALUES ('3', '3', '机械技术员', '3', '门机队机械技术员点检表', '1');
@@ -657,80 +352,114 @@ INSERT INTO `employeerole_inspecttable` VALUES ('15', '10', '点检员', '12', '
 INSERT INTO `employeerole_inspecttable` VALUES ('16', '10', '点检员', '13', '门座式起重机每月检查表', '3');
 INSERT INTO `employeerole_inspecttable` VALUES ('17', '10', '点检员', '14', '门座式起重机每季度检查表', '3');
 INSERT INTO `employeerole_inspecttable` VALUES ('18', '10', '点检员', '15', '门座式起重机每年检查表', '3');
-INSERT INTO `image_upload` VALUES ('1', '61', '1507', '32', '2014-08-05 15:05:34', '1', 'a.jpg');
-INSERT INTO `inspect_locate` VALUES ('1', '14', 'xiaozhujun', '2014-08-05 16:25:41', '2014-07-11 10:18:52', '13', '门座式起重机#01', '1', '机修人员点检表', '114.380494', '30.507115', '1', '已完成', '武汉市武昌区烽火村郁馨花园', null, '2014-08-05 19:23:41');
-INSERT INTO `inspect_locate` VALUES ('2', '3', 'suihui', '2014-08-05 16:25:41', '2014-07-11 17:26:02', '14', '门座式起重机#02', '2', '门机司机日常点检表', '113.177633', '27.859618', '1', '已完成', '中国湖南株洲市荷塘区红旗中路伟大国际广场d座903号', null, '2014-08-05 20:28:41');
-INSERT INTO `inspect_locate` VALUES ('3', '6', '赵伟', '2014-07-11 09:27:50', '2014-07-11 10:27:55', '15', '门座式起重机#03', '3', '门机队机械技术员点检表', '114.26731', '30.603794', '1', '已完成', '罗家咀路5', null, '2014-07-23 20:30:25');
-INSERT INTO `inspect_plan` VALUES ('11', '机械师每日点检', '机械师每日点检', '* * *', '3', '2014-07-11', '2020-07-11', '8', '12', '0', '2014-07-11', '1');
-INSERT INTO `inspect_plan` VALUES ('12', '司机每日点检', '司机每日点检', '* * *', '2', '2014-07-11', '2015-07-11', '8', '12', '0', '2014-07-11', '1');
-INSERT INTO `inspect_plan` VALUES ('13', '电气师每日点检', '电气师每日点检', '* * *', '4', '2014-07-11', '2020-07-11', '8', '12', '0', '2014-07-11', '1');
-INSERT INTO `inspect_plan` VALUES ('14', '每班巡查1', '每班巡查一次', '* * *', '12', '2014-07-21', '2015-07-21', '1', '8', '0', '2014-07-21', '3');
-INSERT INTO `inspect_plan` VALUES ('15', '每班巡查2', '每班巡查一次', '* * *', '12', '2014-07-21', '2015-07-21', '8', '16', '0', '2014-07-21', '3');
-INSERT INTO `inspect_task` VALUES ('10', '12', '2', '0', '6', '13', '0', null, '2014-07-11 09:52:58', '0', '1', '2014-07-11 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('11', '13', '4', '0', '7', '14', '0', null, '2014-07-11 09:52:58', '0', '1', '2014-07-11 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('12', '11', '3', '0', '8', '15', '0', null, '2014-07-11 09:52:58', '0', '1', '2014-07-11 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('13', '12', '2', '0', '6', '13', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('14', '13', '4', '0', '7', '14', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('15', '11', '3', '0', '8', '15', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('16', '12', '2', '0', '10', '17', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('17', '12', '2', '0', '6', '13', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('18', '13', '4', '0', '7', '14', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('19', '11', '3', '0', '8', '15', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('20', '12', '2', '0', '10', '17', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('21', '12', '2', '0', '6', '13', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('22', '13', '4', '0', '7', '14', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('23', '11', '3', '0', '8', '15', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('24', '12', '2', '0', '10', '17', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('25', '12', '2', '36', '6', '13', '2', '2014-07-15 11:14:43', '2014-07-15 01:00:00', '1', '1', '2014-07-15 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('26', '13', '4', '0', '7', '14', '0', null, '2014-07-15 01:00:00', '0', '1', '2014-07-15 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('27', '11', '3', '0', '8', '15', '0', null, '2014-07-15 01:00:00', '0', '1', '2014-07-15 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('28', '12', '2', '0', '10', '17', '0', null, '2014-07-15 01:00:00', '0', '1', '2014-07-15 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('29', '12', '2', '38', '6', '13', '2', '2014-07-16 11:14:43', '2014-07-16 01:00:00', '1', '1', '2014-07-16 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('30', '13', '4', '0', '7', '14', '0', null, '2014-07-16 01:00:00', '0', '1', '2014-07-16 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('31', '11', '3', '0', '8', '15', '0', null, '2014-07-16 01:00:00', '0', '1', '2014-07-16 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('32', '12', '2', '0', '10', '17', '0', null, '2014-07-16 01:00:00', '0', '1', '2014-07-16 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('33', '12', '2', '39', '6', '13', '2', '2014-07-17 11:14:43', '2014-07-17 01:00:00', '1', '1', '2014-07-17 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('34', '13', '4', '0', '7', '14', '0', null, '2014-07-17 01:00:00', '0', '1', '2014-07-17 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('35', '11', '3', '0', '8', '15', '0', null, '2014-07-17 01:00:00', '0', '1', '2014-07-17 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('36', '12', '2', '0', '10', '17', '0', null, '2014-07-17 01:00:00', '0', '1', '2014-07-17 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('37', '12', '2', '40', '6', '13', '2', '2014-07-18 11:14:43', '2014-07-18 01:00:00', '1', '1', '2014-07-18 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('38', '13', '4', '0', '7', '14', '0', null, '2014-07-18 01:00:00', '0', '1', '2014-07-18 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('39', '11', '3', '0', '8', '15', '0', null, '2014-07-18 01:00:00', '0', '1', '2014-07-18 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('40', '12', '2', '0', '10', '17', '0', null, '2014-07-18 01:00:00', '0', '1', '2014-07-18 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('41', '12', '2', '41', '6', '13', '2', '2014-07-19 11:14:43', '2014-07-19 01:00:00', '1', '1', '2014-07-19 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('42', '13', '4', '0', '7', '14', '0', null, '2014-07-19 01:00:00', '0', '1', '2014-07-19 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('43', '11', '3', '0', '8', '15', '0', null, '2014-07-19 01:00:00', '0', '1', '2014-07-19 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('44', '12', '2', '0', '10', '17', '0', null, '2014-07-19 01:00:00', '0', '1', '2014-07-19 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('45', '12', '2', '0', '6', '13', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('46', '13', '4', '0', '7', '14', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('47', '11', '3', '0', '8', '15', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('48', '12', '2', '0', '10', '17', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('49', '12', '2', '0', '6', '13', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('50', '13', '4', '0', '7', '14', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('51', '11', '3', '0', '8', '15', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('52', '12', '2', '0', '10', '17', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('53', '12', '2', '45', '6', '13', '1', '2014-07-21 11:47:03', '2014-07-21 01:00:00', '1', '1', '2014-07-21 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('54', '13', '4', '0', '7', '14', '0', null, '2014-07-21 01:00:00', '0', '1', '2014-07-21 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('55', '11', '3', '0', '8', '15', '0', null, '2014-07-21 01:00:00', '0', '1', '2014-07-21 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('56', '12', '2', '0', '10', '17', '0', null, '2014-07-21 01:00:00', '0', '1', '2014-07-21 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('61', '12', '2', '47', '6', '13', '4', '2014-07-22 10:17:31', '2014-07-22 01:00:00', '1', '1', '2014-07-22 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('62', '13', '4', '0', '7', '14', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('63', '11', '3', '0', '8', '15', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('64', '12', '2', '0', '10', '17', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('65', '12', '2', '53', '6', '13', '1', '2014-07-23 11:01:29', '2014-07-23 01:00:00', '1', '1', '2014-07-23 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('66', '13', '4', '0', '7', '14', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('67', '11', '3', '0', '8', '15', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('68', '12', '2', '0', '10', '17', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('70', '12', '2', '0', '6', '13', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('73', '13', '4', '0', '7', '14', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('76', '11', '3', '0', '8', '15', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('79', '12', '2', '0', '10', '17', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('80', '12', '2', '0', '6', '13', '0', null, '2014-08-09 01:00:00', '0', '1', '2014-08-09 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('81', '11', '3', '0', '8', '15', '0', null, '2014-08-09 01:00:00', '0', '1', '2014-08-09 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('82', '12', '2', '0', '10', '17', '0', null, '2014-08-09 01:00:00', '0', '1', '2014-08-09 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('83', '12', '2', '0', '6', '13', '0', null, '2014-08-10 01:00:00', '0', '1', '2014-08-10 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('84', '11', '3', '0', '8', '15', '0', null, '2014-08-10 01:00:00', '0', '1', '2014-08-10 00:00:00', '8', '12');
-INSERT INTO `inspect_task` VALUES ('85', '12', '2', '0', '10', '17', '0', null, '2014-08-10 01:00:00', '0', '1', '2014-08-10 00:00:00', '8', '12');
+
+-- ----------------------------
+-- Table structure for `employee_employeerole`
+-- ----------------------------
+DROP TABLE IF EXISTS `employee_employeerole`;
+CREATE TABLE `employee_employeerole` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `employeeId` bigint(20) DEFAULT NULL,
+  `employeeName` varchar(255) DEFAULT NULL,
+  `employeeRoleId` bigint(20) DEFAULT NULL,
+  `employeeRoleName` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of employee_employeerole
+-- ----------------------------
+INSERT INTO `employee_employeerole` VALUES ('3', '4', '赵伟', '1', '机修人员', '1');
+INSERT INTO `employee_employeerole` VALUES ('4', '5', '王福明', '2', '门机司机', '1');
+INSERT INTO `employee_employeerole` VALUES ('5', '6', '常建', '3', '机械技术员', '1');
+INSERT INTO `employee_employeerole` VALUES ('6', '7', '庞伟', '4', '电气技术员', '1');
+INSERT INTO `employee_employeerole` VALUES ('7', '8', '秦小娟', '4', '电气技术员', '1');
+INSERT INTO `employee_employeerole` VALUES ('8', '9', '孙伟', '5', '定保员', '1');
+INSERT INTO `employee_employeerole` VALUES ('9', '10', '晋中', '6', '减速机点检员', '1');
+INSERT INTO `employee_employeerole` VALUES ('10', '11', '测试刘', '7', 'LDS01', '1');
+INSERT INTO `employee_employeerole` VALUES ('11', '12', '测试刘B', '8', 'LDS02', '1');
+INSERT INTO `employee_employeerole` VALUES ('12', '13', 'manager', '9', '点检管理员', '1');
+INSERT INTO `employee_employeerole` VALUES ('13', '14', '刘点检', '10', '点检员', '3');
+
+-- ----------------------------
+-- Table structure for `exception`
+-- ----------------------------
+DROP TABLE IF EXISTS `exception`;
+CREATE TABLE `exception` (
+  `id` bigint(20) NOT NULL DEFAULT '0',
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of exception
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `image_upload`
+-- ----------------------------
+DROP TABLE IF EXISTS `image_upload`;
+CREATE TABLE `image_upload` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `tableRecordId` bigint(20) NOT NULL,
+  `itemRecordId` bigint(20) NOT NULL,
+  `itemId` bigint(20) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `appId` bigint(20) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of image_upload
+-- ----------------------------
+INSERT INTO `image_upload` VALUES ('16', '85', '2897', '23', '2014-09-02 09:53:24', '1', '/inspectManagementResource/inspectExceptionImage/b.jpg');
+INSERT INTO `image_upload` VALUES ('17', '1', '2054', '1', '2014-09-16 16:09:05', '1', '/inspectManagementResource/inspectExceptionImage/1_QQå¾ç20140916090004.jpg');
+INSERT INTO `image_upload` VALUES ('18', '6667', '44', '2222', '2014-09-16 18:34:43', '1', '/inspectManagementResource/inspectExceptionImage/6667_QQå¾ç20140916090004.jpg');
+
+-- ----------------------------
+-- Table structure for `inspectaccount`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspectaccount`;
+CREATE TABLE `inspectaccount` (
+  `id` bigint(20) NOT NULL,
+  `inspectTaskId` bigint(20) DEFAULT NULL,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `inspectTableRecordId` bigint(20) DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `exceptioncount` bigint(20) DEFAULT NULL,
+  `inspectTime` date DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of inspectaccount
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `inspectarea`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspectarea`;
+CREATE TABLE `inspectarea` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `number` varchar(255) DEFAULT NULL,
+  `deviceTypeId` bigint(20) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspectarea
+-- ----------------------------
 INSERT INTO `inspectarea` VALUES ('5', '行走区域', '行走区域', '2014-06-23', 'xingzou001', '11', '1');
 INSERT INTO `inspectarea` VALUES ('6', '转盘区域', '转盘区域', '2014-06-23', 'zhuanpan001', '11', '1');
 INSERT INTO `inspectarea` VALUES ('7', '司机室区域', '司机室区域', '2014-06-23', 'sijishi001', '11', '1');
@@ -752,6 +481,21 @@ INSERT INTO `inspectarea` VALUES ('22', '回转机构', '回转机构', '2014-07
 INSERT INTO `inspectarea` VALUES ('23', '金属结构', '金属结构', '2014-07-21', '05', '18', '3');
 INSERT INTO `inspectarea` VALUES ('25', '电气系统', '电气系统', '2014-07-21', '06', '18', '3');
 INSERT INTO `inspectarea` VALUES ('27', '其他', '其他', '2014-07-21', '07', '18', '3');
+
+-- ----------------------------
+-- Table structure for `inspectchoice`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspectchoice`;
+CREATE TABLE `inspectchoice` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `choiceValue` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspectchoice
+-- ----------------------------
 INSERT INTO `inspectchoice` VALUES ('1', '正常', '1');
 INSERT INTO `inspectchoice` VALUES ('2', '异常', '1');
 INSERT INTO `inspectchoice` VALUES ('3', '无', '1');
@@ -759,10 +503,32 @@ INSERT INTO `inspectchoice` VALUES ('4', '正常', '2');
 INSERT INTO `inspectchoice` VALUES ('5', '异常', '2');
 INSERT INTO `inspectchoice` VALUES ('6', '正常', '3');
 INSERT INTO `inspectchoice` VALUES ('7', '异常', '3');
-INSERT INTO `inspectitem` VALUES ('23', '行走台车', '', '2014-06-23', '1', '5', '004', '0', '1');
+INSERT INTO `inspectchoice` VALUES ('8', 'vzdn', '1');
+
+-- ----------------------------
+-- Table structure for `inspectitem`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspectitem`;
+CREATE TABLE `inspectitem` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `inspectAreaId` bigint(20) DEFAULT NULL,
+  `number` varchar(255) DEFAULT NULL,
+  `isInput` tinyint(4) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1084 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspectitem
+-- ----------------------------
+INSERT INTO `inspectitem` VALUES ('23', '行走台车', '行走台车', '2014-06-23', '1', '5', '004', '0', '1');
 INSERT INTO `inspectitem` VALUES ('24', '驱动装置', '', '2014-06-23', '1', '5', '005', '0', '1');
 INSERT INTO `inspectitem` VALUES ('25', '行走轮', '', '2014-06-23', '1', '6', '006', '0', '1');
-INSERT INTO `inspectitem` VALUES ('26', '极限开关', '', '2014-06-23', '1', '5', '007', '0', '1');
+INSERT INTO `inspectitem` VALUES ('26', '极限开关', '极限开关', '2014-06-23', '1', '5', '007', '0', '1');
 INSERT INTO `inspectitem` VALUES ('27', '报警装置', '', '2014-06-23', '1', '5', '008', '0', '1');
 INSERT INTO `inspectitem` VALUES ('28', '钢丝绳绳端', '', '2014-06-23', '1', '5', '009', '0', '1');
 INSERT INTO `inspectitem` VALUES ('29', '吊钩', '', '2014-06-23', '1', '5', '010', '0', '1');
@@ -1400,6 +1166,95 @@ INSERT INTO `inspectitem` VALUES ('1078', '门扇间隙', '', '2014-07-22', '16'
 INSERT INTO `inspectitem` VALUES ('1079', '最不利点间隙', '', '2014-07-22', '16', '17', '10', '0', '2');
 INSERT INTO `inspectitem` VALUES ('1080', '门刀间隙', '', '2014-07-22', '16', '17', '11', '0', '2');
 INSERT INTO `inspectitem` VALUES ('1081', '滚轮间隙', '', '2014-07-22', '16', '17', '12', '0', '2');
+INSERT INTO `inspectitem` VALUES ('1082', 'cffccv', 'f', '2014-08-23', '1', '5', 'f', '0', '1');
+INSERT INTO `inspectitem` VALUES ('1083', 'zxxx', 'f', '2014-08-23', '1', '5', '1', '0', '1');
+
+-- ----------------------------
+-- Table structure for `inspectitemrecord`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspectitemrecord`;
+CREATE TABLE `inspectitemrecord` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `inspectTagId` bigint(20) DEFAULT NULL,
+  `inspectItemId` bigint(20) DEFAULT NULL,
+  `inspectChoiceId` bigint(20) DEFAULT NULL,
+  `inspectChoiceValue` varchar(20) DEFAULT NULL,
+  `inspectTableRecordId` bigint(20) DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `inspectTime` datetime DEFAULT NULL,
+  `maintainId` bigint(20) DEFAULT NULL,
+  `maintainSuggest` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2985 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspectitemrecord
+-- ----------------------------
+INSERT INTO `inspectitemrecord` VALUES ('2941', '1', '5', '23', '2', '异常', '86', '6', '13', '1', '聊几句', '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2942', '1', '5', '24', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2943', '1', '6', '25', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2944', '1', '5', '26', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2945', '1', '5', '27', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2946', '1', '5', '28', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2947', '1', '5', '29', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2948', '1', '5', '30', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:42', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2949', '1', '5', '31', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2950', '1', '5', '32', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2951', '1', '5', '33', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2952', '1', '5', '34', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2953', '1', '6', '35', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2954', '1', '6', '36', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2955', '1', '6', '37', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2956', '1', '6', '38', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2957', '1', '6', '39', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2958', '1', '6', '40', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2959', '1', '6', '41', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2960', '1', '6', '42', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2961', '1', '7', '43', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2962', '1', '7', '44', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2963', '1', '7', '45', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2964', '1', '7', '46', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2965', '1', '7', '47', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2966', '1', '7', '48', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2967', '1', '7', '49', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2968', '1', '7', '50', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2969', '1', '7', '51', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2970', '1', '7', '52', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2971', '1', '7', '53', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2972', '1', '7', '54', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2973', '1', '7', '55', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2974', '1', '8', '56', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2975', '1', '8', '57', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2976', '1', '8', '58', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:43', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2977', '1', '8', '59', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2978', '1', '8', '60', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2979', '1', '8', '61', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2980', '1', '8', '62', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2981', '1', '8', '63', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2982', '1', '8', '64', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2983', '1', '8', '65', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+INSERT INTO `inspectitemrecord` VALUES ('2984', '1', '8', '66', '1', '正常', '86', '6', '13', '1', null, '2014-09-02 11:02:44', '2014-08-15 22:06:48', '0', null);
+
+-- ----------------------------
+-- Table structure for `inspectitem_choice`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspectitem_choice`;
+CREATE TABLE `inspectitem_choice` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `inspectItemId` bigint(20) DEFAULT NULL,
+  `inspectChoiceId` bigint(20) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2815 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspectitem_choice
+-- ----------------------------
 INSERT INTO `inspectitem_choice` VALUES ('1', '17', '1', '1');
 INSERT INTO `inspectitem_choice` VALUES ('2', '17', '2', '1');
 INSERT INTO `inspectitem_choice` VALUES ('3', '17', '3', '1');
@@ -1414,9 +1269,6 @@ INSERT INTO `inspectitem_choice` VALUES ('34', '23', '3', '1');
 INSERT INTO `inspectitem_choice` VALUES ('35', '24', '1', '1');
 INSERT INTO `inspectitem_choice` VALUES ('36', '24', '2', '1');
 INSERT INTO `inspectitem_choice` VALUES ('37', '24', '3', '1');
-INSERT INTO `inspectitem_choice` VALUES ('41', '26', '1', '1');
-INSERT INTO `inspectitem_choice` VALUES ('42', '26', '2', '1');
-INSERT INTO `inspectitem_choice` VALUES ('43', '26', '3', '1');
 INSERT INTO `inspectitem_choice` VALUES ('44', '27', '1', '1');
 INSERT INTO `inspectitem_choice` VALUES ('45', '27', '2', '1');
 INSERT INTO `inspectitem_choice` VALUES ('46', '27', '3', '1');
@@ -2901,114 +2753,30 @@ INSERT INTO `inspectitem_choice` VALUES ('2804', '1080', '4', '2');
 INSERT INTO `inspectitem_choice` VALUES ('2805', '1080', '5', '2');
 INSERT INTO `inspectitem_choice` VALUES ('2806', '1081', '4', '2');
 INSERT INTO `inspectitem_choice` VALUES ('2807', '1081', '5', '2');
-INSERT INTO `inspectitemrecord` VALUES ('1291', '2', '7', '121', '2', '异常', '45', '6', '13', '1', null, '2014-07-21 22:16:27', '2014-07-21 22:16:34', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1292', '2', '5', '103', '2', '异常', '46', '6', '13', '1', null, '2014-07-21 22:28:04', '2014-07-21 19:47:03', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1293', '2', '7', '118', '2', '异常', '46', '6', '13', '1', null, '2014-07-21 22:28:04', '2014-07-21 19:47:03', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1294', '2', '7', '121', '2', '异常', '46', '6', '13', '1', null, '2014-07-21 22:28:04', '2014-07-21 19:47:03', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1295', '2', '5', '76', '2', '异常', '47', '6', '13', '1', null, '2014-07-22 10:26:45', '2014-07-22 10:17:31', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1296', '2', '6', '109', '2', '异常', '47', '6', '13', '1', null, '2014-07-22 10:26:45', '2014-07-22 10:17:31', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1297', '2', '7', '121', '2', '异常', '47', '6', '13', '1', null, '2014-07-22 10:26:45', '2014-07-22 10:17:31', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1298', '2', '8', '175', '2', '异常', '47', '6', '13', '1', null, '2014-07-22 10:26:45', '2014-07-22 10:17:31', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1299', '1', '6', '37', '2', '异常', '48', '6', '13', '1', null, '2014-07-22 10:42:08', '2014-07-22 10:32:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1300', '1', '7', '45', '2', '异常', '48', '6', '13', '1', null, '2014-07-22 10:42:08', '2014-07-22 10:32:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1301', '1', '5', '22', '2', '异常', '49', '6', '13', '1', null, '2014-07-22 10:45:49', '2014-07-22 10:40:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1302', '1', '6', '37', '2', '异常', '49', '6', '13', '1', null, '2014-07-22 10:45:49', '2014-07-22 10:40:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1303', '1', '7', '45', '2', '异常', '49', '6', '13', '1', null, '2014-07-22 10:45:50', '2014-07-22 10:40:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1304', '1', '5', '22', '2', '异常', '50', '6', '13', '1', null, '2014-07-22 10:50:03', '2014-07-22 10:45:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1305', '1', '5', '23', '2', '异常', '50', '6', '13', '1', null, '2014-07-22 10:50:03', '2014-07-22 10:45:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1306', '1', '6', '37', '2', '异常', '50', '6', '13', '1', null, '2014-07-22 10:50:03', '2014-07-22 10:45:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1307', '1', '7', '45', '2', '异常', '50', '6', '13', '1', null, '2014-07-22 10:50:03', '2014-07-22 10:45:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1308', '1', '5', '20', '2', '异常', '51', '6', '13', '1', null, '2014-07-22 20:12:57', '2014-07-22 20:12:49', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1309', '2', '5', '73', '2', '异常', '52', '6', '13', '1', '铁鞋松动，需要紧固', '2014-07-23 08:56:23', '2014-07-23 08:56:15', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1310', '2', '8', '178', '2', '异常', '52', '6', '13', '1', '有点异常，需要进一步查看！', '2014-07-23 08:56:23', '2014-07-23 08:56:15', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1311', '2', '6', '109', '2', '异常', '53', '6', '13', '1', null, '2014-07-23 11:01:37', '2014-07-23 11:01:29', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1312', '1', '5', '20', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1315', '1', '5', '22', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1318', '1', '5', '24', '3', '无', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1321', '1', '5', '26', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1324', '1', '5', '28', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1327', '1', '5', '29', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1330', '1', '5', '31', '3', '无', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1333', '1', '5', '32', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1336', '1', '5', '33', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1339', '1', '6', '36', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1342', '1', '6', '38', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1345', '1', '6', '40', '3', '无', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1348', '1', '6', '41', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1351', '1', '7', '43', '3', '无', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1354', '1', '7', '44', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1357', '1', '7', '45', '3', '无', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1360', '1', '7', '47', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1363', '1', '7', '48', '3', '无', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1366', '1', '7', '50', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1369', '1', '7', '52', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1372', '1', '7', '55', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1375', '1', '8', '56', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1378', '1', '8', '57', '3', '无', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1381', '1', '8', '59', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1384', '1', '8', '61', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1387', '1', '8', '63', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1390', '1', '8', '64', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1393', '1', '8', '65', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1396', '1', '8', '66', '2', '异常', '55', '4', '13', '1', null, '2014-08-05 11:17:30', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1399', '1', '5', '20', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1402', '1', '5', '22', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1405', '1', '5', '24', '3', '无', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1408', '1', '5', '26', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1411', '1', '5', '28', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1414', '1', '5', '29', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1417', '1', '5', '31', '3', '无', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1420', '1', '5', '32', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1423', '1', '5', '33', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1426', '1', '6', '36', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1429', '1', '6', '38', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1432', '1', '6', '40', '3', '无', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1435', '1', '6', '41', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1438', '1', '7', '43', '3', '无', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1441', '1', '7', '44', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1444', '1', '7', '45', '3', '无', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1447', '1', '7', '47', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1450', '1', '7', '48', '3', '无', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1453', '1', '7', '50', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1456', '1', '7', '52', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1459', '1', '7', '55', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1462', '1', '8', '56', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1465', '1', '8', '57', '3', '无', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1468', '1', '8', '59', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1471', '1', '8', '61', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1474', '1', '8', '63', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1477', '1', '8', '64', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1480', '1', '8', '65', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1483', '1', '8', '66', '2', '异常', '58', '4', '13', '1', null, '2014-08-05 14:59:44', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1486', '1', '5', '20', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1489', '1', '5', '22', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1492', '1', '5', '24', '3', '无', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1495', '1', '5', '26', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1498', '1', '5', '28', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1501', '1', '5', '29', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1504', '1', '5', '31', '3', '无', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1507', '1', '5', '32', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1510', '1', '5', '33', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1513', '1', '6', '36', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1516', '1', '6', '38', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1519', '1', '6', '40', '3', '无', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1522', '1', '6', '41', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1525', '1', '7', '43', '3', '无', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1528', '1', '7', '44', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1531', '1', '7', '45', '3', '无', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1534', '1', '7', '47', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1537', '1', '7', '48', '3', '无', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1540', '1', '7', '50', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1543', '1', '7', '52', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1546', '1', '7', '55', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1549', '1', '8', '56', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1552', '1', '8', '57', '3', '无', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1555', '1', '8', '59', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1558', '1', '8', '61', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1561', '1', '8', '63', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1564', '1', '8', '64', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1567', '1', '8', '65', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
-INSERT INTO `inspectitemrecord` VALUES ('1570', '1', '8', '66', '2', '异常', '61', '6', '13', '1', null, '2014-08-05 15:05:34', '2014-06-27 14:10:53', null, null);
+INSERT INTO `inspectitem_choice` VALUES ('2808', '1083', '1', '1');
+INSERT INTO `inspectitem_choice` VALUES ('2809', '1083', '2', '1');
+INSERT INTO `inspectitem_choice` VALUES ('2810', '1083', '3', '1');
+INSERT INTO `inspectitem_choice` VALUES ('2811', '1083', '8', '1');
+INSERT INTO `inspectitem_choice` VALUES ('2812', '26', '1', '1');
+INSERT INTO `inspectitem_choice` VALUES ('2813', '26', '2', '1');
+INSERT INTO `inspectitem_choice` VALUES ('2814', '26', '3', '1');
+
+-- ----------------------------
+-- Table structure for `inspecttable`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspecttable`;
+CREATE TABLE `inspecttable` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspecttable
+-- ----------------------------
 INSERT INTO `inspecttable` VALUES ('1', '机修人员点检表', '2014-05-29', '', '1');
 INSERT INTO `inspecttable` VALUES ('2', '门机司机日常点检表', '2014-05-29', '', '1');
 INSERT INTO `inspecttable` VALUES ('3', '门机队机械技术员点检表', '2014-06-13', '', '1');
@@ -3025,7 +2793,49 @@ INSERT INTO `inspecttable` VALUES ('13', '门座式起重机每月检查表', '2
 INSERT INTO `inspecttable` VALUES ('14', '门座式起重机每季度检查表', '2014-07-21', '门座式起重机每季度检查表', '3');
 INSERT INTO `inspecttable` VALUES ('15', '门座式起重机每年检查表', '2014-07-21', '门座式起重机每年检查表             ', '3');
 INSERT INTO `inspecttable` VALUES ('16', '客、载货梯定期检验表', '2014-07-22', '        客、载货梯定期检验表          ', '2');
-INSERT INTO `inspecttablerecord` VALUES ('61', '1', '6', '2014-06-27 14:10:53', '2014-08-05', '29', '53e0823e96891d92df79b4be', null, '13', '1');
+
+-- ----------------------------
+-- Table structure for `inspecttablerecord`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspecttablerecord`;
+CREATE TABLE `inspecttablerecord` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `inspectTime` datetime DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `exceptioncount` bigint(20) DEFAULT NULL,
+  `mongoId` varchar(255) DEFAULT NULL,
+  `exceptionId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspecttablerecord
+-- ----------------------------
+INSERT INTO `inspecttablerecord` VALUES ('86', '1', '6', '2014-08-15 22:06:48', '2014-09-02', '1', '5405335443dee2bab9b290f9', null, '13', '1');
+
+-- ----------------------------
+-- Table structure for `inspecttag`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspecttag`;
+CREATE TABLE `inspecttag` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `number` varchar(20) DEFAULT NULL,
+  `inspectAreaId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspecttag
+-- ----------------------------
 INSERT INTO `inspecttag` VALUES ('5', '行走区域', '行走区域', '2014-06-23', 'xingzou', '5', '13', '1');
 INSERT INTO `inspecttag` VALUES ('6', '转盘区域', '转盘区域', '2014-06-23', 'zhuangpan', '6', '13', '1');
 INSERT INTO `inspecttag` VALUES ('7', '司机室区域', '司机室区域', '2014-06-23', 'siji', '7', '13', '1');
@@ -3041,6 +2851,220 @@ INSERT INTO `inspecttag` VALUES ('16', 'CSYMSQZJ', 'CSYMSQZJ04', '2014-07-21', '
 INSERT INTO `inspecttag` VALUES ('17', 'CSYMSQZJ', 'CSYMSQZJ05', '2014-07-21', '05', '23', '22', '3');
 INSERT INTO `inspecttag` VALUES ('18', 'CSYMSQZJ', 'CSYMSQZJ06', '2014-07-21', '06', '25', '22', '3');
 INSERT INTO `inspecttag` VALUES ('19', 'CSYMSQZJ', 'CSYMSQZJ07', '2014-07-21', '07', '27', '22', '3');
+
+-- ----------------------------
+-- Table structure for `inspecttask`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspecttask`;
+CREATE TABLE `inspecttask` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `dayStart` date DEFAULT NULL,
+  `dayEnd` date DEFAULT NULL,
+  `timeStart` varchar(255) DEFAULT NULL,
+  `timeEnd` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of inspecttask
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `inspectversion`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspectversion`;
+CREATE TABLE `inspectversion` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `versionCode` bigint(20) DEFAULT NULL,
+  `downloadAddress` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspectversion
+-- ----------------------------
+INSERT INTO `inspectversion` VALUES ('1', '2', 'app/inspect-android.apk', '1');
+
+-- ----------------------------
+-- Table structure for `inspect_locate`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspect_locate`;
+CREATE TABLE `inspect_locate` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) DEFAULT NULL,
+  `userName` varchar(255) DEFAULT NULL,
+  `inspectStartTime` datetime DEFAULT NULL,
+  `inspectEndTime` datetime DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `devName` varchar(255) DEFAULT NULL,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `inspectTableName` varchar(255) DEFAULT NULL,
+  `lng` varchar(255) DEFAULT NULL,
+  `lat` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `updateTime` datetime DEFAULT NULL,
+  `deviceNum` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspect_locate
+-- ----------------------------
+INSERT INTO `inspect_locate` VALUES ('1', '14', 'xiaozhujun', '2014-08-05 16:25:41', '2014-07-11 10:18:52', '13', '门座式起重机#01', '1', '机修人员点检表', '114.380494', '30.507115', '1', '已完成', '武汉市武昌区烽火村郁馨花园', '2014-08-05 19:23:41', null);
+INSERT INTO `inspect_locate` VALUES ('2', '3', 'suihui', '2014-08-05 16:25:41', '2014-07-11 17:26:02', '14', '门座式起重机#02', '2', '门机司机日常点检表', '113.177633', '27.859618', '1', '已完成', '中国湖南株洲市荷塘区红旗中路伟大国际广场d座903号', '2014-08-05 20:28:41', null);
+INSERT INTO `inspect_locate` VALUES ('3', '6', '赵伟', '2014-07-11 09:27:50', '2014-07-11 10:27:55', '15', '门座式起重机#03', '3', '门机队机械技术员点检表', '114.26731', '30.603794', '1', '已完成', '罗家咀路5', '2014-07-23 20:30:25', null);
+
+-- ----------------------------
+-- Table structure for `inspect_plan`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspect_plan`;
+CREATE TABLE `inspect_plan` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `rule` varchar(255) DEFAULT NULL,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `dayStart` date DEFAULT NULL,
+  `dayEnd` date DEFAULT NULL,
+  `timeStart` varchar(255) DEFAULT NULL,
+  `timeEnd` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspect_plan
+-- ----------------------------
+INSERT INTO `inspect_plan` VALUES ('11', '机械师每日点检', '机械师每日点检', '* * *', '3', '2014-07-11', '2020-07-11', '8', '12', '0', '2014-07-11', '1');
+INSERT INTO `inspect_plan` VALUES ('12', '司机每日点检', '司机每日点检', '* * *', '2', '2014-07-11', '2015-07-11', '8', '12', '0', '2014-07-11', '1');
+INSERT INTO `inspect_plan` VALUES ('13', '电气师每日点检', '电气师每日点检', '* * *', '4', '2014-07-11', '2020-07-11', '8', '12', '0', '2014-07-11', '1');
+INSERT INTO `inspect_plan` VALUES ('14', '每班巡查1', '每班巡查一次', '* * *', '12', '2014-07-21', '2015-07-21', '1', '8', '0', '2014-07-21', '3');
+INSERT INTO `inspect_plan` VALUES ('15', '每班巡查2', '每班巡查一次', '* * *', '12', '2014-07-21', '2015-07-21', '8', '16', '0', '2014-07-21', '3');
+
+-- ----------------------------
+-- Table structure for `inspect_task`
+-- ----------------------------
+DROP TABLE IF EXISTS `inspect_task`;
+CREATE TABLE `inspect_task` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `inspectPlanId` bigint(20) DEFAULT NULL,
+  `inspectTableId` bigint(20) DEFAULT NULL,
+  `inspectTableRecordId` bigint(20) DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `faultCount` int(11) DEFAULT NULL,
+  `inspectTime` datetime DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  `taskDate` datetime DEFAULT NULL,
+  `timeStart` int(11) DEFAULT NULL,
+  `timeEnd` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of inspect_task
+-- ----------------------------
+INSERT INTO `inspect_task` VALUES ('10', '12', '2', '0', '6', '13', '0', null, '2014-07-11 09:52:58', '0', '1', '2014-07-11 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('11', '13', '4', '0', '7', '14', '0', null, '2014-07-11 09:52:58', '0', '1', '2014-07-11 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('12', '11', '3', '0', '8', '15', '0', null, '2014-07-11 09:52:58', '0', '1', '2014-07-11 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('13', '12', '2', '0', '6', '13', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('14', '13', '4', '0', '7', '14', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('15', '11', '3', '0', '8', '15', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('16', '12', '2', '0', '10', '17', '0', null, '2014-07-12 01:00:00', '0', '1', '2014-07-12 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('17', '12', '2', '0', '6', '13', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('18', '13', '4', '0', '7', '14', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('19', '11', '3', '0', '8', '15', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('20', '12', '2', '0', '10', '17', '0', null, '2014-07-13 01:00:00', '0', '1', '2014-07-13 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('21', '12', '2', '0', '6', '13', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('22', '13', '4', '0', '7', '14', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('23', '11', '3', '0', '8', '15', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('24', '12', '2', '0', '10', '17', '0', null, '2014-07-14 01:00:00', '0', '1', '2014-07-14 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('25', '12', '2', '36', '6', '13', '2', '2014-07-15 11:14:43', '2014-07-15 01:00:00', '1', '1', '2014-07-15 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('26', '13', '4', '0', '7', '14', '0', null, '2014-07-15 01:00:00', '0', '1', '2014-07-15 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('27', '11', '3', '0', '8', '15', '0', null, '2014-07-15 01:00:00', '0', '1', '2014-07-15 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('28', '12', '2', '0', '10', '17', '0', null, '2014-07-15 01:00:00', '0', '1', '2014-07-15 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('29', '12', '2', '38', '6', '13', '2', '2014-07-16 11:14:43', '2014-07-16 01:00:00', '1', '1', '2014-07-16 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('30', '13', '4', '0', '7', '14', '0', null, '2014-07-16 01:00:00', '0', '1', '2014-07-16 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('31', '11', '3', '0', '8', '15', '0', null, '2014-07-16 01:00:00', '0', '1', '2014-07-16 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('32', '12', '2', '0', '10', '17', '0', null, '2014-07-16 01:00:00', '0', '1', '2014-07-16 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('33', '12', '2', '39', '6', '13', '2', '2014-07-17 11:14:43', '2014-07-17 01:00:00', '1', '1', '2014-07-17 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('34', '13', '4', '0', '7', '14', '0', null, '2014-07-17 01:00:00', '0', '1', '2014-07-17 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('35', '11', '3', '0', '8', '15', '0', null, '2014-07-17 01:00:00', '0', '1', '2014-07-17 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('36', '12', '2', '0', '10', '17', '0', null, '2014-07-17 01:00:00', '0', '1', '2014-07-17 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('37', '12', '2', '40', '6', '13', '2', '2014-07-18 11:14:43', '2014-07-18 01:00:00', '1', '1', '2014-07-18 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('38', '13', '4', '0', '7', '14', '0', null, '2014-07-18 01:00:00', '0', '1', '2014-07-18 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('39', '11', '3', '0', '8', '15', '0', null, '2014-07-18 01:00:00', '0', '1', '2014-07-18 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('40', '12', '2', '0', '10', '17', '0', null, '2014-07-18 01:00:00', '0', '1', '2014-07-18 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('41', '12', '2', '41', '6', '13', '2', '2014-07-19 11:14:43', '2014-07-19 01:00:00', '1', '1', '2014-07-19 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('42', '13', '4', '0', '7', '14', '0', null, '2014-07-19 01:00:00', '0', '1', '2014-07-19 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('43', '11', '3', '0', '8', '15', '0', null, '2014-07-19 01:00:00', '0', '1', '2014-07-19 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('44', '12', '2', '0', '10', '17', '0', null, '2014-07-19 01:00:00', '0', '1', '2014-07-19 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('45', '12', '2', '0', '6', '13', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('46', '13', '4', '0', '7', '14', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('47', '11', '3', '0', '8', '15', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('48', '12', '2', '0', '10', '17', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('49', '12', '2', '0', '6', '13', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('50', '13', '4', '0', '7', '14', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('51', '11', '3', '0', '8', '15', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('52', '12', '2', '0', '10', '17', '0', null, '2014-07-20 01:00:00', '0', '1', '2014-07-20 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('53', '12', '2', '45', '6', '13', '1', '2014-07-21 11:47:03', '2014-07-21 01:00:00', '1', '1', '2014-07-21 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('54', '13', '4', '0', '7', '14', '0', null, '2014-07-21 01:00:00', '0', '1', '2014-07-21 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('55', '11', '3', '0', '8', '15', '0', null, '2014-07-21 01:00:00', '0', '1', '2014-07-21 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('56', '12', '2', '0', '10', '17', '0', null, '2014-07-21 01:00:00', '0', '1', '2014-07-21 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('61', '12', '2', '47', '6', '13', '4', '2014-07-22 10:17:31', '2014-07-22 01:00:00', '1', '1', '2014-07-22 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('62', '13', '4', '0', '7', '14', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('63', '11', '3', '0', '8', '15', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('64', '12', '2', '0', '10', '17', '0', null, '2014-07-22 01:00:00', '0', '1', '2014-07-22 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('65', '12', '2', '53', '6', '13', '1', '2014-07-23 11:01:29', '2014-07-23 01:00:00', '1', '1', '2014-07-23 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('66', '13', '4', '0', '7', '14', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('67', '11', '3', '0', '8', '15', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('68', '12', '2', '0', '10', '17', '0', null, '2014-07-23 01:00:00', '0', '1', '2014-07-23 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('70', '12', '2', '0', '6', '13', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('73', '13', '4', '0', '7', '14', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('76', '11', '3', '0', '8', '15', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('79', '12', '2', '0', '10', '17', '0', null, '2014-08-01 01:00:01', '0', '1', '2014-08-01 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('80', '12', '2', '0', '6', '13', '0', null, '2014-08-09 01:00:00', '0', '1', '2014-08-09 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('81', '11', '3', '0', '8', '15', '0', null, '2014-08-09 01:00:00', '0', '1', '2014-08-09 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('82', '12', '2', '0', '10', '17', '0', null, '2014-08-09 01:00:00', '0', '1', '2014-08-09 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('83', '12', '2', '0', '6', '13', '0', null, '2014-08-10 01:00:00', '0', '1', '2014-08-10 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('84', '11', '3', '0', '8', '15', '0', null, '2014-08-10 01:00:00', '0', '1', '2014-08-10 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('85', '12', '2', '0', '10', '17', '0', null, '2014-08-10 01:00:00', '0', '1', '2014-08-10 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('86', '12', '2', '0', '6', '13', '0', null, '2014-09-02 01:00:00', '0', '1', '2014-09-02 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('87', '11', '3', '0', '8', '15', '0', null, '2014-09-02 01:00:00', '0', '1', '2014-09-02 00:00:00', '8', '12');
+INSERT INTO `inspect_task` VALUES ('88', '12', '2', '0', '10', '17', '0', null, '2014-09-02 01:00:00', '0', '1', '2014-09-02 00:00:00', '8', '12');
+
+-- ----------------------------
+-- Table structure for `menu`
+-- ----------------------------
+DROP TABLE IF EXISTS `menu`;
+CREATE TABLE `menu` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pid` bigint(20) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `level` bigint(20) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `parentname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of menu
+-- ----------------------------
 INSERT INTO `menu` VALUES ('1', '0', '部门管理', '1', '', '菜单');
 INSERT INTO `menu` VALUES ('2', '1', '添加部门', '2', 'department/add.html', '部门管理');
 INSERT INTO `menu` VALUES ('3', '0', '设备管理', '1', '', '菜单');
@@ -3082,13 +3106,50 @@ INSERT INTO `menu` VALUES ('40', '0', '任务管理', '1', '', '菜单');
 INSERT INTO `menu` VALUES ('41', '40', '添加计划', '2', 'task/addTaskPlan.html', '任务管理');
 INSERT INTO `menu` VALUES ('42', '40', '计划列表', '2', 'task/listTaskPlan.html', '任务管理');
 INSERT INTO `menu` VALUES ('43', '40', '任务派发', '2', 'task/dispatchTaskPlan.html', '任务管理');
-INSERT INTO `menu` VALUES ('44', '4', '上传测试', '2', 'uploadTest/test.html', '点检表管理');
+INSERT INTO `menu` VALUES ('44', '4', '图片上传测试', '2', 'test/uploadTest.html', '点检表管理');
+INSERT INTO `menu` VALUES ('45', '4', '获取版本', '2', 'test/versionTest.html', '点检表管理');
+
+-- ----------------------------
+-- Table structure for `power`
+-- ----------------------------
+DROP TABLE IF EXISTS `power`;
+CREATE TABLE `power` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `resource` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of power
+-- ----------------------------
 INSERT INTO `power` VALUES ('1', '/rs/**', 'resource', '所有rest服务');
 INSERT INTO `power` VALUES ('2', '/user.html', 'url', null);
 INSERT INTO `power` VALUES ('3', '/admin.html', 'url', null);
 INSERT INTO `power` VALUES ('4', '/index.html', 'url', null);
 INSERT INTO `power` VALUES ('15', 'cas/**', 'service', 'cas client test from android');
 INSERT INTO `power` VALUES ('16', '/index.jsp', 'resource', '首页');
+
+-- ----------------------------
+-- Table structure for `user`
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT '1',
+  `status` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
 INSERT INTO `user` VALUES ('3', 'sunhui', 'e68fa2bc61b75b8a06766e25905052c7', '男', 'ROLE_USER', '1', '启用', null);
 INSERT INTO `user` VALUES ('4', 'liujinxia', 'c99c1cbefe13019978d90cb442cb8f78', '女', 'ROLE_ADMIN', '1', '启用', null);
 INSERT INTO `user` VALUES ('6', 'zhaowei', 'e10adc3949ba59abbe56e057f20f883e', '男', 'ROLE_ADMIN', '1', '启用', null);
@@ -3105,6 +3166,23 @@ INSERT INTO `user` VALUES ('17', 'manager', 'e10adc3949ba59abbe56e057f20f883e', 
 INSERT INTO `user` VALUES ('18', 'zouzhi', '2d9f6bb41b753609ba0a4d5a47154363', '男', 'ROLE_USER;ROLE_ADMIN', '2', '启用', null);
 INSERT INTO `user` VALUES ('19', 'zouzhi1', '0dc346ec81d7df49b58022e5e6e34e6f', '男', 'ROLE_USER;ROLE_ADMIN', '3', '启用', null);
 INSERT INTO `user` VALUES ('20', '刘点检', 'c4ca4238a0b923820dcc509a6f75849b', '男', 'ROLE_USER', '3', '启用', null);
+
+-- ----------------------------
+-- Table structure for `user_authority`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_authority`;
+CREATE TABLE `user_authority` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) DEFAULT NULL,
+  `authorityId` bigint(20) DEFAULT NULL,
+  `userName` varchar(255) DEFAULT NULL,
+  `authorityName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_authority
+-- ----------------------------
 INSERT INTO `user_authority` VALUES ('6', '3', '1', 'sunhui', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('7', '4', '2', 'liujinxia', 'ROLE_ADMIN');
 INSERT INTO `user_authority` VALUES ('9', '6', '2', 'zhaowei', 'ROLE_ADMIN');
@@ -3124,6 +3202,25 @@ INSERT INTO `user_authority` VALUES ('23', '14', '2', 'xiaozhujun', 'ROLE_ADMIN'
 INSERT INTO `user_authority` VALUES ('24', '19', '1', 'zouzhi1', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('25', '19', '2', 'zouzhi1', 'ROLE_ADMIN');
 INSERT INTO `user_authority` VALUES ('26', '20', '1', '刘点检', 'ROLE_USER');
+
+-- ----------------------------
+-- Table structure for `user_inspect_plan`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_inspect_plan`;
+CREATE TABLE `user_inspect_plan` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `inspectPlanId` bigint(20) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_inspect_plan
+-- ----------------------------
 INSERT INTO `user_inspect_plan` VALUES ('9', '6', '13', '12', '0', '2014-07-11', '1');
 INSERT INTO `user_inspect_plan` VALUES ('10', '7', '14', '13', '0', '2014-07-11', '1');
 INSERT INTO `user_inspect_plan` VALUES ('11', '8', '15', '11', '0', '2014-07-11', '1');

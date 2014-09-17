@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.inspectManagement.business.inspectTable.mapper.InspectVersionMapper">
+    <sql id="inspectVersion_fields">
+        ID,VERSIONCODE,DOWNLOADADDRESS,APPID
+    </sql>
+
+    <select id="getVersionCodeByIdAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT versionCode
+        FROM inspectversion
+        WHERE id=#{id} AND appId=#{appId}
+    </select>
+
+    <select id="getAddressByIdAndAppId" parameterType="map" resultType="java.lang.String">
+        SELECT downloadAddress
+        FROM inspectversion
+        WHERE id=#{id} AND appId=#{appId}
+    </select>
+</mapper>

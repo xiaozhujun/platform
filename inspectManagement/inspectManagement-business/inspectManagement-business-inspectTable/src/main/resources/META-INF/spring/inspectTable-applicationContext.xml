@@ -7,4 +7,5 @@
       <bean id="inspectChoiceService" class="org.whut.inspectManagement.business.inspectTable.service.InspectChoiceService" depends-on="mappers"/>
       <bean id="inspectItemChoiceService" class="org.whut.inspectManagement.business.inspectTable.service.InspectItemChoiceService" depends-on="mappers"/>
     <bean id="subInspectItem" class="org.whut.inspectManagement.business.inspectTable.entity.SubInspectItem" depends-on="mappers"/>
+    <bean id="inspectVersionService" class="org.whut.inspectManagement.business.inspectTable.service.InspectVersionService" depends-on="mappers"/>
 </beans>

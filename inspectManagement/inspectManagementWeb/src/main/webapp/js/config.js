@@ -160,6 +160,10 @@
         },
         "inspectResult":{
             "upload":"rs/inspectResult/upload"
+        },
+        "inspectVersion":{
+            "getVersionCode":"rs/inspectVersion/getVersionCode",
+            "getAddress":"rs/inspectVersion/getAddress"
         }
     }
 })(jQuery);

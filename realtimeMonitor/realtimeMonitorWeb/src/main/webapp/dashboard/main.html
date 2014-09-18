@@ -35,7 +35,7 @@ var wsData;
 var sNumList= new Array();
 var initSNum = 0;
 $(document).ready(function() {
-    $("#treeMenu").ligerLayout({leftWidth: 250});
+    $("#treeMenu").ligerLayout({leftWidth: 300});
     connect();
 });
 $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
@@ -112,7 +112,7 @@ function sensorMenuCallback(data){
         parentIDFieldName :'pid',
         checkbox: false,
         parentIcon: null,
-        nodeWidth:180,
+        nodeWidth:300,
         childIcon: null,
         isExpand:false,
         onclick:onClickLeaf

@@ -101,7 +101,7 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
                     String collectorNum=sensorService.getCNumBySNum(number) ;
                     System.out.println("aaaaaaaaaaaa"+collectorNum);
 
-                    String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:"+collectorNum+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"'";
+                    String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"'";
                     int endIndex = messageText.indexOf("}]}");
                     System.out.println(messageText.substring(0,endIndex));
                     String s2= messageText.substring(0,endIndex)+","+s+"}]}";

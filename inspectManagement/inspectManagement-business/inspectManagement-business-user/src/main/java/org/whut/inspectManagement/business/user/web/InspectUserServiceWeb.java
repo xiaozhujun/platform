@@ -5,13 +5,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.Employee;
+import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeEmployeeRole;
 import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRole;
+import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeEmployeeRoleService;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeRoleService;
 import org.whut.inspectManagement.business.deptAndEmployee.service.EmployeeService;
 import org.whut.inspectManagement.business.user.bean.InspectUser;
 import org.whut.platform.business.app.service.AppService;
 import org.whut.platform.business.user.entity.User;
-import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -20,6 +21,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,6 +47,9 @@ public class InspectUserServiceWeb {
     @Autowired
     private EmployeeRoleService employeeRoleService;
 
+    @Autowired
+    private EmployeeEmployeeRoleService employeeEmployeeRoleService;
+
     private static final PlatformLogger logger = PlatformLogger.getLogger(InspectUserServiceWeb.class);
 
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -63,17 +69,27 @@ public class InspectUserServiceWeb {
         logger.info("current user is "+username);
         User user;
         Employee employee;
-        EmployeeRole employeeRole;
+
         InspectUser inspectUser = new InspectUser();
         try {
             user = userService.findByName(username);
             employee = employeeService.getByUserId(user.getId());
             if(employee!=null){
+                List<EmployeeEmployeeRole> employeeEmployeeRoleList = employeeEmployeeRoleService.getByEmployeeId(employee.getId());
+                //employeeRole = employeeRoleService.getByName(employee.getEmployeeRoleName(), UserContext.currentUserAppId());
+                EmployeeRole employeeRole = null;
+                List<EmployeeRole> employeeRoleList = new ArrayList<EmployeeRole>();
+                for(EmployeeEmployeeRole employeeEmployeeRole:employeeEmployeeRoleList){
+                    employeeRole = new EmployeeRole();
+                    employeeRole.setId(employeeEmployeeRole.getEmployeeRoleId());
+                    employeeRole.setName(employeeEmployeeRole.getEmployeeRoleName());
+                    employeeRoleList.add(employeeRole);
+                    inspectUser.setRoleNum(employeeRole.getId());
+                    inspectUser.setRole(employeeRole.getName());
+                }
+                inspectUser.setEmployeeRoleList(employeeRoleList);
 
-                employeeRole = employeeRoleService.getByName(employee.getEmployeeRoleName(), UserContext.currentUserAppId());
-                inspectUser.setRoleNum(employeeRole.getId());
                 inspectUser.setName(employee.getName());
-                inspectUser.setRole(employee.getEmployeeRoleName());
             }
             inspectUser.setNumber(user.getId());
             inspectUser.setUserName(user.getName());

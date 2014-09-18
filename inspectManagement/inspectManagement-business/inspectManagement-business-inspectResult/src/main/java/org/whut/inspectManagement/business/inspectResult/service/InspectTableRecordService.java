@@ -187,14 +187,10 @@ public class InspectTableRecordService {
                             inspectItemRecord.setAppId(appId);
                             inspectItemRecord.setCreateTime(new Date());
                             inspectItemRecord.setInspectTime(inspectTime);
-                            inspectItemRecordMapper.add(inspectItemRecord);
+                            //inspectItemRecordMapper.add(inspectItemRecord);
                             inspectItemRecords.add(inspectItemRecord);
                             System.out.println(tname + area + inspectTime+ item + inspectChoiceValue + worknum  +tableRecid + dnum);
-                            long tempItemRecordId = inspectItemRecordMapper.getIdByCondition(inspectTableId,inspectTagId,itemId1,inspectChoiceId,inspectItemRecord.getCreateTime(),userId,deviceId,appId);
-                            ImageBean imageBean = new ImageBean();
-                            imageBean.setItemRecordId(tempItemRecordId);
-                            imageBean.setItemId(itemId1);
-                            imageArrayList.add(imageBean);
+
                         }
                     }
                 }
@@ -240,10 +236,17 @@ public class InspectTableRecordService {
                 inspectTask.setFaultCount(exceptionCount);
                 inspectTaskMapper.completeTask(inspectTask);
 
-//                for (InspectItemRecord exceptionRecord:exceptionRecordList){
-//                    exceptionRecord.setInspectTableRecordId(inspectTableRecord.getId());
-//                    inspectItemRecordMapper.add(exceptionRecord);
-//                }
+                for (InspectItemRecord exceptionRecord:exceptionRecordList){
+                    exceptionRecord.setInspectTableRecordId(inspectTableRecord.getId());
+                    inspectItemRecordMapper.add(exceptionRecord);
+
+                    //long tempItemRecordId = inspectItemRecordMapper.getIdByCondition(inspectTableId,inspectTagId,exceptionRecord.getInspectItemId(),exceptionRecord.getInspectChoiceId(),exceptionRecord.getCreateTime(),userId,deviceId,appId);
+                    ImageBean imageBean = new ImageBean();
+                    imageBean.setItemRecordId(exceptionRecord.getId());
+                    imageBean.setItemId(exceptionRecord.getInspectItemId());
+                    imageBean.setTableRecordId(inspectTableRecord.getId());
+                    imageArrayList.add(imageBean);
+                }
 
                 flag=5;
                 map.put("flag",flag);

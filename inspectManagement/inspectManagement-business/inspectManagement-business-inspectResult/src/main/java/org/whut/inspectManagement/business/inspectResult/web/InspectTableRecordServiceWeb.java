@@ -79,6 +79,7 @@ public class InspectTableRecordServiceWeb {
                     List<ImageBean> tempList = new ArrayList<ImageBean>();
                     tempList = (ArrayList<ImageBean>)map.get("list");
 //                    return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"上传成功！");
+                    logger.info(JsonResultUtils.getObjectResultByStringAsDefault(tempList, JsonResultUtils.Code.SUCCESS));
                     return JsonResultUtils.getObjectResultByStringAsDefault(tempList, JsonResultUtils.Code.SUCCESS);
                 }
             } else {

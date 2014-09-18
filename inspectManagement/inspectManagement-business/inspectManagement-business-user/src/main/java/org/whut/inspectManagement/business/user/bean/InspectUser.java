@@ -1,5 +1,9 @@
 package org.whut.inspectManagement.business.user.bean;
 
+import org.whut.inspectManagement.business.deptAndEmployee.entity.EmployeeRole;
+
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
@@ -9,6 +13,7 @@ package org.whut.inspectManagement.business.user.bean;
  */
 public class InspectUser {
     private long number;
+    private List<EmployeeRole> employeeRoleList;
     private String role;
     private long roleNum;
     private String name;
@@ -98,4 +103,14 @@ public class InspectUser {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
+
+    public List<EmployeeRole> getEmployeeRoleList() {
+        return employeeRoleList;
+    }
+
+    public void setEmployeeRoleList(List<EmployeeRole> employeeRoleList) {
+        this.employeeRoleList = employeeRoleList;
+    }
+
+
 }

@@ -93,6 +93,7 @@
         FROM inspectitem
         WHERE appid=#{appId}
         AND inspectTableId = #{inspectTableId}
+        order by inspectAreaId asc
     </select>
     <select id="getInspectItemList" parameterType="java.lang.Long" resultType="map">
         SELECT item.id,item.`name`,item.number,intable.`name` AS inspectTable,type.`name` AS deviceType,inarea.`name` AS inspectArea,item.isInput AS input,GROUP_CONCAT(DISTINCT choice.choiceValue separator ';') AS choiceValue,item.description,item.createtime

@@ -71,7 +71,7 @@ public class SensorMessageDispatcher implements MessageDispatcher {
         if (collectorStatusService.delete(sensorNum)) {
 //            wsMessageDispatcher.dispatchMessage(sensorService.getCNumBySNum(sensorNum) + "离线");
             wsMessageDispatcher.dispatchMessage("{sensors:[{sensorNum:'" + sensorNum + "',dataType:'Route',time:'"+new Date().toString()+"',data:[],id:" + sensorService.getSensorId(sensorNum,1) +
-                    ",meanVariance:0,MaxValue:0,MinValue:0,warnCount:'暂无数据',collectorNum:'" + sensorService.getCNumBySNum(sensorNum) + "',lastCommunicateTime:'"+new Date().toString()+"',"+"isConnected:'"+"false"+"'"+"}]}");
+                    ",meanVariance:0,MaxValue:0,MinValue:0,warnCount:'暂无数据',collectorNum:'" + sensorService.getCNumBySNum(sensorNum) + "',lastCommunicateTime:'"+redisConnector.get("sensor:{"+sensorNum+"}:lastDate")+"',"+"isConnected:'"+"false"+"'"+"}]}");
         }
         collectorService.updateTimeByNumber(redisConnector.get("sensor:{"+sensorNum+"}:collector"),redisConnector.get("sensor:{"+sensorNum+"}:lastDate"));
         collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+sensorNum+"}:collector"),"离线或异常");

@@ -197,7 +197,7 @@ function onClickLeaf(node){
                 else if(dt==2) { drawChart2("#waveCanvas", wsData, "mV",d2);d2=0;d1=d3=d4=1;   }
                 else if(dt==3){  drawChart3("#waveCanvas", wsData, "mV",d3); d3=0;d2=d1=d4=1;  }
                 else if(dt==4){ drawChart4("#waveCanvas", wsData, "mV",d4); d4=0;d2=d3=d1=1;  }
-            }else drawChart("#waveCanvas", [], "mV");
+            }else {drawChart("#waveCanvas", [], "mV");d1=d2=d3=d4=1;}
         };
     }
 }

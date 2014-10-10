@@ -30,9 +30,13 @@
       <param-value>/WEB-INF/applicationContext.xml,classpath*:META-INF/spring/*-applicationContext.xml</param-value>
   </context-param>
   <!-- Servlet Filters ================================================ -->
-    <context-param>
+    <context-param>                             -
         <param-name>logbackConfigLocation</param-name>
         <param-value>WEB-INF/logback.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>riskManagement.root</param-value>
     </context-param>
     <listener>
         <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
@@ -77,7 +81,7 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-     <filter>
+    <!-- <filter>
          <filter-name>monitoring</filter-name>
          <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
      </filter>
@@ -87,7 +91,7 @@
     </filter-mapping>
     <listener>
         <listener-class>net.bull.javamelody.SessionListener</listener-class>
-    </listener>
+    </listener>-->
     <servlet>
         <servlet-name>jerseyServlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>

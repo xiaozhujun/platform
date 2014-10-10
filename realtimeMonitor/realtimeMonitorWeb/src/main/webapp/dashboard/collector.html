@@ -53,6 +53,9 @@
                         else{
                             grid.updateCell('status',"在线正常工作",i);
                         }
+                        if(jsonData.sensors[0].isConnected == "false") {
+                            grid.updateCell('status',"离线或异常",i);
+                        }
                     }
                 }
             };

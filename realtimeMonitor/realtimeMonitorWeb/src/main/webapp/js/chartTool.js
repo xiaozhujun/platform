@@ -1,5 +1,8 @@
-function drawChart(container,data,unit){
-    $(container).highcharts({
+function drawChart(container,data,unit,d){
+
+                   var d1=d;
+
+ $(container).highcharts({
         chart: {
             defaultSeriesType: 'line',
             marginRight: 20,
@@ -88,4 +91,7 @@ function drawChart(container,data,unit){
             enabled: false
         }
     });
+
+
+
 }

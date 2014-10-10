@@ -14,6 +14,7 @@
         <module>riskManagement</module>
         <module>inspectManagement</module>
         <module>realtimeMonitor</module>
+        <module>rentManagement</module>
         <!--<module>auth</module>-->
     </modules>
     <properties>

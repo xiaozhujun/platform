@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>租赁管理平台-登录</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script type="text/javascript" src="map/js/getParam.js"></script>
+    <style type="text/css">
+        body{ padding:0; margin:0;font-family: 'Hiragino Sans GB','Microsoft YaHei',sans-serif;}
+        #layout{  width:100%; margin:0;  height:100%; padding:0;}
+        #mainContainer{background-image: url("login/background.jpg");background-size: 100% 100%;}
+        #main{margin: 0 auto; width: 1100px;position: relative;}
+        #loginBackgroundImg{width: 100%;z-index: 1;}
+        #loginFormDiv{position: relative;top: -400px;left: 480px;z-index: 1000;}
+        #loginMsg{color: red;}
+    </style>
+</head>
+<body>
+<div id="layout">
+    <div id="mainContainer" position="center" title="">
+        <div id="main">
+            <img id="loginBackgroundImg" src="login/login.png">
+            <div id="loginFormDiv">
+                <form method="post" action="j_spring_security_check">
+                    <table>
+                        <tr>
+                            <td>用户名：</td>
+                            <td><input id="username" name="j_username" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>密&nbsp;&nbsp;&nbsp;码：</td>
+                            <td><input id="password" name="j_password" type="password"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit"  value="登录"/> </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td id="loginMsg" colspan="2"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#layout").ligerLayout({leftWidth:200});
+        var info = $.getUrlVar("error");
+        if(info){
+            $("#loginMsg").html("对不起，用户名或者密码错误！");
+        }
+    });
+</script>
+</body>
+</html>

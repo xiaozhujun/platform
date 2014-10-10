@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>rentManagement</artifactId>
+        <groupId>platform</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>rentManagement-business</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>rentManagement-business-device</module>
+        <module>rentManagement-business-deptAndEmployee</module>
+        <module>rentManagement-business-customer</module>
+        <module>rentManagement-business-supplier</module>
+        <module>rentManagement-business-storehouse</module>
+        <module>rentManagement-business-contract</module>
+        <module>rentManagement-business-stock</module>
+        <module>rentManagement-business-badDebt</module>
+    </modules>
+
+
+</project>

@@ -5,7 +5,7 @@
  * Time: 下午4:04
  * To change this template use File | Settings | File Templates.
  */
-function drawChart3(container,data,unit) {
+function drawChart3(container,data,unit,d) {
      // alert(data);
    // alert(data.length)  ;
     var sum = 0;
@@ -14,6 +14,10 @@ function drawChart3(container,data,unit) {
     }
    var average = sum/(data.length);
                 //  alert(average);
+    a()
+
+     function a(){
+    if(d==1){
     $(container).highcharts({
 
             chart: {
@@ -109,9 +113,15 @@ function drawChart3(container,data,unit) {
 
         }
 
+        ) ;  }  else{
 
-        // Add some life
+        var chart = $(container).highcharts();
+        var x= (new Date()).getTime();
+       // chart.series[0].addPoint([average],true,true);
+                var point = chart.series[0].points[0];
+                                point.update(average);
 
+    }
+     }
 
-        ) ;
 };

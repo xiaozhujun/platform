@@ -5,7 +5,11 @@
  * Time: 下午4:20
  * To change this template use File | Settings | File Templates.
  */
-function drawChart4(container,data,unit){
+function drawChart4(container,data,unit,d){
+        var y=data[data.length-1];
+    a();
+    function a(){
+    if(d==1){
     $(container).highcharts({
         chart: {
             defaultSeriesType: 'spline',
@@ -38,6 +42,7 @@ function drawChart4(container,data,unit){
             y: 100,
             borderWidth: 0
         },
+
         yAxis: {
             maxPadding:0.01,
             minPadding:0.01,
@@ -95,4 +100,11 @@ function drawChart4(container,data,unit){
             enabled: false
         }
     });
+    }else{
+
+        var chart = $(container).highcharts();
+        var x= (new Date()).getTime();
+         chart.series[0].addPoint([y],true,true);
+    };
+    }
 }

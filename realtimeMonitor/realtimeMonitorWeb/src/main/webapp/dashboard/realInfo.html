@@ -44,6 +44,7 @@
                 var jsonData = eval("(" +event.data+ ")");
                 number=jsonData.sensors[0].sensorNum;
                 for(var i=0;i<sNumList.length;i++){
+                    console.log("number : " + sNumList);
                     if(number==sNumList[i]){
                         sensorLastDate[i]=jsonData.sensors[0].lastCommunicateTime;
                         grid.updateCell('lastMessageTime',sensorLastDate[i],i);
@@ -55,7 +56,9 @@
                         //当前日期
                         currDate = new Date();
                         dif = (currDate.getTime()-date.getTime())/(1000*3600);
-                        if(dif>1){
+                        console.log("dif : " + dif);
+                        if(dif>0.0002){
+                            console.log("检测是否执行！！！！");
                             grid.updateCell('sensorStatus',"离线",i);
                         }
                         else{
@@ -111,6 +114,7 @@
                             }
                         });
                         if (s==1){
+                            sState="暂无数据";
                             return "暂无数据";
                         }
                         else {
@@ -120,7 +124,7 @@
                             //当前日期
                             currDate = new Date();
                              dif = (currDate.getTime()-date.getTime())/(1000*3600);
-                            if(dif>1){
+                            if(dif>0.0002){
                                 sState="离线";
                             }
                             else{

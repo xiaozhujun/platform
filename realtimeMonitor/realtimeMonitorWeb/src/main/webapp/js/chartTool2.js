@@ -1,4 +1,9 @@
-function drawChart2(container,data,unit){
+function drawChart2(container,data,unit,d){
+    var y=data[data.length-1];
+
+    a();
+    function a(){
+        if(d==1){
     $(container).highcharts({
         chart: {
             defaultSeriesType: 'column',
@@ -88,4 +93,10 @@ function drawChart2(container,data,unit){
             enabled: false
         }
     });
+
+        }else{
+            var chart = $(container).highcharts();
+            var x= (new Date()).getTime();
+            chart.series[0].addPoint([y],true,true);
+        }     }
 }

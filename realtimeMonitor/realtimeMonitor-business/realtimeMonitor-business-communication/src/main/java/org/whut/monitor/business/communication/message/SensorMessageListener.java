@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.whut.monitor.business.algorithm.service.AlgorithmService;
+import org.whut.monitor.business.communication.service.CollectorStatusService;
 import org.whut.monitor.business.communication.service.SensorDataService;
 import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.monitor.business.monitor.service.SensorService;
@@ -60,6 +61,8 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
     @Autowired
     private WsMessageDispatcher wsMessageDispatcher;
 
+    @Autowired
+    private CollectorStatusService collectorStatusService;
 
     private RedisConnector redisConnector = new RedisConnector();
 
@@ -88,6 +91,7 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
                     JSONArray data= dataJson.getJSONArray("sensors");
                     JSONObject info=data.getJSONObject(0);
                     number=info.getString("sensorNum");
+                    collectorStatusService.add(number);
                     JSONArray originalData=info.getJSONArray("data");
                     System.out.println(originalData);
                     for(int i=0;i<originalData.length();i++){
@@ -101,11 +105,11 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
                     String collectorNum=sensorService.getCNumBySNum(number) ;
                     System.out.println("aaaaaaaaaaaa"+collectorNum);
 
-                    String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"'";
+                    String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',"+"isConnected:"+"'"+"true"+"'";
                     int endIndex = messageText.indexOf("}]}");
                     System.out.println(messageText.substring(0,endIndex));
                     String s2= messageText.substring(0,endIndex)+","+s+"}]}";
-                    System.out.println(s2);
+                    System.out.println("s2 : " + s2);
                     wsMessageDispatcher.dispatchMessage(s2);
                     redisConnector.set("sensorNum",number);
                     System.out.println("number:"+number);

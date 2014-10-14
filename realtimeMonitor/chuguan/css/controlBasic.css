@@ -225,11 +225,11 @@ div.selectbox-wrapper ul li.hover {
     border-bottom: 0 none;
 }
 .tree-node-extStyle .tree-expanded {
-    background: url("../../tankFrame.fd/images/btnDel.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("../images/btnDel.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
     width: 18px;
 }
 .tree-node-extStyle .tree-collapsed {
-    background: url("../../tankFrame.fd/images/btnAdd.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("../images/btnAdd.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
     width: 18px;
 }
 a.slidesjs-next, a.slidesjs-previous, a.slidesjs-play, a.slidesjs-stop {

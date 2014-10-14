@@ -152,6 +152,7 @@
     border: medium solid rgba(0, 0, 0, 0);
     height: 100%;
     overflow: hidden;
+    font-weight: bold;
     width: 100%;
 }
 .labelCssHover:hover {

@@ -12,6 +12,11 @@
        <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
        <script src="js/config.js" type="text/javascript"></script>
     <script type="text/javascript">
+
+        function jumpURL(url){
+            $("#displayArea").attr("src", url);
+        }
+
         function jumpDown(a, index, srcIn) {
             if (srcIn) {
                 //guoyanhua 0825
@@ -47,7 +52,7 @@
                         $("#displayArea").attr("src", "wendu.html");
                         break;
                     case "罐体变形监测":
-                        $("#displayArea").attr("src", "bianxing.html");
+                        $("#displayArea").attr("src", "xingbian.html");
                         break;
                     case "可燃气体浓度监测":
                         $("#displayArea").attr("src", "longdu.html");
@@ -78,7 +83,7 @@
         <li><a target="displayArea">现场布置图</a></li>
     </ul>
 </div>
-<iframe id="displayArea" name="displayArea" style="height: 800px; width: 100%; overflow-y: scroll;overflow-x:hidden;" src="http://192.168.107.199/Agilor.Visual.View/view.html?page=jgjkjc/jgjkjc_2&isView=true&ID=0&tunkID=%E7%BD%90_1">
+<iframe id="displayArea" name="displayArea" style="height: 800px; width: 100%; overflow-y: scroll;overflow-x:hidden;" src="">
 </iframe>
 
 <div class="footer">

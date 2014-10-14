@@ -1,0 +1,85 @@
+@CHARSET "UTF-8";
+.backbtn{
+    display: inline-block;
+    margin-left:360px;
+    width: 100px;
+    height: 30px;
+    margin-top: 25px;
+    background-color: white;
+    color: #999999;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.relative {
+    position: relative;
+    z-index: 1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#panelArrow {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: #BBBBBB -moz-use-text-color #BBBBBB #BBBBBB;
+    border-image: none;
+    border-radius: 3px 0 0 3px;
+    border-style: solid none solid solid;
+    border-width: 1px 0 1px 1px;
+    box-shadow: 1px 1px 1px #999999;
+    height: 78px;
+    position: absolute;
+    right: 384px;
+    text-align: center;
+    top: 40%;
+    width: 24px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+#rightMain{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #3399FF;
+    margin: 0px;
+    position: absolute;
+    width: 385px;
+    z-index: 2;
+    right:0px;
+    float: left;
+    height: 100%;
+}
+
+#panelImg {
+    background: url("../images/sprites.png") no-repeat scroll -2px -20px rgba(0, 0, 0, 0);
+    height: 12px;
+    margin-left: 8px;
+    margin-top: 32px;
+    width: 6px;
+}
+
+#choiceContainer{
+    width: 95%;
+    margin:0 auto;
+    height: 100%;
+}
+
+#rightGrid{
+    float: right;
+}
+
+#displayContainer{
+    color: #000000;
+}
+
+
+#displayContainer .l-panel{
+    border: none;
+}

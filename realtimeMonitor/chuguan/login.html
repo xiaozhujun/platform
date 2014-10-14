@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
+    <title>登录</title>
+</head>
+
+<body>
+<div id="box">
+    <div id="login_bg">   <!--start form-->
+        <div id="form_container">
+            <div class="form_box">
+                <input id="loginid" type="text" class="put user"size="15" placeholder="用户名" value="admin"/>
+            </div>
+            <div class="form_box">
+                <input id="password" type="password" class="put Password"size="15" placeholder="密码" value=""/>
+            </div>
+            <div class="form_box">
+                <input id="submmit" name="button" type="button" class="btn1" value=""/>
+            </div>
+            <div class="error_box hide">账号或密码错误！</div>
+        </div> <!--form stop-->
+        <div id="note_tip" style="display:none;">如果您还没有帐号，请与管理员联系</div>
+    </div><!--"login_bg"  stop-->
+    <div id="footer" >中国特种设备检测研究院</div>
+</div>
+</body>
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#submmit").bind("click", function () {
+            $('.error_box').addClass('hide');
+            if ($("#loginid").val().trim() == "admin" && $("#password").val().trim() == "password") {
+                window.location.href = "home.html";
+            }else{
+                $('.error_box').removeClass('hide');
+            }
+        });
+        $("#password").keypress(function(keycode){
+            if(keycode.charCode==13){
+                $("#submmit").click();
+            }
+        });
+    });
+</script>
+</html>

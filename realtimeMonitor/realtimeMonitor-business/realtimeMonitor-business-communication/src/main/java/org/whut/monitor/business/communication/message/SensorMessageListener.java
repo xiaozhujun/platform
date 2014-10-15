@@ -93,7 +93,6 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
                     number=info.getString("sensorNum");
                     collectorStatusService.add(number);
                     JSONArray originalData=info.getJSONArray("data");
-                    System.out.println(originalData);
                     for(int i=0;i<originalData.length();i++){
                         arrayList.add(originalData.get(i));
                     }
@@ -103,16 +102,11 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
                     String warnCount = redisConnector.get("sensor:{"+number+"}:warnCount");
                     String lastCommunicateTime = redisConnector.get("sensor:{"+number+"}:lastDate");
                     String collectorNum=sensorService.getCNumBySNum(number) ;
-                    System.out.println("aaaaaaaaaaaa"+collectorNum);
-
                     String s="id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',"+"isConnected:"+"'"+"true"+"'";
                     int endIndex = messageText.indexOf("}]}");
-                    System.out.println(messageText.substring(0,endIndex));
                     String s2= messageText.substring(0,endIndex)+","+s+"}]}";
-                    System.out.println("s2 : " + s2);
                     wsMessageDispatcher.dispatchMessage(s2);
                     redisConnector.set("sensorNum",number);
-                    System.out.println("number:"+number);
                     lastDate = redisConnector.get("sensor:{"+number+"}:lastDate");
                     switch (isNormal(number,lastDate)){
                         case 0:collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+number+"}:collector"),"在线正常工作");
@@ -145,14 +139,13 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
             redisConnector.set("sensor:{"+number+"}:collector",collectorNum);
         }
         if (lastDate!=null){
-            System.out.println("lastDate "+lastDate);
             redisConnector.set("sensor:{"+redisConnector.get("sensor:{"+number+"}:collector")+"}:collectorTime",lastDate);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
                 Date date = sdf.parse(lastDate);
                 Date now=new Date();
                 long dif = (now.getTime()- date.getTime())/(1000);
-                System.out.println("dif:"+dif);
+
 
                 if (dif >60 || (redisConnector.get("sensor:{"+number+"}:collector").equals("") || redisConnector.get("sensor:{"+number+"}:collector") == null)) {
                     flag=1;

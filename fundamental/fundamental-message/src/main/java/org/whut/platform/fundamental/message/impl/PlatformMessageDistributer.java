@@ -50,9 +50,7 @@ public class PlatformMessageDistributer implements MessageListener {
 
         String messageName = getMessageName(message);
         String monitorDestination;
-        System.out.println("vvvvvvvvvvv"+listeners.size());
         for (int i=0;i<listeners.size();i++) {
-            System.out.println("dddddddddddd"+listeners);
             monitorDestination =listeners.get(i).getMessageName();
             LOGGER.info(monitorDestination +"=? "+ messageName);
             if (StringUtils.isNotBlank(monitorDestination)&& StringUtils.equalsIgnoreCase(monitorDestination,messageName))

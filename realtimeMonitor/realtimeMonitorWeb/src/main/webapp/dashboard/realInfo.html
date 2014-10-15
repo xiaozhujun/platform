@@ -30,7 +30,8 @@
         });
         function connect() {
             var url= $.URL.websocket.register;
-            var s="all"+"|"+2;
+            var num="all";
+            var s="{c:'Subscribe',sensors:["+num+"]}";
             ws =  new WebSocket(url);
             ws.onopen = function () {
                 console.log('Info: connection opened.');
@@ -48,7 +49,7 @@
                     if(number==sNumList[i]){
                         sensorLastDate[i]=jsonData.sensors[0].lastCommunicateTime;
                         grid.updateCell('lastMessageTime',sensorLastDate[i],i);
-                        console.log("ssssssssssssssssssss"+sensorLastDate[i]);
+
 
                         sT = sensorLastDate[i].replace(/-/g,"/");
                         //要计算的日期

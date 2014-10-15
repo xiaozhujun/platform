@@ -1,5 +1,8 @@
 package org.whut.platform.fundamental.websocket.handler;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -22,74 +25,57 @@ import java.util.Map;
  */
 public class WebsocketEndPoint extends TextWebSocketHandler {
 
-    private static String tempMessage;
-    private static List<WebSocketSession> wsList;
-    private static Map<WebSocketSession,String> map=new HashMap<WebSocketSession, String>();
-    private static Map<String,List<WebSocketSession>> map1=new HashMap<String, List<WebSocketSession>>();
+    private static String ReceivedMessage;    //收到的消息
+    private static List<WebSocketSession> wssList;   // ReceivedMessage对应的 WebSocketSession列表
+    private static Map<WebSocketSession,String> map=new HashMap<WebSocketSession, String>(); // 一个session对应一个message 维护 session和message的关系
+    private static Map<String,List<WebSocketSession>> wsImpMap=new HashMap<String, List<WebSocketSession>>(); //一个message对应多个session，供通过websocket向前台发送消息使用
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        tempMessage = message.getPayload();
-        map.put(session,tempMessage);
-        int i=0;
-        if(map1.size()==0){
-            System.out.println("qwertyuioo");
-            wsList=new ArrayList<WebSocketSession>();
-            wsList.add(session);
-            map1.put(tempMessage,wsList);
-            wsList=null;
+        ReceivedMessage = message.getPayload();
+        map.put(session,ReceivedMessage);
+        wssList=wsImpMap.get(ReceivedMessage);
+        if(wssList==null){
+            wssList=new ArrayList<WebSocketSession>();
+
         }
-        else{
-            try {
-                for(String key : map1.keySet()){
-                    if(key.equals(tempMessage)){
-                        i=1;
-                        wsList=map1.get(key);
-                        System.out.println("qwer123456"+wsList);
-                        wsList.add(session);
-                        System.out.println("qwer1234567890"+wsList);
-                        map1.remove(tempMessage);
-                        map1.put(tempMessage,wsList);
-                        wsList=null;
-                    }
+         wssList.add(session);
+        try{
+            System.out.println(ReceivedMessage);
+            JSONObject dataJson=new JSONObject(ReceivedMessage);
+            JSONArray sNum= dataJson.getJSONArray("sensors");
+            System.out.println("sNum为，"+sNum+"长度为"+sNum.length());
+            String info=dataJson.getString("c");
+            System.out.println("sNum为，"+info);
+            if (info.equals("Subscribe")) {    //订阅
+                for(int i=0;i<sNum.length();i++){
+                    wsImpMap.put(sNum.get(i).toString(),wssList);
                 }
-                if(i==0){
-                    System.out.println("111111111111111");
-                    wsList=new ArrayList<WebSocketSession>();
-                    wsList.add(session);
-                    map1.put(tempMessage,wsList);
-                    wsList=null;
-                }
-            } catch (Exception exception) {
-                exception.printStackTrace();
+            }
+            else{
+                System.out.println("进行取消订阅");
             }
         }
-        System.out.println(map1);
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+        wssList=null;
         super.handleTextMessage(session, message);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
        String msg= map.get(session);
-       List<WebSocketSession> webSocketSessionList=map1.get(msg);
+       List<WebSocketSession> webSocketSessionList=wsImpMap.get(msg);
        webSocketSessionList.remove(session);
-       map1.remove(msg);
-       map1.put(msg,webSocketSessionList);
+        wsImpMap.remove(msg);
+        wsImpMap.put(msg,webSocketSessionList);
        map.remove(session);
        System.out.println("连接关闭！");
        super.afterConnectionClosed(session, status);
     }
 
     public static Map<String,List<WebSocketSession>> getTempMessage(){
-        return map1;
+        return wsImpMap;
     }
-    public static void main(String[] args) throws IOException {
-        String s="{sensors:[{202,365]}]}";
-        System.out.println(s.length());
-        int startIndex = s.indexOf("{sensors:[{");
-        System.out.println(startIndex);
-        int endIndex = s.indexOf("}]}",startIndex);
-        System.out.println(endIndex);
-    }
-
 }

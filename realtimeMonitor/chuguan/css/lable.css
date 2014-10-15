@@ -1,0 +1,164 @@
+
+.BasicProperty_Radius {
+    cursor: pointer;
+    float: left;
+    font-family: '微软雅黑',arial;
+    font-size: 8px;
+    font-weight: bold;
+    margin: 5px 4px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 30px;
+}
+.BasicProperty_RadiusforSaFari {
+    cursor: pointer;
+    float: left;
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 5px 4px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 30px;
+}
+.AutoFill_PanelSty {
+    height: 45px;
+    line-height: 45px;
+    width: 100%;
+}
+.controls {
+    margin-top: 10px;
+}
+.LableRadiusTable {
+    font-size: 12px;
+    width: 100%;
+}
+.LableRadiusTable td {
+    border: 1px solid #CCCCCC;
+    border-collapse: collapse;
+}
+.LableRadiusTable td input {
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    height: 98%;
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 80%;
+}
+.prortityLabelTabletd0 {
+    padding: 1px;
+    text-align: right;
+}
+.prortityLabelTabletd0 select {
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    height: 98%;
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 80px;
+}
+.prortityLabelTabletd1 {
+    padding: 1px;
+    text-align: left;
+}
+.prortityLabelTabletd1 select {
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    height: 98%;
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 80px;
+}
+.prortityLabelTabletd1 input[type="text"] {
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    height: 98%;
+    width: 80%;
+}
+.prortityLabelTabletd1 input[type="number"] {
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    height: 98%;
+    width: 80px;
+}
+#FontTextInput {
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    height: 98%;
+    width: 80%;
+}
+.prortityLabelTabletd0 input[type="button"] {
+    font-family: '微软雅黑',arial;
+    font-size: 12px;
+    height: 90%;
+    margin-right: 100px;
+    text-align: center;
+    width: 30%;
+}
+#bgColorTransparent {
+    height: 30px;
+    width: 20px;
+}
+#BackgroundColorDivId {
+}
+.colorTrID {
+    height: 35px;
+}
+.colorDivClass {
+    margin-top: 0;
+}
+#IsLink {
+    display: inline;
+    height: 20px;
+    margin-right: 5px;
+    width: 45px;
+}
+#LinkAddress {
+    height: 80%;
+    margin-right: 5px;
+    width: 70%;
+}
+#insideLinkDiv {
+    text-align: center;
+}
+.BasicProperty_Radius {
+    border: 1px solid #667C8D;
+    border-radius: 10px;
+    height: auto;
+    margin: 10px 0;
+    padding: 5px 0;
+    width: 100%;
+}
+.BasicProperty_TypeFace {
+    border: 1px solid #667C8D;
+    border-radius: 10px;
+    height: auto;
+    margin: 10px 0;
+    padding: 5px 0;
+    width: 100%;
+}
+.FilterFrameColor {
+    width: 30px;
+}
+.selectDivClass {
+    height: 20px;
+    width: 90px;
+}
+.LabelPor {
+    border: medium solid rgba(0, 0, 0, 0);
+    height: 100%;
+    overflow: hidden;
+    font-weight: bold;
+    width: 100%;
+}
+.labelCssHover:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.Lable_InputLineheight {
+    line-height: 20px;
+}

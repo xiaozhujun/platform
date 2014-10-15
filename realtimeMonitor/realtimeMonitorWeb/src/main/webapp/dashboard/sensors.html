@@ -37,7 +37,8 @@
     var finalValue = new Array();
     function connect() {
         var url= $.URL.websocket.register;
-        var s="all"+"|"+2;
+        var num="all";
+        var s="{c:'Subscribe',sensors:["+num+"]}";
         ws =  new WebSocket(url);
         ws.onopen = function () {
             console.log('Info: connection opened.');

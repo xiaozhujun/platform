@@ -1,0 +1,926 @@
+<link rel="stylesheet" href="css/controlBasic.css"/>
+<link rel="stylesheet" href="css/dropList.css"/>
+<link rel="stylesheet" href="css/bootstrap.css"/>
+<link rel="stylesheet" href="css/dataGrid.css"/>
+<link rel="stylesheet" href="css/jquery.ui.theme.css"/>
+<link rel="stylesheet" href="css/jquery.wijmo.wijgrid.css"/>
+<link rel="stylesheet" href="css/lable.css"/>
+<div id="workspace" style="background-color: rgb(255, 255, 255); width: 1280px; height: 1024px;">
+    <div class="PanelSty agi-panel" id="Panel916239"
+         style="z-index: 1001; width: 150px; height: 43.6044px; left: 482px; top: 338px; border-radius: 5px; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+    <div class="PanelSty agi-panel" id="Panel831345"
+         style="z-index: 1501; width: 150px; height: 43.6044px; left: 55px; top: 37px; border-radius: 5px; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+    <div class="PanelSty agi-panel" id="Panel14995"
+         style="z-index: 1501; width: 150px; height: 43.6044px; left: 55px; top: 338px; border-radius: 5px; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+    <div class="PanelSty agi-panel" id="Panel332672"
+         style="z-index: 1001; width: 150px; height: 43.6044px; left: 482px; top: 37px; border-radius: 5px; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+    <div class="PanelSty agi-panel" id="Panel480147"
+         style="z-index: 1005; width: 360px; height: 405.099px; left: 163px; top: 14px; border-radius: 0px; background: none no-repeat scroll center center / 100% 100% transparent; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);">
+        <svg width="360" height="405" viewBox="0 0 360 405" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <linearGradient id="myGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="5%" stop-color="#CCCCCC"/>
+                    <stop offset="95%" stop-color="#E5E5E5" stop-opacity="0.1"/>
+                </linearGradient>
+            </defs>
+            <defs>
+                <linearGradient id="myNewGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="5%" stop-color="#999999"/>
+                    <stop offset="80%" stop-color="white" stop-opacity="1"/>
+                </linearGradient>
+            </defs>
+            <circle cx="180" cy="202.5" r="152" fill="url(#myGradient)"/>
+            <path d="M 180.13935717437832 27.500055486928943 A 175 175 0 1 1 180.12442842219514 27.500044235526303 L 180.0974096790899 65.50003463009773 A 137 137 0 1 0 180.10909675937046 65.50004343833865 Z"
+                  fill="white" stroke-width="2" stroke="black"/>
+            <line x1="180.13935717437832" y1="27.500055486928943" x2="180.0974096790899" y2="65.50003463009773"
+                  stroke="white" stroke-width="2"/>
+            <g opacity="0.9999901234567902">
+                <path stroke-width="2" stroke="#DCDCDC" fill="#2C3E50" data-order="0"
+                      d="M 180 42.5 A 160 160 0 0 1 339.9999999807452 202.49751775395282 L 331.9999999817079 202.49764186625518 A 152 152 0 0 0 180 50.5 L 180 202.5 Z"/>
+                <path stroke-width="2" stroke="#DCDCDC" fill="#FC4349" data-order="1"
+                      d="M 339.9999999807452 202.49751775395282 A 160 160 0 0 1 180.0049644920938 362.4999999229807 L 180.0047162674891 354.49999992683166 A 152 152 0 0 0 331.9999999817079 202.49764186625518 L 180 202.5 Z"/>
+                <path stroke-width="2" stroke="#DCDCDC" fill="#6DBCDB" data-order="2"
+                      d="M 180.0049644920938 362.4999999229807 A 160 160 0 0 1 20.000000173293472 202.50744673813915 L 28.0000001646288 202.5070744012322 A 152 152 0 0 0 180.0047162674891 354.49999992683166 L 180 202.5 Z"/>
+                <path stroke-width="2" stroke="#DCDCDC" fill="#F7E248" data-order="3"
+                      d="M 20.000000173293472 202.50744673813915 A 160 160 0 0 1 179.9900710158172 42.50000030807729 L 179.99056746502634 50.500000292673406 A 152 152 0 0 0 28.0000001646288 202.5070744012322 L 180 202.5 Z"/>
+            </g>
+            <circle cx="180" cy="202.5" r="54" fill="url(#myNewGradient)"/>
+        </svg>
+        <div class="doughnutSummary" style="width: 288px; height: 288px; margin-left: -144px; margin-top: -144px;"><p
+                class="doughnutSummaryTitle"></p>
+
+            <p class="doughnutSummaryNumber" style="opacity: 0;"></p></div>
+    </div>
+    <div class="PanelSty agi-panel" id="Panel239971"
+         style="z-index: 1000; width: 1208.78px; height: 354.462px; left: 37px; top: 444px; border-radius: 0px; background: none no-repeat scroll center center / 100% 100% rgb(255, 255, 255); border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+    <div style="padding-right: 2px; width: 591px; height: auto; left: 648px; top: 39px; z-index: 3016;"
+         class="PanelSty selectPanelSty" id="Panel_DataGrid433690" recivedata="true">
+        <div class="" id="head_DataGrid433690" style="display: none;"><span>DataGrid433690</span></div>
+        <div class="selectPanelBodySty">
+            <div class="ui-widget wijmo-wijgrid ui-widget-content ui-corner-all"
+                 style="width: 100%; border-width: 1px;">
+                <table cellspacing="0" cellpadding="0" border="0" id="DataGrid433690"
+                       style="border-collapse: separate; width: 100%; table-layout: fixed;"
+                       class="wijmo-wijgrid-root wijmo-wijobserver-visibility wijmo-wijgrid-table" role="grid"
+                       aria-disabled="false" tabindex="0">
+                    <thead>
+                    <tr role="row" class="wijmo-wijgrid-headerrow">
+                        <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+                            role="columnheader" scope="col" style="width: 99px; height: 40px;">
+                            <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                                    class="wijmo-wijgrid-headertext"
+                                                                    style="color: rgb(0, 0, 0);">油罐编号</a></div>
+                        </th>
+                        <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+                            role="columnheader" scope="col" style="width: 128px; height: 40px;">
+                            <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                                    class="wijmo-wijgrid-headertext"
+                                                                    style="color: rgb(0, 0, 0);">检测位置描述</a></div>
+                        </th>
+                        <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+                            role="columnheader" scope="col" style="width: 180px; height: 40px;">
+                            <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                                    class="wijmo-wijgrid-headertext"
+                                                                    style="color: rgb(0, 0, 0);">可燃气浓度实测值</a></div>
+                        </th>
+                        <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+                            role="columnheader" scope="col" style="width: 180px; height: 40px;">
+                            <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                                    class="wijmo-wijgrid-headertext"
+                                                                    style="color: rgb(0, 0, 0);">报警状态</a></div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <colgroup>
+                        <col style="width: 100px;">
+                        <col style="width: 129px;">
+                        <col style="width: 181px;">
+                        <col style="width: 181px;">
+                    </colgroup>
+                    <tbody class="ui-widget-content wijmo-wijgrid-data">
+                    <tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow"
+                        style="border-top-color: rgb(195, 195, 195); height: 50px;">
+                        <td class="wijgridtd wijdata-type-number" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+                            tabindex="0" aria-selected="true"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">1</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u68C0%u6D4B%u4F4D%u7F6E%u63CF%u8FF0" aria-selected="true"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u53EF%u71C3%u6C14%u6D53%u5EA6%u5B9E%u6D4B%u503C" aria-selected="true"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR1_0_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR1_0_GAS</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u62A5%u8B66%u72B6%u6001"
+                            aria-selected="true"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR1_0_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR1_0_GAS</div>
+                        </td>
+                    </tr>
+                    <tr role="row"
+                        class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow wijmo-wijgrid-alternatingrow"
+                        style="border-top-color: rgb(195, 195, 195); height: 50px;">
+                        <td class="wijgridtd wijdata-type-number" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">1</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u68C0%u6D4B%u4F4D%u7F6E%u63CF%u8FF0"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u53EF%u71C3%u6C14%u6D53%u5EA6%u5B9E%u6D4B%u503C"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR2_90_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR2_90_GAS</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u62A5%u8B66%u72B6%u6001"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR2_90_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR2_90_GAS</div>
+                        </td>
+                    </tr>
+                    <tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow"
+                        style="border-top-color: rgb(195, 195, 195); height: 50px;">
+                        <td class="wijgridtd wijdata-type-number" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">1</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u68C0%u6D4B%u4F4D%u7F6E%u63CF%u8FF0"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u53EF%u71C3%u6C14%u6D53%u5EA6%u5B9E%u6D4B%u503C"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR3_180_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR3_180_GAS</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u62A5%u8B66%u72B6%u6001"
+                            style="color: rgb(0, 0, 0); font-size: 12px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR3_180_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR3_180_GAS</div>
+                        </td>
+                    </tr>
+                    <tr role="row"
+                        class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow wijmo-wijgrid-alternatingrow"
+                        style="border-top-color: rgb(195, 195, 195); height: 50px;">
+                        <td class="wijgridtd wijdata-type-number" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">1</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u68C0%u6D4B%u4F4D%u7F6E%u63CF%u8FF0"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell"
+                            headers="%u53EF%u71C3%u6C14%u6D53%u5EA6%u5B9E%u6D4B%u503C"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR4_270_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR4_270_GAS</div>
+                        </td>
+                        <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u62A5%u8B66%u72B6%u6001"
+                            style="color: rgb(0, 0, 0); background: none repeat scroll 0% 0% rgb(255, 255, 255); font-size: 12px; border-right-color: rgb(195, 195, 195); font-family: Microsoft YaHei; font-weight: normal;"
+                            id="FG1AR4_270_GAS">
+                            <div class="wijmo-wijgrid-innercell" style="text-align: center;">FG1AR4_270_GAS</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty dropdownControlShell" id="Panel_DropDownList696309" recivedata="true"
+         style="width: 81px; height: 35px; left: 307px; top: 202px; z-index: 4015;">
+        <div class="" id="head_DropDownList696309" style="display: none;"><span>DropDownList696309</span></div>
+        <div class="selectPanelBodySty">
+            <div class="navbar" id="DropDownList696309">
+                <ul style="height: 25px;background: transparent;" role="navigation"
+                    class="nav pull-right dropdownlistControl">
+                    <li style="height: 25px;" class="dropdown"><a data-toggle="dropdown"
+                                                                  class="dropdown-toggle dropdown-theme1-a"
+                                                                  role="button" href="#"
+                                                                  style="height: 22px; padding: 0px; vertical-align: top; overflow: hidden; color: rgb(0, 0, 0); background: none repeat scroll 0% 0% transparent; border-width: 0px; border-style: solid; border-color: rgb(255, 255, 255); border-radius: 5px; font-size: 20px;"><span
+                            class="DropDownListTextOver" style="width: 59px;">罐_1</span>
+
+                        <div style="float: left; margin-left: 0px; display: none;" class="downArrow"></div>
+                    </a>
+                        <ul role="menu" class="dropdown-menu" style="overflow-y: auto;">
+                            <li data-value="1"><a href="#" tabindex="-1">罐_1</a></li>
+                            <li data-value="2"><a href="#" tabindex="-1">罐_2</a></li>
+                            <li data-value="3"><a href="#" tabindex="-1">罐_3</a></li>
+                            <li data-value="4"><a href="#" tabindex="-1">罐_4</a></li>
+                            <li data-value="5"><a href="#" tabindex="-1">罐_5</a></li>
+                            <li data-value="6"><a href="#" tabindex="-1">罐_6</a></li>
+                            <li data-value="7"><a href="#" tabindex="-1">罐_7</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div style="overflow: hidden; width: 29px; height: 33px; left: 57px; top: 42px; border-radius: 5px; z-index: 3017;"
+         class="PanelSty selectPanelSty" id="Panel_AnimationControl27319" recivedata="true">
+        <div class="" id="head_AnimationControl27319" style="display: none;"><span>AnimationControl27319</span></div>
+        <div class="selectPanelBodySty">
+            <div value="" class="AnimationControlPor" id="AnimationControl27319"
+                 style="border-width: 0px; border-color: red; font-size: 14px; color: black;">
+                <!--<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>-->
+                <!--<div style="width: 320px; height: 240px">-->
+                <!--1.HTML-->
+                <div style="width: 100%; height: 100%;">
+                    <div id="ac_border">
+                        <!--<div style="margin-left: 4%; margin-right: 6%; height: 100%;">-->
+                        <div id="ac_fill">
+                            <div id="ac_gradient">
+                                <!--<img src="image/emptyBattery.png" alt="" style="z-index: -1;" width="100%" height="100%">-->
+                            </div>
+                        </div>
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!--</div>-->
+                <!--2.CSS-->
+                <style type="text/css">
+                    #ac_border {
+                        border-color: #000000;
+                        border-width: 0px;
+                        border-style: solid;
+                        height: 100%;
+                        /*background: #c0c0c0;*/
+                        /*background: url("JS/Controls/AnimationControl/image/emptyBattery.png") no-repeat;
+                        background-size: 100% 100%;*/
+                    }
+
+                    #ac_fill {
+                        width: 100%;
+                        height: 100%;
+                        /*background: #008000;*/
+                        /*-webkit-transition: background-color 0.5s linear;*/
+                    }
+
+                    #ac_gradient {
+                        width: 100%;
+                        height: 100%;
+                        /*background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%);*/
+                    }
+                </style>
+                <!--3.JS-->
+
+            </div>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div style="overflow: hidden; width: 30px; height: 35px; left: 56px; top: 341px; border-radius: 5px; z-index: 3018;"
+         class="PanelSty selectPanelSty" id="Panel_AnimationControl356715" recivedata="true">
+        <div class="" id="head_AnimationControl356715" style="display: none;"><span>AnimationControl356715</span></div>
+        <div class="selectPanelBodySty">
+            <div value="" class="AnimationControlPor" id="AnimationControl356715"
+                 style="border-width: 0px; border-color: red; font-size: 14px; color: black;">
+                <!--<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>-->
+                <!--<div style="width: 320px; height: 240px">-->
+                <!--1.HTML-->
+                <div style="width: 100%; height: 100%;">
+                    <div id="ac_border">
+                        <!--<div style="margin-left: 4%; margin-right: 6%; height: 100%;">-->
+                        <div id="ac_fill">
+                            <div id="ac_gradient">
+                                <!--<img src="image/emptyBattery.png" alt="" style="z-index: -1;" width="100%" height="100%">-->
+                            </div>
+                        </div>
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!--</div>-->
+                <!--2.CSS-->
+                <style type="text/css">
+                    #ac_border {
+                        border-color: #000000;
+                        border-width: 0px;
+                        border-style: solid;
+                        height: 100%;
+                        /*background: #c0c0c0;*/
+                        /*background: url("JS/Controls/AnimationControl/image/emptyBattery.png") no-repeat;
+                        background-size: 100% 100%;*/
+                    }
+
+                    #ac_fill {
+                        width: 100%;
+                        height: 100%;
+                        /*background: #008000;*/
+                        /*-webkit-transition: background-color 0.5s linear;*/
+                    }
+
+                    #ac_gradient {
+                        width: 100%;
+                        height: 100%;
+                        /*background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%);*/
+                    }
+                </style>
+                <!--3.JS-->
+
+            </div>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div style="overflow: hidden; width: 30px; height: 35px; left: 483px; top: 42px; border-radius: 5px; z-index: 3019;"
+         class="PanelSty selectPanelSty" id="Panel_AnimationControl743329" recivedata="true">
+        <div class="" id="head_AnimationControl743329" style="display: none;"><span>AnimationControl743329</span></div>
+        <div class="selectPanelBodySty">
+            <div value="" class="AnimationControlPor" id="AnimationControl743329"
+                 style="border-width: 0px; border-color: red; font-size: 14px; color: black;">
+                <!--<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>-->
+                <!--<div style="width: 320px; height: 240px">-->
+                <!--1.HTML-->
+                <div style="width: 100%; height: 100%;">
+                    <div id="ac_border">
+                        <!--<div style="margin-left: 4%; margin-right: 6%; height: 100%;">-->
+                        <div id="ac_fill">
+                            <div id="ac_gradient">
+                                <!--<img src="image/emptyBattery.png" alt="" style="z-index: -1;" width="100%" height="100%">-->
+                            </div>
+                        </div>
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!--</div>-->
+                <!--2.CSS-->
+                <style type="text/css">
+                    #ac_border {
+                        border-color: #000000;
+                        border-width: 0px;
+                        border-style: solid;
+                        height: 100%;
+                        /*background: #c0c0c0;*/
+                        /*background: url("JS/Controls/AnimationControl/image/emptyBattery.png") no-repeat;
+                        background-size: 100% 100%;*/
+                    }
+
+                    #ac_fill {
+                        width: 100%;
+                        height: 100%;
+                        /*background: #008000;*/
+                        /*-webkit-transition: background-color 0.5s linear;*/
+                    }
+
+                    #ac_gradient {
+                        width: 100%;
+                        height: 100%;
+                        /*background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%);*/
+                    }
+                </style>
+                <!--3.JS-->
+
+            </div>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div style="overflow: hidden; width: 30px; height: 35px; left: 484px; top: 340px; border-radius: 5px; z-index: 3020;"
+         class="PanelSty selectPanelSty" id="Panel_AnimationControl373478" recivedata="true">
+        <div class="" id="head_AnimationControl373478" style="display: none;"><span>AnimationControl373478</span></div>
+        <div class="selectPanelBodySty">
+            <div value="" class="AnimationControlPor" id="AnimationControl373478"
+                 style="border-width: 0px; border-color: red; font-size: 14px; color: black;">
+                <!--<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>-->
+                <!--<div style="width: 320px; height: 240px">-->
+                <!--1.HTML-->
+                <div style="width: 100%; height: 100%;">
+                    <div id="ac_border">
+                        <!--<div style="margin-left: 4%; margin-right: 6%; height: 100%;">-->
+                        <div id="ac_fill">
+                            <div id="ac_gradient">
+                                <!--<img src="image/emptyBattery.png" alt="" style="z-index: -1;" width="100%" height="100%">-->
+                            </div>
+                        </div>
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!--</div>-->
+                <!--2.CSS-->
+                <style type="text/css">
+                    #ac_border {
+                        border-color: #000000;
+                        border-width: 0px;
+                        border-style: solid;
+                        height: 100%;
+                        /*background: #c0c0c0;*/
+                        /*background: url("JS/Controls/AnimationControl/image/emptyBattery.png") no-repeat;
+                        background-size: 100% 100%;*/
+                    }
+
+                    #ac_fill {
+                        width: 100%;
+                        height: 100%;
+                        /*background: #008000;*/
+                        /*-webkit-transition: background-color 0.5s linear;*/
+                    }
+
+                    #ac_gradient {
+                        width: 100%;
+                        height: 100%;
+                        /*background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%);*/
+                    }
+                </style>
+                <!--3.JS-->
+
+            </div>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_DynamicChart407771" recivedata="true"
+         style="width: 1138px; height: 343px; left: 92px; top: 444px; z-index: 3002;">
+        <div class="" id="head_DynamicChart407771" style="display: none;"><span>DynamicChart407771</span></div>
+        <div class="selectPanelBodySty">
+            <div style="width:100%;height:100%;margin: 0 auto" id="DynamicChart407771" data-highcharts-chart="2">
+                <div class="highcharts-container" id="highcharts-6"
+                     style="position: relative; overflow: hidden; width: 1138px; height: 343px; text-align: left; line-height: normal; z-index: 0; left: 0px; top: 0px;">
+                    <svg version="1.1"
+                         style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;"
+                         xmlns="http://www.w3.org/2000/svg" width="1138" height="343">
+                        <desc>Created with Highstock 2.0.1</desc>
+                        <defs>
+                            <clipPath id="highcharts-7">
+                                <rect x="0" y="0" width="1108" height="264"/>
+                            </clipPath>
+                        </defs>
+                        <g class="highcharts-grid" zIndex="1">
+                            <path fill="none" d="M 149.5 38 L 149.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 264.5 38 L 264.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 378.5 38 L 378.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 492.5 38 L 492.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 607.5 38 L 607.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 721.5 38 L 721.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 835.5 38 L 835.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 950.5 38 L 950.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 1064.5 38 L 1064.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                            <path fill="none" d="M 35.5 38 L 35.5 302" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                                  opacity="1"/>
+                        </g>
+                        <g class="highcharts-grid" zIndex="1"/>
+                        <g class="highcharts-axis" zIndex="2">
+                            <path fill="none" d="M 10 302.5 L 1118 302.5" stroke="#7D7B7C" stroke-width="1" zIndex="7"
+                                  visibility="visible"/>
+                        </g>
+                        <g class="highcharts-axis" zIndex="2">
+                            <path fill="none" d="M 9.5 38 L 9.5 302" stroke="#7D7B7C" stroke-width="1" zIndex="7"
+                                  visibility="visible"/>
+                        </g>
+                        <g class="highcharts-series-group" zIndex="3">
+                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="url(#highcharts-7)">
+                                <path fill="none" d="M 0 0" stroke-linejoin="round" visibility="visible"
+                                      stroke="rgba(192,192,192,0.0001)" stroke-width="22" zIndex="2"
+                                      class=" highcharts-tracker" style=""/>
+                            </g>
+                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="none" style=""/>
+                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="url(#highcharts-7)">
+                                <path fill="none" d="M 0 0" stroke-linejoin="round" visibility="visible"
+                                      stroke="rgba(192,192,192,0.0001)" stroke-width="22" zIndex="2"
+                                      class=" highcharts-tracker" style=""/>
+                            </g>
+                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="none" style=""/>
+                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="url(#highcharts-7)">
+                                <path fill="none" d="M 0 0" stroke-linejoin="round" visibility="visible"
+                                      stroke="rgba(192,192,192,0.0001)" stroke-width="22" zIndex="2"
+                                      class=" highcharts-tracker" style=""/>
+                            </g>
+                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="none" style=""/>
+                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="url(#highcharts-7)">
+                                <path fill="none" d="M 0 0" stroke-linejoin="round" visibility="visible"
+                                      stroke="rgba(192,192,192,0.0001)" stroke-width="22" zIndex="2"
+                                      class=" highcharts-tracker" style=""/>
+                            </g>
+                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
+                               transform="translate(10,38) scale(1 1)" clip-path="none" style=""/>
+                        </g>
+                        <g class="highcharts-axis-labels highcharts-xaxis-labels" zIndex="7">
+                            <text x="1065.1155830753355" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:58:46
+                            </text>
+                            <text x="950.7708978328174" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:58:48
+                            </text>
+                            <text x="836.4262125902992" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:58:50
+                            </text>
+                            <text x="722.0815273477813" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:58:52
+                            </text>
+                            <text x="607.7368421052631" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:58:54
+                            </text>
+                            <text x="493.3921568627451" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:58:56
+                            </text>
+                            <text x="379.04747162022704" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:58:58
+                            </text>
+                            <text x="264.702786377709" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:59:00
+                            </text>
+                            <text x="150.35810113519085" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:59:02
+                            </text>
+                            <text x="36.01341589267281" text-anchor="middle"
+                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="322" opacity="1">
+                                13:59:04
+                            </text>
+                        </g>
+                        <g class="highcharts-axis-labels highcharts-yaxis-labels" zIndex="7"/>
+                        <g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;white-space:nowrap;"
+                           transform="translate(0,-9999)">
+                            <path fill="none"
+                                  d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0"
+                                  stroke-width="5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996"
+                                  transform="translate(1, 1)"/>
+                            <path fill="none"
+                                  d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0"
+                                  stroke-width="3" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999"
+                                  transform="translate(1, 1)"/>
+                            <path fill="none"
+                                  d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0"
+                                  stroke-width="1" isShadow="true" stroke="black" stroke-opacity="0.15"
+                                  transform="translate(1, 1)"/>
+                            <path fill="rgba(249, 249, 249, .85)"
+                                  d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0"
+                                  stroke-width="1"/>
+                            <text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="21"></text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty" id="Panel_RealTimeLable888762" recivedata="true"
+         style="width: 103px; height: 35px; background: none repeat scroll 0% 0% transparent; border-color: rgb(0, 0, 0); border-style: solid; border-width: 0px; border-radius: 0px; left: 87px; top: 344px; z-index: 3012;">
+        <div class="" id="head_RealTimeLable888762" style="display: none;"><span>RealTimeLable888762</span></div>
+        <div class="selectPanelBodySty">
+            <table class="navbarRealTimeLable" id="RealTimeLable888762">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; font-size: 14px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                    class="RealTimeLable">FG1AR2_90_GAS
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty" id="Panel_RealTimeLable818231" recivedata="true"
+         style="width: 102px; height: 33px; background: none repeat scroll 0% 0% transparent; border-color: rgb(0, 0, 0); border-style: solid; border-width: 0px; border-radius: 0px; left: 517px; top: 344px; z-index: 3013;">
+        <div class="" id="head_RealTimeLable818231" style="display: none;"><span>RealTimeLable818231</span></div>
+        <div class="selectPanelBodySty">
+            <table class="navbarRealTimeLable" id="RealTimeLable818231">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; font-size: 14px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                    class="RealTimeLable">FG1AR4_270_GAS
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty" id="Panel_RealTimeLable950810" recivedata="true"
+         style="width: 103px; height: 32px; background: none repeat scroll 0% 0% transparent; border-color: rgb(0, 0, 0); border-style: solid; border-width: 0px; border-radius: 0px; left: 515px; top: 43px; z-index: 3013;">
+        <div class="" id="head_RealTimeLable950810" style="display: none;"><span>RealTimeLable950810</span></div>
+        <div class="selectPanelBodySty">
+            <table class="navbarRealTimeLable" id="RealTimeLable950810">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; font-size: 14px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                    class="RealTimeLable">FG1AR3_180_GAS
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty" id="Panel_RealTimeLable760940" recivedata="true"
+         style="width: 102px; height: 30px; background: none repeat scroll 0% 0% transparent; border-color: rgb(0, 0, 0); border-style: solid; border-width: 0px; border-radius: 0px; left: 90px; top: 43px; z-index: 3013;">
+        <div class="" id="head_RealTimeLable760940" style="display: none;"><span>RealTimeLable760940</span></div>
+        <div class="selectPanelBodySty">
+            <table class="navbarRealTimeLable" id="RealTimeLable760940">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; font-size: 14px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                    class="RealTimeLable">FG1AR1_0_GAS
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label124952" recivedata="true"
+         style="width: 39px; height: 28px; left: 664px; top: 762px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3014;">
+        <div class="" id="head_Label124952" style="display: none;"><span>Label124952</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label124952">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">时间
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label327906" recivedata="true"
+         style="width: 29px; height: 50px; left: 56px; top: 519px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3006;">
+        <div class="" id="head_Label327906" style="display: none;"><span>Label327906</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label327906">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 16px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">燃
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label940846" recivedata="true"
+         style="width: 30px; height: 35px; left: 56px; top: 666px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3005;">
+        <div class="" id="head_Label940846" style="display: none;"><span>Label940846</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label940846">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 16px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">度
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label424190" recivedata="true"
+         style="width: 29px; height: 50px; left: 56px; top: 482px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3005;">
+        <div class="" id="head_Label424190" style="display: none;"><span>Label424190</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label424190">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 16px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">可
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label545807" recivedata="true"
+         style="width: 83px; height: 35px; left: 1020px; top: 448px; border-radius: 5px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% rgb(170, 170, 255); border: 0px solid rgb(0, 0, 0); z-index: 3007;">
+        <div class="" id="head_Label545807" style="display: none;"><span>Label545807</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label545807">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(255, 255, 255); text-align: center;"
+                                    id="labelObjId">参数设置
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label426455" recivedata="true"
+         style="width: 29px; height: 50px; left: 56px; top: 557px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3007;">
+        <div class="" id="head_Label426455" style="display: none;"><span>Label426455</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label426455">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 16px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">气
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label831319" recivedata="true"
+         style="width: 29px; height: 50px; left: 56px; top: 589px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3008;">
+        <div class="" id="head_Label831319" style="display: none;"><span>Label831319</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label831319">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 16px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">体
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label582910" recivedata="true"
+         style="width: 30px; height: 49px; left: 55px; top: 625px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3009;">
+        <div class="" id="head_Label582910" style="display: none;"><span>Label582910</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label582910">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 16px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">浓
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label137548" recivedata="true"
+         style="width: 86px; height: 35px; left: 1111px; top: 448px; border-radius: 5px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% rgb(170, 170, 255); border: 0px solid rgb(0, 0, 0); z-index: 3008;">
+        <div class="" id="head_Label137548" style="display: none;"><span>Label137548</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label137548">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(255, 255, 255); text-align: center;"
+                                    id="labelObjId">历史曲线
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+    <div class="PanelSty selectPanelSty" id="Panel_Label133576" recivedata="true"
+         style="width: 164px; height: 37px; left: 604px; top: 447px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 3006;">
+        <div class="" id="head_Label133576" style="display: none;"><span>Label133576</span></div>
+        <div class="selectPanelBodySty">
+            <table width="100%" value="" class="LabelPor" id="Label133576">
+                <tbody>
+                <tr>
+                    <td align="left">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="white-space: nowrap; line-height: 0; font-size: 16px; color: rgb(51, 51, 51); text-align: left;"
+                                    id="labelObjId">可燃气体浓度特性曲线
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+</div>

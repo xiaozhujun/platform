@@ -1,0 +1,1147 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/controlBasic.css"/>
+    <link rel="stylesheet" href="css/dropList.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/dataGrid.css"/>
+    <link rel="stylesheet" href="css/jquery.ui.css"/>
+    <link rel="stylesheet" href="css/jquery.ui.theme.css"/>
+    <link rel="stylesheet" href="css/jquery.wijmo.wijgrid.css"/>
+    <link rel="stylesheet" href="css/jquery.wijmo.wijpager.css"/>
+    <link rel="stylesheet" href="css/lable.css"/>
+    <link rel="stylesheet" href="css/realTimeLable.css"/>
+    <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <!--<script src="js/jquery-1.10.2.js" type="text/javascript"></script>-->
+    <script src="js/jquery.json-2.4.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tankSelect").click(function(){
+                $("#selectOptions").toggle();
+            });
+
+            $("#selectOptions li a").click(function(){
+                $("#selectTank").html($(this).text());
+                $("#selectOptions").hide();
+            });
+
+            $(".lookXingbianRealdata").click(function(){
+                window.parent.jumpURL("xingbianRealData.html");
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<div id="workspace" style="background-color: rgb(255, 255, 255); width: 1280px; height: 1024px;">
+<div class="PanelSty selectPanelSty dropdownControlShell" id="Panel_DropDownList625236" recivedata="true"
+     style="width: 160px; height: 35px; left: 47px; top: 39px; z-index: 3031;">
+    <div class="" id="head_DropDownList625236" style="display: none;"><span>DropDownList625236</span></div>
+    <div class="selectPanelBodySty">
+        <div class="navbar" id="DropDownList625236">
+            <ul style="height: 25px;background: transparent;" role="navigation"
+                class="nav pull-right dropdownlistControl">
+                <li style="height: 25px;" class="dropdown">
+                    <a id="tankSelect"
+                       data-toggle="dropdown"
+                       class="dropdown-toggle dropdown-theme1-a"
+                       role="button" href="#"
+                       style="height: 22px; padding: 0px; vertical-align: top; overflow: hidden; color: rgb(255, 255, 255); background: none repeat scroll 0% 0% rgb(170, 170, 255); border-width: 1px; border-style: solid; border-color: rgb(195, 195, 195); border-radius: 5px; font-size: 9px;">
+                        <span id="selectTank"
+                            class="DropDownListTextOver" style="width: 136px;font-size: 13px;">罐_1</span>
+
+                        <div style="float:left; margin-left: 0px;" class="downArrow"></div>
+                    </a>
+                    <ul id="selectOptions" role="menu" class="dropdown-menu" style="overflow-y: auto;">
+                        <li data-value="1"><a href="#" tabindex="-1">罐_1</a></li>
+                        <li data-value="2"><a href="#" tabindex="-1">罐_2</a></li>
+                        <li data-value="3"><a href="#" tabindex="-1">罐_3</a></li>
+                        <li data-value="4"><a href="#" tabindex="-1">罐_4</a></li>
+                        <li data-value="5"><a href="#" tabindex="-1">罐_5</a></li>
+                        <li data-value="6"><a href="#" tabindex="-1">罐_6</a></li>
+                        <li data-value="7"><a href="#" tabindex="-1">罐_7</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty agi-panel" id="Panel882667"
+     style="z-index: 1000; width: 1252.5px; height: 478.242px; left: 16px; top: 7px; border-radius: 0px; background: none no-repeat scroll center center / 100% 100% rgb(255, 255, 255); border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+<div class="PanelSty agi-panel" id="Panel855823"
+     style="z-index: 1800; width: 187.5px; height: 323.516px; left: 80px; top: 99px; border-radius: 0px; background-image: url('images/由南向北2_副本.png'); background-color: transparent; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+<div class="PanelSty agi-panel" id="Panel15767"
+     style="z-index: 1800; width: 215px; height: 323.516px; left: 372px; top: 99px; border-radius: 0px; background-image: url('images/由西向东2.png'); background-color: transparent; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+<div class="PanelSty agi-panel" id="Panel34250"
+     style="z-index: 1800; width: 215px; height: 323.516px; left: 690px; top: 98px; border-radius: 0px; background-image: url('images/由北向南4.png'); background-color: transparent; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+<div class="PanelSty agi-panel" id="Panel904793"
+     style="z-index: 1800; width: 215.52px; height: 323.516px; left: 991px; top: 99px; border-radius: 0px; background-image: url('images/由东向西2.png'); background-color: transparent; background-position: center center; background-repeat: no-repeat; background-size: 100% 100%; border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+<div class="PanelSty" id="Panel_RealTimeLable297984" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 1105px; top: 350px; z-index: 3030;">
+    <div class="" id="head_RealTimeLable297984" style="display: none;"><span>RealTimeLable297984</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable297984">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN315_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable463945" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 330px; top: 350px; z-index: 3017;">
+    <div class="" id="head_RealTimeLable463945" style="display: none;"><span>RealTimeLable463945</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable463945">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN90_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable156666" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 18px; top: 350px; z-index: 3015;">
+    <div class="" id="head_RealTimeLable156666" style="display: none;"><span>RealTimeLable156666</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable156666">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN0_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable732128" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 485px; top: 257px; z-index: 3019;">
+    <div class="" id="head_RealTimeLable732128" style="display: none;"><span>RealTimeLable732128</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable732128">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID135_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable469630" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 640px; top: 164px; z-index: 3021;">
+    <div class="" id="head_RealTimeLable469630" style="display: none;"><span>RealTimeLable469630</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable469630">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP180_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable85208" recivedata="true"
+     style="width: 150px; height: 33px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 640px; top: 350px; z-index: 3023;">
+    <div class="" id="head_RealTimeLable85208" style="display: none;"><span>RealTimeLable85208</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable85208">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN180_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable436140" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 795px; top: 257px; z-index: 3023;">
+    <div class="" id="head_RealTimeLable436140" style="display: none;"><span>RealTimeLable436140</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable436140">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID225_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable868170" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 173px; top: 164px; z-index: 3014;">
+    <div class="" id="head_RealTimeLable868170" style="display: none;"><span>RealTimeLable868170</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable868170">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP45_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable718333" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 1105px; top: 257px; z-index: 3029;">
+    <div class="" id="head_RealTimeLable718333" style="display: none;"><span>RealTimeLable718333</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable718333">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID315_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable536166" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 640px; top: 257px; z-index: 3022;">
+    <div class="" id="head_RealTimeLable536166" style="display: none;"><span>RealTimeLable536166</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable536166">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID180_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable834310" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 18px; top: 257px; z-index: 3014;">
+    <div class="" id="head_RealTimeLable834310" style="display: none;"><span>RealTimeLable834310</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable834310">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID0_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable823510" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 330px; top: 257px; z-index: 3017;">
+    <div class="" id="head_RealTimeLable823510" style="display: none;"><span>RealTimeLable823510</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable823510">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID90_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable87535" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 330px; top: 164px; z-index: 3016;">
+    <div class="" id="head_RealTimeLable87535" style="display: none;"><span>RealTimeLable87535</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable87535">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP90_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable832973" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 948px; top: 164px; z-index: 3025;">
+    <div class="" id="head_RealTimeLable832973" style="display: none;"><span>RealTimeLable832973</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable832973">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP270_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable468943" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 948px; top: 350px; z-index: 3027;">
+    <div class="" id="head_RealTimeLable468943" style="display: none;"><span>RealTimeLable468943</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable468943">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN270_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable988842" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 485px; top: 350px; z-index: 3020;">
+    <div class="" id="head_RealTimeLable988842" style="display: none;"><span>RealTimeLable988842</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable988842">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN135_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable590971" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 173px; top: 257px; z-index: 3015;">
+    <div class="" id="head_RealTimeLable590971" style="display: none;"><span>RealTimeLable590971</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable590971">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID45_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable112907" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 1105px; top: 164px; z-index: 3028;">
+    <div class="" id="head_RealTimeLable112907" style="display: none;"><span>RealTimeLable112907</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable112907">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP315_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable_548406" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 18px; top: 164px; z-index: 3013;">
+    <div class="" id="head_RealTimeLable_548406" style="display: none;"><span>RealTimeLable_548406</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable_548406">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP0_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable614884" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 173px; top: 350px; z-index: 3016;">
+    <div class="" id="head_RealTimeLable614884" style="display: none;"><span>RealTimeLable614884</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable614884">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN45_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable848465" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 795px; top: 350px; z-index: 3024;">
+    <div class="" id="head_RealTimeLable848465" style="display: none;"><span>RealTimeLable848465</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable848465">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">DOWN225_ST&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable405684" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 948px; top: 257px; z-index: 3026;">
+    <div class="" id="head_RealTimeLable405684" style="display: none;"><span>RealTimeLable405684</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable405684">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">MID270_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable9892" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 795px; top: 164px; z-index: 3022;">
+    <div class="" id="head_RealTimeLable9892" style="display: none;"><span>RealTimeLable9892</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable9892">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP225_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty" id="Panel_RealTimeLable443727" recivedata="true"
+     style="width: 150px; height: 32px; background: none repeat scroll 0% 0% rgb(255, 255, 170); border-color: rgb(195, 195, 195); border-style: solid; border-width: 1px; border-radius: 0px; left: 485px; top: 164px; z-index: 3018;">
+    <div class="" id="head_RealTimeLable443727" style="display: none;"><span>RealTimeLable443727</span></div>
+    <div class="selectPanelBodySty">
+        <table class="navbarRealTimeLable" id="RealTimeLable443727">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-size: 12px; text-indent: 0px; color: rgb(0, 0, 0); font-weight: normal;"
+                                class="RealTimeLable">UP135_ST&nbsp;&nbsp;&nbsp;0
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div style="padding-right: 2px; width: 1250px; height: auto; left: 14px; top: 496px; z-index: 1001;"
+     class="PanelSty selectPanelSty" id="Panel_DataGrid414255" recivedata="true">
+<div class="" id="head_DataGrid414255" style="display: none;"><span>DataGrid414255</span></div>
+<div class="selectPanelBodySty">
+<div class="ui-widget wijmo-wijgrid ui-widget-content ui-corner-all" style="width: 100%; border: 1px none;">
+<table cellspacing="0" cellpadding="0" border="0" id="DataGrid414255"
+       style="border-collapse: separate; width: 100%; table-layout: fixed;"
+       class="wijmo-wijgrid-root wijmo-wijobserver-visibility wijmo-wijgrid-table" role="grid"
+       aria-disabled="false" tabindex="0">
+<thead>
+<tr role="row" class="wijmo-wijgrid-headerrow">
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 151px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">油罐编号</a>
+        </div>
+    </th>
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 151px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">关键部件</a>
+        </div>
+    </th>
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 151px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">测点位置</a>
+        </div>
+    </th>
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 166px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">传感器编号</a>
+        </div>
+    </th>
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 166px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">监测物理量</a>
+        </div>
+    </th>
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 169px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">实测值</a>
+        </div>
+    </th>
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 168px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">变形状态</a>
+        </div>
+    </th>
+    <th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field"
+        role="columnheader" scope="col"
+        style="width: 120px; border-width: 0px; border-style: none; border-color: -moz-use-text-color;">
+        <div class="wijmo-wijgrid-innercell"><a role="button" href="#"
+                                                class="wijmo-wijgrid-headertext"
+                                                style="color: rgb(0, 0, 0); text-shadow: none;">操作</a>
+        </div>
+    </th>
+</tr>
+</thead>
+<colgroup>
+    <col style="width: 152px;">
+    <col style="width: 152px;">
+    <col style="width: 152px;">
+    <col style="width: 167px;">
+    <col style="width: 167px;">
+    <col style="width: 170px;">
+    <col style="width: 169px;">
+    <col style="width: 121px;">
+</colgroup>
+<tbody class="ui-widget-content wijmo-wijgrid-data" style="border: 0px none;">
+<tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        tabindex="0" aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7" aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0009</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF" aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP0_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP0_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u53D8%u5F62%u72B6%u6001"
+        aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP_ST_AL" rowspan="8">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP_ST_AL</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        aria-selected="true"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+<tr role="row"
+    class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow wijmo-wijgrid-alternatingrow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0010</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP45_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP45_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+<tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0011</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP90_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP90_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+<tr role="row"
+    class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow wijmo-wijgrid-alternatingrow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0012</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP135_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP135_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+<tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0013</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP180_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP180_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+<tr role="row"
+    class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow wijmo-wijgrid-alternatingrow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0014</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP225_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP225_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+<tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0015</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP270_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP270_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+<tr role="row"
+    class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow wijmo-wijgrid-alternatingrow"
+    style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐_1</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u4F20%u611F%u5668%u7F16%u53F7"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">0016</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell"
+        headers="%u76D1%u6D4B%u7269%u7406%u91CF"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"
+        id="UP315_ST">
+        <div class="wijmo-wijgrid-innercell" style="text-align: center;">UP315_ST</div>
+    </td>
+    <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"
+        style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">
+        <div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div>
+    </td>
+</tr>
+</tbody>
+</table>
+<div class="wijmo-wijgrid-footer wijmo-wijsuperpanel-footer ui-state-default ui-corner-bottom ui-widget wijmo-wijpager ui-helper-clearfix"
+     style="z-index: 5;">
+    <ul role="tablist" class="ui-list ui-corner-all ui-widget-content ui-helper-clearfix"
+        style="border: 0px none;">
+        <li class="ui-page ui-corner-all ui-state-active" role="tab" aria-label="1" title="1"
+            aria-selected="true"><span>1</span></li>
+        <li class="ui-page ui-corner-all ui-state-default" role="tab" aria-label="2" title="2"><a
+                href="#">2</a></li>
+        <li class="ui-page ui-corner-all ui-state-default" role="tab" aria-label="3" title="3"><a
+                href="#">3</a></li>
+    </ul>
+</div>
+</div>
+</div>
+<div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty selectPanelSty" id="Panel_Label129870" recivedata="true"
+     style="width: 105px; height: 49px; left: 116px; top: 420px; font-weight: bold; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 1802;">
+    <div class="" id="head_Label129870" style="display: none;"><span>Label129870</span></div>
+    <div class="selectPanelBodySty">
+        <table width="100%" value="" class="LabelPor" id="Label129870">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; line-height: 0; font-size: 20px;font-weight: bold; color: rgb(81, 103, 169); text-align: center;"
+                                id="labelObjId">东
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty selectPanelSty" id="Panel_Label156752" recivedata="true"
+     style="width: 105px; height: 49px; left: 1052px; top: 419px; font-weight: bold; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 1005;">
+    <div class="" id="head_Label156752" style="display: none;"><span>Label156752</span></div>
+    <div class="selectPanelBodySty">
+        <table width="100%" value="" class="LabelPor" id="Label156752">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; line-height: 0; font-size: 20px; font-weight: bold;color: rgb(81, 103, 169); text-align: center;"
+                                id="labelObjId">北
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty selectPanelSty" id="Panel_Label942560" recivedata="true"
+     style="width: 105px; height: 49px; left: 741px; top: 417px; font-weight: bold; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 1804;">
+    <div class="" id="head_Label942560" style="display: none;"><span>Label942560</span></div>
+    <div class="selectPanelBodySty">
+        <table width="100%" value="" class="LabelPor" id="Label942560">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; line-height: 0; font-size: 20px;font-weight: bold; color: rgb(81, 103, 169); text-align: center;"
+                                id="labelObjId">西
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+<div class="PanelSty selectPanelSty" id="Panel_Label788874" recivedata="true"
+     style="width: 105px; height: 49px; left: 435px; top: 417px; font-weight: bold; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 1805;">
+    <div class="" id="head_Label788874" style="display: none;"><span>Label788874</span></div>
+    <div class="selectPanelBodySty">
+        <table width="100%" value="" class="LabelPor" id="Label788874">
+            <tbody>
+            <tr>
+                <td align="left">
+                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; line-height: 0; font-size: 20px; font-weight: bold;color: rgb(81, 103, 169); text-align: center;"
+                                id="labelObjId">南
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+</div>
+</div>
+</body>
+</html>

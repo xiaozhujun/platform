@@ -1,0 +1,121 @@
+
+@charset "utf-8";
+* {
+    margin: 0 auto;
+    padding: 0;
+}
+html, body {
+    background-color: #ECF3FC;
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei" !important;
+    font-size: 12px;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0 !important;
+}
+#box {
+    background: url("../images/login/login_bg_u.jpg") repeat-x scroll left top rgba(0, 0, 0, 0);
+    height: 100%;
+    width: 100%;
+}
+#footer {
+    background-color: #BCC2CA;
+    bottom: 0;
+    color: #272727;
+    font-family: "华文细黑";
+    height: 25px;
+    line-height: 25px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+#login_bg {
+    background: url("../images/login/login_bg.jpg") no-repeat scroll center top rgba(0, 0, 0, 0);
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+#form_container {
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 380px;
+    padding-left: 550px;
+    width: 340px;
+}
+.form_box {
+    height: 40px;
+    width: 340px;
+}
+.put {
+    background-color: #FFFFFF;
+    border: 1px solid #17719C;
+    border-radius: 3px;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin: 5px auto 5px 5px;
+    padding-left: 28px;
+    width: 252px;
+}
+.put:hover {
+    border: 1px solid #059EE8;
+}
+.user {
+    background: url("../images/login/user.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}
+.Password {
+    background: url("../images/login/password.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}
+.btn1 {
+    background: url("../images/login/bt.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    border: medium none;
+    color: #6F6F6F;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "微软雅黑";
+    font-size: 12px;
+    height: 32px;
+    margin: 5px;
+    width: 252px;
+}
+.btn1:hover {
+    background: url("../images/login/bt_hover.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+}
+#note_tip {
+    color: #696969;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 300px;
+}
+a {
+    color: #464646;
+    cursor: pointer;
+    text-decoration: none;
+}
+a:hover {
+}
+a:visited {
+    text-decoration: none;
+}
+.error_box {
+    background-color: #FFF7F7;
+    background-image: url("../images/login/error.png");
+    background-repeat: no-repeat;
+    border: 1px solid #FF6060;
+    color: #000000;
+    font-family: "微软雅黑";
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 5px;
+    margin-top: 5px;
+    padding-left: 28px;
+    text-align: left;
+    width: 222px;
+}
+.hide {
+    display: none;
+}

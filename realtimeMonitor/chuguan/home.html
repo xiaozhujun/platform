@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>浮顶式储油罐健康监测与预报可视化系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/home.css">
+   <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+       <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+       <!--<script src="js/jquery-1.10.2.js" type="text/javascript"></script>-->
+       <script src="js/jquery.json-2.4.min.js" type="text/javascript"></script>
+       <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+       <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+       <script src="js/config.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function jumpURL(url){
+            $("#displayArea").attr("src", url);
+        }
+
+        function jumpTab(index){
+           $("#tabs").find("a").removeClass("checked");
+            $("#tabs").find("a").each(function(i,element){
+                 if(i==index){
+                     $(this).addClass("checked");
+                 }
+            });
+
+        }
+
+        function jumpDown(a, index, srcIn) {
+            if (srcIn) {
+                //guoyanhua 0825
+                var flag = -1;
+                var pageTab = ['syFD/syFD_1', 'Jgjkjc/Jgjkjc_2', 'wdjkjc/wdjkjc_2', 'TankKRQ/TankKRQ_1', ' '];
+                for (var i = 0; i < pageTab.length; i++) {
+                    if (srcIn.toLowerCase().indexOf(pageTab[i].toLowerCase()) > 0) {
+                        flag = i;
+                        break;
+                    }
+                }
+                if(flag >= 0){
+                    $("#tabs").find("ul>li>a").removeClass('checked');
+                    $("#tabs").find('ul>li>a:eq(' + flag + ')').addClass('checked');
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            //$("#displayArea").css("height", $(window).height() - $("#tabs").height());
+            $("#displayArea").css({ "height": "800px", "width": '100%', 'overflow-y': 'hidden' });
+            var baseUrl = "";
+            $("#tabs").find("ul>li>a").die("click").live("click", function () {
+                //$("#tabs").find("ul>li>a").css("background", "#87CEFF");
+                $("#tabs").find("ul>li>a").removeClass('checked');
+                $(this).addClass('checked');
+                // jumpDown("a");
+                switch ($(this).text()) {
+                    case "首页":
+                        $("#displayArea").attr("src", "mainMonitor.html");
+                        break;
+                    case "温度实时监测":
+                        $("#displayArea").attr("src", "wendu.html");
+                        break;
+                    case "罐体变形监测":
+                        $("#displayArea").attr("src", "xingbian.html");
+                        break;
+                    case "可燃气体浓度监测":
+                        $("#displayArea").attr("src", "longdu.html");
+                        break;
+                    case "现场布置图":
+                        $("#displayArea").attr("src", "buzhitu.html");
+                        break;
+                    default:
+                        $("#displayArea").attr("src", "mainMonitor.html");
+                        break;
+                }
+            });
+            $("#tabs").find("a").eq(0).click();
+        });
+
+    </script>
+</head>
+<body onselectstart="return false;">
+<div class="title">
+
+</div>
+<div id="tabs">
+    <ul style="padding: 8px 0;">
+        <li><a target="displayArea" class="checked">首页</a></li>
+        <li><a target="displayArea">罐体变形监测</a></li>
+        <li><a target="displayArea">温度实时监测</a></li>
+        <li><a target="displayA ge;">可燃气体浓度监测</a></li>
+        <li><a target="displayArea">现场布置图</a></li>
+    </ul>
+</div>
+<iframe id="displayArea" name="displayArea" style="height: 800px; width: 100%; overflow-y: scroll;overflow-x:hidden;" src="">
+</iframe>
+
+<div class="footer">
+    中国特种设备检测研究院
+</div>
+
+</body></html>

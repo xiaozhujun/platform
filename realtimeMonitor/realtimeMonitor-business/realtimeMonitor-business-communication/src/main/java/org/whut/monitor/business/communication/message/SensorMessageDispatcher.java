@@ -67,7 +67,6 @@ public class SensorMessageDispatcher implements MessageDispatcher {
     public void exceptionProcess() {
         //{sensors:[{sensorNum:'2100000000010000',dataType:'Route',time:'2014-09-20 10:04:46',data:[313,272,462,84,223,100,209,416,85,398,106,183,76,27,157,255,85,259,97,212,307,139,279,145,218,342,188,175,135,409,241,299,270,458,374,465,349,395,96,418,114,187,53,424,192,416,340,395,122,188,216,286,28,403,92,350,220,10,118,428],id:1,meanVariance:129.19405193566595,MaxValue:465.0,MinValue:10.0,warnCount:19514,collectorNum:'01',lastCommunicateTime:'2014-09-20 10:04:46'}]}
         String sensorNum = redisConnector.get("sensorNum");
-        System.out.println(sensorNum);
         if (collectorStatusService.delete(sensorNum)) {
 //            wsMessageDispatcher.dispatchMessage(sensorService.getCNumBySNum(sensorNum) + "离线");
             wsMessageDispatcher.dispatchMessage("{sensors:[{sensorNum:'" + sensorNum + "',dataType:'Route',time:'"+new Date().toString()+"',data:[],id:" + sensorService.getSensorId(sensorNum,1) +

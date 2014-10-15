@@ -13,6 +13,7 @@ import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
 
 import javax.jms.Message;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -52,37 +53,35 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                     e.printStackTrace();
                 }
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }
     }
     public void sendMsg(String number,String messageText){
-        Map<String,List<WebSocketSession>> tempMap=webSocket.getTempMessage();
-        TextMessage returnMessage = new TextMessage(messageText);
+        Map<String,List<WebSocketSession>> wsImpMap=webSocket.getTempMessage();
+        System.out.println("wsImpMap中有："+wsImpMap);
+        TextMessage wsMessage = new TextMessage(messageText);
         try {
-            for(String key : tempMap.keySet()){
-                String s1[]=key.split("\\|");
-                String sNum=s1[0];
-                String page=s1[1];
-                List<WebSocketSession> wSSList=tempMap.get(key);
-                if(page.equals("1")) {
-                    if(number.equals(sNum)){
+            for(String key : wsImpMap.keySet()){
+                List<WebSocketSession> wSSList=wsImpMap.get(key);
+                System.out.println("wSSList中有："+wSSList);
+                System.out.println("number为："+number);
+                    if(number.equals(key)){
                         for(int i=0;i<wSSList.size();i++){
-                           wSSList.get(i).sendMessage(returnMessage);
-                          System.out.println("向1发数据"+messageText);
+                          wSSList.get(i).sendMessage(wsMessage);
+                          System.out.println("发送num为"+number+"的数据："+messageText);
                       }
                     }
-                }
-                else if(page.equals("2")){
-                    for(int i=0;i<wSSList.size();i++){
-                        wSSList.get(i).sendMessage(returnMessage);
-                        System.out.println("向2发数据"+messageText);
+                else {
+                        if (key.equals("all")){
+                            for(int i=0;i<wSSList.size();i++){
+                                wSSList.get(i).sendMessage(wsMessage);
+                                System.out.println("发送all为"+number+"的数据："+messageText);
+                            }
+                        }
                     }
-                }
             }
-
-
-        } catch (Exception exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }

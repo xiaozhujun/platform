@@ -17,6 +17,16 @@
             $("#displayArea").attr("src", url);
         }
 
+        function jumpTab(index){
+           $("#tabs").find("a").removeClass("checked");
+            $("#tabs").find("a").each(function(i,element){
+                 if(i==index){
+                     $(this).addClass("checked");
+                 }
+            });
+
+        }
+
         function jumpDown(a, index, srcIn) {
             if (srcIn) {
                 //guoyanhua 0825

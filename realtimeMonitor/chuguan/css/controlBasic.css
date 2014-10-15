@@ -295,3 +295,35 @@ a.slidesjs-stop:hover {
 .slidesjs-pagination li a:hover {
     background-position: 0 -26px;
 }
+
+.lookWendu{
+     cursor: pointer;
+ }
+
+.lookWendu:hover{
+    color: blue;
+}
+
+.lookXingbian{
+    cursor: pointer;
+}
+
+.lookXingbian:hover{
+    color: blue;
+}
+
+.lookLongdu{
+    cursor: pointer;
+}
+
+.lookLongdu:hover{
+    color: blue;
+}
+
+.lookXingbianRealdata{
+    cursor: pointer;
+}
+
+.lookXingbianRealdata:hover{
+    color: blue;
+}

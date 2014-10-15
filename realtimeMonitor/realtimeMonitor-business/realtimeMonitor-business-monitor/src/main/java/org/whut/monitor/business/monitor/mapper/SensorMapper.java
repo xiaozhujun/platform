@@ -31,4 +31,5 @@ public interface SensorMapper extends AbstractMapper<Sensor>{
     public List<Map<String,String>> getCollectorNameBySensorNumber(@Param("number") long number);
     public Long getDataTypeByIdAndAppId(@Param("id") long id, @Param("appId") long appId);
     public String getCNumBySNum(String sNum);
+    public List<String> getSensorNumByCNum(String CNum);
 }

@@ -117,7 +117,7 @@
                 }
             }
         });
-        var collectorName;
+        var collectorName = "";
         $("#numberSelect").ligerComboBox({
             isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
             width:100,
@@ -154,7 +154,7 @@
             var number = $("#numberSelect").val();
             var startTime = $("#startTimeSelect").val();
             var endTime = $("#endTimeSelect").val();
-            $.post($.URL.warnCondition.list,{groupName:groupName.toString(),
+            $.post($.URL.warnCondition.list,{warnType:warnType.toString(),groupName:groupName.toString(),
                 areaName:areaName.toString(),collectorName:collectorName.toString(),
                 sensorName:sensorName.toString(),number:number.toString(),sTime:startTime,eTime:endTime},warnRecordGridCallback,"json");
         }

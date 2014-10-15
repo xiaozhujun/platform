@@ -56,11 +56,11 @@ public class WarnConditionServiceWeb {
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
     @POST
-    public String list(@FormParam("groupName")String groupName,@FormParam("areaName")String
+    public String list(@FormParam("warnType")String warnType,@FormParam("groupName")String groupName,@FormParam("areaName")String
             areaName,@FormParam("collectorName")String collectorName,
                        @FormParam("sensorName")String sensorName,@FormParam("number")String number
             ,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime) {
-        List<WarnCondition> list = warnConditionService.getListByAppId(groupName,areaName,collectorName,sensorName,number,sTime,eTime);
+        List<WarnCondition> list = warnConditionService.getListByAppId(warnType,groupName,areaName,collectorName,sensorName,number,sTime,eTime);
         if (list == null) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"列表为空");
         }

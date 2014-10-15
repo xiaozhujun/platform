@@ -5,7 +5,6 @@
 <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="css/main.css"/>
 <script src="lib/json2.js" type="text/javascript"></script>
-<script src="lib/dump.js" type="text/javascript"></script>
 <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
 <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
 <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
@@ -65,7 +64,7 @@ function connect() {
             console.log(event);			};
     } ;
     ws.onmessage = function (event) {
-        console.log ("收到消息！"+event.data);
+//        console.log ("收到消息！"+event.data);
         var jsonData = eval("(" +event.data+ ")");
         wsData=jsonData.sensors[0].data;
     };
@@ -159,6 +158,17 @@ function init(a){
             wsData=jsonData.sensors[0].data;
             console.log(wsData);
             var sensorNum=jsonData.sensors[0].sensorNum;
+            var count = 0;
+            for(var i=0;i<=sNumList.length;i++) {
+                if(sensorNum == sNumList[i]) {
+                    count ++;
+                    break;
+                }
+            }
+            if(count == 0) {
+                sNumList.push(sensorNum);
+            }
+
             if(num==sensorNum){
 
                 if(dt==1) {drawChart("#waveCanvas", wsData, "mV",d1);d1=0;d2=d3=d4=1; }
@@ -186,18 +196,41 @@ function onClickLeaf(node){
         });
         $.post($.URL.sensor.getDataTypeByIdAndAppId,{"id":sensorId},dataTypeCallback,"json");
         ws.onmessage = function (event) {
-            console.log ("收到消息！"+event.data);
+//            console.log ("收到消息！"+event.data);
             var jsonData = eval("(" +event.data+ ")");
             wsData=jsonData.sensors[0].data;
             console.log(wsData);
             var sensorNum=jsonData.sensors[0].sensorNum;
-            //if(num==sensorNum){
-             if(num==sensorNum){
+            var count = 0;
+            for(var i=0;i<sNumList.length;i++) {
+                if(sensorNum == sNumList[i]) {
+                    count ++;
+                    break;
+                }
+            }
+//            console.log("count:" + count);
+            if(count == 0) {
+                sNumList.push(sensorNum);
+            }
+
+            if(num==sensorNum){
                 if(dt==1) {drawChart("#waveCanvas", wsData, "mV",d1);d1=0;d2=d3=d4=1; }
                 else if(dt==2) { drawChart2("#waveCanvas", wsData, "mV",d2);d2=0;d1=d3=d4=1;   }
                 else if(dt==3){  drawChart3("#waveCanvas", wsData, "mV",d3); d3=0;d2=d1=d4=1;  }
                 else if(dt==4){ drawChart4("#waveCanvas", wsData, "mV",d4); d4=0;d2=d3=d1=1;  }
-            }else {drawChart("#waveCanvas", [], "mV");d1=d2=d3=d4=1;}
+            }else {
+                var count1 = 0;
+                for(var i=0;i<sNumList.length;i++) {
+                    if(num == sNumList[i]) {
+                        count1 ++;
+                    }
+                }
+//                console.log("count1:" + count1);
+                if(count1 == 0) {
+//                    console.log("怎么没执行？");
+                    drawChart("#waveCanvas", [], "mV");d1=d2=d3=d4=1;
+                }
+            }
         };
     }
 }

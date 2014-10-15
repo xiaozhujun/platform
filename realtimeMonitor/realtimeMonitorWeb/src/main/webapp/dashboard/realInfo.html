@@ -24,10 +24,65 @@
         var date;
         var currDate;
         var dif;
+        var  number;
+        var sensorCondition=[];
         $(document).ready(function() {
             $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
             connect();
         });
+
+        var gridData = {};
+        function gridCallback(data){
+            for(var i=0;i<data.data.length;i++)  {
+                sNumList[i]=data.data[i].number;
+            }
+            gridData.Rows = data.data;
+            gridData.Total = data.length;
+            number=data.data.number;
+            f_getLastTime();
+            f_initGrid();
+        }
+
+        function f_getLastTime() {
+            var s=0;
+            var status;
+            var tempURL = $.URL.sensors.getWarnCondition;
+            for(var i=0; i<sNumList.length; i++) {
+                var j={};
+                var myURL = tempURL + sNumList[i].toString();
+                $.ajax({
+                    url: myURL+".html",
+                    async:false,
+                    dataType:'jsonp',
+                    success: function(result) {
+                        if( result["lastDate"]==null){
+                            s=1;
+                            sensorTime="0000-00-00 00:00:00";
+                        }
+                        else {
+                            sensorTime = result["lastDate"].toString();
+                        }
+                        sT = sensorTime.replace(/-/g,"/");
+                        //要计算的日期
+                        date = new Date(sT);
+                        //当前日期
+                        currDate = new Date();
+                        dif = (currDate.getTime()-date.getTime())/(1000*3600);
+                        if(dif>0.0002){
+                            status="离线";
+                        }
+                        else{
+                            status="在线";
+                        }
+                        j["lastMessageTime"] = sensorTime;
+                        j["sensorStatus"] = status;
+                        j["number"] = sNumList[i];
+                        sensorCondition.push(j);
+                    }
+                });
+            }
+        }
+
         function connect() {
             var url= $.URL.websocket.register;
             var s="all"+"|"+2;
@@ -44,26 +99,25 @@
                 var jsonData = eval("(" +event.data+ ")");
                 number=jsonData.sensors[0].sensorNum;
                 for(var i=0;i<sNumList.length;i++){
-                    console.log("number : " + sNumList);
                     if(number==sNumList[i]){
                         sensorLastDate[i]=jsonData.sensors[0].lastCommunicateTime;
+                        sensorCondition[i].lastMessageTime = sensorLastDate[i];
                         grid.updateCell('lastMessageTime',sensorLastDate[i],i);
-                        console.log("ssssssssssssssssssss"+sensorLastDate[i]);
-
                         sT = sensorLastDate[i].replace(/-/g,"/");
                         //要计算的日期
                         date = new Date(sT);
                         //当前日期
                         currDate = new Date();
                         dif = (currDate.getTime()-date.getTime())/(1000*3600);
-                        console.log("dif : " + dif);
-                        if(dif>0.0002){
-                            console.log("检测是否执行！！！！");
-                            grid.updateCell('sensorStatus',"离线",i);
+                        if(dif>0.002 || jsonData.sensors[0].isConnected == "false"){
+                            sensorCondition[i].sensorStatus = "离线";
                         }
                         else{
-                            grid.updateCell('sensorStatus',"在线",i);
+                            sensorCondition[i].sensorStatus = "在线";
                         }
+                        sState = sensorCondition[i].sensorStatus;
+                        grid.updateCell('sensorStatus',sState,i);
+                        console.log("number" + number + "lastMessageTime " + sensorCondition[i].lastMessageTime + "|sensorStatus:" + sensorCondition[i].sensorStatus + "|isConnected:" + jsonData.sensors[0].isConnected);
                     }
                 }
             };
@@ -74,17 +128,7 @@
                 ws = null;
             }
         }});
-        var  number;
-        var gridData = {};
-        function gridCallback(data){
-            for(var i=0;i<data.data.length;i++)  {
-                sNumList[i]=data.data[i].number;
-            }
-            gridData.Rows = data.data;
-            gridData.Total = data.length;
-            number=data.data.number;
-            f_initGrid();
-        }
+
         function f_initGrid(){
             grid = $("#monitorGrid").ligerGrid({
                 columns:[
@@ -93,52 +137,22 @@
                     {name:'groupName',display:'监测组',width:'auto'},
                     {name:'areaName',display:'监测区域',width:'auto'},
                     {name:'collectorName',display:'采集仪名称',width:'auto'},
-                    {name:'lastMessageTime',display:'最后通信时间',width:'auto'
-                        ,render:function(item){
-                        var s=0;
-                        var num =item.number;
-                        var tempURL = $.URL.sensors.getWarnCondition;
-                        var myURL = tempURL + num.toString();
-                        $.ajax({
-                            url: myURL+".html",
-                            async:false,
-                            dataType:'jsonp',
-                            success: function(result) {
-                                if( result["lastDate"]==null){
-                                    s=1;
-                                    sensorTime="0000-00-00 00:00:00";
+                    {name:'lastMessageTime',display:'最后通信时间',width:'auto',
+                        render:function(item) {
+                            for(var i=0;i<sensorCondition.length;i++) {
+                                if(item.number == sensorCondition[i].number) {
+                                    sensorTime = sensorCondition[i].lastMessageTime;
+                                    sState = sensorCondition[i].sensorStatus;
                                 }
-                                else {
-                                    sensorTime = result["lastDate"].toString();
-                                }
-                            }
-                        });
-                        if (s==1){
-                            sState="暂无数据";
-                            return "暂无数据";
-                        }
-                        else {
-                             sT = sensorTime.replace(/-/g,"/");
-                            //要计算的日期
-                             date = new Date(sT);
-                            //当前日期
-                            currDate = new Date();
-                             dif = (currDate.getTime()-date.getTime())/(1000*3600);
-                            if(dif>0.0002){
-                                sState="离线";
-                            }
-                            else{
-                                sState="在线";
                             }
                             return sensorTime;
-
                         }
-                    }
                     },
-                    { display: '状态', name: 'sensorStatus',width:'auto'
-                        ,render: function() {
-                          return sState;
-                    }},
+                    { display: '状态', name: 'sensorStatus',width:'auto',
+                        render:function() {
+                            return sState;
+                        }
+                    },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -161,7 +175,6 @@
             currentMonitor = grid.getRow(rowindex);
             $("#realInfoTab").load("dashboard/realData.html");
         }
-
     </script>
 
     <style type="text/css">

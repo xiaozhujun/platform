@@ -15,211 +15,207 @@
 <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/rightHidePanel.js"></script>
 <script type="text/javascript">
-    var tempURL = $.URL.sensors.getWarnCondition;
-    var sNumList= new Array();
-    var warnTypeList = new Array();
-    $("#choiceContainer").ligerLayout();
-    $(document).ready(function() {
-        $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
-        $.post($.URL.collector.list,null,rightGridCallback,"json");
+var tempURL = $.URL.sensors.getWarnCondition;
+var sNumList= new Array();
+var num="";
+$("#choiceContainer").ligerLayout();
+$(document).ready(function() {
+    $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
+    $.post($.URL.collector.list,null,rightGridCallback,"json");
+});
+$("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+    if (ws != null) {
+        ws.close();
+        ws = null;
+    }
+}});
+var MaxValue=new Array();
+var MinValue=new Array();
+var meanVariance=new Array();
+var warnCount=new Array();
+function connect() {
+    var url= $.URL.websocket.register;
+    var s="{c:'Subscribe',sensors:["+num+"]}";
+    ws =  new WebSocket(url);
+    ws.onopen = function () {
+        console.log('Info: connection opened.');
+        ws.send(s);
+        ws.onclose = function (event) {
+            console.log('Info: connection closed.');
+            console.log(event);			};
+    } ;
+    ws.onmessage = function (event) {
+        console.log ("收到消息！"+event.data);
+        var jsonData = eval("(" +event.data+ ")");
+        number=jsonData.sensors[0].sensorNum;
+        for(var i=0;i<sNumList.length;i++){
+            if(number==sNumList[i]){
+                MaxValue[i]=jsonData.sensors[0].MaxValue;
+                MinValue[i]=jsonData.sensors[0].MinValue;
+                meanVariance[i]=jsonData.sensors[0].meanVariance;
+                warnCount[i]=jsonData.sensors[0].warnCount;
+            }
+        }
+    };
+}
+var gridData = {};
+var rightGridData = {};
+function gridCallback(data) {
+    if(data.code == 200) {
+        for(var i=0;i<data.data.length;i++)  {
+            sNumList[i]=data.data[i].number;
+            if(i==0){
+                num=data.data[i].number+",";
+            }
+            else {
+                num=num+data.data[i].number+",";
+            }
+        }
+        var lastIndex = num.lastIndexOf(',');
+        if (lastIndex > -1) {
+            num = num.substring(0, lastIndex) + num.substring(lastIndex + 1, num.length);
+
+        }
         connect();
+        gridData.Rows = data.data;
+        gridData.Total = data.length;
+        f_initGrid();
+    }
+}
+
+function rightGridCallback(data) {
+    if(data.code == 200) {
+        rightGridData.Rows = data.data;
+        rightGridData.Total = data.length;
+        f_initRightGrid();
+    }
+}
+var grid;
+var h = "";
+var count = "";
+var meanVarianceValue = "";
+var tempCount = new Array();
+var rowInf;
+
+function f_initGrid() {
+    grid = $("#centerGrid").ligerGrid({
+        columns:[
+            {display:'编号',name:'number',width:150},
+            {display:'传感器',name:'name',width:'auto'},
+            {display:'监测组',name:'groupName',width:'auto'},
+            {display:'测量区域',name:'areaName',width:'auto'},
+            {display:'采集仪',name:'collectorName',width:'auto'},
+            {display:'报警参数类型',name:'warnType',width:'auto'},
+            {display:'报警值',name:'warnValue',width:'auto'},
+            {display:'当前数值',name:'curSensorValue',width:180 ,render:function(item,rowindex) {
+                if(meanVariance[rowindex]==null) {
+                    return  "0" ;
+                }
+                else
+                    return meanVariance[rowindex]  ;
+            }},
+            {display:'报警次数',name:'warnCount',width:'auto' ,render:function(item,rowindex) {
+                if(warnCount[rowindex]==null) {
+                    return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + "暂无数据" + "</a>"
+                }
+                else
+                    return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + warnCount[rowindex] + "</a>"
+            } }
+        ],
+        data:gridData,
+        width:'100%',
+        usePager:false,
+        onSelected:function(rowdata,rowindex) {
+            $("#txtrowindex").val(rowindex);
+        }
     });
-    $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
-        if (ws != null) {
-            ws.close();
-            ws = null;
-        }
-    }});
-    var MaxValue=new Array();
-    var MinValue=new Array();
-    var meanVariance=new Array();
-    var warnCount=new Array();
-    var finalValue = new Array();
-    function connect() {
-        var url= $.URL.websocket.register;
-        var num="all";
-        var s="{c:'Subscribe',sensors:["+num+"]}";
-        ws =  new WebSocket(url);
-        ws.onopen = function () {
-            console.log('Info: connection opened.');
-            ws.send(s);
-            ws.onclose = function (event) {
-                console.log('Info: connection closed.');
-                console.log(event);			};
-        } ;
-        ws.onmessage = function (event) {
-            console.log ("收到消息！"+event.data);
-            var jsonData = eval("(" +event.data+ ")");
-            number=jsonData.sensors[0].sensorNum;
-            for(var i=0;i<sNumList.length;i++){
-                if(number==sNumList[i]){
-                    MaxValue[i]=jsonData.sensors[0].MaxValue;
-                    MinValue[i]=jsonData.sensors[0].MinValue;
-                    meanVariance[i]=jsonData.sensors[0].meanVariance;
-                    var m = warnTypeList[i];
-                    console.log(m);
-                    switch(m) {
-                        case "均方差": finalValue[i] = meanVariance[i];break;
-                        case "最大值": finalValue[i] = MaxValue[i];break;
-                        case "最小值": finalValue[i] = MinValue[i];break;
-                    }
-                    warnCount[i]=jsonData.sensors[0].warnCount;
-                    if(jsonData.sensors[0].isConnected == "false") {
-                        console.log("log1:" + meanVariance[i]);
-                        finalValue[i] = null;
-                        grid.updateCell("curSensorValue",finalValue[i],i);
-                    }
+}
+function jump(rowid) {
+    var row = grid.getRow(rowid);
+    var jsonString  = $.toJSON(row);
+    var sensorJumpName = $.evalJSON(jsonString).name;
+    var groupJumpName = $.evalJSON(jsonString).groupName;
+    var collectorJumpName = $.evalJSON(jsonString).collectorName;
+    var areaJumpName = $.evalJSON(jsonString).areaName;
+    var jumpNumber = $.evalJSON(jsonString).number;
+    var myDate = new Date();
+    $.post($.URL.warnCondition.list,{groupName:groupJumpName.toString(),
+        areaName:areaJumpName.toString(),collectorName:collectorJumpName.toString(),
+        sensorName:sensorJumpName.toString(),number:jumpNumber.toString(),
+        sTime:myDate.toLocaleDateString(),eTime:myDate.toLocaleDateString()},warnRecordCallback,"json");
+    $("#choiceContainer").load("dashboard/mainLink.html",{},jumpCallback);
+}
+
+function returnCurSensor() {
+    return h;
+}
+var warnRecordData = {};
+var warnRecordGrid;
+function warnRecordCallback(data) {
+    if(data.code == 200) {
+        warnRecordData.Rows = data.data;
+        warnRecordData.Total = data.length;
+    }
+}
+
+function jumpCallback() {
+    warnRecordGrid = $("#warnRecordGrid").ligerGrid({
+        columns:[
+            {name:'id',display:'序号',width:'auto'},
+            {name:'sensorName',display:'传感器',width:'auto'},
+            {name:'groupName',display:'监测组',width:'auto'},
+            {name:'areaName',display:'测量区域',width:'auto'},
+            {name:'collectorName',display:'采集仪',width:'auto'},
+            {name:'warnTime',display:'报警时间',width:'auto'},
+            {name:'curWarnValue',display:'报警值',width:'auto'}
+        ],
+        data:warnRecordData,
+        width:'auto',
+        usePager:true
+    });
+}
+
+var rightGrid;
+function f_initRightGrid(){
+    rightGrid = $("#rightGrid").ligerGrid({
+        columns:[
+            {name:'name',display:'采集仪',width:100},
+            {name:'status',display:'状态',width:'auto'
+                ,render:function(item) {
+                if(item.status.toString()=="在线正常工作")   {
+                    return "<img style='width: 20px' src=images/online.png />";
+                }
+                else {
+                    return "<img style='width: 20px' src=images/offline.png />";
                 }
             }
-        };
-    }
-    var gridData = {};
-    var rightGridData = {};
-    function gridCallback(data) {
-        if(data.code == 200) {
-            for(var i=0;i<data.data.length;i++)  {
-                sNumList[i]=data.data[i].number;
-                warnTypeList[i]=data.data[i].warnType;
             }
-            gridData.Rows = data.data;
-            gridData.Total = data.length;
-            f_initGrid();
-        }
-    }
-
-    function rightGridCallback(data) {
-        if(data.code == 200) {
-            rightGridData.Rows = data.data;
-            rightGridData.Total = data.length;
-           f_initRightGrid();
-        }
-    }
-    var grid;
-    var h = "";
-    var count = "";
-    var meanVarianceValue = "";
-    var tempCount = new Array();
-    var rowInf;
-
-    function f_initGrid() {
-        grid = $("#centerGrid").ligerGrid({
-            columns:[
-                {display:'编号',name:'number',width:150},
-                {display:'传感器',name:'name',width:'auto'},
-                {display:'监测组',name:'groupName',width:'auto'},
-                {display:'测量区域',name:'areaName',width:'auto'},
-                {display:'采集仪',name:'collectorName',width:'auto'},
-                {display:'报警参数类型',name:'warnType',width:'auto'},
-                {display:'报警值',name:'warnValue',width:'auto'},
-                {display:'当前数值',name:'curSensorValue',width:180 ,render:function(item,rowindex) {
-                    if(finalValue[rowindex]==null) {
-                        return  "0" ;
-                    }
-                    else
-                        return finalValue[rowindex]  ;
-                }},
-                {display:'报警次数',name:'warnCount',width:'auto' ,render:function(item,rowindex) {
-                    if(warnCount[rowindex]==null) {
-                        return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + "暂无数据" + "</a>"
-                    }
-                    else
-                        return "<a style='color: #0000FF' href='javascript:jump("+ rowindex +")'>" + warnCount[rowindex] + "</a>"
-                } }
-            ],
-            data:gridData,
-            width:'100%',
-            usePager:false,
-            onSelected:function(rowdata,rowindex) {
-                $("#txtrowindex").val(rowindex);
-            }
-        });
-    }
-    function jump(rowid) {
-        var row = grid.getRow(rowid);
-        var jsonString  = $.toJSON(row);
-        var sensorJumpName = $.evalJSON(jsonString).name;
-        var groupJumpName = $.evalJSON(jsonString).groupName;
-        var collectorJumpName = $.evalJSON(jsonString).collectorName;
-        var areaJumpName = $.evalJSON(jsonString).areaName;
-        var jumpNumber = $.evalJSON(jsonString).number;
-        var myDate = new Date();
-        $.post($.URL.warnCondition.list,{groupName:groupJumpName.toString(),
-            areaName:areaJumpName.toString(),collectorName:collectorJumpName.toString(),
-            sensorName:sensorJumpName.toString(),number:jumpNumber.toString(),
-            sTime:myDate.toLocaleDateString(),eTime:myDate.toLocaleDateString()},warnRecordCallback,"json");
-        $("#choiceContainer").load("dashboard/sensorLink.html",{},jumpCallback);
-    }
-
-    function returnCurSensor() {
-        return h;
-    }
-    var warnRecordData = {};
-    var warnRecordGrid;
-    function warnRecordCallback(data) {
-        if(data.code == 200) {
-            warnRecordData.Rows = data.data;
-            warnRecordData.Total = data.length;
-        }
-    }
-
-    function jumpCallback() {
-        warnRecordGrid = $("#warnRecordGrid").ligerGrid({
-            columns:[
-                {name:'id',display:'序号',width:'auto'},
-                {name:'sensorName',display:'传感器',width:'auto'},
-                {name:'groupName',display:'监测组',width:'auto'},
-                {name:'areaName',display:'测量区域',width:'auto'},
-                {name:'collectorName',display:'采集仪',width:'auto'},
-                {name:'warnTime',display:'报警时间',width:'auto'},
-                {name:'curWarnValue',display:'报警值',width:'auto'}
-            ],
-            data:warnRecordData,
-            width:'auto',
-            usePager:true
-        });
-    }
-
-    var rightGrid;
-    function f_initRightGrid(){
-        rightGrid = $("#rightGrid").ligerGrid({
-            columns:[
-                {name:'name',display:'采集仪',width:100},
-                {name:'status',display:'状态',width:'auto'
-                    ,render:function(item) {
-                    if(item.status.toString()=="在线正常工作")   {
-                        return "<img style='width: 20px' src=images/online.png />";
-                    }
-                    else {
-                        return "<img style='width: 20px' src=images/offline.png />";
-                    }
-                }
-                }
-            ],
-            onSelectRow: function (rowdata, rowindex)
-            {
-                $("#txtrowindex").val(rowindex);
-            },
-            rownumbers: true,    // 显示序号
-            rownumbersColWidth:60,// 显示序号宽度
-            frozenRownumbers:true,   // 行序号是否在固定列中
-            enabledEdit: false,
-            clickToEdit: false,
-            isScroll: false,
-            usePager: false,
-            data:rightGridData,
-            width:'100%',
-            resizable:false
-        });
-    }
-    $("#curDataFlush").click(f_click);
-    function f_click(){
-        for (var i=0;i<sNumList.length;i++)
+        ],
+        onSelectRow: function (rowdata, rowindex)
         {
-            grid.updateCell('curSensorValue',meanVariance[i],i);
-            grid.updateCell('warnCount',warnCount[i],i);
-        }
+            $("#txtrowindex").val(rowindex);
+        },
+        rownumbers: true,    // 显示序号
+        rownumbersColWidth:60,// 显示序号宽度
+        frozenRownumbers:true,   // 行序号是否在固定列中
+        enabledEdit: false,
+        clickToEdit: false,
+        isScroll: false,
+        usePager: false,
+        data:rightGridData,
+        width:'100%',
+        resizable:false
+    });
+}
+$("#curDataFlush").click(f_click);
+function f_click(){
+    for (var i=0;i<sNumList.length;i++)
+    {
+        grid.updateCell('curSensorValue',meanVariance[i],i);
+        grid.updateCell('warnCount',warnCount[i],i);
     }
-    setInterval('$("#curDataFlush").trigger("click")',1000);
+}
+setInterval('$("#curDataFlush").trigger("click")',1000);
 
 </script>
 

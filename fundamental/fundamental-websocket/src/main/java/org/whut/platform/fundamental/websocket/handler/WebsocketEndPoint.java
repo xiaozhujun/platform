@@ -9,6 +9,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class WebsocketEndPoint extends TextWebSocketHandler {
-
+    private static final PlatformLogger logger = PlatformLogger.getLogger(WebsocketEndPoint.class);
     private static String ReceivedMessage;    //收到的消息
     private static List<WebSocketSession> wssList;   // ReceivedMessage对应的 WebSocketSession列表
     private static Map<WebSocketSession,String> map=new HashMap<WebSocketSession, String>(); // 一个session对应一个message 维护 session和message的关系
@@ -32,47 +33,44 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+
         ReceivedMessage = message.getPayload();
         map.put(session,ReceivedMessage);
-        wssList=wsImpMap.get(ReceivedMessage);
-        if(wssList==null){
-            wssList=new ArrayList<WebSocketSession>();
-
-        }
-         wssList.add(session);
-        try{
-            System.out.println(ReceivedMessage);
-            JSONObject dataJson=new JSONObject(ReceivedMessage);
-            JSONArray sNum= dataJson.getJSONArray("sensors");
-            System.out.println("sNum为，"+sNum+"长度为"+sNum.length());
-            String info=dataJson.getString("c");
-            System.out.println("sNum为，"+info);
-            if (info.equals("Subscribe")) {    //订阅
-                for(int i=0;i<sNum.length();i++){
-                    wsImpMap.put(sNum.get(i).toString(),wssList);
-                }
+        JSONObject dataJson=new JSONObject(ReceivedMessage);
+        JSONArray sNum= dataJson.getJSONArray("sensors");
+        String command=dataJson.getString("c");
+        for(int i=0;i<sNum.length();i++){
+            wssList=wsImpMap.get(sNum.get(i).toString());
+            if(wssList==null){
+                wssList=new ArrayList<WebSocketSession>();
+            }
+            wssList.add(session);
+            if (command.equals("Subscribe")) {    //订阅
+                wsImpMap.put(sNum.get(i).toString(),wssList);
             }
             else{
-                System.out.println("进行取消订阅");
+                logger.info("进行取消订阅！");   ;
             }
+            wssList=null;
         }
-        catch (JSONException e){
-            e.printStackTrace();
-        }
-        wssList=null;
         super.handleTextMessage(session, message);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-       String msg= map.get(session);
-       List<WebSocketSession> webSocketSessionList=wsImpMap.get(msg);
-       webSocketSessionList.remove(session);
-        wsImpMap.remove(msg);
-        wsImpMap.put(msg,webSocketSessionList);
-       map.remove(session);
-       System.out.println("连接关闭！");
-       super.afterConnectionClosed(session, status);
+        String msg= map.get(session);     //获得接收到的sNum 数组
+        JSONObject dataJson=new JSONObject(ReceivedMessage);
+        JSONArray sNum= dataJson.getJSONArray("sensors");
+
+        for(int i=0;i<sNum.length();i++){
+            List<WebSocketSession> webSocketSessionList=wsImpMap.get(sNum.get(i).toString());
+            webSocketSessionList.remove(session);
+            wsImpMap.remove(msg);
+            wsImpMap.put(msg,webSocketSessionList);
+            map.remove(session);
+        }
+        logger.info("连接关闭！");
+        super.afterConnectionClosed(session, status);
     }
 
     public static Map<String,List<WebSocketSession>> getTempMessage(){

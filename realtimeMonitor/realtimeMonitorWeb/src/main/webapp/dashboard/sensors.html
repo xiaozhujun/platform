@@ -17,6 +17,7 @@
 <script type="text/javascript">
 var tempURL = $.URL.sensors.getWarnCondition;
 var sNumList= new Array();
+var warnTypeList = new Array();
 var num="";
 $("#choiceContainer").ligerLayout();
 $(document).ready(function() {
@@ -33,6 +34,7 @@ var MaxValue=new Array();
 var MinValue=new Array();
 var meanVariance=new Array();
 var warnCount=new Array();
+var finalValue = new Array();
 function connect() {
     var url= $.URL.websocket.register;
     var s="{c:'Subscribe',sensors:["+num+"]}";
@@ -53,7 +55,19 @@ function connect() {
                 MaxValue[i]=jsonData.sensors[0].MaxValue;
                 MinValue[i]=jsonData.sensors[0].MinValue;
                 meanVariance[i]=jsonData.sensors[0].meanVariance;
+                var m = warnTypeList[i];
+                console.log(m);
+                switch(m) {
+                    case "均方差": finalValue[i] = meanVariance[i];break;
+                    case "最大值": finalValue[i] = MaxValue[i];break;
+                    case "最小值": finalValue[i] = MinValue[i];break;
+                }
                 warnCount[i]=jsonData.sensors[0].warnCount;
+                if(jsonData.sensors[0].isConnected == "false") {
+                    console.log("log1:" + meanVariance[i]);
+                    finalValue[i] = null;
+                    grid.updateCell("curSensorValue",finalValue[i],i);
+                }
             }
         }
     };
@@ -64,6 +78,7 @@ function gridCallback(data) {
     if(data.code == 200) {
         for(var i=0;i<data.data.length;i++)  {
             sNumList[i]=data.data[i].number;
+            warnTypeList[i]=data.data[i].warnType;
             if(i==0){
                 num=data.data[i].number+",";
             }
@@ -108,11 +123,11 @@ function f_initGrid() {
             {display:'报警参数类型',name:'warnType',width:'auto'},
             {display:'报警值',name:'warnValue',width:'auto'},
             {display:'当前数值',name:'curSensorValue',width:180 ,render:function(item,rowindex) {
-                if(meanVariance[rowindex]==null) {
+                if(finalValue[rowindex]==null) {
                     return  "0" ;
                 }
                 else
-                    return meanVariance[rowindex]  ;
+                    return finalValue[rowindex]  ;
             }},
             {display:'报警次数',name:'warnCount',width:'auto' ,render:function(item,rowindex) {
                 if(warnCount[rowindex]==null) {
@@ -143,7 +158,7 @@ function jump(rowid) {
         areaName:areaJumpName.toString(),collectorName:collectorJumpName.toString(),
         sensorName:sensorJumpName.toString(),number:jumpNumber.toString(),
         sTime:myDate.toLocaleDateString(),eTime:myDate.toLocaleDateString()},warnRecordCallback,"json");
-    $("#choiceContainer").load("dashboard/mainLink.html",{},jumpCallback);
+    $("#choiceContainer").load("dashboard/sensorLink.html",{},jumpCallback);
 }
 
 function returnCurSensor() {

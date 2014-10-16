@@ -47,7 +47,9 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                     JSONArray data= dataJson.getJSONArray("sensors");
                     JSONObject info=data.getJSONObject(0);
                     number=info.getString("sensorNum");
-                    sendMsg(number, messageText);//向websocket通道发数据
+                    Long wsNumber = Long.parseLong(number);
+                    System.out.println("number1:" + wsNumber);
+                    sendMsg(wsNumber.toString(), messageText);//向websocket通道发数据
                 }
                 catch (JSONException e){
                     e.printStackTrace();

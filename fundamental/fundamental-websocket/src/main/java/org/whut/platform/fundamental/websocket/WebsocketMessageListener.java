@@ -59,29 +59,17 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
     }
     public void sendMsg(String number,String messageText){
         Map<String,List<WebSocketSession>> wsImpMap=webSocket.getTempMessage();
-        System.out.println("wsImpMap中有："+wsImpMap);
+        logger.info("wsImpMap中有："+wsImpMap);
         TextMessage wsMessage = new TextMessage(messageText);
         try {
-            for(String key : wsImpMap.keySet()){
-                List<WebSocketSession> wSSList=wsImpMap.get(key);
-                System.out.println("wSSList中有："+wSSList);
-                System.out.println("number为："+number);
-                    if(number.equals(key)){
-                        for(int i=0;i<wSSList.size();i++){
-                          wSSList.get(i).sendMessage(wsMessage);
-                          System.out.println("发送num为"+number+"的数据："+messageText);
-                      }
-                    }
-                else {
-                        if (key.equals("all")){
-                            for(int i=0;i<wSSList.size();i++){
-                                wSSList.get(i).sendMessage(wsMessage);
-                                System.out.println("发送all为"+number+"的数据："+messageText);
-                            }
-                        }
-                    }
+            List<WebSocketSession> wSSList=wsImpMap.get(number);
+            if (wSSList!=null){
+                for(int i=0;i<wSSList.size();i++){
+                    wSSList.get(i).sendMessage(wsMessage);
+                    logger.info("发送num为"+number+"的数据："+messageText);
+                }
             }
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }

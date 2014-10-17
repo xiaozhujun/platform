@@ -47,9 +47,10 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                     JSONArray data= dataJson.getJSONArray("sensors");
                     JSONObject info=data.getJSONObject(0);
                     number=info.getString("sensorNum");
+                    Long appId=Long.parseLong(info.getString("appId"));
                     Long wsNumber = Long.parseLong(number);
-                    System.out.println("number1:" + wsNumber);
-                    sendMsg(wsNumber.toString(), messageText);//向websocket通道发数据
+                    logger.info("number1:" + wsNumber);
+                    sendMsg(wsNumber.toString(),appId, messageText);//向websocket通道发数据
                 }
                 catch (JSONException e){
                     e.printStackTrace();
@@ -59,17 +60,17 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
             }
         }
     }
-    public void sendMsg(String number,String messageText){
-        Map<String,List<WebSocketSession>> wsImpMap=webSocket.getTempMessage();
+    public void sendMsg(String number,Long appId,String messageText){
+        Map<String,List<WebSocketSession>> wsImpMap=WebsocketEndPoint.getWsImpMap();
         logger.info("wsImpMap中有："+wsImpMap);
         TextMessage wsMessage = new TextMessage(messageText);
         try {
-            List<WebSocketSession> wSSList=wsImpMap.get(number);
-            if (wSSList!=null){
-                for(int i=0;i<wSSList.size();i++){
-                    wSSList.get(i).sendMessage(wsMessage);
-                    logger.info("发送num为"+number+"的数据："+messageText);
-                }
+                logger.info("number+appId："+number+appId);
+                List<WebSocketSession> wSSList=wsImpMap.get(number+appId);
+                if (wSSList!=null){
+                    for(int i=0;i<wSSList.size();i++){
+                        wSSList.get(i).sendMessage(wsMessage);
+                    }
             }
         } catch (Exception exception) {
             exception.printStackTrace();

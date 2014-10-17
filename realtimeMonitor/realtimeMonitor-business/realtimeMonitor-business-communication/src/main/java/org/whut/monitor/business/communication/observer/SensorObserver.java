@@ -138,9 +138,8 @@ public class SensorObserver implements Observer {
         String warnCount = redisConnector.get("sensor:{"+number+"}:warnCount");
         String lastCommunicateTime = redisConnector.get("sensor:{"+number+"}:lastDate");
         String collectorNum = sensorService.getCNumBySNum(number) ;
-        System.out.println("aaaaaaaaaaaa"+collectorNum);
-
-        String s = "id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',isConnected:" + "'true'";
+        Long appId=sensorService.getAppIdBySNum(number);
+        String s = "appId:"+appId+","+"id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',isConnected:" + "'true'";
         String s2 = "{sensors:[{sensorNum:'" + number + "',dataType:'" + dataType + "',time:'" + time +"',data:" + dataList + "," + s + "}]}";
         System.out.println("s2:" + s2);
         wsMessageDispatcher.dispatchMessage(s2);

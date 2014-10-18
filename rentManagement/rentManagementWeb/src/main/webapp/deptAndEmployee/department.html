@@ -13,39 +13,35 @@
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $.ligerDialog.close("#addCar_driver");
+        $.ligerDialog.close("#addDepart");
         $(function(){
-            $.post($.URL.car_Driver.list,null,listCallback,"json");
+            $.post($.URL.department.list,null,listCallback,"json");
         });
         var gridData = {};
         function listCallback(data){
             if(data.code==200){
                 gridData.Rows = data.data;
                 gridData.Total = data.data.length;
-                c_initGrid();
+                f_initGrid();
             }
         }
         var dataGridColumns = [
             { header: 'ID', name: 'id', width: 20 },
-            { header: '车主', name: 'name' },
+            { header: '名称', name: 'name' },
             { header: '创建时间', name:'createTime'},
-            {header:'车牌号',name:'carNumber'},
-            {header:'车型',name:'carType'}
+            {header:'说明',name:'description'}
         ];
         var manager, g;
-        function  c_initGrid()
+        function f_initGrid()
         {
-            g = manager = $("#Maingrid").ligerGrid({
+            g = manager = $("#maingrid").ligerGrid({
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '车主',name: 'name',
+                    { display: '名称',name: 'name',
                         editor: { type: 'text'}
                     },
                     { display: '创建时间', name: 'createTime',width:100 ,type: 'date',frozen:true},
-                    {display:'车牌号',name:'carNumber',
-                        editor:{type:'text'}
-                    },
-                    {display:'车型',name:'carType',
+                    {display:'说明',name:'description',
                         editor:{type:'text'}
                     },
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
@@ -74,26 +70,25 @@
                 width: '100%'
             });
         }
-        function c_add(){
-
-            c_show();
-            $.ligerDialog.open({title:'添加司机', target: $("#addCar_driver")});
+        function f_add(){
+            $("#Name").val("");
+            f_show();
+            $.ligerDialog.open({title:'添加部门', target: $("#addDepart")});
         };
 
 
         $("#submitBtn1").click(function(){
             var addData={};
             addData.name = $("#Name").val();
-            addData.carNumber = $("#CarNumber").val();
-            addData.carType = $("#CarType").val();
-            $.post($.URL.car_Driver.add,addData,addCar_driverCallback,"json");
+            addData.description = $("#Description").val();
+            $.post($.URL.department.add,addData,addDepartmentCallback,"json");
 
         });
 
-        function addCar_driverCallback(data){
+        function addDepartmentCallback(data){
             if(data.code==200){
                 $.ligerDialog.success('操作成功');
-                $.post($.URL.car_Driver.list,null,listCallback,"json");
+                $.post($.URL.department.list,null,listCallback,"json");
             }
             else if(data.code==500)
             {
@@ -112,7 +107,7 @@
             manager.endEdit(rowid);
             var row = manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
-            $.post($.URL.car_Driver.update,{"jsonString":jsonString},updateCallback,"json");
+            $.post($.URL.department.update,{"jsonString":jsonString},updateCallback,"json");
         }
 
         function updateCallback(data){
@@ -121,7 +116,7 @@
             }
             else if(data.code==500)
             {
-                $.post($.URL.car_Driver.list,null,listCallback,"json");
+                $.post($.URL.department.list,null,listCallback,"json");
                 $.ligerDialog.error(data.message);
             }
         }
@@ -131,7 +126,7 @@
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
-                $.post($.URL.car_Driver.delete,{"jsonString":jsonString},deleteCallback,"json");
+                $.post($.URL.department.delete,{"jsonString":jsonString},deleteCallback,"json");
                 manager.deleteRow(rowid);
             }
         }
@@ -150,22 +145,22 @@
         {
             manager.addEditRow();
         }
-        function c_show(){
-            $("#addCar_driver").css('display','block');
+        function f_show(){
+            $("#addDepart").css('display','block');
         }
 
     </script>
     <style type="text/css">
         .l-table-edit {}
         .l-table-edit-td{ padding:4px;}
-        .l-button-submit{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
         .l-dialog-tc{background:#E0EDFF;}
 
 
     </style>
 </head>
 <body  style="padding:10px">
-<div id="addCar_driver" style="display:none" >
+<div id="addDepart" style="display:none" >
     <form name="form1" method="post" action="" id="form1">
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
@@ -174,13 +169,8 @@
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">车牌号:</td>
-                <td align="left" class="l-table-edit-td"><input name="CarNumber" type="text" id="CarNumber" ltype="text" /></td>
-                <td align="left"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">车型:</td>
-                <td align="left" class="l-table-edit-td"><input name="CarType" type="text" id="CarType" ltype="text" /></td>
+                <td align="right" class="l-table-edit-td">备注:</td>
+                <td align="left" class="l-table-edit-td"><input name="Description" type="text" id="Description" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
         </table>
@@ -191,9 +181,9 @@
 </div>
 <div class="l-clear"></div>
 <div id="list">
-    <div><input type="button" value="添加" id="addSubmitBtn" onclick="c_add()" class="l-button l-button-submit" /></div>
+    <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
     <div class="l-clear"></div>
-    <div id="Maingrid" style="margin-top:20px"></div> <br />
+    <div id="maingrid" style="margin-top:20px"></div> <br />
 </div>
 <div style="display:none;">
     <!-- g data total ttt -->

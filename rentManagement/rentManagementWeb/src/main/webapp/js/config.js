@@ -50,7 +50,16 @@
             "list":"rs/car_Driver/list",
             "update":"rs/car_Driver/update",
             "delete":"rs/car_Driver/delete"
+        },
+        "device":{
+            "add":"rs/device/add",
+            "update":"rs/device/update",
+            "delete":"rs/device/delete",
+            "list":"rs/device/list",
+            "getIdByNumber":"rs/device/getIdByNumber"
+        },
+        "deviceType":{
+            "list":"rs/deviceType/list"
         }
-
     }
 })(jQuery);

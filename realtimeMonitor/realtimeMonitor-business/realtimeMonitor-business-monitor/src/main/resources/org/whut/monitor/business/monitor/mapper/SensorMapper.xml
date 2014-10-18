@@ -160,4 +160,15 @@
         FROM sensor,collector
         WHERE  sensor.collectorId=collector.id AND sensor.number=#{sNum}
     </select>
+
+    <select id="getSensorNumByCNum" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT s.number
+        FROM sensor AS s,collector AS c
+        WHERE s.collectorId=c.id AND c.number=#{CNum}
+    </select>
+    <select id="getAppIdBySNum" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT sensor.appId
+        FROM sensor
+        WHERE sensor.number=#{sNum}
+    </select>
 </mapper>

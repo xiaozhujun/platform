@@ -55,7 +55,7 @@
     <script type="text/javascript">
         var  ws=null;
         var num= currentMonitor.number;
-        var s=currentMonitor.number+"|"+1;
+        var s="{c:'Subscribe',sensors:["+num+"]}";
         var tempURL = $.URL.sensors.getSensorDataArray;
         var myURL = tempURL + num.toString();
         $(document).ready(function () {

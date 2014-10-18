@@ -17,13 +17,35 @@
     <script type="text/javascript">
         var cNumList= new Array();
         var collectLastDate=new Array();
+        var num="";
         $(document).ready(function(){
             $.post($.URL.collector.list,null,collectorListCallback,"json");
-            connect();
+            $.post($.URL.sensor.homePage,{"fStatus":"false"},gridCallback,"json");
+
         });
+        function gridCallback(data) {
+            if(data.code == 200) {
+                for(var i=0;i<data.data.length;i++)  {
+                    sNumList[i]=data.data[i].number;
+                    if(i==0){
+                        num=data.data[i].number+",";
+                    }
+                    else {
+                        num=num+data.data[i].number+",";
+                    }
+                }
+                var lastIndex = num.lastIndexOf(',');
+                if (lastIndex > -1) {
+                    num = num.substring(0, lastIndex) + num.substring(lastIndex + 1, num.length);
+
+                }
+            }
+            connect();
+        }
         function connect() {
             var url= $.URL.websocket.register;
-            var s="all"+"|"+2;
+
+            var s="{c:'Subscribe',sensors:["+num+"]}";
             ws =  new WebSocket(url);
             ws.onopen = function () {
                 console.log('Info: connection opened.');
@@ -41,7 +63,7 @@
                         collectLastDate[i]=jsonData.sensors[0].lastCommunicateTime;
                         grid.updateCell('lastMessageTime',collectLastDate[i],i);
                         //要计算的日期字符串
-                       var  collectLD = collectLastDate[i].replace(/-/g,"/");
+                        var  collectLD = collectLastDate[i].replace(/-/g,"/");
                         //要计算的日期
                         var date = new Date(collectLD);
                         //当前日期

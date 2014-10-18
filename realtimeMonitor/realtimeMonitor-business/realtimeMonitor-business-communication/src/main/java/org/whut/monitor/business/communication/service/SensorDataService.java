@@ -4,20 +4,18 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.whut.monitor.business.algorithm.factory.AlgorithmServiceFactory;
 import org.whut.monitor.business.algorithm.service.AlgorithmService;
-import org.whut.monitor.business.monitor.entity.WarnCondition;
-import org.whut.monitor.business.monitor.entity.WarnConditionFactory;
+import org.whut.monitor.business.communication.observer.SensorObservable;
+import org.whut.monitor.business.communication.observer.SensorObserver;
+import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.monitor.business.monitor.service.SensorService;
 import org.whut.monitor.business.monitor.service.WarnConditionService;
+import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,12 +31,20 @@ public class SensorDataService {
     private RedisConnector redisConnector;
     private MongoConnector mongoConnector;
     private int keyExpireTime;
+    private Map<String,Object> map = new HashMap<String, Object>();
+    private SensorObservable observable;
+    private SensorObserver observer;
 
     @Autowired
     private SensorService sensorService;
-
     @Autowired
     private WarnConditionService warnConditionService;
+    @Autowired
+    private AlgorithmService algorithmService;
+    @Autowired
+    private CollectorService collectorService;
+    @Autowired
+    private WsMessageDispatcher wsMessageDispatcher;
 
     //构造函数
     public SensorDataService(){
@@ -48,47 +54,48 @@ public class SensorDataService {
 
         redisConnector = new RedisConnector();
         mongoConnector = new MongoConnector(sensorDB,sensorCollection);
+        observer = new SensorObserver();
+        observable = new SensorObservable();
+        observable.addObserver(observer);
     }
 
     //保存消息对象
     public String saveMessage(String msg){
         String objectID = "";
+        if (observer.getSensorService() == null || observer.getRedisConnector() == null
+                || observer.getWarnConditionService() == null || observer.getAlgorithmService() == null
+                || observer.getCollectorService() == null || observer.getWsMessageDispatcher() == null) {
+            observer.setSensorService(sensorService);
+            observer.setRedisConnector(redisConnector);
+            observer.setWarnConditionService(warnConditionService);
+            observer.setAlgorithmService(algorithmService);
+            observer.setCollectorService(collectorService);
+            observer.setWsMessageDispatcher(wsMessageDispatcher);
+            System.out.println("完成注入");
+        }
+        System.out.println("sssssssssssss " + observer.getSensorService());
         try{
             DBObject dbObject = (DBObject) JSON.parse(msg);
             ArrayList sensors = (ArrayList)dbObject.get("sensors");
+            System.out.println("dddddddddddddddddd " + sensors.size() + " dddddddddddddddddd " + sensors);
             DBObject curSensor;
             for(int i=0;i<sensors.size();i++){
                 curSensor = (DBObject)sensors.get(i);
                 String sensor = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")).toString();
-                //long timestamp = new Date().getTime();
+//                map.put("sensor",sensor);
+//                ArrayList data = (ArrayList) curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
+//                map.put("data",data);
+//                String time = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time")).toString();
+//                map.put("time",time);
+//                String dataType = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.dataType")).toString();
+//                map.put("dataType",dataType);
+//                observable.setMap(map);
+                observable.setObject(curSensor);
                 String temp = mongoConnector.insertDocumentObject(curSensor);
-
                 if(objectID!=null){
                     if(redisConnector.set(sensor,keyExpireTime,temp)){
                         objectID+=temp + " ";
                     }
-                }
-                ArrayList data = (ArrayList)curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
-                AlgorithmService algorithmService = AlgorithmServiceFactory.create();
-                if (redisConnector.get("sensor:{"+sensor+"}:warnType") == null || !redisConnector.get("sensor:{"+sensor+"}:warnType").equals(redisConnector.get("sensor:{"+sensor+"}:warnTypeChanged"))) {
-                    Map map = sensorService.getWarnConditionByNumber(sensor);
-                    redisConnector.set("sensor:{"+sensor+"}:warnType",map.get("warnType").toString());
-                    redisConnector.set("sensor:{"+sensor+"}:warnValue",map.get("warnValue").toString());
-                    redisConnector.set("sensor:{"+sensor+"}:warnCount",map.get("warnCount").toString());
-                }
-                String curData = Double.toString(algorithmService.calculate(redisConnector.get("sensor:{"+sensor+"}:warnType"),data));
-                redisConnector.set("sensor:{"+sensor+"}:value",keyExpireTime,curData);
-                String warnValue = redisConnector.get("sensor:{"+sensor+"}:warnValue");
-                long count = Long.parseLong(redisConnector.get("sensor:{"+sensor+"}:warnCount"));
-                Date date = new Date();
-                String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-                redisConnector.set("sensor:{"+sensor+"}:lastDate",dateString);
-                if (algorithmService.compare(Double.parseDouble(curData),Double.parseDouble(warnValue))) {
-                    System.out.println("执行更新操作");
-                    updateWarnCondition(sensor,curData,count+1,date);
-                }
-                else {
-                    System.out.println("没有执行更新操作");
                 }
             }
         }catch (Exception e){
@@ -115,13 +122,4 @@ public class SensorDataService {
         return (ArrayList)dbObject.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
     }
 
-    public void updateWarnCondition(String id,String curData,long count,Date date) {
-        System.out.println("执行更新操作");
-        sensorService.updateWarnCountByNumber(id,count+1);
-        redisConnector.set("sensor:{"+id+"}:warnCount",Long.toString(count+1));
-        Map tempMap = sensorService.findByNumber(id);
-        WarnCondition warnCondition = WarnConditionFactory.create(tempMap.get("groupName").toString(),tempMap.get("areaName").toString(),
-                tempMap.get("collectorName").toString(),tempMap.get("name").toString(),date,id,Double.parseDouble(curData));
-        warnConditionService.add(warnCondition);
-    }
 }

@@ -13,6 +13,7 @@ import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
 
 import javax.jms.Message;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -46,42 +47,31 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                     JSONArray data= dataJson.getJSONArray("sensors");
                     JSONObject info=data.getJSONObject(0);
                     number=info.getString("sensorNum");
-                    sendMsg(number, messageText);//向websocket通道发数据
+                    Long appId=Long.parseLong(info.getString("appId"));
+                    Long wsNumber = Long.parseLong(number);
+                    logger.info("number1:" + wsNumber);
+                    sendMsg(wsNumber.toString(),appId, messageText);//向websocket通道发数据
                 }
                 catch (JSONException e){
                     e.printStackTrace();
                 }
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }
     }
-    public void sendMsg(String number,String messageText){
-        Map<String,List<WebSocketSession>> tempMap=webSocket.getTempMessage();
-        TextMessage returnMessage = new TextMessage(messageText);
+    public void sendMsg(String number,Long appId,String messageText){
+        Map<String,List<WebSocketSession>> wsImpMap=WebsocketEndPoint.getWsImpMap();
+        logger.info("wsImpMap中有："+wsImpMap);
+        TextMessage wsMessage = new TextMessage(messageText);
         try {
-            for(String key : tempMap.keySet()){
-                String s1[]=key.split("\\|");
-                String sNum=s1[0];
-                String page=s1[1];
-                List<WebSocketSession> wSSList=tempMap.get(key);
-                if(page.equals("1")) {
-                    if(number.equals(sNum)){
-                        for(int i=0;i<wSSList.size();i++){
-                           wSSList.get(i).sendMessage(returnMessage);
-                          System.out.println("向1发数据"+messageText);
-                      }
-                    }
-                }
-                else if(page.equals("2")){
+                logger.info("number+appId："+number+appId);
+                List<WebSocketSession> wSSList=wsImpMap.get(number+appId);
+                if (wSSList!=null){
                     for(int i=0;i<wSSList.size();i++){
-                        wSSList.get(i).sendMessage(returnMessage);
-                        System.out.println("向2发数据"+messageText);
+                        wSSList.get(i).sendMessage(wsMessage);
                     }
-                }
             }
-
-
         } catch (Exception exception) {
             exception.printStackTrace();
         }

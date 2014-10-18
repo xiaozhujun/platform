@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/json2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $.post($.URL.group.list,null,groupCallback,"json");
+        });
+
+        var warnTypeData = [
+            {text:'最大值',id:'最大值'},
+            {text:'最小值',id:'最小值'},
+            {text:'峰峰值',id:'峰峰值'},
+            {text:'平均值',id:'平均值'},
+            {text:'有效值',id:'有效值'},
+            {text:'均方差',id:'均方差'}
+        ];
+
+        $("#warnTypeSelect").ligerComboBox({isShowCheckBox:false,isMultiSelect:false, emptyText:null,
+            data:warnTypeData,
+            width:100,
+            valueField:'id',
+            textField:'text'
+        });
+
+        function groupCallback(data) {
+            var groupName = [];
+            if(data.code == 200) {
+                $.each(data.data,function(index,content){
+                    var j = {};
+                    j["text"] = content.name;
+                    j["id"] = content.id;
+                    groupName.push(j);
+                });
+                $("#groupSelect").ligerComboBox({isShowCheckBox:false,isMultiSelect:false, emptyText:null,
+                    data:groupName,
+                    width:100,
+                    valueField:'id',
+                    textField:'text',
+                    onSelected:function(group) {
+                        if(group != null) {
+                            $.post($.URL.area.getAreaByGroupId,{"groupId":group},areaCallback,"json");
+
+                        }
+                    }
+                });
+            }
+        }
+
+        function areaCallback(data){
+            if(data.code == 200) {
+                var areaName = [];
+                $.each(data.data,function(index,content){
+                    var j={};
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    areaName.push(j);
+                })
+                $("#areaSelect").ligerComboBox({data:areaName});
+            }
+        }
+        $("#areaSelect").ligerComboBox({isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
+            width:100,
+            valueField:'id',
+            textField:'text',
+            onSelected:function(area) {
+                if(area != null) {
+                    $.post($.URL.sensor.getSensorsByAreaId,{"areaId":area},collectorCallback,"json");
+                }
+            }
+        });
+
+
+        function collectorCallback(data){
+            if(data.code==200){
+                var sensorName=[];
+                $.each(data.data,function(index,content){
+                    var c={};
+                    c["id"]=content.name;
+                    c["text"]=content.name;
+                    sensorName.push(c);
+                });
+                $("#sensorSelect").ligerComboBox({data:sensorName});
+            }
+        }
+
+        $("#sensorSelect").ligerComboBox({
+            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
+            width:100,
+            valueField:'id',
+            textField:'text',
+            onSelected:function(sensor) {
+                if(sensor != null) {
+                    var number = [];
+                    $.post($.URL.sensor.getSensorIdAndNumbersByName,{"sensorName":sensor},function(data){
+                        if(data.code == 200) {
+                            $.each(data.data,function(index,content){
+                                var j = {};
+                                j["text"] = content.number;
+                                j["id"] = content.number;
+                                number.push(j);
+                            });
+                            $("#numberSelect").ligerComboBox({data:number});
+                        }
+                    },"json");
+                }
+            }
+        });
+        var collectorName = "";
+        $("#numberSelect").ligerComboBox({
+            isShowCheckBox:false,isMultiSelect:false, emptyText:null,data:null,
+            width:100,
+            valueField:'id',
+            textField:'text',onSelected:function(number){
+                if(number != null) {
+                    $.post($.URL.sensor.getCollectorNameBySensorNumber,{"number":number},function(data){
+                        if(data.code == 200) {
+                            $.each(data.data,function(index,content){
+                                collectorName= content.name;
+                            })
+                        }else collectorName="";
+                    },"json");
+                }
+            }
+        });
+
+        var d=new Date();
+        var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+        $("#startTimeSelect").ligerDateEditor({initValue: dd});
+        $("#endTimeSelect").ligerDateEditor({initValue: dd});
+
+        $("#submitBtn").ligerButton({
+            width:60,
+            click:submitCallback
+        });
+
+        function submitCallback() {
+            var warnType = $("#warnTypeSelect").val();
+            var groupName = $("#groupSelect").val();
+            var areaName = $("#areaSelect").val();
+
+            var sensorName = $("#sensorSelect").val();
+            var number = $("#numberSelect").val();
+            var startTime = $("#startTimeSelect").val();
+            var endTime = $("#endTimeSelect").val();
+            $.post($.URL.warnCondition.list,{warnType:warnType.toString(),groupName:groupName.toString(),
+                areaName:areaName.toString(),collectorName:collectorName.toString(),
+                sensorName:sensorName.toString(),number:number.toString(),sTime:startTime,eTime:endTime},warnRecordGridCallback,"json");
+        }
+        var warnConditionGrid;
+        var warnConditionData = {};
+        function warnRecordGridCallback(data) {
+            if(data.code == 200) {
+                warnConditionData.Rows = data.data;
+                warnConditionData.Total = data.length;
+                f_initWarnConditionGrid();
+            }
+        }
+
+        function f_initWarnConditionGrid() {
+            warnConditionGrid = $("#warnRecordGrid").ligerGrid({
+                columns:[
+                    {name:'id',display:'序号',width:'auto'},
+                    {name:'sensorName',display:'传感器',width:'auto'},
+                    {name:'groupName',display:'监测组',width:'auto'},
+                    {name:'areaName',display:'测量区域',width:'auto'},
+                    {name:'collectorName',display:'采集仪',width:'auto'},
+                    {name:'warnTime',display:'报警时间',width:'auto'},
+                    {name:'curWarnValue',display:'报警值',width:'auto'}
+                ],
+                data:warnConditionData,
+                width:'auto',
+                usePager:true
+            });
+        }
+
+    </script>
+
+    <style type="text/css">
+        .l-div {height: 30px;margin-top: 10px}
+        .l-span-show-com{margin-left: 10px;  width: 60px;float: left;margin-top:2px}
+        .l-show-com{width: 60px; margin-left: 10px; float: left;}
+    </style>
+
+</head>
+<body>
+<div class="l-div">
+
+    <span class="l-span-show-com">报警类型：</span>
+    <span class="l-show-com">
+        <input name="warnTypeSelect" id="warnTypeSelect" type="text">
+    </span>
+
+    <span style="margin-left: 60px;  width: 50px;float: left;margin-top: 2px">监控组：</span>
+    <span class="l-show-com">
+        <input name="groupSelect" id="groupSelect" type="text">
+    </span>
+
+    <span style="margin-left: 60px;  width: 60px;float: left;margin-top: 2px">测量区域：</span>
+    <span class="l-show-com">
+        <input name="areaSelect" id="areaSelect" type="text">
+    </span>
+
+    <span style="margin-left: 60px;  width: 50px;float: left;margin-top: 2px">传感器：</span>
+    <span class="l-show-com">
+        <input name="sensorSelect" id="sensorSelect" type="text">
+    </span>
+
+    <span style="margin-left: 60px;  width: 40px;float: left;margin-top: 2px">编号：</span>
+    <span class="l-show-com">
+        <input name="numberSelect" id="numberSelect" type="text">
+    </span><br><br><br>
+
+    <span style="margin-left: 10px;  width: 60px;float: left;margin-top: 2px">起始时间：</span>
+    <span class="l-show-com">
+        <input name="startTimeSelect" id="startTimeSelect" type="text">
+    </span>
+
+    <span style="margin-left: 100px;  width: 60px;float: left;margin-top: 2px">终止时间：</span>
+    <span class="l-show-com">
+        <input name="endTimeSelect" id="endTimeSelect" type="text">
+    </span>
+
+    <span style="margin-left: 90px;  width: 60px;float: left">
+        <span style="width: 70px; margin-left: 15px; float: left">
+            <input id="submitBtn" type="button" value="查询">
+        </span>
+    </span>
+</div><br><br><br><br>
+<div id="warnRecordGrid"></div>
+</body>
+</html>

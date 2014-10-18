@@ -29,6 +29,7 @@ public class SocketTest {
             //向服务器端第二次发送字符串
             long count = 1000000;
             StringBuffer data = new StringBuffer("");
+            StringBuffer data1 = new StringBuffer("");
             Date startTime = new Date();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -36,17 +37,21 @@ public class SocketTest {
                 for(int i=0;i<60;i++){
                     if(i==0){
                         data.append(Math.round(Math.random()*500));
+                        data1.append(Math.round(Math.random()*400));
                     }else{
                         data.append(",").append(Math.round(Math.random()*500));
+                        data1.append(",").append(Math.round(Math.random()*400));
                     }
 
                 }
                 Date now = new Date();
-                String json = "{sensors:[{sensorNum:'2100000000010000',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]}]}";
+                String json = "{sensors:["+"{sensorNum:'2100000000010000',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]},"
+                        +"{sensorNum:'01',dataType:'Route',time:'"+format.format(now)+"',data:["+data1+"]}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);
                 data.delete(0,data.length());
+                data1.delete(0,data1.length());
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {

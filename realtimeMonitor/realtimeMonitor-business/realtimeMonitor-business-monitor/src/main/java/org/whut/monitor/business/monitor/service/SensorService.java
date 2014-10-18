@@ -78,4 +78,12 @@ public class SensorService {
     public String getCNumBySNum(String sNum){
         return sensorMapper.getCNumBySNum(sNum);
     }
+
+    public List<String> getSensorNumByCNum(String CNum) {
+        return sensorMapper.getSensorNumByCNum(CNum);
+    }
+
+    public Long  getAppIdBySNum(String sNum) {
+        return sensorMapper.getAppIdBySNum(sNum);
+    }
 }

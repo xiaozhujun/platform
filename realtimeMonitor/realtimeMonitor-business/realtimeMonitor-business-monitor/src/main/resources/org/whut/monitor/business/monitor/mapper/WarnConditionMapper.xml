@@ -27,8 +27,15 @@
     </insert>
 
     <select id="getListByAppId" parameterType="map" resultMap="WarnConditionResultMap">
-        SELECT * FROM warn_record WHERE GROUPNAME=#{groupName} AND AREANAME=#{areaName}
-        AND COLLECTORNAME=#{collectorName} AND SENSORNAME=#{sensorName} AND NUMBER=#{number}
+        SELECT *
+        FROM warn_record AS w,sensor AS s
+        WHERE
+        <if test="groupName!=null">w.GROUPNAME=#{groupName}</if>
+        <if test="areaName!=null">AND w.AREANAME=#{areaName}</if>
+        <if test="collectorName!=null">AND w.COLLECTORNAME=#{collectorName}</if>
+        <if test="sensorName!=null">AND w.SENSORNAME=#{sensorName}</if>
+        <if test="number!=null">AND w.NUMBER=#{number}</if>
+        <if test="warnType!=null">AND w.NUMBER=s.number AND s.warnType=#{warnType}</if>
         AND WARNTIME BETWEEN #{sTime} AND #{eTime}
     </select>
 </mapper>

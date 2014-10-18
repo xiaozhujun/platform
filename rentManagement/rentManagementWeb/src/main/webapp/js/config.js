@@ -43,7 +43,7 @@
             "add":"rs/department/add",
             "list":"rs/department/list",
             "update":"rs/department/update",
-            "delete":"rs/department/delete",
+            "delete":"rs/department/delete"
         },
         "car_Driver":{
             "add":"rs/car_Driver/add",

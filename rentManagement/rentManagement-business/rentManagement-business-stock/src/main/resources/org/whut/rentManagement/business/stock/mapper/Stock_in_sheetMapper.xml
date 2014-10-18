@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.stock.mapper.Stock_in_sheetMapper">
+    <sql id="stock_in_sheet_fields">
+          ID,NUMBER,CARNUMBER,CUSTOMERID,CONTRACTID,HANDLER,STOREHOUSEID,DESCRIPTION,CREATETIME,CREATOR,APPID
+    </sql>
+    <resultMap id="stock_in_sheetResultMap" type="Stock_in_sheet">
+        <id property="id" column="ID" />
+        <result property="number" column="NUMBER" />
+        <result property="carNumber" column="CARNUMBER"/>
+        <result property="customerId" column="CUSTOMERID" />
+        <result property="contractId" column="CONTRACTID"/>
+        <result property="handler" column="HANDLER"/>
+        <result property="storehouseId" column="STOREHOUSEID"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createTime" column="CREATETIME"/>
+        <result property="creator" column="CREATOR"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Stock_in_sheet"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        stock_in_sheet(
+        <include refid="stock_in_sheet_fields" />
+        )
+        VALUES (#{id}, #{number},#{carNumber}, #{customerId},#{contractId},#{handler},#{storehouseId},#{description},#{createTime},#{creator},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+</mapper>
+
+
+

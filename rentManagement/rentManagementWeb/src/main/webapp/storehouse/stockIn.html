@@ -1,9 +1,104 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+</title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $(function()
+        {
+
+            $("#submitBtn").click(function(){
+                var data={};
+
+                data.number=$("#number").val();
+                data.carNumber=$("#carNumber").val();
+                data.handler=$("#handler").val();
+                data.description=$("#description").val();
+                data.createTime=$("#createTime").val();
+                data.creator=$("#creator").val();
+
+                $.post($.URL.stock_in_sheet.add,data,addCallBack,"json");
+            })
+            function addCallBack(data){
+                if(data.code==200){
+                    $.ligerDialog.success("操作成功！");
+                }
+                else if(data.code==500)
+                {
+                    $.ligerDialog.error(data.message);
+                }
+            }
+
+        })
+    </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+    </style>
+
+
 </head>
-<body>
-         stockIn
+
+<body style="padding:10px">
+
+<form name="form1" method="post" action="" id="form1">
+    <div>
+    </div>
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">入库单编号:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="number" type="text" id="number" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">货车车牌号:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="carNumber" type="text" id="carNumber" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">经办人:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="handler" type="text" id="handler" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">描述:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="description" type="text" id="description" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">创建时间:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="createTime" type="date" id="createTime" ltype="date"/></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">创建者:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="creator" type="text" id="creator" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+    </table>
+    <br />
+    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+</form>
+<div style="display:none">
+  </div>
 </body>
 </html>
+

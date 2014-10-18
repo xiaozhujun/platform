@@ -48,6 +48,9 @@
         },
         "deviceType":{
             "list":"rs/deviceType/list"
+        },
+        "stock_in_sheet":{
+            "add":"rs/stock_in_sheet/add"
         }
     }
 })(jQuery);

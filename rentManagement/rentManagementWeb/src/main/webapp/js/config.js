@@ -39,6 +39,18 @@
             "update":"rs/installation/update",
             "delete":"rs/installation/delete"
         },
+        "department":{
+            "add":"rs/department/add",
+            "list":"rs/department/list",
+            "update":"rs/department/update",
+            "delete":"rs/department/delete",
+        },
+        "car_Driver":{
+            "add":"rs/car_Driver/add",
+            "list":"rs/car_Driver/list",
+            "update":"rs/car_Driver/update",
+            "delete":"rs/car_Driver/delete"
+        },
         "device":{
             "add":"rs/device/add",
             "update":"rs/device/update",

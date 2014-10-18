@@ -38,6 +38,16 @@
             "add":"rs/installation/add",
             "update":"rs/installation/update",
             "delete":"rs/installation/delete"
+        },
+        "device":{
+            "add":"rs/device/add",
+            "update":"rs/device/update",
+            "delete":"rs/device/delete",
+            "list":"rs/device/list",
+            "getIdByNumber":"rs/device/getIdByNumber"
+        },
+        "deviceType":{
+            "list":"rs/deviceType/list"
         }
     }
 })(jQuery);

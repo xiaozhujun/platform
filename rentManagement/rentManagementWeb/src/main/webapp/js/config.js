@@ -63,6 +63,12 @@
         },
         "stock_in_sheet":{
             "add":"rs/stock_in_sheet/add"
+        },
+        "stock_out_sheet":{
+            "add" :"rs/stock_out_sheet/add" ,
+            "list":"rs/stock_out_sheet/list" ,
+            "delete": "rs/stock_out_sheet/delete" ,
+            "update":"rs/stock_out_sheet/update"
         }
     }
 })(jQuery);

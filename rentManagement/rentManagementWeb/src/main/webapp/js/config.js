@@ -27,6 +27,12 @@
         "device":{
             "add":"rs/device/add"
         },
+        "customer":{
+            "add":"rs/customer/add",
+            "update":"rs/customer/update",
+            "delete":"rs/customer/delete",
+            "list":"rs/customer/list"
+        },
         "installation":{
             "list":"rs/installation/list",
             "add":"rs/installation/add",

@@ -73,6 +73,11 @@
             <version>3.0.0.RELEASE</version>
             <optional>false</optional>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>rentManagement-business-contract</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
     </dependencies>
 

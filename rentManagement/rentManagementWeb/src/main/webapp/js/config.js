@@ -23,6 +23,15 @@
         },
         "userAuthority":{
               "add":"rs/userAuthority/add"
+        },
+        "device":{
+            "add":"rs/device/add"
+        },
+        "installation":{
+            "list":"rs/installation/list",
+            "add":"rs/installation/add",
+            "update":"rs/installation/update",
+            "delete":"rs/installation/delete"
         }
     }
 })(jQuery);

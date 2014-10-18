@@ -72,11 +72,11 @@
         FROM stock_out_sheet
         WHERE appId=#{appId}
     </select>
-    <!--<select id="getIdByCustomerIdAndContractId" parameterType="map" resultType="java.lang.Long">-->
-        <!--SELECT id-->
-        <!--FROM stock_out_sheet-->
-        <!--WHERE customerId=#{customerId} AND contractId=#{contractId}-->
-    <!--</select>-->
+    <select id="getIdByCustomerIdAndContractId" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM stock_out_sheet
+        WHERE customerId=#{customerId} AND contractId=#{contractId}
+    </select>
     <!--<select id="getIdByContractIdAndAppId" parameterType="map" resultType="java.lang.Long">-->
         <!--SELECT id-->
         <!--FROM stock_out_sheet-->

@@ -38,7 +38,7 @@ public class Stock_out_sheetServiceWeb {
     public String add(@FormParam("number") String number,@FormParam("carNumber")String carNumber,@FormParam("customerId")long customerId,@FormParam("contractId")long contractId,@FormParam("handler")String handler,@FormParam("storehouseId")long storehouseId,@FormParam("description")String description,
                       @FormParam("createTime")String createTime,@FormParam("creator")String creator){
        long appId = UserContext.currentUserAppId();
-        if(number==null||number.equals("")){
+        if(customerId==0||contractId==0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
         long id;

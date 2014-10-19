@@ -63,6 +63,7 @@ public class SensorMessageDispatcher implements MessageDispatcher {
     @Override
     public void exceptionProcess() {
         String sensorNum = redisConnector.get("sensorNum");
+        Long appId=sensorService.getAppIdBySNum(sensorNum);
         System.out.println(sensorNum);
         String collectorNum = collectorService.getCollectNumberBySensorNumber(sensorNum);
         List<String> sensorNumbers = sensorService.getSensorNumByCNum(collectorNum);
@@ -70,7 +71,7 @@ public class SensorMessageDispatcher implements MessageDispatcher {
             String number = sensorNumbers.get(i).toString();
             System.out.println("jjjjjjjjjjjjjjjjjj " + number);
             wsMessageDispatcher.dispatchMessage("{sensors:[{sensorNum:'" + sensorNumbers.get(i) + "',dataType:'Route',time:'"+new Date().toString()+"',data:[],id:" + sensorService.getSensorId(sensorNum,1) +
-                    ",meanVariance:0,MaxValue:0,MinValue:0,warnCount:'暂无数据',collectorNum:'" + collectorNum + "',lastCommunicateTime:'"+redisConnector.get("sensor:{"+sensorNum+"}:lastDate")+"',"+"isConnected:'"+"false"+"'"+"}]}");
+                    ",appId:" + appId + ",meanVariance:0,MaxValue:0,MinValue:0,warnCount:'暂无数据',collectorNum:'" + collectorNum + "',lastCommunicateTime:'"+redisConnector.get("sensor:{"+sensorNum+"}:lastDate")+"',"+"isConnected:'"+"false"+"'"+"}]}");
         }
 //        wsMessageDispatcher.dispatchMessage("{sensors:[{sensorNum:'" + sensorNum + "',dataType:'Route',time:'"+new Date().toString()+"',data:[],id:" + sensorService.getSensorId(sensorNum,1) +
 //                ",meanVariance:0,MaxValue:0,MinValue:0,warnCount:'暂无数据',collectorNum:'" + sensorService.getCNumBySNum(sensorNum) + "',lastCommunicateTime:'"+redisConnector.get("sensor:{"+sensorNum+"}:lastDate")+"',"+"isConnected:'"+"false"+"'"+"}]}");

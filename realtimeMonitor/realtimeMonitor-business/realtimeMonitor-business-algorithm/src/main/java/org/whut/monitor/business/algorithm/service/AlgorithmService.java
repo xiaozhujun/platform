@@ -1,14 +1,12 @@
 package org.whut.monitor.business.algorithm.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.whut.monitor.business.monitor.service.SensorService;
+import org.whut.monitor.business.algorithm.impl.MaxValueCalculator;
+import org.whut.monitor.business.algorithm.impl.MeanVarianceCalculator;
+import org.whut.monitor.business.algorithm.impl.MinValueCalculator;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.Math.abs;
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,87 +16,32 @@ import static java.lang.Math.sqrt;
  * To change this template use File | Settings | File Templates.
  */
 public class AlgorithmService {
-//    @Autowired
-//    private SensorService sensorService;
-    //均方差
-    public double meanVariance(ArrayList sensorDataArray) {
-        Double[] sensorData = new Double[sensorDataArray.size()];
-        for(int i=0;i<sensorDataArray.size();i++){
-            sensorData[i] = Double.parseDouble(sensorDataArray.get(i).toString());
-        }
-        double sum = 0;
-        for (int i=0;i<sensorDataArray.size();i++) {
-            sum += sensorData[i];
-        }
-        double average = sum/(sensorDataArray.size());
-        double temp = 0;
-        for (int i=0;i<sensorDataArray.size();i++) {
-            temp += pow((sensorData[i]-average),2);
-        }
-        temp /= sensorDataArray.size();
-        return sqrt(temp);
+    private MaxValueCalculator maxValueCalculator = new MaxValueCalculator();
+    private MinValueCalculator minValueCalculator = new MinValueCalculator();
+    private MeanVarianceCalculator meanVarianceCalculator = new MeanVarianceCalculator();
+    private Map curData = new HashMap();
+    private boolean isWarn;
+
+    public Map getCurData() {
+        return curData;
     }
 
-    public boolean compare(double curValue,double warnValue) {
-        if (curValue > warnValue) {
-            return true;
+    public boolean calculate(String warnType,ArrayList sensorDataArray,double warnValue) {
+        String warnTypeList = "最大值   最小值   均方差";
+        switch (warnTypeList.indexOf(warnType)/6) {
+            case 0:
+                isWarn = maxValueCalculator.calculate(sensorDataArray, warnValue);
+                this.curData.put("最大值",maxValueCalculator.getMaxValue());
+                return isWarn;
+            case 1:
+                isWarn = minValueCalculator.calculate(sensorDataArray, warnValue);
+                this.curData.put("最小值",minValueCalculator.getMinValue());
+                return isWarn;
+            case 2:
+                isWarn = meanVarianceCalculator.calculate(sensorDataArray, warnValue);
+                this.curData.put("均方差",meanVarianceCalculator.getMeanVariance());
+                return isWarn;
         }
-        else {
-            return false;
-        }
+        return false;
     }
-
-    public int getNum(String warnType) {
-        if (warnType.equals("均方差")) {
-            return 0;
-        }
-        else if (warnType.equals("最大值")) {
-            return 1;
-        }
-        else if (warnType.equals("最小值")){
-            return 2;
-        }
-        return -1;
-    }
-
-    public double calculate(String type,ArrayList data) {
-        int warnType;
-        warnType = getNum(type);
-        switch (warnType) {
-            case -1: return 0;
-            case 0: return meanVariance(data);
-            case 1:return MaxValue(data);
-            case 2:return MinValue(data);
-        }
-        return 0;
-    }
-
-    //最大值
-    public double MaxValue(ArrayList sensorDataArray) {
-        Double[] sensorData = new Double[sensorDataArray.size()];
-        for(int i=0;i<sensorDataArray.size();i++){
-            sensorData[i] = Double.parseDouble(sensorDataArray.get(i).toString());
-        }
-        double maxValue=sensorData[0];
-        for(int i=0; i<sensorDataArray.size(); i++) {
-            if(maxValue<sensorData[i])  maxValue=sensorData[i];
-        }
-        return maxValue;
-    }
-
-    //最小值
-    public double MinValue(ArrayList sensorDataArray) {
-        Double[] sensorData = new Double[sensorDataArray.size()];
-        for(int i=0;i<sensorDataArray.size();i++){
-            sensorData[i] = Double.parseDouble(sensorDataArray.get(i).toString());
-        }
-        double minValue=sensorData[0];
-        for(int i=0; i<sensorDataArray.size(); i++) {
-            if(minValue>sensorData[i])  minValue=sensorData[i];
-        }
-        return minValue;
-    }
-
-
-
 }

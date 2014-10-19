@@ -32,6 +32,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
     private static Map<WebSocketSession,String> map=new HashMap<WebSocketSession, String>(); // 一个session对应一个message 维护 session和message的关系
     private static Map<String,List<WebSocketSession>> wsImpMap=new HashMap<String, List<WebSocketSession>>(); //一个message对应多个session，供通过websocket向前台发送消息使用
     private static Map<WebSocketSession,Long> sessionAndAppIdMap= new HashMap<WebSocketSession,Long>();  //维护session和appId的关系，
+    private static Map<String,List<WebSocketSession>> wsuImpMap=new HashMap<String, List<WebSocketSession>>();
+    private static List<WebSocketSession> wssuList;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -39,7 +41,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         Map<String,Object> sessionAttributesMap= session.getHandshakeAttributes();
         Object credential=((SecurityContext) sessionAttributesMap.values().toArray()[0]).getAuthentication().getPrincipal();
         Long appId=((MyUserDetail) credential).getAppId();
+        Long userId=((MyUserDetail) credential).getId();
         logger.info("appId= " + appId);
+        logger.info("userId= " + userId);
         //维护起session和appId的关系，一个session可以对应多个appId
         sessionAndAppIdMap.put(session,appId);
         //得到前台发来的消息，里面可能包含多个sNum
@@ -52,18 +56,24 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         String command=dataJson.getString("c");
         for(int i=0;i<sNum.length();i++){
             wssList=wsImpMap.get(appId+":"+sNum.get(i).toString());
+            wssuList=wsuImpMap.get(appId+":"+userId+":"+sNum.get(i).toString());
             if (command.equals("Subscribe")){    //订阅
                 if(wssList==null){
                     wssList=new ArrayList<WebSocketSession>();
                 }
+                if(wssuList==null){
+                    wssuList=new ArrayList<WebSocketSession>();
+                }
                 wssList.add(session);
+                wssuList.add(session);
                 wsImpMap.put(appId+":"+sNum.get(i).toString(),wssList);
+                wssuList=wsuImpMap.put(appId+":"+userId+":"+sNum.get(i).toString(),wssuList);
             }
 
             else{
                 logger.info("进行取消订阅！");
                 if (command.equals("cancelSubscribe")){    //订阅
-                  //  cancelSubscribe(ReceivedMessage,appId);   //这样做有问题
+                    cancelSubscribe(ReceivedMessage,appId,userId);   //这样做有问题
                 }
             }
             wssList=null;
@@ -84,24 +94,28 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         JSONObject dataJson=new JSONObject(msg);
         JSONArray sNum= dataJson.getJSONArray("sensors");
         for(int i=0;i<sNum.length();i++){
+            logger.info("wsImpMap为"+wsImpMap);
             List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
             webSocketSessionList.remove(session);
-            wsImpMap.remove(appId+":"+sNum.get(i).toString());
-            wsImpMap.put(appId + ":" + sNum.get(i).toString(), webSocketSessionList);
+            logger.info("wsImpMap为"+wsImpMap);
         }
         map.remove(session);
         sessionAndAppIdMap.remove(session);
     }
-    public void cancelSubscribe(String msg,Long appId) throws JSONException {
+
+    public void cancelSubscribe(String msg,Long appId,Long userId) throws JSONException {
         JSONObject dataJson=new JSONObject(msg);
         JSONArray sNum= dataJson.getJSONArray("sensors");
         for(int i=0;i<sNum.length();i++){
-            List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
+            List<WebSocketSession> webSocketSessionList=wsuImpMap.get(appId+":"+userId+":"+sNum.get(i).toString());
             if (webSocketSessionList!=null){
-                wsImpMap.remove(appId+":"+sNum.get(i).toString());
+                 for (int j=0;j<webSocketSessionList.size();i++){
+                     cancelSubscribe(webSocketSessionList.get(i));
+                 }
             }
         }
     }
+
     public static Map<String,List<WebSocketSession>> getWsImpMap(){
         return wsImpMap;
     }

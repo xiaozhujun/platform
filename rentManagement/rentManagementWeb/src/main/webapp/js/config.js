@@ -69,6 +69,18 @@
             "list":"rs/stock_out_sheet/list" ,
             "delete": "rs/stock_out_sheet/delete" ,
             "update":"rs/stock_out_sheet/update"
+        } ,
+        "selfInspect":{
+            "add":"rs/selfInspect/add" ,
+            "update":"rs/selfInspect/update",
+            "delete":"rs/selfInspect/delete" ,
+            "list":"rs/selfInspect/list"
+        },
+        "remove":{
+            "add":"rs/remove/add"  ,
+            "update":"rs/remove/update",
+            "delete":"rs/remove/delete" ,
+            "list":"rs/remove/list"
         }
     }
 })(jQuery);

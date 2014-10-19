@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.contract.mapper.PreBuryMapper">
+    <sql id="PreBury_fields">
+          ID,CONTRACTID,PREBURYMAN,PREBURYTIME,PREBURYSTATUS,APPID
+    </sql>
+    <resultMap id="PreBuryResultMap" type="PreBury">
+        <id property="id" column="ID" />
+        <result property="contractId" column="CONTRACTID"/>
+        <result property="preBuryMan" column="PREBURYMAN"/>
+        <result property="preBuryTime" column="PREBURYTIME"/>
+        <result property="preBuryStatus" column="PREBURYSTATUS"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="PreBury"  keyProperty="id"
+            useGeneratedKeys="true">
+
+        INSERT INTO
+        installation(
+        <include refid="PreBury_fields" />
+        )
+        VALUES (#{id}, #{contractId},#{preBuryMan},#{preBuryTime},#{preBuryStatus},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="PreBuryResultMap">
+        select *
+        from prebury
+        where APPID=#{appId}
+    </select>
+    <update id="update" parameterType="PreBury">
+        UPDATE prebury
+        <set>
+            <if test="type!=null">preBuryMan=#{PREBURYMAN},</if>
+            <if test="installDeviceId!=null">preBuryStatus=#{PREBURYSTATUS},</if>
+            <if test="installMan!=null">preBuryTime=#{PREBURYTIME},</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <delete id="delete" parameterType="PreBury">
+        DELETE from prebury
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+    <select id="getIdByContractId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select id
+        from prebury
+        <if test="contractId!=null">where CONTRACTID=#{contractId}</if>
+    </select>
+</mapper>

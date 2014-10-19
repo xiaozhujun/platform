@@ -15,6 +15,9 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.installation.list,null,listCallBack,"json");
+            var d=new Date();
+            var sDay=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            $("installTime").ligerDateEditor({initValue: sDay});
             $("#submitBtn").click(function(){
                 var data={};
                 data.contractId=$("#contractId").val();
@@ -146,6 +149,12 @@
 
         function f_add() {
 //            $("#mainContainer").load("contract/addInstallation.html");
+            $("contractId").val("");
+            $("#type").val("");
+            $("#installDeviceId").val("");
+            $("#installMan").val("");
+            $("#installTime").val("");
+            $("#installStatus").val("");
             $("#add").css('display','block');
             $.ligerDialog.open({title:'添加安装/加装信息', target: $("#add")});
         }
@@ -161,8 +170,6 @@
 <body  style="padding:10px">
 <div id="add" style="display:none">
     <form name="form1" method="post" action="" id="form1">
-        <div>
-        </div>
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
                 <td align="right" class="l-table-edit-td">合同号:</td>
@@ -196,7 +203,7 @@
             <tr>
                 <td align="right" class="l-table-edit-td">安装时间:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="date"  id="installTime">
+                    <input type="text"  id="installTime">
                 </td>
             </tr>
             <tr>

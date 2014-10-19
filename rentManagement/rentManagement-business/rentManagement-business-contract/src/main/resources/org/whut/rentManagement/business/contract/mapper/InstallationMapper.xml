@@ -53,4 +53,9 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
+    <select id="getIdByDeviceId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select id
+        from installation
+        <if test="installDeviceId!=null">where INSTALLDEVICEID=#{installDeviceId}</if>
+    </select>
 </mapper>

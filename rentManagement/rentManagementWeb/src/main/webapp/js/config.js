@@ -81,6 +81,12 @@
             "update":"rs/remove/update",
             "delete":"rs/remove/delete" ,
             "list":"rs/remove/list"
+        },
+        "prebury":{
+            "add":"rs/prebury/add"  ,
+            "update":"rs/prebury/update",
+            "delete":"rs/prebury/delete" ,
+            "list":"rs/prebury/list"
         }
     }
 })(jQuery);

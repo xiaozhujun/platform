@@ -66,7 +66,7 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
         TextMessage wsMessage = new TextMessage(messageText);
         try {
                 logger.info("number+appId："+number+appId);
-                List<WebSocketSession> wSSList=wsImpMap.get(number+appId);
+                List<WebSocketSession> wSSList=wsImpMap.get(appId+":"+number);
                 if (wSSList!=null){
                     for(int i=0;i<wSSList.size();i++){
                         wSSList.get(i).sendMessage(wsMessage);

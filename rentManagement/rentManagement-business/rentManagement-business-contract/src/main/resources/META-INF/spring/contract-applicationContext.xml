@@ -6,4 +6,5 @@
     <bean id="installationService" class="org.whut.rentManagement.business.contract.service.InstallationService" depends-on="mappers"/>
     <bean id="removeService" class="org.whut.rentManagement.business.contract.service.RemoveService" depends-on="mappers"/>
     <bean id="selfInspectService" class="org.whut.rentManagement.business.contract.service.SelfInspectService" depends-on="mappers"/>
+    <bean id="preBuryService" class="org.whut.rentManagement.business.contract.service.PreBuryService" depends-on="mappers"/>
 </beans>

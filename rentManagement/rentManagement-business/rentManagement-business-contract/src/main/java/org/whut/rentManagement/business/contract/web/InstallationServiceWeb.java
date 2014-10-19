@@ -36,8 +36,6 @@ public class InstallationServiceWeb {
 
     @Autowired
     InstallationService installationservice;
-//    @Autowired
-//    contractService contractService;
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")
@@ -58,7 +56,7 @@ public class InstallationServiceWeb {
                 ||installMan==null||"".equals(installMan)||installTime==null||"".equals(installStatus)||installStatus==null){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
-        contractId = contractId.replace(" ","");
+        long contractIdnew = Long.parseLong(contractId.replace(" ",""));
         installDeviceId = installDeviceId.replace(" ","");
         long appId = UserContext.currentUserAppId();
         Date date = null;
@@ -69,16 +67,16 @@ public class InstallationServiceWeb {
             JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
         }
         Long id;
-//        try {
-//            id = installationservice.getContractId(contractId);
-//        }
-//        catch(Exception e){
+        try {
+            id = installationservice.getIdByDeviceId(contractIdnew);
+        }
+        catch(Exception e){
             id = null;
-//        }
+        }
         if (id==null){
             Installation Installation = new Installation();
             Installation.setAppId(appId);
-            Installation.setContractId(Long.parseLong(contractId));
+            Installation.setContractId(contractIdnew);
             Installation.setType(type);
             Installation.setInstallDeviceId(Long.parseLong(installDeviceId));
             Installation.setInstallMan(installMan);
@@ -88,7 +86,7 @@ public class InstallationServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
         }
         else {
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "合同已经存在!");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "该合同的安装设备记录已存在!");
         }
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

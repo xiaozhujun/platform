@@ -29,4 +29,7 @@ public class InstallationService {
     public int delete(Installation installation){
         return installationmapper.delete(installation);
     }
+    public long getIdByDeviceId(long installDeviceId){
+        return installationmapper.getIdByDeviceId(installDeviceId);
+    }
 }

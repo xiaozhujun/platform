@@ -1,0 +1,40 @@
+
+<script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+<script>
+    var navtab = null;
+    $(document).ready(function () {
+        $("#tab").ligerTab();
+        navtab = $("#tab").ligerGetTabManager();
+
+        $("#tab").ligerTab({onAfterSelectTabItem: function (tabid) {
+            loadTabPage(tabid);
+        }});
+
+        loadTabPage('contractTab');
+    });
+    function loadTabPage(tabid){
+        if(tabid=="contractTab"){
+            $("#"+tabid).load("dashboard/contractTab.html");
+        }else if(tabid=="employeeTab"){
+            $("#"+tabid).load("dashboard/employeeTab.html");
+        }else if(tabid=="deviceTab"){
+            $("#"+tabid).load("dashboard/deviceTab.html");
+        }else if(tabid=="storeTab"){
+            $("#"+tabid).load("dashboard/storeTab.html");
+        }
+    }
+</script>
+<style type="text/css">
+</style>
+<div id="tab" style="height: 100%;">
+    <div id="contractTab" tabid="contractTab" title="合同" style="height: 100%;">
+    </div>
+    <div id="employeeTab" tabid="employeeTab" title="人员" style="height: 100%;">
+    </div>
+    <div id="deviceTab" tabid="deviceTab" title="设备" style="height: 100%;">
+    </div>
+    <div id="storeTab" tabid="storeTab" title="仓库" style="height: 100%;">
+    </div>
+
+</div>
+

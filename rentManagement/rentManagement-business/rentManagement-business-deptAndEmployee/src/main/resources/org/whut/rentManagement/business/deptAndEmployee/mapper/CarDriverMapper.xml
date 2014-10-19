@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.deptAndEmployee.mapper.CarDriverMapper">
+    <sql id="Car_driver_fields">
+        ID,NAME,CREATETIME,CARTYPE,CARNUMBER,APPID
+            </sql>
+    <resultMap type="CarDriver" id="CarDriverResultMapper">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="createTime" column="CREATETIME"/>
+        <result property="carType" column="CARTYPE"/>
+        <result property="carNumber" column="CARNUMBER"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="CarDriver" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        car_driver
+        (
+        <include refid="Car_driver_fields"/>
+        )
+        values (#{id},#{name},#{createTime},#{carType},#{carNumber},#{appId});
+        <selectKey keyProperty="id" resultType="long">
+            select LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="CarDriver">
+        update car_driver
+        <set>
+            <if test="carNumber!=null">NAME=#{carNumber},</if>
+            <if test="name!=null">NAME=#{name},</if>
+        </set>
+        where ID=#{id};
+    </update>
+
+    <delete id="delete" parameterType="CarDriver">
+        DELETE FROM car_driver
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="name != null"> AND NAME=#{name}</if>
+            <if test="carNumber !=null">AND CARNUMBER=#{carNumber}</if>
+        </where>
+    </delete>
+    <select id="list" parameterType="java.lang.Long" resultMap="CarDriverResultMapper">
+        SELECT
+        <include refid="Car_driver_fields"/>
+        FROM car_driver
+        WHERE APPID=#{appId}
+    </select>
+
+    <select id="getIdByCar_Number" parameterType="map" resultType="java.lang.Long">
+        select id
+        from car_driver
+        where CARNUMBER=#{carNumber} and APPID=#{appId}
+    </select>
+
+    <select id="getCar_NumberById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select carNumber
+        from car_driver
+        where ID=#{id}
+    </select>
+
+</mapper>

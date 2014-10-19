@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.contract.mapper.SelfInspectMapper">
+    <sql id="SelfInspect_fields">
+          ID,CONTRACTID,SELFINSPECTDEVICEID,SELFINSPECTMAN,SELFINSPECTTIME,SELFINSPECTSTATUS,APPID
+    </sql>
+    <resultMap id="SelfInspectResultMap" type="SelfInspect">
+        <id property="id" column="ID" />
+        <result property="contractId" column="CONTRACTID"/>
+        <result property="selfInspectDeviceId" column="SELFINSPECTDEVICEID"/>
+        <result property="selfInspectMan" column="SELFINSPECTMAN"/>
+        <result property="selfInspectTime" column="SELFINSPECTTIME"/>
+        <result property="selfInspectStatus" column="SELFINSPECTSTATUS"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="SelfInspect"  keyProperty="id"
+            useGeneratedKeys="true">
+
+        INSERT INTO
+        selfinspect(
+        <include refid="SelfInspect_fields" />
+        )
+        VALUES (#{id}, #{contractId},#{selfInspectDeviceId},#{selfInspectMan},#{selfInspectTime},#{selfInspectStatus},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="SelfInspectResultMap">
+        select
+        <include refid="SelfInspect_fields" />
+        from selfinspect
+        where APPID=#{appId}
+    </select>
+    <update id="update" parameterType="SelfInspect">
+        UPDATE selfinspect
+        <set>
+            <if test="contractId!=null"> CONTRACTID=#{contractId},</if>
+            <if test="selfInspectDeviceId!=null"> SELFINSPECTDEVICEID=#{selfInspectDeviceId},</if>
+            <if test="selfInspectMan!=null"> SELFINSPECTMAN=#{selfInspectMan},</if>
+            <if test="selfInspectTime!=null"> SELFINSPECTTIME=#{selfInspectTime},</if>
+            <if test="selfInspectStatus!=null"> SELFINSPECTSTATUS=#{selfInspectStatus},</if>
+
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="SelfInspect">
+        DELETE FROM selfinspect
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+    <select id="getContractIdById" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+       id
+        from selfinspect
+        where CONTRACTID=#{contractId}
+    </select>
+
+</mapper>

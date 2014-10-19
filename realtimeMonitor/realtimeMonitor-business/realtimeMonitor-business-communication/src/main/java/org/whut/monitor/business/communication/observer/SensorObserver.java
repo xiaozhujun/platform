@@ -104,37 +104,40 @@ public class SensorObserver implements Observer {
             redisConnector.set("sensor:{"+number+"}:warnValue",map1.get("warnValue").toString());
             redisConnector.set("sensor:{"+number+"}:warnCount",map1.get("warnCount").toString());
         }
-        String curData = Double.toString(algorithmService.calculate(redisConnector.get("sensor:{"+number+"}:warnType"),dataList));
+        Double warnValue = Double.parseDouble(redisConnector.get("sensor:{"+number+"}:warnValue"));
+        String warnType = redisConnector.get("sensor:{"+number+"}:warnType");
+        boolean isWarn = algorithmService.calculate(warnType,dataList,warnValue);
+        String curData = algorithmService.getCurData().get(warnType).toString();
         redisConnector.set("sensor:{"+number+"}:value",keyExpireTime,curData);
-        String warnValue = redisConnector.get("sensor:{"+number+"}:warnValue");
         long count = Long.parseLong(redisConnector.get("sensor:{"+number+"}:warnCount"));
         Date date = new Date();
         String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
         redisConnector.set("sensor:{"+number+"}:lastDate",dateString);
-        if (algorithmService.compare(Double.parseDouble(curData),Double.parseDouble(warnValue))) {
+        if (isWarn) {
             System.out.println("执行更新操作");
             updateWarnCondition(number,curData,count+1,date);
         }
         else {
             System.out.println("没有执行更新操作");
         }
-        transmitMessage(number,dataList,dataType,time);
+        transmitMessage(number,dataList,dataType,time,warnType);
     }
 
-    private void updateWarnCondition(String id,String curData,long count,Date date) {
-        System.out.println("执行更新操作");
-        sensorService.updateWarnCountByNumber(id,count+1);
-        redisConnector.set("sensor:{"+id+"}:warnCount",Long.toString(count+1));
-        Map tempMap = sensorService.findByNumber(id);
-        WarnCondition warnCondition = WarnConditionFactory.create(tempMap.get("groupName").toString(), tempMap.get("areaName").toString(),
-                tempMap.get("collectorName").toString(), tempMap.get("name").toString(), date, id, Double.parseDouble(curData));
-        warnConditionService.add(warnCondition);
-    }
-
-    private void transmitMessage(String number,ArrayList dataList,String dataType,String time) {
-        double meanVariance= algorithmService.meanVariance(dataList);
-        double MaxValue = algorithmService.MaxValue(dataList);
-        double MinValue = algorithmService.MinValue(dataList);
+    private void transmitMessage(String number,ArrayList dataList,String dataType,String time,String warnType) {
+//        double meanVariance= (Double)algorithmService.getCurData().get("均方差");
+//        double MaxValue = (Double)algorithmService.getCurData().get("最大值");
+//        double MinValue = (Double)algorithmService.getCurData().get("最小值");
+        double meanVariance,MaxValue,MinValue;
+        meanVariance = MaxValue = MinValue = 0;
+        if (warnType.equals("均方差")) {
+            meanVariance = (Double)algorithmService.getCurData().get("均方差");
+        }
+        else if (warnType.equals("最大值")) {
+            MaxValue = (Double)algorithmService.getCurData().get("最大值");
+        }
+        else if (warnType.equals("最小值")){
+            MinValue = (Double)algorithmService.getCurData().get("最小值");
+        }
         String warnCount = redisConnector.get("sensor:{"+number+"}:warnCount");
         String lastCommunicateTime = redisConnector.get("sensor:{"+number+"}:lastDate");
         String collectorNum = sensorService.getCNumBySNum(number) ;
@@ -156,10 +159,18 @@ public class SensorObserver implements Observer {
         }
     }
 
+    private void updateWarnCondition(String id,String curData,long count,Date date) {
+        System.out.println("执行更新操作");
+        sensorService.updateWarnCountByNumber(id,count+1);
+        redisConnector.set("sensor:{"+id+"}:warnCount",Long.toString(count+1));
+        Map tempMap = sensorService.findByNumber(id);
+        WarnCondition warnCondition = WarnConditionFactory.create(tempMap.get("groupName").toString(), tempMap.get("areaName").toString(),
+                tempMap.get("collectorName").toString(), tempMap.get("name").toString(), date, id, Double.parseDouble(curData));
+        warnConditionService.add(warnCondition);
+    }
+
     public int isNormal(String number,String lastDate){
-//        String lastDate = redisConnector.get("sensor:{"+number+"}:lastDate");
         int flag=0;
-        String lastMessageTime = lastDate;
         if (redisConnector.get("sensor:{"+number+"}:collector") == null) {
             String collectorNum = collectorService.getCollectNumberBySensorNumber(number);
             redisConnector.set("sensor:{"+number+"}:collector",collectorNum);
@@ -176,11 +187,9 @@ public class SensorObserver implements Observer {
 
                 if (dif >60 || (redisConnector.get("sensor:{"+number+"}:collector").equals("") || redisConnector.get("sensor:{"+number+"}:collector") == null)) {
                     flag=1;
-                    //collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+number+"}:collector"),"离线或异常");
                 }
                 else {
                     flag = 0;
-                    //collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+number+"}:collector"),"在线正常工作");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -188,7 +197,6 @@ public class SensorObserver implements Observer {
         }
         else{
             flag = 2;
-            //collectorService.updateStatusByNumber(redisConnector.get("sensor:{"+number+"}collector"),"暂无数据");
         }
         return flag;
     }

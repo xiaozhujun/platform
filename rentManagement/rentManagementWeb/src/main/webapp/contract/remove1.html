@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+</title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(function()
+        {
+            $("#test").click(function(){
+                $("#aaa").load("contract/removeList.html");
+
+            });
+
+
+            $("#submitBtn").click(function(){
+                var data={};
+                data.contractId=$("#contractId").val();
+                data.removeDeviceId=$("#removeDeviceId").val();
+                data.removeMan=$("#removeMan").val();
+                data.removeTime=$("#removeTime").val();
+                data.removeStatus=$("#removeStatus").val();
+                $.post($.URL.remove.add,data,addCallBack,"json");
+                // $.post($.URL.selfInspect.delete,data,addCallBack,"json");
+                //$.post($.URL.selfInspect.update,data,addCallBack,"json");
+            })
+            function addCallBack(data){
+                if(data.code==200){
+                    $.ligerDialog.success("操作成功！");
+                }
+                else if(data.code==500)
+                {
+                    $.ligerDialog.error(data.message);
+                }
+            }
+
+
+
+        })
+    </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+    </style>
+
+</head>
+
+<body style="padding:10px">
+
+<form name="form1" method="post" action="" id="form1">
+    <div>
+    </div>
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">合同id:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="contractId" type="text" id="contractId" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">移除设备id:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="removeDeviceId" type="text" id="removeDeviceId" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">移除人员:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="removeMan" type="text" id="removeMan" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+
+
+        <tr>
+            <td align="right" class="l-table-edit-td">移除时间:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="removeTime" type="text" id="removeTime" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">移除状态:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="removeStatus" type="text" id="removeStatus" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+
+    </table>
+    <br />
+    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+    <input type="button" value="查看" id="test" class="l-button l-button-submit" />
+    <div id="aaa"></div>
+</form>
+
+</body>
+</html>

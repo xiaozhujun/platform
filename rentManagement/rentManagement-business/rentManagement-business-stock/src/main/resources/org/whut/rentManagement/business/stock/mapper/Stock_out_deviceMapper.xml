@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.stock.mapper.Stock_out_deviceMapper">
+    <sql id="Stock_out_device_fields">
+        ID,STOCKOUTID,DEVICEID
+    </sql>
+    <resultMap id="Stock_out_deviceResultMap" type="Stock_out_device">
+        <id property="id" column="ID" />
+        <result property="stockOutId" column="STOCKOUTID"/>
+        <result property="deviceId" column="DEVICEID"/>
+    </resultMap>
+    <insert id="add" parameterType="Stock_out_device"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        stock_out_device(
+        <include refid="Stock_out_device_fields" />
+        )
+        VALUES (#{id},#{stockOutId},#{deviceID});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="update" parameterType="Stock_out_device">
+        UPDATE stock_out_device
+        <set>
+            <if test="stockOutId!=null">STOCKOUTID=#{stockOutId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <delete id="delete" parameterType="Stock_out_device">
+        DELETE FROM stock_out_sheet
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+    <!--<insert id="addList" parameterType="java.util.List" useGeneratedKeys="true">-->
+        <!--<selectKey resultType="long" keyProperty="id" order="AFTER">-->
+            <!--SELECT-->
+            <!--LAST_INSERT_ID() as id-->
+        <!--</selectKey>-->
+        <!--INSERT INTO-->
+        <!--stock_out_device(-->
+        <!--<include refid="Stock_out_device_fields"/>)-->
+        <!--values-->
+        <!--<foreach collection="list" item="item" index="index" separator=",">-->
+            <!--(#{item.id},#{item.stockOutId},#{item.deviceId)-->
+        <!--</foreach>-->
+    <!--</insert>-->
+    <!--<select id="getListByStockOutId" parameterType="java.lang.Long" resultMap="Stock_out_deviceResultMap">-->
+        <!--SELECT *-->
+        <!--FROM stock_out_device-->
+        <!--WHERE appId=#{stockOutId}-->
+    <!--</select>-->
+    <!--<select id="getListByDeviceId" parameterType="java.lang.Long" resultMap="Stock_out_deviceResultMap">-->
+        <!--SELECT *-->
+        <!--FROM stock_out_device-->
+        <!--WHERE appId=#{deviceId}-->
+    <!--</select>-->
+
+    <!--<select id="getIdByStockOutIdIdAndDeviceId" parameterType="map" resultType="java.lang.Long">-->
+        <!--SELECT id-->
+        <!--FROM stock_out_device-->
+        <!--WHERE stockOutIdId=#{stockOutIdId} AND deviceId=#{deviceId}-->
+    <!--</select>-->
+    <!--<select id="getStockOutIdById" parameterType="java.lang.Long" resultType="java.lang.String">-->
+         <!--SELECT stockOutId-->
+         <!--FROM stock_out_device-->
+         <!--WHERE id=#{id}-->
+     <!--</select>-->
+    <!--<select id="getDeviceIdById" parameterType="java.lang.Long" resultType="java.lang.String">-->
+         <!--SELECT deviceId-->
+         <!--FROM stock_out_device-->
+         <!--WHERE id=#{id}-->
+     <!--</select>-->
+</mapper>

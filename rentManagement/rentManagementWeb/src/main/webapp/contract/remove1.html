@@ -17,7 +17,7 @@
         $(function()
         {
             $("#test").click(function(){
-                $("#aaa").load("contract/selfInspectList.html");
+                $("#aaa").load("contract/removeList.html");
 
             });
 
@@ -25,13 +25,13 @@
             $("#submitBtn").click(function(){
                 var data={};
                 data.contractId=$("#contractId").val();
-                data.selfInspectDeviceId=$("#selfInspectDeviceId").val();
-                data.selfInspectMan=$("#selfInspectMan").val();
-                data.selfInspectTime=$("#selfInspectTime").val();
-                data.selfInspectStatus=$("#selfInspectStatus").val();
-                $.post($.URL.selfInspect.add,data,addCallBack,"json");
-               // $.post($.URL.selfInspect.delete,data,addCallBack,"json");
-               //$.post($.URL.selfInspect.update,data,addCallBack,"json");
+                data.removeDeviceId=$("#removeDeviceId").val();
+                data.removeMan=$("#removeMan").val();
+                data.removeTime=$("#removeTime").val();
+                data.removeStatus=$("#removeStatus").val();
+                $.post($.URL.remove.add,data,addCallBack,"json");
+                // $.post($.URL.selfInspect.delete,data,addCallBack,"json");
+                //$.post($.URL.selfInspect.update,data,addCallBack,"json");
             })
             function addCallBack(data){
                 if(data.code==200){
@@ -68,29 +68,29 @@
             <td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">质检设备id:</td>
+            <td align="right" class="l-table-edit-td">移除设备id:</td>
             <td align="left" class="l-table-edit-td">
-                <input name="selfInspectDeviceId" type="text" id="selfInspectDeviceId" ltype="text" /></td>
+                <input name="removeDeviceId" type="text" id="removeDeviceId" ltype="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">质检人员:</td>
+            <td align="right" class="l-table-edit-td">移除人员:</td>
             <td align="left" class="l-table-edit-td">
-                <input name="selfInspectMan" type="text" id="selfInspectMan" ltype="text" /></td>
+                <input name="removeMan" type="text" id="removeMan" ltype="text" /></td>
             <td align="left"></td>
         </tr>
 
 
         <tr>
-            <td align="right" class="l-table-edit-td">质检时间:</td>
+            <td align="right" class="l-table-edit-td">移除时间:</td>
             <td align="left" class="l-table-edit-td">
-                <input name="selfInspectTime" type="text" id="selfInspectTime" ltype="text" /></td>
+                <input name="removeTime" type="text" id="removeTime" ltype="text" /></td>
             <td align="left"></td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">质检状态:</td>
+            <td align="right" class="l-table-edit-td">移除状态:</td>
             <td align="left" class="l-table-edit-td">
-                <input name="selfInspectStatus" type="text" id="selfInspectStatus" ltype="text" /></td>
+                <input name="removeStatus" type="text" id="removeStatus" ltype="text" /></td>
             <td align="left"></td>
         </tr>
 

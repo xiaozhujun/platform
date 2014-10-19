@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.contract.mapper.RemoveMapper">
+    <sql id="Remove_fields">
+          ID,CONTRACTID,REMOVEDEVICEID,REMOVEMAN,REMOVESTATUS,REMOVETIME,APPID
+    </sql>
+    <resultMap id="RemoveResultMap" type="Remove">
+        <id property="id" column="ID" />
+        <result property="contractId" column="CONTRACTID"/>
+        <result property="removeDeviceId" column="REMOVEDEVICEID"/>
+        <result property="removeMan" column="REMOVEMAN"/>
+        <result property="removeTime" column="REMOVETIME"/>
+        <result property="removeStatus" column="REMOVESTATUS"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="Remove"  keyProperty="id"
+            useGeneratedKeys="true">
+
+        INSERT INTO
+        remove(
+        <include refid="Remove_fields" />
+        )
+        VALUES (#{id}, #{contractId},#{removeDeviceId},#{removeMan},#{removeTime},#{removeStatus},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="RemoveResultMap">
+        select
+        <include refid="Remove_fields" />
+        from remove
+        where APPID=#{appId}
+    </select>
+    <update id="update" parameterType="Remove">
+        UPDATE remove
+        <set>
+            <if test="contractId!=null"> CONTRACTID=#{contractId},</if>
+            <if test="removeDeviceId!=null"> REMOVEDEVICEID=#{removeDeviceId},</if>
+            <if test="removeMan!=null"> REMOVEMAN=#{removeMan},</if>
+            <if test="removeTime!=null"> REMOVETIME=#{removeTime},</if>
+            <if test="removeStatus!=null"> REMOVESTATUS=#{removeStatus},</if>
+
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Remove">
+        DELETE FROM remove
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+</mapper>

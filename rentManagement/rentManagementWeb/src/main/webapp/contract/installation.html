@@ -15,10 +15,7 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.installation.list,null,listCallBack,"json");
-            var d=new Date();
-            var sDay=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-            $("installTime").ligerDateEditor({initValue: sDay});
-            $("#submitBtn").click(function(){
+/*            $("#submitBtn").click(function(){
                 var data={};
                 data.contractId=$("#contractId").val();
                 data.type=$("#type").val();
@@ -30,8 +27,8 @@
 
                 $.post($.URL.installation.add,data,addCallBack,"json");
                 f_initGrid();
-            })
-            function addCallBack(data){
+            })*/
+/*            function addCallBack(data){
                 if(data.code==200){
                     $.ligerDialog.success("操作成功！");
                 }
@@ -39,7 +36,7 @@
                 {
                     $.ligerDialog.error(data.message);
                 }
-            }
+            }*/
 
 
         });
@@ -148,15 +145,15 @@
         }
 
         function f_add() {
-//            $("#mainContainer").load("contract/addInstallation.html");
-            $("contractId").val("");
+            $("#mainContainer").load("contract/addInstallation.html");
+/*            $("contractId").val("");
             $("#type").val("");
             $("#installDeviceId").val("");
             $("#installMan").val("");
             $("#installTime").val("");
             $("#installStatus").val("");
-            $("#add").css('display','block');
-            $.ligerDialog.open({title:'添加安装/加装信息', target: $("#add")});
+            $("#add").css('display','block');*/
+//            $.ligerDialog.open({title:'添加安装/加装信息', target: $("#add")});
         }
 
     </script>
@@ -168,7 +165,7 @@
     </style>
 </head>
 <body  style="padding:10px">
-<div id="add" style="display:none">
+<!--<div id="add" style="display:none">
     <form name="form1" method="post" action="" id="form1">
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
@@ -221,7 +218,7 @@
         <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
         <input type="button" value="返回" id="returnBtn" class="l-button l-button-submit" />
     </form>
-</div>
+</div>-->
 <div id="list">
     <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
     <div class="l-clear"></div>

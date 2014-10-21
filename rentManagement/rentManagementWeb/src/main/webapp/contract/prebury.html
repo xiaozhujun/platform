@@ -15,10 +15,8 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.prebury.list,null,listCallBack,"json");
-            var d=new Date();
-            var sDay=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-            $("preBuryTime").ligerDateEditor({initValue: sDay});
-            $("#submitBtn").click(function(){
+
+ /*           $("#submitBtn").click(function(){
                 var data={};
                 data.contractId=$("#contractId").val();
                 data.preBuryMan=$("#preBuryMan").val();
@@ -36,7 +34,7 @@
                 {
                     $.ligerDialog.error(data.message);
                 }
-            }
+            }*/
 
 
         });
@@ -141,13 +139,13 @@
         }
 
         function f_add() {
-//            $("#mainContainer").load("contract/addInstallation.html");
-            $("#contractId").val("");
-            $("#preBuryMan").val("");
-            $("#preBuryTime").val("");
-            $("#preBuryStatus").val("");
-            $("#add").css('display','block');
-            $.ligerDialog.open({title:'添加预埋信息', target: $("#add")});
+            $("#mainContainer").load("contract/addpreBury.html");
+//            $("#contractId").val("");
+//            $("#preBuryMan").val("");
+//            $("#preBuryTime").val("");
+//            $("#preBuryStatus").val("");
+//            $("#add").css('display','block');
+//            $.ligerDialog.open({title:'添加预埋信息', target: $("#add")});
         }
 
     </script>
@@ -159,7 +157,7 @@
     </style>
 </head>
 <body  style="padding:10px">
-<div id="add" style="display:none">
+<!--<div id="add" style="display:none">
     <form name="form1" method="post" action="" id="form1">
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
@@ -195,7 +193,7 @@
         <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
         <input type="button" value="返回" id="returnBtn" class="l-button l-button-submit" />
     </form>
-</div>
+</div>-->
 <div id="list">
     <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
     <div class="l-clear"></div>

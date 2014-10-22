@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.badDebt.mapper.BadDebtDeviceMapper">
+    <sql id="BadDebtDevice_fields">
+        ID,BADDEBTID,DEVICEID
+    </sql>
+    <resultMap id="BadDebtDeviceResultMap" type="BadDebtDevice">
+        <id property="id" column="ID"/>
+        <result property="badDebtId" column="BADDEBTID"/>
+        <result property="deviceId" column="DEVICEID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="BadDebtDevice"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        bad_debt_device(
+        <include refid="BadDebtDevice_fields" />
+        )
+        VALUES (#{id}, #{badDebtId}, #{deviceId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="BadDebtDevice">
+        UPDATE bad_debt_device
+        <set>
+            <if test="badDebtId != null">BADDEBTID=#{badDebtId},</if>
+            <if test="deviceId != null">DEVICEID=#{deviceId},</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="BadDebtDevice">
+        DELETE FROM bad_debt_device
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
+
+</mapper>

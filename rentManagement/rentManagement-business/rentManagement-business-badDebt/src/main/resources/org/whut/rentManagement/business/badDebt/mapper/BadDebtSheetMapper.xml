@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.badDebt.mapper.BadDebtSheetMapper">
+    <sql id="BadDebtSheet_fields">
+        ID,NUMBER,CARNUMBER,CUSTOMERID,CONTRACTID,HANDLER,STOREHOUSEID,DESCRIPTION,CREATETIME,CREATOR,APPID
+    </sql>
+    <resultMap id="badDebtSheetResultMap" type="BadDebtSheet">
+        <id property="id" column="ID" />
+        <result property="number" column="NUMBER"/>
+        <result property="carNumber" column="CARNUMBER"/>
+        <result property="customerId" column="CUSTOMERID" />
+        <result property="contractId" column="CONTRACTID" />
+        <result property="handler" column="HANDLER" />
+        <result property="storehouseId" column="STOREHOUSEID" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="createTime" column="CREATETIME" />
+        <result property="creator" column="CREATOR" />
+        <result property="appId" column="APPID" />
+    </resultMap>
+    <insert id="add" parameterType="BadDebtSheet"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        bad_debt_sheet(
+        <include refid="BadDebtSheet_fields" />
+        )
+        VALUES (#{id}, #{number},#{carNumber},#{customerId},#{contractId},#{handler},#{storehouseId},#{description}, #{createTime}, #{creator},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="update" parameterType="BadDebtSheet">
+        UPDATE bad_debt_sheet
+        <set>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
+            <if test="customerId!=null">CUSTOMERID=#{customerId},</if>
+            <if test="contractId!=null">CONTRACTID=#{contractId},</if>
+            <if test="handler!=null">HANDLER=#{handler},</if>
+            <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+            <if test="creator!=null">CREATOR=#{creator},</if>
+            <if test="appId!=null">APPID=#{appId},</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+    <delete id="delete" parameterType="BadDebtSheet">
+        DELETE FROM bad_debt_sheet
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="badDebtSheetResultMap">
+        SELECT *
+        FROM bad_debt_sheet
+        WHERE appId=#{appId}
+    </select>
+    <select id="getBadDebtSheetId" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+         FROM bad_debt_sheet
+         WHERE number=#{number} AND carNumber=#{carNumber} AND customerId=#{customerId} AND contractId=#{contractId} AND storehouseId=#{storehouseId} AND appId=#{appId}
+    </select>
+</mapper>

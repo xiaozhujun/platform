@@ -22,4 +22,7 @@
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
     <bean id="departmentService" class="org.whut.rentManagement.business.deptAndEmployee.service.DepartmentService" depends-on="mappers"/>
     <bean id="carDriverService" class="org.whut.rentManagement.business.deptAndEmployee.service.CarDriverService" depends-on="mappers"/>
+    <bean id="employeeService" class="org.whut.rentManagement.business.deptAndEmployee.service.EmployeeService" depends-on="mappers"/>
+    <bean id="skillService" class="org.whut.rentManagement.business.deptAndEmployee.service.SkillService" depends-on="mappers"/>
+
 </beans>

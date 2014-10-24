@@ -18,7 +18,7 @@
             useGeneratedKeys="true">
 
         INSERT INTO
-        installation(
+        prebury(
         <include refid="PreBury_fields" />
         )
         VALUES (#{id}, #{contractId},#{preBuryMan},#{preBuryTime},#{preBuryStatus},#{appId});
@@ -35,9 +35,9 @@
     <update id="update" parameterType="PreBury">
         UPDATE prebury
         <set>
-            <if test="type!=null">preBuryMan=#{PREBURYMAN},</if>
-            <if test="installDeviceId!=null">preBuryStatus=#{PREBURYSTATUS},</if>
-            <if test="installMan!=null">preBuryTime=#{PREBURYTIME},</if>
+            <if test="preBuryMan!=null">PREBURYMAN=#{preBuryMan},</if>
+            <if test="preBuryStatus!=null">PREBURYSTATUS=#{preBuryStatus},</if>
+            <if test="preBuryTime!=null">PREBURYTIME=#{preBuryTime},</if>
         </set>
         WHERE ID=#{id}
     </update>

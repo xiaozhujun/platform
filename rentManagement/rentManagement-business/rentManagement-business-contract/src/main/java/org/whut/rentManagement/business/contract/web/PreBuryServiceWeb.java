@@ -8,6 +8,7 @@ import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.contract.entity.Installation;
 import org.whut.rentManagement.business.contract.entity.PreBury;
 import org.whut.rentManagement.business.contract.entity.subInstallation;
+import org.whut.rentManagement.business.contract.entity.subPreBury;
 import org.whut.rentManagement.business.contract.service.InstallationService;
 import org.whut.rentManagement.business.contract.service.PreBuryService;
 
@@ -60,7 +61,7 @@ public class PreBuryServiceWeb {
         try{
             date = sdf.parse(preBuryTime);
         }catch (Exception e){
-            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
         }
         Long id;
         try {
@@ -85,25 +86,24 @@ public class PreBuryServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/update")
     @POST
-    public String update(@FormParam("id") String id ,@FormParam("preBuryMan") String preBuryMan,
-                         @FormParam("preBuryStatus") String preBuryStatus,@FormParam("preBuryTime") String preBuryTime)  {
-        if(preBuryMan==null||"".equals(preBuryMan.trim())
-                ||preBuryStatus==null||"".equals(preBuryStatus.trim())||preBuryTime==null||"".equals(preBuryTime.trim())){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
+    public String update(@FormParam("jsonString")String jsonString)  {
+        subPreBury subprebury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,subPreBury.class);
+        if(subprebury.getPreBuryStatus()==null||"".equals(subprebury.getPreBuryStatus().trim())){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "预埋状态不能为空!");
         }
         long appId = UserContext.currentUserAppId();
         Date date = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try{
-            date = sdf.parse(preBuryTime);
+            date = sdf.parse(subprebury.getPreBuryTime());
         }catch (Exception e){
             JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
         }
         PreBury preBury = new PreBury();
-        preBury.setId(Long.parseLong(id));
+        preBury.setId(subprebury.getId());
         preBury.setPreBuryTime(date);
-        preBury.setPreBuryStatus(preBuryStatus);
-        preBury.setPreBuryMan(preBuryMan);
+        preBury.setPreBuryStatus(subprebury.getPreBuryStatus());
+        preBury.setPreBuryMan(subprebury.getPreBuryMan());
         preBury.setAppId(appId);
         preBuryService.update(preBury);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"更新成功!");

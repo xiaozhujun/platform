@@ -20,14 +20,10 @@
             $("#submitBtn").click(function(){
                 var data={};
                 data.contractId=$("input[name='contractId']").val();
-                data.type=$("input[name='type']").val();
-                data.installDeviceId=$("input[name='installDeviceId']").val();
-                data.installMan=$("input[name='installMan']").val();
-                data.installTime=$("input[name='installTime']").val();
-                data.installStatus=$("input[name='installStatus']").val();
-
-
-                $.post($.URL.installation.add,data,addCallBack,"json");
+                data.preBuryMan=$("input[name='preBuryMan']").val();
+                data.preBuryTime=$("input[name='preBuryTime']").val();
+                data.preBuryStatus=$("input[name='preBuryStatus']").val();
+                $.post($.URL.prebury.add,data,addCallBack,"json");
             })
             function addCallBack(data){
                 if(data.code==200){
@@ -39,18 +35,16 @@
                 }
             }
             $("#returnBtn").click(function(){
-                $("#mainContainer").load("contract/installation.html");
+                $("#mainContainer").load("contract/prebury.html");
             })
             var groupicon = "lib/ligerUI/skins/icons/communication.gif";
             $("#form1").ligerForm({
                 inputWidth: 170, labelWidth: 90, space: 40,
                 fields: [
                     { display: "合同号", name: "contractId", newline: true, type: "text" , group: "基础信息", groupicon: groupicon},
-                    { display: "安装类型", name: "type", newline: true},
-                    { display: "安装设备号", name: "installDeviceId", newline: true},
-                    { display: "安装人员", name: "installMan", newline: true},
-                    { display: "安装日期", name: "installTime", newline: true, type: "date"},
-                    { display: "安装状态", name: "installStatus", newline: true}
+                    { display: "预埋人员", name: "preBuryMan", newline: true},
+                    { display: "预埋时间", name: "preBuryTime", newline: true, type: "date"},
+                    { display: "预埋状态", name: "preBuryStatus", newline: true}
                 ]
             })
 

@@ -20,6 +20,7 @@ public class SubBadDebtSheet {
     private String createTime;  //定义成String而不是date方便json传值
     private String creator;
     private long appId;
+    private String deviceNumber;
 
     public long getId() {
         return id;
@@ -107,5 +108,13 @@ public class SubBadDebtSheet {
 
     public void setAppId(long appId) {
         this.appId = appId;
+    }
+
+    public String getDeviceNumber() {
+        return deviceNumber;
+    }
+
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
     }
 }

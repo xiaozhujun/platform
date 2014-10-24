@@ -12,7 +12,6 @@ import org.whut.rentManagement.business.badDebt.mapper.BadDebtDeviceMapper;
  * To change this template use File | Settings | File Templates.
  */
 public class BadDebtDeviceService {
-
     @Autowired
     private BadDebtDeviceMapper badDebtDeviceMapper;
 

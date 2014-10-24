@@ -24,7 +24,6 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-
     <update id="update" parameterType="BadDebtDevice">
         UPDATE bad_debt_device
         <set>
@@ -33,7 +32,6 @@
         </set>
         WHERE ID = #{id};
     </update>
-
     <delete id="delete" parameterType="BadDebtDevice">
         DELETE FROM bad_debt_device
         <where>

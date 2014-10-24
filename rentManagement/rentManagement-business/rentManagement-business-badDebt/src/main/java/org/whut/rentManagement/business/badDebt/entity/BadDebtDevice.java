@@ -8,31 +8,31 @@ package org.whut.rentManagement.business.badDebt.entity;
  * To change this template use File | Settings | File Templates.
  */
 public class BadDebtDevice {
-    private int id;
-    private int badDebtId;
-    private int deviceId;
+    private long id;
+    private long badDebtId;
+    private long deviceId;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getBadDebtId() {
+    public long getBadDebtId() {
         return badDebtId;
     }
 
-    public void setBadDebtId(int badDebtId) {
+    public void setBadDebtId(long badDebtId) {
         this.badDebtId = badDebtId;
     }
 
-    public int getDeviceId() {
+    public long getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(int deviceId) {
+    public void setDeviceId(long deviceId) {
         this.deviceId = deviceId;
     }
 }

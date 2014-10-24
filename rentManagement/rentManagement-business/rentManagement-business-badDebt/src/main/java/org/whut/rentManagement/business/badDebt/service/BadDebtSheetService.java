@@ -5,6 +5,7 @@ import org.whut.rentManagement.business.badDebt.entity.BadDebtSheet;
 import org.whut.rentManagement.business.badDebt.mapper.BadDebtSheetMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +30,7 @@ public class BadDebtSheetService {
         badDebtSheetMapper.delete(badDebtSheet);
     }
 
-    public List<BadDebtSheet> getListByAppId(long appId){
+    public List<Map<String,Object>> getListByAppId(long appId){
         return badDebtSheetMapper.getListByAppId(appId);
     }
 

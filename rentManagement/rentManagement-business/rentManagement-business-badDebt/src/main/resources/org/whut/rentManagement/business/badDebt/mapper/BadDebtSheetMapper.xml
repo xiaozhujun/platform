@@ -53,11 +53,12 @@
             <if test="id != null">ID=#{id}</if>
         </where>
     </delete>
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="badDebtSheetResultMap">
-        SELECT *
-        FROM bad_debt_sheet
-        WHERE appId=#{appId}
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+        SELECT a.*,b.number
+        FROM bad_debt_sheet a left join device b on a.appId=b.appId
     </select>
+
     <select id="getBadDebtSheetId" parameterType="map" resultType="java.lang.Long">
         SELECT id
          FROM bad_debt_sheet

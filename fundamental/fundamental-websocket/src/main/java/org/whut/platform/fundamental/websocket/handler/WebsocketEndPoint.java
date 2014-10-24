@@ -108,7 +108,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         for(int i=0;i<sNum.length();i++){
             WebSocketSession webSocketSession=wsuImpMap.get(appId+":"+userId+":"+sNum.get(i).toString());
             List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
-            webSocketSessionList.remove(webSocketSession);
+             webSocketSessionList.remove(webSocketSession);
             wsuImpMap.remove(appId+":"+userId+":"+sNum.get(i).toString());
         }
     }

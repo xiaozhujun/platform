@@ -93,6 +93,12 @@
             "update":"rs/prebury/update",
             "delete":"rs/prebury/delete" ,
             "list":"rs/prebury/list"
+        },
+        "bad_Debt_Sheet":{
+            "add":"rs/bad_Debt_Sheet/add",
+            "update":"rs/bad_Debt_Sheet/update",
+            "delete":"rs/bad_Debt_Sheet/delete",
+            "list":"rs/bad_Debt_Sheet/list"
         }
     }
 })(jQuery);

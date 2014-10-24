@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="badDebtDeviceService" class="org.whut.rentManagement.business.badDebt.service.BadDebtDeviceService" depends-on="mappers"/>
+    <bean id="badDebtSheetService" class="org.whut.rentManagement.business.badDebt.service.BadDebtSheetService" depends-on="mappers"/>
+</beans>

@@ -39,6 +39,12 @@
             "update":"rs/installation/update",
             "delete":"rs/installation/delete"
         },
+        "employee":{
+            "list":"rs/employee/list",
+            "add":"rs/employee/add",
+            "update":"rs/employee/update",
+            "delete":"rs/employee/delete"
+        },
         "department":{
             "add":"rs/department/add",
             "list":"rs/department/list",

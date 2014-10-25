@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+</title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(function()
+        {
+            $("#submitBtn").click(function(){
+                var data={};
+                data.departmentId=$("input[name='departmentId']").val();
+                data.name=$("input[name='name']").val();
+                data.sex=$("input[name='sex']").val();
+                data.skillId=$("input[name='skillId']").val();
+                data.telephone=$("input[name='telephone']").val();
+                data.email=$("input[name='email']").val();
+                data.employedTime=$("input[name='employedTime']").val();
+                data.position=$("input[name='position']").val();
+                $.post($.URL.employee.add,data,addCallBack,"json");
+            })
+            function addCallBack(data){
+                if(data.code==200){
+                    $.ligerDialog.success("操作成功！");
+                }
+                else if(data.code==500)
+                {
+                    $.ligerDialog.error(data.message);
+                }
+            }
+            $("#returnBtn").click(function(){
+                $("#mainContainer").load("deptAndEmployee/employee.html");
+            })
+            var groupicon = "lib/ligerUI/skins/icons/communication.gif";
+            $("#form1").ligerForm({
+                inputWidth: 170, labelWidth: 90, space: 40,
+                fields: [
+                    { display: "员工", name: "name", newline: true, type: "text" , group: "基础信息", groupicon: groupicon},
+                    { display: "部门号", name: "departmentId", newline: true},
+                    { display: "性别", name: "sex", newline: true},
+                    { display: "技能", name: "skillId", newline: true},
+                    { display: "电话", name: "telephone", newline: true},
+                    { display: "邮箱", name: "email", newline: true},
+                    { display: "雇佣日期", name: "employedTime", newline: true, type: "date"},
+                    { display: "位置", name: "position", newline: true}
+                ]
+            })
+
+        })
+    </script>
+    <style type="text/css">
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+    </style>
+
+</head>
+
+<body style="padding:10px">
+<div id="add">
+    <form name="form1" method="post" action="" id="form1">
+
+    </form>
+    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+    <input type="button" value="返回" id="returnBtn" class="l-button l-button-reset" />
+</div>
+<div style="display:none">
+    <!--  数据统计代码 --></div>
+</body>
+</html>

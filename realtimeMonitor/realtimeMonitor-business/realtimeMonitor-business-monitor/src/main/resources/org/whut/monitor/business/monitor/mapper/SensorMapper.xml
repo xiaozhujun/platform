@@ -171,4 +171,9 @@
         FROM sensor
         WHERE sensor.number=#{sNum}
     </select>
+    <select id="getGroupIdBySNum" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT sensor.groupId
+        FROM sensor
+        WHERE sensor.number=#{sNum}
+    </select>
 </mapper>

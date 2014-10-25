@@ -33,4 +33,5 @@ public interface SensorMapper extends AbstractMapper<Sensor>{
     public String getCNumBySNum(String sNum);
     public List<String> getSensorNumByCNum(String CNum);
     public Long getAppIdBySNum(String sNum);
+    public Long getGroupIdBySNum(String sNum);
 }

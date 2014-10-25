@@ -1,14 +1,11 @@
 (function($){
-    var baseUrl="http://www.cseicms.com/realtimeMonitor/"
+    var baseUrl="http://localhost:8080/realtimeMonitor/";
     $.URL = {
         "power":{
             "add":baseUrl+"rs/power/add",
             "update":baseUrl+"rs/power/update",
             "delete":baseUrl+"rs/power/delete",
             "list":baseUrl+"rs/power/list"
-        },
-        "authority":{
-            "add":baseUrl+"rs/authority/add"
         },
         "user":{
             "add":baseUrl+"rs/user/add",
@@ -85,7 +82,7 @@
             "query":baseUrl+"rs/report/query/"
         } ,
         "websocket":{
-            "register":baseUrl+"ws://www.cseicms.com/realtimeMonitor/websocket/hello"
+            "register":"ws://localhost:8080/realtimeMonitor/websocket/hello"
         }
     }
 })(jQuery);

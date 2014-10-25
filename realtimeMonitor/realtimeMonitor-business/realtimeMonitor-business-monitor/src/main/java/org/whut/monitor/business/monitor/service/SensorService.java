@@ -2,6 +2,7 @@ package org.whut.monitor.business.monitor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.monitor.entity.Sensor;
+import org.whut.monitor.business.monitor.mapper.GroupMapper;
 import org.whut.monitor.business.monitor.mapper.SensorMapper;
 
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Map;
 public class SensorService {
     @Autowired
     private SensorMapper sensorMapper;
+    @Autowired
+    private GroupMapper groupMapper;
     public long getSensorId(String number,long appId){
          return sensorMapper.getSensorId(number,appId);
     }
@@ -86,4 +89,11 @@ public class SensorService {
     public Long  getAppIdBySNum(String sNum) {
         return sensorMapper.getAppIdBySNum(sNum);
     }
+
+    public String  getGroupNameBySNum(String sNum) {
+        Long id=sensorMapper.getGroupIdBySNum(sNum);
+         return groupMapper.getNameById(id);
+
+    }
+
 }

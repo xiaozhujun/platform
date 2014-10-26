@@ -34,7 +34,11 @@ public class BadDebtSheetService {
         return badDebtSheetMapper.getListByAppId(appId);
     }
 
-    public long getBadDebtSheetId(String number,String carNumber,long customerId,long contractId,long storehouseId,long appId){
-        return badDebtSheetMapper.getBadDebtSheetId(number,carNumber,customerId,contractId,storehouseId,appId);
+    public Long getBadDebtId(String number,String carNumber,long customerId,long contractId,long storehouseId,long appId){
+        return badDebtSheetMapper.getBadDebtId(number,carNumber,customerId,contractId,storehouseId,appId);
+    }
+
+    public BadDebtSheet getById(long id){
+        return badDebtSheetMapper.getById(id);
     }
 }

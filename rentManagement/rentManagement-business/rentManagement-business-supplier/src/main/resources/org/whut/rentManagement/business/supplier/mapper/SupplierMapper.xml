@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.whut.rentManagement.business.customer.mapper.CustomerMapper">
-    <sql id="customer_fields">
-          ID,NAME,DESCRIPTION,ADDRESS,LINKMAN,TELEPHONE,EMAIL,QQ,BANK,BANKACCOUNT,CREATETIME,APPID
+<mapper namespace="org.whut.rentManagement.business.supplier.mapper.SupplierMapper">
+    <sql id="supplier_fields">
+          ID,NAME,DESCRIPTION,ADDRESS,LINKMAN,TELEPHONE,EMAIL,QQ,CREATETIME,APPID
     </sql>
-    <resultMap id="customerResultMap" type="customer">
+    <resultMap id="supplierResultMap" type="supplier">
         <id property="id" column="ID" />
         <result property="name" column="NAME" />
         <result property="description" column="DESCRIPTION"/>
@@ -15,27 +15,24 @@
         <result property="telephone" column="TELEPHONE"/>
         <result property="email" column="EMAIL"/>
         <result property="qq" column="QQ"/>
-        <result property="bank" column="BANK"/>
-        <result property="bankAccount" column="BANKACCOUNT"/>
         <result property="createTime" column="CREATETIME"/>
         <result property="appId" column="APPID"/>
     </resultMap>
-    <insert id="add" parameterType="customer"  keyProperty="id"
+    <insert id="add" parameterType="supplier"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
-        customer(
-        <include refid="customer_fields" />
+        supplier(
+        <include refid="supplier_fields" />
         )
-        VALUES (#{id},#{name},#{description},#{address},#{linkman},#{telephone},#{email},#{qq},
-        #{bank},#{bankAccount},#{createTime},#{appId});
+        VALUES (#{id},#{name},#{description},#{address},#{linkman},#{telephone},#{email},#{qq},#{createTime},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
 
-    <update id="update" parameterType="customer">
-        UPDATE customer
+    <update id="update" parameterType="supplier">
+        UPDATE supplier
         <set>
             <if test="name != null">NAME=#{name},</if>
             <if test="description != null">DESCRIPTION=#{description},</if>
@@ -44,15 +41,13 @@
             <if test="telephone != null">TELEPHONE=#{telephone},</if>
             <if test="email != null">EMAIL=#{email},</if>
             <if test="qq != null">QQ=#{qq},</if>
-            <if test="bank != null">BANK=#{bank},</if>
-            <if test="bankAccount != null">BANKACCOUNT=#{bankAccount},</if>
             <if test="appId != null">APPID=#{appId},</if>
         </set>
         WHERE ID = #{id};
     </update>
 
     <delete id="delete" parameterType="User">
-        DELETE FROM  customer
+        DELETE FROM  supplier
         <where>
             <if test="id != null">ID=#{id}</if>
 
@@ -60,10 +55,10 @@
         </where>
     </delete>
 
-    <select id="findByCondition" parameterType="map" resultMap="customerResultMap">
+    <select id="findByCondition" parameterType="map" resultMap="supplierResultMap">
         SELECT
-        <include refid="customer_fields"/>
-        FROM customer
+        <include refid="supplier_fields"/>
+        FROM supplier
         <where>
             <if test="appId!=null">APPID=#{appId}</if>
             <if test="name!=null">AND NAME=#{name}</if>
@@ -73,8 +68,6 @@
             <if test="telephone!=null">AND TELEPHONE=#{telephone}</if>
             <if test="email!=null">AND EMAIL=#{email}</if>
             <if test="qq!=null">AND QQ=#{qq}</if>
-            <if test="bank!=null">AND BANK=#{bank}</if>
-            <if test="bankAccount!=null">AND BANKACCOUNT=#{bankAccount}</if>
             <if test="createTime!=null">AND CREATETIME=#{createTime}</if>
         </where>
     </select>
@@ -82,20 +75,20 @@
 
     <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
         SELECT  id
-        FROM customer
+        FROM supplier
         WHERE NAME=#{name}  AND APPID=#{appId}
     </select>
 
     <select id="getIdByTelephone" parameterType="map" resultType="java.lang.Long">
         SELECT  id
-        FROM customer
+        FROM supplier
         WHERE TELEPHONE=#{telephone}
     </select>
 
-    <select id="getByNameAndLinkman" parameterType="map" resultMap="customerResultMap">
+    <select id="getByNameAndLinkman" parameterType="map" resultMap="supplierResultMap">
         select
-        <include refid="customer_fields"/>
-        from customer
+        <include refid="supplier_fields"/>
+        from supplier
         <where>
             <if test="name !=null"> NAME LIKE #{name}</if>
             <if test="linkman !=null">and LINKMAN like #{linkman}</if>

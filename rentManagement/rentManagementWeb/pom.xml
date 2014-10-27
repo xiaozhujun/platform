@@ -90,6 +90,11 @@
         </dependency>
         <dependency>
             <groupId>platform</groupId>
+            <artifactId>rentManagement-business-supplier</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>platform</groupId>
             <artifactId>rentManagement-business-device</artifactId>
             <version>${project.version}</version>
         </dependency>

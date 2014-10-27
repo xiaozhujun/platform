@@ -31,7 +31,15 @@
             "add":"rs/customer/add",
             "update":"rs/customer/update",
             "delete":"rs/customer/delete",
-            "list":"rs/customer/list"
+            "list":"rs/customer/list",
+            "listCustomerByNameAndLinkman":"rs/customer/listCustomerByNameAndLinkman"
+        },
+        "supplier":{
+            "add":"rs/supplier/add",
+            "update":"rs/supplier/update",
+            "delete":"rs/supplier/delete",
+            "list":"rs/supplier/list",
+            "listSupplierByNameAndLinkman":"rs/supplier/listSupplierByNameAndLinkman"
         },
         "installation":{
             "list":"rs/installation/list",

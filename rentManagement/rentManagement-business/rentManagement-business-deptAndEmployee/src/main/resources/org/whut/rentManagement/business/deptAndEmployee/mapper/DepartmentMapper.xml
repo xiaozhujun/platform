@@ -29,7 +29,9 @@
         update department
         <set>
             <if test="name!=null">NAME=#{name},</if>
-            <if test="description!=null">DESCRIPTION=#{description}</if>
+            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="appId!=null">APPID=#{appId},</if>
         </set>
         where ID=#{id};
     </update>

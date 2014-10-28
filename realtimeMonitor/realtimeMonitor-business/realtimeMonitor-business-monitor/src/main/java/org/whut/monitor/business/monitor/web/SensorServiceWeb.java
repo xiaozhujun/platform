@@ -496,5 +496,23 @@ public class SensorServiceWeb {
         long dataType = sensorService.getDataTypeByIdAndAppId(id,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(dataType, JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getListByGroupName")
+    @POST
+    public String getListByGroupName(@FormParam("groupName")String groupName){
+        long appId=UserContext.currentUserAppId();
+        List<Map<String,String>> listByGroupName = sensorService.getListByGroupName(appId,groupName);
+        return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupName, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getSensorsByAreaName")
+    @POST
+    public String getSensorsByAreaName(@FormParam("AreaName") String AreaName,@FormParam("GroupName") String GroupName){
+        logger.info("得到AreaName为"+AreaName);
+        logger.info("得到GroupName为"+GroupName);
+        long appId=UserContext.currentUserAppId();
+        List<Sensor> list=sensorService.getSensorsByAreaName(AreaName,GroupName,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }
 

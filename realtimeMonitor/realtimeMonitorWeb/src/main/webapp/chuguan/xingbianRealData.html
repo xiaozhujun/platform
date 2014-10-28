@@ -10,29 +10,138 @@
     <link rel="stylesheet" href="css/lable.css"/>
     <link rel="stylesheet" href="css/realTimeLable.css"/>
     <link rel="stylesheet" href="css/tree.css"/>
+    <script src="lib/json2.js" type="text/javascript"></script>
     <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <!--<script src="js/jquery-1.10.2.js" type="text/javascript"></script>-->
     <script src="js/jquery.json-2.4.min.js" type="text/javascript"></script>
+    <script src="js/config.js" type="text/javascript"></script>
+    <script src="js/highcharts.js" type="text/javascript"></script>
+    <script src="js/chartTool.js" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
-            $("#tankSelect").click(function(){
-                $("#selectOptions").toggle();
-            });
-
-            $("#selectOptions li a").click(function(){
-                $("#selectTank").html($(this).text());
-                $("#selectOptions").hide();
-            });
-
-            $("div.tree-node").click(function(){
-               $(this).parent().find("ul").toggle();
-               $(this).parent().find(".tree-hit").toggleClass("tree-collapsed tree-expanded");
-            });
-
+            $.post($.URL.group.list,null,gridCallback);
             $("#backBtn").click(function(){
                 window.parent.jumpURL("xingbian.html");
             });
         });
+        var cgData="";
+        var groupName="";
+        function gridCallback(data) {
+            if(data.code == 200) {
+                cgData = data.data;
+                groupName=cgData[0].name;
+                creatSelectHead(cgData);
+                creatMenu(groupName);
+                $("div.tree-node").click(function(){
+                    $(this).parent().find("ul").toggle();
+                    $(this).parent().find(".tree-hit").toggleClass("tree-collapsed tree-expanded");
+                });
+                $("#tankSelect").click(function(){
+                    $("#selectOptions").toggle();
+                });
+                $("#selectOptions li a").click(function(){
+                    $("#selectTank").html($(this).text());
+                    $("#selectOptions").hide();
+                    groupName=$(this).text();
+                    changeGroupName(groupName);
+                    $("div.tree-node").click(function(){
+                        $(this).parent().find("ul").toggle();
+                        $(this).parent().find(".tree-hit").toggleClass("tree-collapsed tree-expanded");
+                    });
+                });
+            }
+            connect();
+        }
+        function changeGroupName(groupName){
+            creatMenu(groupName);
+        }
+        function creatSelectHead(data){
+            var tableHead="";
+            if(navigator.appName.indexOf("Explorer")>-1)    {
+                document.getElementById("selectTank").innerText=cgData[0].name;
+            }
+            else
+                document.getElementById("selectTank").textContent=cgData[0].name;
+            for(var i=0 ;i<data.length ; i++){
+                tableHead=tableHead+ '<li data-value="'+i+1+'"><a href="#" tabindex="-1">'+data[i].name+'</a></li>'
+            }
+            document.getElementById("selectOptions").innerHTML=tableHead;
+
+        }
+        var areaName="";
+        var sNum="";
+        function connect() {
+            var url= $.URL.websocket.register;
+            var s="{c:'Subscribe',sensors:["+sNum+"]}";
+            console.log("s为："+s);
+            ws =  new WebSocket(url);
+            ws.onopen = function () {
+                console.log('Info: connection opened.');
+                ws.send(s);
+            } ;
+            ws.onclose = function (event) {
+                console.log('Info: connection closed.');
+                console.log(event);			};
+            ws.onmessage = function (event) {
+                var jsonData = eval("(" +event.data+ ")");
+                wsData=jsonData.sensors[0].data;
+                initCharts(wsData) ;
+            };
+        }
+        function initCharts(data){
+            drawChart("#DynamicChart861722", data, "mV");
+        }
+
+        var num=1;
+        function creatMenuHead(data){
+            var menuHead="";
+                for(var i=0 ;i<data.length ; i++){
+                    $.ajax({
+                        url:$.URL.sensor.getSensorsByAreaName,
+                        async:false,
+                        dataType:'json',
+                        type:'POST',
+                        data:{"AreaName":data[i],"GroupName":groupName},
+                        success:(function(sensoResult){
+                            menuHead=menuHead+ '<li  class="tankArea" id="tankArea">'+
+                                    '<div class="tree-node tree-node-extStyle tree-node-selected" node-id="1" style="cursor: pointer;">'+
+                                    '<span class="tree-hit tree-expanded"></span>'+
+                                    '<span class="tree-icon tree-folder icon-blank tree-folder-open"></span>'+
+                                    '<span class="tree-title">'+data[i]+'</span>'+
+                                    '</div><ul style="display: block;">';
+                            var result=sensoResult.data;
+                            console.log("result.length为："+result.length);
+                            for(var j=0 ;j<result.length ;j++){
+                                if(i==0){
+                                    sNum= result[0].number;
+                                }
+                                console.log("result[j].name为："+result[j].number);
+                                menuHead=menuHead+ ' <li><div class="tree-node" node-id="'+num+'" style="cursor: pointer;">' +
+                                        '<span class="tree-indent"></span>' +
+                                        '<span class="tree-indent"></span>' +
+                                        '<span class="tree-icon tree-file icon-blank"></span>' +
+                                        '<span class="tree-title">'+result[j].number+'</span></div></li>'
+                                  num=num+1;
+                            }
+                            menuHead=menuHead+ '</ul> </li>';
+                        })
+                    });
+                }
+            document.getElementById("sensorMenu").innerHTML=menuHead;
+        }
+        function creatMenu(data){
+           $.ajax({
+               url:$.URL.area.getAreaListByGroupName,
+               async:false,
+               dataType:'json',
+               type:'POST',
+               data:{"groupName":data},
+               success:(function(areaResult){
+                   areaName = areaResult.data;
+                   creatMenuHead(areaName);
+
+               })
+           });
+       }
     </script>
 </head><body>
 <div id="workspace" style="background-color: rgb(255, 255, 255); width: 1280px; height: 1024px; opacity: 1;">
@@ -42,154 +151,15 @@
          style="z-index: 1000; width: 1008.26px; height: 437.451px; left: 266px; top: 15px; border-radius: 0px; background: none no-repeat scroll center center / 100% 100% rgb(255, 255, 255); border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
     <div class="PanelSty agi-panel" id="Panel975225"
          style="z-index: 1000; width: 1007.32px; height: 338.989px; left: 267px; top: 462px; border-radius: 0px; background: none no-repeat scroll center center / 100% 100% rgb(255, 255, 255); border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0);"></div>
+
     <div class="PanelSty agi-panel tree" id="Panel27733"
          style="z-index: 3000; width: 238.009px; height: 715.956px; left: 8px; top: 77px; border-radius: 0px; background: none no-repeat scroll center center / 100% 100% rgb(255, 255, 255); border-width: 0px; border-style: solid; border-color: rgb(255, 255, 255); overflow-y: scroll;">
-        <ul>
-            <li class="tankArea">
-                <div class="tree-node tree-node-extStyle tree-node-selected" node-id="1" style="cursor: pointer;"><span
-                        class="tree-hit tree-expanded"></span><span
-                        class="tree-icon tree-folder icon-blank tree-folder-open"></span><span class="tree-title">上部</span>
-                </div>
-                <ul style="display: block;">
-                    <li>
-                        <div class="tree-node" node-id="10" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0009</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="11" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0010</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="12" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0011</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="13" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0012</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="14" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0013</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="15" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0014</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="16" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0015</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="17" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">上部0016</span></div>
-                    </li>
-                </ul>
-            </li>
-            <li class="tankArea">
-                <div class="tree-node tree-node-extStyle" node-id="18" style="cursor: pointer;"><span
-                        class="tree-hit tree-collapsed"></span><span class="tree-icon tree-folder icon-blank"></span><span
-                        class="tree-title">中部</span></div>
-                <ul style="display: none;">
-                    <li>
-                        <div class="tree-node" node-id="27" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0025</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="28" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0026</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="29" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0027</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="30" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0028</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="31" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0029</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="32" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0030</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="33" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0031</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="34" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">中部0032</span></div>
-                    </li>
-                </ul>
-            </li>
-            <li class="tankArea">
-                <div class="tree-node tree-node-extStyle" node-id="35" style="cursor: pointer;"><span
-                        class="tree-hit tree-collapsed"></span><span class="tree-icon tree-folder icon-blank"></span><span
-                        class="tree-title">下部</span></div>
-                <ul style="display: none;">
-                    <li>
-                        <div class="tree-node" node-id="44" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0041</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="45" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0042</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="46" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0043</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="47" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0044</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="48" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0045</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="49" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0046</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="50" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0047</span></div>
-                    </li>
-                    <li>
-                        <div class="tree-node" node-id="51" style="cursor: pointer;"><span class="tree-indent"></span><span
-                                class="tree-indent"></span><span class="tree-icon tree-file icon-blank"></span><span
-                                class="tree-title">下部0048</span></div>
-                    </li>
-                </ul>
-            </li>
+        <ul id="sensorMenu">
+<!--此处代码自动生成  -->
         </ul>
 
     </div>
+
     <div class="PanelSty selectPanelSty dropdownControlShell" id="Panel_DropDownList338998" recivedata="true"
          style="width: 145px; height: 35px; left: 70px; top: 16px; z-index: 3001;">
         <div class="" id="head_DropDownList338998" style="display: none;"><span>DropDownList338998</span></div>
@@ -200,19 +170,13 @@
                     <li style="height: 25px;" class="dropdown"><a id="tankSelect" data-toggle="dropdown"
                                                                   class="dropdown-toggle dropdown-theme1-a"
                                                                   role="button" href="#"
-                                                                  style="height: 22px; padding: 0px; vertical-align: top; overflow: hidden; color: rgb(255, 255, 255); background: none repeat scroll 0% 0% rgb(170, 170, 255); border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0); border-radius: 5px; font-size: 13px;"><span
-                            class="DropDownListTextOver" style="width: 123px;" id="selectTank">罐_1</span>
+                                                                  style="height: 22px; padding: 0px; vertical-align: top; overflow: hidden; color: rgb(255, 255, 255); background: none repeat scroll 0% 0% rgb(170, 170, 255); border-width: 0px; border-style: solid; border-color: rgb(0, 0, 0); border-radius: 5px; font-size: 13px;">
+                        <span class="DropDownListTextOver" style="width: 123px;" id="selectTank">罐_1</span>
 
                         <div style="float:left; margin-left: 0px;" class="downArrow"></div>
                     </a>
                         <ul id="selectOptions" role="menu" class="dropdown-menu" style="overflow-y: auto;">
-                            <li data-value="1"><a href="#" tabindex="-1">罐_1</a></li>
-                            <li data-value="2"><a href="#" tabindex="-1">罐_2</a></li>
-                            <li data-value="3"><a href="#" tabindex="-1">罐_3</a></li>
-                            <li data-value="4"><a href="#" tabindex="-1">罐_4</a></li>
-                            <li data-value="5"><a href="#" tabindex="-1">罐_5</a></li>
-                            <li data-value="6"><a href="#" tabindex="-1">罐_6</a></li>
-                            <li data-value="7"><a href="#" tabindex="-1">罐_7</a></li>
+                   <!--此处动态生成  -->
                         </ul>
                     </li>
                 </ul>
@@ -220,8 +184,10 @@
         </div>
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
+
+
     <div class="PanelSty selectPanelSty" id="Panel_Label592272" recivedata="true"
-         style="width: 28px; height: 29px; left: 282px; top: 689px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1019;">
+         style="width: 28px; height: 29px; left: 282px; top: 689px; font-weight: normal; font-family: '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1019;">
         <div class="" id="head_Label592272" style="display: none;"><span>Label592272</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label592272">
@@ -232,7 +198,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">态
+                                    id="label2">态
                                 </td>
                             </tr>
                             </tbody>
@@ -245,7 +211,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label409538" recivedata="true"
-         style="width: 69px; height: 29px; left: 412px; top: 493px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 3012; opacity: 0;">
+         style="width: 69px; height: 29px; left: 412px; top: 493px; font-weight: normal; font-family: '微软雅黑' background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 3012; opacity: 0;">
         <div class="" id="head_Label409538" style="display: none;"><span>Label409538</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label409538">
@@ -256,7 +222,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 12px; color: rgb(66, 66, 66); text-align: center;"
-                                    id="labelObjId">开始时间:
+                                    id="label3">开始时间:
                                 </td>
                             </tr>
                             </tbody>
@@ -269,7 +235,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label784372" recivedata="true"
-         style="width: 71px; height: 29px; left: 981px; top: 492px; border-radius: 5px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% rgb(170, 170, 255); border: 1px solid rgb(195, 195, 195); z-index: 3011; opacity: 0;">
+         style="width: 71px; height: 29px; left: 981px; top: 492px; border-radius: 5px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% rgb(170, 170, 255); border: 1px solid rgb(195, 195, 195); z-index: 3011; opacity: 0;">
         <div class="" id="head_Label784372" style="display: none;"><span>Label784372</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label784372">
@@ -280,7 +246,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 12px; color: rgb(255, 255, 255); text-align: center;"
-                                    id="labelObjId">数据导出
+                                    id="label1">数据导出
                                 </td>
                             </tr>
                             </tbody>
@@ -293,7 +259,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label919489" recivedata="true"
-         style="width: 46px; height: 32px; left: 10px; top: 15px; border-radius: 8px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% rgb(170, 170, 255); border: 0px solid rgb(0, 0, 0); z-index: 3002;">
+         style="width: 46px; height: 32px; left: 10px; top: 15px; border-radius: 8px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% rgb(170, 170, 255); border: 0px solid rgb(0, 0, 0); z-index: 3002;">
         <div class="" id="head_Label919489" style="display: none;"><span>Label919489</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label919489">
@@ -317,7 +283,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label733437" recivedata="true"
-         style="width: 28px; height: 26px; left: 282px; top: 642px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1018;">
+         style="width: 28px; height: 26px; left: 282px; top: 642px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1018;">
         <div class="" id="head_Label733437" style="display: none;"><span>Label733437</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label733437">
@@ -328,7 +294,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">状
+                                    id="label4">状
                                 </td>
                             </tr>
                             </tbody>
@@ -341,7 +307,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label821957" recivedata="true"
-         style="width: 26px; height: 37px; left: 282px; top: 531px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1016;">
+         style="width: 26px; height: 37px; left: 282px; top: 531px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1016;">
         <div class="" id="head_Label821957" style="display: none;"><span>Label821957</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label821957">
@@ -352,7 +318,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">变
+                                    id="label5">变
                                 </td>
                             </tr>
                             </tbody>
@@ -365,7 +331,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label672867" recivedata="true"
-         style="width: 28px; height: 28px; left: 283px; top: 739px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1020;">
+         style="width: 28px; height: 28px; left: 283px; top: 739px; font-weight: normal; font-family: '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1020;">
         <div class="" id="head_Label672867" style="display: none;"><span>Label672867</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label672867">
@@ -376,7 +342,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">值
+                                    id="label6">值
                                 </td>
                             </tr>
                             </tbody>
@@ -389,7 +355,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label743464" recivedata="true"
-         style="width: 26px; height: 37px; left: 276px; top: 206px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 1018;">
+         style="width: 26px; height: 37px; left: 276px; top: 206px; font-weight: normal; font-family:  '微软雅黑'; border: 0px solid rgb(0, 0, 0); z-index: 1018;">
         <div class="" id="head_Label743464" style="display: none;"><span>Label743464</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label743464">
@@ -400,7 +366,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">点
+                                    id="label7">点
                                 </td>
                             </tr>
                             </tbody>
@@ -413,7 +379,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label431788" recivedata="true"
-         style="width: 26px; height: 37px; left: 276px; top: 154px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 1017;">
+         style="width: 26px; height: 37px; left: 276px; top: 154px; font-weight: normal; font-family:  '微软雅黑'; border: 0px solid rgb(0, 0, 0); z-index: 1017;">
         <div class="" id="head_Label431788" style="display: none;"><span>Label431788</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label431788">
@@ -424,7 +390,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">测
+                                    id="label8">测
                                 </td>
                             </tr>
                             </tbody>
@@ -437,7 +403,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label875150" recivedata="true"
-         style="width: 238px; height: 42px; left: 645px; top: 9px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1015;">
+         style="width: 238px; height: 42px; left: 645px; top: 9px; font-weight: normal; font-family: '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1015;">
         <div class="" id="head_Label875150" style="display: none;"><span>Label875150</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label875150">
@@ -448,7 +414,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">测点实时曲线（可显示多条）
+                                    id="label9">测点实时曲线（可显示多条）
                                 </td>
                             </tr>
                             </tbody>
@@ -461,7 +427,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label847721" recivedata="true"
-         style="width: 235px; height: 29px; left: 645px; top: 461px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1010;">
+         style="width: 235px; height: 29px; left: 645px; top: 461px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1010;">
         <div class="" id="head_Label847721" style="display: none;"><span>Label847721</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label847721">
@@ -472,7 +438,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(0, 0, 0); text-align: center;"
-                                    id="labelObjId">罐_1&mdash;&mdash;实时曲线
+                                    id="label9">罐_1&mdash;&mdash;实时曲线
                                 </td>
                             </tr>
                             </tbody>
@@ -485,7 +451,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label785454" recivedata="true"
-         style="width: 26px; height: 37px; left: 276px; top: 261px; font-weight: normal; font-family: 微软雅黑; border: 0px solid rgb(0, 0, 0); z-index: 1019;">
+         style="width: 26px; height: 37px; left: 276px; top: 261px; font-weight: normal; font-family:  '微软雅黑'; border: 0px solid rgb(0, 0, 0); z-index: 1019;">
         <div class="" id="head_Label785454" style="display: none;"><span>Label785454</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label785454">
@@ -496,7 +462,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">值
+                                    id="label10">值
                                 </td>
                             </tr>
                             </tbody>
@@ -509,7 +475,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label341576" recivedata="true"
-         style="width: 63px; height: 29px; left: 662px; top: 492px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 3013; opacity: 0;">
+         style="width: 63px; height: 29px; left: 662px; top: 492px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 3013; opacity: 0;">
         <div class="" id="head_Label341576" style="display: none;"><span>Label341576</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label341576">
@@ -520,7 +486,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 12px; color: rgb(66, 66, 66); text-align: center;"
-                                    id="labelObjId">结束时间:
+                                    id="label11">结束时间:
                                 </td>
                             </tr>
                             </tbody>
@@ -533,7 +499,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label247273" recivedata="true"
-         style="width: 155px; height: 30px; left: 957px; top: 461px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 2002; cursor: pointer;">
+         style="width: 155px; height: 30px; left: 957px; top: 461px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 2002; cursor: pointer;">
         <div class="" id="head_Label247273" style="display: none;"><span>Label247273</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label247273">
@@ -544,7 +510,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 12px; color: rgb(0, 0, 0); text-align: center;"
-                                    id="labelObjId">查看历史曲线
+                                    id="label12">查看历史曲线
                                 </td>
                             </tr>
                             </tbody>
@@ -557,7 +523,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label260151" recivedata="true"
-         style="width: 37px; height: 42px; left: 266px; top: 302px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 3003;">
+         style="width: 37px; height: 42px; left: 266px; top: 302px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 3003;">
         <div class="" id="head_Label260151" style="display: none;"><span>Label260151</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label260151">
@@ -568,7 +534,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">(με)
+                                    id="label13">(με)
                                 </td>
                             </tr>
                             </tbody>
@@ -581,7 +547,7 @@
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_Label915995" recivedata="true"
-         style="width: 26px; height: 37px; left: 282px; top: 585px; font-weight: normal; font-family: 微软雅黑; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1017;">
+         style="width: 26px; height: 37px; left: 282px; top: 585px; font-weight: normal; font-family:  '微软雅黑'; background: none repeat scroll 0% 0% transparent; border: 0px solid rgb(0, 0, 0); z-index: 1017;">
         <div class="" id="head_Label915995" style="display: none;"><span>Label915995</span></div>
         <div class="selectPanelBodySty">
             <table width="100%" value="" class="LabelPor" id="Label915995">
@@ -592,7 +558,7 @@
                             <tbody>
                             <tr>
                                 <td style="white-space: nowrap; line-height: 0; font-size: 14px; color: rgb(51, 51, 51); text-align: left;"
-                                    id="labelObjId">形
+                                    id="label14">形
                                 </td>
                             </tr>
                             </tbody>
@@ -604,6 +570,7 @@
         </div>
         <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
+
     <div class="PanelSty selectPanelSty" id="Panel_DynamicChart611927" recivedata="true"
          style="width: 977px; height: 285px; left: 296px; top: 517px; z-index: 1005; opacity: 0;">
         <div class="" id="head_DynamicChart611927" style="display: none;"><span>DynamicChart611927</span></div>
@@ -704,610 +671,224 @@
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_DynamicChart861722" recivedata="true"
          style="width: 977px; height: 420px; left: 296px; top: 42px; z-index: 1014;">
-        <div class="" id="head_DynamicChart861722" style="display: none;"><span>DynamicChart861722</span></div>
-        <div class="selectPanelBodySty">
-            <div style="width:100%;height:100%;margin: 0 auto" id="DynamicChart861722" data-highcharts-chart="9">
-                <div class="highcharts-container" id="highcharts-36"
-                     style="position: relative; overflow: hidden; width: 977px; height: 420px; text-align: left; line-height: normal; z-index: 0; left: 0px; top: 0px;">
-                    <svg version="1.1"
-                         style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;"
-                         xmlns="http://www.w3.org/2000/svg" width="977" height="420">
-                        <desc>Created with Highstock 2.0.1</desc>
-                        <defs>
-                            <clipPath id="highcharts-37">
-                                <rect x="0" y="0" width="904" height="341"/>
-                            </clipPath>
-                        </defs>
-                        <path fill="rgba(47,126,216,0.25)" d="M 0 0"/>
-                        <path fill="rgba(13,35,58,0.25)" d="M 0 0"/>
-                        <path fill="rgba(139,188,33,0.25)" d="M 0 0"/>
-                        <path fill="rgba(145,0,0,0.25)" d="M 0 0"/>
-                        <path fill="rgba(26,173,206,0.25)" d="M 0 0"/>
-                        <path fill="rgba(73,41,112,0.25)" d="M 0 0"/>
-                        <path fill="rgba(242,143,67,0.25)" d="M 0 0"/>
-                        <path fill="rgba(119,161,229,0.25)" d="M 0 0"/>
-                        <g class="highcharts-grid" zIndex="1">
-                            <path fill="none" d="M 882.5 38 L 882.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 789.5 38 L 789.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 696.5 38 L 696.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 603.5 38 L 603.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 509.5 38 L 509.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 416.5 38 L 416.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 323.5 38 L 323.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 229.5 38 L 229.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 136.5 38 L 136.5 379" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                        </g>
-                        <g class="highcharts-grid" zIndex="1">
-                            <path fill="none" d="M 53 95.5 L 957 95.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 53 322.5 L 957 322.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 53 37.5 L 957 37.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 53 152.5 L 957 152.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 53 209.5 L 957 209.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 53 265.5 L 957 265.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 53 379.5 L 957 379.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                        </g>
-                        <g class="highcharts-axis" zIndex="2">
-                            <path fill="none" d="M 53 379.5 L 957 379.5" stroke="#7D7B7C" stroke-width="1" zIndex="7"
-                                  visibility="visible"/>
-                        </g>
-                        <g class="highcharts-axis" zIndex="2">
-                            <path fill="none" d="M 52.5 38 L 52.5 379" stroke="#7D7B7C" stroke-width="1" zIndex="7"
-                                  visibility="visible"/>
-                        </g>
-                        <path fill="none" d="M 201.5 38 L 201.5 379" stroke-width="2" stroke="#ee5046" zIndex="2"
-                              visibility="hidden"/>
-                        <g class="highcharts-series-group" zIndex="3">
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 56.833333333333314 L 848.4912280701755 56.833333333333314 L 801.8452012383901 56.833333333333314 L 755.1991744066047 56.833333333333314 L 708.5531475748194 56.833333333333314 L 661.907120743034 56.833333333333314 L 615.2610939112487 56.833333333333314 L 568.6150670794634 56.833333333333314 L 521.969040247678 56.833333333333314 L 475.32301341589266 56.833333333333314 L 428.6769865841073 56.833333333333314 L 382.0309597523219 56.833333333333314 L 335.3849329205366 56.833333333333314 L 288.73890608875126 56.833333333333314 L 242.09287925696594 56.833333333333314 L 195.4468524251805 56.833333333333314 L 148.8008255933952 56.833333333333314 L 102.15479876160987 56.833333333333314 L 55.50877192982455 56.833333333333314 L 8.862745098039113 56.833333333333314"
-                                      stroke="#2f7ed8" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 56.833333333333314 L 895.1372549019608 56.833333333333314 L 848.4912280701755 56.833333333333314 L 801.8452012383901 56.833333333333314 L 755.1991744066047 56.833333333333314 L 708.5531475748194 56.833333333333314 L 661.907120743034 56.833333333333314 L 615.2610939112487 56.833333333333314 L 568.6150670794634 56.833333333333314 L 521.969040247678 56.833333333333314 L 475.32301341589266 56.833333333333314 L 428.6769865841073 56.833333333333314 L 382.0309597523219 56.833333333333314 L 335.3849329205366 56.833333333333314 L 288.73890608875126 56.833333333333314 L 242.09287925696594 56.833333333333314 L 195.4468524251805 56.833333333333314 L 148.8008255933952 56.833333333333314 L 102.15479876160987 56.833333333333314 L 55.50877192982455 56.833333333333314 L 8.862745098039113 56.833333333333314 L 18.862745098039113 56.833333333333314"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#2f7ed8"
-                                      d="M 195.4468524251805 51.833333333333314 C 202.1068524251805 51.833333333333314 202.1068524251805 61.833333333333314 195.4468524251805 61.833333333333314 C 188.7868524251805 61.833333333333314 188.7868524251805 51.833333333333314 195.4468524251805 51.833333333333314 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 273.3160466666667 L 848.4912280701755 273.3160466666667 L 801.8452012383901 273.3160466666667 L 755.1991744066047 273.3160466666667 L 708.5531475748194 273.3160466666667 L 661.907120743034 273.3160466666667 L 615.2610939112487 273.3160466666667 L 568.6150670794634 273.3160466666667 L 521.969040247678 273.3160466666667 L 475.32301341589266 273.3160466666667 L 428.6769865841073 273.3160466666667 L 382.0309597523219 273.3160466666667 L 335.3849329205366 273.3160466666667 L 288.73890608875126 273.3160466666667 L 242.09287925696594 273.3160466666667 L 195.4468524251805 273.3160466666667 L 148.8008255933952 273.3160466666667 L 102.15479876160987 273.3160466666667 L 55.50877192982455 273.3160466666667 L 8.862745098039113 273.3160466666667"
-                                      stroke="#0d233a" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 273.3160466666667 L 895.1372549019608 273.3160466666667 L 848.4912280701755 273.3160466666667 L 801.8452012383901 273.3160466666667 L 755.1991744066047 273.3160466666667 L 708.5531475748194 273.3160466666667 L 661.907120743034 273.3160466666667 L 615.2610939112487 273.3160466666667 L 568.6150670794634 273.3160466666667 L 521.969040247678 273.3160466666667 L 475.32301341589266 273.3160466666667 L 428.6769865841073 273.3160466666667 L 382.0309597523219 273.3160466666667 L 335.3849329205366 273.3160466666667 L 288.73890608875126 273.3160466666667 L 242.09287925696594 273.3160466666667 L 195.4468524251805 273.3160466666667 L 148.8008255933952 273.3160466666667 L 102.15479876160987 273.3160466666667 L 55.50877192982455 273.3160466666667 L 8.862745098039113 273.3160466666667 L 18.862745098039113 273.3160466666667"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#0d233a"
-                                      d="M 195.4468524251805 268.3160466666667 C 202.1068524251805 268.3160466666667 202.1068524251805 278.3160466666667 195.4468524251805 278.3160466666667 C 188.7868524251805 278.3160466666667 188.7868524251805 268.3160466666667 195.4468524251805 268.3160466666667 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 268.34199333333333 L 848.4912280701755 268.34199333333333 L 801.8452012383901 268.34199333333333 L 755.1991744066047 268.34199333333333 L 708.5531475748194 268.34199333333333 L 661.907120743034 268.34199333333333 L 615.2610939112487 268.34199333333333 L 568.6150670794634 268.34199333333333 L 521.969040247678 268.34199333333333 L 475.32301341589266 268.34199333333333 L 428.6769865841073 268.34199333333333 L 382.0309597523219 268.34199333333333 L 335.3849329205366 268.34199333333333 L 288.73890608875126 268.34199333333333 L 242.09287925696594 268.34199333333333 L 195.4468524251805 268.34199333333333 L 148.8008255933952 268.34199333333333 L 102.15479876160987 268.34199333333333 L 55.50877192982455 268.34199333333333 L 8.862745098039113 268.34199333333333"
-                                      stroke="#8bbc21" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 268.34199333333333 L 895.1372549019608 268.34199333333333 L 848.4912280701755 268.34199333333333 L 801.8452012383901 268.34199333333333 L 755.1991744066047 268.34199333333333 L 708.5531475748194 268.34199333333333 L 661.907120743034 268.34199333333333 L 615.2610939112487 268.34199333333333 L 568.6150670794634 268.34199333333333 L 521.969040247678 268.34199333333333 L 475.32301341589266 268.34199333333333 L 428.6769865841073 268.34199333333333 L 382.0309597523219 268.34199333333333 L 335.3849329205366 268.34199333333333 L 288.73890608875126 268.34199333333333 L 242.09287925696594 268.34199333333333 L 195.4468524251805 268.34199333333333 L 148.8008255933952 268.34199333333333 L 102.15479876160987 268.34199333333333 L 55.50877192982455 268.34199333333333 L 8.862745098039113 268.34199333333333 L 18.862745098039113 268.34199333333333"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#8bbc21"
-                                      d="M 195.4468524251805 263.34199333333333 C 202.1068524251805 263.34199333333333 202.1068524251805 273.34199333333333 195.4468524251805 273.34199333333333 C 188.7868524251805 273.34199333333333 188.7868524251805 263.34199333333333 195.4468524251805 263.34199333333333 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 277.97638 L 848.4912280701755 277.97638 L 801.8452012383901 277.97638 L 755.1991744066047 277.97638 L 708.5531475748194 277.97638 L 661.907120743034 277.97638 L 615.2610939112487 277.97638 L 568.6150670794634 277.97638 L 521.969040247678 277.97638 L 475.32301341589266 277.97638 L 428.6769865841073 277.97638 L 382.0309597523219 277.97638 L 335.3849329205366 277.97638 L 288.73890608875126 277.97638 L 242.09287925696594 277.97638 L 195.4468524251805 277.97638 L 148.8008255933952 277.97638 L 102.15479876160987 277.97638 L 55.50877192982455 277.97638 L 8.862745098039113 277.97638"
-                                      stroke="#910000" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 277.97638 L 895.1372549019608 277.97638 L 848.4912280701755 277.97638 L 801.8452012383901 277.97638 L 755.1991744066047 277.97638 L 708.5531475748194 277.97638 L 661.907120743034 277.97638 L 615.2610939112487 277.97638 L 568.6150670794634 277.97638 L 521.969040247678 277.97638 L 475.32301341589266 277.97638 L 428.6769865841073 277.97638 L 382.0309597523219 277.97638 L 335.3849329205366 277.97638 L 288.73890608875126 277.97638 L 242.09287925696594 277.97638 L 195.4468524251805 277.97638 L 148.8008255933952 277.97638 L 102.15479876160987 277.97638 L 55.50877192982455 277.97638 L 8.862745098039113 277.97638 L 18.862745098039113 277.97638"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#910000"
-                                      d="M 195.4468524251805 272.97638 C 202.1068524251805 272.97638 202.1068524251805 282.97638 195.4468524251805 282.97638 C 188.7868524251805 282.97638 188.7868524251805 272.97638 195.4468524251805 272.97638 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 281.7432933333333 L 848.4912280701755 281.7432933333333 L 801.8452012383901 281.7432933333333 L 755.1991744066047 281.7432933333333 L 708.5531475748194 281.7432933333333 L 661.907120743034 281.7432933333333 L 615.2610939112487 281.7432933333333 L 568.6150670794634 281.7432933333333 L 521.969040247678 281.7432933333333 L 475.32301341589266 281.7432933333333 L 428.6769865841073 281.7432933333333 L 382.0309597523219 281.7432933333333 L 335.3849329205366 281.7432933333333 L 288.73890608875126 281.7432933333333 L 242.09287925696594 281.7432933333333 L 195.4468524251805 281.7432933333333 L 148.8008255933952 281.7432933333333 L 102.15479876160987 281.7432933333333 L 55.50877192982455 281.7432933333333 L 8.862745098039113 281.7432933333333"
-                                      stroke="#1aadce" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 281.7432933333333 L 895.1372549019608 281.7432933333333 L 848.4912280701755 281.7432933333333 L 801.8452012383901 281.7432933333333 L 755.1991744066047 281.7432933333333 L 708.5531475748194 281.7432933333333 L 661.907120743034 281.7432933333333 L 615.2610939112487 281.7432933333333 L 568.6150670794634 281.7432933333333 L 521.969040247678 281.7432933333333 L 475.32301341589266 281.7432933333333 L 428.6769865841073 281.7432933333333 L 382.0309597523219 281.7432933333333 L 335.3849329205366 281.7432933333333 L 288.73890608875126 281.7432933333333 L 242.09287925696594 281.7432933333333 L 195.4468524251805 281.7432933333333 L 148.8008255933952 281.7432933333333 L 102.15479876160987 281.7432933333333 L 55.50877192982455 281.7432933333333 L 8.862745098039113 281.7432933333333 L 18.862745098039113 281.7432933333333"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#1aadce"
-                                      d="M 195.4468524251805 276.7432933333333 C 202.1068524251805 276.7432933333333 202.1068524251805 286.7432933333333 195.4468524251805 286.7432933333333 C 188.7868524251805 286.7432933333333 188.7868524251805 276.7432933333333 195.4468524251805 276.7432933333333 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 276.5851 L 848.4912280701755 276.5851 L 801.8452012383901 276.5851 L 755.1991744066047 276.5851 L 708.5531475748194 276.5851 L 661.907120743034 276.5851 L 615.2610939112487 276.5851 L 568.6150670794634 276.5851 L 521.969040247678 276.5851 L 475.32301341589266 276.5851 L 428.6769865841073 276.5851 L 382.0309597523219 276.5851 L 335.3849329205366 276.5851 L 288.73890608875126 276.5851 L 242.09287925696594 276.5851 L 195.4468524251805 276.5851 L 148.8008255933952 276.5851 L 102.15479876160987 276.5851 L 55.50877192982455 276.5851 L 8.862745098039113 276.5851"
-                                      stroke="#492970" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 276.5851 L 895.1372549019608 276.5851 L 848.4912280701755 276.5851 L 801.8452012383901 276.5851 L 755.1991744066047 276.5851 L 708.5531475748194 276.5851 L 661.907120743034 276.5851 L 615.2610939112487 276.5851 L 568.6150670794634 276.5851 L 521.969040247678 276.5851 L 475.32301341589266 276.5851 L 428.6769865841073 276.5851 L 382.0309597523219 276.5851 L 335.3849329205366 276.5851 L 288.73890608875126 276.5851 L 242.09287925696594 276.5851 L 195.4468524251805 276.5851 L 148.8008255933952 276.5851 L 102.15479876160987 276.5851 L 55.50877192982455 276.5851 L 8.862745098039113 276.5851 L 18.862745098039113 276.5851"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#492970"
-                                      d="M 195.4468524251805 271.5851 C 202.1068524251805 271.5851 202.1068524251805 281.5851 195.4468524251805 281.5851 C 188.7868524251805 281.5851 188.7868524251805 271.5851 195.4468524251805 271.5851 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 279.44040666666666 L 848.4912280701755 279.44040666666666 L 801.8452012383901 279.44040666666666 L 755.1991744066047 279.44040666666666 L 708.5531475748194 279.44040666666666 L 661.907120743034 279.44040666666666 L 615.2610939112487 279.44040666666666 L 568.6150670794634 279.44040666666666 L 521.969040247678 279.44040666666666 L 475.32301341589266 279.44040666666666 L 428.6769865841073 279.44040666666666 L 382.0309597523219 279.44040666666666 L 335.3849329205366 279.44040666666666 L 288.73890608875126 279.44040666666666 L 242.09287925696594 279.44040666666666 L 195.4468524251805 279.44040666666666 L 148.8008255933952 279.44040666666666 L 102.15479876160987 279.44040666666666 L 55.50877192982455 279.44040666666666 L 8.862745098039113 279.44040666666666"
-                                      stroke="#f28f43" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 279.44040666666666 L 895.1372549019608 279.44040666666666 L 848.4912280701755 279.44040666666666 L 801.8452012383901 279.44040666666666 L 755.1991744066047 279.44040666666666 L 708.5531475748194 279.44040666666666 L 661.907120743034 279.44040666666666 L 615.2610939112487 279.44040666666666 L 568.6150670794634 279.44040666666666 L 521.969040247678 279.44040666666666 L 475.32301341589266 279.44040666666666 L 428.6769865841073 279.44040666666666 L 382.0309597523219 279.44040666666666 L 335.3849329205366 279.44040666666666 L 288.73890608875126 279.44040666666666 L 242.09287925696594 279.44040666666666 L 195.4468524251805 279.44040666666666 L 148.8008255933952 279.44040666666666 L 102.15479876160987 279.44040666666666 L 55.50877192982455 279.44040666666666 L 8.862745098039113 279.44040666666666 L 18.862745098039113 279.44040666666666"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#f28f43"
-                                      d="M 195.4468524251805 274.44040666666666 C 202.1068524251805 274.44040666666666 202.1068524251805 284.44040666666666 195.4468524251805 284.44040666666666 C 188.7868524251805 284.44040666666666 188.7868524251805 274.44040666666666 195.4468524251805 274.44040666666666 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="url(#highcharts-37)">
-                                <path fill="none"
-                                      d="M 895.1372549019608 282.23206 L 848.4912280701755 282.23206 L 801.8452012383901 282.23206 L 755.1991744066047 282.23206 L 708.5531475748194 282.23206 L 661.907120743034 282.23206 L 615.2610939112487 282.23206 L 568.6150670794634 282.23206 L 521.969040247678 282.23206 L 475.32301341589266 282.23206 L 428.6769865841073 282.23206 L 382.0309597523219 282.23206 L 335.3849329205366 282.23206 L 288.73890608875126 282.23206 L 242.09287925696594 282.23206 L 195.4468524251805 282.23206 L 148.8008255933952 282.23206 L 102.15479876160987 282.23206 L 55.50877192982455 282.23206 L 8.862745098039113 282.23206"
-                                      stroke="#77a1e5" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 885.1372549019608 282.23206 L 895.1372549019608 282.23206 L 848.4912280701755 282.23206 L 801.8452012383901 282.23206 L 755.1991744066047 282.23206 L 708.5531475748194 282.23206 L 661.907120743034 282.23206 L 615.2610939112487 282.23206 L 568.6150670794634 282.23206 L 521.969040247678 282.23206 L 475.32301341589266 282.23206 L 428.6769865841073 282.23206 L 382.0309597523219 282.23206 L 335.3849329205366 282.23206 L 288.73890608875126 282.23206 L 242.09287925696594 282.23206 L 195.4468524251805 282.23206 L 148.8008255933952 282.23206 L 102.15479876160987 282.23206 L 55.50877192982455 282.23206 L 8.862745098039113 282.23206 L 18.862745098039113 282.23206"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(53,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="#77a1e5"
-                                      d="M 195.4468524251805 277.23206 C 202.1068524251805 277.23206 202.1068524251805 287.23206 195.4468524251805 287.23206 C 188.7868524251805 287.23206 188.7868524251805 277.23206 195.4468524251805 277.23206 Z"
-                                      stroke="#FFFFFF" stroke-width="1" visibility="hidden"/>
-                            </g>
-                        </g>
-                        <g class="highcharts-legend" zIndex="7" transform="translate(302,10)">
-                            <rect x="0.5" y="0.5" width="664" height="30" strokeWidth="1" stroke="#909090"
-                                  stroke-width="1" fill="#FFFFFF" visibility="visible"/>
-                            <g zIndex="1">
-                                <g>
-                                    <g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#2f7ed8"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP0_ST
-                                        </text>
-                                    </g>
-                                    <g class="highcharts-legend-item" zIndex="1"
-                                       transform="translate(78.01666641235352,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#0d233a"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP45_ST
-                                        </text>
-                                    </g>
-                                    <g class="highcharts-legend-item" zIndex="1"
-                                       transform="translate(155.8666648864746,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#8bbc21"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP90_ST
-                                        </text>
-                                    </g>
-                                    <g class="highcharts-legend-item" zIndex="1"
-                                       transform="translate(233.7166633605957,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#910000"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP135_ST
-                                        </text>
-                                    </g>
-                                    <g class="highcharts-legend-item" zIndex="1"
-                                       transform="translate(319.39999771118164,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#1aadce"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP180_ST
-                                        </text>
-                                    </g>
-                                    <g class="highcharts-legend-item" zIndex="1"
-                                       transform="translate(405.0833320617676,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#492970"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP225_ST
-                                        </text>
-                                    </g>
-                                    <g class="highcharts-legend-item" zIndex="1"
-                                       transform="translate(490.7666664123535,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#f28f43"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP270_ST
-                                        </text>
-                                    </g>
-                                    <g class="highcharts-legend-item" zIndex="1"
-                                       transform="translate(576.4500007629395,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#77a1e5"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP315_ST
-                                        </text>
-                                    </g>
-                                </g>
-                            </g>
-                        </g>
-                        <g class="highcharts-axis-labels highcharts-xaxis-labels" zIndex="7">
-                            <text x="883.4858617131063" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:26
-                            </text>
-                            <text x="790.1938080495356" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:28
-                            </text>
-                            <text x="696.901754385965" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:30
-                            </text>
-                            <text x="603.6097007223942" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:32
-                            </text>
-                            <text x="510.3176470588235" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:34
-                            </text>
-                            <text x="417.0255933952528" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:36
-                            </text>
-                            <text x="323.7335397316821" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:38
-                            </text>
-                            <text x="230.44148606811143" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:40
-                            </text>
-                            <text x="137.14943240454068" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="399" opacity="1">
-                                17:04:42
-                            </text>
-                        </g>
-                        <g class="highcharts-axis-labels highcharts-yaxis-labels" zIndex="7">
-                            <text x="38" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;"
-                                  y="97.83333333333331" opacity="1">1000
-                            </text>
-                            <text x="38" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;"
-                                  y="325.1666666666667" opacity="1">0
-                            </text>
-                            <text x="38" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;" y="382"
-                                  opacity="1">-250
-                            </text>
-                            <text x="38" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;"
-                                  y="268.3333333333333" opacity="1">250
-                            </text>
-                            <text x="38" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;"
-                                  y="211.5" opacity="1">500
-                            </text>
-                            <text x="38" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;"
-                                  y="154.66666666666666" opacity="1">750
-                            </text>
-                            <text x="38" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;" y="41"
-                                  opacity="1">1250
-                            </text>
-                        </g>
-                        <g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;white-space:nowrap;"
-                           transform="translate(116,214)" opacity="0" visibility="hidden">
-                            <path fill="none"
-                                  d="M 3.5 0.5 L 112.5 0.5 C 115.5 0.5 115.5 0.5 115.5 3.5 L 115.5 145.5 C 115.5 148.5 115.5 148.5 112.5 148.5 L 3.5 148.5 C 0.5 148.5 0.5 148.5 0.5 145.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996"
-                                  transform="translate(1, 1)" width="115" height="148"/>
-                            <path fill="none"
-                                  d="M 3.5 0.5 L 112.5 0.5 C 115.5 0.5 115.5 0.5 115.5 3.5 L 115.5 145.5 C 115.5 148.5 115.5 148.5 112.5 148.5 L 3.5 148.5 C 0.5 148.5 0.5 148.5 0.5 145.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="3" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999"
-                                  transform="translate(1, 1)" width="115" height="148"/>
-                            <path fill="none"
-                                  d="M 3.5 0.5 L 112.5 0.5 C 115.5 0.5 115.5 0.5 115.5 3.5 L 115.5 145.5 C 115.5 148.5 115.5 148.5 112.5 148.5 L 3.5 148.5 C 0.5 148.5 0.5 148.5 0.5 145.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="1" isShadow="true" stroke="black" stroke-opacity="0.15"
-                                  transform="translate(1, 1)" width="115" height="148"/>
-                            <path fill="rgba(249, 249, 249, .85)"
-                                  d="M 3.5 0.5 L 112.5 0.5 C 115.5 0.5 115.5 0.5 115.5 3.5 L 115.5 145.5 C 115.5 148.5 115.5 148.5 112.5 148.5 L 3.5 148.5 C 0.5 148.5 0.5 148.5 0.5 145.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="1" stroke="#e3e3e3"/>
-                            <text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="21">
-                                <tspan style="fill:#2f7ed8;">UP0_ST:</tspan>
-                                <tspan dx="0">1000</tspan>
-                                <tspan style="fill:#0d233a;" x="8" dy="16">UP45_ST:</tspan>
-                                <tspan dx="0">47.73</tspan>
-                                <tspan style="fill:#8bbc21;" x="8" dy="16">UP90_ST:</tspan>
-                                <tspan dx="0">69.61</tspan>
-                                <tspan style="fill:#910000;" x="8" dy="16">UP135_ST:</tspan>
-                                <tspan dx="0">27.23</tspan>
-                                <tspan style="fill:#1aadce;" x="8" dy="16">UP180_ST:</tspan>
-                                <tspan dx="0">10.66</tspan>
-                                <tspan style="fill:#492970;" x="8" dy="16">UP225_ST:</tspan>
-                                <tspan dx="0">33.35</tspan>
-                                <tspan style="fill:#f28f43;" x="8" dy="16">UP270_ST:</tspan>
-                                <tspan dx="0">20.79</tspan>
-                                <tspan style="fill:#77a1e5;" x="8" dy="16">UP315_ST:</tspan>
-                                <tspan dx="0">8.51</tspan>
-                            </text>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        <div class="selectPanelFooterSty" style="display: none;"></div>
+    <div class="" id="head_DynamicChart861722" style="display: none;"><span>DynamicChart861722</span></div>
+    <div class="selectPanelBodySty">
+    <div style="width:100%;height:100%;margin: 0 auto" id="DynamicChart861722" data-highcharts-chart="9">
+
+    </div>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
     <div class="PanelSty selectPanelSty" id="Panel_DynamicChart552271" recivedata="true"
          style="width: 976px; height: 348px; left: 297px; top: 454px; z-index: 1003; opacity: 1;">
-        <div class="" id="head_DynamicChart552271" style="display: none;"><span>DynamicChart552271</span></div>
-        <div class="selectPanelBodySty">
-            <div style="width:100%;height:100%;margin: 0 auto" id="DynamicChart552271" data-highcharts-chart="11">
-                <div class="highcharts-container" id="highcharts-44"
-                     style="position: relative; overflow: hidden; width: 976px; height: 348px; text-align: left; line-height: normal; z-index: 0; left: 0px; top: 0px;">
-                    <svg version="1.1"
-                         style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;"
-                         xmlns="http://www.w3.org/2000/svg" width="976" height="348">
-                        <desc>Created with Highstock 2.0.1</desc>
-                        <defs>
-                            <clipPath id="highcharts-45">
-                                <rect x="0" y="0" width="900" height="269"/>
-                            </clipPath>
-                        </defs>
-                        <path fill="rgba(47,126,216,0.25)" d="M 0 0"/>
-                        <g class="highcharts-grid" zIndex="1">
-                            <path fill="none" d="M 889.5 38 L 889.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 796.5 38 L 796.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 703.5 38 L 703.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 610.5 38 L 610.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 517.5 38 L 517.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 424.5 38 L 424.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 331.5 38 L 331.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 238.5 38 L 238.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                            <path fill="none" d="M 146.5 38 L 146.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                        </g>
-                        <g class="highcharts-grid" zIndex="1">
-                            <path fill="none" d="M 56 172.5 L 956 172.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
-                                  opacity="1"/>
-                        </g>
-                        <g class="highcharts-axis" zIndex="2">
-                            <path fill="none" d="M 56 307.5 L 956 307.5" stroke="#7D7B7C" stroke-width="1" zIndex="7"
-                                  visibility="visible"/>
-                        </g>
-                        <g class="highcharts-axis" zIndex="2">
-                            <path fill="none" d="M 55.5 38 L 55.5 307" stroke="#7D7B7C" stroke-width="1" zIndex="7"
-                                  visibility="visible"/>
-                        </g>
-                        <path fill="none" d="M 64.5 38 L 64.5 307" stroke-width="2" stroke="#ee5046" zIndex="2"
-                              visibility="hidden"/>
-                        <g class="highcharts-series-group" zIndex="3">
-                            <g class="highcharts-series" visibility="visible" zIndex="0.1"
-                               transform="translate(56,38) scale(1 1)" clip-path="url(#highcharts-45)">
-                                <path fill="none"
-                                      d="M 891.1764705882352 134.49999999999997 L 844.7368421052631 134.49999999999997 L 798.297213622291 134.49999999999997 L 751.8575851393189 134.49999999999997 L 705.4179566563467 134.49999999999997 L 658.9783281733746 134.49999999999997 L 612.5386996904024 134.49999999999997 L 566.0990712074304 134.49999999999997 L 519.6594427244581 134.49999999999997 L 473.21981424148606 134.49999999999997 L 426.78018575851394 134.49999999999997 L 380.34055727554176 134.49999999999997 L 333.90092879256963 134.49999999999997 L 287.4613003095975 134.49999999999997 L 241.02167182662538 134.49999999999997 L 194.58204334365325 134.49999999999997 L 148.14241486068113 134.49999999999997 L 101.70278637770889 134.49999999999997 L 55.263157894736764 134.49999999999997 L 8.823529411764639 134.49999999999997"
-                                      stroke="#2f7ed8" stroke-width="2" zIndex="1" stroke-linejoin="round"
-                                      stroke-linecap="round"/>
-                                <path fill="none"
-                                      d="M 881.1764705882352 134.49999999999997 L 891.1764705882352 134.49999999999997 L 844.7368421052631 134.49999999999997 L 798.297213622291 134.49999999999997 L 751.8575851393189 134.49999999999997 L 705.4179566563467 134.49999999999997 L 658.9783281733746 134.49999999999997 L 612.5386996904024 134.49999999999997 L 566.0990712074304 134.49999999999997 L 519.6594427244581 134.49999999999997 L 473.21981424148606 134.49999999999997 L 426.78018575851394 134.49999999999997 L 380.34055727554176 134.49999999999997 L 333.90092879256963 134.49999999999997 L 287.4613003095975 134.49999999999997 L 241.02167182662538 134.49999999999997 L 194.58204334365325 134.49999999999997 L 148.14241486068113 134.49999999999997 L 101.70278637770889 134.49999999999997 L 55.263157894736764 134.49999999999997 L 8.823529411764639 134.49999999999997 L 18.82352941176464 134.49999999999997"
-                                      stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
-                                      stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
-                            </g>
-                            <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
-                               transform="translate(56,38) scale(1 1)" clip-path="none" style="">
-                                <path fill="blue"
-                                      d="M 891 131.49999999999997 C 894.996 131.49999999999997 894.996 137.49999999999997 891 137.49999999999997 C 887.004 137.49999999999997 887.004 131.49999999999997 891 131.49999999999997 Z"
+    <div class="" id="head_DynamicChart552271" style="display: none;"><span>DynamicChart552271</span></div>
+    <div class="selectPanelBodySty">
+    <div style="width:100%;height:100%;margin: 0 auto" id="DynamicChart552271" data-highcharts-chart="11">
+        <div class="highcharts-container" id="highcharts-44"
+             style="position: relative; overflow: hidden; width: 976px; height: 348px; text-align: left; line-height: normal; z-index: 0; left: 0px; top: 0px;">
+            <svg version="1.1"
+                 style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;"
+                 xmlns="http://www.w3.org/2000/svg" width="976" height="348">
+                <desc>Created with Highstock 2.0.1</desc>
+                <defs>
+                    <clipPath id="highcharts-45">
+                        <rect x="0" y="0" width="900" height="269"/>
+                    </clipPath>
+                </defs>
+                <path fill="rgba(47,126,216,0.25)" d="M 0 0"/>
+                <g class="highcharts-grid" zIndex="1">
+                    <path fill="none" d="M 889.5 38 L 889.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 796.5 38 L 796.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 703.5 38 L 703.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 610.5 38 L 610.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 517.5 38 L 517.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 424.5 38 L 424.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 331.5 38 L 331.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 238.5 38 L 238.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                    <path fill="none" d="M 146.5 38 L 146.5 307" stroke="#C5C8CB" stroke-width="1" zIndex="1" opacity="1"/>
+                </g>
+                <g class="highcharts-grid" zIndex="1">
+                    <path fill="none" d="M 56 172.5 L 956 172.5" stroke="#C5C8CB" stroke-width="1" zIndex="1"
+                          opacity="1"/>
+                </g>
+                <g class="highcharts-axis" zIndex="2">
+                    <path fill="none" d="M 56 307.5 L 956 307.5" stroke="#7D7B7C" stroke-width="1" zIndex="7"
+                          visibility="visible"/>
+                </g>
+                <g class="highcharts-axis" zIndex="2">
+                    <path fill="none" d="M 55.5 38 L 55.5 307" stroke="#7D7B7C" stroke-width="1" zIndex="7"
+                          visibility="visible"/>
+                </g>
+                <path fill="none" d="M 64.5 38 L 64.5 307" stroke-width="2" stroke="#ee5046" zIndex="2"
+                      visibility="hidden"/>
+                <g class="highcharts-series-group" zIndex="3">
+                    <g class="highcharts-series" visibility="visible" zIndex="0.1"
+                       transform="translate(56,38) scale(1 1)" clip-path="url(#highcharts-45)">
+                        <path fill="none"
+                              d="M 891.1764705882352 134.49999999999997 L 844.7368421052631 134.49999999999997 L 798.297213622291 134.49999999999997 L 751.8575851393189 134.49999999999997 L 705.4179566563467 134.49999999999997 L 658.9783281733746 134.49999999999997 L 612.5386996904024 134.49999999999997 L 566.0990712074304 134.49999999999997 L 519.6594427244581 134.49999999999997 L 473.21981424148606 134.49999999999997 L 426.78018575851394 134.49999999999997 L 380.34055727554176 134.49999999999997 L 333.90092879256963 134.49999999999997 L 287.4613003095975 134.49999999999997 L 241.02167182662538 134.49999999999997 L 194.58204334365325 134.49999999999997 L 148.14241486068113 134.49999999999997 L 101.70278637770889 134.49999999999997 L 55.263157894736764 134.49999999999997 L 8.823529411764639 134.49999999999997"
+                              stroke="#2f7ed8" stroke-width="2" zIndex="1" stroke-linejoin="round"
+                              stroke-linecap="round"/>
+                        <path fill="none"
+                              d="M 881.1764705882352 134.49999999999997 L 891.1764705882352 134.49999999999997 L 844.7368421052631 134.49999999999997 L 798.297213622291 134.49999999999997 L 751.8575851393189 134.49999999999997 L 705.4179566563467 134.49999999999997 L 658.9783281733746 134.49999999999997 L 612.5386996904024 134.49999999999997 L 566.0990712074304 134.49999999999997 L 519.6594427244581 134.49999999999997 L 473.21981424148606 134.49999999999997 L 426.78018575851394 134.49999999999997 L 380.34055727554176 134.49999999999997 L 333.90092879256963 134.49999999999997 L 287.4613003095975 134.49999999999997 L 241.02167182662538 134.49999999999997 L 194.58204334365325 134.49999999999997 L 148.14241486068113 134.49999999999997 L 101.70278637770889 134.49999999999997 L 55.263157894736764 134.49999999999997 L 8.823529411764639 134.49999999999997 L 18.82352941176464 134.49999999999997"
+                              stroke-linejoin="round" visibility="visible" stroke="rgba(192,192,192,0.0001)"
+                              stroke-width="22" zIndex="2" class=" highcharts-tracker" style=""/>
+                    </g>
+                    <g class="highcharts-markers highcharts-tracker" visibility="visible" zIndex="0.1"
+                       transform="translate(56,38) scale(1 1)" clip-path="none" style="">
+                        <path fill="blue"
+                              d="M 891 131.49999999999997 C 894.996 131.49999999999997 894.996 137.49999999999997 891 137.49999999999997 C 887.004 137.49999999999997 887.004 131.49999999999997 891 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 844 131.49999999999997 C 847.996 131.49999999999997 847.996 137.49999999999997 844 137.49999999999997 C 840.004 137.49999999999997 840.004 131.49999999999997 844 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 798 131.49999999999997 C 801.996 131.49999999999997 801.996 137.49999999999997 798 137.49999999999997 C 794.004 137.49999999999997 794.004 131.49999999999997 798 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 751 131.49999999999997 C 754.996 131.49999999999997 754.996 137.49999999999997 751 137.49999999999997 C 747.004 137.49999999999997 747.004 131.49999999999997 751 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 705 131.49999999999997 C 708.996 131.49999999999997 708.996 137.49999999999997 705 137.49999999999997 C 701.004 137.49999999999997 701.004 131.49999999999997 705 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 658 131.49999999999997 C 661.996 131.49999999999997 661.996 137.49999999999997 658 137.49999999999997 C 654.004 137.49999999999997 654.004 131.49999999999997 658 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 612 131.49999999999997 C 615.996 131.49999999999997 615.996 137.49999999999997 612 137.49999999999997 C 608.004 137.49999999999997 608.004 131.49999999999997 612 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 566 131.49999999999997 C 569.996 131.49999999999997 569.996 137.49999999999997 566 137.49999999999997 C 562.004 137.49999999999997 562.004 131.49999999999997 566 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 519 131.49999999999997 C 522.996 131.49999999999997 522.996 137.49999999999997 519 137.49999999999997 C 515.004 137.49999999999997 515.004 131.49999999999997 519 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 473 131.49999999999997 C 476.996 131.49999999999997 476.996 137.49999999999997 473 137.49999999999997 C 469.004 137.49999999999997 469.004 131.49999999999997 473 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 426 131.49999999999997 C 429.996 131.49999999999997 429.996 137.49999999999997 426 137.49999999999997 C 422.004 137.49999999999997 422.004 131.49999999999997 426 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 380 131.49999999999997 C 383.996 131.49999999999997 383.996 137.49999999999997 380 137.49999999999997 C 376.004 137.49999999999997 376.004 131.49999999999997 380 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 333 131.49999999999997 C 336.996 131.49999999999997 336.996 137.49999999999997 333 137.49999999999997 C 329.004 137.49999999999997 329.004 131.49999999999997 333 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 287 131.49999999999997 C 290.996 131.49999999999997 290.996 137.49999999999997 287 137.49999999999997 C 283.004 137.49999999999997 283.004 131.49999999999997 287 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 241 131.49999999999997 C 244.996 131.49999999999997 244.996 137.49999999999997 241 137.49999999999997 C 237.004 137.49999999999997 237.004 131.49999999999997 241 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 194 131.49999999999997 C 197.996 131.49999999999997 197.996 137.49999999999997 194 137.49999999999997 C 190.004 137.49999999999997 190.004 131.49999999999997 194 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 148 131.49999999999997 C 151.996 131.49999999999997 151.996 137.49999999999997 148 137.49999999999997 C 144.004 137.49999999999997 144.004 131.49999999999997 148 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 101 131.49999999999997 C 104.996 131.49999999999997 104.996 137.49999999999997 101 137.49999999999997 C 97.004 137.49999999999997 97.004 131.49999999999997 101 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 55 131.49999999999997 C 58.996 131.49999999999997 58.996 137.49999999999997 55 137.49999999999997 C 51.004 137.49999999999997 51.004 131.49999999999997 55 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                        <path fill="blue"
+                              d="M 8 131.49999999999997 C 11.996 131.49999999999997 11.996 137.49999999999997 8 137.49999999999997 C 4.004 137.49999999999997 4.004 131.49999999999997 8 131.49999999999997 Z"
+                              stroke="#FFFFFF" stroke-width="0.00001"/>
+                    </g>
+                </g>
+                <g class="highcharts-legend" zIndex="7" transform="translate(871,10)">
+                    <rect x="0.5" y="0.5" width="93" height="30" strokeWidth="1" stroke="#909090"
+                          stroke-width="1" fill="#FFFFFF" visibility="visible"/>
+                    <g zIndex="1">
+                        <g>
+                            <g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)">
+                                <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#2f7ed8"/>
+                                <path fill="#2f7ed8"
+                                      d="M 8 8 C 11.996 8 11.996 14 8 14 C 4.004 14 4.004 8 8 8 Z"
                                       stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 844 131.49999999999997 C 847.996 131.49999999999997 847.996 137.49999999999997 844 137.49999999999997 C 840.004 137.49999999999997 840.004 131.49999999999997 844 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 798 131.49999999999997 C 801.996 131.49999999999997 801.996 137.49999999999997 798 137.49999999999997 C 794.004 137.49999999999997 794.004 131.49999999999997 798 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 751 131.49999999999997 C 754.996 131.49999999999997 754.996 137.49999999999997 751 137.49999999999997 C 747.004 137.49999999999997 747.004 131.49999999999997 751 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 705 131.49999999999997 C 708.996 131.49999999999997 708.996 137.49999999999997 705 137.49999999999997 C 701.004 137.49999999999997 701.004 131.49999999999997 705 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 658 131.49999999999997 C 661.996 131.49999999999997 661.996 137.49999999999997 658 137.49999999999997 C 654.004 137.49999999999997 654.004 131.49999999999997 658 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 612 131.49999999999997 C 615.996 131.49999999999997 615.996 137.49999999999997 612 137.49999999999997 C 608.004 137.49999999999997 608.004 131.49999999999997 612 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 566 131.49999999999997 C 569.996 131.49999999999997 569.996 137.49999999999997 566 137.49999999999997 C 562.004 137.49999999999997 562.004 131.49999999999997 566 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 519 131.49999999999997 C 522.996 131.49999999999997 522.996 137.49999999999997 519 137.49999999999997 C 515.004 137.49999999999997 515.004 131.49999999999997 519 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 473 131.49999999999997 C 476.996 131.49999999999997 476.996 137.49999999999997 473 137.49999999999997 C 469.004 137.49999999999997 469.004 131.49999999999997 473 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 426 131.49999999999997 C 429.996 131.49999999999997 429.996 137.49999999999997 426 137.49999999999997 C 422.004 137.49999999999997 422.004 131.49999999999997 426 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 380 131.49999999999997 C 383.996 131.49999999999997 383.996 137.49999999999997 380 137.49999999999997 C 376.004 137.49999999999997 376.004 131.49999999999997 380 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 333 131.49999999999997 C 336.996 131.49999999999997 336.996 137.49999999999997 333 137.49999999999997 C 329.004 137.49999999999997 329.004 131.49999999999997 333 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 287 131.49999999999997 C 290.996 131.49999999999997 290.996 137.49999999999997 287 137.49999999999997 C 283.004 137.49999999999997 283.004 131.49999999999997 287 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 241 131.49999999999997 C 244.996 131.49999999999997 244.996 137.49999999999997 241 137.49999999999997 C 237.004 137.49999999999997 237.004 131.49999999999997 241 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 194 131.49999999999997 C 197.996 131.49999999999997 197.996 137.49999999999997 194 137.49999999999997 C 190.004 137.49999999999997 190.004 131.49999999999997 194 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 148 131.49999999999997 C 151.996 131.49999999999997 151.996 137.49999999999997 148 137.49999999999997 C 144.004 137.49999999999997 144.004 131.49999999999997 148 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 101 131.49999999999997 C 104.996 131.49999999999997 104.996 137.49999999999997 101 137.49999999999997 C 97.004 137.49999999999997 97.004 131.49999999999997 101 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 55 131.49999999999997 C 58.996 131.49999999999997 58.996 137.49999999999997 55 137.49999999999997 C 51.004 137.49999999999997 51.004 131.49999999999997 55 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                                <path fill="blue"
-                                      d="M 8 131.49999999999997 C 11.996 131.49999999999997 11.996 137.49999999999997 8 137.49999999999997 C 4.004 137.49999999999997 4.004 131.49999999999997 8 131.49999999999997 Z"
-                                      stroke="#FFFFFF" stroke-width="0.00001"/>
-                            </g>
-                        </g>
-                        <g class="highcharts-legend" zIndex="7" transform="translate(871,10)">
-                            <rect x="0.5" y="0.5" width="93" height="30" strokeWidth="1" stroke="#909090"
-                                  stroke-width="1" fill="#FFFFFF" visibility="visible"/>
-                            <g zIndex="1">
-                                <g>
-                                    <g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)">
-                                        <path fill="none" d="M 0 11 L 16 11" stroke-width="2" stroke="#2f7ed8"/>
-                                        <path fill="#2f7ed8"
-                                              d="M 8 8 C 11.996 8 11.996 14 8 14 C 4.004 14 4.004 8 8 8 Z"
-                                              stroke="#FFFFFF" stroke-width="0.00001"/>
-                                        <text x="21" y="15"
-                                              style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
-                                              text-anchor="start" zIndex="2">UP_ST_AL
-                                        </text>
-                                    </g>
-                                </g>
+                                <text x="21" y="15"
+                                      style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;"
+                                      text-anchor="start" zIndex="2">UP_ST_AL
+                                </text>
                             </g>
                         </g>
-                        <g class="highcharts-axis-labels highcharts-xaxis-labels" zIndex="7">
-                            <text x="889.6377708978328" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:26
-                            </text>
-                            <text x="796.7585139318885" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:28
-                            </text>
-                            <text x="703.8792569659443" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:30
-                            </text>
-                            <text x="611" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:32
-                            </text>
-                            <text x="518.1207430340557" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:34
-                            </text>
-                            <text x="425.2414860681114" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:36
-                            </text>
-                            <text x="332.36222910216713" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:38
-                            </text>
-                            <text x="239.48297213622288" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:40
-                            </text>
-                            <text x="146.60371517027863" text-anchor="middle"
-                                  style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
-                                17:04:42
-                            </text>
-                        </g>
-                        <g class="highcharts-axis-labels highcharts-yaxis-labels" zIndex="7">
-                            <text x="41" text-anchor="end"
-                                  style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;"
-                                  y="175.49999999999997" opacity="1">63.32
-                            </text>
-                        </g>
-                        <g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;white-space:nowrap;"
-                           transform="translate(8,120)" opacity="0" visibility="hidden">
-                            <path fill="none"
-                                  d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996"
-                                  transform="translate(1, 1)" width="113" height="36"/>
-                            <path fill="none"
-                                  d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="3" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999"
-                                  transform="translate(1, 1)" width="113" height="36"/>
-                            <path fill="none"
-                                  d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="1" isShadow="true" stroke="black" stroke-opacity="0.15"
-                                  transform="translate(1, 1)" width="113" height="36"/>
-                            <path fill="rgba(249, 249, 249, .85)"
-                                  d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
-                                  stroke-width="1" stroke="#e3e3e3"/>
-                            <text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="21">
-                                <tspan style="fill:#2f7ed8;">UP_ST_AL:</tspan>
-                                <tspan dx="0">63.32</tspan>
-                            </text>
-                        </g>
-                    </svg>
-                </div>
-            </div>
+                    </g>
+                </g>
+                <g class="highcharts-axis-labels highcharts-xaxis-labels" zIndex="7">
+                    <text x="889.6377708978328" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:26
+                    </text>
+                    <text x="796.7585139318885" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:28
+                    </text>
+                    <text x="703.8792569659443" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:30
+                    </text>
+                    <text x="611" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:32
+                    </text>
+                    <text x="518.1207430340557" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:34
+                    </text>
+                    <text x="425.2414860681114" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:36
+                    </text>
+                    <text x="332.36222910216713" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:38
+                    </text>
+                    <text x="239.48297213622288" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:40
+                    </text>
+                    <text x="146.60371517027863" text-anchor="middle"
+                          style="color:#606060;cursor:default;font-size:11px;fill:#606060;" y="327" opacity="1">
+                        17:04:42
+                    </text>
+                </g>
+                <g class="highcharts-axis-labels highcharts-yaxis-labels" zIndex="7">
+                    <text x="41" text-anchor="end"
+                          style="width:302px;color:#606060;cursor:default;font-size:11px;fill:#606060;"
+                          y="175.49999999999997" opacity="1">63.32
+                    </text>
+                </g>
+                <g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;white-space:nowrap;"
+                   transform="translate(8,120)" opacity="0" visibility="hidden">
+                    <path fill="none"
+                          d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
+                          stroke-width="5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996"
+                          transform="translate(1, 1)" width="113" height="36"/>
+                    <path fill="none"
+                          d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
+                          stroke-width="3" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999"
+                          transform="translate(1, 1)" width="113" height="36"/>
+                    <path fill="none"
+                          d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
+                          stroke-width="1" isShadow="true" stroke="black" stroke-opacity="0.15"
+                          transform="translate(1, 1)" width="113" height="36"/>
+                    <path fill="rgba(249, 249, 249, .85)"
+                          d="M 3.5 0.5 L 110.5 0.5 C 113.5 0.5 113.5 0.5 113.5 3.5 L 113.5 33.5 C 113.5 36.5 113.5 36.5 110.5 36.5 L 63.5 36.5 57.5 42.5 51.5 36.5 3.5 36.5 C 0.5 36.5 0.5 36.5 0.5 33.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"
+                          stroke-width="1" stroke="#e3e3e3"/>
+                    <text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="21">
+                        <tspan style="fill:#2f7ed8;">UP_ST_AL:</tspan>
+                        <tspan dx="0">63.32</tspan>
+                    </text>
+                </g>
+            </svg>
         </div>
-        <div class="selectPanelFooterSty" style="display: none;"></div>
     </div>
+    </div>
+    <div class="selectPanelFooterSty" style="display: none;"></div>
+    </div>
+
+
     <div style="padding-bottom: 15px; width: 53px; height: 33px; left: 920px; top: 490px; z-index: 3009; opacity: 0;"
          class="PanelSty selectPanelSty" id="Panel_InquireButton158897" recivedata="true">
         <div class="" id="head_InquireButton158897" style="display: none;"><span>InquireButton158897</span></div>

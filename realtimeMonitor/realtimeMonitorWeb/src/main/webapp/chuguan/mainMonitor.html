@@ -8,24 +8,12 @@
 <script src="lib/json2.js" type="text/javascript"></script>
 <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="js/jquery.json-2.4.min.js" type="text/javascript"></script>
-    <script src="js/map.js" type="text/javascript"></script>
-    <script src="js/config.js" type="text/javascript"></script>
+<script src="js/map.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
             $.post($.URL.sensor.homePage,{"fStatus":"false"},sNumCallback,"json");
-            $(".lookXingbian").click(function(){
-                window.parent.jumpURL("xingbian.html");
-                window.parent.jumpTab(1);
-            });
-            $(".lookWendu").click(function(){
-                window.parent.jumpURL("wendu.html");
-                window.parent.jumpTab(2);
-            });
-            $(".lookLongdu").click(function(){
-                window.parent.jumpURL("longdu.html");
-                window.parent.jumpTab(3);
-            });
         });
 
       var cgData="";
@@ -44,7 +32,6 @@
                     for(var i=0;i<data.data.length;i++)  {
                       sNumList[i]=data.data[i].number;
                         if(i==0){
-
                             num=data.data[i].number+",";
                         }
                         else {
@@ -63,23 +50,21 @@
         function connect() {
             var url= $.URL.websocket.register;
             var s="{c:'Subscribe',sensors:["+num+"]}";
-            console.log("s为："+s);
             ws =  new WebSocket(url);
             ws.onopen = function () {
                 console.log('Info: connection opened.');
                 ws.send(s);
-                ws.onclose = function (event) {
-                    console.log('Info: connection closed.');
-                    console.log(event);			};
             } ;
+            ws.onclose = function (event) {
+                console.log('Info: connection closed.');
+                console.log(event);
+            };
             ws.onmessage = function (event) {
                 console.log ("收到消息！"+event.data);
                 var jsonData = eval("(" +event.data+ ")");
                 wsData=jsonData.sensors[0].data;
                 var groupName= jsonData.sensors[0].groupName;
-                console.log("A"+groupName);
                 var sensorNum= jsonData.sensors[0].sensorNum;
-                console.log("B"+sensorNum);
                 var max;
                 for(var i=0;i<wsData.length;i++){
                     if(i==0){
@@ -101,10 +86,23 @@
                 if(eq==0){
                     sensorList[sizeOfSensorNum]=sensorNum;
                 }
-                console.log("FFF"+sensorList);
                 m.put(groupName+":"+sensorNum,max);
-               console.log("C"+m);
                updataXingbian();
+                $(".lookXingbian").click(function(){
+                    alert("lookXingbian");
+                    window.parent.jumpURL("xingbian.html");
+                    window.parent.jumpTab(1);
+                });
+                $(".lookWendu").click(function(){
+                    alert("lookWendu");
+                    window.parent.jumpURL("wendu.html");
+                    window.parent.jumpTab(2);
+                });
+                $(".lookLongdu").click(function(){
+                    alert("lookLongdu");
+                    window.parent.jumpURL("longdu.html");
+                    window.parent.jumpTab(3);
+                });
             }
         }
         function updataXingbian(){
@@ -121,18 +119,14 @@
                 else
                     gName=oTable.rows[i].cells[0].textContent;
                 var s=gName.replace(/[ ]/g,"");
-                console.log("gName:"+gName);
                 var k=0;
                 for(var j=0;j<sensorList.length;j++){
-                    console.log("得到"+parseInt(m.get(s+":"+sensorList[j])));
                     if(parseInt(m.get(s+":"+sensorList[j]))>400){
                         k=1;
-                        console.log("修改："+k);
                         oTable.rows[i].cells[4].innerHTML =updateException;
                         break;
                     }
                     if(k==0){
-                        console.log("JJJ："+k);
                         oTable.rows[i].cells[4].innerHTML =update;
                 }
 
@@ -186,7 +180,6 @@
             tableHead=tableHead+'<tbody class="ui-widget-content wijmo-wijgrid-data">';
             return  tableHead;
         }
-        var tableData=['油罐','双盘式浮顶油罐','原油','100000m?','正常（查看）','正常（查看）','正常（查看）'];
         function creatTableGrid(){
             var  tableGrid="";
             for(var i=0 ;i<cgData.length ; i++){
@@ -194,17 +187,17 @@
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7" tabindex="0" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;"> ';
                 tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;"> '+cgData[i].name+'</div></td>';
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7C7B%u578B" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+tableData[1]+'</div></td>';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">双盘式浮顶油罐</div></td>';
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5DE5%u4F5C%u4ECB%u8D28" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+tableData[2]+'</div></td>';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">原油</div></td>';
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u5BB9%u79EF" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+tableData[3]+'</div></td>';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">100000m?</div></td>';
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookXingbian" style="text-align: center;">'+tableData[4]+'</div></td>';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookXingbian"  id="lookXingbian" style="text-align: center;">正常（查看）</div></td>';
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6E29%u5EA6%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;"> ';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookWendu" style="text-align: center;">'+tableData[5]+'</div> </td>';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookWendu"  style="text-align: center;">正常（查看）</div> </td>';
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u53EF%u71C3%u6C14%u4F53%u6D53%u5EA6%u76D1%u6D4B" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookLongdu" style="text-align: center;">'+tableData[6]+'</div></td></tr> ';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookLongdu"  style="text-align: center;">正常（查看）</div></td></tr> ';
             }
             tableGrid=tableGrid+'</tbody></table>';
             return tableGrid;
@@ -212,8 +205,22 @@
         function createShowingTable(){
             var tableStr="";
             tableStr=creatTableHead()+creatTableGrid();
-            //将动态生成的table添加的事先隐藏的div中.
             $("#showData").html(tableStr);
+            $(".lookXingbian").click(function(){
+                alert("lookXingbian");
+                window.parent.jumpURL("xingbian.html");
+                window.parent.jumpTab(1);
+            });
+            $(".lookWendu").click(function(){
+                alert("lookWendu");
+                window.parent.jumpURL("wendu.html");
+                window.parent.jumpTab(2);
+            });
+            $(".lookLongdu").click(function(){
+                alert("lookLongdu");
+                window.parent.jumpURL("longdu.html");
+                window.parent.jumpTab(3);
+            });
         }
         </script>
 </head><body>

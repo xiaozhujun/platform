@@ -56,7 +56,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         String command=dataJson.getString("c");
         for(int i=0;i<sNum.length();i++){
             wssList=wsImpMap.get(appId+":"+sNum.get(i).toString());
-
             if (command.equals("Subscribe")){    //订阅
                 if(wssList==null){
                     wssList=new ArrayList<WebSocketSession>();

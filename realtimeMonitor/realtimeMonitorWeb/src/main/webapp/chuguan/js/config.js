@@ -29,6 +29,7 @@
             "add":baseUrl+"rs/area/add",
             "list":baseUrl+"rs/area/list",
             "update":baseUrl+"rs/area/update",
+            "getAreaListByGroupName":baseUrl+"rs/area/getAreaListByGroupName",
             "getAreaNameListByAppId":baseUrl+"rs/area/getAreaNameListByAppId" ,
             "getAreaByGroupId":baseUrl+"rs/area/getAreaByGroupId"
         },
@@ -63,6 +64,8 @@
             "getMongoDataLastTimeByNumber":baseUrl+"rs/sensor/getMongoDataLastTimeByNumber",
             "getMongoDataLastListByNumber":baseUrl+"rs/sensor/getMongoDataLastListByNumber",
             "getSensorsByAreaId":baseUrl+"rs/sensor/getSensorsByAreaId",
+            "getSensorsByAreaName":baseUrl+"rs/sensor/getSensorsByAreaName",
+            "getListByGroupName":baseUrl+"rs/sensor/getListByGroupName",
             "getListByGroupAreaAndMonitor":baseUrl+"rs/sensor/getListByGroupAreaAndMonitor",
             "getNumberBySensorId":baseUrl+"rs/sensor/getNumberBySensorId",
             "getSensorIdAndNumbersByName":baseUrl+"rs/sensor/getSensorIdAndNumbersByName",

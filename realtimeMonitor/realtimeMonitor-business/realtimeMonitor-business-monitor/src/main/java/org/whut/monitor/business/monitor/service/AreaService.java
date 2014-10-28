@@ -3,6 +3,7 @@ package org.whut.monitor.business.monitor.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.monitor.entity.Area;
 import org.whut.monitor.business.monitor.mapper.AreaMapper;
+import org.whut.monitor.business.monitor.mapper.GroupMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import java.util.Map;
 public class AreaService {
     @Autowired
     private AreaMapper areaMapper;
+    @Autowired
+    private GroupMapper groupMapper;
 
     public void add(Area area){
          areaMapper.add(area);
@@ -40,6 +43,10 @@ public class AreaService {
         return areaMapper.getAreaNameListByAppId(appId);
     }
     public List<String> getAreaNames(long groupId){
+        return areaMapper.getAreaNames(groupId);
+    }
+    public List<String> getAreaListByGroupName(Long appId,String group){
+        Long groupId=groupMapper.getIdByNameAndAppId(group,appId);
         return areaMapper.getAreaNames(groupId);
     }
 }

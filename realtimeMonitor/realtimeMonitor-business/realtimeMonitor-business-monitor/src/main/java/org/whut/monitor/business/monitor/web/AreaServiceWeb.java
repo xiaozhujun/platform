@@ -8,6 +8,7 @@ import org.whut.monitor.business.monitor.entity.SubArea;
 import org.whut.monitor.business.monitor.service.AreaService;
 import org.whut.monitor.business.monitor.service.GroupService;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
@@ -34,6 +35,8 @@ import java.util.Map;
 @Component
 @Path("/area")
 public class AreaServiceWeb {
+    private static PlatformLogger logger = PlatformLogger.getLogger(SensorServiceWeb.class);
+
     @Autowired
     AreaService areaService;
     @Autowired
@@ -167,5 +170,14 @@ public class AreaServiceWeb {
         long appId=UserContext.currentUserAppId();
         List<Area>list =areaService.getAreaByGroupId(groupId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getAreaListByGroupName")
+    @POST
+    public String getAreaListByGroupName(@FormParam("groupName")String groupName){
+        logger.info("现在的数据："+groupName);
+        long appId=UserContext.currentUserAppId();
+        List<String> listByGroupName = areaService.getAreaListByGroupName(appId,groupName);
+        return JsonResultUtils.getObjectResultByStringAsDefault(listByGroupName, JsonResultUtils.Code.SUCCESS);
     }
 }

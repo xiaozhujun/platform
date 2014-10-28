@@ -90,6 +90,10 @@
             }
         }
 
+        var d=new Date();      /*实现时间的选择*/
+        var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+        $("#createTime").ligerDateEditor({initValue: dd});
+
         var manager, g;
         function f_initGrid()
         {

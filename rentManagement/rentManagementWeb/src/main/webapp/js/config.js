@@ -24,9 +24,6 @@
         "userAuthority":{
               "add":"rs/userAuthority/add"
         },
-        "device":{
-            "add":"rs/device/add"
-        },
         "customer":{
             "add":"rs/customer/add",
             "update":"rs/customer/update",

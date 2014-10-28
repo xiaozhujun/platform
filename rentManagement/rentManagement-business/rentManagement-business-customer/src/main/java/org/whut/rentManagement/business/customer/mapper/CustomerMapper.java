@@ -20,4 +20,5 @@ public interface CustomerMapper extends AbstractMapper<Customer> {
                                           @Param("address") String address, @Param("linkman") String linkman, @Param("telephone") String telephone,
                                           @Param("email") String email, @Param("qq") String qq, @Param("bank") String bank,
                                           @Param("bankAccount") String bankAccount, @Param("createTime") String createTime);
+    public List<Customer> getByNameAndLinkman(@Param("name") String name, @Param("linkman") String linkman, @Param("appId") long appId);
 }

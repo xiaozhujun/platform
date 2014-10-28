@@ -13,4 +13,5 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface BadDebtDeviceMapper extends AbstractMapper<BadDebtDevice> {
+    public int deleteByBadDebtId(long badDebtId); //在BadDebtDeviceMapper.xml中添加deleteByBadDebtId
 }

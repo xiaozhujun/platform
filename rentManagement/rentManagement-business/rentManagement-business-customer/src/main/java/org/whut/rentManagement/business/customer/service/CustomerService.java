@@ -36,5 +36,8 @@ public class CustomerService {
     public long getIdByTelephone(String telephone){
         return customerMapper.getIdByTelephone(telephone);
     }
+    public List<Customer> getByNameAndLinkman(String name,String linkman,long appId){
+        return  customerMapper.getByNameAndLinkman(name,linkman,appId);
+    }
 
 }

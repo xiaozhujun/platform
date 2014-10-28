@@ -17,5 +17,6 @@ import java.util.Map;
 public interface BadDebtSheetMapper extends AbstractMapper<BadDebtSheet> {
     //public List<BadDebtSheet> getBadDebtSheetListByAppId(long appId);//方法名与Mapper.xml中的id值相同
     public List<Map<String,Object>> getListByAppId(long appId);
-    public long getBadDebtSheetId(@Param("number") String number,@Param("carNumber") String carNumber,@Param("customerId") long customerId,@Param("contractId") long contractId,@Param("storehouseId")long storehouseId,@Param("appId")long appId);
+    public Long getBadDebtId(@Param("number") String number,@Param("carNumber") String carNumber,@Param("customerId") long customerId,@Param("contractId") long contractId,@Param("storehouseId")long storehouseId,@Param("appId")long appId);
+    public BadDebtSheet getById(long id);
 }

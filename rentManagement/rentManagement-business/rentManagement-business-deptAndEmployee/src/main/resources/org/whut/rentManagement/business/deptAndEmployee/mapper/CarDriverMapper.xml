@@ -29,8 +29,11 @@
     <update id="update" parameterType="CarDriver">
         update car_driver
         <set>
-            <if test="carNumber!=null">NAME=#{carNumber},</if>
             <if test="name!=null">NAME=#{name},</if>
+            <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
+            <if test="carType!=null">CARTYPE=#{carType},</if>
+            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
         </set>
         where ID=#{id};
     </update>
@@ -50,13 +53,13 @@
         WHERE APPID=#{appId}
     </select>
 
-    <select id="getIdByCar_Number" parameterType="map" resultType="java.lang.Long">
+    <select id="getIdByCarNumber" parameterType="map" resultType="java.lang.Long">
         select id
         from car_driver
         where CARNUMBER=#{carNumber} and APPID=#{appId}
     </select>
 
-    <select id="getCar_NumberById" parameterType="java.lang.Long" resultType="java.lang.String">
+    <select id="getCarNumberById" parameterType="java.lang.Long" resultType="java.lang.String">
         select carNumber
         from car_driver
         where ID=#{id}

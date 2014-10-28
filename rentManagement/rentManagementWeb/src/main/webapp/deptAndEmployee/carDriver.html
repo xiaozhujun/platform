@@ -28,9 +28,9 @@
         var dataGridColumns = [
             { header: 'ID', name: 'id', width: 20 },
             { header: '车主', name: 'name' },
-            { header: '创建时间', name:'createTime'},
             {header:'车牌号',name:'carNumber'},
-            {header:'车型',name:'carType'}
+            {header:'车型',name:'carType'},
+            { header: '创建时间', name:'createTime'}
         ];
         var manager, g;
         function  c_initGrid()
@@ -41,13 +41,13 @@
                     { display: '车主',name: 'name',
                         editor: { type: 'text'}
                     },
-                    { display: '创建时间', name: 'createTime',width:100 ,type: 'date',frozen:true},
                     {display:'车牌号',name:'carNumber',
                         editor:{type:'text'}
                     },
                     {display:'车型',name:'carType',
                         editor:{type:'text'}
                     },
+                    { display: '创建时间', name: 'createTime',width:100 ,editor:{type:'date'}},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -94,6 +94,7 @@
             if(data.code==200){
                 $.ligerDialog.success('操作成功');
                 $.post($.URL.car_Driver.list,null,listCallback,"json");
+                $.ligerDialog.hide("#addCar_driver");
             }
             else if(data.code==500)
             {
@@ -101,6 +102,7 @@
 
             }
         }
+
         function beginEdit(rowid) {
             manager.beginEdit(rowid);
         }
@@ -118,6 +120,7 @@
         function updateCallback(data){
             if(data.code==200){
                 $.ligerDialog.success("修改成功");
+                $.post($.URL.car_Driver.list,null,listCallback,"json");
             }
             else if(data.code==500)
             {

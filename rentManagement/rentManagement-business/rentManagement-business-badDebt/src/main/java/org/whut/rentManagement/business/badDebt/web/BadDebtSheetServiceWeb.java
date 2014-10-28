@@ -74,23 +74,34 @@ public class BadDebtSheetServiceWeb {
                 badDebtSheetService.add(badDebtSheet);
 
             long deviceId = deviceService.getIdByNumber(subBadDebtSheet.getDeviceNumber(),appId);
-            long badDebtId = badDebtSheetService.getBadDebtSheetId(jsonObject.getString("number"),jsonObject.getString("carNumber"),jsonObject.getLong("customerId"),jsonObject.getLong("contractId"),jsonObject.getLong("storehouseId"),jsonObject.getLong("appId"));
+            String number = jsonObject.getString("number");
+            long badDebtId = badDebtSheetService.getBadDebtId(number,jsonObject.getString("carNumber"),jsonObject.getLong("customerId"),jsonObject.getLong("contractId"),jsonObject.getLong("storehouseId"),appId);
             BadDebtDevice badDebtDevice = new BadDebtDevice();
             badDebtDevice.setBadDebtId(badDebtId);
             badDebtDevice.setDeviceId(deviceId);
             badDebtDeviceService.add(badDebtDevice);   //对关联表bad_debt_device进行插入操作
-
         }catch (JSONException e){
             e.printStackTrace();
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-        BadDebtSheet badDebtSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,BadDebtSheet.class);
+        SubBadDebtSheet subBadDebtSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubBadDebtSheet.class);
+        BadDebtSheet badDebtSheet = new BadDebtSheet();
+        badDebtSheet.setId(subBadDebtSheet.getId());
+        badDebtSheet.setNumber(subBadDebtSheet.getNumber());
+        badDebtSheet.setCarNumber(subBadDebtSheet.getCarNumber());
+        badDebtSheet.setCustomerId(subBadDebtSheet.getCustomerId());
+        badDebtSheet.setContractId(subBadDebtSheet.getContractId());
+        badDebtSheet.setHandler(subBadDebtSheet.getHandler());
+        badDebtSheet.setStorehouseId(subBadDebtSheet.getStorehouseId());
+        badDebtSheet.setDescription(subBadDebtSheet.getDescription());
+        badDebtSheet.setCreator(subBadDebtSheet.getCreator());
         badDebtSheetService.update(badDebtSheet);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -98,8 +109,14 @@ public class BadDebtSheetServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/delete")
     @POST
-    public String delete(@FormParam("jsonString") String jsonString){
-        BadDebtSheet badDebtSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,BadDebtSheet.class);
+    public String delete(@FormParam("jsonString") String jsonString) throws JSONException, ParseException{
+        long appId = UserContext.currentUserAppId();
+        JSONObject jsonObject = new JSONObject(jsonString);
+        SubBadDebtSheet subBadDebtSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubBadDebtSheet.class);
+        BadDebtSheet badDebtSheet = badDebtSheetService.getById(subBadDebtSheet.getId());
+        long badDebtId = jsonObject.getLong("id");
+        //Long badDebtId = badDebtSheetService.getBadDebtId(jsonObject.getString("number"),jsonObject.getString("carNumber"),jsonObject.getLong("customerId"),jsonObject.getLong("contractId"),jsonObject.getLong("storehouseId"),appId);
+        badDebtDeviceService.deleteByBadDebtId(badDebtId); //badDebtDeviceService.deleteByBadDebtId(badDebtId)和 badDebtSheetService.delete(badDebtSheet)注意顺序
         badDebtSheetService.delete(badDebtSheet);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -127,8 +144,9 @@ public class BadDebtSheetServiceWeb {
             subBadDebtSheet.setCreateTime(str);
             subBadDebtSheet.setCreator((String) badDebtSheet.get("creator"));
             subBadDebtSheet.setAppId((Long)badDebtSheet.get("appId"));
-            subBadDebtSheet.setDeviceNumber((String) badDebtSheet.get("deviceNumber"));
-            //System.out.println(subBadDebtSheet);
+            Long badDebtId =(Long)badDebtSheet.get("id");
+
+            subBadDebtSheet.setDeviceNumber((String) badDebtSheet.get("deviceNumber")); //这一句有错，不会传deviceNumber的值
             subBadDebtSheetsList.add(subBadDebtSheet);
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(subBadDebtSheetsList, JsonResultUtils.Code.SUCCESS);

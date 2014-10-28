@@ -26,4 +26,8 @@ public class BadDebtDeviceService {
     public void delete(BadDebtDevice badDebtDevice){
         badDebtDeviceMapper.delete(badDebtDevice);
     }
+
+    public int deleteByBadDebtId(long badDebtId){
+        return badDebtDeviceMapper.deleteByBadDebtId(badDebtId);
+    }
 }

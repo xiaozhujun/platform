@@ -41,9 +41,8 @@
             <if test="handler!=null">HANDLER=#{handler},</if>
             <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
-            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+      <!--  <if test="createTime!=null">CREATETIME=#{createTime},</if>  -->
             <if test="creator!=null">CREATOR=#{creator},</if>
-            <if test="appId!=null">APPID=#{appId},</if>
         </set>
         WHERE ID = #{id};
     </update>
@@ -59,9 +58,18 @@
         FROM bad_debt_sheet a left join device b on a.appId=b.appId
     </select>
 
-    <select id="getBadDebtSheetId" parameterType="map" resultType="java.lang.Long">
+    <select id="getBadDebtId" parameterType="map" resultType="java.lang.Long">
         SELECT id
          FROM bad_debt_sheet
-         WHERE number=#{number} AND carNumber=#{carNumber} AND customerId=#{customerId} AND contractId=#{contractId} AND storehouseId=#{storehouseId} AND appId=#{appId}
+         WHERE NUMBER=#{number} AND CARNUMBER=#{carNumber} AND CUSTOMERID=#{customerId}
+                AND CONTRACTID=#{contractId} AND STOREHOUSEID=#{storehouseId} AND APPID=#{appId}
     </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultMap="badDebtSheetResultMap">    /*根据id获取某行信息，做删除时用到*/
+        select
+        <include refid="BadDebtSheet_fields"/>
+        from bad_debt_sheet
+        where id=#{id}
+    </select>
+
 </mapper>

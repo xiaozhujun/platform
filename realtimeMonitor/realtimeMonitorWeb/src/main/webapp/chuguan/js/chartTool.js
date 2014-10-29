@@ -1,7 +1,8 @@
-function drawChart(container,data,unit){
+function drawChart(container,map,unit){
 
 
  $(container).highcharts({
+
         chart: {
             defaultSeriesType: 'line',
             marginRight: 20,
@@ -81,9 +82,17 @@ function drawChart(container,data,unit){
                 shadow: false
             }
         },
-        series : [{
-            data: data
-        }],
+        series : function(){
+            console.log("^^^^^^^^^^^map^^^^^^^^^^^^^^^^^^^");
+            console.log(map);
+            var temp = [];
+            for(key in map.data){
+                temp.push({name:key,data:map.data[key]});
+            }
+            console.log("^^^^^^^^^^^temp^^^^^^^^^^^^^^^^^^^");
+            console.log(temp);
+            return temp;
+        }(),
         credits: {
             enabled: false
         }

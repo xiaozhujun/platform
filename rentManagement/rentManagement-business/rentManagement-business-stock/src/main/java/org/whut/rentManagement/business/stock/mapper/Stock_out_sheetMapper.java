@@ -18,14 +18,6 @@ public interface Stock_out_sheetMapper extends AbstractMapper<Stock_out_sheet> {
     public List<Stock_out_sheet> findByCondition(@Param("appId") long appId, @Param("customerId") long customerId, @Param("contractId") long contractId, @Param("storehouseId") long storehouseId);
     public List<Stock_out_sheet> getListByAppId(long appId);
     public List<Map<String,String>> getListByCondition(@Param("appId") long appId, @Param("customerId") long customerId, @Param("contractId") long contractId, @Param("storehouseId") long storehouseId);
-    public long getIdByCustomerIdAndContractId(@Param("customerId") long customerId, @Param("contractId") long contractId);
-//    public Long getStockOutIdById(@Param("Id")Long Id);
-//    //public List<Map<>> getListByStockOutId()
-//    public Long getIdByNumber(@Param("number") String number,@Param("appId") long appId);
-//    public List<Map<Long,Long>> getListByStockOutId(@Param("deviceType") String deviceType,@Param("deviceNumber") String deviceNumber,@Param("tagName") String tagName,@Param("appId") long appId);
-//    public List<Map<String,Object>> getListByTagId(long tagId);
-//    public String getNameById(long id);
-//    public List<Stock_out_device> getListByAppId(long appId);
-//    public Long getIdByName(@Param("name") String name, @Param("appId") long appId);
-//    public List<Stock_out_device> getInfoByCondition(@Param("name")String name,@Param("number")String number,@Param("deviceTypeId")long deviceTypeId,@Param("appId")long appId);
+    public long getIdByCustomerIdAndContractId(@Param("customerId") String customerId, @Param("contractId") String contractId);
+    public Long getDeviceId(@Param("number") String number,@Param("carNumber") String carNumber,@Param("customerId") long customerId,@Param("contractId") long contractId,@Param("storehouseId")long storehouseId,@Param("appId")long appId);
 }

@@ -33,7 +33,7 @@ public class CustomerService {
     public long getIdByName(String name,long appId){
         return customerMapper.getIdByName(name, appId);
     }
-    public long getNameById(long id,long appId){
+    public String getNameById(long id,long appId){
         return customerMapper.getNameById(id,appId);
     }
     public long getIdByTelephone(String telephone){

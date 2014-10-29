@@ -15,18 +15,100 @@
 <script src="js/jquery.json-2.4.min.js" type="text/javascript"></script>
 <script src="js/config.js" type="text/javascript"></script>
 <script>
-var nowGName="";
+var nowGName="储油罐1";
 $(document).ready(function () {
+    creatTable(nowGName);
     $.post($.URL.group.list,null,gridCallback);
+    $.post($.URL.sensor.getListByGroupName,{"groupName":nowGName},getListByDefaultGroupNameCallback);
 
 });
+function getListByDefaultGroupNameCallback(data){
+    if(data.code==200){
+        console.log("返回的数据："+data.data);
+        for(var i=0;i<data.data.length;i++)  {
+            if(i==0){
+                num=data.data[i].number+",";
+            }
+            else {
+                num=num+data.data[i].number+",";
+            }
+        }
+        var lastIndex = num.lastIndexOf(',');
+        if (lastIndex > -1) {
+            num = num.substring(0, lastIndex) + num.substring(lastIndex + 1, num.length);
+        }
+        s ="{c:'Subscribe',sensors:["+num+"]}";
+        connect();
+    }
+}
+function creatTable(data){
+    $.ajax({
+        url:$.URL.area.getAreaListByGroupName,
+        async:false,
+        dataType:'json',
+        type:'POST',
+        data:{"groupName":data},
+        success:(function(areaResult){
+            areaName = areaResult.data;
+            creatSensorTable(areaName);
+        })
+    });
+}
+function creatSensorTable(data){
+    var tableHead="";
+    var qwe="";
+    for(var i=0 ;i<data.length ; i++){
+        $.ajax({
+            url:$.URL.sensor.getSensorsByAreaName,
+            async:false,
+            dataType:'json',
+            type:'POST',
+            data:{"AreaName":data[i],"GroupName":nowGName},
+            success:(function(sensoResult){
+                var result=sensoResult.data;
+                qwe=result;
+                    for(var j=0;j<result.length;j++){
+       tableHead=tableHead+ '<tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow" style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">'+
+                            '<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"  tabindex="0" aria-selected="true" style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">' +
+                            '<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+nowGName+'</div></td>'+
+                            '<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6" aria-selected="true"'+
+                            'style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">'+
+                            '<div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div></td>';
+       tableHead=tableHead+ '<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E" aria-selected="true" '+
+                            'style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"> '+
+                            '<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+data[i]+'</div></td> ';
+       tableHead=tableHead+ '<td class="wijgridtd wijdata-type-string" role="gridcell"  headers="%u4F20%u611F%u5668%u7F16%u53F7" aria-selected="true" '+
+                            ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"> '+
+                            '<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+result[j].number+'</div> '+
+                            ' </td> <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u76D1%u6D4B%u7269%u7406%u91CF" aria-selected="true" '+
+                            ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">'+
+                            ' <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>'+
+                            ' </td> <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C" aria-selected="true"'+
+                            ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;" id="UP0_ST"> '+
+                            '<div class="wijmo-wijgrid-innercell" style="text-align: center;">UP0_ST</div>'+
+                            ' </td><td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u53D8%u5F62%u72B6%u6001" aria-selected="true"'+
+                            ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;" id="UP_ST_AL">'+
+                            '<div class="wijmo-wijgrid-innercell" style="text-align: center;">UP_ST_AL</div> '+
+                            '</td> <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"  aria-selected="true"'+
+                            'style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"> '+
+                            '<div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div></td></tr>  '
+                }
+            }
+        )
+        });
+    }
+    document.getElementById("wijmo-wijgrid-data").innerHTML=tableHead;
+    $(".lookXingbianRealdata").click(function(){
+        window.parent.jumpURL("xingbianRealData.html");
+    });
+}
+
 var cgData="";
 
 function gridCallback(data) {
     if(data.code == 200) {
         cgData = data.data;
         creatSelectHead(cgData);
-        creatTable(cgData);
         $("#tankSelect").click(function(){
             $("#selectOptions").toggle();
         });
@@ -40,7 +122,6 @@ function gridCallback(data) {
 }
 var num="";
 var s="";
-var groupName="";
 function connect() {
     var url= $.URL.websocket.register;
     console.log("s为："+s);
@@ -57,6 +138,7 @@ function connect() {
         wsData=jsonData.sensors[0].data;
         var gn=jsonData.sensors[0].groupName;
         var sensorNumber=jsonData.sensors[0].sensorNum;
+        sensorNumber=sensorNumber.replace(/[ ]/g,"");
         console.log ("收到消息！"+wsData);
         var max;
         for(var i=0;i<wsData.length;i++){
@@ -69,7 +151,7 @@ function connect() {
                 }
             }
         }
-        if(gn==groupName){
+        if(gn==nowGName){
             if(sensorNumber=='2100000000010000')
                 document.getElementById("s1").innerHTML='UP0_ST&nbsp;&nbsp;&nbsp'+max;
             if(sensorNumber=='2100000000010001')
@@ -167,17 +249,37 @@ function connect() {
             if(sensorNumber=='2100000000010047')
                 document.getElementById("z8").innerHTML='DOWN315_ST&nbsp;&nbsp;&nbsp'+max;
         }
+        var s="";
+        var tbody = document.getElementById('DataGrid414255');
+        for(var i = 1;i<tbody.rows.length;i++){
+            if(navigator.appName.indexOf("Explorer")>-1)
+              s= tbody.rows[i].cells[3].innerText;
+            else
+              s= tbody.rows[i].cells[3].textContent;
+              s=s.replace(/[ ]/g,"");
+
+            if(s==sensorNumber) {
+                if(navigator.appName.indexOf("Explorer")>-1)
+                     tbody.rows[i].cells[5].innerText="UP0_ST "+max;
+                else
+                     tbody.rows[i].cells[5].textContent="UP0_ST "+max;
+            }
+        }
     }
 }
-function changeGroupName(gName){
-    s ="{c:'cancelSubscribe',sensors:["+num+"]}";    //取消订阅 之前的
-    ws.send(s);
-    groupName=gName;
-    $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameCallback,"json");
+function changeGroupName(data){
+//    s ="{c:'cancelSubscribe',sensors:["+num+"]}";    //取消订阅 之前的
+//    ws.send(s);
+    if(ws!=null){
+        ws.close();
+        ws=null;
+    }
+    nowGName=data;
+    creatTable(nowGName);
+    $.post($.URL.sensor.getListByGroupName,{"groupName":nowGName},getListByGroupNameCallback,"json");
 }
 function creatSelectHead(data){
     var tableHead="";
-    groupName=cgData[0].name;
     if(navigator.appName.indexOf("Explorer")>-1)    {
         document.getElementById("selectTank").innerText=cgData[0].name;
     }
@@ -187,9 +289,6 @@ function creatSelectHead(data){
         tableHead=tableHead+ '<li data-value="'+i+1+'"><a href="#" tabindex="-1">'+data[i].name+'</a></li>'
     }
     document.getElementById("selectOptions").innerHTML=tableHead;
-    groupName=data[0].name;
-    $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameCallback);
-
 }
 function getListByGroupNameCallback(data){
     if(data.code==200){
@@ -207,41 +306,8 @@ function getListByGroupNameCallback(data){
             num = num.substring(0, lastIndex) + num.substring(lastIndex + 1, num.length);
         }
         s ="{c:'Subscribe',sensors:["+num+"]}";
-        connect();
+       ws.send(s);
     }
-}
-function creatTable(data){
-    var tableHead="";
-    for(var i=0 ;i<data.length ; i++){
-        tableHead=tableHead+ '<tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow" style="border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; border-width: 0px; border-style: none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 22px;">'+
-                '<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7"  tabindex="0" aria-selected="true" style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">' +
-                '<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+cgData[0].name+'</div></td>'+
-                '<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5173%u952E%u90E8%u4EF6" aria-selected="true"'+
-                'style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">'+
-                '<div class="wijmo-wijgrid-innercell" style="text-align: center;">罐体</div>'+
-                '</td><td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6D4B%u70B9%u4F4D%u7F6E" aria-selected="true" '+
-                ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"> '+
-                '<div class="wijmo-wijgrid-innercell" style="text-align: center;">量油口</div>'+
-                '</td> <td class="wijgridtd wijdata-type-string" role="gridcell"  headers="%u4F20%u611F%u5668%u7F16%u53F7" aria-selected="true" '+
-                ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"> '+
-                '<div class="wijmo-wijgrid-innercell" style="text-align: center;">0009</div> '+
-                ' </td> <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u76D1%u6D4B%u7269%u7406%u91CF" aria-selected="true" '+
-                ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;">'+
-                ' <div class="wijmo-wijgrid-innercell" style="text-align: center;">应变</div>'+
-                ' </td> <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5B9E%u6D4B%u503C" aria-selected="true"'+
-                ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;" id="UP0_ST"> '+
-                '<div class="wijmo-wijgrid-innercell" style="text-align: center;">UP0_ST</div>'+
-                ' </td><td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u53D8%u5F62%u72B6%u6001" aria-selected="true"'+
-                ' style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;" id="UP_ST_AL">'+
-                '<div class="wijmo-wijgrid-innercell" style="text-align: center;">UP_ST_AL</div> '+
-                '</td> <td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u64CD%u4F5C"  aria-selected="true"'+
-                'style="background: none repeat scroll 0% 0% rgb(255, 255, 255); color: rgb(0, 0, 0); border-right-color: rgb(170, 170, 170); font-size: 12px; font-family: Microsoft YaHei; font-weight: normal;"> '+
-                '<div class="wijmo-wijgrid-innercell lookXingbianRealdata" style="text-align: center;">查看</div></td></tr>  '
-    }
-    document.getElementById("wijmo-wijgrid-data").innerHTML=tableHead;
-    $(".lookXingbianRealdata").click(function(){
-        window.parent.jumpURL("xingbianRealData.html");
-    });
 }
 </script>
 </head>
@@ -853,6 +919,8 @@ function creatTable(data){
     </div>
     <div class="selectPanelFooterSty" style="display: none;"></div>
 </div>
+
+
 <div style="padding-right: 2px; width: 1250px; height: auto; left: 14px; top: 496px; z-index: 1001;"
      class="PanelSty selectPanelSty" id="Panel_DataGrid414255" recivedata="true">
     <div class="" id="head_DataGrid414255" style="display: none;"><span>DataGrid414255</span></div>
@@ -960,6 +1028,7 @@ function creatTable(data){
     </div>
     <div class="selectPanelFooterSty" style="display: none;"></div>
 </div>
+
 <div class="PanelSty selectPanelSty" id="Panel_Label129870" recivedata="true"
      style="width: 105px; height: 49px; left: 116px; top: 420px; font-weight: bold; font-family: '微软雅黑'; border: 0px solid rgb(0, 0, 0); z-index: 1802;">
     <div class="" id="head_Label129870" style="display: none;"><span>Label129870</span></div>

@@ -22,8 +22,8 @@
             $.post($.URL.device.list,null,listDeviceCallback,"json");
             $.post($.URL.car_Driver.list,null,listCarDriverCallback,"json");
             $.post($.URL.customer.list,null,listCustomerCallback,"json");
-           /* $.post($.URL.contract.list,null,listContractCallback,"json");
-            $.post($.URL.storehouse.list,null,listStorehouseCallback,"json");*/
+            $.post($.URL.contract.list,null,listContractCallback,"json");
+            /* $.post($.URL.storehouse.list,null,listStorehouseCallback,"json");*/
         });
 
         var gridData = {};
@@ -90,6 +90,23 @@
             }
         }
 
+        var ContractIdData=[];
+        function listContractCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["type"]=content.id;
+                    j["text"]=content.id;
+                    ContractIdData.push(j);
+                     var data = JSON.stringify(j);
+                });
+                $("#contractId").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:ContractIdData,
+                    valueFieldID: 'contractId'
+                });
+            }
+        }
+
         var d=new Date();      /*实现时间的选择*/
         var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
         $("#createTime").ligerDateEditor({initValue: dd});
@@ -115,15 +132,15 @@
                     { display: '车号', name: 'carNumber', type: 'int',
                         editor: { type: 'int'}
                     },
-                    { display: '顾客号',name: 'customerId',
+                    { display: '顾客名',name: 'customerName',
                         editor: { type: 'int'}
                     },
-                    { display: '合同号',name: 'contractId',
+                    { display: '合同名',name: 'contractName',
                         editor: { type: 'text'}
                     },
                     { display: '经手人',name: 'handler',
                         editor: { type: 'text'}
-                    },{ display: '仓库号',name: 'storehouseId',
+                    },{ display: '仓库管理人员名',name: 'storehouseId',
                         editor: { type: 'int'}
                     },
                     { display: '描述',name: 'description',

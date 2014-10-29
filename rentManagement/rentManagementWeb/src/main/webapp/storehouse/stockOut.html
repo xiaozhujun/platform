@@ -1,9 +1,114 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="../lib/json2.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            $.post($.URL.customer.list,null,listCustomerCallback,"json");
+            function listCustomerCallback(data){
+                if(data.code==200){
+                    var myData = [];
+                    $.each(data.data,function(index,content){
+                        var j=[];
+                        j["type"]=content.number;
+                        j["text"]=content.number;
+                        myData.push(j);
+                    });
+                    $("#customerId").ligerComboBox({emptyText:null,   //实现下拉框
+                        data:myData,
+                        valueFieldID: 'customerIdrSelect'
+                    });
+                }
+            }
+
+            $("#submitBtn").click(function(){
+                var addData={};
+                addData.number = $("#number").val();
+                addData.carNumber = $( "#carNumber").val();
+                addData.customerId = $( "#customerId").val();
+                addData.contractId = $( "#contractId").val();
+                addData.handler = $( "#handler").val();
+                addData.storehouseId = $( "#storehouseId").val(),
+                addData.description = $( "#description").val();
+                addData.createTime = $( "#createTime").val();
+                addData.creator = $( "#creator").val();
+                $.post($.URL.stock_out_sheet.add,addData,addCallBack,"json");
+            });
+        });
+        function addCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success("添加成功");
+                //$.post($.URL.bad_Debt_Sheet.list,null,listCallback,"json");添加成功后直接跳转到列表页面
+            }
+            else{
+                $.ligerDialog.warn(data.message);
+            }
+        }
+    </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+    </style>
 </head>
-<body>
-                   stockOut
+<body style="padding:10px">
+
+<form name="form1" method="post" action="" id="form1">
+    <div>
+    </div>
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">数量:</td>
+            <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="number" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">车号:</td>
+            <td align="left" class="l-table-edit-td"><input name="carNumber" type="text" id="carNumber" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">顾客号:</td>
+            <td align="left" class="l-table-edit-td"><input name="customerId" type="text" id="customerId" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">合同号:</td>
+            <td align="left" class="l-table-edit-td"><input name="contractId" type="text" id="contractId" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">经手人:</td>
+            <td align="left" class="l-table-edit-td"><input name="handler" type="text" id="handler" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>  <tr>
+        <td align="right" class="l-table-edit-td">仓库号:</td>
+        <td align="left" class="l-table-edit-td"><input name="storehouseId" type="text" id="storehouseId" ltype="text" /></td>
+        <td align="left"></td>
+    </tr>  <tr>
+        <td align="right" class="l-table-edit-td">描述:</td>
+        <td align="left" class="l-table-edit-td"><input name="description" type="text" id="description" ltype="text" /></td>
+        <td align="left"></td>
+    </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">创建者:</td>
+            <td align="left" class="l-table-edit-td"><input name="creator" type="text" id="creator" ltype="text" /></td>
+            <td align="left"></td>
+        </tr>
+    </table>
+    <br />
+    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+</form>
+<div style="display:none">
+    <!--  数据统计代码 --></div>
 </body>
-</html>

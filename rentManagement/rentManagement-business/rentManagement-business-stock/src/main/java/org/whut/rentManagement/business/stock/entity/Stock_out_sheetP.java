@@ -1,43 +1,32 @@
-package org.whut.rentManagement.business.badDebt.entity;
-
+package org.whut.rentManagement.business.stock.entity;
 
 /**
  * Created with IntelliJ IDEA.
- * User: cwb
- * Date: 14-10-14
- * Time: 下午8:53
+ * User: YRuJ
+ * Date: 14-10-25
+ * Time: 下午7:32
  * To change this template use File | Settings | File Templates.
  */
-public class SubBadDebtSheet {
+public class Stock_out_sheetP {
     private long id;
     private String number;
     private String carNumber;
-    private long customerId;
-    private long contractId;
+    private String customerId;
+    private String contractId;
     private String handler;
-    private long storehouseId;
+    private String storehouseId;
     private String description;
-    private String createTime;  //定义成String而不是date方便json传值
+    private String createTime;
     private String creator;
     private long appId;
     private String deviceNumber;
-    private String customerName;
-    private String contractName;
 
-    public String getContractName() {
-        return contractName;
+    public String getDeviceNumber() {
+        return deviceNumber;
     }
 
-    public void setContractName(String contractName) {
-        this.contractName = contractName;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
     }
 
     public long getId() {
@@ -64,19 +53,19 @@ public class SubBadDebtSheet {
         this.carNumber = carNumber;
     }
 
-    public long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public long getContractId() {
+    public String getContractId() {
         return contractId;
     }
 
-    public void setContractId(long contractId) {
+    public void setContractId(String contractId) {
         this.contractId = contractId;
     }
 
@@ -88,11 +77,11 @@ public class SubBadDebtSheet {
         this.handler = handler;
     }
 
-    public long getStorehouseId() {
+    public String getStorehouseId() {
         return storehouseId;
     }
 
-    public void setStorehouseId(long storehouseId) {
+    public void setStorehouseId(String storehouseId) {
         this.storehouseId = storehouseId;
     }
 
@@ -126,13 +115,5 @@ public class SubBadDebtSheet {
 
     public void setAppId(long appId) {
         this.appId = appId;
-    }
-
-    public String getDeviceNumber() {
-        return deviceNumber;
-    }
-
-    public void setDeviceNumber(String deviceNumber) {
-        this.deviceNumber = deviceNumber;
     }
 }

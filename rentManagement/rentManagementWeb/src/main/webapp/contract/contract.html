@@ -31,28 +31,28 @@
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '合同名',name: 'name',editor:{type:'text'}} ,
-                    { display: '编号',name: 'number',width:100},
-                    { display: '客户姓名', name: 'customerName', width: 100,frozen: true },
-                    { display: '负责人', name: 'chargeMan', width: 100,frozen: true },
-                    { display: '项目地点', name: 'projectLocation', width: 100,frozen: true },
-                    { display: '签订时间',name: 'signTime',width:100},
-                    { display: '开始时间',name: 'startTime',width:100},
-                    { display: '结束时间',name: 'endTime',width:100},
-                    { display: '状态',name: 'status',width:100},
-                    { display: '预埋人',name: 'preBuryMan',width:100},
-                    { display: '预埋时间',name: 'preBuryTime',width:100},
-                    { display: '预埋状态',name: 'preBuryStatus',width:100},
-                    { display: '需安装数',name: 'needInstallCount',width:100},
-                    { display: '已安装数',name: 'installCount',width:100},
-                    { display: '自检状态',name: 'selfInspectStatus',width:100},
-                    { display: '自检时间',name: 'selfInspectTime',width:100},
-                    { display: '移除人',name: 'removeMan',width:100},
-                    { display: '移除时间',name: 'removeTime',width:100},
-                    { display: '移除状态',name: 'removeStatus',width:100},
+                    { display: '合同名',name: 'name',width: 100,editor:{type:'text'},frozen: true} ,
+                    { display: '编号',name: 'number',width: 100,editor:{type:'text'}},
+                    { display: '客户姓名', name: 'customerName',width: 100},
+                    { display: '负责人', name: 'chargeMan',width: 100},
+                    { display: '项目地点', name: 'projectLocation',width: 100},
+                    { display: '签订时间',name: 'signTime',width: 100},
+                    { display: '开始时间',name: 'startTime',width: 100},
+                    { display: '结束时间',name: 'endTime',width: 100},
+                    { display: '状态',name: 'status',width: 100},
+                    { display: '预埋人',name: 'preBuryMan',width: 100},
+                    { display: '预埋时间',name: 'preBuryTime',width: 100},
+                    { display: '预埋状态',name: 'preBuryStatus',width: 100},
+                    { display: '需安装数',name: 'needInstallCount',width: 100},
+                    { display: '已安装数',name: 'installCount',width: 100},
+                    { display: '自检状态',name: 'selfInspectStatus',width: 100},
+                    { display: '自检时间',name: 'selfInspectTime',width: 100},
+                    { display: '移除人',name: 'removeMan',width: 100},
+                    { display: '移除时间',name: 'removeTime',width: 100},
+                    { display: '移除状态',name: 'removeStatus',width: 100},
 //                    { display: '描述',name: 'description',type:'string',editor: { type: 'text'}
 //                    },
-                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+                    { display: '操作', isSort: false, width: 120, frozen: true,render: function (rowdata, rowindex, value)
                     {
                         var h = "";
                         if (!rowdata._editing)
@@ -111,7 +111,7 @@
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
-                $.post($.URL.contract.delete,{"jsonString":jsonString},deleteCallback,"json");
+                $.post($.URL.contract.delete,{"id":row.id},deleteCallback,"json");
                 manager.deleteRow(rowid);
             }
         }
@@ -130,6 +130,9 @@
             manager.addEditRow();
         }
 
+        function f_add() {
+            $("#maingrid").load("contract/addContract.html");
+        }
     </script>
     <style type="text/css">
         .l-table-edit {}
@@ -139,6 +142,9 @@
     </style>
 </head>
 <body  style="padding:10px">
+
+<div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
+<br/><br/>
 <div style="display:none;">
     <!-- g data total ttt -->
 </div>

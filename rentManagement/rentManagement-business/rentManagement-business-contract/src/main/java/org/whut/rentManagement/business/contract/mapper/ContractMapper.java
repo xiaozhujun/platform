@@ -16,4 +16,5 @@ import java.util.List;
 public interface ContractMapper extends AbstractMapper<Contract> {
     public List<Contract> getListByAppId(@Param("appId")long appId) ;
     public Contract getContractById(@Param("id")long id,@Param("appId")long appId);
+    public int deleteById(@Param("id")long id,@Param("appId")long appId);
 }

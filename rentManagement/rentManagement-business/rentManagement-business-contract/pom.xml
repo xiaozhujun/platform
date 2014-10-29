@@ -93,6 +93,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>rentManagement-business-customer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 

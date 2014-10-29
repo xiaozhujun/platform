@@ -88,16 +88,21 @@
         DELETE FROM device
         <where>
             <if test="number != null">NUMBER=#{number}</if>
-            <if test="name != null"> AND NAME=#{name}</if>
+            <if test="name != null">and NAME=#{name}</if>
         </where>
     </delete>
 
 
-    <select id="getContractById" parameterType="long" resultMap="contractResultMap">
+    <select id="getContractById" parameterType="map" resultMap="contractResultMap">
         SELECT
         <include refid="contract_fields" />
         FROM contract WHERE ID=#{id} AND APPID=#{appId}
     </select>
+
+    <delete id="deleteById" parameterType="map">
+        DELETE FROM contract
+        WHERE ID=#{id} AND APPID=#{appId}
+    </delete>
 
     <select id="getIdByNumber"  parameterType="map" resultType="java.lang.Long">
         select   id

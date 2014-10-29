@@ -21,6 +21,24 @@ public class SubBadDebtSheet {
     private String creator;
     private long appId;
     private String deviceNumber;
+    private String customerName;
+    private String contractName;
+
+    public String getContractName() {
+        return contractName;
+    }
+
+    public void setContractName(String contractName) {
+        this.contractName = contractName;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
     public long getId() {
         return id;

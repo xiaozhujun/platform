@@ -24,6 +24,13 @@
         "userAuthority":{
               "add":"rs/userAuthority/add"
         },
+        "contract":{
+            "add":"rs/contract/add",
+            "update":"rs/contract/update",
+            "delete":"rs/contract/delete",
+            "list":"rs/contract/list",
+            "getContractById":"rs/contract/getContractById"
+        },
         "customer":{
             "add":"rs/customer/add",
             "update":"rs/customer/update",
@@ -87,7 +94,7 @@
             "list":"rs/stock_out_sheet/list" ,
             "delete": "rs/stock_out_sheet/delete" ,
             "update":"rs/stock_out_sheet/update"
-        } ,
+        },
         "selfInspect":{
             "add":"rs/selfInspect/add" ,
             "update":"rs/selfInspect/update",

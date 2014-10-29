@@ -13,7 +13,7 @@ import org.whut.rentManagement.business.stock.entity.Stock_out_device;
  */
 public interface Stock_out_deviceMapper extends AbstractMapper<Stock_out_device> {
    public Long getIdByStockOutIdAndDeviceId(@Param("stockOutId") long stockOutId, @Param("deviceId") long deviceId);
-    public Long getStockOutIdById(@Param("Id") Long Id);
+   // public Long getStockOutIdById(@Param("Id") Long Id);
     //public List<Map<>> getListByStockOutId()
    // public Long getIdByNumber(@Param("number") String number, @Param("appId") long appId);
   //  public List<Map<Long,Long>> getListByStockOutId(@Param("deviceType") String deviceType,@Param("deviceNumber") String deviceNumber,@Param("tagName") String tagName,@Param("appId") long appId);

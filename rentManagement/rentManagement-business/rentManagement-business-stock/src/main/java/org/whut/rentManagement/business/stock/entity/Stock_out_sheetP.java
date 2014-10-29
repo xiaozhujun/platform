@@ -1,14 +1,13 @@
 package org.whut.rentManagement.business.stock.entity;
-import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Administrator
- * Date: 14-10-10
- * Time: 上午10:04
+ * User: YRuJ
+ * Date: 14-10-25
+ * Time: 下午7:32
  * To change this template use File | Settings | File Templates.
  */
-public class Stock_out_sheet {
+public class Stock_out_sheetP {
     private long id;
     private String number;
     private String carNumber;
@@ -17,9 +16,18 @@ public class Stock_out_sheet {
     private String handler;
     private String storehouseId;
     private String description;
-    private Date createTime;
+    private String createTime;
     private String creator;
     private long appId;
+    private String deviceNumber;
+
+    public String getDeviceNumber() {
+        return deviceNumber;
+    }
+
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
+    }
 
     public long getId() {
         return id;
@@ -85,11 +93,11 @@ public class Stock_out_sheet {
         this.description = description;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

@@ -306,7 +306,7 @@ function getListByGroupNameCallback(data){
             num = num.substring(0, lastIndex) + num.substring(lastIndex + 1, num.length);
         }
         s ="{c:'Subscribe',sensors:["+num+"]}";
-       ws.send(s);
+        connect();
     }
 }
 </script>

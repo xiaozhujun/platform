@@ -17,18 +17,39 @@
     <script src="js/highcharts.js" type="text/javascript"></script>
     <script src="js/chartTool.js" type="text/javascript"></script>
     <script>
+        var groupName="储油罐1";
+        var sensorNum="2100000000010000";
         $(document).ready(function () {
+            $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByDefaultGroupNameCallback);
             $.post($.URL.group.list,null,gridCallback);
             $("#backBtn").click(function(){
                 window.parent.jumpURL("xingbian.html");
             });
         });
         var cgData="";
-        var groupName="";
+        var sNum="";
+        function getListByDefaultGroupNameCallback(data){
+            if(data.code==200){
+                console.log("返回的数据："+data.data);
+                for(var i=0;i<data.data.length;i++)  {
+                    if(i==0){
+                        sNum=data.data[i].number+",";
+                    }
+                    else {
+                        sNum=sNum+data.data[i].number+",";
+                    }
+                }
+                var lastIndex = sNum.lastIndexOf(',');
+                if (lastIndex > -1) {
+                    sNum = sNum.substring(0, lastIndex) + sNum.substring(lastIndex + 1, sNum.length);
+                }
+                s ="{c:'Subscribe',sensors:["+sNum+"]}";
+                connect();
+            }
+        }
         function gridCallback(data) {
             if(data.code == 200) {
                 cgData = data.data;
-                groupName=cgData[0].name;
                 creatSelectHead(cgData);
                 creatMenu(groupName);
                 $("div.tree-node").click(function(){
@@ -49,10 +70,36 @@
                     });
                 });
             }
-            connect();
+
         }
-        function changeGroupName(groupName){
-            creatMenu(groupName);
+        function changeGroupName(data){
+//            s ="{c:'cancelSubscribe',sensors:["+sNum+"]}";    //取消订阅 之前的
+//            ws.send(s);
+            if(ws!=null){
+                ws.close();
+                ws=null;
+            }
+            creatMenu(data);
+            $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameCallback);
+        }
+        function getListByGroupNameCallback(data){
+            if(data.code==200){
+                console.log("返回的数据："+data.data);
+                for(var i=0;i<data.data.length;i++)  {
+                    if(i==0){
+                        sNum=data.data[i].number+",";
+                    }
+                    else {
+                        sNum=sNum+data.data[i].number+",";
+                    }
+                }
+                var lastIndex = sNum.lastIndexOf(',');
+                if (lastIndex > -1) {
+                    sNum = sNum.substring(0, lastIndex) + sNum.substring(lastIndex + 1, sNum.length);
+                }
+                s ="{c:'Subscribe',sensors:["+sNum+"]}";
+                connect();
+            }
         }
         function creatSelectHead(data){
             var tableHead="";
@@ -68,10 +115,9 @@
 
         }
         var areaName="";
-        var sNum="";
+
         function connect() {
             var url= $.URL.websocket.register;
-            var s="{c:'Subscribe',sensors:["+sNum+"]}";
             console.log("s为："+s);
             ws =  new WebSocket(url);
             ws.onopen = function () {
@@ -84,7 +130,11 @@
             ws.onmessage = function (event) {
                 var jsonData = eval("(" +event.data+ ")");
                 wsData=jsonData.sensors[0].data;
-                initCharts(wsData) ;
+                var sensorNumber=jsonData.sensors[0].sensorNum;
+                sensorNumber=sensorNumber.replace(/[ ]/g,"");
+                if(sensorNumber==sensorNum){
+                   initCharts(wsData) ;
+                }
             };
         }
         function initCharts(data){
@@ -111,10 +161,6 @@
                             var result=sensoResult.data;
                             console.log("result.length为："+result.length);
                             for(var j=0 ;j<result.length ;j++){
-                                if(i==0){
-                                    sNum= result[0].number;
-                                }
-                                console.log("result[j].name为："+result[j].number);
                                 menuHead=menuHead+ ' <li><div class="tree-node" node-id="'+num+'" style="cursor: pointer;">' +
                                         '<span class="tree-indent"></span>' +
                                         '<span class="tree-indent"></span>' +

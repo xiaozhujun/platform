@@ -267,10 +267,14 @@ function connect() {
         }
     }
 }
-function changeGroupName(gName){
-    s ="{c:'cancelSubscribe',sensors:["+num+"]}";    //取消订阅 之前的
-    ws.send(s);
-    nowGName=gName;
+function changeGroupName(data){
+//    s ="{c:'cancelSubscribe',sensors:["+num+"]}";    //取消订阅 之前的
+//    ws.send(s);
+    if(ws!=null){
+        ws.close();
+        ws=null;
+    }
+    nowGName=data;
     creatTable(nowGName);
     $.post($.URL.sensor.getListByGroupName,{"groupName":nowGName},getListByGroupNameCallback,"json");
 }

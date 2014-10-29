@@ -103,7 +103,7 @@
         }
         function creatSelectHead(data){
             var tableHead="";
-            if(navigator.appName.indexOf("Explorer")>-1)    {
+            if(navigator.appName.indexOf("Explorer")>-1)    {       <!--IE 和 火狐浏览器的不兼容-->
                 document.getElementById("selectTank").innerText=cgData[0].name;
             }
             else
@@ -153,11 +153,12 @@
                         data:{"AreaName":data[i],"GroupName":groupName},
                         success:(function(sensoResult){
                             menuHead=menuHead+ '<li  class="tankArea" id="tankArea">'+
-                                    '<div class="tree-node tree-node-extStyle tree-node-selected" node-id="1" style="cursor: pointer;">'+
+                                    '<div class="tree-node tree-node-extStyle tree-node-selected" node-id="'+num+'" style="cursor: pointer;">'+
                                     '<span class="tree-hit tree-expanded"></span>'+
                                     '<span class="tree-icon tree-folder icon-blank tree-folder-open"></span>'+
                                     '<span class="tree-title">'+data[i]+'</span>'+
                                     '</div><ul style="display: block;">';
+                            num=num+1;
                             var result=sensoResult.data;
                             console.log("result.length为："+result.length);
                             for(var j=0 ;j<result.length ;j++){

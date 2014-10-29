@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : yy
+Source Server         : cwb
 Source Server Version : 50151
 Source Host           : localhost:3306
 Source Database       : rentmanagement
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50151
 File Encoding         : 65001
 
-Date: 2014-10-19 09:06:18
+Date: 2014-10-29 21:51:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -152,8 +152,8 @@ CREATE TABLE `contract` (
   `preBuryStatus` varchar(255) DEFAULT NULL,
   `needInstallCount` bigint(20) DEFAULT NULL,
   `installCount` bigint(20) DEFAULT NULL,
-  `netRegiterMan` varchar(255) DEFAULT NULL,
-  `netRegiterTime` date DEFAULT NULL,
+  `netRegisterMan` varchar(255) DEFAULT NULL,
+  `netRegisterTime` date DEFAULT NULL,
   `selfInspectStatus` varchar(255) DEFAULT NULL,
   `selfInspectTime` date DEFAULT NULL,
   `removeMan` varchar(255) DEFAULT NULL,

@@ -16,9 +16,10 @@
     <script src="js/config.js" type="text/javascript"></script>
     <script src="js/highcharts.js" type="text/javascript"></script>
     <script src="js/chartTool.js" type="text/javascript"></script>
+    <script src="js/map.js" type="text/javascript"></script>
     <script>
-        var groupName="储油罐1";
-        var sensorNum="2100000000010000";
+        var  groupName="储油罐1";
+        var m = new Map();
         $(document).ready(function () {
             $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByDefaultGroupNameCallback);
             $.post($.URL.group.list,null,gridCallback);
@@ -130,15 +131,13 @@
             ws.onmessage = function (event) {
                 var jsonData = eval("(" +event.data+ ")");
                 wsData=jsonData.sensors[0].data;
-                var sensorNumber=jsonData.sensors[0].sensorNum;
-                sensorNumber=sensorNumber.replace(/[ ]/g,"");
-                if(sensorNumber==sensorNum){
-                   initCharts(wsData) ;
-                }
+                wsDataNum= jsonData.sensors[0].sensorNum ;
+                m.put(wsDataNum,wsData);
+                initCharts(m) ;
             };
         }
-        function initCharts(data){
-            drawChart("#DynamicChart861722", data, "mV");
+        function initCharts(map){
+            drawChart("#DynamicChart861722", map,"mV");
         }
 
         var num=1;

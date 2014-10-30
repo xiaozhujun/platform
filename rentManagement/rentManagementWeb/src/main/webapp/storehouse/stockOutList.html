@@ -16,6 +16,10 @@
         $.ligerDialog.close("#addStockOut");
         $(function(){
             $.post($.URL.stock_out_sheet.list,null,listCallback,"json");
+            $.post($.URL.customer.list,null,listcustomerCallback,"json");
+//            $.post($.URL.device.list,null,listDeviceCallback,"json") ;
+            $.post($.URL.device.list,null,listDeviceIdCallback,"json");
+            $.post($.URL.car_Driver.list,null,listCarDriverCallback,"json");
         });
         var gridData = {};
         function listCallback(data){
@@ -25,35 +29,82 @@
                 f_initGrid();
             }
         }
-        var dataGridColumns = [
-            { header: 'ID', name: 'id', width: 20 },
-            { header: '数量', name: 'number' },
-            { header: '车号', name: 'carNumber' },
-            { header: '顾客号', name:'customerId'},
-            { header:'合同号',name:'contractId'},
-            { header: '经手人', name:'handler'},
-            { header: '仓库号', name:'storehouseId'},
-            { header: '描述', name:'description'},
-            { header: '时间', name:'createTime'},
-            { header: '创建者', name:'creator'}
+        var CarDriverNumberData=[];
+        function listCarDriverCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["type"]=content.carNumber;
+                    j["text"]=content.carNumber;
+                    CarDriverNumberData.push(j);
+                    /* var data = JSON.stringify(j);
+                     alert(data);*/
+                });
+                $("#carNumber").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:CarDriverNumberData,
+                    valueFieldID: 'carNumber'
+                });
+            }
+        }
+
+        var customerIdData = [];
+        function listcustomerCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var rs=[];
+                    rs["type"]=content.id;
+                    rs["text"]=content.id;
+                    customerIdData.push(rs);
+                });
+                $("#customerId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
+                    data:customerIdData,
+                    valueFieldID: 'customerIdSelect'
+                });
+            }
+        };
 
 
-        ];
-       // var statusData = [{ type: '启用', text: '启用' },{ type: '封禁', text: '封禁' }];
+        var deviceIdData = [];
+        function listDeviceIdCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var rs={};
+                    rs["type"]=content.id;
+                    rs["text"]=content.id;
+                    deviceIdData.push(rs);
+
+                });
+                $("#deviceId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
+                    data:deviceIdData,
+                    valueFieldID: 'deviceId'
+                });
+            }
+        }
+
+
+
+
         var manager, g;
         function f_initGrid()
         {
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '数量',name: 'number',
+                   // { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+                    { display: '编号',name: 'number',
                         editor: { type: 'int'}
                     },
                     { display: '车号',name: 'carNumber',
-                        editor: { type: 'int'}
+                        editor: { type: 'select',emptyText:null, data: CarDriverNumberData, valueField:'type',textField:'text'},
+                        render:function(item){
+                            return item.carNumber;
+                        }
                     },
                     { display: '顾客号',name: 'customerId',
-                        editor: { type: 'int'}
+                        editor: { type: 'select',emptyText:null, data: customerIdData, valueField:'type',textField:'text'},
+                        render:function(item){
+                            return item.customerId;
+                        }
+
                     },
                     { display: '合同号',name: 'contractId',
                         editor: { type: 'text'}
@@ -66,7 +117,9 @@
                     { display: '描述',name: 'description',
                         editor: { type: 'text'}
                     },
-                    { display: '时间', name: 'createTime',width:100 ,type: 'date',frozen:true},
+                    { display: '时间', name: 'createTime',
+                        editor: { type: 'date'}
+                        },
                     {display:'创建者',name:'creator',
                         editor:{type:'text'}
                     },
@@ -96,12 +149,11 @@
                 width: '100%'
             });
         }
-        function f_add(){
+        function f_add(){                 //弹出框
             $("#Name").val("");
             f_show();
-            $.ligerDialog.open({title:'添加出库信息', target: $("#addStockOut")});
+            $.ligerDialog.open({width:500,target: $("#addStockOut"),title:'添加出库信息'});
         };
-
 
         $("#submitBtn1").click(function(){
             var addData={};
@@ -114,18 +166,19 @@
             addData.description = $( "#description").val();
             addData.createTime = $( "#createTime").val();
             addData.creator = $( "#creator").val();
-
-            $.post($.URL.stock_out_sheet.add,addData,addDepartmentCallback,"json");
+            addData.deviceId= $( "#deviceId").val();
+            $.post($.URL.stock_out_sheet.add,addData,addStockOutCallback,"json");
 
         });
 
-        function addDepartmentCallback(data){
+        function addStockOutCallback(data){
             if(data.code==200){
                 $.ligerDialog.success('操作成功');
-                $.post($.URL.stock_out_sheet.list,null,listCallback,"json");
+               $.post($.URL.stock_out_sheet.list,null,listCallback,"json");
             }
             else if(data.code==500)
             {
+               // $.ligerDialog.success("格式错误");
                 $.ligerDialog.error(data.message);
 
             }
@@ -147,9 +200,11 @@
         function updateCallback(data){
             if(data.code==200){
                 $.ligerDialog.success("修改成功");
+                $.post($.URL.stock_out_sheet.list,null,listCallback,"json");
             }
             else if(data.code==500)
             {
+                $.ligerDialog.success("格式错误");
                 $.post($.URL.stock_out_sheet.list,null,listCallback,"json");
                 $.ligerDialog.error(data.message);
             }
@@ -182,9 +237,10 @@
         function f_show(){
             $("#addStockOut").css('display','block');
         }
+//        var groupicon = "lib/ligerUI/skins/icons/communication.gif";
 
     </script>
-    <style type="text/css">
+    <style type="text/css" >
         .l-table-edit {}
         .l-table-edit-td{ padding:4px;}
         .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
@@ -195,26 +251,31 @@
 </head>
 <body  style="padding:10px">
 <div id="addStockOut" style="display:none" >
-    <form name="form1" method="post" action="" id="form1">
+    <form name="form1" method="post" action="" id="form1" width=500 length=500>
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
-                <td align="right" class="l-table-edit-td">数量:</td>
-                <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="number" ltype="int" /></td>
+                <td align="right" class="l-table-edit-td">编号:</td>
+                <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="number" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">设备编号:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceId" type="text" id="deviceId" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">车号:</td>
-                <td align="left" class="l-table-edit-td"><input name="carNumber" type="text" id="carNumber" ltype="int" /></td>
+                <td align="left" class="l-table-edit-td"><input name="carNumber" type="text" id="carNumber" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">顾客号:</td>
-                <td align="left" class="l-table-edit-td"><input name="customerId" type="text" id="customerId" ltype="int" /></td>
+                <td align="left" class="l-table-edit-td"><input name="customerId" type="text" id="customerId" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">合同号:</td>
-                <td align="left" class="l-table-edit-td"><input name="contractId" type="text" id="contractId" ltype="int" /></td>
+                <td align="left" class="l-table-edit-td"><input name="contractId" type="text" id="contractId" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
@@ -223,15 +284,11 @@
                 <td align="left"></td>
             </tr>  <tr>
             <td align="right" class="l-table-edit-td">仓库号:</td>
-            <td align="left" class="l-table-edit-td"><input name="storehouseId" type="text" id="storehouseId" ltype="int" /></td>
+            <td align="left" class="l-table-edit-td"><input name="storehouseId" type="text" id="storehouseId" ltype="text" /></td>
             <td align="left"></td>
         </tr>  <tr>
             <td align="right" class="l-table-edit-td">描述:</td>
             <td align="left" class="l-table-edit-td"><input name="description" type="text" id="description" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>  <tr>
-            <td align="right" class="l-table-edit-td">时间:</td>
-            <td align="left" class="l-table-edit-td"><input name="createTime" type="text" id="createTime" ltype="date" /></td>
             <td align="left"></td>
         </tr>
             <tr>

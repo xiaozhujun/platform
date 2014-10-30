@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.rentManagement.business.deptAndEmployee.entity.Skill;
 import org.whut.rentManagement.business.deptAndEmployee.mapper.SkillMapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
@@ -24,5 +26,11 @@ public class SkillService {
     public Skill getById(long id)
     {
         return skillMapper.getById(id);
+    }
+    public List<Skill> list(long appId){
+        return skillMapper.list(appId);
+    }
+    public String getSkilltNameById(long id){
+        return skillMapper.getSkillNameById(id);
     }
 }

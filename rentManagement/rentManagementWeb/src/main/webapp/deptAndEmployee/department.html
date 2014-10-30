@@ -28,8 +28,8 @@
         var dataGridColumns = [
             { header: 'ID', name: 'id', width: 20 },
             { header: '名称', name: 'name' },
-            { header: '创建时间', name:'createTime'},
-            {header:'说明',name:'description'}
+            {header:'说明',name:'description'},
+            { header: '创建时间', name:'createTime'}
         ];
         var manager, g;
         function f_initGrid()
@@ -40,10 +40,10 @@
                     { display: '名称',name: 'name',
                         editor: { type: 'text'}
                     },
-                    { display: '创建时间', name: 'createTime',width:100 ,type: 'date',frozen:true},
                     {display:'说明',name:'description',
                         editor:{type:'text'}
                     },
+                    { display: '创建时间', name: 'createTime',width:100 ,editor:{type:'date'}},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -89,6 +89,7 @@
             if(data.code==200){
                 $.ligerDialog.success('操作成功');
                 $.post($.URL.department.list,null,listCallback,"json");
+                $.ligerDialog.hide("#addDepart");
             }
             else if(data.code==500)
             {
@@ -96,6 +97,7 @@
 
             }
         }
+
         function beginEdit(rowid) {
             manager.beginEdit(rowid);
         }
@@ -113,11 +115,13 @@
         function updateCallback(data){
             if(data.code==200){
                 $.ligerDialog.success("修改成功");
+                $.post($.URL.department.list,null,listCallback,"json");
+
             }
             else if(data.code==500)
             {
-                $.post($.URL.department.list,null,listCallback,"json");
                 $.ligerDialog.error(data.message);
+                $.post($.URL.department.list,null,listCallback,"json");
             }
         }
         function deleteRow(rowid)

@@ -12,14 +12,30 @@
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-
+    <script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
     <script type="text/javascript">
         //$.ligerDialog.close("#addBadDebt"); //弹跳窗口
-
+        //$("#maingrid").ligerGrid({});
+      /*  var aaa;*/
         $(function(){
             $.post($.URL.bad_Debt_Sheet.list,null,listBadDebtSheetCallback,"json");
             $.post($.URL.device.list,null,listDeviceCallback,"json");
+            $.post($.URL.car_Driver.list,null,listCarDriverCallback,"json");
+            $.post($.URL.customer.list,null,listCustomerCallback,"json");
+            $.post($.URL.contract.list,null,listContractCallback,"json");
+            /* $.post($.URL.storehouse.list,null,listStorehouseCallback,"json");*/
         });
+
+        var gridData = {};
+        function listBadDebtSheetCallback(data){
+            if(data.code==200){
+                gridData.Rows = data.data;
+                gridData.Total = data.data.length;
+                f_initGrid();
+              /*  alert(JSON.stringify(aaa));*/
+            }
+        }
 
         var deviceNumberData = [];
         function listDeviceCallback(data){
@@ -29,22 +45,72 @@
                     rs["type"]=content.number;
                     rs["text"]=content.number;
                     deviceNumberData.push(rs);
+                    /*var data = JSON.stringify(rs);
+                    alert(data);*/
                 });
-                $("#Device").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,emptyText:null,    /*实现下拉表*/
+                $("#deviceNumber").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,emptyText:null,    /*实现下拉表*/
                     data:deviceNumberData,
-                    valueFieldID: 'Device'   /*下拉表Id是Device*/
+                    valueFieldID: 'deviceNumber'   /*下拉表Id是Device*/
                 });
             }
         }
 
-        var gridData = {};
-        function listBadDebtSheetCallback(data){
+        var CarDriverNumberData=[];
+        function listCarDriverCallback(data){
             if(data.code==200){
-                gridData.Rows = data.data;
-                gridData.Total = data.data.length;
-                f_initGrid();
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["type"]=content.carNumber;
+                    j["text"]=content.carNumber;
+                    CarDriverNumberData.push(j);
+                    /* var data = JSON.stringify(j);
+                     alert(data);*/
+                });
+                $("#carNumber").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:CarDriverNumberData,
+                    valueFieldID: 'carNumber'
+                });
             }
         }
+
+        var CustomerIdData=[];
+        function listCustomerCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["type"]=content.id;
+                    j["text"]=content.id;
+                    CustomerIdData.push(j);
+                    /* var data = JSON.stringify(j);
+                     alert(data);*/
+                });
+                $("#customerId").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:CustomerIdData,
+                    valueFieldID: 'customerId'
+                });
+            }
+        }
+
+        var ContractIdData=[];
+        function listContractCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["type"]=content.id;
+                    j["text"]=content.id;
+                    ContractIdData.push(j);
+                     var data = JSON.stringify(j);
+                });
+                $("#contractId").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:ContractIdData,
+                    valueFieldID: 'contractId'
+                });
+            }
+        }
+
+        var d=new Date();      /*实现时间的选择*/
+        var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+        $("#createTime").ligerDateEditor({initValue: dd});
 
         var manager, g;
         function f_initGrid()
@@ -55,26 +121,27 @@
                     { display: '报损编号',name: 'number',
                         editor: { type: 'int'}
                     },
-                    { display: '报损设备编号', name: 'number', type: 'string',
+                    /*{ display: '报损设备编号', name: 'deviceNumber', type: 'string',
                         editor: { type:'select',data:deviceNumberData,valueField:'type',textField:'text',
                             isMultiSelect:true,isShowCheckBox:true,emptyText:null},
                         render:function(item){
-                            return item.number;
-                            /*alert(item.deviceNumber);*/
+                            aaa=item;
+                            return item.deviceNumber;
                         }
-                    },
+
+                    },*/
                     { display: '车号', name: 'carNumber', type: 'int',
                         editor: { type: 'int'}
                     },
-                    { display: '顾客号',name: 'customerId',
+                    { display: '顾客名',name: 'customerName',
                         editor: { type: 'int'}
                     },
-                    { display: '合同号',name: 'contractId',
+                    { display: '合同名',name: 'contractName',
                         editor: { type: 'text'}
                     },
                     { display: '经手人',name: 'handler',
                         editor: { type: 'text'}
-                    },{ display: '仓库号',name: 'storehouseId',
+                    },{ display: '仓库管理人员名',name: 'storehouseId',
                         editor: { type: 'int'}
                     },
                     { display: '描述',name: 'description',
@@ -111,6 +178,44 @@
             });
         }
 
+        $("#addSubmitBtn").click(function(){
+            f_show();
+            $.ligerDialog.open({title:'添加报损单', target: $("#addBadDebt"),
+                                width: 500,height:'auto', showMax: true, showToggle: true, showMin: true, isResize: true, modal: false});
+        });
+
+        function f_show(){
+            $('#addBadDebt').css('display','block');
+        }
+
+        $("#submitBtn1").click(function(){
+            var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
+            data.number=$("#number").val();
+            data.deviceNumber=$("#deviceNumber").val();  //新增字段
+            data.carNumber=$("#carNumber").val();
+            data.customerId=$("#customerId").val();
+            data.contractId=$("#contractId").val();
+            data.handler=$("#handler").val();
+            data.storehouseId=$("#storehouseId").val();
+            data.description=$("#description").val();
+            data.createTime=$( "#createTime").val();
+            data.creator=$("#creator").val();
+            var toData = JSON.stringify(data);   //把原来是对象的类型转换成字符串类型
+            //alert(toData);
+            $.post($.URL.bad_Debt_Sheet.add,{"jsonStringList":toData},addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+        });
+
+        function addCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success('操作成功');
+                $.post($.URL.bad_Debt_Sheet.list,null,listBadDebtSheetCallback,"json");
+            }
+            else if(data.code==500)
+            {
+                $.ligerDialog.error(data.message);
+            }
+        }
+
         function beginEdit(rowid) {
             manager.beginEdit(rowid);
         }
@@ -134,12 +239,12 @@
             }
         }
 
-        function deleteRow(rowid)
-        {
+        function deleteRow(rowid){
             if (confirm('确定删除?'))
             {
                 var row = manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
+               /* alert(jsonString);*/
                 $.post($.URL.bad_Debt_Sheet.delete,{"jsonString":jsonString},deleteCallback,"json");
                 manager.deleteRow(rowid);
             }
@@ -165,10 +270,88 @@
         .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
         .l-dialog-tc{background:#E0EDFF; }
     </style>
+    <style type="text/css">
+        <!--
+        body{   line-height:200%}
+        -->
+    </style>
 </head>
 <body style="padding:10px">
-<div class="l-clear"></div>
-<div id="maingrid" style="margin-top:20px"></div>
 
+<div id="addBadDebt" style="display: none">
+    <form name="form1" method="post" action="" id="form1"  >
+        <table  cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">报损编号:</td>
+                <td align="left" class="l-table-edit-td"><input name="number" type="text" id="number" ltype="int" /></td>
+                <td align="left"></td>
+          <!--  </tr>
+            <tr>-->
+                <td align="right" class="l-table-edit-td">报损设备编号:</td>
+                <td align="left" class="l-table-edit-td"><input  name="deviceNumber" type="text" id="deviceNumber" ltype="int" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">车号:</td>
+                <td align="left" class="l-table-edit-td"><input  name="carNumber" type="text" id="carNumber" ltype="int" /></td>
+                <td align="left"></td>
+          <!--  </tr>
+            <tr>-->
+                <td align="right" class="l-table-edit-td">顾客号:</td>
+                <td align="left" class="l-table-edit-td"><input name="customerId" type="text" id="customerId" ltype="int" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">合同号:</td>
+                <td align="left" class="l-table-edit-td"><input name="contractId" type="text" id="contractId" ltype="int" /></td>
+                <td align="left"></td>
+        <!--    </tr>
+            <tr>-->
+                <td align="right" class="l-table-edit-td">经手人:</td>
+                <td align="left" class="l-table-edit-td"><input name="handler" type="text" id="handler" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">仓库号:</td>
+                <td align="left" class="l-table-edit-td"><input name="storehouseId" type="text" id="storehouseId" ltype="int" /></td>
+                <td align="left"></td>
+          <!--  </tr>
+            <tr>-->
+                <td align="right" class="l-table-edit-td">描述:</td>
+                <td align="left" class="l-table-edit-td"><input name="description" type="text" id="description" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="createTime" type="text" id="createTime" ltype="date" /></td>
+                <td align="left"></td>
+            <!--</tr>
+            <tr>-->
+                <td align="right" class="l-table-edit-td">创建者:</td>
+                <td align="left" class="l-table-edit-td"><input name="creator" type="text" id="creator" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+        </table>
+        <br />
+        <input type="button" value="提交" id="submitBtn1" class="l-button l-button-submit" />
+    </form>
+</div>
+
+<div id="list">
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right"><input type="button" value="添加报损单" id="addSubmitBtn" class="l-button l-button-submit" /></td>
+        </tr>
+    </table>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:20px"></div> <br />
+</div>
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
 </body>
 </html>

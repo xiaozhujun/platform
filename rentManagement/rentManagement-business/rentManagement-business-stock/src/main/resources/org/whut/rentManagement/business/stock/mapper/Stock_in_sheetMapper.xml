@@ -33,6 +33,33 @@
         </selectKey>
     </insert>
 
+    <select id="getListByAppId" parameterType="java.lang.Long"  resultMap="stock_in_sheetResultMap">
+        SELECT *
+        FROM stock_in_sheet
+        WHERE appId=#{appId}
+    </select>
+
+    <update id="update" parameterType="Stock_in_sheet">
+        UPDATE stock_in_sheet
+        <set>
+            <if test="number != null">NUMBER=#{number},</if>
+            <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
+            <if test="handler!=null">HANDLER=#{handler},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+            <if test="creator!=null">CREATOR=#{creator},</if>
+            <if test="appId!=null">APPID=#{appId},</if>
+        </set>
+        WHERE ID=#{id};
+    </update>
+
+    <delete id="delete" parameterType="User">
+        DELETE FROM  stock_in_sheet
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
+
 </mapper>
 
 

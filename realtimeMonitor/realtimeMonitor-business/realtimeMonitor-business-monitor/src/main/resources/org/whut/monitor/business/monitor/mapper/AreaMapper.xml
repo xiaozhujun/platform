@@ -76,4 +76,5 @@
         FROM area
         WHERE groupId=#{groupId}
     </select>
+
 </mapper>

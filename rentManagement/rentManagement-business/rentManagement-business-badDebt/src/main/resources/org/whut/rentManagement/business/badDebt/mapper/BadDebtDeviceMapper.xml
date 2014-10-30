@@ -39,4 +39,9 @@
         </where>
     </delete>
 
+    <delete id="deleteByBadDebtId" parameterType="java.lang.Long">
+         DELETE FROM bad_debt_device
+        WHERE BADDEBTID= #{badDebtId};
+    </delete>
+
 </mapper>

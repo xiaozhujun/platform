@@ -3,6 +3,7 @@ package org.whut.rentManagement.business.stock.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.stock.entity.Stock_in_sheet;
 import org.whut.rentManagement.business.stock.service.Stock_in_sheetService;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,7 +58,32 @@ public class Stock_in_sheetServiceWeb {
         stockInSheetService.add(stockInSheet);
 
         return JsonResultUtils.getObjectResultByStringAsDefault(stockInSheet, JsonResultUtils.Code.SUCCESS);
+    }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getList")
+    @POST
+    public String getList(){
+        long appId=UserContext.currentUserAppId();
+        List<Stock_in_sheet> list=stockInSheetService.getListByAppId(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/update")
+    @POST
+    public String update(@FormParam("jsonString") String jsonString){
+        Stock_in_sheet stockInSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
+        stockInSheetService.update(stockInSheet);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/delete")
+    @POST
+    public String delete(@FormParam("jsonString") String jsonString){
+        Stock_in_sheet stockInSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
+        stockInSheetService.delete(stockInSheet);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

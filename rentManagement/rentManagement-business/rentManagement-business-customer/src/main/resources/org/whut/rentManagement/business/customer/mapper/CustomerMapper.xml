@@ -85,6 +85,11 @@
         FROM customer
         WHERE NAME=#{name}  AND APPID=#{appId}
     </select>
+    <select id="getNameById" parameterType="map" resultType="java.lang.String">
+        SELECT  name
+        FROM customer
+        WHERE ID=#{id}  AND APPID=#{appId}
+    </select>
 
     <select id="getIdByTelephone" parameterType="map" resultType="java.lang.Long">
         SELECT  id

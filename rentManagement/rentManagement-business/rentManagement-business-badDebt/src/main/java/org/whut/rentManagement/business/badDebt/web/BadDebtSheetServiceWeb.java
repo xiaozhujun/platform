@@ -12,6 +12,9 @@ import org.whut.rentManagement.business.badDebt.entity.BadDebtSheet;
 import org.whut.rentManagement.business.badDebt.entity.SubBadDebtSheet;
 import org.whut.rentManagement.business.badDebt.service.BadDebtDeviceService;
 import org.whut.rentManagement.business.badDebt.service.BadDebtSheetService;
+import org.whut.rentManagement.business.contract.entity.Contract;
+import org.whut.rentManagement.business.contract.service.ContractService;
+import org.whut.rentManagement.business.customer.service.CustomerService;
 import org.whut.rentManagement.business.device.service.DeviceService;
 
 import javax.ws.rs.FormParam;
@@ -43,6 +46,10 @@ public class BadDebtSheetServiceWeb {
     BadDebtDeviceService badDebtDeviceService;
     @Autowired
     DeviceService deviceService;
+    @Autowired
+    CustomerService customerService;
+    @Autowired
+    ContractService contractService;
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
@@ -58,20 +65,20 @@ public class BadDebtSheetServiceWeb {
             if(jsonObject==null){
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空");
             }
-            SubBadDebtSheet subBadDebtSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonStringList, SubBadDebtSheet.class);
-            BadDebtSheet badDebtSheet = new BadDebtSheet();
-            badDebtSheet.setNumber(subBadDebtSheet.getNumber());
-            badDebtSheet.setCarNumber(subBadDebtSheet.getCarNumber());
-            badDebtSheet.setCustomerId(subBadDebtSheet.getCustomerId());
-            badDebtSheet.setContractId(subBadDebtSheet.getContractId());
-            badDebtSheet.setHandler(subBadDebtSheet.getHandler());
-            badDebtSheet.setStorehouseId(subBadDebtSheet.getStorehouseId());
-            badDebtSheet.setDescription(subBadDebtSheet.getDescription());
-            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //定义时间格式
-            badDebtSheet.setCreateTime(sdf.parse(subBadDebtSheet.getCreateTime()));  //String搞成date类型
-            badDebtSheet.setCreator(subBadDebtSheet.getCreator());
-            badDebtSheet.setAppId(appId);
-            badDebtSheetService.add(badDebtSheet);
+                SubBadDebtSheet subBadDebtSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonStringList, SubBadDebtSheet.class);
+                BadDebtSheet badDebtSheet = new BadDebtSheet();
+                badDebtSheet.setNumber(subBadDebtSheet.getNumber());
+                badDebtSheet.setCarNumber(subBadDebtSheet.getCarNumber());
+                badDebtSheet.setCustomerId(subBadDebtSheet.getCustomerId());
+                badDebtSheet.setContractId(subBadDebtSheet.getContractId());
+                badDebtSheet.setHandler(subBadDebtSheet.getHandler());
+                badDebtSheet.setStorehouseId(subBadDebtSheet.getStorehouseId());
+                badDebtSheet.setDescription(subBadDebtSheet.getDescription());
+                DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //定义时间格式
+                badDebtSheet.setCreateTime(sdf.parse(subBadDebtSheet.getCreateTime()));  //String搞成date类型
+                badDebtSheet.setCreator(subBadDebtSheet.getCreator());
+                badDebtSheet.setAppId(appId);
+                badDebtSheetService.add(badDebtSheet);
 
             long deviceId = deviceService.getIdByNumber(subBadDebtSheet.getDeviceNumber(),appId);
             String number = jsonObject.getString("number");
@@ -133,10 +140,23 @@ public class BadDebtSheetServiceWeb {
             subBadDebtSheet.setNumber((String)badDebtSheet.get("number"));
             subBadDebtSheet.setCarNumber((String) badDebtSheet.get("carNumber"));
             subBadDebtSheet.setId((Long) badDebtSheet.get("id"));
-            subBadDebtSheet.setCustomerId((Long) badDebtSheet.get("customerId"));
-            subBadDebtSheet.setContractId((Long) badDebtSheet.get("contractId"));
+
+            Long customerId =(Long) badDebtSheet.get("customerId");
+            String customerName = customerService.getNameById(customerId,appId);
+            subBadDebtSheet.setCustomerId(customerId);
+            subBadDebtSheet.setCustomerName(customerName); //"customerName"
+
+            Long contractId = (Long) badDebtSheet.get("contractId");
+            Contract contract = contractService.getContractById(contractId,appId);
+            subBadDebtSheet.setContractId(contractId);
+            String contractName = contract.getName();
+            subBadDebtSheet.setContractName(contractName);
+
+            Long storehouseId = (Long) badDebtSheet.get("storehouseId");
+            /*String storehouse = */
+            subBadDebtSheet.setStorehouseId(storehouseId);
+
             subBadDebtSheet.setHandler((String) badDebtSheet.get("handler"));
-            subBadDebtSheet.setStorehouseId((Long) badDebtSheet.get("storehouseId"));
             subBadDebtSheet.setDescription((String) badDebtSheet.get("description"));
             Date date=(Date)badDebtSheet.get("createTime");  //获取到日期
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -144,7 +164,9 @@ public class BadDebtSheetServiceWeb {
             subBadDebtSheet.setCreateTime(str);
             subBadDebtSheet.setCreator((String) badDebtSheet.get("creator"));
             subBadDebtSheet.setAppId((Long)badDebtSheet.get("appId"));
-            subBadDebtSheet.setDeviceNumber((String) badDebtSheet.get("deviceNumber"));
+            Long badDebtId =(Long)badDebtSheet.get("id");
+
+            subBadDebtSheet.setDeviceNumber((String) badDebtSheet.get("deviceNumber")); //这一句有错，不会传deviceNumber的值
             subBadDebtSheetsList.add(subBadDebtSheet);
         }
         return JsonResultUtils.getObjectResultByStringAsDefault(subBadDebtSheetsList, JsonResultUtils.Code.SUCCESS);

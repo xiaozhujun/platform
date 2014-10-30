@@ -176,6 +176,7 @@ public class SupplierServiceWeb {
             subSupplier.setTelephone(supplier.getTelephone());
             subSupplier.setEmail(supplier.getEmail());
             subSupplier.setQq(supplier.getQq());
+            subSupplier.setCreateTime(supplier.getCreateTime());
             supplierList.add(subSupplier);
         }
         if (supplierList.toArray().length==0)  {

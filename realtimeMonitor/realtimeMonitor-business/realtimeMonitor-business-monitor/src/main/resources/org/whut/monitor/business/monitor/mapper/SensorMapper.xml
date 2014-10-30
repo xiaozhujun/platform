@@ -176,4 +176,16 @@
         FROM sensor
         WHERE sensor.number=#{sNum}
     </select>
+
+    <select id="getListByGroupName" parameterType="map" resultType="map">
+        SELECT s.number
+        FROM `group` g,sensor s
+        WHERE s.groupId=g.id  AND s.appId=#{appId}  AND  g.`name`=#{group}
+    </select>
+    <select id="getSensorsByAreaName" parameterType="map" resultType="map">
+        SELECT sensor.number
+        FROM sensor,area,`group`
+        WHERE area.name=#{areaName} AND sensor.appId=#{appId} AND sensor.areaId=area.id AND sensor.groupId=`group`.id AND `group`.name=#{groupName}
+    </select>
+
 </mapper>

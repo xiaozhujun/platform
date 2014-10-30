@@ -33,7 +33,7 @@ public class SensorService {
         return sensorMapper.getListByGroupAreaAndMonitor(appId,group,areaName,monitor);
     }
 
-    public int deleteById(long id){
+       public int deleteById(long id){
        return sensorMapper.deleteById(id);
     }
 
@@ -95,5 +95,10 @@ public class SensorService {
          return groupMapper.getNameById(id);
 
     }
-
+    public List<Map<String,String>> getListByGroupName(long appId,String group){
+        return sensorMapper.getListByGroupName(appId,group);
+    }
+    public List<Sensor>getSensorsByAreaName(String areaName,String groupName,long appId){
+        return sensorMapper.getSensorsByAreaName(areaName,groupName,appId);
+    }
 }

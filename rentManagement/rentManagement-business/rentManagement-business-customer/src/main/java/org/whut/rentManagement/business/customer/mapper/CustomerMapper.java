@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface CustomerMapper extends AbstractMapper<Customer> {
     public long getIdByName(@Param("name") String name, @Param("appId") long appId);
+    public String getNameById(@Param("id") long id, @Param("appId") long appId);
     public long getIdByTelephone(@Param("telephone") String telephone);
     public List<Customer> findByCondition(@Param("appId") long appId, @Param("name") String name, @Param("description") String description,
                                           @Param("address") String address, @Param("linkman") String linkman, @Param("telephone") String telephone,

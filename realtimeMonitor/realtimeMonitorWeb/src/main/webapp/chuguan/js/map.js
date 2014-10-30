@@ -15,7 +15,17 @@ function Map() {
         }
         this.data[key] = value;
     };
-
+    /**
+     * 清空键值对
+     *
+     */
+    this.removeAll = function() {
+        var len = this.keys.length;
+        for (var i = 0; i < len; i++) {
+            this.remove(this.keys[i]);
+        }
+        this.keys.length=0;
+    };
     /**
      * 获取某键对应的值
      * @param {String} key

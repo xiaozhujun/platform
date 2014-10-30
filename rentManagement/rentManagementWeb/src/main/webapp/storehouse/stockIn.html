@@ -1,104 +1,220 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head><title>
-</title>
+<head>
+    <title></title>
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/json2.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script type="text/javascript">
-
-        $(function()
-        {
-
-            $("#submitBtn").click(function(){
-                var data={};
-
-                data.number=$("#number").val();
-                data.carNumber=$("#carNumber").val();
-                data.handler=$("#handler").val();
-                data.description=$("#description").val();
-                data.createTime=$("#createTime").val();
-                data.creator=$("#creator").val();
-
-                $.post($.URL.stock_in_sheet.add,data,addCallBack,"json");
-            })
-            function addCallBack(data){
-                if(data.code==200){
-                    $.ligerDialog.success("操作成功！");
-                }
-                else if(data.code==500)
-                {
-                    $.ligerDialog.error(data.message);
-                }
+        $.ligerDialog.close("#addStock_in_sheetList") ;
+        $(function(){
+            $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+        });
+        var gridData = {};
+        function listCallback(data){
+            if(data.code==200){
+                gridData.Rows = data.data;
+                gridData.Total = data.data.length;
+                f_initGrid();
             }
+        }
+        var manager, g;
+        function f_initGrid()
+        {
+            g = manager = $("#maingrid").ligerGrid({
+                columns: [
+                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+                    { display: '编号',name: 'number',editor:{type:'text'}} ,
+                    { display: '车牌号',name: 'carNumber',editor:{type:'text'}},
+                    { display: '用户ID', name: 'customerId', width: 50, type: 'int'},
+                    { display: '合同ID', name: 'contractId', width: 50, type: 'int'},
+                    { display: '经办人',name: 'handler',editor:{type:'text'}},
+                    { display: '仓库ID', name: 'storehouseId', width: 50, type: 'int'},
+                    { display: '描述',name: 'description',type:'string',
+                        editor: { type: 'text'}
+                    },
+                    { display: '创建时间',name: 'createTime',width:100,editor:{type:'date'}  },
+                    { display: '创建者',name: 'creator',editor:{type:'text'}} ,
+                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+                    {
+                        var h = "";
+                        if (!rowdata._editing)
+                        {
+                            h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
+                            h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a>" ;
+                        }
+                        else
+                        {
+                            h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
+                            h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
+                        }
+                        return h;
+                    }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: gridData,
+                width: '100%'
+            });
+        }
+        function beginEdit(rowid) {
+            manager.beginEdit(rowid);
+        }
+        function cancelEdit(rowid) {
+            manager.cancelEdit(rowid);
+        }
+        function endEdit(rowid)
+        {
+            manager.endEdit(rowid);
+            var row = manager.getRow(rowid);
+            var jsonString  = $.toJSON(row);
+            $.post($.URL.stock_in_sheet.update,{"jsonString":jsonString},updateCallback,"json");
+        }
 
-        })
+        function updateCallback(data){
+            if(data.code==200){
+                $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+                $.ligerDialog.success(data.message);
+            }
+            else{
+
+                $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+                $.ligerDialog.warn(data.message);
+
+            }
+        }
+        function deleteRow(rowid)
+        {
+            if (confirm('确定删除?'))
+            {
+                var row = manager.getRow(rowid);
+                var jsonString  = $.toJSON(row);
+                $.post($.URL.stock_in_sheet.delete,{"jsonString":jsonString},deleteCallback,"json");
+                manager.deleteRow(rowid);
+            }
+        }
+
+        function deleteCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("成功删除！");
+            }else{
+                $.ligerDialog.success("删除失败！");
+            }
+        }
+
+
+        function f_add(){
+            $("#addStock_in_sheetList input[name]").val("");
+            f_show();
+            $.ligerDialog.open({isDrag: true,title:'添加选项', target: $("#addStock_in_sheetList"),width:500});
+        };
+
+        function f_show(){
+            $('#addStock_in_sheetList').css('display','block');
+        }
+
+        $("#inputCreateTime").ligerDateEditor();
+
+
+        $("#submitBtn").click(function(){
+            $.post($.URL.stock_in_sheet.add, $(this).parent().serialize(),addCallBack,"json") ;
+        });
+
+        function addCallBack(data){
+            if(data.code==200){
+                $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+                $.ligerDialog.success(data.message);
+
+            }
+            else{
+                $.ligerDialog.warn(data.message);
+
+            }
+        }
+
+        var newrowid = 100;
+        function addNewRow()
+        {
+            manager.addEditRow();
+        }
+
     </script>
     <style type="text/css">
         .l-table-edit {}
         .l-table-edit-td{ padding:4px;}
         .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF; }
     </style>
-
-
 </head>
+<body  style="padding:10px">
 
-<body style="padding:10px">
+<div id="addStock_in_sheetList"  style="display: none" >
+    <form name="form1" method="post" action="" id="form1"  >
+        <div>
+        </div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">编号:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="number" type="text" id="inputNumber" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">车牌号:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="carNumber" type="text" id="inputCarNumber" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">经办人:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="handler" type="text" id="inputHandler" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">描述:</td>
+                <td align="left" class="l-table-edit-td">
+                    <textarea id="addDescription" class="l-textarea" name="description" cols="50" rows="2" style="width:160px">
+                    </textarea>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">创建时间:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="createTime" type="text" id="inputCreateTime"/></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">创建者:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="creator" type="text" id="inputCreator" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+        </table>
+        <br />
+        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
 
-<form name="form1" method="post" action="" id="form1">
-    <div>
-    </div>
-    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
-        <tr>
-            <td align="right" class="l-table-edit-td">入库单编号:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="number" type="text" id="number" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">货车车牌号:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="carNumber" type="text" id="carNumber" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">经办人:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="handler" type="text" id="handler" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">描述:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="description" type="text" id="description" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">创建时间:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="createTime" type="date" id="createTime" ltype="date"/></td>
-            <td align="left"></td>
-        </tr>
-        <tr>
-            <td align="right" class="l-table-edit-td">创建者:</td>
-            <td align="left" class="l-table-edit-td">
-                <input name="creator" type="text" id="creator" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
-    </table>
-    <br />
-    <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
-</form>
-<div style="display:none">
-  </div>
+    </form>
+</div>
+
+<div id="list">
+    <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:5px"></div> <br />
+</div>
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
 </body>
 </html>
-

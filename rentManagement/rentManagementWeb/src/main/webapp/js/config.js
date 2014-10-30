@@ -73,7 +73,10 @@
             "list":"rs/deviceType/list"
         },
         "stock_in_sheet":{
-            "add":"rs/stock_in_sheet/add"
+            "add":"rs/stock_in_sheet/add" ,
+            "getList":"rs/stock_in_sheet/getList",
+            "update":"rs/stock_in_sheet/update",
+            "delete":"rs/stock_in_sheet/delete"
         },
         "stock_out_sheet":{
             "add" :"rs/stock_out_sheet/add" ,

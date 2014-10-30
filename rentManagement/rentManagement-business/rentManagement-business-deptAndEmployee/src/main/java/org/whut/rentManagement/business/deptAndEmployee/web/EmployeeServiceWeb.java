@@ -8,6 +8,7 @@ import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.deptAndEmployee.entity.Employee;
 import org.whut.rentManagement.business.deptAndEmployee.entity.SubEmployee;
+import org.whut.rentManagement.business.deptAndEmployee.service.DepartmentService;
 import org.whut.rentManagement.business.deptAndEmployee.service.EmployeeService;
 import org.whut.rentManagement.business.deptAndEmployee.service.SkillService;
 
@@ -36,6 +37,9 @@ public class EmployeeServiceWeb {
     EmployeeService employeeService;
     @Autowired
     SkillService skillService;
+    @Autowired
+    DepartmentService departmentService;
+
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
@@ -134,5 +138,14 @@ public class EmployeeServiceWeb {
         long appId= UserContext.currentUserAppId();
         List<Map<String,String>> list=employeeService.getListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getDepartmentById")
+    @POST
+    public String getDepartmentById(@FormParam("departmentId")long departmentId){
+        long appId= UserContext.currentUserAppId();
+        String department=departmentService.getNameById(departmentId);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(department,JsonResultUtils.Code.SUCCESS);
     }
 }

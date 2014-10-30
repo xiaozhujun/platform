@@ -48,7 +48,8 @@
             "list":"rs/employee/list",
             "add":"rs/employee/add",
             "update":"rs/employee/update",
-            "delete":"rs/employee/delete"
+            "delete":"rs/employee/delete",
+            "getDepartmentById":"rs/employee/getDepartmentById"
         },
         "department":{
             "add":"rs/department/add",
@@ -104,6 +105,13 @@
             "update":"rs/bad_Debt_Sheet/update",
             "delete":"rs/bad_Debt_Sheet/delete",
             "list":"rs/bad_Debt_Sheet/list"
+        },
+        "skill":{
+            "add":"rs/skill/add",
+            "update":"rs/skill/update",
+            "delete":"rs/skill/delete",
+            "list":"rs/skill/list",
+            "getSkillNameById":"rs/skill/getSkillNameById"
         }
     }
 })(jQuery);

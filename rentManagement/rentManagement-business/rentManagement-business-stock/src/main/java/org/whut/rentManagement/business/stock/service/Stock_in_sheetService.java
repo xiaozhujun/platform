@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.rentManagement.business.stock.entity.Stock_in_sheet;
 import org.whut.rentManagement.business.stock.mapper.Stock_in_sheetMapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Jiaju
@@ -18,5 +20,17 @@ public class Stock_in_sheetService {
 
     public void add(Stock_in_sheet stockInSheet){
         stockInSheetMapper.add(stockInSheet);
+    }
+
+    public void update(Stock_in_sheet stockInSheet){
+        stockInSheetMapper.update(stockInSheet);
+    }
+
+    public void delete(Stock_in_sheet stockInSheet){
+        stockInSheetMapper.delete(stockInSheet);
+    }
+
+    public List<Stock_in_sheet> getListByAppId(long appId){
+        return  stockInSheetMapper.getListByAppId(appId);
     }
 }

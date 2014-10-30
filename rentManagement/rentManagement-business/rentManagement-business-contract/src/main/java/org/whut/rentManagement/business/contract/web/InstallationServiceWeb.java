@@ -53,7 +53,7 @@ public class InstallationServiceWeb {
                       @FormParam("installMan") String installMan,@FormParam("installTime") String installTime,
                       @FormParam("installStatus") String installStatus){
         if(contractId==null||"".equals(contractId.trim())||"".equals(type)||type==null||installDeviceId==null||"".equals(installDeviceId.trim())
-                ||installMan==null||"".equals(installMan)||installTime==null||"".equals(installStatus)||installStatus==null){
+                ||installMan==null||"".equals(installMan)||"".equals(installTime.trim())||installTime==null||"".equals(installStatus)||installStatus==null){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
         long contractIdnew = Long.parseLong(contractId.replace(" ",""));
@@ -67,13 +67,13 @@ public class InstallationServiceWeb {
             JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
         }
         Long id;
-        try {
+/*        try {
             id = installationservice.getIdByDeviceId(contractIdnew);
         }
         catch(Exception e){
             id = null;
         }
-        if (id==null){
+        if (id==null){*/
             Installation Installation = new Installation();
             Installation.setAppId(appId);
             Installation.setContractId(contractIdnew);
@@ -85,10 +85,10 @@ public class InstallationServiceWeb {
             installationservice.add(Installation);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
         }
-        else {
+/*        else {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "该合同的安装设备记录已存在!");
         }
-    }
+    }*/
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/update")
     @POST
@@ -126,8 +126,5 @@ public class InstallationServiceWeb {
         installationservice.delete(installation);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
-
-
-
 
 }

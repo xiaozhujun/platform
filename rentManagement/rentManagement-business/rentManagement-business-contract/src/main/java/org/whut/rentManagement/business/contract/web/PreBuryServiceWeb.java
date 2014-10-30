@@ -63,13 +63,13 @@ public class PreBuryServiceWeb {
         }catch (Exception e){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
         }
-        Long id;
+/*        Long id;
         try {
             id = preBuryService.getIdByContractId(contractid);
         }catch (Exception e){
             id = null;
         }
-        if (id==null){
+        if (id==null){*/
         PreBury preBury = new PreBury();
         preBury.setAppId(appId);
         preBury.setContractId(Long.parseLong(contractId));
@@ -78,9 +78,9 @@ public class PreBuryServiceWeb {
         preBury.setPreBuryStatus(preBuryStatus);
             preBuryService.add(preBury);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
-        }else {
+/*        }else {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "该合同预埋记录已经存在!");
-        }
+        }*/
 
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

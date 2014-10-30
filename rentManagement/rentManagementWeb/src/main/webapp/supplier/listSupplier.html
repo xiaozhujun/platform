@@ -99,7 +99,7 @@
             $("#qq").val("");
             $("#description").val("");
             f_show();
-            $.ligerDialog.open({title:'添加提供商(带*号的为必填项)', target: $("#addSupplier")});
+            $.ligerDialog.open({title:'添加供应商商(带*号的为必填项)', target: $("#addSupplier"),width:500});
         };
 
         $("#submitBtn").click(function(){
@@ -228,7 +228,8 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">地址:</td>
-                <td align="left" class="l-table-edit-td"><input name="address" type="text" id="address" ltype="text" /> <font color="red">* </font></td>
+                <td align="left" class="l-table-edit-td">
+                    <textarea cols="50" rows="2" class="l-textarea" style="width:400px" input name="address" id="address" /></textarea> <font color="red">* </font></td>
                 <td align="left"></td>
             </tr>
             <tr>

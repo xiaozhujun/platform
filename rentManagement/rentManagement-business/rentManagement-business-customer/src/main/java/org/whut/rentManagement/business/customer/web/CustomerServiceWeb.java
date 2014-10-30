@@ -193,6 +193,7 @@ public class CustomerServiceWeb {
             subCustomer.setQq(customer.getQq());
             subCustomer.setBank(customer.getBank());
             subCustomer.setBankAccount(customer.getBankAccount());
+            subCustomer.setCreateTime(customer.getCreateTime());
             customerList.add(subCustomer);
         }
         if (customerList.toArray().length==0)  {

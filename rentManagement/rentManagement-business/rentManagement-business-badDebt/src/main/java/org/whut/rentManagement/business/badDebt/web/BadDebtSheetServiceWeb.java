@@ -12,6 +12,9 @@ import org.whut.rentManagement.business.badDebt.entity.BadDebtSheet;
 import org.whut.rentManagement.business.badDebt.entity.SubBadDebtSheet;
 import org.whut.rentManagement.business.badDebt.service.BadDebtDeviceService;
 import org.whut.rentManagement.business.badDebt.service.BadDebtSheetService;
+import org.whut.rentManagement.business.contract.entity.Contract;
+import org.whut.rentManagement.business.contract.service.ContractService;
+import org.whut.rentManagement.business.customer.service.CustomerService;
 import org.whut.rentManagement.business.device.service.DeviceService;
 
 import javax.ws.rs.FormParam;
@@ -43,6 +46,10 @@ public class BadDebtSheetServiceWeb {
     BadDebtDeviceService badDebtDeviceService;
     @Autowired
     DeviceService deviceService;
+    @Autowired
+    CustomerService customerService;
+    @Autowired
+    ContractService contractService;
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
@@ -133,10 +140,23 @@ public class BadDebtSheetServiceWeb {
             subBadDebtSheet.setNumber((String)badDebtSheet.get("number"));
             subBadDebtSheet.setCarNumber((String) badDebtSheet.get("carNumber"));
             subBadDebtSheet.setId((Long) badDebtSheet.get("id"));
-            subBadDebtSheet.setCustomerId((Long) badDebtSheet.get("customerId"));
-            subBadDebtSheet.setContractId((Long) badDebtSheet.get("contractId"));
+
+            Long customerId =(Long) badDebtSheet.get("customerId");
+            String customerName = customerService.getNameById(customerId,appId);
+            subBadDebtSheet.setCustomerId(customerId);
+            subBadDebtSheet.setCustomerName(customerName); //"customerName"
+
+            Long contractId = (Long) badDebtSheet.get("contractId");
+            Contract contract = contractService.getContractById(contractId,appId);
+            subBadDebtSheet.setContractId(contractId);
+            String contractName = contract.getName();
+            subBadDebtSheet.setContractName(contractName);
+
+            Long storehouseId = (Long) badDebtSheet.get("storehouseId");
+            /*String storehouse = */
+            subBadDebtSheet.setStorehouseId(storehouseId);
+
             subBadDebtSheet.setHandler((String) badDebtSheet.get("handler"));
-            subBadDebtSheet.setStorehouseId((Long) badDebtSheet.get("storehouseId"));
             subBadDebtSheet.setDescription((String) badDebtSheet.get("description"));
             Date date=(Date)badDebtSheet.get("createTime");  //获取到日期
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

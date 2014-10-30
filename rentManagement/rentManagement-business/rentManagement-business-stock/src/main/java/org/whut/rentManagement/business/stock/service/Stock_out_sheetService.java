@@ -25,14 +25,16 @@ public class Stock_out_sheetService {
     public int delete(Stock_out_sheet stock_out_sheet){
         return stock_out_sheetMapper.delete(stock_out_sheet);
     }
-    public long getIdByCustomerIdAndContractId(long customerId,long contractId){
+    public long getIdByCustomerIdAndContractId(String customerId,String contractId){
         return stock_out_sheetMapper.getIdByCustomerIdAndContractId(customerId,contractId);
     }
     public List<Stock_out_sheet> list(long appId,long customerId,long contractId,long storehouseId){
         return stock_out_sheetMapper.findByCondition(appId, customerId, contractId,storehouseId);
     }
-    public List<Stock_out_sheet> getListByAppId(long appId)
-    {
+    public Long getStockOutId(String number,String carNumber,long customerId,long contractId,long storehouseId,long appId){
+        return stock_out_sheetMapper.getDeviceId(number,carNumber,customerId,contractId,storehouseId,appId);
+    }
+    public List<Stock_out_sheet> getListByAppId(long appId){
         return stock_out_sheetMapper.getListByAppId(appId);
     }
 //    public List<Map<String,String>> getListByCondition(long appId,long customerId,long contractId,long storehouseId){

@@ -53,20 +53,7 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
-    <!--<insert id="addList" parameterType="java.util.List" useGeneratedKeys="true">-->
-        <!--<selectKey resultType="long" keyProperty="id" order="AFTER">-->
-            <!--SELECT-->
-            <!--LAST_INSERT_ID() as id-->
-        <!--</selectKey>-->
-        <!--INSERT INTO-->
-        <!--stock_out_sheet(-->
-        <!--<include refid="stock_out_sheet_fields"/>)-->
-        <!--values-->
-        <!--(#{id},#{number},#{carNumber},#{customerId},#{contractId},#{handler},#{storehouseId},#{description},#{createTime},#{creator},#{appId})-->
-        <!--&lt;!&ndash;<foreach collection="list" item="item" index="index" separator=",">&ndash;&gt;-->
-          <!--&lt;!&ndash;(#{item.id},#{item.number},#{item.carNumber},#{item.customerId},#{item.contractId},#{item.handler},#{item.storehouseId},#{item.description},#{item.createTime},#{item.creator},#{item.appId})&ndash;&gt;-->
-<!--&lt;!&ndash;     </foreach>&ndash;&gt;-->
-    <!--</insert>-->
+
     <select id="getListByAppId" parameterType="java.lang.Long" resultMap="stock_out_sheetResultMap">
         SELECT *
         FROM stock_out_sheet
@@ -77,45 +64,10 @@
         FROM stock_out_sheet
         WHERE customerId=#{customerId} AND contractId=#{contractId}
     </select>
-    <!--<select id="getIdByContractIdAndAppId" parameterType="map" resultType="java.lang.Long">-->
-        <!--SELECT id-->
-        <!--FROM stock_out_sheet-->
-        <!--WHERE contractId=#{contractId} AND appId=#{appId}-->
-    <!--</select>-->
-
-    <!--<select id="getIdByContractIdAndAppId" parameterType="map" resultType="java.lang.Long">-->
-        <!--SELECT id-->
-        <!--FROM stock_out_sheet-->
-        <!--WHERE contractId=#{contractId} AND appId=#{appId}-->
-    <!--</select>-->
-    <!--<select id="getIdByStorehouseIdAndAppId" parameterType="map" resultType="java.lang.Long">-->
-        <!--SELECT id-->
-        <!--FROM stock_out_sheet-->
-        <!--WHERE storehouseId=#{storehouseId} AND appId=#{appId}-->
-    <!--</select>-->
-    <!--<select id="getNumberById" parameterType="java.lang.Long" resultType="java.lang.String">-->
-         <!--SELECT number-->
-         <!--FROM stock_out_sheet-->
-         <!--WHERE id=#{id}-->
-     <!--</select>-->
-    <!--<select id="getHandlerById" parameterType="java.lang.Long" resultType="java.lang.String">-->
-         <!--SELECT handler-->
-         <!--FROM stock_out_sheet-->
-         <!--WHERE id=#{id}-->
-     <!--</select>-->
-    <!--<select id="getDescriptionById" parameterType="java.lang.Long" resultType="java.lang.String">-->
-         <!--SELECT description-->
-         <!--FROM stock_out_sheet-->
-         <!--WHERE id=#{id}-->
-     <!--</select>-->
-    <!--<select id="getCreateTimeById" parameterType="java.lang.Long" resultType="java.lang.String">-->
-         <!--SELECT createTime-->
-         <!--FROM stock_out_sheet-->
-         <!--WHERE id=#{id}-->
-     <!--</select>-->
-    <!--<select id="getCreatorById" parameterType="java.lang.Long" resultType="java.lang.String">-->
-         <!--SELECT creator-->
-         <!--FROM stock_out_sheet-->
-         <!--WHERE id=#{id}-->
-     <!--</select>-->
+    <select id="getStockOutId" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+         FROM stock_out_sheet
+         WHERE NUMBER=#{number} AND CARNUMBER=#{carNumber} AND CUSTOMERID=#{customerId}
+                AND CONTRACTID=#{contractId} AND STOREHOUSEID=#{storehouseId} AND APPID=#{appId}
+    </select>
 </mapper>

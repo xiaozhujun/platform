@@ -24,6 +24,13 @@
         "userAuthority":{
               "add":"rs/userAuthority/add"
         },
+        "contract":{
+            "add":"rs/contract/add",
+            "update":"rs/contract/update",
+            "delete":"rs/contract/delete",
+            "list":"rs/contract/list",
+            "getContractById":"rs/contract/getContractById"
+        },
         "customer":{
             "add":"rs/customer/add",
             "update":"rs/customer/update",
@@ -48,7 +55,8 @@
             "list":"rs/employee/list",
             "add":"rs/employee/add",
             "update":"rs/employee/update",
-            "delete":"rs/employee/delete"
+            "delete":"rs/employee/delete",
+            "getDepartmentById":"rs/employee/getDepartmentById"
         },
         "department":{
             "add":"rs/department/add",
@@ -69,6 +77,13 @@
             "list":"rs/device/list",
             "getIdByNumber":"rs/device/getIdByNumber"
         },
+        "contract":{
+            "add":"rs/contract/add",
+            "update":"rs/contract/update",
+            "delete":"rs/contract/delete",
+            "list":"rs/contract/list",
+            "getContractById":"rs/contract/getContractById"
+        },
         "deviceType":{
             "list":"rs/deviceType/list"
         },
@@ -83,7 +98,7 @@
             "list":"rs/stock_out_sheet/list" ,
             "delete": "rs/stock_out_sheet/delete" ,
             "update":"rs/stock_out_sheet/update"
-        } ,
+        },
         "selfInspect":{
             "add":"rs/selfInspect/add" ,
             "update":"rs/selfInspect/update",
@@ -107,6 +122,13 @@
             "update":"rs/bad_Debt_Sheet/update",
             "delete":"rs/bad_Debt_Sheet/delete",
             "list":"rs/bad_Debt_Sheet/list"
+        },
+        "skill":{
+            "add":"rs/skill/add",
+            "update":"rs/skill/update",
+            "delete":"rs/skill/delete",
+            "list":"rs/skill/list",
+            "getSkillNameById":"rs/skill/getSkillNameById"
         }
     }
 })(jQuery);

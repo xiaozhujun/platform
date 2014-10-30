@@ -1,8 +1,5 @@
-function drawChartOfMap(container,map,unit){
-
-
+function drawChartOfData(container,data,unit){
  $(container).highcharts({
-
         chart: {
             defaultSeriesType: 'line',
             marginRight: 20,
@@ -12,7 +9,7 @@ function drawChartOfMap(container,map,unit){
         },
         xAxis: {
             title: {
-                text: '',
+                text: '(xUnit)',
                 align: "high",
                 margin: 0,
                 style: {
@@ -39,7 +36,7 @@ function drawChartOfMap(container,map,unit){
             minPadding:0.01,
             tickPixelInterval:30,
             title: {
-                text: '',
+                text: '('+unit+')',
                 align: "high",
                 rotation: 270,
                 margin: 10,
@@ -53,6 +50,8 @@ function drawChartOfMap(container,map,unit){
             enabled: true,
             formatter: function() {
                 var s = 'value:<b>'+ this.y + unit + '</b>';
+
+
                 return s;
             }
         },
@@ -82,17 +81,9 @@ function drawChartOfMap(container,map,unit){
                 shadow: false
             }
         },
-        series : function(){
-            console.log("^^^^^^^^^^^map^^^^^^^^^^^^^^^^^^^");
-            console.log(map);
-            var temp = [];
-            for(key in map.data){
-                temp.push({name:key,data:map.data[key]});
-            }
-            console.log("^^^^^^^^^^^temp^^^^^^^^^^^^^^^^^^^");
-            console.log(temp);
-            return temp;
-        }(),
+        series : [{
+            data: data
+        }],
         credits: {
             enabled: false
         }

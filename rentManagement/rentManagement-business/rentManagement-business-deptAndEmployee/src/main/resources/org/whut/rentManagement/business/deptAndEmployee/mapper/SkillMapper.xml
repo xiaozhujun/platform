@@ -46,11 +46,23 @@
         </where>
     </delete>
 
-
     <select id="getById" parameterType="java.lang.Long" resultMap="skillResultMap">
         select
         <include refid="skill_fields"/>
         from skill
         where ID=#{id}
+    </select>
+
+    <select id="getSkillNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select name
+        from skill
+        where ID=#{id}
+    </select>
+
+    <select id="list" parameterType="java.lang.Long" resultMap="skillResultMap">
+        SELECT
+        <include refid="skill_fields"/>
+        FROM skill
+        WHERE APPID=#{appId}
     </select>
 </mapper>

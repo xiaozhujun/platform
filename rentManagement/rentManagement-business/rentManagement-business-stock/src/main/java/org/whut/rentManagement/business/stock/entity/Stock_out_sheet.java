@@ -12,14 +12,15 @@ public class Stock_out_sheet {
     private long id;
     private String number;
     private String carNumber;
-    private long customerId;
-    private long contractId;
+    private String customerId;
+    private String contractId;
     private String handler;
-    private long storehouseId;
+    private String storehouseId;
     private String description;
     private Date createTime;
     private String creator;
     private long appId;
+
     public long getId() {
         return id;
     }
@@ -44,19 +45,19 @@ public class Stock_out_sheet {
         this.carNumber = carNumber;
     }
 
-    public long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public long getContractId() {
+    public String getContractId() {
         return contractId;
     }
 
-    public void setContractId(long contractId) {
+    public void setContractId(String contractId) {
         this.contractId = contractId;
     }
 
@@ -68,11 +69,11 @@ public class Stock_out_sheet {
         this.handler = handler;
     }
 
-    public long getStorehouseId() {
+    public String getStorehouseId() {
         return storehouseId;
     }
 
-    public void setStorehouseId(long storehouseId) {
+    public void setStorehouseId(String storehouseId) {
         this.storehouseId = storehouseId;
     }
 
@@ -107,6 +108,4 @@ public class Stock_out_sheet {
     public void setAppId(long appId) {
         this.appId = appId;
     }
-
-
 }

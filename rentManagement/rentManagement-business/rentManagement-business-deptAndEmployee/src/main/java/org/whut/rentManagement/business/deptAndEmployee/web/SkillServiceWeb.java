@@ -14,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -73,6 +74,20 @@ public class SkillServiceWeb {
         Skill employee=skillService.getById(id);
         return JsonResultUtils.getObjectResultByStringAsDefault(employee, JsonResultUtils.Code.SUCCESS);
     }
-
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/list")
+    @POST
+    public String list(){
+        long appId= UserContext.currentUserAppId();
+        List<Skill> list = skillService.list(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getSkillNameById")
+    @POST
+    public String getDepartmentById(@FormParam("skillId")long skillId){
+        String department=skillService.getSkilltNameById(skillId);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(department,JsonResultUtils.Code.SUCCESS);
+    }
 
 }

@@ -3,6 +3,8 @@ package org.whut.rentManagement.business.deptAndEmployee.mapper;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 import org.whut.rentManagement.business.deptAndEmployee.entity.Skill;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
@@ -12,4 +14,7 @@ import org.whut.rentManagement.business.deptAndEmployee.entity.Skill;
  */
 public interface SkillMapper extends AbstractMapper<Skill> {
     public Skill getById(long id);
+    public List<Skill> list(long appId);
+    public String getSkillNameById(long id);
+
 }

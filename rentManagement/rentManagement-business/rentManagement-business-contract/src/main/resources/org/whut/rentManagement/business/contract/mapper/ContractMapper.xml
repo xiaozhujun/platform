@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.contract.mapper.ContractMapper">
+    <sql id="contract_fields">
+          ID,CUSTOMERID,CUSTOMERNAME,NAME,NUMBER,STATUS,
+          STARTTIME,ENDTIME,SIGNTIME,PROJECTLOCATION,CHARGEMAN,
+          PREBURYMAN,PREBURYTIME,PREBURYSTATUS,NEEDINSTALLCOUNT,
+          INSTALLCOUNT,SELFINSPECTTIME,SELFINSPECTSTATUS,NETREGISTERMAN,NETREGISTERTIME,
+          REMOVEMAN,REMOVESTATUS,REMOVETIME,APPID
+    </sql>
+    <resultMap id="contractResultMap" type="Contract">
+        <id property="id" column="ID" />
+        <result property="customerId" column="CUSTOMERID" />
+        <result property="customerName" column="CUSTOMERNAME" />
+        <result property="name" column="NAME"/>
+        <result property="number" column="NUMBER"/>
+        <result property="status" column="STATUS"/>
+        <result property="startTime" column="STARTTIME"/>
+        <result property="endTime" column="ENDTIME"/>
+        <result property="signTime" column="SIGNTIME"/>
+        <result property="projectLocation" column="PROJECTLOCATION"/>
+        <result property="chargeMan" column="CHARGEMAN"/>
+        <result property="preBuryMan" column="PREBURYMAN"/>
+        <result property="preBuryTime" column="PREBURYTIME"/>
+        <result property="preBuryStatus" column="PREBURYSTATUS"/>
+        <result property="needInstallCount" column="NEEDINSTALLCOUNT"/>
+        <result property="installCount" column="INSTALLCOUNT"/>
+        <result property="selfInspectTime" column="SELFINSPECTTIME"/>
+        <result property="selfInspectStatus" column="SELFINSPECTSTATUS"/>
+        <result property="netRegisterMan" column="NETREGISTERMAN"/>
+        <result property="netRegisterTime" column="NETREGISTERTIME"/>
+        <result property="removeMan" column="REMOVEMAN"/>
+        <result property="removeStatus" column="REMOVESTATUS"/>
+        <result property="removeTime" column="REMOVETIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Contract"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        contract(
+        <include refid="contract_fields" />
+        )
+        VALUES (#{customerId},#{customerName},#{name},#{number},#{status},
+        #{startTime},#{endTime},#{signTime},#{projectLocation},#{chargeMan},
+        #{preBuryMan},#{preBuryTime},#{preBuryStatus},#{needInstallCount}, #{installCount},
+        #{selfInspectTime},#{selfInspectStatus},#{netRegisterMan},#{netRegisterTime},#{removeMan},
+        #{removeStatus},#{removeTime},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Contract">
+        update contract
+        <set>
+            <if test="customerId!=null"> CUSTOMERID=#{customerId},</if>
+            <if test="customerName!=null"> CUSTOMERNAME=#{customerName},</if>
+            <if test="name!=null"> NAME=#{name},</if>
+            <if test="number!=null"> NUMBER=#{number},</if>
+            <if test="status!=null"> STATUS=#{status},</if>
+            <if test="startTime!=null"> STARTTIME=#{startTime},</if>
+            <if test="endTime!=null"> ENDTIME=#{endTime},</if>
+            <if test="signTime!=null"> SIGNTIME=#{signTime},</if>
+            <if test="projectLocation!=null"> PROJECTLOCATION=#{projectLocation},</if>
+            <if test="chargeMan!=null"> CHARGEMAN=#{chargeMan},</if>
+            <if test="preBuryMan!=null"> PREBURYMAN=#{preBuryMan},</if>
+            <if test="preBuryTime!=null"> PREBURYTIME=#{preBuryTime},</if>
+            <if test="preBuryStatus!=null"> PREBURYSTATUS=#{preBuryStatus},</if>
+            <if test="needInstallCount!=null"> NEEDINSTALLCOUNT=#{needInstallCount},</if>
+            <if test="installCount!=null"> INSTALLCOUNT=#{installCount},</if>
+            <if test="selfInspectTime!=null"> SELFINSPECTTIME=#{selfInspectTime},</if>
+            <if test="selfInspectStatus!=null"> SELFINSPECTSTATUS=#{selfInspectStatus},</if>
+            <if test="netRegisterMan!=null"> NETREGISTERMAN=#{netRegisterMan},</if>
+            <if test="netRegisterTime!=null"> NETREGISTERTIME=#{netRegisterTime},</if>
+            <if test="removeMan!=null"> REMOVEMAN=#{removeMan},</if>
+            <if test="removeStatus!=null"> REMOVESTATUS=#{removeStatus},</if>
+            <if test="removeTime!=null"> REMOVETIME=#{removeTime},</if>
+            <if test="appId!=null">APPID=#{appId},</if>
+        </set>
+        where ID=#{id};
+    </update>
+
+    <delete id="delete" parameterType="Contract">
+        DELETE FROM device
+        <where>
+            <if test="number != null">NUMBER=#{number}</if>
+            <if test="name != null">and NAME=#{name}</if>
+        </where>
+    </delete>
+
+
+    <select id="getContractById" parameterType="map" resultMap="contractResultMap">
+        SELECT
+        <include refid="contract_fields" />
+        FROM contract WHERE ID=#{id} AND APPID=#{appId}
+    </select>
+
+    <delete id="deleteById" parameterType="map">
+        DELETE FROM contract
+        WHERE ID=#{id} AND APPID=#{appId}
+    </delete>
+
+    <select id="getIdByNumber"  parameterType="map" resultType="java.lang.Long">
+        select   id
+        from   contract
+        where number=#{number}
+        and  appId=#{appId}
+    </select>
+
+    <select id="findByCondition" parameterType="Contract" resultMap="contractResultMap">
+        select
+        <include refid="contract_fields"/>
+        from contract
+        <where>
+            <if test="name!=null">NAME=#{name}</if>
+            <if test="number!=null">and  NUMBER=#{number}</if>
+            <if test="appId!=null">and APPID=#{appId}</if>
+        </where>
+    </select>
+
+    <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select name
+        from contract
+        where ID=#{id}
+    </select>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="contractResultMap">
+        select
+        <include refid="contract_fields"/>
+        from contract
+        where APPID=#{appId}
+    </select>
+
+</mapper>

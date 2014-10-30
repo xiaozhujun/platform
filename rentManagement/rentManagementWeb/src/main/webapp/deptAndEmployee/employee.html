@@ -15,6 +15,9 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.employee.list,null,listCallBack,"json");
+            $.post($.URL.department.list,null,listDepartmentCallback,"json");
+            $.post($.URL.skill.list,null,listSkillCallback,"json");
+            $("#employedTime").ligerDateEditor();
             })
 
         var employeeData = {};
@@ -23,6 +26,44 @@
                 employeeData.Rows = data.data;
                 employeeData.total = data.length;
                 f_initGrid();
+            }
+        }
+
+        var DepartmentData=[];
+        function listDepartmentCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["id"]=content.id;
+                    j["name"]=content.name;
+                    DepartmentData.push(j);
+                    /* var data = JSON.stringify(j);
+                     alert(data);*/
+                });
+                $("#departmentId").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:DepartmentData,
+                    valueField : 'id',
+                    textField: 'name'
+                });
+            }
+        }
+
+        var SkillData=[];
+        function listSkillCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["id"]=content.id;
+                    j["name"]=content.name;
+                    SkillData.push(j);
+                    /* var data = JSON.stringify(j);
+                     alert(data);*/
+                });
+                $("#skillId").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:SkillData,
+                    valueField : 'id',
+                    textField: 'name'
+                });
             }
         }
 
@@ -49,13 +90,13 @@
 
                 columns:[
                     {display:'姓名',name:'name',width:80,editor:{type:'text'}},
-                    {display:'部门',name:'departmentId',width:80,type:'int',editor:{type:'select',valueField:"type",data:[{type:'1',text:'行政部'},{type:'2',text:'财务部'}],emptyText:null}},
+                    {display:'部门',name:'departmentId',width:80,render:f_renderNamebyId,editor:{type:'select',data:DepartmentData,valueField:"id",textField:"name",emptyText:null}},
                     {display:'性别',name:'sex',width:80, editor:{type:'text'}},
-                    {display:'技能',name:'skillId',width:100,type:'int',editor:{type:'select',valueField:"type",data:[{type:'1',text:'初级'},{type:'2',text:'中级'}],emptyText:null}},
+                    {display:'技能',name:'skillId',width:100,render:f_renderNamebySkillId,editor:{type:'select',data:SkillData,valueField:"id",textField:"name",emptyText:null}},
                     {display:'联系电话',name:'telephone',width:100,editor:{type:'text'}},
                     {display:'邮箱',name:'email',width:100,editor:{type:'text'}},
                     {display:'雇佣时间',name:'employedTime',width:100,editor:{type:'date'}},
-                    {display:'位置',name:'position',width:100,editor:{type:'text'}},
+                    {display:'职位',name:'position',width:100,editor:{type:'text'}},
                     {display:'创建日期',name:'createTime',width:100,editor:{type:'date'}},
                     {display:'操作',isSort:false,render:function(rowdata,rowindex,value)
                     {
@@ -80,6 +121,62 @@
             });
         }
 
+        function f_renderNamebyId(rowdata, index, value)
+        {
+            var departmentName;
+            var data={};
+//            console.log("testValue:"+value);
+            data.departmentId=value;
+            $.ajax({
+                url:$.URL.employee.getDepartmentById,
+                async:false,
+                type:'POST',
+                dataType:'json',
+                data:data,
+                success:function(data){
+                    departmentName=data.data;
+                },
+                error:function(data) {
+                    $.ligerDialog.error("返回departmentName失败！");
+                }
+            });
+            console.log("departmentName的值:"+departmentName);
+            return departmentName;
+        }
+
+        function f_renderNamebySkillId(rowdata, index, value)
+        {
+            var skillName;
+            var data={};
+//            console.log("testValue:"+value);
+            data.skillId=value;
+//            alert("value的值:"+value);
+//            $.post($.URL.skill.getSkillNameById,data,function(data){
+//                if(data.code==200){
+////                    alert("data.data的值："+data.data);
+//                    console.log("testDataDate:"+data.data);
+//                    skillName=data.data;
+//                }
+//                else{
+//                    $.ligerDialog.error("返回SkillName失败！");
+//                }
+//
+//        },"json");
+            $.ajax({
+                url:$.URL.skill.getSkillNameById,
+                async:false,
+                type:'POST',
+                dataType:'json',
+                data:data,
+                success:function(data){
+                    skillName=data.data;
+                },
+                error:function(data) {
+                    $.ligerDialog.error("返回SkillName失败！");
+                }
+            });
+            return skillName;
+        }
         function beginEdit(rowid){
             manager.beginEdit(rowid);
         }
@@ -120,7 +217,9 @@
         }
 
         function f_add() {
-           $("#mainContainer").load("deptAndEmployee/addEmployee.html");
+            $('#addEmployee').css('display','block');
+            $.ligerDialog.open({title:'添加员工', target: $("#addEmployee")});
+//           $("#mainContainer").load("deptAndEmployee/addEmployee.html");
 //            $("#departmentId").val("");
 //            $("#name").val("");
 //            $("#sex").val("");
@@ -133,6 +232,36 @@
 //            $("#add").css('display','block');
 //            $.ligerDialog.open({title:'添加新员工', target: $("#add")});
         }
+        $("#submitBtn").click(function(){
+            var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
+            data.name=$("#name").val();
+            data.departmentId=$("#departmentId").ligerComboBox().getValue();  //新增字段
+            data.sex=$("#sex").val();
+            data.skillId=$("#skillId").ligerComboBox().getValue();
+            data.telephone=$("#telephone").val();
+            data.email=$("#email").val();
+            data.employedTime=$("#employedTime").val();
+            data.position=$("#position").val();
+//            var toData = JSON.stringify(data);   //把原来是对象的类型转换成字符串类型
+            //alert(toData);
+            $.post($.URL.employee.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+        });
+
+        $("#returnBtn").click(function(){
+ //           $('#addEmployee').css('display','none');
+            $.ligerDialog.close();
+ //           $('#addEmployee').remove();
+        })
+
+        function addCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success("操作成功！");
+            }
+            else if(data.code==500)
+            {
+                $.ligerDialog.error(data.message);
+            }
+        }
 
     </script>
     <style type="text/css">
@@ -143,71 +272,74 @@
     </style>
 </head>
 <body  style="padding:10px">
-<!--<div id="add" style="display:none">
+<div id="addEmployee" style="display:none">
     <form name="form1" method="post" action="" id="form1">
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
                 <td align="right" class="l-table-edit-td">员工:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input name="contractId" type="text" id="name" ltype="text" /></td>
+                    <input name="name" type="text" id="name" ltype="text" />
+                </td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">部门:</td>
                 <td align="left" class="l-table-edit-td">
-                    <select name="departmentId" id="departmentId" ltype="select" ligeruiid="type">
-                        <option value="1">行政部</option>
-                        <option value="2">管理部</option>
-                    </select>
+                    <input name="departmentId" type="text" id="departmentId" ltype="text" />
                 </td>
+                <td align="left"></td>
             </tr>
-
-
             <tr>
                 <td align="right" class="l-table-edit-td">性别:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="sex">
+                    <select name="sex" id="sex" ltype="select" ligeruiid="type">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
                 </td>
+                <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">技能:</td>
                 <td align="left" class="l-table-edit-td">
-                    <select name="skillId" id="skillId" ltype="select" ligeruiid="type">
-                        <option value="1">初级</option>
-                        <option value="2">中级</option>
-                    </select>
+                    <input name="skillId" type="text" id="skillId" ltype="text" />
                 </td>
+                <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">联系电话:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="telephone">
+                    <input name="telephone" type="text" id="telephone" ltype="text" />
                 </td>
+                <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">邮箱:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="email">
+                    <input name="email" type="text" id="email" ltype="text" />
                 </td>
+                <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">雇佣时间:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="employedTime">
+                    <input name="employedTime" type="text" id="employedTime" ltype="text" />
                 </td>
+                <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">位置:</td>
+                <td align="right" class="l-table-edit-td">职位:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="position">
+                    <input name="position" type="text" id="position" ltype="text" />
                 </td>
+                <td align="left"></td>
             </tr>
         </table>
         <br />
         <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
         <input type="button" value="返回" id="returnBtn" class="l-button l-button-submit" />
     </form>
-</div>-->
+</div>
 <div id="list">
     <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
     <div class="l-clear"></div>

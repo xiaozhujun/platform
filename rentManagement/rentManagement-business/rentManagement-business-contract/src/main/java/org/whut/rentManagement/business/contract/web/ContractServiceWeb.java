@@ -24,6 +24,8 @@ import java.util.List;
 public class ContractServiceWeb {
     @Autowired
     private ContractService contractService;
+    @Autowired
+    org.whut.rentManagement.business.customer.service.CustomerService customerService;
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
@@ -34,8 +36,8 @@ public class ContractServiceWeb {
 
         if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
                 ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
-                ||contract.getSignTime()==null||contract.getSignTime().equals("")||contract.getStartTime()==null||contract.getStartTime().equals("")
-                ||contract.getEndTime()==null||contract.getEndTime().equals("")||contract.getChargeMan()==null||contract.getChargeMan().equals("")
+                ||contract.getSignTime()==null||contract.getStartTime()==null
+                ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
                 ){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
@@ -66,9 +68,23 @@ public class ContractServiceWeb {
         contract.setAppId(appId);
         contractService.add(contract);
     */
+        Long id;
+        try
+        {
+            id=customerService.getIdByName(contract.getCustomerName(),appId);
+        }
+        catch (Exception e){
+            id= null;
+        }
+        if(id==null){
         contract.setAppId(appId);
+        contract.setCustomerId(id);
         contractService.add(contract);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        else{
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"不存在此客户");
+        }
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -78,8 +94,8 @@ public class ContractServiceWeb {
         Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
         if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
                 ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
-                ||contract.getSignTime()==null||contract.getSignTime().equals("")||contract.getStartTime()==null||contract.getStartTime().equals("")
-                ||contract.getEndTime()==null||contract.getEndTime().equals("")||contract.getChargeMan()==null||contract.getChargeMan().equals("")
+                ||contract.getSignTime()==null||contract.getStartTime()==null
+                ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
                 ){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
@@ -95,9 +111,12 @@ public class ContractServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/delete")
     @POST
-    public  String delete(@FormParam("jsonString") String jsonString){
-        Contract contract=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
-        int result=contractService.delete(contract);
+//    public  String delete(@FormParam("jsonString") String jsonString)
+    public  String delete(@FormParam("id") long id){
+        long appId=UserContext.currentUserAppId();
+//        Contract contract=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
+//        int result=contractService.deleteById(contract.getId(),appId);
+        int result=contractService.deleteById(id,appId);
         if(result>0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }
@@ -107,9 +126,9 @@ public class ContractServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getList")
+    @Path("/list")
     @POST
-    public String getList(){
+    public String list(){
         long appId=UserContext.currentUserAppId();
         List<Contract> list=contractService.getListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);

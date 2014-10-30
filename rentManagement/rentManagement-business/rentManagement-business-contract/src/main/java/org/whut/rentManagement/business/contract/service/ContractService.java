@@ -29,6 +29,10 @@ public class ContractService {
         return contractMapper.update(contract);
     }
 
+    public int deleteById(long id,long appId){
+        return contractMapper.deleteById(id,appId);
+    }
+
     public List<Contract> getListByAppId(long appId){
         return contractMapper.getListByAppId(appId);
     }

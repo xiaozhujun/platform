@@ -169,8 +169,8 @@ public class Stock_out_sheetServiceWeb {
         stock_out_sheet.setAppId(appId);
         stock_out_sheetService.update(stock_out_sheet);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "更新成功!");
-    }
         }
+    }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")

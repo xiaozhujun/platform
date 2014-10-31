@@ -42,7 +42,7 @@
     <update id="update" parameterType="Stock_in_sheet">
         UPDATE stock_in_sheet
         <set>
-            <if test="number != null">NUMBER=#{number},</if>
+            <if test="number!= null">NUMBER=#{number},</if>
             <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
             <if test="handler!=null">HANDLER=#{handler},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
@@ -50,7 +50,7 @@
             <if test="creator!=null">CREATOR=#{creator},</if>
             <if test="appId!=null">APPID=#{appId},</if>
         </set>
-        WHERE ID=#{id};
+        WHERE ID=#{id}
     </update>
 
     <delete id="delete" parameterType="User">

@@ -84,11 +84,13 @@
 
         function updateCallback(data){
             if(data.code==200){
+                $.ligerDialog.success("修改成功");
                 $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
-                $.ligerDialog.success(data.message);
+//                $.ligerDialog.success(data.message);
+
             }
             else{
-
+                $.ligerDialog.success("格式错误");
                 $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
                 $.ligerDialog.warn(data.message);
 

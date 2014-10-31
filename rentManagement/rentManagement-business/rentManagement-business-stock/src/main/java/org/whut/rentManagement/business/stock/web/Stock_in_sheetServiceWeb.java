@@ -6,6 +6,7 @@ import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.stock.entity.Stock_in_sheet;
+import org.whut.rentManagement.business.stock.entity.Stock_in_sheetP;
 import org.whut.rentManagement.business.stock.service.Stock_in_sheetService;
 
 import javax.ws.rs.FormParam;
@@ -73,9 +74,54 @@ public class Stock_in_sheetServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-        Stock_in_sheet stockInSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
-        stockInSheetService.update(stockInSheet);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        Stock_in_sheet stockInSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
+
+        long appId= UserContext.currentUserAppId();
+        Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
+        if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
+        }
+        Stock_in_sheet stockInSheet=new Stock_in_sheet();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String s=stockInSheetp.getCreateTime() ;
+        if(s==null){
+            stockInSheet.setId(stockInSheetp.getId());
+            stockInSheet.setNumber(stockInSheetp.getNumber());
+            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
+            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
+            stockInSheet.setContractId(stockInSheetp.getContractId());
+            stockInSheet.setHandler(stockInSheetp.getHandler());
+            stockInSheet.setCreator(stockInSheetp.getCreator());
+            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
+            stockInSheet.setDescription(stockInSheetp.getDescription());
+            stockInSheet.setAppId(appId);
+            stockInSheetService.update(stockInSheet);
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "更新成功!");
+        }  else {
+            Date date = null;
+            try {
+                date = sdf.parse(stockInSheetp.getCreateTime());
+            } catch (ParseException e) {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "时间格式错误");
+            }
+            long oneDayTime = 1000*3600*24;
+            Date Time = new Date(date.getTime() + oneDayTime);
+
+            stockInSheet.setId(stockInSheetp.getId());
+            stockInSheet.setNumber(stockInSheetp.getNumber());
+            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
+            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
+            stockInSheet.setContractId(stockInSheetp.getContractId());
+            stockInSheet.setHandler(stockInSheetp.getHandler());
+            stockInSheet.setCreator(stockInSheetp.getCreator());
+            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
+            stockInSheet.setDescription(stockInSheetp.getDescription());
+            stockInSheet.setCreateTime(Time);
+            stockInSheet.setAppId(appId);
+
+            stockInSheetService.update(stockInSheet);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

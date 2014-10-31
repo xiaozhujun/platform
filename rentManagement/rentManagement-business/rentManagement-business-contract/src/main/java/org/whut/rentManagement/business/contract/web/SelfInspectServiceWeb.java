@@ -10,6 +10,7 @@ import org.whut.rentManagement.business.contract.service.SelfInspectService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class SelfInspectServiceWeb {
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")
-    @GET
+    @POST
     public String list(){
         long appId = UserContext.currentUserAppId();
         List<SelfInspect> list=selfInspectService.getListByAppId(appId);
@@ -39,7 +40,7 @@ public class SelfInspectServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("contractId") String contractId ,@FormParam("selfInspectDeviceId") String selfInspectDeviceId,
-                      @FormParam("selfInspectMan") String selfInspectMan,                      @FormParam("selfInspectStatus") String selfInspectStatus){
+                      @FormParam("selfInspectMan") String selfInspectMan,@FormParam("selfInspectTime") String selfInspectTime, @FormParam("selfInspectStatus") String selfInspectStatus){
         if(contractId==null||"".equals(contractId.trim())||selfInspectDeviceId==null||"".equals(selfInspectDeviceId.trim())
                 ||selfInspectMan==null||"".equals(selfInspectMan)||selfInspectStatus==null){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
@@ -48,6 +49,12 @@ public class SelfInspectServiceWeb {
         selfInspectDeviceId = selfInspectDeviceId.replace(" ","");
         long appId = UserContext.currentUserAppId();
         Date date=new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            date = sdf.parse(selfInspectTime);
+        }catch (Exception e){
+            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+        }
         Long id;
         try {
            id = selfInspectService.getContractIdById(Long.parseLong(contractId));

@@ -40,6 +40,8 @@ public class RemoveService {
     public long getIdByContractIdAndDeviceIdAndAppId(long contractId,long deviceId,long appId) {
         return removeMapper.getIdByContractIdAndDeviceIdAndAppId(contractId,deviceId,appId);
     }
-
+    public long getRemoveDeviceIdById(long removeDeviceId){
+        return  removeMapper.getRemoveDeviceIdById(removeDeviceId);
+    }
 
 }

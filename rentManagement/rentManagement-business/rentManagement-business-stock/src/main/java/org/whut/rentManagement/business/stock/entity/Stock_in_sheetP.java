@@ -20,6 +20,7 @@ public class Stock_in_sheetP {
     private String creator;
     private long appId;
 
+
     public long getId() {
         return id;
     }

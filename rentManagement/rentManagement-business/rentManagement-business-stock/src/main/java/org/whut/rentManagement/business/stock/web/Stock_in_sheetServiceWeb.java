@@ -74,10 +74,9 @@ public class Stock_in_sheetServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-//        Stock_in_sheet stockInSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
-
         long appId= UserContext.currentUserAppId();
         Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
+
         if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
@@ -97,13 +96,14 @@ public class Stock_in_sheetServiceWeb {
             stockInSheet.setAppId(appId);
             stockInSheetService.update(stockInSheet);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "更新成功!");
-        }  else {
+        }   else {
             Date date = null;
             try {
                 date = sdf.parse(stockInSheetp.getCreateTime());
             } catch (ParseException e) {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "时间格式错误");
             }
+
             long oneDayTime = 1000*3600*24;
             Date Time = new Date(date.getTime() + oneDayTime);
 

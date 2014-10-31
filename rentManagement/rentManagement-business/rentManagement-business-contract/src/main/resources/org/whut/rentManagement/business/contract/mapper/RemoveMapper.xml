@@ -53,4 +53,10 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
+    <select id="getRemoveDeviceIdById" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+       id
+        from remove
+        where REMOVEDEVICEID=#{removeDeviceId}
+    </select>
 </mapper>

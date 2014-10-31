@@ -19,7 +19,7 @@
     <script src="js/map.js" type="text/javascript"></script>
     <script src="js/chartToolOfData.js" type="text/javascript"></script>
     <script>
-        var  groupName="储油罐1";
+        var  groupName=parent.gName;
         var m = new Map();
         var selectClick=0; //是否点击了菜单中的传感器，默认没有点击
         $(document).ready(function () {
@@ -107,10 +107,10 @@
         function creatSelectHead(data){
             var tableHead="";
             if(navigator.appName.indexOf("Explorer")>-1)    {       <!--IE 和 火狐浏览器的不兼容-->
-                document.getElementById("selectTank").innerText=cgData[0].name;
+                document.getElementById("selectTank").innerText=groupName;
             }
             else
-                document.getElementById("selectTank").textContent=cgData[0].name;
+                document.getElementById("selectTank").textContent=groupName;
             for(var i=0 ;i<data.length ; i++){
                 tableHead=tableHead+ '<li data-value="'+i+1+'"><a href="#" tabindex="-1">'+data[i].name+'</a></li>'
             }

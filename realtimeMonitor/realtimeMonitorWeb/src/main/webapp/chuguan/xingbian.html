@@ -288,12 +288,13 @@ function changeGroupName(data){
         ws=null;
     }
     nowGName=data;
+    parent.gName=nowGName;
     creatTable(nowGName);
     $.post($.URL.sensor.getListByGroupName,{"groupName":nowGName},getListByGroupNameCallback,"json");
 }
 function creatSelectHead(data){
     var tableHead="";
-    if(parent.gName!=null){
+    if(parent.gName!=""){
         if(navigator.appName.indexOf("Explorer")>-1)    {
             document.getElementById("selectTank").innerText=parent.gName;
         } else

@@ -14,8 +14,8 @@
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
-            $.post($.URL.storehouse.list,null,listCallBack,"json");
-        })
+            $.post($.URL.deviceType.list,null,listCallBack,"json");
+        }) ;
         var gridData={};
         function listCallBack(data){
             if(data.code==200)
@@ -28,30 +28,41 @@
 
         var d=new Date();      /*实现时间的选择*/
         var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-        $("#CreateTime").ligerDateEditor({initValue: dd});
+        $("#createTime").ligerDateEditor({initValue: dd});
 
+        var inputData = [
+            { id: "0", text: '否' },
+            { id: "1", text: '是'}
+        ];
         var manager,g;
         function f_initGrid(){
             g = manager = $("#maingrid").ligerGrid( {
 
                 columns:[
                     {display:'主键',name:'id',width:50,type:'int',frozen:true} ,
-                    {display:'仓库名',name:'name',
+                    {display:'设备类型名',name:'name',
                         editor:{type:'text'}
                     } ,
-                    {display:'地址',name:'address',
-                        editor:{type:'text'}
-                    } ,
-                    {display:'联系人',name:'linkman',
-                        editor:{type:'text'}
-                    } ,
-                    {display:'电话',name:'telephone', type:"int",
-                        editor:{type:'int'}
-                    } ,
-                    {display:'创建时间',name:'CreateTime',width: 100,type:"date",editor:{type:'date'}},
-                    {display:'仓库描述',name:'description',
+                    {display:'类型描述',name:'description',
                         editor:{type:'text'}
                     },
+                    { display: '是否主设备', name: 'mainDevice', type: 'string', width: 70,
+                        editor: { type: 'select', data: inputData, emptyText: null, valueField: 'id', textField: 'text'},
+                        render: function (item) {
+                            if (parseInt(item.input) == 0)
+                                return '否';
+                            else
+                                return '是';
+                        }
+                    },
+                    {display:'保修年限',name:'warnTime',width:100,type:"int",
+                        editor:{type:"int"}
+                    },
+                    {display:'单位',name:'unit',
+                        editor:{type:'text'}
+                    },
+                    { display: '创建时间', name: 'createTime', width: 100,type:"date",
+                        editor:{type:'date'}},
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {
                         var h="";
@@ -90,15 +101,14 @@
             manager.endEdit(rowid);
             var row=manager.getRow(rowid);
             var jsonString= $.toJSON(row);
-            $.post($.URL.storehouse.update,{"jsonString":jsonString},updateCallBack,"json");
+            $.post($.URL.deviceType.update,{"jsonString":jsonString},updateCallBack,"json");
         }
         function updateCallBack(data){
             if(data.code==200){
                 $.ligerDialog.success("修改成功") ;
             }
             else{
-                $.ligerDialog.error(data.message);
-                $.post($.URL.storehouse.list,null,listCallBack,"json");
+                $.ligerDialog.error("修改失败！");
             }
         }
         function deleteRow(rowid){
@@ -106,7 +116,7 @@
             {
                 var row=manager.getRow(rowid);
                 var jsonString= $.toJSON(row);
-                $.post($.URL.storehouse.delete,{"jsonString":jsonString},deleteCallBack,"json");
+                $.post($.URL.deviceType.delete,{"jsonString":jsonString},deleteCallBack,"json");
                 manager.deleteRow(rowid);
             }
         }
@@ -119,45 +129,41 @@
                 $.ligerDialog.error("删除失败！");
             }
         }
-
         $("#addSubmitBtn").click(function(){
-            c_show();
-            $.ligerDialog.open({title:'添加仓库', target: $("#addStorehouse"),width:500});
+            f_show();
+            $.ligerDialog.open({title:'添加设备类型', target: $("#addDeviceType"),width:500});
         });
 
-        function c_show(){
-            $("#addStorehouse").css('display','block');
-        };
+        function f_show(){
+            $('#addDeviceType').css('display','block');
+        }
 
-
-        $("#submitBtn1").click(function(){
-            var addData={};
-            addData.name = $("#Name").val();
-            addData.address = $("#Address").val();
-            addData.linkman = $("#Linkman").val();
-            addData.telephone = $("#Telephone").val();
-            addData.createTime=$("#CreateTime").val();
-            var toData = JSON.stringify(addData);
-            $.post($.URL.storehouse.add,{"jsonString":toData},addStorehouseCallback,"json");
-
+        $("#submitBtn").click(function(){
+            var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
+            data.name=$("#deviceTypeName").val();
+            data.unit=$("#deviceTypeUnit").val();
+            data.warnTime=$("#deviceTypeWarnTime").val();
+            data.description=$("#deviceTypeDescription").val();
+            data.createTime=$( "#createTime").val();
+            //var toData = JSON.stringify(data);
+            $.post($.URL.deviceType.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
         });
 
-        function addStorehouseCallback(data){
+        function addCallBack(data){
             if(data.code==200){
                 $.ligerDialog.success('操作成功');
-                $.post($.URL.storehouse.list,null,listCallBack,"json");
+                $.post($.URL.deviceType.list,null,listCallBack,"json");
             }
             else if(data.code==500)
             {
                 $.ligerDialog.error(data.message);
             }
         }
-        var newrowid = 100;
+        var newrowid=100;
         function addNewRow()
         {
             manager.addEditRow();
         }
-
     </script>
     <style type="text/css">
         .l-table-edit {}
@@ -167,48 +173,50 @@
     </style>
 </head>
 <body  style="padding:10px">
-<div id="addStorehouse" style="display:none" >
+<div id="addDeviceType" style="display: none">
     <form name="form1" method="post" action="" id="form1">
+        <div>
+        </div>
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
-                <td align="right" class="l-table-edit-td">仓库名:</td>
-                <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="Name" ltype="text" /></td>
+                <td align="right" class="l-table-edit-td">设备类型名:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceTypeName" type="text" id="deviceTypeName" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">地址:</td>
-                <td align="left" class="l-table-edit-td"><input name="Address" type="text" id="Address" ltype="text" /></td>
+                <td align="right" class="l-table-edit-td">所属单位:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceTypeUnit" type="text"  id="deviceTypeUnit" ltype="text"></td>
                 <td align="left"></td>
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">联系人:</td>
-                <td align="left" class="l-table-edit-td"><input name="Linkman" type="text" id="Linkman" ltype="text" /></td>
-                <td align="left"></td>
-            </tr>
-
-            <tr>
-                <td align="right" class="l-table-edit-td">电话:</td>
-                <td align="left" class="l-table-edit-td"><input name="Telephone" type="int" id="Telephone" ltype="int" /></td>
+                <td align="right" class="l-table-edit-td">报修年限:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceTypeWarnTime" type="text"  id="deviceTypeWarnTime" ltype="text"></td>
                 <td align="left"></td>
             </tr>
 
             <tr>
                 <td align="right" class="l-table-edit-td">创建时间:</td>
-                <td align="left" class="l-table-edit-td"><input name="CreateTime" type="date" id="CreateTime" ltype="date" /></td>
+                <td align="left" class="l-table-edit-td"><input name="createTime" type="text" id="createTime" ltype="date" /></td>
                 <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">类型描述:</td>
+                <td align="left" class="l-table-edit-td"><textarea name="deviceTypeDescription" type="text" id="deviceTypeDescription" cols="20" rows="2" class="l-textarea" style="width:400px"></textarea>
+                </td><td align="left"></td>
             </tr>
         </table>
         <br />
-        <input type="button" value="提交" id="submitBtn1" class="l-button l-button-submit" />
+        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
     </form>
-
 </div>
-<div><input type="button" value="添加仓库" id="addSubmitBtn" class="l-button l-button-submit"/></div>
-<div class="l-clear"></div>
-<div id="maingrid" style="margin-top:20px"></div> <br />
-
+<div id="list">
+    <div><input type="button" value="添加" id="addSubmitBtn" class="l-button l-button-submit" /></div>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:20px"></div> <br />
+</div>
 <div style="display:none;">
     <!-- g data total ttt -->
 </div>

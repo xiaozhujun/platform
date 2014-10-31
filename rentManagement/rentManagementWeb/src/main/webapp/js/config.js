@@ -85,7 +85,11 @@
             "getContractById":"rs/contract/getContractById"
         },
         "deviceType":{
-            "list":"rs/deviceType/list"
+            "list":"rs/deviceType/list",
+            "add":"rs/deviceType/add",
+            "update":"rs/deviceType/update",
+            "delete":"rs/deviceType/delete",
+            "getIdByName":"rs/deviceType/getIdByName"
         },
         "stock_in_sheet":{
             "add":"rs/stock_in_sheet/add" ,
@@ -129,6 +133,13 @@
             "delete":"rs/skill/delete",
             "list":"rs/skill/list",
             "getSkillNameById":"rs/skill/getSkillNameById"
+        },
+        "storehouse":{
+            "add" :"rs/storeHouse/add" ,
+            "list":"rs/storeHouse/list" ,
+            "delete": "rs/storeHouse/delete" ,
+            "update":"rs/storeHouse/update",
+            "getIdByNameAndAppId":"rs/storeHouse/getIdByNameAndAppId"
         }
     }
 })(jQuery);

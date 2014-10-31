@@ -38,7 +38,7 @@ public class RemoveServiceWeb {
     UserService userService;
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
-    @GET
+    @POST
     public String list(){
         long appId= UserContext.currentUserAppId();
         List<Map<String,String>> list=removeService.getListByAppId(appId);
@@ -48,69 +48,43 @@ public class RemoveServiceWeb {
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("jsonStringList") String jsonStringList) {
+    public String add(@FormParam("contractId") String contractId ,@FormParam("removeDeviceId") String removeDeviceId,@FormParam("removeMan") String removeMan,@FormParam("removeTime") String removeTime,@FormParam("removeStatus") String removeStatus){
+        if(contractId==null||"".equals(contractId.trim())||removeDeviceId==null||"".equals(removeDeviceId.trim())
+                ||removeMan==null||"".equals(removeMan)||removeStatus==null){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
+        }
         long appId= UserContext.currentUserAppId();
-        List<SubRemove> removeSuccessList = new ArrayList<SubRemove>();
-        List<SubRemove> removeErrorList = new ArrayList<SubRemove>();
-        List<SubRemove> removeRepeatList=new ArrayList<SubRemove>();
+        Date date=new Date();
+        Date date1=new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            date = sdf.parse(removeTime);
+        }catch (Exception e){
+            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+        }
+        Long id;
         try {
-            JSONArray jsonArray = new JSONArray(jsonStringList);
-            if(jsonArray.length()==0){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
-            }
-            for(int i=0;i<jsonArray.length();i++){
-                String jsonString= jsonArray.get(i).toString();
-                SubRemove subRemove = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubRemove.class);
-                if(subRemove.getAddStatus().equals("提交成功1")){
-                    removeSuccessList.add(subRemove);
-                }
-                else {
-                    if (subRemove.getContractId().equals("") || subRemove.getContractId()==null || subRemove.getRemoveDeviceId().equals("") || subRemove.getRemoveDeviceId()==null) {
-                        subRemove.setAddStatus("参数缺省");
-                        removeErrorList.add(subRemove);
-                    }
-                    else {
-                        long tempId;
-                        try {
-                            tempId = removeService.getIdByContractIdAndDeviceIdAndAppId(Long.parseLong(subRemove.getContractId())
-                                    ,Long.parseLong(subRemove.getRemoveDeviceId()),appId);
-                        }catch (Exception e) {
-                            tempId = 0;
-                        }
+            id = removeService.getRemoveDeviceIdById(Long.parseLong(removeDeviceId));
+        }
+        catch(Exception e){
+            id = null;
+        }
+        if (id==null){
+            Remove remove = new Remove();
+            remove.setAppId(appId);
+            remove.setContractId(Long.parseLong(contractId));
+            remove.setRemoveDeviceId(Long.parseLong(removeDeviceId));
+            remove.setRemoveMan(removeMan);
+            remove.setRemoveStatus(removeStatus);
+            remove.setRemoveTime(date1);
+            removeService.add(remove);
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "添加成功!");
+        }
+        else {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "设备已经移除!");
+        }
 
-                        if(tempId != 0){
-                            subRemove.setAddStatus("参数重复");
-                            removeRepeatList.add(subRemove);
-                        }
-                        else {
-                            Remove remove = new Remove();
-                            remove.setContractId(Long.parseLong(subRemove.getContractId()));
-                            remove.setRemoveDeviceId(Long.parseLong(subRemove.getRemoveDeviceId()));
-                            remove.setRemoveMan(subRemove.getRemoveMan());
-                            remove.setRemoveStatus(subRemove.getRemoveStatus());
-                            Date date=new Date();
-                            remove.setRemoveTime(date);
-                            remove.setAppId(appId);
-                            removeService.add(remove);
-                            subRemove.setAddStatus("提交成功");
-                            removeSuccessList.add(subRemove);
-                        }
-                    }
-                }
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (removeErrorList.size()!=0){
-            removeErrorList.addAll(removeRepeatList);
-            removeErrorList.addAll(removeSuccessList);
-            return JsonResultUtils.getObjectResultByStringAsDefault(removeErrorList, JsonResultUtils.Code.ERROR);
-        }else if(removeRepeatList.size()!=0){
-            removeRepeatList.addAll(removeSuccessList);
-            return JsonResultUtils.getObjectResultByStringAsDefault(removeRepeatList, JsonResultUtils.Code.DUPLICATE);
-        }else {
-            return JsonResultUtils.getObjectResultByStringAsDefault(removeSuccessList, JsonResultUtils.Code.SUCCESS);
-        }
+
     }
 
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
@@ -129,26 +103,16 @@ public class RemoveServiceWeb {
         remove.setRemoveStatus(subRemove.getRemoveStatus());
         DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         remove.setRemoveTime(format.parse(subRemove.getRemoveTime()));
-
-        String removeMan = remove.getRemoveMan();
-        if (removeMan.trim().equals("")) {
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
+        Remove remove1= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Remove.class);
+        int result=removeService.update(remove1);
+        if(result>0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS) ;
+        }
+        else {
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
 
-        long id;
-        try {
-            id = removeService.getIdByContractIdAndDeviceIdAndAppId(Long.parseLong(subRemove.getContractId())
-                    ,Long.parseLong(subRemove.getRemoveDeviceId()),appId);
-        } catch (Exception e) {
-            id = 0;
-        }
-        if (id != 0) {
-            if (id != remove.getId()) {
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "设备已移除");
-            }
-        }
-        removeService.update(remove);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/getListByContractId")

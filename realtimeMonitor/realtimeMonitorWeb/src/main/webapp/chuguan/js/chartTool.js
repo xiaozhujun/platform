@@ -1,6 +1,4 @@
 function drawChartOfMap(container,map,unit){
-
-
  $(container).highcharts({
 
         chart: {
@@ -25,15 +23,7 @@ function drawChartOfMap(container,map,unit){
             enabled: false,
             text : ''
         },
-        legend: {
-            enabled : false,
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -10,
-            y: 100,
-            borderWidth: 0
-        },
+
         yAxis: {
             maxPadding:0.01,
             minPadding:0.01,
@@ -82,15 +72,17 @@ function drawChartOfMap(container,map,unit){
                 shadow: false
             }
         },
+       legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+       },
         series : function(){
-            console.log("^^^^^^^^^^^map^^^^^^^^^^^^^^^^^^^");
-            console.log(map);
             var temp = [];
             for(key in map.data){
                 temp.push({name:key,data:map.data[key]});
             }
-            console.log("^^^^^^^^^^^temp^^^^^^^^^^^^^^^^^^^");
-            console.log(temp);
             return temp;
         }(),
         credits: {

@@ -73,36 +73,36 @@
             }
         }
 
-        var CustomerIdData=[];
+        var CustomerNameData=[];
         function listCustomerCallback(data){
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var j=[];
-                    j["type"]=content.id;
-                    j["text"]=content.id;
-                    CustomerIdData.push(j);
+                    j["type"]=content.name;
+                    j["text"]=content.name;
+                    CustomerNameData.push(j);
                     /* var data = JSON.stringify(j);
                      alert(data);*/
                 });
                 $("#customerId").ligerComboBox({emptyText:null,   //实现下拉框
-                    data:CustomerIdData,
+                    data:CustomerNameData,
                     valueFieldID: 'customerId'
                 });
             }
         }
 
-        var ContractIdData=[];
+        var ContractNameData=[];
         function listContractCallback(data){
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var j=[];
-                    j["type"]=content.id;
-                    j["text"]=content.id;
-                    ContractIdData.push(j);
+                    j["type"]=content.name;
+                    j["text"]=content.name;
+                    ContractNameData.push(j);
                      var data = JSON.stringify(j);
                 });
                 $("#contractId").ligerComboBox({emptyText:null,   //实现下拉框
-                    data:ContractIdData,
+                    data:ContractNameData,
                     valueFieldID: 'contractId'
                 });
             }
@@ -130,14 +130,26 @@
                         }
 
                     },*/
-                    { display: '车号', name: 'carNumber', type: 'int',
-                        editor: { type: 'int'}
+                    { display: '车号', name: 'carNumber', type: 'string',
+                        editor: { type: 'select',data:CarDriverNumberData,valueField:"type",textField:"text",
+                        isMultiSelect:true,isShowCheckBox:true,emptyText:null},
+                        render:function(item){
+                            return item.carNumber;
+                        }
                     },
-                    { display: '顾客名',name: 'customerName',
-                        editor: { type: 'int'}
+                    { display: '顾客名',name: 'customerName',type:'string',
+                        editor: { type: 'select',data:CustomerNameData,valueField:"type",textField:"text",
+                            isMultiSelect:true,isShowCheckBox:true,emptyText:null},
+                        render:function(item){
+                            return item.customerName;
+                        }
                     },
-                    { display: '合同名',name: 'contractName',
-                        editor: { type: 'text'}
+                    { display: '合同名',name: 'contractName',type:'string',
+                        editor: { type: 'select',data:ContractNameData,valueField:"type",textField:"text",
+                            isMultiSelect:true,isShowCheckBox:true,emptyText:null},
+                        render:function(item){
+                            return item.contractName;
+                        }
                     },
                     { display: '经手人',name: 'handler',
                         editor: { type: 'text'}

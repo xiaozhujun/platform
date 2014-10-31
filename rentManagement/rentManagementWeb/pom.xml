@@ -108,6 +108,11 @@
             <artifactId>rentManagement-business-badDebt</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>rentManagement-business-storehouse</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 

@@ -1,19 +1,17 @@
 package org.whut.rentManagement.business.device.entity;
 
-import java.util.Date;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Steven
- * Date: 14-10-10
- * Time: 上午11:20
+ * Date: 14-10-30
+ * Time: 下午4:12
  * To change this template use File | Settings | File Templates.
  */
-public class DeviceType {
+public class SubDeviceType {
     private long id;
     private String name;
     private String description;
-    private Date createTime;
+    private String createTime;
     private String unit;
     private long MainDevice;
     private String warnTime;
@@ -43,11 +41,11 @@ public class DeviceType {
         this.description = description;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -57,6 +55,14 @@ public class DeviceType {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public long getMainDevice() {
+        return MainDevice;
+    }
+
+    public void setMainDevice(long mainDevice) {
+        MainDevice = mainDevice;
     }
 
     public String getWarnTime() {
@@ -73,13 +79,5 @@ public class DeviceType {
 
     public void setAppId(long appId) {
         this.appId = appId;
-    }
-
-    public long getMainDevice() {
-        return MainDevice;
-    }
-
-    public void setMainDevice(long mainDevice) {
-        MainDevice = mainDevice;
     }
 }

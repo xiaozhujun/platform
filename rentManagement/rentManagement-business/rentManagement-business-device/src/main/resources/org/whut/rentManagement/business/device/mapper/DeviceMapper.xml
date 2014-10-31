@@ -29,7 +29,7 @@
         <include refid="device_fields" />
         )
         VALUES (#{id}, #{mainDeviceId},#{typeId},#{storehouseId},#{contractId},#{address},#{status},#{name},#{number},#{price},#{produceTime},#{createTime},#{priceUnit},#{appId});
-        <selectKey resultType="long" keyProperty="id">
+        <selectKey resultType="java.lang.Long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
         </selectKey>
@@ -38,29 +38,26 @@
     <update id="update" parameterType="Device">
         update device
         <set>
-            <if test="name!=null">NAME=#{name},</if>
-            <if test="number!=null">  NUMBER=#{number},</if>
-            <if test="createTime!=null"> CREATETIME=#{createTime},</if>
-            <if test="appId!=null">APPID=#{appId},</if>
+            <if test="mainDeviceId!=null">MAINDEVICEID=#{mainDeviceId},</if>
             <if test="typeId!=null">TYPEID=#{typeId},</if>
-            <if test="mainDeviceId!=null">MAINDEVICEID=#{mainDevcieId},</if>
-            <if test="contractId!=null">CONTRACTID=#{contractId},</if>
             <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
+            <if test="contractId!=null">CONTRACTID=#{contractId},</if>
             <if test="address!=null">ADDRESS=#{address},</if>
             <if test="status!=null">STATUS=#{status},</if>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="number!=null">NUMBER=#{number},</if>
             <if test="price!=null">PRICE=#{price},</if>
+            <if test="produceTime!=null">PRODUCETIME=#{produceTime},</if>
+            <if test="createTime!=null"> CREATETIME=#{createTime},</if>
             <if test="priceUnit!=null">PRICEUNIT=#{priceUnit},</if>
-            <if test="produceTime!=null">PRODUCETIME=#{produceTime}</if>
+            <if test="appId!=null">APPID=#{appId}</if>
         </set>
         where ID=#{id};
     </update>
 
-    <delete id="delete" parameterType="Device">
+    <delete id="delete" parameterType="java.lang.Long">
         DELETE FROM device
-        <where>
-            <if test="id != null">ID=#{id}</if>
-            <if test="name != null"> AND NAME=#{name}</if>
-        </where>
+        WHERE ID=#{id}
     </delete>
 
     <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceResultMap">

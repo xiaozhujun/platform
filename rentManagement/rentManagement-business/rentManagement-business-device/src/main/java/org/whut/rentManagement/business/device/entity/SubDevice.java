@@ -1,15 +1,13 @@
 package org.whut.rentManagement.business.device.entity;
 
-import java.util.Date;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Steven
- * Date: 14-10-10
- * Time: 上午11:17
+ * Date: 14-10-30
+ * Time: 下午5:19
  * To change this template use File | Settings | File Templates.
  */
-public class Device {
+public class SubDevice {
     private long id;
     private long mainDeviceId;
     private long typeId;
@@ -20,8 +18,8 @@ public class Device {
     private String name;
     private String number;
     private String price;
-    private Date produceTime;
-    private Date createTime;
+    private String produceTime;
+    private String createTime;
     private String priceUnit;
     private long appId;
 
@@ -31,6 +29,14 @@ public class Device {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getMainDeviceId() {
+        return mainDeviceId;
+    }
+
+    public void setMainDeviceId(long mainDeviceId) {
+        this.mainDeviceId = mainDeviceId;
     }
 
     public long getTypeId() {
@@ -97,19 +103,19 @@ public class Device {
         this.price = price;
     }
 
-    public Date getProduceTime() {
+    public String getProduceTime() {
         return produceTime;
     }
 
-    public void setProduceTime(Date produceTime) {
+    public void setProduceTime(String produceTime) {
         this.produceTime = produceTime;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -127,13 +133,5 @@ public class Device {
 
     public void setAppId(long appId) {
         this.appId = appId;
-    }
-
-    public long getMainDeviceId() {
-        return mainDeviceId;
-    }
-
-    public void setMainDeviceId(long mainDeviceId) {
-        this.mainDeviceId = mainDeviceId;
     }
 }

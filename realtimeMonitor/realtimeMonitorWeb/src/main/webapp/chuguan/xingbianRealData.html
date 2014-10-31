@@ -23,15 +23,20 @@
         var m = new Map();
         var selectClick=0; //是否点击了菜单中的传感器，默认没有点击
         $(document).ready(function () {
-            $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByDefaultGroupNameCallback);
             $.post($.URL.group.list,null,gridCallback);
             $("#backBtn").click(function(){
                 window.parent.jumpURL("xingbian.html");
             });
         });
+        function  AreaListGridCallback(data){
+            if(data.code==200){
+                var topAreaName=data.data[0];
+                $.post($.URL.sensor.getSensorsByAreaName,{"AreaName":topAreaName,"GroupName":groupName},getListByDefaultCallback);
+            }
+        }
         var cgData="";
         var sNum="";
-        function getListByDefaultGroupNameCallback(data){
+        function getListByDefaultCallback(data){
             if(data.code==200){
                 console.log("返回的数据："+data.data);
                 for(var i=0;i<data.data.length;i++)  {
@@ -53,6 +58,10 @@
         function gridCallback(data) {
             if(data.code == 200) {
                 cgData = data.data;
+                if(parent.gName==""){
+                    groupName=cgData[0].name;
+                }
+                $.post($.URL.area.getAreaListByGroupName,{"groupName":groupName},AreaListGridCallback,'json');
                 creatSelectHead(cgData);
                 creatMenu(groupName);
                 $("div.tree-node").click(function(){
@@ -82,27 +91,28 @@
                 ws=null;
             }
             creatMenu(data);
-            $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameCallback);
+            $.post($.URL.area.getAreaListByGroupName,{"groupName":data},AreaListGridCallback,'json');
+          //  $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameCallback);
         }
-        function getListByGroupNameCallback(data){
-            if(data.code==200){
-                console.log("返回的数据："+data.data);
-                for(var i=0;i<data.data.length;i++)  {
-                    if(i==0){
-                        sNum=data.data[i].number+",";
-                    }
-                    else {
-                        sNum=sNum+data.data[i].number+",";
-                    }
-                }
-                var lastIndex = sNum.lastIndexOf(',');
-                if (lastIndex > -1) {
-                    sNum = sNum.substring(0, lastIndex) + sNum.substring(lastIndex + 1, sNum.length);
-                }
-                s ="{c:'Subscribe',sensors:["+sNum+"]}";
-                connect();
-            }
-        }
+//        function getListByGroupNameCallback(data){
+//            if(data.code==200){
+//                console.log("返回的数据："+data.data);
+//                for(var i=0;i<data.data.length;i++)  {
+//                    if(i==0){
+//                        sNum=data.data[i].number+",";
+//                    }
+//                    else {
+//                        sNum=sNum+data.data[i].number+",";
+//                    }
+//                }
+//                var lastIndex = sNum.lastIndexOf(',');
+//                if (lastIndex > -1) {
+//                    sNum = sNum.substring(0, lastIndex) + sNum.substring(lastIndex + 1, sNum.length);
+//                }
+//                s ="{c:'Subscribe',sensors:["+sNum+"]}";
+//                connect();
+//            }
+//        }
         function creatSelectHead(data){
             var tableHead="";
             if(navigator.appName.indexOf("Explorer")>-1)    {       <!--IE 和 火狐浏览器的不兼容-->

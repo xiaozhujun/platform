@@ -73,36 +73,36 @@
             }
         }
 
-        var CustomerNameData=[];
+        var CustomerData=[];
         function listCustomerCallback(data){
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var j=[];
-                    j["type"]=content.name;
-                    j["text"]=content.name;
-                    CustomerNameData.push(j);
-                    /* var data = JSON.stringify(j);
-                     alert(data);*/
+                    j["type"]=content.id;  //点击“修改”后，下拉框显示的是id值
+                    j["text"]=content.id;
+                    CustomerData.push(j);
+                    // var data = JSON.stringify(j);
+                     //alert(data);
                 });
-                $("#customerId").ligerComboBox({emptyText:null,   //实现下拉框
-                    data:CustomerNameData,
-                    valueFieldID: 'customerId'
+                $("#customerId").ligerComboBox({emptyText:null,   //customerId必须和table中Id名保持一致，实现“添加”弹出框的"顾客号"的下拉框
+                    data:CustomerData,   //data名字必须和display中的data名字保持一致才能实现点击“修改”出现顾客名的下拉框
+                    valueFieldID: 'customerNumber1'
                 });
             }
         }
 
-        var ContractNameData=[];
+        var ContractData=[];
         function listContractCallback(data){
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var j=[];
-                    j["type"]=content.name;
-                    j["text"]=content.name;
-                    ContractNameData.push(j);
+                    j["type"]=content.id;
+                    j["text"]=content.id;
+                    ContractData.push(j);
                      var data = JSON.stringify(j);
                 });
                 $("#contractId").ligerComboBox({emptyText:null,   //实现下拉框
-                    data:ContractNameData,
+                    data:ContractData,
                     valueFieldID: 'contractId'
                 });
             }
@@ -138,14 +138,14 @@
                         }
                     },
                     { display: '顾客名',name: 'customerName',type:'string',
-                        editor: { type: 'select',data:CustomerNameData,valueField:"type",textField:"text",
+                        editor: { type: 'select',data:CustomerData,valueField:"type",textField:"text",
                             isMultiSelect:true,isShowCheckBox:true,emptyText:null},
                         render:function(item){
                             return item.customerName;
                         }
                     },
                     { display: '合同名',name: 'contractName',type:'string',
-                        editor: { type: 'select',data:ContractNameData,valueField:"type",textField:"text",
+                        editor: { type: 'select',data:ContractData,valueField:"type",textField:"text",
                             isMultiSelect:true,isShowCheckBox:true,emptyText:null},
                         render:function(item){
                             return item.contractName;

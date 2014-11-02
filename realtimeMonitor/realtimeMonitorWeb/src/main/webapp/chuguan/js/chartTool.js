@@ -93,10 +93,11 @@ function drawChartOfMap(container,map,d){
             for(key in map.data){
                 temp.push({name:key,data: (function() { // generate an array of random data
                     var data = [],
+                        time = (new Date()).getTime(),
                         j;
                     for (j = -19; j <= 0; j++) {
                         data.push({
-                            x:null,
+                            x: time + j * 1000,
                             y: map.get(key)
                         });
                     }
@@ -110,14 +111,10 @@ function drawChartOfMap(container,map,d){
         }
     });}
         else{
-                var x= (new Date()).getTime();
             for(key in map.data){
-                $(container).highcharts().series[i].addPoint([null,map.data[key]],true,true);
+                $(container).highcharts().series[i].addPoint([(new Date()).getTime(),map.data[key]],true,true);
                   i++;
-
-
             }
-
         }
 
     }

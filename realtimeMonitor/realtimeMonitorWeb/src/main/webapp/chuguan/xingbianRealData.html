@@ -21,7 +21,6 @@
     <script>
         var  groupName=parent.gName;
         var m = new Map();
-        var dataMap = new Map();
         var selectClick=0; //是否点击了菜单中的传感器，默认没有点击
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
@@ -39,8 +38,7 @@
         var sNum="";
         function getListByDefaultCallback(data){
             if(data.code==200){
-                console.log("返回的数据："+data.data);
-                for(var i=0;i<data.data.length;i++)  {
+                for(var i=0;i<data.data.length;i++){
                     if(i==0){
                         sNum=data.data[i].number+",";
                     }
@@ -75,6 +73,8 @@
                 $("#selectOptions li a").click(function(){
                     $("#selectTank").html($(this).text());
                     $("#selectOptions").hide();
+                    m.removeAll();
+                    selectClick=0;
                     groupName=$(this).text();
                     changeGroupName(groupName);
                     $("div.tree-node").click(function(){
@@ -131,8 +131,8 @@
                     initMapCharts(m) ;
                 }else{
                      if(sensorNum==wsDataNum){
-                         dataMap.put(wsDataNum,wsData);
-                         initDataCharts(dataMap) ;
+                         m.put(wsDataNum,wsData);
+                         initDataCharts(m) ;
                      }
                 }
 
@@ -141,11 +141,11 @@
         var dataFirst=1;
         function initDataCharts(data){
             if(dataFirst==1){
-                drawChartOfMap("#DynamicChart861722", data,dataFirst);
+                drawChartSingleMap("#DynamicChart861722", data,dataFirst);
                 dataFirst=0;
             }
             else
-                drawChartOfMap("#DynamicChart861722", data, dataFirst);
+                drawChartSingleMap("#DynamicChart861722", data, dataFirst);
         }
         function initMapCharts(map){
             if(first==1){
@@ -191,7 +191,7 @@
                 }
             document.getElementById("sensorMenu").innerHTML=menuHead;
             $("#sensorMenu ul li").click(function(){
-                console.log("发生了");
+                m.removeAll();
                 selectClick=1;
                 sensorNum=$(this).text();
             });
@@ -206,7 +206,6 @@
                success:(function(areaResult){
                    areaName = areaResult.data;
                    creatMenuHead(areaName);
-
                })
            });
        }

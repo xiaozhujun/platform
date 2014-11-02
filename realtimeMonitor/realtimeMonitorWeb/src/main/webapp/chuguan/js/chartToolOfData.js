@@ -1,11 +1,19 @@
-function drawChartOfData(container,data,unit){
- $(container).highcharts({
+function drawChartOfData(container,data,d){
+    var x="",y="";
+    a();
+    function a(){
+    if(d==1){
+     $(container).highcharts({
         chart: {
             defaultSeriesType: 'line',
             marginRight: 20,
             marginBottom: 30,
             borderRadius:0,
-            animation:false
+            animation:false ,
+            events: {
+                load: function() {
+                }
+            }
         },
         xAxis: {
             title: {
@@ -36,7 +44,7 @@ function drawChartOfData(container,data,unit){
             minPadding:0.01,
             tickPixelInterval:30,
             title: {
-                text: '('+unit+')',
+                text: '(unit)',
                 align: "high",
                 rotation: 270,
                 margin: 10,
@@ -49,10 +57,8 @@ function drawChartOfData(container,data,unit){
         tooltip: {
             enabled: true,
             formatter: function() {
-                var s = 'value:<b>'+ this.y + unit + '</b>';
-
-
-                return s;
+                var s = 'value:<b>'+ this.y + 'unit' + '</b>';
+                  return s;
             }
         },
         plotOptions: {
@@ -81,14 +87,29 @@ function drawChartOfData(container,data,unit){
                 shadow: false
             }
         },
-        series : [{
-            data: data
-        }],
+        series : [
+            {
+                data: (function() { // generate an array of random data
+                    var data = [],
+                        i;
+                    for (i = -19; i <= 0; i++) {
+                        data.push({
+                            x:null,
+                            y:data
+                        });
+                    }
+                    return data;
+                })()
+            }
+        ],
         credits: {
             enabled: false
         }
     });
-
-
-
+    }
+    else{
+            var chart = $(container).highcharts();
+            chart.series[0].addPoint([null,data],true,true);
+        }
+    }
 }

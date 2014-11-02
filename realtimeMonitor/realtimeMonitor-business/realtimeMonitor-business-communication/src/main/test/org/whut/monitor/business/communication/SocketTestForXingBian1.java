@@ -14,7 +14,7 @@ import java.util.Date;
  * Time: 下午3:55
  * To change this template use File | Settings | File Templates.
  */
-public class SocketTest1 {
+public class SocketTestForXingBian1 {
     public static void main(String[] args)  {
         //为了简单起见，所有的异常都直接往外抛
 //        String host = "www.cseicms.com";  //要连接的服务端IP地址
@@ -34,16 +34,7 @@ public class SocketTest1 {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             for (long j=0;j<count;j++){
-                for(int i=0;i<60;i++){
-                    if(i==0){
-                        data.append(Math.round(Math.random()*500));
-                        data1.append(Math.round(Math.random()*400));
-                    }else{
-                        data.append(",").append(Math.round(Math.random()*500));
-                        data1.append(",").append(Math.round(Math.random()*400));
-                    }
-
-                }
+                data.append(Math.round(Math.random()*500));
                 Date now = new Date();
                 String json = "{sensors:["+"{sensorNum:'2100000000010024',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]},"
                         +"{sensorNum:'2100000000010025',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]},"

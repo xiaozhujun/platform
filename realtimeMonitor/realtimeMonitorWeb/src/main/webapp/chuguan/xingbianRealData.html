@@ -21,6 +21,7 @@
     <script>
         var  groupName=parent.gName;
         var m = new Map();
+        var dataMap = new Map();
         var selectClick=0; //是否点击了菜单中的传感器，默认没有点击
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
@@ -92,27 +93,8 @@
             }
             creatMenu(data);
             $.post($.URL.area.getAreaListByGroupName,{"groupName":data},AreaListGridCallback,'json');
-          //  $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameCallback);
         }
-//        function getListByGroupNameCallback(data){
-//            if(data.code==200){
-//                console.log("返回的数据："+data.data);
-//                for(var i=0;i<data.data.length;i++)  {
-//                    if(i==0){
-//                        sNum=data.data[i].number+",";
-//                    }
-//                    else {
-//                        sNum=sNum+data.data[i].number+",";
-//                    }
-//                }
-//                var lastIndex = sNum.lastIndexOf(',');
-//                if (lastIndex > -1) {
-//                    sNum = sNum.substring(0, lastIndex) + sNum.substring(lastIndex + 1, sNum.length);
-//                }
-//                s ="{c:'Subscribe',sensors:["+sNum+"]}";
-//                connect();
-//            }
-//        }
+
         function creatSelectHead(data){
             var tableHead="";
             if(navigator.appName.indexOf("Explorer")>-1)    {       <!--IE 和 火狐浏览器的不兼容-->
@@ -128,6 +110,7 @@
         }
         var areaName="";
         var sensorNum="";
+        var first=1;
         function connect() {
             var url= $.URL.websocket.register;
             console.log("s为："+s);
@@ -138,24 +121,41 @@
             } ;
             ws.onclose = function (event) {
                 console.log('Info: connection closed.');
-                console.log(event);			};
+                console.log(event);};
             ws.onmessage = function (event) {
                 var jsonData = eval("(" +event.data+ ")");
-                wsData=jsonData.sensors[0].data;
+                wsData=jsonData.sensors[0].data[0];
                 wsDataNum= jsonData.sensors[0].sensorNum ;
                 if(selectClick==0){
                    m.put(wsDataNum,wsData);
-                   initCharts(m) ;
+                    initMapCharts(m) ;
                 }else{
                      if(sensorNum==wsDataNum){
-                         drawChartOfData("#DynamicChart861722", wsData, "mV");
+                         dataMap.put(wsDataNum,wsData);
+                         initDataCharts(dataMap) ;
                      }
                 }
 
             };
         }
-        function initCharts(map){
-            drawChartOfMap("#DynamicChart861722", map,"mV");
+        var dataFirst=1;
+        function initDataCharts(data){
+            if(dataFirst==1){
+                drawChartOfMap("#DynamicChart861722", data,dataFirst);
+                dataFirst=0;
+            }
+            else
+                drawChartOfMap("#DynamicChart861722", data, dataFirst);
+        }
+        function initMapCharts(map){
+            if(first==1){
+            drawChartOfMap("#DynamicChart861722", map,first);
+                if(map.size()==8){
+                    first=0;
+                }
+          }
+            else
+                drawChartOfMap("#DynamicChart861722", map,first);
         }
 
         var num=1;
@@ -177,7 +177,6 @@
                                     '</div><ul style="display: block;">';
                             num=num+1;
                             var result=sensoResult.data;
-                            console.log("result.length为："+result.length);
                             for(var j=0 ;j<result.length ;j++){
                                 menuHead=menuHead+ ' <li><div class="tree-node" node-id="'+num+'" style="cursor: pointer;">' +
                                         '<span class="tree-indent"></span>' +
@@ -192,6 +191,7 @@
                 }
             document.getElementById("sensorMenu").innerHTML=menuHead;
             $("#sensorMenu ul li").click(function(){
+                console.log("发生了");
                 selectClick=1;
                 sensorNum=$(this).text();
             });
@@ -659,6 +659,7 @@
                         <g class="highcharts-grid" zIndex="1"/>
                         <g class="highcharts-axis" zIndex="2"/>
                         <g class="highcharts-axis" zIndex="2"/>
+
                         <g class="highcharts-series-group" zIndex="3">
                             <g class="highcharts-series" visibility="visible" zIndex="0.1"
                                transform="translate(10,38) scale(1 1)" clip-path="url(#highcharts-5)">

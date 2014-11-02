@@ -153,17 +153,7 @@ function connect() {
         var sensorNumber=jsonData.sensors[0].sensorNum;
         sensorNumber=sensorNumber.replace(/[ ]/g,"");
         console.log ("收到消息！"+wsData);
-        var max;
-        for(var i=0;i<wsData.length;i++){
-            if(i==0){
-                max=wsData[i];
-            }
-            else{
-                if(max<wsData[i]){
-                    max=wsData[i];
-                }
-            }
-        }
+        var max=wsData[0];
         if(gn==nowGName){
             if(sensorNumber==prefix+'0000')
                 document.getElementById("s1").innerHTML='UP0_ST&nbsp;&nbsp;&nbsp'+max;

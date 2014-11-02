@@ -1,14 +1,24 @@
-function drawChartOfMap(container,map,unit){
- $(container).highcharts({
+function drawChartOfMap(container,map,d){
+    var x="",y="", i=0;
+    a();
+    function a(){
+        if(d==1){
+   $(container).highcharts({
 
         chart: {
+            type: 'spline',
             defaultSeriesType: 'line',
             marginRight: 20,
             marginBottom: 30,
             borderRadius:0,
-            animation:false
+            animation:false,
+            events: {
+                load: function() {
+                }
+            }
         },
-        xAxis: {
+
+     xAxis: {
             title: {
                 text: '',
                 align: "high",
@@ -42,7 +52,7 @@ function drawChartOfMap(container,map,unit){
         tooltip: {
             enabled: true,
             formatter: function() {
-                var s = 'value:<b>'+ this.y + unit + '</b>';
+                var s = 'value:<b>'+ this.y + 'unit' + '</b>';
                 return s;
             }
         },
@@ -81,15 +91,35 @@ function drawChartOfMap(container,map,unit){
         series : function(){
             var temp = [];
             for(key in map.data){
-                temp.push({name:key,data:map.data[key]});
+                temp.push({name:key,data: (function() { // generate an array of random data
+                    var data = [],
+                        j;
+                    for (j = -19; j <= 0; j++) {
+                        data.push({
+                            x:null,
+                            y: map.get(key)
+                        });
+                    }
+                    return data;
+                })()  });
             }
             return temp;
         }(),
         credits: {
             enabled: false
         }
-    });
+    });}
+        else{
+                var x= (new Date()).getTime();
+            for(key in map.data){
+                $(container).highcharts().series[i].addPoint([null,map.data[key]],true,true);
+                  i++;
 
 
+            }
+
+        }
+
+    }
 
 }

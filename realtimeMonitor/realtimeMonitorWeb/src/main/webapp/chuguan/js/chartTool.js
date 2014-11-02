@@ -1,4 +1,11 @@
 function drawChartOfMap(container,map,d){
+
+
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
     var x="",y="", i=0;
     a();
     function a(){
@@ -8,26 +15,28 @@ function drawChartOfMap(container,map,d){
         chart: {
             type: 'spline',
             defaultSeriesType: 'line',
-            marginRight: 20,
+            marginRight: 10,
             marginBottom: 30,
             borderRadius:0,
-            animation:false,
+            animation: Highcharts.svg,
             events: {
                 load: function() {
                 }
             }
         },
 
-     xAxis: {
-            title: {
-                text: '',
-                align: "high",
-                margin: 0,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
-                }
-            }
+        xAxis: {
+         type: 'datetime',
+         tickPixelInterval: 150,
+            style: {
+                color: '#000000',
+                fontWeight: 'normal'
+            } ,
+            text: '',
+            align: "high",
+            margin: 0
+
+
         },
         title : {
             enabled: false,
@@ -43,10 +52,15 @@ function drawChartOfMap(container,map,d){
                 align: "high",
                 rotation: 270,
                 margin: 10,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
-                }
+//                style: {
+//                    color: '#000000',
+//                    fontWeight: 'normal'
+//                }
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
             }
         },
         tooltip: {

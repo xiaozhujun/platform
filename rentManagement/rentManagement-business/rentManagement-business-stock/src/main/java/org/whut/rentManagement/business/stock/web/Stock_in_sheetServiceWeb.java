@@ -83,6 +83,8 @@ public class Stock_in_sheetServiceWeb {
         long appId= UserContext.currentUserAppId();
         Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
 
+
+
         if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")
                 ||stockInSheetp.getCarNumber()==null||stockInSheetp.getCarNumber().equals("")
                 ||stockInSheetp.getHandler()==null||stockInSheetp.getHandler().equals("")
@@ -91,6 +93,7 @@ public class Stock_in_sheetServiceWeb {
                 ||stockInSheetp.getCreator()==null||stockInSheetp.getCreator().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
+
         Stock_in_sheet stockInSheet=new Stock_in_sheet();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String s=stockInSheetp.getCreateTime() ;
@@ -117,6 +120,7 @@ public class Stock_in_sheetServiceWeb {
 
             long oneDayTime = 1000*3600*24;
             Date Time = new Date(date.getTime() + oneDayTime);
+
 
             stockInSheet.setId(stockInSheetp.getId());
             stockInSheet.setNumber(stockInSheetp.getNumber());

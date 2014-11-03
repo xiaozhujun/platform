@@ -1,6 +1,12 @@
 function drawChartOfMap(container,map,d,sensorNum){
     var x="",y="", i=0;
     a();
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+
     function a(){
         if(d==1){
    $(container).highcharts({

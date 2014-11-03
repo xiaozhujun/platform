@@ -1,4 +1,10 @@
 function drawChartSingleMap(container,map,d){
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+
     var x="",y="", i=0;
     a();
     function a(){

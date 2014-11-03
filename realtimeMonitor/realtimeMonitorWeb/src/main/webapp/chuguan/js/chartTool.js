@@ -1,6 +1,7 @@
 function drawChartOfMap(container,map,d,sensorNum){
     var x="",y="", i=0;
     a();
+    //定义时间
     Highcharts.setOptions({
         global: {
             useUTC: false

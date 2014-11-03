@@ -1,11 +1,4 @@
-function drawChartOfMap(container,map,d){
-
-
-    Highcharts.setOptions({
-        global: {
-            useUTC: false
-        }
-    });
+function drawChartOfMap(container,map,d,sensorNum){
     var x="",y="", i=0;
     a();
     function a(){
@@ -125,10 +118,16 @@ function drawChartOfMap(container,map,d){
         }
     });}
         else{
-            for(key in map.data){
-                $(container).highcharts().series[i].addPoint([(new Date()).getTime(),map.data[key]],true,true);
-                  i++;
+            for(var j=0;j<map.size();j++){
+                var name =  $(container).highcharts().series[j].name;
+                if(sensorNum==name) {
+                    i=j;
+                    console.log("i:"+i);
+                    break;
+                }
             }
+                x= new Date();
+                $(container).highcharts().series[i].addPoint([x.getTime(),map.data[key]],true,true);
         }
 
     }

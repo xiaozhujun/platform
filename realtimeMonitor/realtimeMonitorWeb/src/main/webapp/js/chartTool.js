@@ -11,6 +11,8 @@ function drawChart(container,data,unit,d){
             animation:false
         },
         xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150,
             title: {
                 text: '(xUnit)',
                 align: "high",

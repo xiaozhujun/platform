@@ -19,6 +19,8 @@ function drawChartSingleMap(container,map,d){
                 },
 
                 xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150,
                     title: {
                         text: '',
                         align: "high",
@@ -30,6 +32,7 @@ function drawChartSingleMap(container,map,d){
                     }
                 },
                 title : {
+
                     enabled: false,
                     text : ''
                 },
@@ -81,6 +84,13 @@ function drawChartSingleMap(container,map,d){
                         animation: false,
                         shadow: false
                     }
+                },
+
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
                 },
                 series : function(){
                     var temp = [];

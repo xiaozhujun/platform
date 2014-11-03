@@ -83,13 +83,10 @@ public class Stock_in_sheetServiceWeb {
         long appId= UserContext.currentUserAppId();
         Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
 
-
-
         if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")
                 ||stockInSheetp.getCarNumber()==null||stockInSheetp.getCarNumber().equals("")
                 ||stockInSheetp.getHandler()==null||stockInSheetp.getHandler().equals("")
                 ||stockInSheetp.getDescription()==null||stockInSheetp.getDescription().equals("")
-                ||stockInSheetp.getCreateTime()==null||stockInSheetp.getCreateTime().equals("")
                 ||stockInSheetp.getCreator()==null||stockInSheetp.getCreator().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
@@ -115,12 +112,8 @@ public class Stock_in_sheetServiceWeb {
             try {
                 date = sdf.parse(stockInSheetp.getCreateTime());
             } catch (ParseException e) {
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "时间格式错误");
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "日期格式错误");
             }
-
-            long oneDayTime = 1000*3600*24;
-            Date Time = new Date(date.getTime() + oneDayTime);
-
 
             stockInSheet.setId(stockInSheetp.getId());
             stockInSheet.setNumber(stockInSheetp.getNumber());
@@ -131,7 +124,7 @@ public class Stock_in_sheetServiceWeb {
             stockInSheet.setCreator(stockInSheetp.getCreator());
             stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
             stockInSheet.setDescription(stockInSheetp.getDescription());
-            stockInSheet.setCreateTime(Time);
+            stockInSheet.setCreateTime(date);
             stockInSheet.setAppId(appId);
 
             stockInSheetService.update(stockInSheet);

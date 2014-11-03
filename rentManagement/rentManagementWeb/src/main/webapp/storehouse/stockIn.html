@@ -30,7 +30,7 @@
         {
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+//                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '编号',name: 'number',editor:{type:'text'}} ,
                     { display: '车牌号',name: 'carNumber',editor:{type:'text'}},
                     { display: '用户ID', name: 'customerId', width: 50, type: 'int'},
@@ -84,13 +84,13 @@
 
         function updateCallback(data){
             if(data.code==200){
-                $.ligerDialog.success("修改成功");
+//                $.ligerDialog.success("修改成功");
                 $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
-//                $.ligerDialog.success(data.message);
+                $.ligerDialog.success(data.message);
 
             }
             else{
-                $.ligerDialog.success("格式错误");
+//                $.ligerDialog.success("格式错误");
                 $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
                 $.ligerDialog.warn(data.message);
 

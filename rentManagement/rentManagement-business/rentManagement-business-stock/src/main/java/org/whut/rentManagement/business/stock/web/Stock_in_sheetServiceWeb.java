@@ -37,6 +37,12 @@ public class Stock_in_sheetServiceWeb {
     @POST
     public String add(@FormParam("number") String number,@FormParam("carNumber")String carNumber,@FormParam("handler")String handler,
                       @FormParam("description")String description,@FormParam("createTime")String createTime,@FormParam("creator")String creator) {
+        if(number==null||"".equals(number.trim())||carNumber==null||"".equals(carNumber.trim())||handler==null||"".equals(handler.trim())
+                ||description==null||"".equals(description.trim())||createTime==null||"".equals(createTime.trim())
+                ||creator==null||"".equals(creator.trim())){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
+        }
+
         long appId= UserContext.currentUserAppId();
         Stock_in_sheet stockInSheet = new Stock_in_sheet();
         stockInSheet.setNumber(number);
@@ -77,7 +83,12 @@ public class Stock_in_sheetServiceWeb {
         long appId= UserContext.currentUserAppId();
         Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
 
-        if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")){
+        if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")
+                ||stockInSheetp.getCarNumber()==null||stockInSheetp.getCarNumber().equals("")
+                ||stockInSheetp.getHandler()==null||stockInSheetp.getHandler().equals("")
+                ||stockInSheetp.getDescription()==null||stockInSheetp.getDescription().equals("")
+                ||stockInSheetp.getCreateTime()==null||stockInSheetp.getCreateTime().equals("")
+                ||stockInSheetp.getCreator()==null||stockInSheetp.getCreator().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
         Stock_in_sheet stockInSheet=new Stock_in_sheet();

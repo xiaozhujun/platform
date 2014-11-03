@@ -21,7 +21,7 @@
     <script>
         var  groupName=parent.gName;
         var m = new Map();
-        var selectClick=0; //是否点击了菜单中的传感器，默认没有点击
+        var selectClick=0; //是否点击了菜单中的传感器，默认没有点击 ，0为显示map，1为显示single
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
             $("#backBtn").click(function(){
@@ -192,6 +192,7 @@
             document.getElementById("sensorMenu").innerHTML=menuHead;
             $("#sensorMenu ul li").click(function(){
                 m.removeAll();
+                drawChartOfMap("#DynamicChart861722",null,1) ;
                 selectClick=1;
                 sensorNum=$(this).text();
             });

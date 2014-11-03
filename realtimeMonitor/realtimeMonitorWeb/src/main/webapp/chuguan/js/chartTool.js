@@ -4,32 +4,32 @@ function drawChartOfMap(container,map,d,sensorNum){
     function a(){
         if(d==1){
    $(container).highcharts({
+
         chart: {
             type: 'spline',
             defaultSeriesType: 'line',
-            marginRight: 20,
+            marginRight: 10,
             marginBottom: 30,
             borderRadius:0,
-            animation:false,
+            animation: Highcharts.svg,
             events: {
                 load: function() {
-                    setInterval(2000);
                 }
             }
         },
 
-     xAxis: {
+        xAxis: {
          type: 'datetime',
-         tickPixelInterval: 2000,
-         title: {
-                text: '',
-                align: "high",
-                margin: 0,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
-                }
-            }
+         tickPixelInterval: 150,
+            style: {
+                color: '#000000',
+                fontWeight: 'normal'
+            } ,
+            text: '',
+            align: "high",
+            margin: 0
+
+
         },
         title : {
             enabled: false,
@@ -45,10 +45,15 @@ function drawChartOfMap(container,map,d,sensorNum){
                 align: "high",
                 rotation: 270,
                 margin: 10,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
-                }
+//                style: {
+//                    color: '#000000',
+//                    fontWeight: 'normal'
+//                }
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
             }
         },
         tooltip: {

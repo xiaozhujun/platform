@@ -1,10 +1,9 @@
-function drawChartOfMap(container,map,d){
+function drawChartOfMap(container,map,d,sensorNum){
     var x="",y="", i=0;
     a();
     function a(){
         if(d==1){
    $(container).highcharts({
-
         chart: {
             type: 'spline',
             defaultSeriesType: 'line',
@@ -14,12 +13,15 @@ function drawChartOfMap(container,map,d){
             animation:false,
             events: {
                 load: function() {
+                    setInterval(2000);
                 }
             }
         },
 
      xAxis: {
-            title: {
+         type: 'datetime',
+         tickPixelInterval: 2000,
+         title: {
                 text: '',
                 align: "high",
                 margin: 0,
@@ -111,10 +113,19 @@ function drawChartOfMap(container,map,d){
         }
     });}
         else{
-            for(key in map.data){
-                $(container).highcharts().series[i].addPoint([(new Date()).getTime(),map.data[key]],true,true);
-                  i++;
+            for(var j=0;j<map.size();j++){
+                var name =  $(container).highcharts().series[j].name;
+                console.log("name:"+name);
+                console.log("sensoNum:"+sensorNum);
+                if(sensorNum==name) {
+                    i=j;
+                    console.log("i:"+i);
+                    break;
+                }
             }
+                console.log("map"+map);
+                x= new Date();
+                $(container).highcharts().series[i].addPoint([x.getTime(),map.data[key]],true,true);
         }
 
     }

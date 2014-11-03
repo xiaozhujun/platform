@@ -128,7 +128,7 @@
                 wsDataNum= jsonData.sensors[0].sensorNum ;
                 if(selectClick==0){
                    m.put(wsDataNum,wsData);
-                    initMapCharts(m) ;
+                    initMapCharts(m,wsDataNum) ;
                 }else{
                      if(sensorNum==wsDataNum){
                          m.put(wsDataNum,wsData);
@@ -147,15 +147,15 @@
             else
                 drawChartSingleMap("#DynamicChart861722", data, dataFirst);
         }
-        function initMapCharts(map){
+        function initMapCharts(map,lineName){
             if(first==1){
-            drawChartOfMap("#DynamicChart861722", map,first);
+            drawChartOfMap("#DynamicChart861722", map,first,lineName);
                 if(map.size()==8){
                     first=0;
                 }
           }
             else
-                drawChartOfMap("#DynamicChart861722", map,first);
+                drawChartOfMap("#DynamicChart861722", map,first,lineName);
         }
 
         var num=1;

@@ -120,15 +120,12 @@ function drawChartOfMap(container,map,d,sensorNum){
         else{
             for(var j=0;j<map.size();j++){
                 var name =  $(container).highcharts().series[j].name;
-                console.log("name:"+name);
-                console.log("sensoNum:"+sensorNum);
                 if(sensorNum==name) {
                     i=j;
                     console.log("i:"+i);
                     break;
                 }
             }
-                console.log("map"+map);
                 x= new Date();
                 $(container).highcharts().series[i].addPoint([x.getTime(),map.data[key]],true,true);
         }

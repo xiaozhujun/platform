@@ -85,6 +85,7 @@ function drawChartSingleMap(container,map,d){
                         shadow: false
                     }
                 },
+
                 legend: {
                     layout: 'vertical',
                     align: 'right',

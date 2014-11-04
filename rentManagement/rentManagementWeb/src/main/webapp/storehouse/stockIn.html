@@ -120,10 +120,11 @@
 
 
         function f_add(){
-            $("#addStock_in_sheetList input[name]").val("");
             f_show();
+            $("#addStock_in_sheetList input[name]").val("");
+            $("#addDescription").val("");
             $.ligerDialog.open({isDrag: true,title:'添加选项', target: $("#addStock_in_sheetList"),width:500});
-        };
+        }
 
         function f_show(){
             $('#addStock_in_sheetList').css('display','block');
@@ -191,7 +192,7 @@
                 <td align="right" class="l-table-edit-td">描述:</td>
                 <td align="left" class="l-table-edit-td">
                     <textarea id="addDescription" class="l-textarea" name="description" cols="50" rows="2" style="width:160px">
-                    </textarea>
+                    </textarea></td>
                 <td align="left"></td>
             </tr>
             <tr>

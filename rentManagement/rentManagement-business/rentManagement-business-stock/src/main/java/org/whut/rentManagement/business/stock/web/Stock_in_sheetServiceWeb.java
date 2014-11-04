@@ -109,11 +109,13 @@ public class Stock_in_sheetServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "更新成功!");
         }   else {
             Date date = null;
+
             try {
                 date = sdf.parse(stockInSheetp.getCreateTime());
             } catch (ParseException e) {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "日期格式错误");
             }
+
             long oneDayTime = 1000*3600*24;
             Date Time = new Date(date.getTime() + oneDayTime);
 

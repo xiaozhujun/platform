@@ -114,6 +114,8 @@ public class Stock_in_sheetServiceWeb {
             } catch (ParseException e) {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "日期格式错误");
             }
+            long oneDayTime = 1000*3600*24;
+            Date Time = new Date(date.getTime() + oneDayTime);
 
             stockInSheet.setId(stockInSheetp.getId());
             stockInSheet.setNumber(stockInSheetp.getNumber());
@@ -124,7 +126,7 @@ public class Stock_in_sheetServiceWeb {
             stockInSheet.setCreator(stockInSheetp.getCreator());
             stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
             stockInSheet.setDescription(stockInSheetp.getDescription());
-            stockInSheet.setCreateTime(date);
+            stockInSheet.setCreateTime(Time);
             stockInSheet.setAppId(appId);
 
             stockInSheetService.update(stockInSheet);

@@ -24,6 +24,7 @@
         var m = new Map();
 //        var statosticMap=new Map();
          var statisticMap={ };
+        var singleMap=new Map();
         var sMapsize=0;
         var loc='上';
          //loc位置
@@ -154,9 +155,8 @@
                     initMapCharts(m,wsDataNum) ;
                 }else{
                      if(sensorNum==wsDataNum){
-                         m.put(wsDataNum,wsData);
-                         statosticMap.put(wsDataNum,wsData);
-                         initDataCharts(m) ;
+                         singleMap.put(wsDataNum,wsData);
+                         initDataCharts(singleMap) ;
 
                      }
                 }

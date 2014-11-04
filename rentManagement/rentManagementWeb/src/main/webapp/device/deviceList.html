@@ -71,7 +71,7 @@ function listContractCallback(data){
     if(data.code==200){
         $.each(data.data,function(index,content){
             var j=[];
-            j["id"]=content.name;
+            j["id"]=content.id;
             j["text"]=content.name;
             contractData.push(j);
         });

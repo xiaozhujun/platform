@@ -28,8 +28,8 @@ import java.util.Map;
 public class ContractServiceWeb {
     @Autowired
     private ContractService contractService;
-    @Autowired
-    org.whut.rentManagement.business.customer.service.CustomerService customerService;
+//    @Autowired
+//    org.whut.rentManagement.business.customer.service.CustomerService customerService;
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
@@ -46,6 +46,7 @@ public class ContractServiceWeb {
 //            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
 //        }
         if(map.get("name")==null||map.get("name").equals("")||map.get("customerName")==null||map.get("customerName").equals("")
+//                ||map.get("customerId")==null||map.get("customerId").equals("")
                 ||map.get("number")==null||map.get("number").equals("")||map.get("projectLocation")==null||map.get("projectLocation").equals("")
                 ||map.get("signTime")==null||map.get("startTime")==null
                 ||map.get("endTime")==null||map.get("chargeMan")==null||map.get("chargeMan").equals("")
@@ -80,16 +81,16 @@ public class ContractServiceWeb {
         contract.setAppId(appId);
         contractService.add(contract);
     */
-        Long id;
-        try
-        {
-            id=customerService.getIdByName(map.get("customerName"),appId);
-        }
-        catch (Exception e){
-            id= null;
-        }
-        if(id!=null)
-        {
+//        Long id;
+//        try
+//        {
+//            id=customerService.getIdByName(map.get("customerName"),appId);
+//        }
+//        catch (Exception e){
+//            id= null;
+//        }
+//        if(id!=null)
+//        {
 
             Date startTime = null;
             Date endTime = null;
@@ -100,13 +101,16 @@ public class ContractServiceWeb {
                 endTime = sdf.parse(map.get("endTime"));
                 signTime = sdf.parse(map.get("signTime"));
             }catch (Exception e){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误！");
+            }
+            if(endTime.before(startTime)){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"结束时间早于开始时间，请确认！");
             }
             Contract contract=new Contract();
             contract.setAppId(appId);
             contract.setName(map.get("name"));
             contract.setNumber(map.get("number"));
-            contract.setCustomerId(id);
+            contract.setCustomerId(Long.parseLong(map.get("customerId")));
             contract.setCustomerName(map.get("customerName"));
             contract.setChargeMan(map.get("chargeMan"));
             contract.setProjectLocation(map.get("projectLocation"));
@@ -115,11 +119,11 @@ public class ContractServiceWeb {
             contract.setStartTime(startTime);
             contractService.add(contract);
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        }
-        else
-        {
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"不存在此客户");
-        }
+//        }
+//        else
+//        {
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"不存在此客户");
+//        }
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

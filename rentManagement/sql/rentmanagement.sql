@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : cwb
+Source Server         : yy
 Source Server Version : 50151
 Source Host           : localhost:3306
 Source Database       : rentmanagement
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50151
 File Encoding         : 65001
 
-Date: 2014-10-29 21:51:59
+Date: 2014-11-04 15:37:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -244,7 +244,7 @@ CREATE TABLE `device_type` (
   `description` varchar(255) DEFAULT NULL,
   `createTime` date DEFAULT NULL,
   `unit` varchar(255) DEFAULT NULL,
-  `isMainDevice` bigint(20) DEFAULT NULL,
+  `mainDevice` bigint(20) DEFAULT NULL,
   `warnTime` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)

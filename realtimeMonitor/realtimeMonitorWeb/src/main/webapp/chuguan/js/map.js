@@ -1,3 +1,9 @@
+Array.prototype.remove = function(s) {
+    for (var i = 0; i < this.length; i++) {
+        if (s == this[i])
+            this.splice(i, 1);
+    }
+}
 function Map() {
     /** 存放键的数组(遍历用到) */
     this.keys = new Array();

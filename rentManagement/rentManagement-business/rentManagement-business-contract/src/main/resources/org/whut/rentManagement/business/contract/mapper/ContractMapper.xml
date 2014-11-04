@@ -6,9 +6,9 @@
     <sql id="contract_fields">
           ID,CUSTOMERID,CUSTOMERNAME,NAME,NUMBER,STATUS,
           STARTTIME,ENDTIME,SIGNTIME,PROJECTLOCATION,CHARGEMAN,
-          PREBURYMAN,PREBURYTIME,PREBURYSTATUS,NEEDINSTALLCOUNT,
-          INSTALLCOUNT,SELFINSPECTTIME,SELFINSPECTSTATUS,NETREGISTERMAN,NETREGISTERTIME,
-          REMOVEMAN,REMOVESTATUS,REMOVETIME,APPID
+          PREBURYMAN,PREBURYTIME,PREBURYSTATUS,NEEDINSTALLCOUNT,INSTALLCOUNT,
+          SELFINSPECTTIME,SELFINSPECTSTATUS,NETREGISTERMAN,NETREGISTERTIME,REMOVEMAN,
+          REMOVESTATUS,REMOVETIME,APPID
     </sql>
     <resultMap id="contractResultMap" type="Contract">
         <id property="id" column="ID" />
@@ -43,7 +43,7 @@
         contract(
         <include refid="contract_fields" />
         )
-        VALUES (#{customerId},#{customerName},#{name},#{number},#{status},
+        VALUES (#{id},#{customerId},#{customerName},#{name},#{number},#{status},
         #{startTime},#{endTime},#{signTime},#{projectLocation},#{chargeMan},
         #{preBuryMan},#{preBuryTime},#{preBuryStatus},#{needInstallCount}, #{installCount},
         #{selfInspectTime},#{selfInspectStatus},#{netRegisterMan},#{netRegisterTime},#{removeMan},

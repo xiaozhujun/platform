@@ -1,23 +1,42 @@
-function drawChartOfMap(container,map,unit){
- $(container).highcharts({
+function drawChartOfMap(container,map,d,sensorNum){
+    var x="",y="", i=0;
+    a();
+    //定义时间
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+
+    function a(){
+        if(d==1){
+   $(container).highcharts({
 
         chart: {
+            type: 'spline',
             defaultSeriesType: 'line',
-            marginRight: 20,
+            marginRight: 10,
             marginBottom: 30,
             borderRadius:0,
-            animation:false
-        },
-        xAxis: {
-            title: {
-                text: '',
-                align: "high",
-                margin: 0,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
+            animation: Highcharts.svg,
+            events: {
+                load: function() {
                 }
             }
+        },
+
+        xAxis: {
+         type: 'datetime',
+         tickPixelInterval: 150,
+            style: {
+                color: '#000000',
+                fontWeight: 'normal'
+            } ,
+            text: '',
+            align: "high",
+            margin: 0
+
+
         },
         title : {
             enabled: false,
@@ -33,16 +52,21 @@ function drawChartOfMap(container,map,unit){
                 align: "high",
                 rotation: 270,
                 margin: 10,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
-                }
+//                style: {
+//                    color: '#000000',
+//                    fontWeight: 'normal'
+//                }
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
             }
         },
         tooltip: {
             enabled: true,
             formatter: function() {
-                var s = 'value:<b>'+ this.y + unit + '</b>';
+                var s = 'value:<b>'+ this.y + 'unit' + '</b>';
                 return s;
             }
         },
@@ -81,15 +105,38 @@ function drawChartOfMap(container,map,unit){
         series : function(){
             var temp = [];
             for(key in map.data){
-                temp.push({name:key,data:map.data[key]});
+                temp.push({name:key,data: (function() { // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime(),
+                        j;
+                    for (j = -19; j <= 0; j++) {
+                        data.push({
+                            x: time + j * 1000,
+                            y: map.get(key)
+                        });
+                    }
+                    return data;
+                })()  });
             }
             return temp;
         }(),
         credits: {
             enabled: false
         }
-    });
+    });}
+        else{
+            for(var j=0;j<map.size();j++){
+                var name =  $(container).highcharts().series[j].name;
+                if(sensorNum==name) {
+                    i=j;
+                    console.log("i:"+i);
+                    break;
+                }
+            }
+                x= new Date();
+                $(container).highcharts().series[i].addPoint([x.getTime(),map.data[key]],true,true);
+        }
 
-
+    }
 
 }

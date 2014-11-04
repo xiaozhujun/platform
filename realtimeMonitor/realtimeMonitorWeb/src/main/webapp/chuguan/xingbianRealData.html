@@ -18,13 +18,13 @@
     <script src="js/chartTool.js" type="text/javascript"></script>
     <script src="js/map.js" type="text/javascript"></script>
     <script src="js/chartToolOfData.js" type="text/javascript"></script>
-    <script src="js/statisticCharTool.js" type="text/javascript"></script>
+    <script src="css/statisticCharTool.js" type="text/javascript"></script>
     <script>
         var  groupName=parent.gName;
         var m = new Map();
         var statosticMap=new Map();
         var loc='上';
-
+         //loc位置
         var selectClick=0; //是否点击了菜单中的传感器，默认没有点击 ，0为显示map，1为显示single
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);

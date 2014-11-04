@@ -53,11 +53,10 @@ public class DeviceServiceWeb {
         Long id;
         try{
             id=deviceService.getIdByNumber(number,appId);
-        }
-        catch(Exception e){
+        }catch(Exception e){
             id=null;
         }
-        if(id==null) {
+        if(id==null){
             Device device=new Device();
             device.setName(name);
             device.setNumber(number);
@@ -65,12 +64,28 @@ public class DeviceServiceWeb {
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //定义时间格式
             device.setCreateTime(sdf.parse(createTime));  //String搞成date类型
             device.setProduceTime(sdf.parse(produceTime));
-            long l = Long.parseLong(deviceTypeId);
-            device.setTypeId(l);
-            long m = Long.parseLong(storehouseId);
-            device.setStorehouseId(m);
-            long n = Long.parseLong(contractId);
-            device.setContractId(n);
+            try{
+                device.setTypeId(Long.parseLong(deviceTypeId));
+            }catch (Exception e){
+                device.setTypeId(null);
+            }
+            try{
+                device.setStorehouseId(Long.parseLong(storehouseId));
+            }catch (Exception e){
+                device.setStorehouseId(null);
+            }
+            try{
+                device.setContractId(Long.parseLong(contractId));
+            }catch (Exception e){
+                device.setContractId(null);
+            }
+              /*if(deviceTypeId==null){
+                  device.setTypeId(0);
+                  else{
+                  long l = Long.parseLong(deviceTypeId);
+                  device.setTypeId(l);
+                  }
+              }*/
             device.setAppId(appId);
             deviceService.add(device);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "添加成功!");

@@ -17,10 +17,12 @@
         $(function(){
 //            $.get($.URL.contract.getNumber,null,null,"json");
             $.post($.URL.contract.list,null,listCallback,"json");
+            $("#customerName").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
             $("#submitBtn").click(function(){
                 var data = {};
                 data.name = $("#contractName").val();
                 data.number = $("#contractNumber").val();
+                data.customerId=$("#customerName").ligerComboBox().getValue();
                 data.customerName = $("#customerName").val();
                 data.chargeMan = $("#chargeMan").val();
                 data.projectLocation = $("#projectLocation").val();
@@ -31,6 +33,8 @@
                 $.post($.URL.contract.add,{"jsonString":jsonString},addCallBack,"json") ;
             });
         });
+
+
         var gridData = {};
         function listCallback(data){
             if(data.code==200){
@@ -148,12 +152,25 @@
 //            $("#maingrid").load("contract/addContract.html");
 //            $.ligerDialog.open({ url: 'addContract.html', height: 500,weight:500,isResize: true });
             document.getElementById('form1').reset();
+            $.post($.URL.customer.list,null,customerCallback,"json");
             $("#startTime").ligerDateEditor();
             $("#endTime").ligerDateEditor();
             $("#signTime").ligerDateEditor();
             $.ligerDialog.open({ target: $("#addContract"),width:500 });
         }
 
+        function customerCallback(data){
+            if(data.code==200){
+                var customerData=[];
+                $.each(data.data,function(index,content){
+                    var c={};
+                    c["id"]=content.id;
+                    c["text"]=content.name;
+                    customerData.push(c);
+                });
+                liger.get("customerName").setData(customerData);
+            }
+        }
 
         function addCallBack(data){
             if(data.code==200){
@@ -217,18 +234,18 @@
                 <td align="left"></td>
                 <!--</tr>-->
                 <!--<tr>-->
-                <td align="right" class="l-table-edit-td">开始时间:</td>
-                <td align="left" class="l-table-edit-td"><input name="startTime" type="text" id="startTime" ></td>
+                <td align="right" class="l-table-edit-td">签订时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="signTime" type="text" id="signTime" ></td>
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">结束时间:</td>
-                <td align="left" class="l-table-edit-td"><input name="endTime" type="text" id="endTime" ></td>
+                <td align="right" class="l-table-edit-td">开始时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="startTime" type="text" id="startTime" ></td>
                 <td align="left"></td>
                 <!--</tr>-->
                 <!--<tr>-->
-                <td align="right" class="l-table-edit-td">签订时间:</td>
-                <td align="left" class="l-table-edit-td"><input name="signTime" type="text" id="signTime" ></td>
+                <td align="right" class="l-table-edit-td">结束时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="endTime" type="text" id="endTime" ></td>
                 <td align="left"></td>
             </tr>
         </table>

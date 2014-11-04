@@ -18,11 +18,14 @@
     <script src="js/chartTool.js" type="text/javascript"></script>
     <script src="js/map.js" type="text/javascript"></script>
     <script src="js/chartToolOfData.js" type="text/javascript"></script>
-    <script src="css/statisticCharTool.js" type="text/javascript"></script>
+    <script src="js/statisticCharTool.js" type="text/javascript"></script>
     <script>
         var  groupName=parent.gName;
         var m = new Map();
-        var statosticMap=new Map();
+//        var statosticMap=new Map();
+         var statisticMap={ };
+        var singleMap=new Map();
+        var sMapsize=0;
         var loc='上';
          //loc位置
         var selectClick=0; //是否点击了菜单中的传感器，默认没有点击 ，0为显示map，1为显示single
@@ -115,6 +118,7 @@
         var areaName="";
         var sensorNum="";
         var first=1;
+        var belowFirst=1;
         function connect() {
             var url= $.URL.websocket.register;
             console.log("s为："+s);
@@ -131,28 +135,29 @@
                 wsData=jsonData.sensors[0].data[0];
                 wsDataNum= jsonData.sensors[0].sensorNum ;
                 if(selectClick==0){
-                    statosticMap.put(wsDataNum,wsData);
-                    m.put(wsDataNum,wsData);
-                    if(statosticMap.size()==8){   //8可用sensor.size动态取代
-                initBelowCharts(statosticMap);
-                        statosticMap.remove(wsDataNum);
-                        console.log("========================");
-                        console.log(statosticMap.size());
 
+                    sMapsize=sMapsize+1;
+                    statisticMap[wsDataNum]=wsData;
+//                    statosticMap.put(wsDataNum,wsData);
+
+
+                    m.put(wsDataNum,wsData);
+                    console.log("------------sMapsize----------");
+                    console.log(sMapsize);
+                    if(sMapsize==8){
+                        console.log("------------statisticMap---------");
+                        console.log(statisticMap);
+                initBelowCharts(statisticMap);
+                        sMapsize=0;
+//                    statosticMap.remove(wsDataNum);
+                     statisticMap = { } ;
                     }
                     initMapCharts(m,wsDataNum) ;
                 }else{
                      if(sensorNum==wsDataNum){
-                         m.put(wsDataNum,wsData);
-                         statosticMap.put(wsDataNum,wsData);
-                         initDataCharts(m) ;
-                         if(statosticMap.size()==8){   //8可用sensor.size动态取代
-                             initBelowCharts(statosticMap);
-                             statosticMap.remove(wsDataNum);
-                             console.log("========================");
-                             console.log(statosticMap.size());
+                         singleMap.put(wsDataNum,wsData);
+                         initDataCharts(singleMap) ;
 
-                         }
                      }
                 }
 
@@ -169,14 +174,14 @@
         }
 
         function initBelowCharts(map){
-            if(first==1){
-                drawBelowChartOfMap("#DynamicChart552271",map,first,loc);
-                if(map.size()==8){
-                    first=0;
-                }
+            console.log("已经进入initBelowCharts")
+            if(belowFirst==1){
+                drawBelowChartOfMap("#DynamicChart552271",map,belowFirst,loc);
+                    belowFirst=0;
+
             }
             else
-            drawBelowChartOfMap("#DynamicChart552271",map,first,loc);
+            drawBelowChartOfMap("#DynamicChart552271",map,belowFirst,loc);
         }
 
         function initMapCharts(map,lineName){

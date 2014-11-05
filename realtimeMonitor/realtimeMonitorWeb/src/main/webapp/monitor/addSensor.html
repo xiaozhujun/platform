@@ -68,6 +68,7 @@
             }
         }
         var shouldWarnData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
+        var warnTypeData = [{id:"0",text:'最大值'},{id:"1",text:'最小值'},{id:"2",text:'均方差'}];
         $(f_initGrid);
         var manager, g;
         function f_initGrid()
@@ -91,7 +92,13 @@
                            return item.shouldWarn;
                         }
                     },
-                    {display:'报警类型',name:'warnType',width:80,type:'text', editor: { type: 'text'}},
+//                    {display:'报警类型',name:'warnType',width:80,type:'text', editor: { type: 'text'}},
+                    {display:'报警类型',name:'warnType',width:100,type:'text',
+                        editor: { type: 'select',emptyText:null,data:warnTypeData,valueField:'text'},
+                        render:function(item) {
+                            return item.warnType;
+                        }
+                    },
                     {display:'报警值',name:'warnValue',width:80,type:'text', editor: { type: 'text'}},
                     {display: '描述',name:'description',width:200,type:'text', editor: { type: 'text'}}
                 ],
@@ -156,7 +163,7 @@
                     minFrequency:'',
                     workFrequency:'',
                     shouldWarn:'是',
-                    warnType:'',
+                    warnType:'均方差',
                     warnValue:'',
                     addStatus:"未提交"
                 }, row, document.getElementById("checked").checked);

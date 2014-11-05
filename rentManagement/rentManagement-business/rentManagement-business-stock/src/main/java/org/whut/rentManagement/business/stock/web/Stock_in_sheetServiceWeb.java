@@ -32,25 +32,40 @@ public class Stock_in_sheetServiceWeb {
     @Autowired
     Stock_in_sheetService stockInSheetService;
 
+
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("number") String number,@FormParam("carNumber")String carNumber,@FormParam("handler")String handler,
-                      @FormParam("description")String description,@FormParam("createTime")String createTime,@FormParam("creator")String creator) {
-        if(number==null||"".equals(number.trim())||carNumber==null||"".equals(carNumber.trim())||handler==null||"".equals(handler.trim())
+    public String add(@FormParam("number") String number,@FormParam("carNumber")String carNumber,
+                      @FormParam("customerId")long customerId,@FormParam("contractId")long contractId,@FormParam("handler")String handler,
+                      @FormParam("storehouseId")long storehouseId,@FormParam("description")String description,@FormParam("createTime")String createTime,
+                      @FormParam("creator")String creator) {
+        if(number==null||"".equals(number.trim())||carNumber==null||"".equals(carNumber.trim())
+                ||0==customerId||0==contractId||0==storehouseId
+                ||handler==null||"".equals(handler.trim())
                 ||description==null||"".equals(description.trim())||createTime==null||"".equals(createTime.trim())
                 ||creator==null||"".equals(creator.trim())){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
 
+//        long id;
+//        try {
+//            id=stock_out_sheetService.getIdByCustomerIdAndContractId(customerId, contractId);
+//        }catch (Exception e){
+//            id=0;
+//        }
+//        if(id!=0){
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "已存在");
+//        }
+
         long appId= UserContext.currentUserAppId();
         Stock_in_sheet stockInSheet = new Stock_in_sheet();
         stockInSheet.setNumber(number);
         stockInSheet.setCarNumber(carNumber);
-        stockInSheet.setCustomerId(0);
-        stockInSheet.setContractId(0);
+        stockInSheet.setCustomerId(customerId);
+        stockInSheet.setContractId(contractId);
         stockInSheet.setHandler(handler);
-        stockInSheet.setStorehouseId(0);
+        stockInSheet.setStorehouseId(storehouseId);
         stockInSheet.setDescription(description);
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         Date time= null;

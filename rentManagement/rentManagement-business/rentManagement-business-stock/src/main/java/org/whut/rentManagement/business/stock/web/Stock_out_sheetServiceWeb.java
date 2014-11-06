@@ -53,7 +53,7 @@ public class Stock_out_sheetServiceWeb {
                       @FormParam("createTime")String createTime,@FormParam("creator")String creator,
                       @FormParam("deviceId")long deviceId){
        long appId = UserContext.currentUserAppId();
-        if(customerId==null||contractId.equals(null)){
+        if(customerId==null||contractId.equals(null)||deviceId==0||carNumber==null||carNumber.equals(null)||customerId==null||customerId.equals(null)||handler==null||handler.equals(null)||creator==null||creator.equals(null)){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
         Stock_out_sheet stock_out_sheet=new Stock_out_sheet();

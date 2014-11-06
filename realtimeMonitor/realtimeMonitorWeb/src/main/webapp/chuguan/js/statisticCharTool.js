@@ -14,12 +14,8 @@ function drawBelowChartOfMap(container,map,firstRequest,loc){
     });
 
     function locFunction(){
-        console.log("------------已进入locFunction----------");
-
                 if(loc=="上"){
                 l= Math.PI*(80*1000+24);
-
-                console.log(l);
             }
             else if(loc=="中"){
                 l= Math.PI*(80*1000+38);
@@ -28,31 +24,11 @@ function drawBelowChartOfMap(container,map,firstRequest,loc){
                 l= Math.PI*(80*1000+58);
             }
 
-//        for(key in map.data){
-//             sum=sum+map.get(key);
-//            console.log("-------------sum---------------");
-//            console.log(sum);
-//         }
         for(key in map){
             sum=sum+map[key];
 
         }
-
-
-            console.log("-------------sum  sum---------------");
-            console.log(sum);
             shapeValue=(sum/8)*l;
-
-            console.log(shapeValue);
-
-
-
-
-
-
-
-
-
 
         if(firstRequest==1){
             $(container).highcharts({

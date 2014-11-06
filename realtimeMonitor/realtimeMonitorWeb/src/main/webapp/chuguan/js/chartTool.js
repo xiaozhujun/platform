@@ -7,11 +7,10 @@ function drawChartOfMap(container,map,d,sensorNum){
             useUTC: false
         }
     });
-
     function a(){
-        if(d==1){
-   $(container).highcharts({
 
+        if(d==1){
+            $(container).highcharts({
         chart: {
             type: 'spline',
             defaultSeriesType: 'line',
@@ -52,10 +51,6 @@ function drawChartOfMap(container,map,d,sensorNum){
                 align: "high",
                 rotation: 270,
                 margin: 10,
-//                style: {
-//                    color: '#000000',
-//                    fontWeight: 'normal'
-//                }
                 plotLines: [{
                     value: 0,
                     width: 1,
@@ -104,15 +99,17 @@ function drawChartOfMap(container,map,d,sensorNum){
        },
         series : function(){
             var temp = [];
-            for(key in map.data){
-                temp.push({name:key,data: (function() { // generate an array of random data
+            for(key in map){
+                temp.push({name:key,data: (function() {
+                    // generate an array of random data
                     var data = [],
                         time = (new Date()).getTime(),
-                        j;
-                    for (j = -19; j <= 0; j++) {
+                        i;
+
+                    for (i = -19; i <= 0; i++) {
                         data.push({
-                            x: time + j * 1000,
-                            y: map.get(key)
+                            x: time + i * 1000,
+                            y: map[key]
                         });
                     }
                     return data;
@@ -124,17 +121,21 @@ function drawChartOfMap(container,map,d,sensorNum){
             enabled: false
         }
     });}
+        else  if(d>1){
+            $(container).highcharts().destroy();
+            d=1;
+            a();
+        }
         else{
-            for(var j=0;j<map.size();j++){
+            for(var j=0;j<8;j++){
                 var name =  $(container).highcharts().series[j].name;
-                if(sensorNum==name) {
+                if(sensorNum==name){
                     i=j;
-                    console.log("i:"+i);
                     break;
                 }
             }
                 x= new Date();
-                $(container).highcharts().series[i].addPoint([x.getTime(),map.data[key]],true,true);
+                $(container).highcharts().series[i].addPoint([x.getTime(),map[sensorNum]],true,true);
         }
 
     }

@@ -76,5 +76,9 @@
         FROM area
         WHERE groupId=#{groupId}
     </select>
-
+    <select id="getAreaNameBySNum" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT area.name
+        FROM area,sensor
+        WHERE sensor.number=#{sNum} AND area.id=sensor.areaId
+    </select>
 </mapper>

@@ -16,34 +16,23 @@
     <script src="js/config.js" type="text/javascript"></script>
     <script src="js/highcharts.js" type="text/javascript"></script>
     <script src="js/chartTool.js" type="text/javascript"></script>
-    <script src="js/map.js" type="text/javascript"></script>
     <script src="js/chartToolOfData.js" type="text/javascript"></script>
     <script src="js/statisticCharTool.js" type="text/javascript"></script>
     <script>
         var  groupName=parent.gName;
-        var m = new Map();
-//        var statosticMap=new Map();
-         var statisticMap={ };
-        var singleMap=new Map();
-        var sMapsize=0;
-        var loc='上';
-         //loc位置
-        var selectClick=0; //是否点击了菜单中的传感器，默认没有点击 ，0为显示map，1为显示single
+        var locMap=[];
+        var locName=[];
+        var areaClick=0; //是否点击了菜单中的区域，默认没有点击
+        var single=0;    //是否点击了菜单中的单个传感器，默认没有点击
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
             $("#backBtn").click(function(){
                 window.parent.jumpURL("xingbian.html");
             });
+            $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameGridCallback,'json');
         });
-        function  AreaListGridCallback(data){
-            if(data.code==200){
-                var topAreaName=data.data[0];
-                $.post($.URL.sensor.getSensorsByAreaName,{"AreaName":topAreaName,"GroupName":groupName},getListByDefaultCallback);
-            }
-        }
-        var cgData="";
         var sNum="";
-        function getListByDefaultCallback(data){
+        function getListByGroupNameGridCallback(data){
             if(data.code==200){
                 for(var i=0;i<data.data.length;i++){
                     if(i==0){
@@ -61,13 +50,13 @@
                 connect();
             }
         }
+        var cgData="";
         function gridCallback(data) {
             if(data.code == 200) {
                 cgData = data.data;
                 if(parent.gName==""){
                     groupName=cgData[0].name;
                 }
-                $.post($.URL.area.getAreaListByGroupName,{"groupName":groupName},AreaListGridCallback,'json');
                 creatSelectHead(cgData);
                 creatMenu(groupName);
                 $("div.tree-node").click(function(){
@@ -80,8 +69,6 @@
                 $("#selectOptions li a").click(function(){
                     $("#selectTank").html($(this).text());
                     $("#selectOptions").hide();
-                    m.removeAll();
-                    selectClick=0;
                     groupName=$(this).text();
                     changeGroupName(groupName);
                     $("div.tree-node").click(function(){
@@ -92,16 +79,14 @@
             }
         }
         function changeGroupName(data){
-//            s ="{c:'cancelSubscribe',sensors:["+sNum+"]}";    //取消订阅 之前的
-//            ws.send(s);
             if(ws!=null){
                 ws.close();
                 ws=null;
             }
+            $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameGridCallback,'json');
             creatMenu(data);
-            $.post($.URL.area.getAreaListByGroupName,{"groupName":data},AreaListGridCallback,'json');
         }
-
+        var count=[];
         function creatSelectHead(data){
             var tableHead="";
             if(navigator.appName.indexOf("Explorer")>-1)    {       <!--IE 和 火狐浏览器的不兼容-->
@@ -115,11 +100,12 @@
             document.getElementById("selectOptions").innerHTML=tableHead;
 
         }
-        var areaName="";
+        var clickAreaName="";
         var sensorNum="";
         var first=1;
+        var singleMap={};
         var belowFirst=1;
-        function connect() {
+        function connect(){
             var url= $.URL.websocket.register;
             console.log("s为："+s);
             ws =  new WebSocket(url);
@@ -131,66 +117,56 @@
                 console.log('Info: connection closed.');
                 console.log(event);};
             ws.onmessage = function (event) {
+                console.log ("收到消息！"+event.data);
                 var jsonData = eval("(" +event.data+ ")");
                 wsData=jsonData.sensors[0].data[0];
                 wsDataNum= jsonData.sensors[0].sensorNum ;
-                if(selectClick==0){
-
-                    sMapsize=sMapsize+1;
-                    statisticMap[wsDataNum]=wsData;
-//                    statosticMap.put(wsDataNum,wsData);
-
-
-                    m.put(wsDataNum,wsData);
-                    console.log("------------sMapsize----------");
-                    console.log(sMapsize);
-                    if(sMapsize==8){
-                        console.log("------------statisticMap---------");
-                        console.log(statisticMap);
-                initBelowCharts(statisticMap);
-                        sMapsize=0;
-//                    statosticMap.remove(wsDataNum);
-                     statisticMap = { } ;
+                var aName=jsonData.sensors[0].areaName ;
+                for(var i=0;i<locName.length;i++){
+                    if(locName[i]==aName){
+                        if(clickAreaName==locName[i]){
+                                areaClick=i;
+                        }
+                        locMap[i][wsDataNum]=wsData;
+                        count[i]++;
                     }
-                    initMapCharts(m,wsDataNum) ;
-                }else{
-                     if(sensorNum==wsDataNum){
-                         singleMap.put(wsDataNum,wsData);
-                         initDataCharts(singleMap) ;
-
-                     }
                 }
-
+                if(single==0){
+                initMapCharts(locMap[areaClick],count[areaClick],wsDataNum);
+                }
+                else if(single==1){
+                    if(sensorNum==wsDataNum) {
+                       singleMap[wsDataNum]=wsData;
+                       initSingleCharts(singleMap,sensorNum);
+                    }
+                }
             };
         }
         var dataFirst=1;
-        function initDataCharts(data){
+        function initSingleCharts(data,s){
             if(dataFirst==1){
-                drawChartSingleMap("#DynamicChart861722", data,dataFirst);
+                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
+                dataFirst=0;
+            }
+            if(dataFirst==2){
+                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
                 dataFirst=0;
             }
             else
-                drawChartSingleMap("#DynamicChart861722", data, dataFirst);
+                drawChartSingleMap("#DynamicChart861722", data, dataFirst,s);
         }
 
-        function initBelowCharts(map){
-            console.log("已经进入initBelowCharts")
-            if(belowFirst==1){
-                drawBelowChartOfMap("#DynamicChart552271",map,belowFirst,loc);
-                    belowFirst=0;
-
-            }
-            else
-            drawBelowChartOfMap("#DynamicChart552271",map,belowFirst,loc);
-        }
-
-        function initMapCharts(map,lineName){
+        function initMapCharts(map,n,lineName){
             if(first==1){
             drawChartOfMap("#DynamicChart861722", map,first,lineName);
-                if(map.size()==8){
+                if(n==8){
                     first=0;
                 }
           }
+           else if(first==2){
+                drawChartOfMap("#DynamicChart861722", map,first,lineName);
+                first=0;
+            }
             else
                drawChartOfMap("#DynamicChart861722", map,first,lineName);
         }
@@ -212,7 +188,11 @@
                                     '<span class="tree-icon tree-folder icon-blank tree-folder-open"></span>'+
                                     '<span class="tree-title">'+data[i]+'</span>'+
                                     '</div><ul style="display: block;">';
+                            locName[i]=data[i];
+                            locMap[i]={};
+                            count[i]=0;
                             num=num+1;
+                            areaClick=0;
                             var result=sensoResult.data;
                             for(var j=0 ;j<result.length ;j++){
                                 menuHead=menuHead+ ' <li><div class="tree-node" node-id="'+num+'" style="cursor: pointer;">' +
@@ -229,15 +209,24 @@
 
             document.getElementById("sensorMenu").innerHTML=menuHead;
             $("#sensorMenu ul li").click(function(){
-                console.log("点击sNum");
-                m.removeAll();
-                drawChartOfMap("#DynamicChart861722",null,1) ;
-                selectClick=1;
+                console.log("单个传感器被点击");
+                single=1;      //单个传感器被点击
+                if(dataFirst==0){
+                    dataFirst=2;
+                }
+                else
+                    dataFirst=1;
                 sensorNum=$(this).text();
+                console.log(sensorNum);
             });
             $("div.tree-node-selected").click(function(){
-                loc=$(this).text();
-                console.log(loc);
+                single=0;
+                clickAreaName=$(this).text();
+                if(first==0){
+                    first=2;
+                }
+                else
+                    first=1;
             });
 
 
@@ -251,8 +240,7 @@
                type:'POST',
                data:{"groupName":data},
                success:(function(areaResult){
-                   areaName = areaResult.data;
-                   creatMenuHead(areaName);
+                  creatMenuHead(areaResult.data);
                })
            });
        }

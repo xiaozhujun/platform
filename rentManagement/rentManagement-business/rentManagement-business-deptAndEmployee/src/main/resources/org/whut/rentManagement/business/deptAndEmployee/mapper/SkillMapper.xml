@@ -19,7 +19,7 @@
     <insert id="add" parameterType="skill" keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
-        skill(name,description,createTime,appId})
+        skill(name,description,createTime,appId)
         VALUES (#{name},#{description},#{createTime},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
@@ -32,8 +32,7 @@
         <set>
             <if test="name!=null">NAME=#{name},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
-            <if test="createTime!=null">CREATETIME=#{createTime}</if>
-            <if test="appId!=null">APPID=#{appId}</if>
+            <if test="createTime!=null">CREATETIME=#{createTime},</if>
         </set>
         where ID=#{id};
     </update>

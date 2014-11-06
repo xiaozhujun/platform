@@ -29,7 +29,6 @@
             $("#backBtn").click(function(){
                 window.parent.jumpURL("xingbian.html");
             });
-            $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameGridCallback,'json');
         });
         var sNum="";
         function getListByGroupNameGridCallback(data){
@@ -57,6 +56,7 @@
                 if(parent.gName==""){
                     groupName=cgData[0].name;
                 }
+                $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameGridCallback,'json');
                 creatSelectHead(cgData);
                 creatMenu(groupName);
                 $("div.tree-node").click(function(){

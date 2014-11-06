@@ -10,7 +10,11 @@ import org.whut.rentManagement.business.contract.service.ContractService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,23 +28,32 @@ import java.util.List;
 public class ContractServiceWeb {
     @Autowired
     private ContractService contractService;
-    @Autowired
-    org.whut.rentManagement.business.customer.service.CustomerService customerService;
+//    @Autowired
+//    org.whut.rentManagement.business.customer.service.CustomerService customerService;
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
     public String add(@FormParam("jsonString") String jsonString){
         long appId= UserContext.currentUserAppId();
-        Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
-
-        if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
-                ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
-                ||contract.getSignTime()==null||contract.getStartTime()==null
-                ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
+//        Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
+        Map<String, String> map = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class);
+//        if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
+//                ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
+//                ||contract.getSignTime()==null||contract.getStartTime()==null
+//                ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
+//                ){
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+//        }
+        if(map.get("name")==null||map.get("name").equals("")||map.get("customerName")==null||map.get("customerName").equals("")
+//                ||map.get("customerId")==null||map.get("customerId").equals("")
+                ||map.get("number")==null||map.get("number").equals("")||map.get("projectLocation")==null||map.get("projectLocation").equals("")
+                ||map.get("signTime")==null||map.get("startTime")==null
+                ||map.get("endTime")==null||map.get("chargeMan")==null||map.get("chargeMan").equals("")
                 ){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
+
   /*
         Contract subContract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
         Contract contract=new Contract();
@@ -68,23 +81,49 @@ public class ContractServiceWeb {
         contract.setAppId(appId);
         contractService.add(contract);
     */
-        Long id;
-        try
-        {
-            id=customerService.getIdByName(contract.getCustomerName(),appId);
-        }
-        catch (Exception e){
-            id= null;
-        }
-        if(id==null){
-        contract.setAppId(appId);
-        contract.setCustomerId(id);
-        contractService.add(contract);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        }
-        else{
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"不存在此客户");
-        }
+//        Long id;
+//        try
+//        {
+//            id=customerService.getIdByName(map.get("customerName"),appId);
+//        }
+//        catch (Exception e){
+//            id= null;
+//        }
+//        if(id!=null)
+//        {
+
+            Date startTime = null;
+            Date endTime = null;
+            Date signTime = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try{
+                startTime = sdf.parse(map.get("startTime"));
+                endTime = sdf.parse(map.get("endTime"));
+                signTime = sdf.parse(map.get("signTime"));
+            }catch (Exception e){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误！");
+            }
+            if(endTime.before(startTime)){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"结束时间早于开始时间，请确认！");
+            }
+            Contract contract=new Contract();
+            contract.setAppId(appId);
+            contract.setName(map.get("name"));
+            contract.setNumber(map.get("number"));
+            contract.setCustomerId(Long.parseLong(map.get("customerId")));
+            contract.setCustomerName(map.get("customerName"));
+            contract.setChargeMan(map.get("chargeMan"));
+            contract.setProjectLocation(map.get("projectLocation"));
+            contract.setEndTime(endTime);
+            contract.setSignTime(signTime);
+            contract.setStartTime(startTime);
+            contractService.add(contract);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        }
+//        else
+//        {
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"不存在此客户");
+//        }
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

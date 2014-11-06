@@ -6,6 +6,7 @@ import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.stock.entity.Stock_in_sheet;
+import org.whut.rentManagement.business.stock.entity.Stock_in_sheetP;
 import org.whut.rentManagement.business.stock.service.Stock_in_sheetService;
 
 import javax.ws.rs.FormParam;
@@ -31,19 +32,40 @@ public class Stock_in_sheetServiceWeb {
     @Autowired
     Stock_in_sheetService stockInSheetService;
 
+
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/add")
     @POST
-    public String add(@FormParam("number") String number,@FormParam("carNumber")String carNumber,@FormParam("handler")String handler,
-                      @FormParam("description")String description,@FormParam("createTime")String createTime,@FormParam("creator")String creator) {
+    public String add(@FormParam("number") String number,@FormParam("carNumber")String carNumber,
+                      @FormParam("customerId")long customerId,@FormParam("contractId")long contractId,@FormParam("handler")String handler,
+                      @FormParam("storehouseId")long storehouseId,@FormParam("description")String description,@FormParam("createTime")String createTime,
+                      @FormParam("creator")String creator) {
+        if(number==null||"".equals(number.trim())||carNumber==null||"".equals(carNumber.trim())
+                ||0==customerId||0==contractId||0==storehouseId
+                ||handler==null||"".equals(handler.trim())
+                ||description==null||"".equals(description.trim())||createTime==null||"".equals(createTime.trim())
+                ||creator==null||"".equals(creator.trim())){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
+        }
+
+//        long id;
+//        try {
+//            id=stock_out_sheetService.getIdByCustomerIdAndContractId(customerId, contractId);
+//        }catch (Exception e){
+//            id=0;
+//        }
+//        if(id!=0){
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "已存在");
+//        }
+
         long appId= UserContext.currentUserAppId();
         Stock_in_sheet stockInSheet = new Stock_in_sheet();
         stockInSheet.setNumber(number);
         stockInSheet.setCarNumber(carNumber);
-        stockInSheet.setCustomerId(0);
-        stockInSheet.setContractId(0);
+        stockInSheet.setCustomerId(customerId);
+        stockInSheet.setContractId(contractId);
         stockInSheet.setHandler(handler);
-        stockInSheet.setStorehouseId(0);
+        stockInSheet.setStorehouseId(storehouseId);
         stockInSheet.setDescription(description);
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         Date time= null;
@@ -73,9 +95,60 @@ public class Stock_in_sheetServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-        Stock_in_sheet stockInSheet = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
-        stockInSheetService.update(stockInSheet);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        long appId= UserContext.currentUserAppId();
+        Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
+
+        if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")
+                ||stockInSheetp.getCarNumber()==null||stockInSheetp.getCarNumber().equals("")
+                ||stockInSheetp.getHandler()==null||stockInSheetp.getHandler().equals("")
+                ||stockInSheetp.getDescription()==null||stockInSheetp.getDescription().equals("")
+                ||stockInSheetp.getCreator()==null||stockInSheetp.getCreator().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
+        }
+
+        Stock_in_sheet stockInSheet=new Stock_in_sheet();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String s=stockInSheetp.getCreateTime() ;
+        if(s==null){
+            stockInSheet.setId(stockInSheetp.getId());
+            stockInSheet.setNumber(stockInSheetp.getNumber());
+            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
+            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
+            stockInSheet.setContractId(stockInSheetp.getContractId());
+            stockInSheet.setHandler(stockInSheetp.getHandler());
+            stockInSheet.setCreator(stockInSheetp.getCreator());
+            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
+            stockInSheet.setDescription(stockInSheetp.getDescription());
+            stockInSheet.setAppId(appId);
+            stockInSheetService.update(stockInSheet);
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "更新成功!");
+        }   else {
+            Date date = null;
+
+            try {
+                date = sdf.parse(stockInSheetp.getCreateTime());
+            } catch (ParseException e) {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "日期格式错误");
+            }
+
+            long oneDayTime = 1000*3600*24;
+            Date Time = new Date(date.getTime() + oneDayTime);
+
+            stockInSheet.setId(stockInSheetp.getId());
+            stockInSheet.setNumber(stockInSheetp.getNumber());
+            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
+            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
+            stockInSheet.setContractId(stockInSheetp.getContractId());
+            stockInSheet.setHandler(stockInSheetp.getHandler());
+            stockInSheet.setCreator(stockInSheetp.getCreator());
+            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
+            stockInSheet.setDescription(stockInSheetp.getDescription());
+            stockInSheet.setCreateTime(Time);
+            stockInSheet.setAppId(appId);
+
+            stockInSheetService.update(stockInSheet);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

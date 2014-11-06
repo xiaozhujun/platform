@@ -12,9 +12,9 @@ import java.util.Date;
 public class Device {
     private long id;
     private long mainDeviceId;
-    private long typeId;
-    private long storehouseId;
-    private long contractId;
+    private Long typeId;
+    private Long storehouseId;
+    private Long contractId;
     private String address;
     private String status;
     private String name;
@@ -31,38 +31,6 @@ public class Device {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getMainDeviceId() {
-        return mainDeviceId;
-    }
-
-    public void setMainDeviceId(long mainDeviceId) {
-        this.mainDeviceId = mainDeviceId;
-    }
-
-    public long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(long typeId) {
-        this.typeId = typeId;
-    }
-
-    public long getStorehouseId() {
-        return storehouseId;
-    }
-
-    public void setStorehouseId(long storehouseId) {
-        this.storehouseId = storehouseId;
-    }
-
-    public long getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(long contractId) {
-        this.contractId = contractId;
     }
 
     public String getAddress() {
@@ -135,5 +103,37 @@ public class Device {
 
     public void setAppId(long appId) {
         this.appId = appId;
+    }
+
+    public long getMainDeviceId() {
+        return mainDeviceId;
+    }
+
+    public void setMainDeviceId(long mainDeviceId) {
+        this.mainDeviceId = mainDeviceId;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+    }
+
+    public Long getStorehouseId() {
+        return storehouseId;
+    }
+
+    public void setStorehouseId(Long storehouseId) {
+        this.storehouseId = storehouseId;
+    }
+
+    public Long getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(Long contractId) {
+        this.contractId = contractId;
     }
 }

@@ -1,5 +1,6 @@
 package org.whut.rentManagement.business.device.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 import org.whut.rentManagement.business.device.entity.DeviceType;
 
@@ -14,6 +15,6 @@ import java.util.List;
  */
 public interface DeviceTypeMapper extends AbstractMapper<DeviceType> {
     public long getIdByName(String name, long appId);
-
+    public  int deleteById(@Param("id") long id);
     public List<DeviceType> getListByAppId(Long appId);
 }

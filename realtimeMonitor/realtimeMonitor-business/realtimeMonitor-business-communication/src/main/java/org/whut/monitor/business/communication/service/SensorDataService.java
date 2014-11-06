@@ -82,14 +82,6 @@ public class SensorDataService {
             for(int i=0;i<sensors.size();i++){
                 curSensor = (DBObject)sensors.get(i);
                 String sensor = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")).toString();
-//                map.put("sensor",sensor);
-//                ArrayList data = (ArrayList) curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
-//                map.put("data",data);
-//                String time = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.time")).toString();
-//                map.put("time",time);
-//                String dataType = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.dataType")).toString();
-//                map.put("dataType",dataType);
-//                observable.setMap(map);
                 observable.setObject(curSensor);
                 String temp = mongoConnector.insertDocumentObject(curSensor);
                 if(objectID!=null){

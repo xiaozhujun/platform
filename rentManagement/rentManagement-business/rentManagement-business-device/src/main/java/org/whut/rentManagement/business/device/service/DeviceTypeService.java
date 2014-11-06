@@ -29,6 +29,9 @@ public class DeviceTypeService {
         return deviceTypeMapper.update(deviceType);
     }
 
+    public int deleteById(long id){
+        return  deviceTypeMapper.deleteById(id);
+    }
     public long getIdByName(String name,long appId) {
         return deviceTypeMapper.getIdByName(name,appId);  //To change body of created methods use File | Settings | File Templates.
     }

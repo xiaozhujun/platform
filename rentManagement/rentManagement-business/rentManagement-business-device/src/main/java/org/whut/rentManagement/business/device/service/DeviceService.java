@@ -32,6 +32,9 @@ public class DeviceService {
     public Long getIdByNumber(String number, long appId) {
         return deviceMapper.getIdByNumber(number,appId);
     }
+    public int deleteById(long id){
+        return deviceMapper.deleteById(id);
+    }
 
     public List<Device> getListByAppId(long appId) {
         return deviceMapper.getListByAppId(appId);

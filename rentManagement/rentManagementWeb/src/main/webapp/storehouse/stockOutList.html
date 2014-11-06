@@ -150,9 +150,19 @@
             });
         }
         function f_add(){                 //弹出框
-            $("#Name").val("");
+
+            $("#number").val("");
+            $( "#carNumber").val("");
+            $( "#customerId").val("");
+            $( "#contractId").val("");
+            $( "#handler").val("");
+            $( "#storehouseId").val("");
+            $( "#description").val("");
+            $( "#createTime").val("");
+            $( "#creator").val("");
+            $( "#deviceId").val("");
             f_show();
-            $.ligerDialog.open({ target: $("#addStockOut"),title:'添加出库信息'});
+            $.ligerDialog.open({width:500,target: $("#addStockOut"),title:'添加出库信息'});
         };
 
         $("#submitBtn1").click(function(){

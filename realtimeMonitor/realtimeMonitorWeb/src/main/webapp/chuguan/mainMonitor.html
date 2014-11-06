@@ -16,7 +16,7 @@
             $.post($.URL.sensor.homePage,{"fStatus":"false"},sNumCallback,"json");
         });
 
-      var cgData="";
+        var cgData="";
         function gridCallback(data) {
             if(data.code == 200) {
                 cgData = data.data;
@@ -65,17 +65,7 @@
                 wsData=jsonData.sensors[0].data;
                 var groupName= jsonData.sensors[0].groupName;
                 var sensorNum= jsonData.sensors[0].sensorNum;
-                var max;
-                for(var i=0;i<wsData.length;i++){
-                    if(i==0){
-                        max=wsData[i];
-                    }
-                    else{
-                        if(max<wsData[i]){
-                            max=wsData[i];
-                        }
-                    }
-                }
+                var max=wsData[0];
               var sizeOfSensorNum=sensorList.length;
                 var eq=0;
               for(var i=0;i<sizeOfSensorNum;i++){
@@ -89,17 +79,18 @@
                 m.put(groupName+":"+sensorNum,max);
                updataXingbian();
                 $(".lookXingbian").click(function(){
-                    alert("lookXingbian");
+                    var hang = $(this).parent("tr").prevAll().length;
+                    var lie = $(this).prevAll().length;
+                    hang = Number(hang)+1;//字符串变为数字
+                    lie = Number(lie)+1;
                     window.parent.jumpURL("xingbian.html");
                     window.parent.jumpTab(1);
                 });
                 $(".lookWendu").click(function(){
-                    alert("lookWendu");
                     window.parent.jumpURL("wendu.html");
                     window.parent.jumpTab(2);
                 });
                 $(".lookLongdu").click(function(){
-                    alert("lookLongdu");
                     window.parent.jumpURL("longdu.html");
                     window.parent.jumpTab(3);
                 });
@@ -107,10 +98,10 @@
         }
         function updataXingbian(){
             var oTable = document.getElementById("DataGrid34430");
-            var updateException='<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">'
-            +'<div class="wijmo-wijgrid-innercell lookXingbian" style="text-align: center;color: rgb(255,0,0);">'+'异常（查看）'+'</div></td>';
-            var update='<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">'
-                    +'<div class="wijmo-wijgrid-innercell lookXingbian" style="text-align: center;">'+'正常（查看）'+'</div></td>';
+            var updateException='<td class="wijgridtd wijdata-type-string lookXingbian" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">'
+            +'<div class="wijmo-wijgrid-innercell" style="text-align: center;color: rgb(255,0,0);">'+'异常（查看）'+'</div></td>';
+            var update='<td class="wijgridtd wijdata-type-string lookXingbian" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">'
+                    +'<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+'正常（查看）'+'</div></td>';
             for(var i=1;i<oTable.rows.length-1;i++)
             {
                var gName="";
@@ -192,12 +183,12 @@
                 tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">原油</div></td>';
                 tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u5BB9%u79EF" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
                 tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">100000m?</div></td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookXingbian"  id="lookXingbian" style="text-align: center;">正常（查看）</div></td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6E29%u5EA6%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;"> ';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookWendu"  style="text-align: center;">正常（查看）</div> </td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u53EF%u71C3%u6C14%u4F53%u6D53%u5EA6%u76D1%u6D4B" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell lookLongdu"  style="text-align: center;">正常（查看）</div></td></tr> ';
+                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string lookXingbian" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">正常（查看）</div></td>';
+                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string lookWendu" role="gridcell" headers="%u6E29%u5EA6%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;"> ';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell"  style="text-align: center;">正常（查看）</div> </td>';
+                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string lookLongdu" role="gridcell" headers="%u53EF%u71C3%u6C14%u4F53%u6D53%u5EA6%u76D1%u6D4B" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
+                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell"  style="text-align: center;">正常（查看）</div></td></tr> ';
             }
             tableGrid=tableGrid+'</tbody></table>';
             return tableGrid;
@@ -207,17 +198,25 @@
             tableStr=creatTableHead()+creatTableGrid();
             $("#showData").html(tableStr);
             $(".lookXingbian").click(function(){
-                alert("lookXingbian");
+                var hang = $(this).parent("tr").prevAll().length;
+                var lie = $(this).prevAll().length;
+                hang =Number(hang)+1;//字符串变为数字
+                lie = Number(lie);
+                var oTable = document.getElementById("DataGrid34430");
+                if(navigator.appName.indexOf("Explorer")>-1)      {
+                    parent.gName=oTable.rows[hang].cells[lie-4].innerText;
+                    parent.gName=parent.gName.replace(/[ ]/g,""); }
+                else   {
+                    parent.gName=oTable.rows[hang].cells[lie-4].textContent;
+                parent.gName=parent.gName.replace(/[ ]/g,""); }
                 window.parent.jumpURL("xingbian.html");
                 window.parent.jumpTab(1);
             });
             $(".lookWendu").click(function(){
-                alert("lookWendu");
                 window.parent.jumpURL("wendu.html");
                 window.parent.jumpTab(2);
             });
             $(".lookLongdu").click(function(){
-                alert("lookLongdu");
                 window.parent.jumpURL("longdu.html");
                 window.parent.jumpTab(3);
             });

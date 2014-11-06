@@ -1,39 +1,47 @@
-function drawChartOfMap(container,map,unit){
+function drawChartOfMap(container,map,d,sensorNum){
+    var x="",y="", i=0;
+    a();
+    //定义时间
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+    function a(){
 
-
- $(container).highcharts({
-
+        if(d==1){
+            $(container).highcharts({
         chart: {
+            type: 'spline',
             defaultSeriesType: 'line',
-            marginRight: 20,
+            marginRight: 10,
             marginBottom: 30,
             borderRadius:0,
-            animation:false
-        },
-        xAxis: {
-            title: {
-                text: '',
-                align: "high",
-                margin: 0,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
+            animation: Highcharts.svg,
+            events: {
+                load: function() {
                 }
             }
+        },
+
+        xAxis: {
+         type: 'datetime',
+         tickPixelInterval: 150,
+            style: {
+                color: '#000000',
+                fontWeight: 'normal'
+            } ,
+            text: '',
+            align: "high",
+            margin: 0
+
+
         },
         title : {
             enabled: false,
             text : ''
         },
-        legend: {
-            enabled : false,
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -10,
-            y: 100,
-            borderWidth: 0
-        },
+
         yAxis: {
             maxPadding:0.01,
             minPadding:0.01,
@@ -43,16 +51,17 @@ function drawChartOfMap(container,map,unit){
                 align: "high",
                 rotation: 270,
                 margin: 10,
-                style: {
-                    color: '#000000',
-                    fontWeight: 'normal'
-                }
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
             }
         },
         tooltip: {
             enabled: true,
             formatter: function() {
-                var s = 'value:<b>'+ this.y + unit + '</b>';
+                var s = 'value:<b>'+ this.y + 'unit' + '</b>';
                 return s;
             }
         },
@@ -82,22 +91,53 @@ function drawChartOfMap(container,map,unit){
                 shadow: false
             }
         },
+       legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+       },
         series : function(){
-            console.log("^^^^^^^^^^^map^^^^^^^^^^^^^^^^^^^");
-            console.log(map);
             var temp = [];
-            for(key in map.data){
-                temp.push({name:key,data:map.data[key]});
+            for(key in map){
+                temp.push({name:key,data: (function() {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime(),
+                        i;
+
+                    for (i = -19; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: map[key]
+                        });
+                    }
+                    return data;
+                })()  });
             }
-            console.log("^^^^^^^^^^^temp^^^^^^^^^^^^^^^^^^^");
-            console.log(temp);
             return temp;
         }(),
         credits: {
             enabled: false
         }
-    });
+    });}
+        else  if(d>1){
+            $(container).highcharts().destroy();
+            d=1;
+            a();
+        }
+        else{
+            for(var j=0;j<8;j++){
+                var name =  $(container).highcharts().series[j].name;
+                if(sensorNum==name){
+                    i=j;
+                    break;
+                }
+            }
+                x= new Date();
+                $(container).highcharts().series[i].addPoint([x.getTime(),map[sensorNum]],true,true);
+        }
 
-
+    }
 
 }

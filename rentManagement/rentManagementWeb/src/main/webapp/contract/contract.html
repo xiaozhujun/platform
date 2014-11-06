@@ -12,11 +12,29 @@
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
 //            $.get($.URL.contract.getNumber,null,null,"json");
             $.post($.URL.contract.list,null,listCallback,"json");
+            $("#customerName").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
+            $("#submitBtn").click(function(){
+                var data = {};
+                data.name = $("#contractName").val();
+                data.number = $("#contractNumber").val();
+                data.customerId=$("#customerName").ligerComboBox().getValue();
+                data.customerName = $("#customerName").val();
+                data.chargeMan = $("#chargeMan").val();
+                data.projectLocation = $("#projectLocation").val();
+                data.startTime = $("#startTime").val();
+                data.endTime = $("#endTime").val();
+                data.signTime = $("#signTime").val();
+                var jsonString  = $.toJSON(data);
+                $.post($.URL.contract.add,{"jsonString":jsonString},addCallBack,"json") ;
+            });
         });
+
+
         var gridData = {};
         function listCallback(data){
             if(data.code==200){
@@ -32,14 +50,14 @@
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '合同名',name: 'name',width: 100,editor:{type:'text'},frozen: true} ,
-                    { display: '编号',name: 'number',width: 100,editor:{type:'text'}},
+                    { display: '编号',name: 'number',width: 100,editor:{type:'text'},frozen: true},
                     { display: '客户姓名', name: 'customerName',width: 100},
                     { display: '负责人', name: 'chargeMan',width: 100},
                     { display: '项目地点', name: 'projectLocation',width: 100},
                     { display: '签订时间',name: 'signTime',width: 100},
                     { display: '开始时间',name: 'startTime',width: 100},
                     { display: '结束时间',name: 'endTime',width: 100},
-                    { display: '状态',name: 'status',width: 100},
+                    { display: '状态',name: 'status',width: 100,editor:{type:'text'},frozen: true},
                     { display: '预埋人',name: 'preBuryMan',width: 100},
                     { display: '预埋时间',name: 'preBuryTime',width: 100},
                     { display: '预埋状态',name: 'preBuryStatus',width: 100},
@@ -131,8 +149,44 @@
         }
 
         function f_add() {
-            $("#maingrid").load("contract/addContract.html");
+//            $("#maingrid").load("contract/addContract.html");
+//            $.ligerDialog.open({ url: 'addContract.html', height: 500,weight:500,isResize: true });
+            document.getElementById('form1').reset();
+            $.post($.URL.customer.list,null,customerCallback,"json");
+            $("#startTime").ligerDateEditor();
+            $("#endTime").ligerDateEditor();
+            $("#signTime").ligerDateEditor();
+            $.ligerDialog.open({ target: $("#addContract"),width:500 });
         }
+
+        function customerCallback(data){
+            if(data.code==200){
+                var customerData=[];
+                $.each(data.data,function(index,content){
+                    var c={};
+                    c["id"]=content.id;
+                    c["text"]=content.name;
+                    customerData.push(c);
+                });
+                liger.get("customerName").setData(customerData);
+            }
+        }
+
+        function addCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success(data.message);
+                document.getElementById('form1').reset();
+                $.post($.URL.contract.list,null,listCallback,"json");
+            }
+            else{
+                $.ligerDialog.warn(data.message);
+            }
+        }
+        //            $("#returnBtn").click(function(){
+        //                $("#mainContainer").load("contract/contract.html");
+        //            });
+        //        $("#returnBtn").click(function (item, dialog) { dialog.close(); });
+
     </script>
     <style type="text/css">
         .l-table-edit {}
@@ -149,5 +203,56 @@
     <!-- g data total ttt -->
 </div>
 <div id="maingrid" style="margin-top:5px"></div>
+
+<div id="addContract" style=" margin:3px; display:none;">
+    <form name="form1" method="post" action="" id="form1">
+
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">合同名称:</td>
+                <td align="left" class="l-table-edit-td"><input name="contractName" type="text" id="contractName" ></td>
+                <td align="left"></td>
+                <!--</tr>-->
+                <!--<tr>-->
+                <td align="right" class="l-table-edit-td">合同序号:</td>
+                <td align="left" class="l-table-edit-td"><input name="contractNumber" type="text" id="contractNumber" ></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">客户名称:</td>
+                <td align="left" class="l-table-edit-td"><input name="customerName" type="text" id="customerName" ></td>
+                <td align="left"></td>
+                <!--</tr>-->
+                <!--<tr>-->
+                <td align="right" class="l-table-edit-td">负责人:</td>
+                <td align="left" class="l-table-edit-td"><input name="chargeMan" type="text" id="chargeMan" ></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">项目地点:</td>
+                <td align="left" class="l-table-edit-td"><input name="projectLocation" type="text" id="projectLocation" ></td>
+                <td align="left"></td>
+                <!--</tr>-->
+                <!--<tr>-->
+                <td align="right" class="l-table-edit-td">签订时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="signTime" type="text" id="signTime" ></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">开始时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="startTime" type="text" id="startTime" ></td>
+                <td align="left"></td>
+                <!--</tr>-->
+                <!--<tr>-->
+                <td align="right" class="l-table-edit-td">结束时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="endTime" type="text" id="endTime" ></td>
+                <td align="left"></td>
+            </tr>
+        </table>
+        <br />
+        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+        <!--<input type="button" value="返回" id="returnBtn" class="l-button l-button-reset" />-->
+    </form>
+</div>
 </body>
 </html>

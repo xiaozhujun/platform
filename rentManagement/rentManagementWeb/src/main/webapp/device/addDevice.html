@@ -13,35 +13,57 @@
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script type="text/javascript">
-
         $(function()
         {
-
-            $.get($.URL.deviceType.list,null,listCallBack,"json");
+            $.post($.URL.deviceType.list,null,listCallBack,"json");
+            var myData=[];
             function listCallBack(data){
                 if(data.code==200){
-                    var myData=[];
                     $.each(data.data,function(index,content){
                         var j={};
                         j["text"]=content.name;
                         j["id"]=content.id;
                         myData.push(j);
-
+                    });
+                    $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
+                        data:myData,
+                        width:200,
+                        valueField:'id',
+                        textField:'text',
+                        valueFieldID:'deviceTypeSelect'
                     })
-                    $("#deviceTypeId").ligerComboBox({ emptyText:null,
+                    /*$("#typeId").ligerComboBox({ emptyText:null,
                         data:myData,
                         valueFieldID:'deviceTypeIdSelect'
-                    });
-                }
-
+                    });*/
+                };
+                $.post($.URL.storehouse.list,null,storeHouselistCallBack,"json");
+                var StoreHouseData=[];
+                function storeHouselistCallBack(data){
+                    if(data.code==200){
+                        $.each(data.data,function(index,content){
+                            var j={};
+                            j["text"]=content.name;
+                            j["id"]=content.id;
+                            StoreHouseData.push(j);
+                        });
+                        $("#storehouse").ligerComboBox({isShowCheckBox:true,isMultiSelect:false, emptyText:null,
+                            data:StoreHouseData,
+                            width:200,
+                            valueField:'id',
+                            textField:'text',
+                            valueFieldID:'storehouseSelect'
+                        })
+                    }
             }
             $("#submitBtn").click(function(){
                 var data={};
                 data.name=$("#deviceName").val();
                 data.number=$("#deviceNumber").val();
                 data.status=$("#deviceStatus").val();
-                data.deviceTypeId=$("#deviceTypeIdSelect").val();
-
+                data.storehouseId=$("#storehouseSelect").val();
+                data.deviceTypeId=$("#deviceTypeSelect").val();
+                data.produceTime=$("#deviceProduceTime").val();
                 $.post($.URL.device.add,data,addCallBack,"json");
             })
             function addCallBack(data){
@@ -53,10 +75,9 @@
                     $.ligerDialog.error(data.message);
                 }
             }
-
-
-
+            }
         })
+
     </script>
     <style type="text/css">
         .l-table-edit {}
@@ -89,14 +110,26 @@
         <tr>
             <td align="right" class="l-table-edit-td">设备类型:</td>
             <td align="left" class="l-table-edit-td">
-                <input type="text" readonly="true" id="deviceTypeId">
+                <input type="text" readonly="true" id="deviceType">
             </td>
         </tr>
         <tr>
-            <td align="right" class="l-table-edit-td">设备描述:</td>
+            <td align="right" class="l-table-edit-td">所属仓库:</td>
             <td align="left" class="l-table-edit-td">
-                <textarea id="deviceStatus" cols="50" rows="4" class="l-textarea" style="width:400px"></textarea>
+                <input type="text" readonly="true" id="storehouse">
+            </td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">设备状态:</td>
+            <td align="left" class="l-table-edit-td">
+                <input type="text" id="deviceStatus">
             </td><td align="left"></td>
+        </tr>
+        <tr>
+            <td align="right" class="l-table-edit-td">生产时间:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="deviceProduceTime" type="text" id="produceTime" ltype="date" /></td>
+            <td align="left"></td>
         </tr>
 
     </table>

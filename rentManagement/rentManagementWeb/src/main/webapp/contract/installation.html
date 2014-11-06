@@ -111,14 +111,7 @@
         }
 
         function f_add() {
-//            $("#mainContainer").load("contract/addInstallation.html");
-            $("#contractId").val("");
-            $("#type").val("");
-            $("#installDeviceId").val("");
-            $("#installMan").val("");
-            $("#installTime").val("");
-            $("#installStatus").val("");
-            $("#add").css('display','block');
+            $("#addinstall").css('display','block');
             $.ligerDialog.open({title:'添加安装/加装信息', target: $("#addinstall"),width:500});
         }
         $("#submitBtn").click(function(){
@@ -193,7 +186,7 @@
 
                 <td align="right" class="l-table-edit-td">安装状态:</td>
                 <td align="left" class="l-table-edit-td">
-                    <select name="installStatus" id="installStatus" ltype="select" ligeruiid="installStatus">
+                    <select name="installStatus" id="installStatus" ltype="select" >
                         <option value="未完成">未完成</option>
                         <option value="完成">完成</option>
                     </select>
@@ -203,7 +196,6 @@
         </table>
         <br />
         <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
-        <!--<input type="button" value="返回" id="returnBtn" class="l-button l-button-submit" />-->
     </form>
 </div>
 <div id="list">

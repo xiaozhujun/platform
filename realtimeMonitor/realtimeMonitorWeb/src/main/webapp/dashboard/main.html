@@ -124,6 +124,7 @@ function areaMenuCallback(data){
 }
 function sensorMenuCallback(data){
     if(data.code==200){
+         $.post($.URL.sensor.getDataTypeByIdAndAppId,{"id":data.data[0].id},dataTypeCallback,"json");
         for(var i=0;i<data.data.length;i++){
             var g={};
             g['pid']=data.data[i].groupName+data.data[i].areaName;

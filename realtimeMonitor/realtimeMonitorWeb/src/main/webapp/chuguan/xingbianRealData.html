@@ -209,6 +209,11 @@
                                     '<span class="tree-icon tree-folder icon-blank tree-folder-open"></span>'+
                                     '<span class="tree-title">'+data[i]+'</span>'+
                                     '</div><ul style="display: block;">';
+                            var tr = document.getElementById('label9');
+                            if(navigator.appName.indexOf("Explorer")>-1)
+                                tr.innerText=groupName+'  '+'实时曲线';
+                            else
+                                tr.textContent=groupName+'  '+'实时曲线';
                             locName[i]=data[i];
                             locMap[i]={};
                             locMapSum[i]={};
@@ -233,7 +238,6 @@
 
             document.getElementById("sensorMenu").innerHTML=menuHead;
             $("#sensorMenu ul li").click(function(){
-                console.log("单个传感器被点击");
                 single=1;      //单个传感器被点击
                 if(dataFirst==0){
                     dataFirst=2;
@@ -241,7 +245,6 @@
                 else
                     dataFirst=1;
                 sensorNum=$(this).text();
-                console.log(sensorNum);
             });
             $("div.tree-node-selected").click(function(){
                 single=0;
@@ -252,9 +255,6 @@
                 else
                     first=1;
             });
-
-
-
         }
         function creatMenu(data){
            $.ajax({

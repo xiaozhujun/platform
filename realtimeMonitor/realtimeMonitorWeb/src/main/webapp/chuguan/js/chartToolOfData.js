@@ -118,9 +118,9 @@ function drawChartSingleMap(container,map,d,sNum){
             a();
         }
         else{
-            for(key in map){
-                $(container).highcharts().series[0].addPoint([(new Date()).getTime(),map[key]],true,true);
-            }
+
+                $(container).highcharts().series[0].addPoint([(new Date()).getTime(),map[sNum]],true,true);
+
         }
 
     }

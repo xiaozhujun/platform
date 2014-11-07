@@ -59,7 +59,7 @@ public class SocketTestForXingBian {
                         +"{sensorNum:'2100000000010020',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]},"
                         +"{sensorNum:'2100000000010021',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]},"
                         +"{sensorNum:'2100000000010022',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]},"
-                        +"{sensorNum:'2100000000010023',dataType:'Route',time:'"+format.format(now)+"',data:["+data1+"]}]}";
+                        +"{sensorNum:'2100000000010023',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);

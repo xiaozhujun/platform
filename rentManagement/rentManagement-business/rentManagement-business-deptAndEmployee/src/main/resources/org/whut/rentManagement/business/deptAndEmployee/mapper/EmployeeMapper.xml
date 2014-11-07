@@ -43,7 +43,7 @@
             <if test="appId!=null">APPID=#{appId},</if>
             <if test="employedTime!=null">EMPLOYEDTIME=#{employedTime},</if>
             <if test="position!=null">POSITION=#{position},</if>
-            <if test="createTime!=null">CREATETIME=#{createTime}</if>
+            <if test="createTime!=null">CREATETIME=#{createTime},</if>
             <if test="telephone!=null">TELEPHONE=#{telephone}</if>
         </set>
         where ID=#{id};

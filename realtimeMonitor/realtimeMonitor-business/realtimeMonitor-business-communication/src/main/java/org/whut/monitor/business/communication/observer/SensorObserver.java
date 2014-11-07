@@ -143,7 +143,8 @@ public class SensorObserver implements Observer {
         String collectorNum = sensorService.getCNumBySNum(number) ;
         Long appId=sensorService.getAppIdBySNum(number);
         String groupName=sensorService.getGroupNameBySNum(number);
-        String s = "groupName:"+"'"+groupName +"'"+","+"appId:"+appId+","+"id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',isConnected:" + "'true'";
+        String areaName=sensorService.getAreaNameBySNum(number);
+        String s = "areaName:"+"'"+areaName +"'"+","+"groupName:"+"'"+groupName +"'"+","+"appId:"+appId+","+"id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',isConnected:" + "'true'";
         String s2 = "{sensors:[{sensorNum:'" + number + "',dataType:'" + dataType + "',time:'" + time +"',data:" + dataList + "," + s + "}]}";
         System.out.println("s2:" + s2);
         wsMessageDispatcher.dispatchMessage(s2);

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 function drawChart4(container,data,unit,d){
-        var y=data[data.length-1];
+   var  y=data[0];
     a();
     function a(){
     if(d==1){
@@ -93,18 +93,26 @@ function drawChart4(container,data,unit,d){
                 shadow: false
             }
         },
-        series : [{
-            data: data
+        series : [{   name: sNum,
+            data: (function() {
+                var data =[],
+                    time = (new Date()).getTime();
+                for (var i = -19; i <= 0; i++) {
+                    data.push({
+                        x: time + i * 1000,
+                        y: y
+                    });
+                }
+                return data;
+            })()
         }],
         credits: {
             enabled: false
         }
     });
     }else{
-
         var chart = $(container).highcharts();
-        var x= (new Date()).getTime();
-         chart.series[0].addPoint([y],true,true);
-    };
+         chart.series[0].addPoint([(new Date()).getTime(),y],true,true);
+    }
     }
 }

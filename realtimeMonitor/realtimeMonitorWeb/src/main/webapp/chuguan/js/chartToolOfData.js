@@ -1,16 +1,13 @@
-function drawChartSingleMap(container,map,d){
+function drawChartSingleMap(container,map,d,sNum){
     Highcharts.setOptions({
         global: {
             useUTC: false
         }
     });
-
-    var x="",y="", i=0;
     a();
     function a(){
         if(d==1){
             $(container).highcharts({
-
                 chart: {
                     type: 'spline',
                     defaultSeriesType: 'line',
@@ -98,34 +95,30 @@ function drawChartSingleMap(container,map,d){
                     verticalAlign: 'middle',
                     borderWidth: 0
                 },
-                series : function(){
-                    var temp = [];
-                    for(key in map.data){
-                        console.log("key:"+key);
-                        temp.push({name:key,data: (function() { // generate an array of random data
-                            var data = [],
-                                time = (new Date()).getTime(),
-                                j;
-                            for (j = -19; j <= 0; j++) {
-                                data.push({
-                                    x: time + j * 1000,
-                                    y: map.get(key)
-                                });
-                            }
-                            return data;
-                        })()  });
-                    }
-                    return temp;
-                }(),
+                series :  [{   name: sNum,
+                    data: (function() {
+                        var data =[],
+                            time = (new Date()).getTime();
+                        for (var i = -19; i <= 0; i++) {
+                            data.push({
+                                x: time + i * 1000,
+                                y: map[sNum]
+                            });
+                        }
+                        return data;
+                    })()
+                }],
                 credits: {
                     enabled: false
                 }
             });}
+        else  if(d>1){
+            $(container).highcharts().destroy();
+            d=1;
+            a();
+        }
         else{
-            for(key in map.data){
-                $(container).highcharts().series[i].addPoint([(new Date()).getTime(),map.data[key]],true,true);
-                i++;
-            }
+             $(container).highcharts().series[0].addPoint([(new Date()).getTime(),map[sNum]],true,true);
         }
 
     }

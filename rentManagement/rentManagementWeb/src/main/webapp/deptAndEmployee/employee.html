@@ -218,7 +218,7 @@
 
         function f_add() {
             $('#addEmployee').css('display','block');
-            $.ligerDialog.open({title:'添加员工', target: $("#addEmployee")});
+            $.ligerDialog.open({title:'添加员工', target: $("#addEmployee"),width:500});
 //           $("#mainContainer").load("deptAndEmployee/addEmployee.html");
 //            $("#departmentId").val("");
 //            $("#name").val("");
@@ -265,9 +265,9 @@
 
     </script>
     <style type="text/css">
-        .l-button-submit {width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-button-submit {width:80px; margin-left:10px; padding-bottom:2px;}
         .l-table-edit-td{ padding:4px;}
-        .l-button-submit{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF;}
         {background:#E0EDFF; }
     </style>
 </head>
@@ -280,9 +280,8 @@
                 <td align="left" class="l-table-edit-td">
                     <input name="name" type="text" id="name" ltype="text" />
                 </td>
-                <td align="left"></td>
-            </tr>
-            <tr>
+                <td align="left" width="100px;"></td>
+
                 <td align="right" class="l-table-edit-td">部门:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="departmentId" type="text" id="departmentId" ltype="text" />
@@ -297,9 +296,8 @@
                         <option value="女">女</option>
                     </select>
                 </td>
-                <td align="left"></td>
-            </tr>
-            <tr>
+                <td align="left" width="100px;"></td>
+
                 <td align="right" class="l-table-edit-td">技能:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="skillId" type="text" id="skillId" ltype="text" />
@@ -311,9 +309,8 @@
                 <td align="left" class="l-table-edit-td">
                     <input name="telephone" type="text" id="telephone" ltype="text" />
                 </td>
-                <td align="left"></td>
-            </tr>
-            <tr>
+                <td align="left" width="100px;"></td>
+
                 <td align="right" class="l-table-edit-td">邮箱:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="email" type="text" id="email" ltype="text" />
@@ -325,19 +322,18 @@
                 <td align="left" class="l-table-edit-td">
                     <input name="employedTime" type="text" id="employedTime" ltype="text" />
                 </td>
-                <td align="left"></td>
-            </tr>
-            <tr>
+                <td align="left" width="100px;"></td>
+
                 <td align="right" class="l-table-edit-td">职位:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="position" type="text" id="position" ltype="text" />
                 </td>
                 <td align="left"></td>
             </tr>
+            <tr>
+                <td height="40" valign="bottom" colspan="6" align="center"><input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" /></td>
+            </tr>
         </table>
-        <br />
-        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
-        <input type="button" value="返回" id="returnBtn" class="l-button l-button-submit" />
     </form>
 </div>
 <div id="list">

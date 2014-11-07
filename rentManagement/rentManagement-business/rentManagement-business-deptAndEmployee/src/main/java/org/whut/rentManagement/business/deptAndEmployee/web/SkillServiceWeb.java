@@ -6,6 +6,8 @@ import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.deptAndEmployee.entity.Skill;
+import org.whut.rentManagement.business.deptAndEmployee.entity.SubEmployee;
+import org.whut.rentManagement.business.deptAndEmployee.entity.SubSkill;
 import org.whut.rentManagement.business.deptAndEmployee.service.SkillService;
 
 import javax.ws.rs.FormParam;
@@ -13,6 +15,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -50,10 +53,26 @@ public class SkillServiceWeb {
     @POST
     public String update(@FormParam("jsonString") String jsonString)
     {
-        Skill skill = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Skill.class);
-        if(skill.getName()==null||skill.getName().equals("")||skill.getDescription()==null||skill.getDescription().equals("")||skill.getCreateTime().equals("")){
+        SubSkill subSkill = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, SubSkill.class);
+        if(subSkill.getName()==null||subSkill.getName().equals("")||subSkill.getDescription()==null||subSkill.getDescription().equals("")||subSkill.getCreateTime().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
         }
+        long appId = UserContext.currentUserAppId();
+        Skill skill=new Skill();
+        Date createDate = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println("测试subSkill是否获取数据："+subSkill.getName()+"和"+subSkill.getId()+"和"+subSkill.getCreateTime());
+        try{
+            createDate=sdf.parse(subSkill.getCreateTime());
+        }catch (Exception e){
+            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+        }
+        skill.setId(subSkill.getId());
+        skill.setName(subSkill.getName());
+        skill.setDescription(subSkill.getDescription());
+        skill.setCreateTime(createDate);
+        skill.setAppId(appId);
+        System.out.println("测试skill是否获取数据："+skill.getName()+"和"+skill.getId());
         skillService.update(skill);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

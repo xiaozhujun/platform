@@ -1,9 +1,9 @@
-function drawBelowChartOfMap(container,map,firstRequest,loc){
+function drawBelowChartOfMap(container,map,firstRequest,loc,locName){
     var shapeValue=0;
     var l;
     var sum=0;
     locFunction(); //定义全局location，传参定义l
-    var x="",y="", i=0;
+
 
     //定义时间 uTC
 
@@ -14,22 +14,24 @@ function drawBelowChartOfMap(container,map,firstRequest,loc){
     });
 
     function locFunction(){
-                if(loc=="上"){
-                l= Math.PI*(80*1000+24);
-            }
-            else if(loc=="中"){
-                l= Math.PI*(80*1000+38);
-            }
-            else if(loc=="下"){
-                l= Math.PI*(80*1000+58);
-            }
+       console.log("====charttool=====") ;
 
-        for(key in map){
-            sum=sum+map[key];
+        if(loc=="上"){
+            l= Math.PI*(80*1000+24);
+        }
+        else if(loc=="中"){
+            l= Math.PI*(80*1000+38);
 
         }
-            shapeValue=(sum/8)*l;
+        else if(loc=="下"){
+            l= Math.PI*(80*1000+58);
 
+        }
+
+        for(key in map){
+            sum=sum+Number(map[key]);
+        }
+        shapeValue=(sum/8)*l;
         if(firstRequest==1){
             $(container).highcharts({
 
@@ -123,34 +125,43 @@ function drawBelowChartOfMap(container,map,firstRequest,loc){
                     verticalAlign: 'middle',
                     borderWidth: 0
                 },
-             series :
-                 [{   name: loc,
-                     data: (function() {
-                         // generate an array of random data
-                         var data = [],
-                             time = (new Date()).getTime(),
-                             i;
+                series :function(){
 
-                         for (i = -19; i <= 0; i++) {
-                             data.push({
-                                 x: time + i * 1000,
-                                 y: shapeValue
-                             });
-                         }
-                         return data;
-                     })()
-                 }]
-                ,
+                        console.log("===进入了series====") ;
+                        var temp = [];
+                        for(var k=0;k<locName.length;k++) {
+                            temp.push({name:locName[k],data: (function() { // generate an array of random data
+                                console.log("===push了一个====") ;
+                                var data = [],
+                                    time = (new Date()).getTime(),
+                                    j;
+                                for (j = -19; j <= 0; j++) {
+                                    data.push({
+                                        x: time + j * 1000,
+                                        y: shapeValue
+                                    });
+                                }
+                                return data;
+                            }
+                                )()  });  }
+
+                        return temp;
+                    }(),
                 credits: {
                     enabled: false
                 }
-            });}
-        else{
-            x= new Date();
-            $(container).highcharts().series[0].addPoint([x.getTime(),shapeValue],true,true);
+            });
         }
+        else{
+            console.log("===进入了addPoint====") ;
+            for(var p=0;p<locName.length;p++){
+                if(loc==locName[p]) {
+                    $(container).highcharts().series[p].addPoint([new Date().getTime(),shapeValue],true,true);
+                }
 
+            }
+        }
+    }
 }
 
 
-}

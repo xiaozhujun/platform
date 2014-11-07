@@ -21,6 +21,7 @@
     <script>
         var  groupName=parent.gName;
         var locMap=[];
+        var locMapSum=[];
         var locName=[];
         var areaClick=0; //是否点击了菜单中的区域，默认没有点击
         var single=0;    //是否点击了菜单中的单个传感器，默认没有点击
@@ -29,7 +30,6 @@
             $("#backBtn").click(function(){
                 window.parent.jumpURL("xingbian.html");
             });
-            $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameGridCallback,'json');
         });
         var sNum="";
         function getListByGroupNameGridCallback(data){
@@ -57,6 +57,7 @@
                 if(parent.gName==""){
                     groupName=cgData[0].name;
                 }
+                $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameGridCallback,'json');
                 creatSelectHead(cgData);
                 creatMenu(groupName);
                 $("div.tree-node").click(function(){
@@ -87,6 +88,7 @@
             creatMenu(data);
         }
         var count=[];
+        var countSum=[];
         function creatSelectHead(data){
             var tableHead="";
             if(navigator.appName.indexOf("Explorer")>-1)    {       <!--IE 和 火狐浏览器的不兼容-->
@@ -104,7 +106,7 @@
         var sensorNum="";
         var first=1;
         var singleMap={};
-        var belowFirst=1;
+        var belowFirst=[];
         function connect(){
             var url= $.URL.websocket.register;
             console.log("s为："+s);
@@ -117,18 +119,27 @@
                 console.log('Info: connection closed.');
                 console.log(event);};
             ws.onmessage = function (event) {
-                console.log ("收到消息！"+event.data);
                 var jsonData = eval("(" +event.data+ ")");
                 wsData=jsonData.sensors[0].data[0];
                 wsDataNum= jsonData.sensors[0].sensorNum ;
                 var aName=jsonData.sensors[0].areaName ;
+                console.log("areaName:"+aName) ;
                 for(var i=0;i<locName.length;i++){
                     if(locName[i]==aName){
                         if(clickAreaName==locName[i]){
                                 areaClick=i;
                         }
                         locMap[i][wsDataNum]=wsData;
+                        locMapSum[i][wsDataNum]=wsData;
                         count[i]++;
+                        countSum[i]++;
+                        if (countSum[i]==8){
+                            countSum[i]=0 ;
+                            var iValue=i;
+                            initBelowCharts( iValue,locMapSum[i],locName,locName[i]);
+                           locMapSum[i]= { } ;
+                        }
+
                     }
                 }
                 if(single==0){
@@ -154,6 +165,16 @@
             }
             else
                 drawChartSingleMap("#DynamicChart861722", data, dataFirst,s);
+        }
+        var firstDrawBelowCharts=1;
+        function initBelowCharts(i,map,locName,loc){
+
+            if(firstDrawBelowCharts==1 && belowFirst[i]==1 ){
+                drawBelowChartOfMap("#DynamicChart552271",map,belowFirst[i],loc,locName);
+                firstDrawBelowCharts=2;
+            }
+            else
+                drawBelowChartOfMap("#DynamicChart552271",map,0,loc,locName);
         }
 
         function initMapCharts(map,n,lineName){
@@ -190,7 +211,10 @@
                                     '</div><ul style="display: block;">';
                             locName[i]=data[i];
                             locMap[i]={};
+                            locMapSum[i]={};
+                            belowFirst[i]=1;
                             count[i]=0;
+                            countSum[i]=0;
                             num=num+1;
                             areaClick=0;
                             var result=sensoResult.data;

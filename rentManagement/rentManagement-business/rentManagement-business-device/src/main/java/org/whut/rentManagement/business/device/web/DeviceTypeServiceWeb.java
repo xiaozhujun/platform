@@ -1,7 +1,6 @@
 package org.whut.rentManagement.business.device.web;
 
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.security.UserContext;
@@ -16,9 +15,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +36,7 @@ public class DeviceTypeServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name,@FormParam("unit")String unit,@FormParam("warnTime")String warnTime,
-                      @FormParam("description")String description,@FormParam("createTime")String createTime)throws ParseException{
+                      @FormParam("description")String description,@FormParam("mainDevice")String mainDevice)throws ParseException{
         if(name==null||name.trim().equals("")) {
             return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
@@ -46,72 +44,63 @@ public class DeviceTypeServiceWeb {
         long id;
         try{
             id=deviceTypeService.getIdByName(name,appId);
-        }
-        catch (Exception e){
+        }catch (Exception e){
             id=0;
         }
         if(id==0){
+            Date createTime=new Date();
             DeviceType deviceType=new DeviceType();
             deviceType.setName(name);
             deviceType.setDescription(description);
-            DateFormat DFT=new SimpleDateFormat("yyyy-MM-dd");
-            deviceType.setCreateTime(DFT.parse(createTime));
+            deviceType.setCreateTime(createTime);
             deviceType.setUnit(unit);
             deviceType.setAppId(appId);
             deviceType.setWarnTime(warnTime);
+            try {
+                deviceType.setMainDevice(Long.parseLong(mainDevice));
+            }catch (Exception e){
+                deviceType.setMainDevice(null);
+            }
             deviceTypeService.add(deviceType);
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        }
-        else{
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "添加成功！");
+        }else{
             return  JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "已存在该设备类型!");
         }
-        /*long appId = UserContext.currentUserAppId();
-        try{
-            JSONObject jsonObject=new JSONObject(jsonStringList);
-            if(jsonObject==null){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空");
-            }
-            SubDeviceType subDeviceType = JsonMapper.buildNonDefaultMapper().fromJson(jsonStringList, SubDeviceType.class);
-            DeviceType deviceType = new DeviceType();
-            deviceType.setName(subDeviceType.getName());
-            deviceType.setUnit(subDeviceType.getUnit());
-            deviceType.setWarnTime(subDeviceType.getWarnTime());
-            deviceType.setDescription(subDeviceType.getDescription());
-            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //定义时间格式
-            deviceType.setCreateTime(sdf.parse(subDeviceType.getCreateTime()));  //String搞成date类型
-            deviceType.setAppId(appId);
-            deviceTypeService.add(deviceType);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);*/
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/update")
     @POST
-    public String update(@FormParam("jsonString") String jsonString)  throws JSONException, ParseException {
-        long appId = UserContext.currentUserAppId();
-        try{
-            JSONObject jsonObject=new JSONObject(jsonString);
-            if(jsonObject==null){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能是空");
+    public String update(@FormParam("jsonString") String jsonString)  throws JSONException {
+            long appId = UserContext.currentUserAppId();
+            SubDeviceType subdeviceType= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubDeviceType.class);
+            if(subdeviceType==null){
+                  return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能是空");
             }
-        SubDeviceType subdeviceType= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubDeviceType.class);
-        DeviceType deviceType=new DeviceType();
-        deviceType.setName(subdeviceType.getName());
-        deviceType.setMainDevice(subdeviceType.getMainDevice());
-        deviceType.setWarnTime(subdeviceType.getWarnTime());
-        deviceType.setUnit(subdeviceType.getUnit());
-        deviceType.setDescription(subdeviceType.getDescription());
-        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        deviceType.setCreateTime(format.parse(subdeviceType.getCreateTime()));
-        deviceType.setAppId(appId);
-        deviceTypeService.update(deviceType);
-        }catch (JSONException e){
-                e.printStackTrace();
+            long id;
+            try{
+                id=deviceTypeService.getIdByName(subdeviceType.getName(),appId);
+            }catch (Exception e){
+                id=0;
             }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+
+            if(id!=0 && id!=subdeviceType.getId())
+            {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"设备类型已存在");
+            }
+            else
+            {
+              DeviceType deviceType=new DeviceType();
+              deviceType.setId(subdeviceType.getId());
+              deviceType.setName(subdeviceType.getName());
+              deviceType.setMainDevice(Long.parseLong(subdeviceType.getMainDevice()));
+              deviceType.setWarnTime(subdeviceType.getWarnTime());
+              deviceType.setUnit(subdeviceType.getUnit());
+              deviceType.setDescription(subdeviceType.getDescription());
+              deviceType.setAppId(appId);
+              deviceTypeService.update(deviceType);
+              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            }
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

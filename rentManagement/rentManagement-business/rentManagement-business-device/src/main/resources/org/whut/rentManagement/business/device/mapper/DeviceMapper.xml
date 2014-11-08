@@ -38,7 +38,6 @@
     <update id="update" parameterType="Device">
         update device
         <set>
-            <if test="mainDeviceId!=null">MAINDEVICEID=#{mainDeviceId},</if>
             <if test="typeId!=null">TYPEID=#{typeId},</if>
             <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
             <if test="contractId!=null">CONTRACTID=#{contractId},</if>
@@ -48,7 +47,6 @@
             <if test="number!=null">NUMBER=#{number},</if>
             <if test="price!=null">PRICE=#{price},</if>
             <if test="produceTime!=null">PRODUCETIME=#{produceTime},</if>
-            <if test="createTime!=null"> CREATETIME=#{createTime},</if>
             <if test="priceUnit!=null">PRICEUNIT=#{priceUnit},</if>
             <if test="appId!=null">APPID=#{appId}</if>
         </set>
@@ -60,11 +58,13 @@
         WHERE ID=#{id}
     </delete>
 
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceResultMap">
-        select
-        <include refid="device_fields"/>
-        from device
-        where APPID=#{appId}
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select device.id,device.name as name,device.number,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,
+                device.produceTime,device.price,device.status
+        from device,device_type,storehouse,contract
+        where device.typeId=device_type.id and device.storehouseId=storehouse.id and device.contractId=contract.id
+         and device.appId=#{appId}
+        <!--联查错误，改后台传name -->
     </select>
 
     <select id="getIdByNumber" parameterType="map" resultType="java.lang.Long">

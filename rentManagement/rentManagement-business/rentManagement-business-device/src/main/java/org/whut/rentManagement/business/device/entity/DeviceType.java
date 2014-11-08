@@ -15,7 +15,7 @@ public class DeviceType {
     private String description;
     private Date createTime;
     private String unit;
-    private long MainDevice;
+    private Long MainDevice;
     private String warnTime;
     private long appId;
 
@@ -75,11 +75,11 @@ public class DeviceType {
         this.appId = appId;
     }
 
-    public long getMainDevice() {
+    public Long getMainDevice() {
         return MainDevice;
     }
 
-    public void setMainDevice(long mainDevice) {
+    public void setMainDevice(Long mainDevice) {
         MainDevice = mainDevice;
     }
 }

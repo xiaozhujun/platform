@@ -16,6 +16,9 @@
     <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/highcharts.js"></script>
     <script type="text/javascript" src="js/chartTool.js"></script>
+    <script type="text/javascript" src="js/chartTool2.js"></script>
+    <script type="text/javascript" src="js/chartTool3.js"></script>
+    <script type="text/javascript" src="js/chartTool4.js"></script>
     <style type="text/css">
         .l-div {
             height: 30px;
@@ -58,6 +61,11 @@
         var s="{c:'Subscribe',sensors:["+num+"]}";
         var tempURL = $.URL.sensors.getSensorDataArray;
         var myURL = tempURL + num.toString();
+        var dt=1;
+        var d1=1;
+        var d2=1;
+        var d3=1;
+        var d4=1;
         $(document).ready(function () {
             $("#number").html(currentMonitor.number);
             $("#group").html(currentMonitor.groupName);
@@ -65,9 +73,17 @@
                 alert("暂无数据");
             }
             else{
-                connect();
+                $.post($.URL.sensor.getDataTypeBySNumAndAppId,{"number":currentMonitor.number},dataTypeCallback,"json");
             }
         });
+        function dataTypeCallback(data){
+            if(data.code==200){
+                dt=data.data;
+                alert(dt);
+                connect();
+            }
+
+        }
         $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
             if (ws != null) {
                 console.log(1234344) ;
@@ -87,7 +103,11 @@
                     var number=sensorJumpName.sensors[0].sensorNum;
                     var data1=sensorJumpName.sensors[0].data;
                     if(currentMonitor.number==number){
-                        drawChart("#waveContainer", data1, "mV");
+                        if(dt==1) {drawChart("#waveCanvas", data1, "mV",d1);d1=0;d2=d3=d4=1; }
+                        else if(dt==2) { drawChart2("#waveCanvas", data1, "mV",d2);d2=0;d1=d3=d4=1;   }
+                        else if(dt==3){  drawChart3("#waveCanvas", data1, "mV",d3); d3=0;d2=d1=d4=1;  }
+                        else if(dt==4){ drawChart4("#waveCanvas", data1, "mV",d4); d4=0;d2=d3=d1=1;
+                        }
                     }
                 };
                 ws.onclose = function (event) {
@@ -95,9 +115,7 @@
                     console.log(event);			};
             }
         }
-        function reconnect() {
-            connect();
-        }
+
     </script>
 </head>
 <body>

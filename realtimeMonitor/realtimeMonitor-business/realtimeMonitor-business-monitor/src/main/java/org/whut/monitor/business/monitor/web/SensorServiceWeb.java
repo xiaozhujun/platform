@@ -514,5 +514,14 @@ public class SensorServiceWeb {
         List<Sensor> list=sensorService.getSensorsByAreaName(AreaName,GroupName,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getDataTypeBySNumAndAppId")
+    @POST
+    public String getDataTypeBySNumAndAppId(@FormParam("number")String number) {
+        long appId = UserContext.currentUserAppId();
+        long dataType = sensorService.getDataTypeBySNumAndAppId(number,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(dataType, JsonResultUtils.Code.SUCCESS);
+    }
 }
 

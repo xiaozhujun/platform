@@ -107,4 +107,7 @@ public class SensorService {
     public String  getAreaNameBySNum(String sNum) {
         return areaMapper.getAreaNameBySNum(sNum);
     }
+    public long getDataTypeBySNumAndAppId(String number,long appId) {
+        return sensorMapper.getDataTypeBySNumAndAppId(number, appId);
+    }
 }

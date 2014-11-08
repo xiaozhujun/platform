@@ -187,5 +187,9 @@
         FROM sensor,area,`group`
         WHERE area.name=#{areaName} AND sensor.appId=#{appId} AND sensor.areaId=area.id AND sensor.groupId=`group`.id AND `group`.name=#{groupName}
     </select>
-
+    <select id="getDataTypeBySNumAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT dataType
+        FROM sensor
+        WHERE number=#{number} AND appId=#{appId}
+    </select>
 </mapper>

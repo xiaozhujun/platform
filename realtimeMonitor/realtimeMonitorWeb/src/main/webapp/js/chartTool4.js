@@ -6,10 +6,16 @@
  * To change this template use File | Settings | File Templates.
  */
 function drawChart4(container,data,unit,d){
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
    var  y=data[0];
     a();
     function a(){
     if(d==1){
+
     $(container).highcharts({
         chart: {
             defaultSeriesType: 'spline',
@@ -19,6 +25,7 @@ function drawChart4(container,data,unit,d){
             animation:false
         },
         xAxis: {
+            type: 'datetime',
             title: {
                 text: '(xUnit)',
                 align: "high",
@@ -62,8 +69,6 @@ function drawChart4(container,data,unit,d){
             enabled: true,
             formatter: function() {
                 var s = 'value:<b>'+ this.y + unit + '</b>';
-
-
                 return s;
             }
         },
@@ -93,7 +98,7 @@ function drawChart4(container,data,unit,d){
                 shadow: false
             }
         },
-        series : [{   name: sNum,
+        series : [{
             data: (function() {
                 var data =[],
                     time = (new Date()).getTime();

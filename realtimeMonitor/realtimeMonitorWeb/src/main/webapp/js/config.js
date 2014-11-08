@@ -69,7 +69,8 @@
             "getNumberBySensorId":"rs/sensor/getNumberBySensorId",
             "getSensorIdAndNumbersByName":"rs/sensor/getSensorIdAndNumbersByName",
             "getCollectorNameBySensorNumber":"rs/sensor/getCollectorNameBySensorNumber",
-            "getDataTypeByIdAndAppId":"rs/sensor/getDataTypeByIdAndAppId"
+            "getDataTypeByIdAndAppId":"rs/sensor/getDataTypeByIdAndAppId",
+            "getDataTypeBySNumAndAppId":"rs/sensor/getDataTypeBySNumAndAppId"
         },
         "sensors":{
             "getSensorDataArray":"rs/sensors/sensor/data/",

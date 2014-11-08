@@ -79,7 +79,6 @@
         function dataTypeCallback(data){
             if(data.code==200){
                 dt=data.data;
-                alert(dt);
                 connect();
             }
 
@@ -98,15 +97,14 @@
                 console.log('Info: connection opened.');
                 ws.send(s);
                 ws.onmessage = function (event) {
-                    console.log ("收到消息！"+event.data);
                     var sensorJumpName=eval("(" +event.data+ ")");
                     var number=sensorJumpName.sensors[0].sensorNum;
                     var data1=sensorJumpName.sensors[0].data;
                     if(currentMonitor.number==number){
-                        if(dt==1) {drawChart("#waveCanvas", data1, "mV",d1);d1=0;d2=d3=d4=1; }
-                        else if(dt==2) { drawChart2("#waveCanvas", data1, "mV",d2);d2=0;d1=d3=d4=1;   }
-                        else if(dt==3){  drawChart3("#waveCanvas", data1, "mV",d3); d3=0;d2=d1=d4=1;  }
-                        else if(dt==4){ drawChart4("#waveCanvas", data1, "mV",d4); d4=0;d2=d3=d1=1;
+                        if(dt==1) {drawChart("#waveContainer", data1, "mV",d1);d1=0; }
+                        else if(dt==2) { drawChart2("#waveContainer", data1, "mV",d2);d2=0;   }
+                        else if(dt==3){  drawChart3("#waveContainer", data1, "mV",d3); d3=0;  }
+                        else if(dt==4){ drawChart4("#waveContainer", data1, "mV",d4); d4=0;
                         }
                     }
                 };

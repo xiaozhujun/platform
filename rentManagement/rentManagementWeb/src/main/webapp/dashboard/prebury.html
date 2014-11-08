@@ -24,41 +24,40 @@ $.ligerDialog.close("#uploadInfo");
 $(function(){
     var d=new Date();
     var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-    $("#contractStartTime").ligerDateEditor({initValue: dd});
-    $("#contractEndTime").ligerDateEditor({initValue: dd});
+    $("#preburyStartTime").ligerDateEditor({initValue: dd});
+    $("#preburyEndTime").ligerDateEditor({initValue: dd});
 
-    getContractList();
+    getPreburyList();
 });
 
-function getContractList(){
-    var user=$("#contractUserName").val();
-    var device=$("#contractDeviceName").val();
-    var sTime=$("#contractStartTime").val();
-    var eTime=$("#contractEndTime").val();
-    $.post($.URL.dashboard.contractList,{"user":user,"device":device,"sTime":sTime,"eTime":eTime},getContractListCallback,"json");
+function getPreburyList(){
+    var user=$("#preburyUserName").val();
+    var sTime=$("#preburyStartTime").val();
+    var eTime=$("#preburyEndTime").val();
+    $.post($.URL.dashboard.preburyList,{"user":user,"sTime":sTime,"eTime":eTime},getPreburyListCallback,"json");
 }
 
-$("#getContractListBtn").click(function(){
-    getContractList();
+$("#getPreburyListBtn").click(function(){
+    getPreburyList();
 });
 
-function getContractListCallback(data){
+function getPreburyListCallback(data){
     if(data.code==200){
         if(data.data==null){
             $.ligerDialog.alert("抱歉,记录不存在!");
         }else{
-            $("#contractShow").html("");
+            $("#preburyShow").html("");
             showGrid(data.data);
         }
     }
 }
 
 
-var contractData={};
+var preburyData={};
 function showGrid(data){
-    var grid = $("<div id='contractGrid'></div>");
-    $("#contractShow").append(grid);
-    contractData.Rows=data;
+    var grid = $("<div id='preburyGrid'></div>");
+    $("#preburyShow").append(grid);
+    preburyData.Rows=data;
     f_peopleRecord(grid);
 }
 var manager, g;
@@ -67,26 +66,31 @@ function f_peopleRecord(grid)
 {
     g = manager = grid.ligerGrid({
         columns: [
-            { display: '合同名称', name: 'name',
+            { display: '项目名称', name: 'name',
                 editor: { type: 'text' }
             },
             { display: '客户名称', name: 'customerName',
                 editor: { type: 'text' }
             },
-            { display: '合同编号', name: 'number', type: 'string',
+            { display: '预埋人员', name: 'preBuryMan', type: 'string',
                 editor: { type: 'text' }
             },
-            { display: '开始日期', name: 'startTime',
+            { display: '预埋日期', name: 'preBuryTime',
                 editor: { type: 'text' }
             },
-            { display: '结束日期', name: 'endTime',
+            { display: '状态', name: 'preBuryStatus',width:'auto',
                 editor: { type: 'text' }
             },
-            { display: '负责人', name: 'chargeMan',width:'auto',
-                editor: { type: 'text' }
-            },
-            { display: '项目地点', name: 'projectLocation',width:'auto',
-                editor: { type: 'text' }
+            { display: '预埋拍照', name:'abnormalPicture', editor:{type:'text'},
+                render:function(rowdata, rowindex, value){
+                    var image = rowdata.image;
+                    if(rowdata.image != null) {
+                        return "<a href='javascript:abnormal(" + rowindex+ ")'>查看</a> ";
+                    }
+                    else {
+                        return "无";
+                    }
+                }
             },
             { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
             {
@@ -99,7 +103,7 @@ function f_peopleRecord(grid)
             $("#txtrowindex").val(rowindex);
         },
         enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
-        data: contractData,
+        data: preburyData,
         width: '100%'
     });
 }
@@ -127,11 +131,11 @@ function showAbnormalPic(rowPicture){
         $("#Suggestion").attr("readonly","readonly");
     }
     else{
-        $("#Suggestion").removeAttr("readonly");
+        $("#Suggestion").preburyAttr("readonly");
     };
     $("#NameTr").attr("hidden","true");
-    $("#NameTr1").removeAttr("hidden");
-    $("#image").removeAttr("hidden");
+    $("#NameTr1").preburyAttr("hidden");
+    $("#image").preburyAttr("hidden");
     $("#submitBtn1").attr("hidden","true");
     $("#suggestionTr").attr("hidden","true");
     $("#Name1").text(rowPicture.userName);
@@ -155,14 +159,14 @@ function resolve(rowid){
 }
 function showAbnormalInfo(rowInfo){
     $("#image").attr("hidden","true");
-    $("#submitBtn1").removeAttr("hidden");
-    $("#suggestionTr").removeAttr("hidden");
+    $("#submitBtn1").preburyAttr("hidden");
+    $("#suggestionTr").preburyAttr("hidden");
 
     if(rowInfo.inspectChoiceValue=="正常"){        //正常时点击处理
         $("#Suggestion").attr("readonly","readonly");
 
         $("#NameTr").attr("hidden","true");
-        $("#NameTr1").removeAttr("hidden");
+        $("#NameTr1").preburyAttr("hidden");
 
         $.post($.URL.employee.getById,{"employeeId":rowInfo.maintainId},function setName1(data){
             if(data.data!=null){
@@ -183,10 +187,10 @@ function showAbnormalInfo(rowInfo){
     }
     else{
 
-        $("#Suggestion").removeAttr("readonly");
+        $("#Suggestion").preburyAttr("readonly");
 
         $("#NameTr1").attr("hidden","true");
-        $("#NameTr").removeAttr("hidden");
+        $("#NameTr").preburyAttr("hidden");
 
         $("#Choice").val(rowInfo.inspectChoiceValue);
         $("#Device").text(rowInfo.deviceName);
@@ -232,7 +236,7 @@ $("#submitBtn1").click(function(){
 function addCallBack(data){
     if(data.code==200){
         $.ligerDialog.success(data.message);
-        getContractList();
+        getPreburyList();
     }
 
     else{
@@ -244,11 +248,11 @@ function addCallBack(data){
 </head>
 <body>
 <div class="searchContainer">
-    <div class="searchItem"><span class="item_font">合同名称:</span><span class="item_input"><input id="contractDeviceName" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">客户名称:</span><span class="item_input"><input id="contractUserName" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="contractStartTime" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="contractEndTime" type="text"></span></div>
-    <div class="btn"><span><input type="button" value="查看" id="getContractListBtn" class="l-button l-button-submit" /></span></div>
+    <div class="searchItem"><span class="item_font">拆卸设备:</span><span class="item_input"><input id="preburyDeviceName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">拆卸人员:</span><span class="item_input"><input id="preburyUserName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="preburyStartTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="preburyEndTime" type="text"></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="getPreburyListBtn" class="l-button l-button-submit" /></span></div>
 </div>
 <div class="exportDiv" id="exportDeviceDiv">
                  <span class="exportType">
@@ -257,7 +261,7 @@ function addCallBack(data){
                  </span>
     <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn"  class="l-button l-button-submit"/></span></span>
 </div>
-<div class="reportContent" id="contractShow"></div>
+<div class="reportContent" id="preburyShow"></div>
 
 <div id="uploadInfo" style="display: none">
     <form name="form1" method="post" action="" id="form1"  >

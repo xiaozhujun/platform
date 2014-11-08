@@ -17,4 +17,6 @@ import java.util.Map;
 public interface PreBuryMapper extends AbstractMapper<PreBury>{
     public List<Map<String,String>> getListByAppId(long appId);
     public long getIdByContractId(@Param("contractId") long contractId);
+
+    public List<Map<String,String>> getPreburyList(Map<String,Object> condition);
 }

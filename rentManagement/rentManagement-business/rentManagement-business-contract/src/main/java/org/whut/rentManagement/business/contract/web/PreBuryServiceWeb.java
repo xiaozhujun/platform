@@ -5,11 +5,8 @@ import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
-import org.whut.rentManagement.business.contract.entity.Installation;
 import org.whut.rentManagement.business.contract.entity.PreBury;
-import org.whut.rentManagement.business.contract.entity.subInstallation;
 import org.whut.rentManagement.business.contract.entity.subPreBury;
-import org.whut.rentManagement.business.contract.service.InstallationService;
 import org.whut.rentManagement.business.contract.service.PreBuryService;
 
 import javax.ws.rs.FormParam;
@@ -19,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -116,6 +114,25 @@ public class PreBuryServiceWeb {
         PreBury preBury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,PreBury.class);
         preBuryService.delete(preBury);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getPreburyList")
+    @POST
+    public String getPreburyList(@FormParam("user")String user,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        Map<String,Object> condition = new HashMap<String, Object>();
+        if(user!=null&&!user.equals("")){
+            condition.put("user",user);
+        }
+        if(sTime!=null&&!sTime.equals("")){
+            condition.put("startTime",sTime+" 00:00:00");
+        }
+        if(eTime!=null&&!eTime.equals("")){
+            condition.put("endTime",eTime+" 59:59:59");
+        }
+        condition.put("appId", UserContext.currentUserAppId());
+        List<Map<String,String>> list=preBuryService.getPreburyList(condition);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 
 

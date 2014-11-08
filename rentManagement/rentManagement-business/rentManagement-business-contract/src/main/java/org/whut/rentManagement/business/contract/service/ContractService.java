@@ -5,6 +5,7 @@ import org.whut.rentManagement.business.contract.entity.Contract;
 import org.whut.rentManagement.business.contract.mapper.ContractMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,5 +41,10 @@ public class ContractService {
     public Contract getContractById(long id,long appId){
         return contractMapper.getContractById(id,appId);
     }
+
+    public List<Map<String,String>> getContractList(Map<String,Object> condition){
+        return contractMapper.getContractList(condition);
+    }
+
 
 }

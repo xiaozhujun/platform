@@ -5,6 +5,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 import org.whut.rentManagement.business.contract.entity.Contract;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,4 +18,6 @@ public interface ContractMapper extends AbstractMapper<Contract> {
     public List<Contract> getListByAppId(@Param("appId")long appId) ;
     public Contract getContractById(@Param("id")long id,@Param("appId")long appId);
     public int deleteById(@Param("id")long id,@Param("appId")long appId);
+
+    public List<Map<String,String>> getContractList(Map<String,Object> condition);
 }

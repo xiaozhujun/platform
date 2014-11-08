@@ -144,7 +144,9 @@
         "dashboard":{
             "mainDeviceList":"rs/device/getMainDeviceList",
             "installationList":"rs/installation/getInstallList",
-            "removeList":"rs/remove/getRemoveList"
+            "removeList":"rs/remove/getRemoveList",
+            "preburyList":"rs/prebury/getPreburyList",
+            "contractList":"rs/contract/getContractList"
         }
     }
 })(jQuery);

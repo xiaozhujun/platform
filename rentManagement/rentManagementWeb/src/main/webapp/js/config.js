@@ -143,7 +143,8 @@
         },
         "dashboard":{
             "mainDeviceList":"rs/device/getMainDeviceList",
-            "installationList":"rs/installation/getInstallList"
+            "installationList":"rs/installation/getInstallList",
+            "removeList":"rs/remove/getRemoveList"
         }
     }
 })(jQuery);

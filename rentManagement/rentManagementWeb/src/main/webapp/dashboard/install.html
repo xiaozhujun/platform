@@ -31,11 +31,11 @@ $(function(){
 });
 
 function getInstallList(){
-    var installer=$("#installUserName").val();
-    var deviceName=$("#installDeviceName").val();
+    var user=$("#installUserName").val();
+    var device=$("#installDeviceName").val();
     var sTime=$("#installStartTime").val();
     var eTime=$("#installEndTime").val();
-    $.get($.URL.dashboard.installationList,{"deviceName":deviceName,"installer":installer,"sTime":sTime,"eTime":eTime},getInstallListCallback,"json");
+    $.post($.URL.dashboard.installationList,{"user":user,"device":device,"sTime":sTime,"eTime":eTime},getInstallListCallback,"json");
 }
 
 $("#getInstallListBtn").click(function(){

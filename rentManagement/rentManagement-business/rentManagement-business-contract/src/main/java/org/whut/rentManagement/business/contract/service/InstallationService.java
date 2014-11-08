@@ -32,7 +32,7 @@ public class InstallationService {
     public long getIdByDeviceId(long installDeviceId){
         return installationmapper.getIdByDeviceId(installDeviceId);
     }
-    public List<Map<String,String>> getInstallList(long appId){
-        return installationmapper.getInstallList(appId);
+    public List<Map<String,String>> getInstallList(Map<String,Object> condition){
+        return installationmapper.getInstallList(condition);
     }
 }

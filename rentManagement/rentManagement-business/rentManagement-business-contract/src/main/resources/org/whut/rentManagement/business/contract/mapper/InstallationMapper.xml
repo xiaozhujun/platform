@@ -61,9 +61,14 @@
         <if test="installDeviceId!=null">where INSTALLDEVICEID=#{installDeviceId}</if>
     </select>
 
-    <select id="getInstallList" parameterType="java.lang.Long" resultType="map">
+    <select id="getInstallList" parameterType="map" resultType="map">
         select installation.*,contract.name,contract.customerName
-        from installation,contract
-        where installation.contractId=contract.id and installation.APPID=#{appId}
+        from installation,contract,device
+        where installation.contractId=contract.id and installation.installDeviceId=device.id
+        <if test="appId!=null"> AND installation.APPID=#{appId}</if>
+        <if test="user!=null">AND installation.installMan like CONCAT('%',#{user},'%') </if>
+        <if test="device!=null">AND device.name like CONCAT('%',#{device},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND installation.installTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND installation.installTime<=#{endTime} ]]> </if>
     </select>
 </mapper>

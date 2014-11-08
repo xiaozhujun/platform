@@ -1,8 +1,5 @@
 package org.whut.rentManagement.business.contract.web;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.security.UserContext;
@@ -12,12 +9,8 @@ import org.whut.rentManagement.business.contract.entity.Installation;
 import org.whut.rentManagement.business.contract.entity.subInstallation;
 import org.whut.rentManagement.business.contract.service.InstallationService;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -125,6 +118,15 @@ public class InstallationServiceWeb {
         Installation installation = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Installation.class);
         installationservice.delete(installation);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getInstallList")
+    @GET
+    public String getInstallList(){
+        long appId = UserContext.currentUserAppId();
+        List<Map<String,String>> list=installationservice.getInstallList(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 
 }

@@ -142,7 +142,8 @@
             "getIdByNameAndAppId":"rs/storeHouse/getIdByNameAndAppId"
         },
         "dashboard":{
-            "mainDeviceList":"rs/device/getMainDeviceList"
+            "mainDeviceList":"rs/device/getMainDeviceList",
+            "installationList":"rs/installation/getInstallList"
         }
     }
 })(jQuery);

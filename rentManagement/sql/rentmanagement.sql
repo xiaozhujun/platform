@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-08 22:36:35
+Date: 2014-11-09 00:11:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -301,13 +301,15 @@ CREATE TABLE `installation` (
   `installMan` varchar(255) DEFAULT NULL,
   `installTime` date DEFAULT NULL,
   `installStatus` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of installation
 -- ----------------------------
+INSERT INTO `installation` VALUES ('1', '1', '安装', '1', '肖竹军', '2014-11-09', '未完成', null, '1');
 
 -- ----------------------------
 -- Table structure for power

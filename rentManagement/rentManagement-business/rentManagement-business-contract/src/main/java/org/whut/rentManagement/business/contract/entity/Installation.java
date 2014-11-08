@@ -17,6 +17,7 @@ public class Installation {
     private String installMan;
     private Date installTime;
     private String installStatus;
+    private String image;
     private long appId;
 
     public long getId() {
@@ -73,6 +74,14 @@ public class Installation {
 
     public void setInstallStatus(String installStatus) {
         this.installStatus = installStatus;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getAppId() {

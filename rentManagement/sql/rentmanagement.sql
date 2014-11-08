@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : yy
-Source Server Version : 50151
+Source Server         : localhost
+Source Server Version : 50533
 Source Host           : localhost:3306
 Source Database       : rentmanagement
 
 Target Server Type    : MYSQL
-Target Server Version : 50151
+Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-04 15:37:56
+Date: 2014-11-08 22:36:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `app`
+-- Table structure for app
 -- ----------------------------
 DROP TABLE IF EXISTS `app`;
 CREATE TABLE `app` (
@@ -34,7 +34,7 @@ CREATE TABLE `app` (
 INSERT INTO `app` VALUES ('1', '企业1', '1', '启用', '2014-05-28');
 
 -- ----------------------------
--- Table structure for `authority`
+-- Table structure for authority
 -- ----------------------------
 DROP TABLE IF EXISTS `authority`;
 CREATE TABLE `authority` (
@@ -52,7 +52,7 @@ INSERT INTO `authority` VALUES ('1', 'ROLE_USER', '用户', '1');
 INSERT INTO `authority` VALUES ('2', 'ROLE_ADMIN', '管理员', '1');
 
 -- ----------------------------
--- Table structure for `authority_power`
+-- Table structure for authority_power
 -- ----------------------------
 DROP TABLE IF EXISTS `authority_power`;
 CREATE TABLE `authority_power` (
@@ -76,7 +76,7 @@ INSERT INTO `authority_power` VALUES ('7', '2', '4', '/index.jsp', 'ROLE_ADMIN')
 INSERT INTO `authority_power` VALUES ('8', '2', '15', 'cas/**', 'ROLE_ADMIN');
 
 -- ----------------------------
--- Table structure for `bad_debt_device`
+-- Table structure for bad_debt_device
 -- ----------------------------
 DROP TABLE IF EXISTS `bad_debt_device`;
 CREATE TABLE `bad_debt_device` (
@@ -84,14 +84,15 @@ CREATE TABLE `bad_debt_device` (
   `badDebtId` bigint(20) DEFAULT NULL,
   `deviceId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bad_debt_device
 -- ----------------------------
+INSERT INTO `bad_debt_device` VALUES ('1', '1', '1');
 
 -- ----------------------------
--- Table structure for `bad_debt_sheet`
+-- Table structure for bad_debt_sheet
 -- ----------------------------
 DROP TABLE IF EXISTS `bad_debt_sheet`;
 CREATE TABLE `bad_debt_sheet` (
@@ -107,14 +108,15 @@ CREATE TABLE `bad_debt_sheet` (
   `creator` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bad_debt_sheet
 -- ----------------------------
+INSERT INTO `bad_debt_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-06', '肖竹军', '1');
 
 -- ----------------------------
--- Table structure for `car_driver`
+-- Table structure for car_driver
 -- ----------------------------
 DROP TABLE IF EXISTS `car_driver`;
 CREATE TABLE `car_driver` (
@@ -125,14 +127,15 @@ CREATE TABLE `car_driver` (
   `createTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of car_driver
 -- ----------------------------
+INSERT INTO `car_driver` VALUES ('1', 'xxx', 'x1234', 'xxx', '2014-10-29', '1');
 
 -- ----------------------------
--- Table structure for `contract`
+-- Table structure for contract
 -- ----------------------------
 DROP TABLE IF EXISTS `contract`;
 CREATE TABLE `contract` (
@@ -161,14 +164,15 @@ CREATE TABLE `contract` (
   `removeTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of contract
 -- ----------------------------
+INSERT INTO `contract` VALUES ('1', '1', 'xxx', '合同1', '1111', null, '2014-11-04', '2014-11-14', '2014-11-02', '武汉市', '肖竹军', null, null, null, '0', '0', null, null, null, null, null, null, null, '1');
 
 -- ----------------------------
--- Table structure for `customer`
+-- Table structure for customer
 -- ----------------------------
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
@@ -185,14 +189,15 @@ CREATE TABLE `customer` (
   `createTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of customer
 -- ----------------------------
+INSERT INTO `customer` VALUES ('1', 'xxx', 'xxx', 'xxx地址', 'xxx', '543234234', 'sdfsdf@163.com', '234234234', 'xxx', '12332423423', '2014-10-29', '1');
 
 -- ----------------------------
--- Table structure for `department`
+-- Table structure for department
 -- ----------------------------
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department` (
@@ -202,14 +207,15 @@ CREATE TABLE `department` (
   `createTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of department
 -- ----------------------------
+INSERT INTO `department` VALUES ('1', 'xxx', 'xxx1', '2014-10-29', '1');
 
 -- ----------------------------
--- Table structure for `device`
+-- Table structure for device
 -- ----------------------------
 DROP TABLE IF EXISTS `device`;
 CREATE TABLE `device` (
@@ -226,20 +232,24 @@ CREATE TABLE `device` (
   `produceTime` date DEFAULT NULL,
   `createTime` date DEFAULT NULL,
   `priceUnit` varchar(255) DEFAULT NULL,
+  `lng` varchar(255) DEFAULT NULL,
+  `lat` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
+INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', '武汉市武昌区', '正常', '司机室001', 'sjs001', null, '2013-10-01', '2014-11-06', null, '114.380494', '30.507115', '1');
+INSERT INTO `device` VALUES ('2', '2', '1', '1', '1', '武汉市洪山区', '在用', '司机室002', 'sjs002', null, '2013-10-08', '2014-11-08', null, '114.380494', '30.506115', '1');
 
 -- ----------------------------
--- Table structure for `device_type`
+-- Table structure for device_type
 -- ----------------------------
 DROP TABLE IF EXISTS `device_type`;
 CREATE TABLE `device_type` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `createTime` date DEFAULT NULL,
@@ -248,14 +258,15 @@ CREATE TABLE `device_type` (
   `warnTime` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device_type
 -- ----------------------------
+INSERT INTO `device_type` VALUES ('1', '司机室', '司机室', '2014-11-06', '台', '0', '5', '1');
 
 -- ----------------------------
--- Table structure for `employee`
+-- Table structure for employee
 -- ----------------------------
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
@@ -271,14 +282,15 @@ CREATE TABLE `employee` (
   `createTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
+INSERT INTO `employee` VALUES ('1', '1', '安装', '男', '1', '18511451798', 'xiaozhujun520@163.com', '2014-11-03', '现场经理', '2014-11-06', '1');
 
 -- ----------------------------
--- Table structure for `installation`
+-- Table structure for installation
 -- ----------------------------
 DROP TABLE IF EXISTS `installation`;
 CREATE TABLE `installation` (
@@ -298,7 +310,7 @@ CREATE TABLE `installation` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `power`
+-- Table structure for power
 -- ----------------------------
 DROP TABLE IF EXISTS `power`;
 CREATE TABLE `power` (
@@ -319,7 +331,7 @@ INSERT INTO `power` VALUES ('4', '/index.jsp', 'url', null);
 INSERT INTO `power` VALUES ('15', 'cas/**', 'service', 'cas client test from android');
 
 -- ----------------------------
--- Table structure for `prebury`
+-- Table structure for prebury
 -- ----------------------------
 DROP TABLE IF EXISTS `prebury`;
 CREATE TABLE `prebury` (
@@ -337,7 +349,7 @@ CREATE TABLE `prebury` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `remove`
+-- Table structure for remove
 -- ----------------------------
 DROP TABLE IF EXISTS `remove`;
 CREATE TABLE `remove` (
@@ -356,7 +368,7 @@ CREATE TABLE `remove` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `selfinspect`
+-- Table structure for selfinspect
 -- ----------------------------
 DROP TABLE IF EXISTS `selfinspect`;
 CREATE TABLE `selfinspect` (
@@ -375,7 +387,7 @@ CREATE TABLE `selfinspect` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `skill`
+-- Table structure for skill
 -- ----------------------------
 DROP TABLE IF EXISTS `skill`;
 CREATE TABLE `skill` (
@@ -385,14 +397,15 @@ CREATE TABLE `skill` (
   `createTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of skill
 -- ----------------------------
+INSERT INTO `skill` VALUES ('1', '安装', '安装技能', '2014-11-06', '1');
 
 -- ----------------------------
--- Table structure for `stock_in_device`
+-- Table structure for stock_in_device
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_in_device`;
 CREATE TABLE `stock_in_device` (
@@ -407,7 +420,7 @@ CREATE TABLE `stock_in_device` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `stock_in_sheet`
+-- Table structure for stock_in_sheet
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_in_sheet`;
 CREATE TABLE `stock_in_sheet` (
@@ -423,14 +436,15 @@ CREATE TABLE `stock_in_sheet` (
   `creator` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stock_in_sheet
 -- ----------------------------
+INSERT INTO `stock_in_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-06', '肖竹军', '1');
 
 -- ----------------------------
--- Table structure for `stock_out_device`
+-- Table structure for stock_out_device
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_out_device`;
 CREATE TABLE `stock_out_device` (
@@ -438,14 +452,15 @@ CREATE TABLE `stock_out_device` (
   `stockOutId` bigint(20) DEFAULT NULL,
   `deviceId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stock_out_device
 -- ----------------------------
+INSERT INTO `stock_out_device` VALUES ('1', '0', '1');
 
 -- ----------------------------
--- Table structure for `stock_out_sheet`
+-- Table structure for stock_out_sheet
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_out_sheet`;
 CREATE TABLE `stock_out_sheet` (
@@ -461,14 +476,15 @@ CREATE TABLE `stock_out_sheet` (
   `creator` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stock_out_sheet
 -- ----------------------------
+INSERT INTO `stock_out_sheet` VALUES ('1', '123123', 'x1234', '1', '1111', '肖竹军', '1', '没有描述', '2014-11-06', '肖竹军', '1');
 
 -- ----------------------------
--- Table structure for `storehouse`
+-- Table structure for storehouse
 -- ----------------------------
 DROP TABLE IF EXISTS `storehouse`;
 CREATE TABLE `storehouse` (
@@ -481,14 +497,15 @@ CREATE TABLE `storehouse` (
   `createTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of storehouse
 -- ----------------------------
+INSERT INTO `storehouse` VALUES ('1', '第一仓库', null, '武汉市武昌区', '肖竹军', '18511451798', '2014-11-06', '1');
 
 -- ----------------------------
--- Table structure for `storehouse_device`
+-- Table structure for storehouse_device
 -- ----------------------------
 DROP TABLE IF EXISTS `storehouse_device`;
 CREATE TABLE `storehouse_device` (
@@ -504,7 +521,7 @@ CREATE TABLE `storehouse_device` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `supplier`
+-- Table structure for supplier
 -- ----------------------------
 DROP TABLE IF EXISTS `supplier`;
 CREATE TABLE `supplier` (
@@ -519,14 +536,16 @@ CREATE TABLE `supplier` (
   `createTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of supplier
 -- ----------------------------
+INSERT INTO `supplier` VALUES ('1', 'xxx公司', 'sdfsdf', 'xxx地址', 'xxx', '1234123123', 'sdfsdf@163.com', '888888', '2014-10-29', '1');
+INSERT INTO `supplier` VALUES ('2', 'sss公司', 'sssss', 'sss地址', 'sss', '54545345', 'sdfsdf@163.com', '65645451', '2014-10-29', '1');
 
 -- ----------------------------
--- Table structure for `user`
+-- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -550,7 +569,7 @@ INSERT INTO `user` VALUES ('3', 'sunhui', 'e68fa2bc61b75b8a06766e25905052c7', '�
 INSERT INTO `user` VALUES ('4', 'liujinxia', 'c99c1cbefe13019978d90cb442cb8f78', '女', 'ROLE_ADMIN', '1', '启用', null);
 
 -- ----------------------------
--- Table structure for `user_authority`
+-- Table structure for user_authority
 -- ----------------------------
 DROP TABLE IF EXISTS `user_authority`;
 CREATE TABLE `user_authority` (

@@ -34,6 +34,12 @@
             { id: "0", text: '否' },
             { id: "1", text: '是'}
         ];
+        $("#mainDevice").ligerComboBox({isShowCheckBox:true,emptyText:null,  //实现下拉框
+            data:inputData,
+            width:200,
+            valueField:'id',
+            textField:'text'
+        });
         var manager,g;
         function f_initGrid(){
             g = manager = $("#maingrid").ligerGrid( {
@@ -49,20 +55,20 @@
                     { display: '是否主设备', name: 'mainDevice', type: 'string', width: 70,
                         editor: { type: 'select', data: inputData, emptyText: null, valueField: 'id', textField: 'text'},
                         render: function (item) {
-                            if (parseInt(item.input) == 0)
+//                            console.log(item.mainDevice);
+                            if (parseInt(item.mainDevice) == 0)
                                 return '否';
                             else
                                 return '是';
                         }
                     },
-                    {display:'保修年限',name:'warnTime',width:100,type:"int",
-                        editor:{type:"int"}
+                    {display:'使用年限',name:'warnTime',width:100,type:"text",
+                        editor:{type:"text"}
                     },
                     {display:'单位',name:'unit',
                         editor:{type:'text'}
                     },
-                    { display: '创建时间', name: 'createTime', width: 100,type:"date",
-                        editor:{type:'date'}},
+                    { display: '创建时间', name: 'createTime', width: 100,type:"date"},
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {
                         var h="";
@@ -104,11 +110,12 @@
             $.post($.URL.deviceType.update,{"jsonString":jsonString},updateCallBack,"json");
         }
         function updateCallBack(data){
+            $.post($.URL.deviceType.list,null,listCallBack,"json");
             if(data.code==200){
                 $.ligerDialog.success("修改成功") ;
             }
             else{
-                $.ligerDialog.error("修改失败！");
+                $.ligerDialog.error(data.message);
             }
         }
         function deleteRow(rowid){
@@ -130,6 +137,7 @@
             }
         }
         $("#addSubmitBtn").click(function(){
+            document.getElementById('form1').reset();
             f_show();
             $.ligerDialog.open({title:'添加设备类型', target: $("#addDeviceType"),width:500});
         });
@@ -143,8 +151,9 @@
             data.name=$("#deviceTypeName").val();
             data.unit=$("#deviceTypeUnit").val();
             data.warnTime=$("#deviceTypeWarnTime").val();
+            data.mainDevice=$("#mainDevice").ligerCheckBox().getValue();
             data.description=$("#deviceTypeDescription").val();
-            data.createTime=$( "#createTime").val();
+            data.priceUnit=$("#priceUnit").val();
             //var toData = JSON.stringify(data);
             $.post($.URL.deviceType.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
         });
@@ -154,7 +163,7 @@
                 $.ligerDialog.success('操作成功');
                 $.post($.URL.deviceType.list,null,listCallBack,"json");
             }
-            else if(data.code==500)
+            else
             {
                 $.ligerDialog.error(data.message);
             }
@@ -185,25 +194,31 @@
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">所属单位:</td>
+                <td align="right" class="l-table-edit-td">计量单位:</td>
                 <td align="left" class="l-table-edit-td"><input name="deviceTypeUnit" type="text"  id="deviceTypeUnit" ltype="text"></td>
                 <td align="left"></td>
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">报修年限:</td>
+                <td align="right" class="l-table-edit-td">使用年限:</td>
                 <td align="left" class="l-table-edit-td"><input name="deviceTypeWarnTime" type="text"  id="deviceTypeWarnTime" ltype="text"></td>
                 <td align="left"></td>
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">创建时间:</td>
-                <td align="left" class="l-table-edit-td"><input name="createTime" type="text" id="createTime" ltype="date" /></td>
+                <td align="right" class="l-table-edit-td">是否主设备:</td>
+                <td align="left" class="l-table-edit-td"><input name="mainDevice" type="text"  id="mainDevice" readonly="true"></td>
                 <td align="left"></td>
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">类型描述:</td>
+                <td align="right" class="l-table-edit-td">单价:</td>
+                <td align="left" class="l-table-edit-td"><input name="priceUnit" type="text" id="priceUnit" ltype="text" ></td>
+                </td><td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">描述:</td>
                 <td align="left" class="l-table-edit-td"><textarea name="deviceTypeDescription" type="text" id="deviceTypeDescription" cols="20" rows="2" class="l-textarea" style="width:400px"></textarea>
                 </td><td align="left"></td>
             </tr>

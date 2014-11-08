@@ -9,10 +9,10 @@ package org.whut.rentManagement.business.device.entity;
  */
 public class SubDevice {
     private long id;
-    private long mainDeviceId;
-    private long typeId;
-    private long storehouseId;
-    private long contractId;
+    private String mainDeviceId;
+    private String deviceType;
+    private String storehouse;
+    private String contract;
     private String address;
     private String status;
     private String name;
@@ -21,7 +21,6 @@ public class SubDevice {
     private String produceTime;
     private String createTime;
     private String priceUnit;
-    private long appId;
 
     public long getId() {
         return id;
@@ -29,38 +28,6 @@ public class SubDevice {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getMainDeviceId() {
-        return mainDeviceId;
-    }
-
-    public void setMainDeviceId(long mainDeviceId) {
-        this.mainDeviceId = mainDeviceId;
-    }
-
-    public long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(long typeId) {
-        this.typeId = typeId;
-    }
-
-    public long getStorehouseId() {
-        return storehouseId;
-    }
-
-    public void setStorehouseId(long storehouseId) {
-        this.storehouseId = storehouseId;
-    }
-
-    public long getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(long contractId) {
-        this.contractId = contractId;
     }
 
     public String getAddress() {
@@ -127,11 +94,35 @@ public class SubDevice {
         this.priceUnit = priceUnit;
     }
 
-    public long getAppId() {
-        return appId;
+    public String getMainDeviceId() {
+        return mainDeviceId;
     }
 
-    public void setAppId(long appId) {
-        this.appId = appId;
+    public void setMainDeviceId(String mainDeviceId) {
+        this.mainDeviceId = mainDeviceId;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public String getStorehouse() {
+        return storehouse;
+    }
+
+    public void setStorehouse(String storehouse) {
+        this.storehouse = storehouse;
+    }
+
+    public String getContract() {
+        return contract;
+    }
+
+    public void setContract(String contract) {
+        this.contract = contract;
     }
 }

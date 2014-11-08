@@ -27,8 +27,28 @@ function deviceCallback(data) {
         gridData.Rows = data.data;
         gridData.Total = data.data.length;
         f_initGrid();
+        mainDevice(data);
     }
 }
+//var mainDeviceData =[];  mainDevice字段的相关部分功能添加
+//function mainDevice(data){
+//    if (data.code == 200) {
+//        $.each(data.data, function (index, content) {
+//            var j = {};
+//            j["text"] = content.name;
+//            j["id"] = content.id;
+//            mainDeviceData.push(j);
+//        });
+//        $("#mainDevice").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+//            data:mainDeviceData,
+//            width:200,
+//            valueField:'id',
+//            textField:'text'
+////            valueFieldID:'mainDevice'   /*下拉表Id是Device*/
+//        });
+//    }
+//};
+
 var deviceTypeData = [];
 function deviceTypeListCallBack(data) {
     if (data.code == 200) {
@@ -38,7 +58,7 @@ function deviceTypeListCallBack(data) {
             j["id"] = content.id;
             deviceTypeData.push(j);
         });
-        $("#deviceType").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,emptyText:null,    /*实现下拉表*/
+        $("#deviceType").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
             data:deviceTypeData,
             width:200,
             valueField:'id',
@@ -57,14 +77,14 @@ function storehouseListCallback(data) {
             j["id"] = content.id;
             storehouseData.push(j);
         });
-    $("#storehouse").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,emptyText:null,    /*实现下拉表*/
-        data:storehouseData,
-        width:200,
-        valueField:'id',
-        textField:'text',
-        valueFieldID:'storehouseSelect'
-    });
-}
+        $("#storehouse").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:storehouseData,
+            width:200,
+            valueField:'id',
+            textField:'text',
+            valueFieldID:'storehouseSelect'
+        });
+    }
 }
 var contractData=[];
 function listContractCallback(data){
@@ -75,7 +95,7 @@ function listContractCallback(data){
             j["text"]=content.name;
             contractData.push(j);
         });
-        $("#contract").ligerComboBox({isShowCheckBox:true,isMultiSelect:true,emptyText:null,  //实现下拉框
+        $("#contract").ligerComboBox({isShowCheckBox:true,emptyText:null,  //实现下拉框
             data:contractData,
             width:200,
             valueField:'id',
@@ -101,24 +121,24 @@ function f_initGrid() {
             { display: '设备名', name: 'name',
                 editor: { type: 'text'}
             },
-            { display: '设备编号', name: 'number', type: 'string',
+            { display: '设备编号', name: 'number', type: 'text',
                 editor: { type: 'text'}
             },
-            { display: '设备类型', name: 'deviceType',
+            { display: '设备类型', name: 'deviceType',type: 'text',
                 editor: { type: 'select', emptyText: null, data:deviceTypeData, valueField: 'id', textField: 'text'
                 },
                 render: function (item) {
                     return item.deviceType;
                 }
             },
-            { display: '所属仓库', name: 'storehouse',
+            { display: '所属仓库', name: 'storehouse',type: 'text',
                 editor: { type: 'select', emptyText: null, data: storehouseData, valueField: 'id', textField: 'text'
                 },
                 render: function (item) {
                     return item.storehouse;
                 }
             },
-            { display: '所属合同', name: 'contract',
+            { display: '所属合同', name: 'contract',type: 'text',
                 editor: { type: 'select', emptyText: null, data: contractData, valueField: 'id', textField: 'text'
                 },
                 render: function (item) {
@@ -128,7 +148,10 @@ function f_initGrid() {
             { display: '价格', name: 'price',
                 editor: { type: 'text'}
             },
-            { display: '创建时间', name: 'createTime', width: 100,editor:{type:'date'}},
+            { display: '设备状态', name: 'status',
+                editor: { type: 'text'}
+            },
+            { display: '创建时间', name: 'createTime', width: 100},
             { display:'生产时间',name:'produceTime',width:100,editor:{type:'date'}},
             { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value) {
                 var h = "";
@@ -194,6 +217,7 @@ function deleteCallback(data) {
 }
 
 $("#addSubmitBtn").click(function(){
+    document.getElementById('form1').reset();
     c_show();
     $.ligerDialog.open({title:'添加设备', target: $("#addDevice"),width:500});
 });
@@ -211,7 +235,6 @@ $("#submitBtn").click(function(){
     data.contractId=$("#contract").ligerComboBox().getValue();
     data.status=$("#deviceStatus").val();
     data.produceTime=$("#produceTime").val();
-    data.createTime=$( "#createTime").val();
     //var toData = JSON.stringify(data);
     //alert(toData);
     $.post($.URL.device.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
@@ -223,7 +246,7 @@ function addCallBack(data){
         $.ligerDialog.success('操作成功');
         $.post($.URL.device.list,null,deviceCallback,"json");
     }
-    else if(data.code==500)
+    else
     {
         $.ligerDialog.error(data.message);
     }
@@ -268,12 +291,6 @@ function addCallBack(data){
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">创建时间:</td>
-                <td align="left" class="l-table-edit-td"><input name="createTime" type="date" id="createTime" ltype="date" /></td>
-                <td align="left"></td>
-            </tr>
-
-            <tr>
                 <td align="right" class="l-table-edit-td">设备类型:</td>
                 <td align="left" class="l-table-edit-td"><input name="deviceType" type="text"  id="deviceType"></td>
                 <td align="left"></td>
@@ -281,13 +298,13 @@ function addCallBack(data){
 
             <tr>
                 <td align="right" class="l-table-edit-td">所属仓库:</td>
-                <td align="left" class="l-table-edit-td"><input name="storehouse" type="text" readonly="true" id="storehouse"></td>
+                <td align="left" class="l-table-edit-td"><input name="storehouse" type="text" id="storehouse"></td>
                 <td align="left"></td>
             </tr>
 
             <tr>
                 <td align="right" class="l-table-edit-td">所属合同:</td>
-                <td align="left" class="l-table-edit-td"><input name="contract" type="text" readonly="true" id="contract"></td>
+                <td align="left" class="l-table-edit-td"><input name="contract" type="text" id="contract"></td>
                 <td align="left"></td>
             </tr>
         </table>

@@ -5,6 +5,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 import org.whut.rentManagement.business.device.entity.Device;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +15,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface DeviceMapper extends AbstractMapper<Device> {
-    public List<Device> getListByAppId(long appId);
+    public List<Map<String,String>> getListByAppId(long appId);
     public int deleteById(@Param("id") long id);
     public long getIdByNumber(@Param("number") String number, @Param("appId") long appId);
 }

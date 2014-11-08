@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-09 00:11:41
+Date: 2014-11-09 02:24:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -169,7 +169,7 @@ CREATE TABLE `contract` (
 -- ----------------------------
 -- Records of contract
 -- ----------------------------
-INSERT INTO `contract` VALUES ('1', '1', 'xxx', '合同1', '1111', null, '2014-11-04', '2014-11-14', '2014-11-02', '武汉市', '肖竹军', null, null, null, '0', '0', null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('1', '1', 'xxx', '合同1', '1111', null, '2014-11-04', '2014-11-14', '2014-11-09', '武汉市', '肖竹军', null, null, null, '0', '0', null, null, null, null, null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for customer
@@ -342,20 +342,22 @@ CREATE TABLE `prebury` (
   `preBuryMan` varchar(255) DEFAULT NULL,
   `preBuryTime` date DEFAULT NULL,
   `preBuryStatus` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of prebury
 -- ----------------------------
+INSERT INTO `prebury` VALUES ('1', '1', '肖竹军', '2014-11-09', '完成', null, '1');
 
 -- ----------------------------
 -- Table structure for remove
 -- ----------------------------
 DROP TABLE IF EXISTS `remove`;
 CREATE TABLE `remove` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `contractId` bigint(20) DEFAULT NULL,
   `removeDeviceId` bigint(20) DEFAULT NULL,
   `removeMan` varchar(255) DEFAULT NULL,
@@ -363,11 +365,12 @@ CREATE TABLE `remove` (
   `removeTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of remove
 -- ----------------------------
+INSERT INTO `remove` VALUES ('1', '1', '1', '肖竹军', '完成', '2014-11-09', '1');
 
 -- ----------------------------
 -- Table structure for selfinspect
@@ -436,6 +439,7 @@ CREATE TABLE `stock_in_sheet` (
   `description` varchar(255) DEFAULT NULL,
   `createTime` date DEFAULT NULL,
   `creator` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -443,7 +447,7 @@ CREATE TABLE `stock_in_sheet` (
 -- ----------------------------
 -- Records of stock_in_sheet
 -- ----------------------------
-INSERT INTO `stock_in_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-06', '肖竹军', '1');
+INSERT INTO `stock_in_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-09', '肖竹军', null, '1');
 
 -- ----------------------------
 -- Table structure for stock_out_device
@@ -476,6 +480,7 @@ CREATE TABLE `stock_out_sheet` (
   `description` varchar(255) DEFAULT NULL,
   `createTime` date DEFAULT NULL,
   `creator` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -483,7 +488,7 @@ CREATE TABLE `stock_out_sheet` (
 -- ----------------------------
 -- Records of stock_out_sheet
 -- ----------------------------
-INSERT INTO `stock_out_sheet` VALUES ('1', '123123', 'x1234', '1', '1111', '肖竹军', '1', '没有描述', '2014-11-06', '肖竹军', '1');
+INSERT INTO `stock_out_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-09', '肖竹军', null, '1');
 
 -- ----------------------------
 -- Table structure for storehouse

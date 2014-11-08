@@ -68,6 +68,7 @@
             }
         }
         var shouldWarnData = [{ id: "0", text: '否' }, { id: "1", text: '是'}];
+        var warnTypeData = [{id:"0",text:'最大值'},{id:"1",text:'最小值'},{id:"2",text:'均方差'}];
         var manager, g;
         function f_initGrid()
         {
@@ -111,7 +112,13 @@
                             return item.shouldWarn;
                         }
                     },
-                    {display:'报警类型',name:'warnType',width:100,type:'text', editor: { type: 'text'}},
+//                    {display:'报警类型',name:'warnType',width:100,type:'text', editor: { type: 'text'}},
+                    {display:'报警类型',name:'warnType',width:100,type:'text',
+                        editor: { type: 'select',emptyText:null,data:warnTypeData,valueField:'text'},
+                        render:function(item) {
+                            return item.warnType;
+                        }
+                    },
                     {display:'报警值',name:'warnValue',width:100,type:'text', editor: { type: 'text'}},
                     //{display:'报警次数',name:'warnCount',width:100,type:'int', editor: { type: 'text'}},
                     //{display:'报警状态',name:'warnStatus',width:100,type:'text', editor: { type: 'text'}},

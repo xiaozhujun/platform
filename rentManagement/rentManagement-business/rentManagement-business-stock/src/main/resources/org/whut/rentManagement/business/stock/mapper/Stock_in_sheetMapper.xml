@@ -44,7 +44,10 @@
         <set>
             <if test="number!= null">NUMBER=#{number},</if>
             <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
+            <if test="customerId!=null">CUSTOMERID=#{customerId},</if>
+            <if test="contractId!=null">CONTRACTID=#{contractId},</if>
             <if test="handler!=null">HANDLER=#{handler},</if>
+            <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
             <if test="createTime!=null">CREATETIME=#{createTime},</if>
             <if test="creator!=null">CREATOR=#{creator},</if>

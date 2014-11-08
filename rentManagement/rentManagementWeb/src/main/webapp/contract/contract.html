@@ -49,8 +49,8 @@
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '合同名',name: 'name',width: 100,editor:{type:'text'},frozen: true} ,
-                    { display: '编号',name: 'number',width: 100,editor:{type:'text'},frozen: true},
+                    { display: '合同名称',name: 'name',width: 100,editor:{type:'text'},frozen: true} ,
+                    { display: '合同编号',name: 'number',width: 100,editor:{type:'text'},frozen: true},
                     { display: '客户姓名', name: 'customerName',width: 100},
                     { display: '负责人', name: 'chargeMan',width: 100},
                     { display: '项目地点', name: 'projectLocation',width: 100},
@@ -156,7 +156,7 @@
             $("#startTime").ligerDateEditor();
             $("#endTime").ligerDateEditor();
             $("#signTime").ligerDateEditor();
-            $.ligerDialog.open({ target: $("#addContract"),width:500 });
+            $.ligerDialog.open({ target: $("#addContract"),width:500,title:'添加合同'});
         }
 
         function customerCallback(data){
@@ -190,7 +190,8 @@
     </script>
     <style type="text/css">
         .l-table-edit {}
-        .l-table-edit-td{ padding:4px;}
+        .l-table-edit-td{margin-left:30px; margin-top:10px;padding:4px;height: 20px}
+        .l-table-edit-input{ padding:4px;width:300px}
         .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
         .l-dialog-tc{background:#E0EDFF; }
     </style>
@@ -205,35 +206,35 @@
 <div id="maingrid" style="margin-top:5px"></div>
 
 <div id="addContract" style=" margin:3px; display:none;">
-    <form name="form1" method="post" action="" id="form1">
+    <form name="form1" method="post" action="" id="form1" style="margin-left: 15px">
 
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
                 <td align="right" class="l-table-edit-td">合同名称:</td>
-                <td align="left" class="l-table-edit-td"><input name="contractName" type="text" id="contractName" ></td>
+                <td align="left" class="l-table-edit-td"><input name="contractName" class="l-table-edit-input" type="text" id="contractName" ></td>
                 <td align="left"></td>
-                <!--</tr>-->
-                <!--<tr>-->
-                <td align="right" class="l-table-edit-td">合同序号:</td>
-                <td align="left" class="l-table-edit-td"><input name="contractNumber" type="text" id="contractNumber" ></td>
+                </tr>
+                <tr>
+                <td align="right" class="l-table-edit-td">合同编号:</td>
+                <td align="left" class="l-table-edit-td"><input name="contractNumber" class="l-table-edit-input" type="text" id="contractNumber" ></td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">客户名称:</td>
                 <td align="left" class="l-table-edit-td"><input name="customerName" type="text" id="customerName" ></td>
                 <td align="left"></td>
-                <!--</tr>-->
-                <!--<tr>-->
+                </tr>
+                <tr>
                 <td align="right" class="l-table-edit-td">负责人:</td>
-                <td align="left" class="l-table-edit-td"><input name="chargeMan" type="text" id="chargeMan" ></td>
+                <td align="left" class="l-table-edit-td"><input name="chargeMan" class="l-table-edit-input" type="text" id="chargeMan" ></td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">项目地点:</td>
-                <td align="left" class="l-table-edit-td"><input name="projectLocation" type="text" id="projectLocation" ></td>
+                <td align="left" class="l-table-edit-td"><input name="projectLocation" class="l-table-edit-input" type="text" id="projectLocation" ></td>
                 <td align="left"></td>
-                <!--</tr>-->
-                <!--<tr>-->
+                </tr>
+                <tr>
                 <td align="right" class="l-table-edit-td">签订时间:</td>
                 <td align="left" class="l-table-edit-td"><input name="signTime" type="text" id="signTime" ></td>
                 <td align="left"></td>
@@ -242,8 +243,8 @@
                 <td align="right" class="l-table-edit-td">开始时间:</td>
                 <td align="left" class="l-table-edit-td"><input name="startTime" type="text" id="startTime" ></td>
                 <td align="left"></td>
-                <!--</tr>-->
-                <!--<tr>-->
+                </tr>
+                <tr>
                 <td align="right" class="l-table-edit-td">结束时间:</td>
                 <td align="left" class="l-table-edit-td"><input name="endTime" type="text" id="endTime" ></td>
                 <td align="left"></td>

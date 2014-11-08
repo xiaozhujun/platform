@@ -36,4 +36,5 @@ public interface SensorMapper extends AbstractMapper<Sensor>{
     public Long getAppIdBySNum(String sNum);
     public Long getGroupIdBySNum(String sNum);
     public List<Map<String,String>> getListByGroupName(@Param("appId") long appId, @Param("group") String group);
+    public Long getDataTypeBySNumAndAppId(@Param("number") String number, @Param("appId") long appId);
 }

@@ -10,30 +10,40 @@
             loadTabPage(tabid);
         }});
 
-        loadTabPage('contractTab');
+        loadTabPage('locationTab');
     });
     function loadTabPage(tabid){
-        if(tabid=="contractTab"){
-            $("#"+tabid).load("dashboard/contractTab.html");
-        }else if(tabid=="employeeTab"){
-            $("#"+tabid).load("dashboard/employeeTab.html");
-        }else if(tabid=="deviceTab"){
-            $("#"+tabid).load("dashboard/deviceTab.html");
-        }else if(tabid=="storeTab"){
-            $("#"+tabid).load("dashboard/storeTab.html");
+        var tab =$("#"+tabid);
+        if(tab.attr("url")!=""){
+            tab.load(tab.attr("url"))
         }
+//        if(tabid=="contractTab"){
+//            $("#"+tabid).load("dashboard/contract.html");
+//        }else if(tabid=="employeeTab"){
+//            $("#"+tabid).load("dashboard/employee.html");
+//        }else if(tabid=="deviceTab"){
+//            $("#"+tabid).load("dashboard/device.html");
+//        }else if(tabid=="storeTab"){
+//            $("#"+tabid).load("dashboard/store.html");
+//        }
     }
 </script>
 <style type="text/css">
 </style>
 <div id="tab" style="height: 100%;">
-    <div id="contractTab" tabid="contractTab" title="合同" style="height: 100%;">
+    <div id="locationTab" tabid="locationTab" url="dashboard/location.html" title="设备实况" style="height: 100%;">
     </div>
-    <div id="employeeTab" tabid="employeeTab" title="人员" style="height: 100%;">
+    <div id="installTab" tabid="installTab" url="dashboard/install.html"  title="安装" style="height: 100%;">
     </div>
-    <div id="deviceTab" tabid="deviceTab" title="设备" style="height: 100%;">
+    <div id="removeTab" tabid="removeTab" url="dashboard/remove.html"  title="拆卸" style="height: 100%;">
     </div>
-    <div id="storeTab" tabid="storeTab" title="仓库" style="height: 100%;">
+    <div id="transmitTab" tabid="transmitTab" url="dashboard/transmit.html"  title="运输" style="height: 100%;">
+    </div>
+    <div id="contractTab" tabid="contractTab" url="dashboard/contract.html"  title="合同" style="height: 100%;">
+    </div>
+    <div id="storeTab" tabid="storeTab" url="dashboard/store.html"  title="仓库" style="height: 100%;">
+    </div>
+    <div id="deviceTab" tabid="deviceTab" url="dashboard/device.html"  title="零部件" style="height: 100%;">
     </div>
 
 </div>

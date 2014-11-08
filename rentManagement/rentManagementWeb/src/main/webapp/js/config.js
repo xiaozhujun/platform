@@ -140,6 +140,9 @@
             "delete": "rs/storeHouse/delete" ,
             "update":"rs/storeHouse/update",
             "getIdByNameAndAppId":"rs/storeHouse/getIdByNameAndAppId"
+        },
+        "dashboard":{
+            "deviceLocationList":"rs/device/locationList"
         }
     }
 })(jQuery);

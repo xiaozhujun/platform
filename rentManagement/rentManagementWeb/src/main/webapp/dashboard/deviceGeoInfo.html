@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="js/map/data.js"></script>
+    <script type="text/javascript" src="js/map/initMap.js"></script>
+    <script type="text/javascript" src="js/map/addMarker.js"></script>
+    <script type="text/javascript" src="lib/json2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //$.initMap("中国",20);
+            //取数据时,得按照app来分组
+            $.get($.URL.dashboard.deviceLocationList,null,getDeviceLocateInfoCallback,"json");
+            /*var j={userId:"1",userName:"test",inspectStartTime:"2014-7-11",inspectEndTime:"2014-7-11",deviceId:"1",devName:"test",inspectTableId:"1",inspectTableName:"test",lng:"test",lat:"test",appId:"1",status:"0",address:"0"};
+            var  jsonString= $.toJSON(j);
+            $.post($.URL.inspectLocate.receiveInspectLocateInfo,{"jsonString":jsonString},receiveInspectLocateInfoCallback,"json");*/
+        });
+        function getDeviceLocateInfoCallback(data){
+            if(data.data[0]==undefined){
+                $.initMap("中国",5);
+            }else{
+            $("#container").css("display","block");
+            $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
+
+            $.addMyMark(data);
+            $("#rightshow").html("");
+            for(i=0;i<data.data.length;i++){
+                var hideField={"userId":data.data[i].userId,"userName":data.data[i].userName,"devName":data.data[i].devName,"inspectTableName":data.data[i].inspectTableName,"lng":data.data[i].lng,"lat":data.data[i].lat,"inspectStartTime":data.data[i].inspectStartTime,"address":data.data[i].address,"image":data.data[i].image};
+                var jsonH= $.toJSON(hideField);
+                var userImage = "images/userDefaultIcon.jpg";
+                if(data.data[i].hasOwnProperty("image")) {
+                    userImage = data.data[i].image;
+                }
+                var device = data.data[i].deviceNum;
+                var table = data.data[i].inspectTableName;
+                if(device==undefined||device=="null"||device==""){
+                    device = "未选择";
+                }
+                if(table==undefined||table=="null"||table==""){
+                    table="未选择";
+                }
+                var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].userId+"'><div class='inspectpic'><img src='"+userImage+"'/></div><span class='inspectcontent'><span class='inspectApp'>点检人员:"+data.data[i].userName+"</span><span class='inspectAddress'><span class='inspectFont'>点检设备:</span>"+device+"</span><span class='inspectAddress'><span class='inspectFont'>点检项目:</span>"+table+"</span><span class='inspectAddress'><span class='inspectFont'>当前位置:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].userId+"'>"+jsonH+"</span></span></span></div></div>";
+                $("#rightshow").append(inspectItem);
+                var inspectItemId="#inspectItem"+data.data[i].userId;
+                var inspectInfoId="#inspectInfo"+data.data[i].userId;
+                $(inspectItemId).mouseover(function(){
+                    var id=this.id.substring(11,inspectItemId.length);
+                    var hideField="#hideField"+id;
+                    var data= JSON2.parse($(hideField).text());
+                    var userId=data.userId;
+                    var title="点检人员:"+data.userName;
+                    var userImage = "images/userDefaultIcon.jpg";
+                    if(data.hasOwnProperty("image")){
+                        userImage = data.image;
+                    }
+                    var device = data.deviceNum;
+                    var table = data.inspectTableName;
+                    if(device==undefined||device=="null"||device==""){
+                        device = "未选择";
+                    }
+                    if(table==undefined||table=="null"||table==""){
+                        table="未选择";
+                    }
+
+                    var content="<div style='float: left;width: 300px;'><div style='float:left'><img width='80' height='100' src='"+userImage+"'></div><div style='float: right;width: 200px;'>点检设备:"+device+"<br>点检项目:"+table+"<br>当前位置:"+data.address+"</div></div>";
+                    var point=data.lng+"|"+data.lat;
+                    isOpen=0;
+                    var icon={};
+                    icon.w=23;
+                    icon.h=25;
+                    icon.t=21;
+                    icon.x=9;
+                    icon.lb=12;
+                    icon.l=46;
+                    $.addOneMarkerWithId(userId,title,content,point,isOpen,icon,0);
+                });
+                $(inspectItemId).click(function(){
+                      inspectItemClick(this.id,this.id.substring(11,inspectItemId.length));
+                });
+            }
+
+        }
+            if(data.data.length>0){
+                setTimeout(function(){
+                    window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),17);
+                },1000);
+
+                //inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
+            }else{
+                $("#rightshow").html("没有在线的点检人员！");
+            }
+        }
+        function inspectItemClick(inspectItemId,inspectInfoId){
+            var inspectInfo="#inspectInfo"+inspectInfoId;
+
+            $(".inspectItemHover").removeClass("inspectItemHover");
+
+            if($("#"+inspectItemId).hasClass("inspectItem")){
+                $("#"+inspectItemId).addClass("inspectItemHover");
+            }else{
+                $("#"+inspectItemId).removeClass("inspectItemHover");
+            }
+            if($(inspectInfo).hasClass("inspectInfoHide")){
+                $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
+            }else{
+                $(inspectInfo).removeClass("inspectInfoClick").addClass("inspectInfoHide");
+            }
+        }
+        function receiveInspectLocateInfoCallback(data){
+
+        }
+    </script>
+    <style type="text/css">
+        #container{
+            width: 100%;
+           /* min-height:500px;*/
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>

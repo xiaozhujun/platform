@@ -40,4 +40,8 @@ public class DeviceService {
     public List<Map<String,String>> getListByAppId(long appId) {
         return deviceMapper.getListByAppId(appId);
     }
+
+    public List<Map<String,String>> getMainDeviceList(long appId) {
+        return deviceMapper.getMainDeviceList(appId);
+    }
 }

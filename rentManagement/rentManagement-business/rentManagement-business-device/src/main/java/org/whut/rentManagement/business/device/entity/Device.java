@@ -23,7 +23,27 @@ public class Device {
     private Date produceTime;
     private Date createTime;
     private String priceUnit;
+
+    private String lng;
+    private String lat;
+
     private long appId;
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
 
     public long getId() {
         return id;

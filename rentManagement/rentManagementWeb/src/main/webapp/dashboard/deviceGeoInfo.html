@@ -10,10 +10,10 @@
         $(document).ready(function(){
             //$.initMap("中国",20);
             //取数据时,得按照app来分组
-            $.get($.URL.dashboard.deviceLocationList,null,getDeviceLocateInfoCallback,"json");
-            /*var j={userId:"1",userName:"test",inspectStartTime:"2014-7-11",inspectEndTime:"2014-7-11",deviceId:"1",devName:"test",inspectTableId:"1",inspectTableName:"test",lng:"test",lat:"test",appId:"1",status:"0",address:"0"};
+            $.get($.URL.dashboard.mainDeviceList,null,getDeviceLocateInfoCallback,"json");
+            /*var j={deviceId:"1",userName:"test",deviceStartTime:"2014-7-11",deviceEndTime:"2014-7-11",deviceId:"1",devName:"test",deviceTableId:"1",deviceTableName:"test",lng:"test",lat:"test",appId:"1",status:"0",address:"0"};
             var  jsonString= $.toJSON(j);
-            $.post($.URL.inspectLocate.receiveInspectLocateInfo,{"jsonString":jsonString},receiveInspectLocateInfoCallback,"json");*/
+            $.post($.URL.deviceLocate.receiveInspectLocateInfo,{"jsonString":jsonString},receiveInspectLocateInfoCallback,"json");*/
         });
         function getDeviceLocateInfoCallback(data){
             if(data.data[0]==undefined){
@@ -25,44 +25,23 @@
             $.addMyMark(data);
             $("#rightshow").html("");
             for(i=0;i<data.data.length;i++){
-                var hideField={"userId":data.data[i].userId,"userName":data.data[i].userName,"devName":data.data[i].devName,"inspectTableName":data.data[i].inspectTableName,"lng":data.data[i].lng,"lat":data.data[i].lat,"inspectStartTime":data.data[i].inspectStartTime,"address":data.data[i].address,"image":data.data[i].image};
+                var hideField={"id":data.data[i].id,"name":data.data[i].name,"number":data.data[i].number,"produceTime":data.data[i].produceTime,"lng":data.data[i].lng,"lat":data.data[i].lat,"address":data.data[i].address};
                 var jsonH= $.toJSON(hideField);
-                var userImage = "images/userDefaultIcon.jpg";
-                if(data.data[i].hasOwnProperty("image")) {
-                    userImage = data.data[i].image;
-                }
-                var device = data.data[i].deviceNum;
-                var table = data.data[i].inspectTableName;
-                if(device==undefined||device=="null"||device==""){
-                    device = "未选择";
-                }
-                if(table==undefined||table=="null"||table==""){
-                    table="未选择";
-                }
-                var inspectItem="<div class='inspectAll'><div class='inspectItem' id='inspectItem"+data.data[i].userId+"'><div class='inspectpic'><img src='"+userImage+"'/></div><span class='inspectcontent'><span class='inspectApp'>点检人员:"+data.data[i].userName+"</span><span class='inspectAddress'><span class='inspectFont'>点检设备:</span>"+device+"</span><span class='inspectAddress'><span class='inspectFont'>点检项目:</span>"+table+"</span><span class='inspectAddress'><span class='inspectFont'>当前位置:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].userId+"'>"+jsonH+"</span></span></span></div></div>";
-                $("#rightshow").append(inspectItem);
-                var inspectItemId="#inspectItem"+data.data[i].userId;
-                var inspectInfoId="#inspectInfo"+data.data[i].userId;
-                $(inspectItemId).mouseover(function(){
-                    var id=this.id.substring(11,inspectItemId.length);
+
+                var deviceItem="<div class='deviceAll'><div class='deviceItem' id='deviceItem"+data.data[i].id+"'><span class='devicecontent'><span class='deviceApp'>设备名称:"+data.data[i].name+"</span><span class='deviceAddress'><span class='deviceFont'>设备编号:</span>"+data.data[i].number+"</span><span class='deviceAddress'><span class='deviceFont'>设备地址:</span>"+data.data[i].address+"</span><span class='deviceAddress'><span class='deviceFont'>生产日期:</span>"+data.data[i].produceTime+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+jsonH+"</span></span></span></div></div>";
+                $("#rightshow").append(deviceItem);
+                var deviceItemId="#deviceItem"+data.data[i].id;
+                var deviceInfoId="#deviceInfo"+data.data[i].id;
+                $(deviceItemId).mouseover(function(){
+                    var id=this.id.substring(11,deviceItemId.length);
                     var hideField="#hideField"+id;
                     var data= JSON2.parse($(hideField).text());
-                    var userId=data.userId;
+                    var deviceId=data.id;
                     var title="点检人员:"+data.userName;
-                    var userImage = "images/userDefaultIcon.jpg";
-                    if(data.hasOwnProperty("image")){
-                        userImage = data.image;
-                    }
-                    var device = data.deviceNum;
-                    var table = data.inspectTableName;
-                    if(device==undefined||device=="null"||device==""){
-                        device = "未选择";
-                    }
-                    if(table==undefined||table=="null"||table==""){
-                        table="未选择";
-                    }
 
-                    var content="<div style='float: left;width: 300px;'><div style='float:left'><img width='80' height='100' src='"+userImage+"'></div><div style='float: right;width: 200px;'>点检设备:"+device+"<br>点检项目:"+table+"<br>当前位置:"+data.address+"</div></div>";
+                    var name = data.name;
+                    var number = data.number;
+                    var content="<div style='float: left;width: 300px;'><div style='float: right;width: 200px;'>设备名称:"+data.name+"<br>设备编号:"+data.number+"<br>设备地址:"+data.address+"<br>生产日期:"+data.produceTime+"</div></div>";
                     var point=data.lng+"|"+data.lat;
                     isOpen=0;
                     var icon={};
@@ -72,10 +51,10 @@
                     icon.x=9;
                     icon.lb=12;
                     icon.l=46;
-                    $.addOneMarkerWithId(userId,title,content,point,isOpen,icon,0);
+                    $.addOneMarkerWithId(deviceId,title,content,point,isOpen,icon,0);
                 });
-                $(inspectItemId).click(function(){
-                      inspectItemClick(this.id,this.id.substring(11,inspectItemId.length));
+                $(deviceItemId).click(function(){
+                      deviceItemClick(this.id,this.id.substring(11,deviceItemId.length));
                 });
             }
 
@@ -85,25 +64,25 @@
                     window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),17);
                 },1000);
 
-                //inspectItemClick("inspectItem"+data.data[0].userId,data.data[0].userId);
+                //deviceItemClick("deviceItem"+data.data[0].deviceId,data.data[0].deviceId);
             }else{
-                $("#rightshow").html("没有在线的点检人员！");
+                $("#rightshow").html("没有找到设备！");
             }
         }
-        function inspectItemClick(inspectItemId,inspectInfoId){
-            var inspectInfo="#inspectInfo"+inspectInfoId;
+        function deviceItemClick(deviceItemId,deviceInfoId){
+            var deviceInfo="#deviceInfo"+deviceInfoId;
 
-            $(".inspectItemHover").removeClass("inspectItemHover");
+            $(".deviceItemHover").removeClass("deviceItemHover");
 
-            if($("#"+inspectItemId).hasClass("inspectItem")){
-                $("#"+inspectItemId).addClass("inspectItemHover");
+            if($("#"+deviceItemId).hasClass("deviceItem")){
+                $("#"+deviceItemId).addClass("deviceItemHover");
             }else{
-                $("#"+inspectItemId).removeClass("inspectItemHover");
+                $("#"+deviceItemId).removeClass("deviceItemHover");
             }
-            if($(inspectInfo).hasClass("inspectInfoHide")){
-                $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
+            if($(deviceInfo).hasClass("deviceInfoHide")){
+                $(deviceInfo).removeClass("deviceInfoHide").addClass("deviceInfoClick");
             }else{
-                $(inspectInfo).removeClass("inspectInfoClick").addClass("inspectInfoHide");
+                $(deviceInfo).removeClass("deviceInfoClick").addClass("deviceInfoHide");
             }
         }
         function receiveInspectLocateInfoCallback(data){

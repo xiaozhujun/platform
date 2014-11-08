@@ -1,0 +1,182 @@
+@CHARSET "UTF-8";
+#leftContainer{
+ width: 100%;
+ float: left;
+}
+.title{
+	display: inline-block;
+	text-align:center;
+	color:white;
+	font-weight: bold;
+	font-size: 30px;
+	margin-top: 25px;
+	margin-left: 550px;	
+}
+.relative {
+    position: relative;
+    z-index: 1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#panelarrow2 {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: #BBBBBB -moz-use-text-color #BBBBBB #BBBBBB;
+    border-image: none;
+    border-radius: 3px 0 0 3px;
+    border-style: solid none solid solid;
+    border-width: 1px 0 1px 1px;
+    box-shadow: 1px 1px 1px #999999;
+    height: 78px;
+    position: absolute;
+    right: 384px;
+    text-align: center;
+    top: 40%;
+    width: 24px;
+    z-index: 1;
+    cursor: pointer;
+}
+#rightmain{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #3399FF;
+    margin: 0px;
+    position: absolute;
+    width: 385px;
+    z-index: 2;
+    right:0px;
+    float: left;
+    height: 100%;
+}
+#myTab{
+    width: 385px;
+    z-index: 1;
+    margin: 0px;
+    height: 40px;
+    background-color:#F7F7F7;
+}
+#rightRank{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #AAAAAA;
+    margin: 0px;
+    min-height: 500px;
+    position: absolute;
+    width: 385px;
+    z-index: 1;
+    right:0px;
+    float: left;
+}
+
+
+
+#panelimg2 {
+    background: url("../../images/sprites.png") no-repeat scroll -2px -20px rgba(0, 0, 0, 0);
+    height: 12px;
+    margin-left: 8px;
+    margin-top: 32px;
+    width: 6px;
+}
+#deviceTitle{
+    width:385px ;
+    height: 38px;
+    background-color: highlight;
+    text-align: center;
+    line-height: 38px;
+    color: #ffffff;
+    margin-top: 1px;
+    font-size: 15px;
+}
+#rightshow{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #AAAAAA;
+    margin: 0px;
+    height: 100%;
+    position: absolute;
+    width: 385px;
+    z-index: 1;
+    right:0px;
+    float: left;
+    overflow: auto;
+    padding-top: 1px;
+}
+.deviceItem{
+   border-bottom: 1px solid #BED5F3;
+   width: 385px;
+   /*height: 70px;*/
+   padding: 1px;
+   cursor: pointer;
+   float: left;
+}
+.deviceItemHover{
+    border-bottom: 1px solid #BED5F3;
+    width: 385px;
+    /*height: 70px;*/
+    padding: 1px;
+    background-color: highlight;
+    color: #ffffff;
+    float: left;
+}
+.deviceItem:hover{
+    border-bottom: 1px solid #BED5F3;
+    width: 385px;
+    /*height: 70px;*/
+    padding: 1px;
+    background-color: highlight;
+    color: #ffffff;
+    float: left;
+}
+.devicepic{
+    /*height: 65px;*//*height: 65px;*/
+    width: 100px;
+    float: left;
+    margin-left: 2px;
+    margin-top: 2px;
+}
+.devicepic img{
+    /*height: 64px;*/
+    width: 100px;
+}
+.devicecontent{
+    width: 280px;
+    float: left;
+    margin-left: 3px;
+}
+.deviceApp{
+   width: 280px;
+   height: 28px;
+   float: left;
+   line-height: 25px;
+}
+.deviceAddress{
+    width: 280px;
+    float: left;
+}
+.deviceFont{
+    margin-left: 1px;
+}
+.deviceAll{
+    width: 385px;
+    height: auto;
+}
+.deviceInfoHide{
+    width: 385px;
+    display: none;
+    height: auto;
+    float:left;
+}
+.deviceInfoClick{
+    width: 385px;
+    height: auto;
+    float:left;
+}
+
+

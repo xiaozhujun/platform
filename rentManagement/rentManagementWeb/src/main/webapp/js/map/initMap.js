@@ -188,27 +188,12 @@ $.extend({
         var riskRankArray=new Array();
         for(i=0;i<data.data.length;i++){
             var item={};
-            item.userId=data.data[i].userId;
-            item.title="点检人员:"+data.data[i].userName;
+            item.userId=data.data[i].id;
+            item.title="设备名称:"+data.data[i].name;
 
-            var userImage = "images/userDefaultIcon.jpg";
-            if(data.data[i].hasOwnProperty("image")){
-                userImage = data.data[i].image;
-            }
-
-            var device = data.data[i].deviceNum;
-            var table = data.data[i].inspectTableName;
-            if(device==undefined||device=="null"||device==""){
-                device = "未选择";
-            }
-            if(table==undefined||table=="null"||table==""){
-                table="未选择";
-            }
-
-            item.content="<div style='float: left;width: 300px;'><div style='float:left'><img width='80' height='100' src='"+userImage+"'></div><div style='float: right;width: 200px;'>点检设备:"+device+"<br>点检项目:"+table+"<br>当前位置:"+data.data[i].address+"</div></div>";
+            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data.data[i].number+"<br>设备地址:"+data.data[i].address+"<br>生产日期:"+data.data[i].produceTime+"</div></div>";
             item.point=data.data[i].lng+"|"+data.data[i].lat;
             item.isOpen=0;
-            /*item.icon={w:23,h:25,l:115,t:21,x:9,lb:12};*/
             item.icon={};
             item.icon.w=23;
             item.icon.h=25;

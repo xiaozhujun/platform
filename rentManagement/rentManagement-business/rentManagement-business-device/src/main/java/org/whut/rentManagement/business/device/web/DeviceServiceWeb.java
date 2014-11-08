@@ -10,10 +10,7 @@ import org.whut.rentManagement.business.device.entity.Device;
 import org.whut.rentManagement.business.device.entity.SubDevice;
 import org.whut.rentManagement.business.device.service.DeviceService;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -159,5 +156,14 @@ public class DeviceServiceWeb {
         long appId= UserContext.currentUserAppId();
         long id=deviceService.getIdByNumber(number,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(id, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getMainDeviceList")
+    @GET
+    public String getMainDeviceList(){
+        long appId= UserContext.currentUserAppId();
+        List<Map<String,String>> list=deviceService.getMainDeviceList(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

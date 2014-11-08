@@ -60,7 +60,7 @@ $.extend({
             });
             _marker.addEventListener("mouseout",function(){
                 $.myMouseout(id);
-                // $.post($.URL.craneinspectreport.getOneUnitAddressInfo,{"unitAddress":title},mouseoutCallback,"json");
+                // $.post($.URL.cranedevicereport.getOneUnitAddressInfo,{"unitAddress":title},mouseoutCallback,"json");
             });
             function mouseoverCallback(data){
                 if(data.code==200){
@@ -93,17 +93,17 @@ $.extend({
         })()
     }
     ,myMouseover:function myMouseover(id){
-        var inspectInfo="#inspectInfo"+id;
-        var riskcontentId="#inspectItem"+id;
-        $(".inspectItemHover").removeClass("inspectItem");
-        $(riskcontentId).addClass("inspectItemHover");
-        $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
+        var deviceInfo="#deviceInfo"+id;
+        var riskcontentId="#deviceItem"+id;
+        $(".deviceItemHover").removeClass("deviceItem");
+        $(riskcontentId).addClass("deviceItemHover");
+        $(deviceInfo).removeClass("deviceInfoHide").addClass("deviceInfoClick");
     },
     myMouseout:function myMouseover(id){
-        var inspectInfo="#inspectInfo"+id;
-        var riskcontentId="#inspectItem"+id;
-        $(".inspectItemHover").removeClass("inspectItemHover");
-        $(riskcontentId).addClass("inspectItem");
-        $(inspectInfo).removeClass("inspectInfoHide").addClass("inspectInfoClick");
+        var deviceInfo="#deviceInfo"+id;
+        var riskcontentId="#deviceItem"+id;
+        $(".deviceItemHover").removeClass("deviceItemHover");
+        $(riskcontentId).addClass("deviceItem");
+        $(deviceInfo).removeClass("deviceInfoHide").addClass("deviceInfoClick");
     }
 });

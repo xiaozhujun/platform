@@ -18,4 +18,5 @@ public interface DeviceMapper extends AbstractMapper<Device> {
     public List<Map<String,String>> getListByAppId(long appId);
     public int deleteById(@Param("id") long id);
     public long getIdByNumber(@Param("number") String number, @Param("appId") long appId);
+    public List<Map<String,String>> getMainDeviceList(long appId);
 }

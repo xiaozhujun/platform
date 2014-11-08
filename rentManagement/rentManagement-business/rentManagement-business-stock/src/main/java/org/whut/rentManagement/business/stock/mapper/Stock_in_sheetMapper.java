@@ -4,6 +4,7 @@ import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 import org.whut.rentManagement.business.stock.entity.Stock_in_sheet;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,4 +15,6 @@ import java.util.List;
  */
 public interface Stock_in_sheetMapper  extends AbstractMapper<Stock_in_sheet> {
     public List<Stock_in_sheet> getListByAppId(long appId);
+
+    public List<Map<String,String>> getInStockList(Map<String,Object> condition);
 }

@@ -20,6 +20,7 @@ public class Stock_in_sheet {
     private String description;
     private Date createTime;
     private String creator;
+    private String image;
     private long appId;
 
     public long getId() {
@@ -100,6 +101,14 @@ public class Stock_in_sheet {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getAppId() {

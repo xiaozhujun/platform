@@ -22,7 +22,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -188,6 +190,28 @@ public class Stock_out_sheetServiceWeb {
         Stock_out_sheet stock_out_sheet= JsonMapper.buildNonDefaultMapper().fromJson(jsonString, Stock_out_sheet.class);
         stock_out_sheetService.delete(stock_out_sheet);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getOutStockList")
+    @POST
+    public String getOutStockList(@FormParam("user")String user,@FormParam("device")String device,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        Map<String,Object> condition = new HashMap<String, Object>();
+        if(user!=null&&!user.equals("")){
+            condition.put("user",user);
+        }
+        if(device!=null&&!device.equals("")){
+            condition.put("device",device);
+        }
+        if(sTime!=null&&!sTime.equals("")){
+            condition.put("startTime",sTime+" 00:00:00");
+        }
+        if(eTime!=null&&!eTime.equals("")){
+            condition.put("endTime",eTime+" 59:59:59");
+        }
+        condition.put("appId", UserContext.currentUserAppId());
+        List<Map<String,String>> list=stock_out_sheetService.getOutStockList(condition);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 
 

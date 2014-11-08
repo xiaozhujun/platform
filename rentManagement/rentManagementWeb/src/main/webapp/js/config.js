@@ -146,7 +146,9 @@
             "installationList":"rs/installation/getInstallList",
             "removeList":"rs/remove/getRemoveList",
             "preburyList":"rs/prebury/getPreburyList",
-            "contractList":"rs/contract/getContractList"
+            "contractList":"rs/contract/getContractList",
+            "inStockList":"rs/stock_in_sheet/getInStockList",
+            "outStockList":"rs/stock_out_sheet/getOutStockList"
         }
     }
 })(jQuery);

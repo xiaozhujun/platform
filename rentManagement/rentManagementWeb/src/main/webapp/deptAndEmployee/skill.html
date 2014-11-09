@@ -108,12 +108,18 @@ $("#submitBtn").click(function(){
     data.name=$("#name").val();
     data.description=$("#description").val();
     $.post($.URL.skill.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+
+    $("#name").val("");
+    $("#description").val("");
+//    document.getElementById("name").value="";
+//    document.getElementById("description").value="";
 });
 
 
 function addCallBack(data){
     if(data.code==200){
         $.ligerDialog.success("操作成功！");
+        $.post($.URL.skill.list,null,listCallBack,"json");
     }
     else if(data.code==500)
     {
@@ -138,10 +144,13 @@ function addCallBack(data){
                 <td align="left" class="l-table-edit-td">
                     <input name="name" type="text" id="name" ltype="text" />
                 </td>
-                <td align="left" width="100px;"></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
                 <td align="right" class="l-table-edit-td">描述:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input name="description" type="text" id="description" ltype="text" />
+                    <textarea name="description" class="l-textarea" id="description" cols="50" rows="2">
+                    </textarea>
                 </td>
                 <td align="left"></td>
             </tr>

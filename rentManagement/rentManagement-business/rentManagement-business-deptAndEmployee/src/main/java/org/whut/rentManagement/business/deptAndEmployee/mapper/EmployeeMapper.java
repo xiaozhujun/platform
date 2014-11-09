@@ -17,4 +17,5 @@ import java.util.Map;
 public interface EmployeeMapper extends AbstractMapper<Employee> {
    public Employee getById(long id);
     public List<Map<String,String>> getListByAppId(long appId);
+    public long getIdByName(String name);
 }

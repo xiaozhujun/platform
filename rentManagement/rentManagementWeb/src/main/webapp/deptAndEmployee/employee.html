@@ -245,17 +245,18 @@
 //            var toData = JSON.stringify(data);   //把原来是对象的类型转换成字符串类型
             //alert(toData);
             $.post($.URL.employee.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+            $("#name").val("");
+            $("#telephone").val("");
+            $("#email").val("");
+            $("#employedTime").val("");
+            $("#position").val("");
         });
 
-        $("#returnBtn").click(function(){
- //           $('#addEmployee').css('display','none');
-            $.ligerDialog.close();
- //           $('#addEmployee').remove();
-        })
 
         function addCallBack(data){
             if(data.code==200){
                 $.ligerDialog.success("操作成功！");
+                $.post($.URL.employee.list,null,listCallBack,"json");
             }
             else if(data.code==500)
             {

@@ -16,14 +16,14 @@ function drawBelowChartOfMap(container,map,firstRequest,loc,locName){
     function locFunction(){
        console.log("====charttool=====") ;
 
-        if(loc=="上"){
+        if(loc==locName[0]){
             l= Math.PI*(80*1000+24);
         }
-        else if(loc=="中"){
+        else if(loc==locName[1]){
             l= Math.PI*(80*1000+38);
 
         }
-        else if(loc=="下"){
+        else if(loc==locName[2]){
             l= Math.PI*(80*1000+58);
 
         }

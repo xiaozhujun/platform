@@ -19,4 +19,5 @@ public interface PreBuryMapper extends AbstractMapper<PreBury>{
     public long getIdByContractId(@Param("contractId") long contractId);
 
     public List<Map<String,String>> getPreburyList(Map<String,Object> condition);
+    public List<Map<String,String>> findByCondition(@Param("contractName") String contractName,@Param("appId") long appId);
 }

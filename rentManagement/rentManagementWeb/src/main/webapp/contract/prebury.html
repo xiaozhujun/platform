@@ -22,7 +22,7 @@
         function listCallBack(data) {
             if(data.code == 200) {
                 preburyData.Rows = data.data;
-                preburyData.total = data.length;
+                preburyData.total = data.data.length;
                 f_initGrid();
             }
         }
@@ -36,7 +36,7 @@
                 width:'100%',
 
                 columns:[
-                    {display:'合同号',name:'contractId',width:100,type:'int',frozen:true} ,
+                    {display:'合同名称',name:'contractName',width:100,type:'int',frozen:true} ,
                     {display:'预埋人员',name:'preBuryMan',width:100,editor:{type:'text'}},
                     {display:'预埋时间',name:'preBuryTime',width:100,frozen:true},
                     {display:'预埋状态',name:'preBuryStatus',width:100,
@@ -128,6 +128,25 @@
                 $.post($.URL.prebury.list,null,listCallBack,"json");
             }
         }
+        $("#searchBtn").click(function(){
+            var data={};
+            data.contractName=$("#scontractName").val();
+            if(data.contractName==""){
+                $.post($.URL.prebury.list,null,listCallBack,"json");
+            }else{
+                $.post($.URL.prebury.findByCondition,data,queryListCallback,"json");
+            }
+        });
+        function queryListCallback(data){
+            if(data.code==200){
+                preburyData.Rows=data.data;
+                preburyData.Total=data.data.length;
+                f_initGrid();
+            }
+            else if(data.code==500) {
+                $.ligerDialog.error(data.message);
+            }
+        };
 
     </script>
     <style type="text/css">
@@ -182,7 +201,7 @@
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
             <td align="right" class="l-table-edit-td">合同名称:</td>
-            <td align="left" class="l-table-edit-td"><input name="name" type="text" id="name1" ltype="text" /></td>
+            <td align="left" class="l-table-edit-td"><input name="scontractName" type="text" id="scontractName" ltype="text" /></td>
             <td align="right"><input type="button" value="查询" id="searchBtn" class="l-button l-button-submit" /></td>
             <td align="right"><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></td>
         </tr>

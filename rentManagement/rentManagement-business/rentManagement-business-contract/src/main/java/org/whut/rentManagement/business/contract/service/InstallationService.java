@@ -35,4 +35,7 @@ public class InstallationService {
     public List<Map<String,String>> getInstallList(Map<String,Object> condition){
         return installationmapper.getInstallList(condition);
     }
+    public List<Map<String,String>> findByCondition(String contractName ,String deviceName,long appId){
+        return installationmapper.findByCondition(contractName,deviceName,appId);
+    }
 }

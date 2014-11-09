@@ -135,7 +135,19 @@ public class PreBuryServiceWeb {
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/findByCondition")
+    @POST
+    public String listByCondition(@FormParam("contractName") String contractName){
+        if (contractName==null||contractName.trim().length()==0){
+            contractName="";
 
+        }
+        long appId = UserContext.currentUserAppId();
+        contractName="%"+contractName+"%";
+        List<Map<String,String>> result=preBuryService.findByCondition(contractName,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(result,JsonResultUtils.Code.SUCCESS);
+    }
 
 
 }

@@ -30,10 +30,15 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="InstallationResultMap">
+<!--    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="InstallationResultMap">
         select *
         from installation
         where APPID=#{appId}
+    </select>-->
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select c.name contractName,i.type,d.name deviceName,i.installMan,i.installTime,i.installStatus
+           from  installation AS i,contract AS c,device AS d
+           where i.appId=#{appId} AND i.contractId=c.id AND i.installDeviceId=d.id
     </select>
     <update id="update" parameterType="Installation">
         UPDATE installation
@@ -70,5 +75,12 @@
         <if test="device!=null">AND device.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND installation.installTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND installation.installTime<=#{endTime} ]]> </if>
+    </select>
+    <select id="findByCondition" parameterType="map" resultType="map">
+        select c.name contractName,i.type,d.name deviceName,i.installMan,i.installTime,i.installStatus
+        from  installation AS i,contract AS c,device AS d
+        where i.appId=#{appId} AND i.contractId=c.id AND i.installDeviceId=d.id
+        <if test="contractName!=null">AND c.name LIKE #{contractName}</if>
+        <if test="deviceName!=null">AND d.name LIKE #{deviceName}</if>
     </select>
 </mapper>

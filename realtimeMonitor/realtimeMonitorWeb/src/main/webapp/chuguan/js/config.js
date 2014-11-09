@@ -14,7 +14,8 @@
             "list":baseUrl+"rs/user/list",
             "getId":baseUrl+"rs/user/getIdByName",
             "currentUserId": "rs/user/currentUserId",
-            "currentUserInfo":baseUrl+"rs/user/currentUser"
+            "currentUserInfo":baseUrl+"rs/user/currentUser" ,
+            "keepAlive":baseUrl+"rs/user/keepAlive"
         },
         "authority":{
              "add":baseUrl+"rs/authority/add",

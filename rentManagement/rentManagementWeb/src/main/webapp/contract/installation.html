@@ -15,7 +15,7 @@
     <script type="text/javascript">
         $(function(){
             $.post($.URL.installation.list,null,listCallBack,"json");
-            $("#installTime").ligerDateEditor({labelWidth: 100, labelAlign: '' });
+            $("#iinstallTime").ligerDateEditor({labelWidth: 100, labelAlign: '' });
         });
 
         var installData = {};
@@ -172,9 +172,9 @@
     <form name="form1" method="post" action="" id="form1">
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
-                <td align="right" class="l-table-edit-td">合同号:</td>
+                <td align="right" class="l-table-edit-td">合同编号:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input name="contractId" type="text" id="contractId" ltype="text" /></td>
+                    <input name="contractId" type="text" id="icontractId" ltype="text" /></td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <!--</tr>-->
                 <!--<tr>-->
@@ -188,25 +188,25 @@
             <tr>
                 <td align="right" class="l-table-edit-td">安装设备号:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="installDeviceId">
+                    <input type="text"  id="iinstallDeviceId">
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 
                 <td align="right" class="l-table-edit-td">安装人员:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="installMan">
+                    <input type="text"  id="iinstallMan">
                 </td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">安装时间:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="installTime">
+                    <input type="text"  id="iinstallTime">
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 
                 <td align="right" class="l-table-edit-td">安装状态:</td>
                 <td align="left" class="l-table-edit-td">
-                    <select name="installStatus" id="installStatus" ltype="select" >
+                    <select name="installStatus" id="iinstallStatus" ltype="select" >
                         <option value="未完成">未完成</option>
                         <option value="完成">完成</option>
                     </select>
@@ -215,7 +215,7 @@
 
         </table>
         <br />
-        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+        <input type="button" value="提交" id="submitBtn" onclick="i_submit()" class="l-button l-button-submit" />
     </form>
 </div>
 <div id="list">

@@ -52,7 +52,7 @@ public class PreBuryServiceWeb {
                 ||preBuryStatus==null||"".equals(preBuryStatus.trim())||preBuryTime==null||"".equals(preBuryTime.trim())){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
-        long contractid = Long.parseLong(contractId.replace(" ",""));
+//        long contractid = Long.parseLong(contractId.replace(" ",""));
         long appId = UserContext.currentUserAppId();
         Date date = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,13 +61,7 @@ public class PreBuryServiceWeb {
         }catch (Exception e){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
         }
-/*        Long id;
-        try {
-            id = preBuryService.getIdByContractId(contractid);
-        }catch (Exception e){
-            id = null;
-        }
-        if (id==null){*/
+
         PreBury preBury = new PreBury();
         preBury.setAppId(appId);
         preBury.setContractId(Long.parseLong(contractId));
@@ -76,9 +70,6 @@ public class PreBuryServiceWeb {
         preBury.setPreBuryStatus(preBuryStatus);
             preBuryService.add(preBury);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
-/*        }else {
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "该合同预埋记录已经存在!");
-        }*/
 
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -111,7 +102,9 @@ public class PreBuryServiceWeb {
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString")String jsonString) {
-        PreBury preBury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,PreBury.class);
+        subPreBury subprebury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,subPreBury.class);
+        PreBury preBury = new PreBury();
+        preBury.setId(subprebury.getId());
         preBuryService.delete(preBury);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

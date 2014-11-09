@@ -34,7 +34,7 @@
         where APPID=#{appId}
     </select>-->
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
-      select c.name contractName,p.preBuryMan,p.preBuryTime,p.preBuryStatus
+      select c.name contractName,p.preBuryMan,p.preBuryTime,p.preBuryStatus,p.id
            from prebury AS p,contract AS c
            where p.appId=#{appId} AND p.contractId=c.id
     </select>

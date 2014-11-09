@@ -36,16 +36,16 @@
         where APPID=#{appId}
     </select>-->
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
-           select c.name contractName,i.type,d.name deviceName,i.installMan,i.installTime,i.installStatus
+           select c.name contractName,i.type,d.name deviceName,i.installMan,i.installTime,i.installStatus,i.id
            from  installation AS i,contract AS c,device AS d
            where i.appId=#{appId} AND i.contractId=c.id AND i.installDeviceId=d.id
     </select>
     <update id="update" parameterType="Installation">
         UPDATE installation
         <set>
-            <if test="contractId!=null">CONTRACTID=#{contractId},</if>
+            <!--<if test="contractId!=null">CONTRACTID=#{contractId},</if>-->
             <if test="type!=null">TYPE=#{type},</if>
-            <if test="installDeviceId!=null">INSTALLDEVICEID=#{installDeviceId},</if>
+            <!--<if test="installDeviceId!=null">INSTALLDEVICEID=#{installDeviceId},</if>-->
             <if test="installMan!=null">INSTALLMAN=#{installMan},</if>
             <if test="installStatus!=null">INSTALLSTATUS=#{installStatus},</if>
             <if test="installTime!=null">INSTALLTIME=#{installTime},</if>

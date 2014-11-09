@@ -20,6 +20,7 @@
         <module>rentManagement-business-contract</module>
         <module>rentManagement-business-stock</module>
         <module>rentManagement-business-badDebt</module>
+        <module>rentManagement-business-transport</module>
     </modules>
 
 

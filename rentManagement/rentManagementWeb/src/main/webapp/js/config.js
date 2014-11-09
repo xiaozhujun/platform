@@ -52,6 +52,13 @@
             "delete":"rs/installation/delete",
             "findByCondition":"rs/installation/findByCondition"
         },
+        "transport":{
+            "list":"rs/transport/list",
+            "add":"rs/transport/add",
+            "update":"rs/transport/update",
+            "delete":"rs/transport/delete",
+            "findByCondition":"rs/transport/findByCondition"
+        },
         "employee":{
             "list":"rs/employee/list",
             "add":"rs/employee/add",

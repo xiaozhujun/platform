@@ -35,7 +35,6 @@
         <set>
             <if test="name!=null">NAME=#{name},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
-            <if test="createTime!=null">CREATETIME=#{createTime},</if>
             <if test="address!=null">ADDRESS=#{address},</if>
             <if test="linkman!=null">Linkman=#{linkman},</if>
             <if test="telephone!=null">TELEPHONE=#{telephone}</if>

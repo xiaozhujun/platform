@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.stock.mapper.Stock_in_sheetMapper">
     <sql id="stock_in_sheet_fields">
-          ID,NUMBER,CARNUMBER,CUSTOMERID,CONTRACTID,HANDLER,STOREHOUSEID,DESCRIPTION,CREATETIME,CREATOR,APPID
+          ID,NUMBER,CARNUMBER,CUSTOMERID,CONTRACTID,HANDLER,STOREHOUSEID,DESCRIPTION,CREATETIME,CREATOR,IMAGE,APPID
     </sql>
     <resultMap id="stock_in_sheetResultMap" type="Stock_in_sheet">
         <id property="id" column="ID" />
@@ -17,6 +17,7 @@
         <result property="description" column="DESCRIPTION"/>
         <result property="createTime" column="CREATETIME"/>
         <result property="creator" column="CREATOR"/>
+        <result property="image" column="IMAGE"/>
         <result property="appId" column="APPID"/>
     </resultMap>
 
@@ -26,7 +27,7 @@
         stock_in_sheet(
         <include refid="stock_in_sheet_fields" />
         )
-        VALUES (#{id}, #{number},#{carNumber}, #{customerId},#{contractId},#{handler},#{storehouseId},#{description},#{createTime},#{creator},#{appId});
+        VALUES (#{id}, #{number},#{carNumber}, #{customerId},#{contractId},#{handler},#{storehouseId},#{description},#{createTime},#{creator},#{image},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -51,6 +52,7 @@
             <if test="description!=null">DESCRIPTION=#{description},</if>
             <if test="createTime!=null">CREATETIME=#{createTime},</if>
             <if test="creator!=null">CREATOR=#{creator},</if>
+            <if test="image!=null">IMAGE=#{image},</if>
             <if test="appId!=null">APPID=#{appId},</if>
         </set>
         WHERE ID=#{id}
@@ -62,6 +64,17 @@
             <if test="id != null">ID=#{id}</if>
         </where>
     </delete>
+
+    <select id="getInStockList" parameterType="map" resultType="map">
+        select stock_in_sheet.*,storehouse.name as storeHouse,contract.name as contractName,contract.customerName
+        from stock_in_sheet,contract,storehouse
+        where stock_in_sheet.contractId=contract.id and stock_in_sheet.storehouseId=storehouse.id
+        <if test="appId!=null"> AND stock_in_sheet.APPID=#{appId}</if>
+        <if test="user!=null">AND stock_in_sheet.handler like CONCAT('%',#{user},'%') </if>
+        <if test="device!=null">AND storehouse.name like CONCAT('%',#{device},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND stock_in_sheet.createTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND stock_in_sheet.createTime<=#{endTime} ]]> </if>
+    </select>
 
 </mapper>
 

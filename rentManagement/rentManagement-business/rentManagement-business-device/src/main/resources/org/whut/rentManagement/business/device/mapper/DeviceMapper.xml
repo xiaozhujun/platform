@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.device.mapper.DeviceMapper">
     <sql id="device_fields">
-          ID,MAINDEVICEID,TYPEID,STOREHOUSEID,CONTRACTID,ADDRESS,STATUS,NAME,NUMBER,PRICE,PRODUCETIME,CREATETIME,PRICEUNIT,APPID
+          ID,MAINDEVICEID,TYPEID,STOREHOUSEID,CONTRACTID,ADDRESS,STATUS,NAME,NUMBER,PRICE,PRODUCETIME,CREATETIME,PRICEUNIT,LNG,LAT,APPID
     </sql>
     <resultMap id="deviceResultMap" type="device">
         <id property="id" column="ID" />
@@ -20,6 +20,8 @@
         <result property="produceTime" column="PRODUCETIME"/>
         <result property="createTime" column="CREATETIME"/>
         <result property="priceUnit" column="PRICEUNIT"/>
+        <result property="lng" column="LNG"/>
+        <result property="lat" column="LAT"/>
         <result property="appId" column="APPID"/>
     </resultMap>
     <insert id="add" parameterType="device"  keyProperty="id"
@@ -28,7 +30,7 @@
         device(
         <include refid="device_fields" />
         )
-        VALUES (#{id}, #{mainDeviceId},#{typeId},#{storehouseId},#{contractId},#{address},#{status},#{name},#{number},#{price},#{produceTime},#{createTime},#{priceUnit},#{appId});
+        VALUES (#{id}, #{mainDeviceId},#{typeId},#{storehouseId},#{contractId},#{address},#{status},#{name},#{number},#{price},#{produceTime},#{createTime},#{priceUnit},#{lng},#{lat},#{appId});
         <selectKey resultType="java.lang.Long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -38,7 +40,6 @@
     <update id="update" parameterType="Device">
         update device
         <set>
-            <if test="mainDeviceId!=null">MAINDEVICEID=#{mainDeviceId},</if>
             <if test="typeId!=null">TYPEID=#{typeId},</if>
             <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
             <if test="contractId!=null">CONTRACTID=#{contractId},</if>
@@ -48,8 +49,9 @@
             <if test="number!=null">NUMBER=#{number},</if>
             <if test="price!=null">PRICE=#{price},</if>
             <if test="produceTime!=null">PRODUCETIME=#{produceTime},</if>
-            <if test="createTime!=null"> CREATETIME=#{createTime},</if>
             <if test="priceUnit!=null">PRICEUNIT=#{priceUnit},</if>
+            <if test="lnt!=null">LNG=#{lng},</if>
+            <if test="lat!=null">LAT=#{lat},</if>
             <if test="appId!=null">APPID=#{appId}</if>
         </set>
         where ID=#{id};
@@ -60,17 +62,27 @@
         WHERE ID=#{id}
     </delete>
 
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceResultMap">
-        select
-        <include refid="device_fields"/>
-        from device
-        where APPID=#{appId}
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select device.id,device.name as name,device.number,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,
+                device.produceTime,device.price,device.status
+        from device,device_type,storehouse,contract
+        where device.typeId=device_type.id and device.storehouseId=storehouse.id and device.contractId=contract.id
+         and device.appId=#{appId}
+        <!--联查错误，改后台传name -->
     </select>
 
     <select id="getIdByNumber" parameterType="map" resultType="java.lang.Long">
         select id
         from device
         where NUMBER=#{number} and APPID=#{appId}
+    </select>
+
+    <select id="getMainDeviceList" parameterType="java.lang.Long" resultType="map">
+        select device.id,device.name as name,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,
+        device.produceTime,device.price,device.status,device.lng,device.lat
+        from device,device_type,storehouse,contract
+        where device.typeId=device_type.id and device.storehouseId=storehouse.id and device.contractId=contract.id and device.mainDeviceId=device.id
+        and device.appId=#{appId}
     </select>
 
 </mapper>

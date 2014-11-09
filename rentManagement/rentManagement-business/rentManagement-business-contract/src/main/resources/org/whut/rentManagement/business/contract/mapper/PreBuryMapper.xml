@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.contract.mapper.PreBuryMapper">
     <sql id="PreBury_fields">
-          ID,CONTRACTID,PREBURYMAN,PREBURYTIME,PREBURYSTATUS,APPID
+          ID,CONTRACTID,PREBURYMAN,PREBURYTIME,PREBURYSTATUS,IMAGE,APPID
     </sql>
     <resultMap id="PreBuryResultMap" type="PreBury">
         <id property="id" column="ID" />
@@ -12,6 +12,7 @@
         <result property="preBuryMan" column="PREBURYMAN"/>
         <result property="preBuryTime" column="PREBURYTIME"/>
         <result property="preBuryStatus" column="PREBURYSTATUS"/>
+        <result property="image" column="IMAGE"/>
         <result property="appId" column="APPID"/>
     </resultMap>
     <insert id="add" parameterType="PreBury"  keyProperty="id"
@@ -21,7 +22,7 @@
         prebury(
         <include refid="PreBury_fields" />
         )
-        VALUES (#{id}, #{contractId},#{preBuryMan},#{preBuryTime},#{preBuryStatus},#{appId});
+        VALUES (#{id}, #{contractId},#{preBuryMan},#{preBuryTime},#{preBuryStatus},#{image},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -37,6 +38,7 @@
         <set>
             <if test="preBuryMan!=null">PREBURYMAN=#{preBuryMan},</if>
             <if test="preBuryStatus!=null">PREBURYSTATUS=#{preBuryStatus},</if>
+            <if test="image!=null">IMAGE=#{image},</if>
             <if test="preBuryTime!=null">PREBURYTIME=#{preBuryTime},</if>
         </set>
         WHERE ID=#{id}
@@ -51,5 +53,15 @@
         select id
         from prebury
         <if test="contractId!=null">where CONTRACTID=#{contractId}</if>
+    </select>
+
+    <select id="getPreburyList" parameterType="map" resultType="map">
+        select prebury.*,contract.name,contract.customerName
+        from prebury,contract
+        where prebury.contractId=contract.id
+        <if test="appId!=null"> AND prebury.APPID=#{appId}</if>
+        <if test="user!=null">AND prebury.preBuryMan like CONCAT('%',#{user},'%') </if>
+        <if test="startTime!=null"><![CDATA[ AND prebury.preBuryTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND prebury.preBuryTime<=#{endTime} ]]> </if>
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import org.whut.rentManagement.business.stock.entity.Stock_in_sheet;
 import org.whut.rentManagement.business.stock.mapper.Stock_in_sheetMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,5 +33,10 @@ public class Stock_in_sheetService {
 
     public List<Stock_in_sheet> getListByAppId(long appId){
         return  stockInSheetMapper.getListByAppId(appId);
+    }
+
+
+    public List<Map<String,String>> getInStockList(Map<String,Object> condition){
+        return stockInSheetMapper.getInStockList(condition);
     }
 }

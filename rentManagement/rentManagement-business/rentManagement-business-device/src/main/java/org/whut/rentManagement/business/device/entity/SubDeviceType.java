@@ -13,9 +13,8 @@ public class SubDeviceType {
     private String description;
     private String createTime;
     private String unit;
-    private long MainDevice;
+    private String mainDevice;
     private String warnTime;
-    private long appId;
 
     public long getId() {
         return id;
@@ -57,14 +56,6 @@ public class SubDeviceType {
         this.unit = unit;
     }
 
-    public long getMainDevice() {
-        return MainDevice;
-    }
-
-    public void setMainDevice(long mainDevice) {
-        MainDevice = mainDevice;
-    }
-
     public String getWarnTime() {
         return warnTime;
     }
@@ -73,11 +64,11 @@ public class SubDeviceType {
         this.warnTime = warnTime;
     }
 
-    public long getAppId() {
-        return appId;
+    public String getMainDevice() {
+        return mainDevice;
     }
 
-    public void setAppId(long appId) {
-        this.appId = appId;
+    public void setMainDevice(String mainDevice) {
+        this.mainDevice = mainDevice;
     }
 }

@@ -135,4 +135,15 @@
         where APPID=#{appId}
     </select>
 
+    <select id="getContractList" parameterType="map" resultType="map">
+        select contract.*
+        from contract
+        where
+        <if test="appId!=null"> contract.APPID=#{appId}</if>
+        <if test="user!=null">AND contract.customerName like CONCAT('%',#{user},'%') </if>
+        <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND contract.signTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND contract.signTime<=#{endTime} ]]> </if>
+    </select>
+
 </mapper>

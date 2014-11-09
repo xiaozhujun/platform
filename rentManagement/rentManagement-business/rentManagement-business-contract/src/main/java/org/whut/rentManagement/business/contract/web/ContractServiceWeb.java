@@ -189,4 +189,26 @@ public class ContractServiceWeb {
     {   int a=0;
         return JsonResultUtils.getObjectResultByStringAsDefault(a, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/getContractList")
+    @POST
+    public String getContractList(@FormParam("user")String user,@FormParam("device")String device,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){
+        Map<String,Object> condition = new HashMap<String, Object>();
+        if(user!=null&&!user.equals("")){
+            condition.put("user",user);
+        }
+        if(device!=null&&!device.equals("")){
+            condition.put("device",device);
+        }
+        if(sTime!=null&&!sTime.equals("")){
+            condition.put("startTime",sTime+" 00:00:00");
+        }
+        if(eTime!=null&&!eTime.equals("")){
+            condition.put("endTime",eTime+" 59:59:59");
+        }
+        condition.put("appId", UserContext.currentUserAppId());
+        List<Map<String,String>> list=contractService.getContractList(condition);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }

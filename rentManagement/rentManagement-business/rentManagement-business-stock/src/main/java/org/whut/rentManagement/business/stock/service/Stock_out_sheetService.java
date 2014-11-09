@@ -5,6 +5,7 @@ import org.whut.rentManagement.business.stock.entity.Stock_out_sheet;
 import org.whut.rentManagement.business.stock.mapper.Stock_out_sheetMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,4 +41,9 @@ public class Stock_out_sheetService {
 //    public List<Map<String,String>> getListByCondition(long appId,long customerId,long contractId,long storehouseId){
 //        return stock_out_sheetMapper.getListByCondition(appId,customerId,contractId,storehouseId);
 //    }
+
+
+    public List<Map<String,String>> getOutStockList(Map<String,Object> condition){
+        return stock_out_sheetMapper.getOutStockList(condition);
+    }
 }

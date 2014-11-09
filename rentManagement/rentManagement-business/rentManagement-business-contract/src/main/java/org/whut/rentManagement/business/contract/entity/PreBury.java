@@ -14,6 +14,7 @@ public class PreBury {
     private String preBuryMan;
     private Date preBuryTime;
     private String preBuryStatus;
+    private String image;
     private long appId;
 
     public long getId() {
@@ -54,6 +55,14 @@ public class PreBury {
 
     public void setPreBuryStatus(String preBuryStatus) {
         this.preBuryStatus = preBuryStatus;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getAppId() {

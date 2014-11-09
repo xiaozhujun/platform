@@ -1,13 +1,9 @@
 package org.whut.rentManagement.business.contract.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.whut.rentManagement.business.contract.entity.Installation;
 import org.whut.rentManagement.business.contract.entity.PreBury;
-import org.whut.rentManagement.business.contract.mapper.InstallationMapper;
 import org.whut.rentManagement.business.contract.mapper.PreBuryMapper;
 
-import javax.ws.rs.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -36,5 +32,9 @@ public class PreBuryService {
     }
     public long getIdByContractId(long contractId){
         return preBuryMapper.getIdByContractId(contractId);
+    }
+
+    public List<Map<String,String>> getPreburyList(Map<String,Object> condition){
+        return preBuryMapper.getPreburyList(condition);
     }
 }

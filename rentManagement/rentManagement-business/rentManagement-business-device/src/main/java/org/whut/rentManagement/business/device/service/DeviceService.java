@@ -5,6 +5,7 @@ import org.whut.rentManagement.business.device.entity.Device;
 import org.whut.rentManagement.business.device.mapper.DeviceMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +37,11 @@ public class DeviceService {
         return deviceMapper.deleteById(id);
     }
 
-    public List<Device> getListByAppId(long appId) {
+    public List<Map<String,String>> getListByAppId(long appId) {
         return deviceMapper.getListByAppId(appId);
+    }
+
+    public List<Map<String,String>> getMainDeviceList(long appId) {
+        return deviceMapper.getMainDeviceList(appId);
     }
 }

@@ -44,4 +44,8 @@ public class RemoveService {
         return  removeMapper.getRemoveDeviceIdById(removeDeviceId);
     }
 
+    public List<Map<String,String>> getRemoveList(Map<String,Object> condition){
+        return removeMapper.getRemoveList(condition);
+    }
+
 }

@@ -45,10 +45,10 @@
                     {display:'联系人',name:'linkman',
                         editor:{type:'text'}
                     } ,
-                    {display:'电话',name:'telephone', type:"int",
-                        editor:{type:'int'}
+                    {display:'电话',name:'telephone', type:"text",
+                        editor:{type:'text'}
                     } ,
-                    {display:'创建时间',name:'CreateTime',width: 100,type:"date",editor:{type:'date'}},
+                    {display:'创建时间',name:'createTime',width: 100,type:"date"},
                     {display:'仓库描述',name:'description',
                         editor:{type:'text'}
                     },
@@ -93,12 +93,12 @@
             $.post($.URL.storehouse.update,{"jsonString":jsonString},updateCallBack,"json");
         }
         function updateCallBack(data){
+            $.post($.URL.storehouse.list,null,listCallBack,"json");
             if(data.code==200){
                 $.ligerDialog.success("修改成功") ;
             }
             else{
                 $.ligerDialog.error(data.message);
-                $.post($.URL.storehouse.list,null,listCallBack,"json");
             }
         }
         function deleteRow(rowid){
@@ -121,6 +121,7 @@
         }
 
         $("#addSubmitBtn").click(function(){
+            document.getElementById('form1').reset();
             c_show();
             $.ligerDialog.open({title:'添加仓库', target: $("#addStorehouse"),width:500});
         });
@@ -136,7 +137,6 @@
             addData.address = $("#Address").val();
             addData.linkman = $("#Linkman").val();
             addData.telephone = $("#Telephone").val();
-            addData.createTime=$("#CreateTime").val();
             var toData = JSON.stringify(addData);
             $.post($.URL.storehouse.add,{"jsonString":toData},addStorehouseCallback,"json");
 
@@ -147,7 +147,7 @@
                 $.ligerDialog.success('操作成功');
                 $.post($.URL.storehouse.list,null,listCallBack,"json");
             }
-            else if(data.code==500)
+            else
             {
                 $.ligerDialog.error(data.message);
             }
@@ -190,15 +190,10 @@
 
             <tr>
                 <td align="right" class="l-table-edit-td">电话:</td>
-                <td align="left" class="l-table-edit-td"><input name="Telephone" type="int" id="Telephone" ltype="int" /></td>
+                <td align="left" class="l-table-edit-td"><input name="Telephone" type="text" id="Telephone"/></td>
                 <td align="left"></td>
             </tr>
 
-            <tr>
-                <td align="right" class="l-table-edit-td">创建时间:</td>
-                <td align="left" class="l-table-edit-td"><input name="CreateTime" type="date" id="CreateTime" ltype="date" /></td>
-                <td align="left"></td>
-            </tr>
         </table>
         <br />
         <input type="button" value="提交" id="submitBtn1" class="l-button l-button-submit" />

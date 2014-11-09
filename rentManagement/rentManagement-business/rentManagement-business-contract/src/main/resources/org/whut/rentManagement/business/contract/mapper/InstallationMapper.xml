@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.contract.mapper.InstallationMapper">
     <sql id="Installation_fields">
-          ID,CONTRACTID,TYPE,INSTALLDEVICEID,INSTALLMAN,INSTALLTIME,INSTALLSTATUS,APPID
+          ID,CONTRACTID,TYPE,INSTALLDEVICEID,INSTALLMAN,INSTALLTIME,INSTALLSTATUS,IMAGE,APPID
     </sql>
     <resultMap id="InstallationResultMap" type="Installation">
         <id property="id" column="ID" />
@@ -14,6 +14,7 @@
         <result property="installMan" column="INSTALLMAN"/>
         <result property="installTime" column="INSTALLTIME"/>
         <result property="installStatus" column="INSTALLSTATUS"/>
+        <result property="image" column="IMAGE"/>
         <result property="appId" column="APPID"/>
     </resultMap>
     <insert id="add" parameterType="Installation"  keyProperty="id"
@@ -23,7 +24,7 @@
         installation(
         <include refid="Installation_fields" />
         )
-        VALUES (#{id}, #{contractId},#{type},#{installDeviceId},#{installMan},#{installTime},#{installStatus},#{appId});
+        VALUES (#{id}, #{contractId},#{type},#{installDeviceId},#{installMan},#{installTime},#{installStatus},#{image},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -43,6 +44,7 @@
             <if test="installMan!=null">INSTALLMAN=#{installMan},</if>
             <if test="installStatus!=null">INSTALLSTATUS=#{installStatus},</if>
             <if test="installTime!=null">INSTALLTIME=#{installTime},</if>
+            <if test="image!=null">IMAGE=#{image},</if>
             <if test="appId!=null">APPID=#{appId},</if>
         </set>
         WHERE ID=#{id}
@@ -57,5 +59,16 @@
         select id
         from installation
         <if test="installDeviceId!=null">where INSTALLDEVICEID=#{installDeviceId}</if>
+    </select>
+
+    <select id="getInstallList" parameterType="map" resultType="map">
+        select installation.*,contract.name,contract.customerName
+        from installation,contract,device
+        where installation.contractId=contract.id and installation.installDeviceId=device.id
+        <if test="appId!=null"> AND installation.APPID=#{appId}</if>
+        <if test="user!=null">AND installation.installMan like CONCAT('%',#{user},'%') </if>
+        <if test="device!=null">AND device.name like CONCAT('%',#{device},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND installation.installTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND installation.installTime<=#{endTime} ]]> </if>
     </select>
 </mapper>

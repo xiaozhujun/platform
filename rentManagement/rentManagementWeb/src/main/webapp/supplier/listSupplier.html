@@ -42,7 +42,7 @@
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
                     // { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '提供商名称',name: 'name',width:"130",
+                    { display: '供应商名称',name: 'name',width:"130",
                         editor: { type: 'text'}
                     },
                     {display:'联系地址',name:'address',width:"300",
@@ -99,7 +99,7 @@
             $("#qq").val("");
             $("#description").val("");
             f_show();
-            $.ligerDialog.open({title:'添加供应商商(带*号的为必填项)', target: $("#addSupplier"),width:500});
+            $.ligerDialog.open({title:'添加供应商(带*号的为必填项)', target: $("#addSupplier"),width:550});
         };
 
         $("#submitBtn").click(function(){
@@ -222,8 +222,28 @@
     <form name="form1" method="post" action="" id="form1">
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
-                <td align="right" class="l-table-edit-td">提供商名称:</td>
-                <td align="left" class="l-table-edit-td"><input name="name" type="text" id="name" ltype="text" /> <font color="red">* </font></td>
+                <td align="right" class="l-table-edit-td">供应商名称:</td>
+                <td align="left" class="l-table-edit-td"><input name="name" style="width:200px" type="text" id="name" ltype="text" /> <font color="red">* </font></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">联系人:</td>
+                <td align="left" class="l-table-edit-td"><input name="linkman" style="width:200px" type="text" id="linkman" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">联系电话:</td>
+                <td align="left" class="l-table-edit-td"><input name="telephone" style="width:200px" type="text" id="telephone" ltype="text" /> <font color="red">* </font></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">电子邮箱:</td>
+                <td align="left" class="l-table-edit-td"><input name="email" style="width:200px" type="text" id="email" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">QQ:</td>
+                <td align="left" class="l-table-edit-td"><input name="qq" style="width:200px" type="text" id="qq" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
@@ -233,28 +253,9 @@
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">联系人:</td>
-                <td align="left" class="l-table-edit-td"><input name="linkman" type="text" id="linkman" ltype="text" /></td>
-                <td align="left"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">联系电话:</td>
-                <td align="left" class="l-table-edit-td"><input name="telephone" type="text" id="telephone" ltype="text" /> <font color="red">* </font></td>
-                <td align="left"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">电子邮箱:</td>
-                <td align="left" class="l-table-edit-td"><input name="email" type="text" id="email" ltype="text" /></td>
-                <td align="left"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">QQ:</td>
-                <td align="left" class="l-table-edit-td"><input name="qq" type="text" id="qq" ltype="text" /></td>
-                <td align="left"></td>
-            </tr>
-            <tr>
                 <td align="right" class="l-table-edit-td">备注:</td>
-                <td align="left" class="l-table-edit-td"><input name="description" type="text" id="description" ltype="text" /></td>
+                <td align="left" class="l-table-edit-td">
+                    <textarea cols="50" rows="2" class="l-textarea" style="width: 400px" input name="description" id="description" /></textarea></td>
                 <td align="left"></td>
             </tr>
         </table>
@@ -267,7 +268,7 @@
 <div id="list">
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
-            <td align="right" class="l-table-edit-td">提供商名称:</td>
+            <td align="right" class="l-table-edit-td">供应商商名称:</td>
             <td align="left" class="l-table-edit-td"><input name="name" type="text" id="name1" ltype="text" /></td>
             <td align="right" class="l-table-edit-td">联系人:</td>
             <td align="left" class="l-table-edit-td"><input name="linkman" type="text" id="linkman1" ltype="text"/></td>

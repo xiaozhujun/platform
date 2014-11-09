@@ -14,18 +14,15 @@ function drawBelowChartOfMap(container,map,firstRequest,loc,locName){
     });
 
     function locFunction(){
-       console.log("====charttool=====") ;
 
         if(loc==locName[0]){
             l= Math.PI*(80*1000+24);
         }
         else if(loc==locName[1]){
             l= Math.PI*(80*1000+38);
-
         }
         else if(loc==locName[2]){
             l= Math.PI*(80*1000+58);
-
         }
 
         for(key in map){
@@ -126,12 +123,9 @@ function drawBelowChartOfMap(container,map,firstRequest,loc,locName){
                     borderWidth: 0
                 },
                 series :function(){
-
-                        console.log("===进入了series====") ;
                         var temp = [];
                         for(var k=0;k<locName.length;k++) {
                             temp.push({name:locName[k],data: (function() { // generate an array of random data
-                                console.log("===push了一个====") ;
                                 var data = [],
                                     time = (new Date()).getTime(),
                                     j;
@@ -153,7 +147,6 @@ function drawBelowChartOfMap(container,map,firstRequest,loc,locName){
             });
         }
         else{
-            console.log("===进入了addPoint====") ;
             for(var p=0;p<locName.length;p++){
                 if(loc==locName[p]) {
                     $(container).highcharts().series[p].addPoint([new Date().getTime(),shapeValue],true,true);

@@ -33,7 +33,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
     private static Map<String,List<WebSocketSession>> wsImpMap=new HashMap<String, List<WebSocketSession>>(); //一个message对应多个session，供通过websocket向前台发送消息使用
     private static Map<WebSocketSession,Long> sessionAndAppIdMap= new HashMap<WebSocketSession,Long>();  //维护session和appId的关系，
     private static Map<String,WebSocketSession> wsuImpMap=new HashMap<String,WebSocketSession>();
-    private static List<WebSocketSession> wssuList;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -94,7 +93,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
             logger.info("wsImpMap为"+wsImpMap);
             List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
             webSocketSessionList.remove(session);
-
             logger.info("wsImpMap为"+wsImpMap);
         }
         map.remove(session);

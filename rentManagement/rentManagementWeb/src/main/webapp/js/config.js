@@ -49,7 +49,8 @@
             "list":"rs/installation/list",
             "add":"rs/installation/add",
             "update":"rs/installation/update",
-            "delete":"rs/installation/delete"
+            "delete":"rs/installation/delete",
+            "findByCondition":"rs/installation/findByCondition"
         },
         "employee":{
             "list":"rs/employee/list",
@@ -119,7 +120,8 @@
             "add":"rs/prebury/add"  ,
             "update":"rs/prebury/update",
             "delete":"rs/prebury/delete" ,
-            "list":"rs/prebury/list"
+            "list":"rs/prebury/list",
+            "findByCondition":"rs/prebury/findByCondition"
         },
         "bad_Debt_Sheet":{
             "add":"rs/bad_Debt_Sheet/add",

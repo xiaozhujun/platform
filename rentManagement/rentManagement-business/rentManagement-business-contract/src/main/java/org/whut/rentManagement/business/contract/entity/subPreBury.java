@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class subPreBury {
     private long id;
-    private String contractId;
+    private String contractName;
     private String preBuryMan;
     private String preBuryTime;
     private String preBuryStatus;
@@ -25,12 +25,12 @@ public class subPreBury {
         this.id = id;
     }
 
-    public String getContractId() {
-        return contractId;
+    public String getContractName() {
+        return contractName;
     }
 
-    public void setContractId(String contractId) {
-        this.contractId = contractId;
+    public void setContractName(String contractName) {
+        this.contractName = contractName;
     }
 
     public String getPreBuryMan() {

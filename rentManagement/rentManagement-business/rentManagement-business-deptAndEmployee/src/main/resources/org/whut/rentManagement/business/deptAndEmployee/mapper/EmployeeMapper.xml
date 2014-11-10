@@ -65,6 +65,12 @@
         where ID=#{id}
     </select>
 
+    <select id="getIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+        select ID
+        from employee
+        where NAME=#{name}
+    </select>
+
     <!--  这个返回list类型，还有待确定   -->
     <select id="getListByAppId" parameterType="java.lang.Long" resultMap="employeeResultMap">
         select

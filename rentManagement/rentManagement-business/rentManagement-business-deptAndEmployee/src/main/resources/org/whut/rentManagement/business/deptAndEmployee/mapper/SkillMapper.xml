@@ -58,6 +58,12 @@
         where ID=#{id}
     </select>
 
+    <select id="getIdBySkillName" parameterType="java.lang.String" resultType="java.lang.Long">
+        select ID
+        from skill
+        where NAME=#{name}
+    </select>
+
     <select id="list" parameterType="java.lang.Long" resultMap="skillResultMap">
         SELECT
         <include refid="skill_fields"/>

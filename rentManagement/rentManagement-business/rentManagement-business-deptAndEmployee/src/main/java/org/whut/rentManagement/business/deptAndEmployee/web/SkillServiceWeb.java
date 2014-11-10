@@ -35,18 +35,32 @@ public class SkillServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("name") String name, @FormParam("description") String description) {
-        if ( name.trim().equals("") || description.trim().equals("")) {
+        if (name==null|| name.trim().equals("") ||description==null|| description.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
-        Skill skill = new Skill();
-        long appId= UserContext.currentUserAppId();
-        skill.setName(name);
-        skill.setDescription(description);
-        Date createdate=new Date();
-        skill.setCreateTime(createdate);
-        skill.setAppId(appId);
-        skillService.add(skill);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        long id;
+        try
+        {
+            id=skillService.getIdBySkillName(name);
+            System.out.println("skillId的值为："+id);
+        }
+        catch (Exception e)
+        {
+            id=0;
+        }
+        if(id==0)
+        {
+            Skill skill = new Skill();
+            long appId= UserContext.currentUserAppId();
+            skill.setName(name);
+            skill.setDescription(description);
+            Date createdate=new Date();
+            skill.setCreateTime(createdate);
+            skill.setAppId(appId);
+            skillService.add(skill);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"改技能已经存在！");
     }
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/update")
@@ -104,9 +118,9 @@ public class SkillServiceWeb {
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/getSkillNameById")
     @POST
-    public String getDepartmentById(@FormParam("skillId")long skillId){
-        String department=skillService.getSkilltNameById(skillId);
-        return  JsonResultUtils.getObjectResultByStringAsDefault(department,JsonResultUtils.Code.SUCCESS);
+    public String getSkillNameById(@FormParam("skillId")long skillId){
+        String skill=skillService.getSkillNameById(skillId);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(skill,JsonResultUtils.Code.SUCCESS);
     }
 
 }

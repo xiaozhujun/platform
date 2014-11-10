@@ -30,7 +30,10 @@ public class SkillService {
     public List<Skill> list(long appId){
         return skillMapper.list(appId);
     }
-    public String getSkilltNameById(long id){
+    public String getSkillNameById(long id){
         return skillMapper.getSkillNameById(id);
+    }
+    public long getIdBySkillName(String name){
+        return skillMapper.getIdBySkillName(name);
     }
 }

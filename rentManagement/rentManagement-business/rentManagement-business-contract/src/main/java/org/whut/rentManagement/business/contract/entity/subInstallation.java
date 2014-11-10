@@ -11,9 +11,9 @@ import java.util.Date;
  */
 public class subInstallation {
     private long id;
-    private String contractId;
+    private String contractName;
     private String type;
-    private String installDeviceId;
+    private String deviceName;
     private String installMan;
     private String installTime;
     private String installStatus;
@@ -27,13 +27,6 @@ public class subInstallation {
         this.id = id;
     }
 
-    public String getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(String contractId) {
-        this.contractId = contractId;
-    }
 
     public String getType() {
         return type;
@@ -43,13 +36,6 @@ public class subInstallation {
         this.type = type;
     }
 
-    public String getInstallDeviceId() {
-        return installDeviceId;
-    }
-
-    public void setInstallDeviceId(String installDeviceId) {
-        this.installDeviceId = installDeviceId;
-    }
 
     public String getInstallMan() {
         return installMan;
@@ -81,5 +67,21 @@ public class subInstallation {
 
     public void setAppId(long appId) {
         this.appId = appId;
+    }
+
+    public String getContractName() {
+        return contractName;
+    }
+
+    public void setContractName(String contractName) {
+        this.contractName = contractName;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 }

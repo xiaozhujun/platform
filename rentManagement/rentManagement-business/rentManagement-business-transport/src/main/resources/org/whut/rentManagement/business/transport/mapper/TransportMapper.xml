@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.transport.mapper.TransportMapper">
+    <sql id="Transport_fields">
+          ID,HANDLER,DRIVER,TELEPHONE,DESTINATION,ADDRESS,LNG,LAT,IMAGE,CREATETIME,APPID
+    </sql>
+    <resultMap id="TransportResultMap" type="Transport">
+        <id property="id" column="ID" />
+        <result property="handler" column="HANDLER"/>
+        <result property="driver" column="DRIVER"/>
+        <result property="telephone" column="TELEPHONE"/>
+        <result property="destination" column="DESTINATION"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="lng" column="LNG"/>
+        <result property="lat" column="LAT"/>
+        <result property="image" column="IMAGE"/>
+        <result property="createTime" column="CREATETIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Transport"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        transport(
+        <include refid="Transport_fields" />
+        )
+        VALUES (#{id}, #{handler},#{driver},#{telephone},#{destination},#{address},#{lng},#{lat},#{image},#{createTime},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select *
+           from  transport
+           where appId=#{appId}
+    </select>
+
+    <update id="update" parameterType="Transport">
+        UPDATE transport
+        <set>
+            <if test="driver!=null">DRIVER=#{driver},</if>
+            <if test="telephone!=null">TELEPHONE=#{telephone},</if>
+            <if test="destination!=null">DESTINATION=#{destination},</if>
+            <if test="image!=null">IMAGE=#{image}</if>
+        </set>
+        WHERE ID=#{id} and APPID=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="Transport">
+        DELETE from transport
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="findByCondition" parameterType="map" resultType="map">
+        select transport.*
+        from transport
+        where
+        <if test="appId!=null"> transport.APPID=#{appId}</if>
+        <if test="user!=null">AND transport.handler like CONCAT('%',#{user},'%') </if>
+        <if test="device!=null">AND transport.driver like CONCAT('%',#{device},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND transport.createTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND transport.createTime<=#{endTime} ]]> </if>
+    </select>
+
+</mapper>

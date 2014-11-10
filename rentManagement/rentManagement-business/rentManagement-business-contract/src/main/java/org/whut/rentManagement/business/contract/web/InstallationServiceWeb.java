@@ -95,19 +95,19 @@ public class InstallationServiceWeb {
         Installation installation = new Installation();
         Date date = null;
         installation.setId(subinstallation.getId());
-        installation.setContractId(Long.parseLong(subinstallation.getContractId()));
+//        installation.setContractId(Long.parseLong(subinstallation.getContractId()));
         installation.setType(subinstallation.getType());
         installation.setInstallStatus(subinstallation.getInstallStatus());
         installation.setInstallMan(subinstallation.getInstallMan());
-        installation.setInstallDeviceId(Long.parseLong(subinstallation.getInstallDeviceId()));
+//        installation.setInstallDeviceId(Long.parseLong(subinstallation.getInstallDeviceId()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try{
             date = sdf.parse(subinstallation.getInstallTime());
         }catch (Exception e){
             JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
         }
-        installation.setInstallTime(date);
-        installation.setAppId(appId);
+//        installation.setInstallTime(date);
+//        installation.setAppId(appId);
         installationservice.update(installation);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
 
@@ -116,7 +116,9 @@ public class InstallationServiceWeb {
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString")String jsonString) {
-        Installation installation = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Installation.class);
+        subInstallation subinstallation = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,subInstallation.class);
+        Installation installation = new Installation();
+        installation.setId(subinstallation.getId());
         installationservice.delete(installation);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -141,6 +143,24 @@ public class InstallationServiceWeb {
         condition.put("appId", UserContext.currentUserAppId());
         List<Map<String,String>> list=installationservice.getInstallList(condition);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/findByCondition")
+    @POST
+    public String listByCondition(@FormParam("contractName") String contractName,@FormParam("deviceName") String deviceName){
+        if ((contractName==null||contractName.trim().length()==0)&&(deviceName==null||deviceName.trim().length()==0)){
+            contractName="";
+            deviceName="";
+        } else if ((contractName!=null||contractName.trim().length()>0)&&(deviceName==null||deviceName.trim().length()==0)){
+            deviceName="";
+        } else if ((deviceName!=null||deviceName.trim().length()>0)&&(contractName==null||contractName.trim().length()==0)){
+            contractName="";
+        }
+        long appId = UserContext.currentUserAppId();
+        contractName="%"+contractName+"%";
+        deviceName="%"+deviceName+"%";
+        List<Map<String,String>> result=installationservice.findByCondition(contractName,deviceName,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(result,JsonResultUtils.Code.SUCCESS);
     }
 
 }

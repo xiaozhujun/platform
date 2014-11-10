@@ -35,4 +35,7 @@ public class EmployeeService {
     {
         return employeeMapper.getListByAppId(appId);
     }
+    public long getIdByName(String name){
+        return employeeMapper.getIdByName(name);
+    }
 }

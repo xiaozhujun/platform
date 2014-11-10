@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-09 02:24:06
+Date: 2014-11-10 01:15:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -223,7 +223,9 @@ CREATE TABLE `device` (
   `mainDeviceId` bigint(20) DEFAULT NULL,
   `typeId` bigint(20) DEFAULT NULL,
   `storehouseId` bigint(20) DEFAULT NULL,
+  `carDriverId` bigint(20) DEFAULT NULL,
   `contractId` bigint(20) DEFAULT NULL,
+  `optionType` bigint(20) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -241,8 +243,8 @@ CREATE TABLE `device` (
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', '武汉市武昌区', '正常', '司机室001', 'sjs001', null, '2013-10-01', '2014-11-06', null, '114.380494', '30.507115', '1');
-INSERT INTO `device` VALUES ('2', '2', '1', '1', '1', '武汉市洪山区', '在用', '司机室002', 'sjs002', null, '2013-10-08', '2014-11-08', null, '114.380494', '30.506115', '1');
+INSERT INTO `device` VALUES ('1', '1', '1', '1', null, '1', null, null, '使用', '司机室001', 'sjs001', null, '2013-11-01', '2014-11-09', null, '114.380494', '30.507115', '1');
+INSERT INTO `device` VALUES ('2', '2', '1', '1', null, '1', null, null, '使用', '司机室002', 'sjs002', null, '2013-11-14', '2014-11-09', null, '114.380494', '30.506115', '1');
 
 -- ----------------------------
 -- Table structure for device_type
@@ -512,22 +514,6 @@ CREATE TABLE `storehouse` (
 INSERT INTO `storehouse` VALUES ('1', '第一仓库', null, '武汉市武昌区', '肖竹军', '18511451798', '2014-11-06', '1');
 
 -- ----------------------------
--- Table structure for storehouse_device
--- ----------------------------
-DROP TABLE IF EXISTS `storehouse_device`;
-CREATE TABLE `storehouse_device` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `storehouseId` bigint(20) DEFAULT NULL,
-  `deviceTypeId` bigint(20) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of storehouse_device
--- ----------------------------
-
--- ----------------------------
 -- Table structure for supplier
 -- ----------------------------
 DROP TABLE IF EXISTS `supplier`;
@@ -550,6 +536,46 @@ CREATE TABLE `supplier` (
 -- ----------------------------
 INSERT INTO `supplier` VALUES ('1', 'xxx公司', 'sdfsdf', 'xxx地址', 'xxx', '1234123123', 'sdfsdf@163.com', '888888', '2014-10-29', '1');
 INSERT INTO `supplier` VALUES ('2', 'sss公司', 'sssss', 'sss地址', 'sss', '54545345', 'sdfsdf@163.com', '65645451', '2014-10-29', '1');
+
+-- ----------------------------
+-- Table structure for transport
+-- ----------------------------
+DROP TABLE IF EXISTS `transport`;
+CREATE TABLE `transport` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `handler` varchar(255) DEFAULT NULL,
+  `driver` varchar(255) DEFAULT NULL,
+  `telephone` varchar(255) DEFAULT NULL,
+  `destination` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `lng` varchar(255) DEFAULT NULL,
+  `lat` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of transport
+-- ----------------------------
+INSERT INTO `transport` VALUES ('1', 'xiaozhujun', '肖竹军', '18511451799', '武汉市武昌区', '武汉市青山区', null, null, null, '2014-11-10 00:42:30', '1');
+INSERT INTO `transport` VALUES ('2', 'xiaozhujun', '张三', '13511459876', '武汉市武昌区', '武汉市汉阳区', null, null, null, '2014-11-10 01:11:22', '1');
+
+-- ----------------------------
+-- Table structure for transport_device
+-- ----------------------------
+DROP TABLE IF EXISTS `transport_device`;
+CREATE TABLE `transport_device` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `transportId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of transport_device
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user

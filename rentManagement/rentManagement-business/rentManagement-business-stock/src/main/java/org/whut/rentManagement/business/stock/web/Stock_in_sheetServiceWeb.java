@@ -40,13 +40,14 @@ public class Stock_in_sheetServiceWeb {
     @POST
     public String add(@FormParam("number") String number,@FormParam("carNumber")String carNumber,
                       @FormParam("customerId")long customerId,@FormParam("contractId")long contractId,@FormParam("handler")String handler,
-                      @FormParam("storehouseId")long storehouseId,@FormParam("description")String description,@FormParam("createTime")String createTime,
-                      @FormParam("creator")String creator) {
+                      @FormParam("storehouseId")long storehouseId,@FormParam("description")String description,
+                      @FormParam("creator")String creator,@FormParam("image")String image) {
         if(number==null||"".equals(number.trim())||carNumber==null||"".equals(carNumber.trim())
                 ||0==customerId||0==contractId||0==storehouseId
                 ||handler==null||"".equals(handler.trim())
-                ||description==null||"".equals(description.trim())||createTime==null||"".equals(createTime.trim())
-                ||creator==null||"".equals(creator.trim())){
+                ||description==null||"".equals(description.trim())
+                ||creator==null||"".equals(creator.trim())
+                ||image==null||"".equals(image.trim())){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
 
@@ -69,15 +70,17 @@ public class Stock_in_sheetServiceWeb {
         stockInSheet.setHandler(handler);
         stockInSheet.setStorehouseId(storehouseId);
         stockInSheet.setDescription(description);
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        Date time= null;
-        try {
-            time = sdf.parse(createTime);
-        } catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+//        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+//        Date time= null;
+//        try {
+//            time = sdf.parse(createTime);
+//        } catch (ParseException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+        Date time=new Date();
         stockInSheet.setCreateTime(time);
         stockInSheet.setCreator(creator);
+        stockInSheet.setImage(image);
         stockInSheet.setAppId(appId);
         stockInSheetService.add(stockInSheet);
 
@@ -85,7 +88,7 @@ public class Stock_in_sheetServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/getList")
+    @Path("/list")
     @POST
     public String getList(){
         long appId=UserContext.currentUserAppId();
@@ -97,61 +100,75 @@ public class Stock_in_sheetServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
-        long appId= UserContext.currentUserAppId();
-        Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
+//        long appId= UserContext.currentUserAppId();
+        Stock_in_sheet stockInSheet=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
 
-        if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")
-                ||stockInSheetp.getCarNumber()==null||stockInSheetp.getCarNumber().equals("")
-                ||stockInSheetp.getHandler()==null||stockInSheetp.getHandler().equals("")
-                ||stockInSheetp.getDescription()==null||stockInSheetp.getDescription().equals("")
-                ||stockInSheetp.getCreator()==null||stockInSheetp.getCreator().equals("")){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
+        if(stockInSheet.getNumber()==null||stockInSheet.getNumber().equals("")
+                ||stockInSheet.getCarNumber()==null||stockInSheet.getCarNumber().equals("")
+                ||stockInSheet.getHandler()==null||stockInSheet.getHandler().equals("")
+                ||stockInSheet.getDescription()==null||stockInSheet.getDescription().equals("")
+                ||stockInSheet.getCreator()==null||stockInSheet.getCreator().equals("")
+                ||stockInSheet.getImage()==null||stockInSheet.getImage().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
 
-        Stock_in_sheet stockInSheet=new Stock_in_sheet();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String s=stockInSheetp.getCreateTime() ;
-        if(s==null){
-            stockInSheet.setId(stockInSheetp.getId());
-            stockInSheet.setNumber(stockInSheetp.getNumber());
-            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
-            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
-            stockInSheet.setContractId(stockInSheetp.getContractId());
-            stockInSheet.setHandler(stockInSheetp.getHandler());
-            stockInSheet.setCreator(stockInSheetp.getCreator());
-            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
-            stockInSheet.setDescription(stockInSheetp.getDescription());
-            stockInSheet.setAppId(appId);
-            stockInSheetService.update(stockInSheet);
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "更新成功!");
-        }   else {
-            Date date = null;
-
-            try {
-                date = sdf.parse(stockInSheetp.getCreateTime());
-            } catch (ParseException e) {
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "日期格式错误");
-            }
-
-            long oneDayTime = 1000*3600*24;
-            Date Time = new Date(date.getTime() + oneDayTime);
-
-            stockInSheet.setId(stockInSheetp.getId());
-            stockInSheet.setNumber(stockInSheetp.getNumber());
-            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
-            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
-            stockInSheet.setContractId(stockInSheetp.getContractId());
-            stockInSheet.setHandler(stockInSheetp.getHandler());
-            stockInSheet.setCreator(stockInSheetp.getCreator());
-            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
-            stockInSheet.setDescription(stockInSheetp.getDescription());
-            stockInSheet.setCreateTime(Time);
-            stockInSheet.setAppId(appId);
-
-            stockInSheetService.update(stockInSheet);
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        }
+        stockInSheetService.update(stockInSheet);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+//        Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
+//
+//        if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")
+//                ||stockInSheetp.getCarNumber()==null||stockInSheetp.getCarNumber().equals("")
+//                ||stockInSheetp.getHandler()==null||stockInSheetp.getHandler().equals("")
+//                ||stockInSheetp.getDescription()==null||stockInSheetp.getDescription().equals("")
+//                ||stockInSheetp.getCreator()==null||stockInSheetp.getCreator().equals("")){
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空");
+//        }
+//
+//        Stock_in_sheet stockInSheet=new Stock_in_sheet();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        String s=stockInSheetp.getCreateTime() ;
+//        if(s==null){
+//            stockInSheet.setId(stockInSheetp.getId());
+//            stockInSheet.setNumber(stockInSheetp.getNumber());
+//            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
+//            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
+//            stockInSheet.setContractId(stockInSheetp.getContractId());
+//            stockInSheet.setHandler(stockInSheetp.getHandler());
+//            stockInSheet.setCreator(stockInSheetp.getCreator());
+//            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
+//            stockInSheet.setDescription(stockInSheetp.getDescription());
+//            stockInSheet.setAppId(appId);
+//            stockInSheetService.update(stockInSheet);
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "更新成功!");
+//        }   else {
+//            Date date = null;
+//
+//            try {
+//                date = sdf.parse(stockInSheetp.getCreateTime());
+//            } catch (ParseException e) {
+//                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "日期格式错误");
+//            }
+//
+//            long oneDayTime = 1000*3600*24;
+//            Date Time = new Date(date.getTime() + oneDayTime);
+//
+//            stockInSheet.setId(stockInSheetp.getId());
+//            stockInSheet.setNumber(stockInSheetp.getNumber());
+//            stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
+//            stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
+//            stockInSheet.setContractId(stockInSheetp.getContractId());
+//            stockInSheet.setHandler(stockInSheetp.getHandler());
+//            stockInSheet.setCreator(stockInSheetp.getCreator());
+//            stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
+//            stockInSheet.setDescription(stockInSheetp.getDescription());
+//            stockInSheet.setCreateTime(Time);
+//            stockInSheet.setAppId(appId);
+//
+//            stockInSheetService.update(stockInSheet);
+//            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        }
+
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/delete")

@@ -101,7 +101,7 @@
         },
         "stock_in_sheet":{
             "add":"rs/stock_in_sheet/add" ,
-            "getList":"rs/stock_in_sheet/getList",
+            "list":"rs/stock_in_sheet/list",
             "update":"rs/stock_in_sheet/update",
             "delete":"rs/stock_in_sheet/delete"
         },

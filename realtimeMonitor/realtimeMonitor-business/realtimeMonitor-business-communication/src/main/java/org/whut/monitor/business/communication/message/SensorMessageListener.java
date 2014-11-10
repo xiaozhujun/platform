@@ -8,7 +8,6 @@ import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 

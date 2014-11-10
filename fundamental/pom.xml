@@ -29,6 +29,7 @@
         <module>fundamental-communication</module>
         <module>fundamental-sms</module>
         <module>fundamental-websocket</module>
+        <module>fundamental-command</module>
     </modules>
 
 

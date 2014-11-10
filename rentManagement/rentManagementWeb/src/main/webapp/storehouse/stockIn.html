@@ -15,7 +15,7 @@
     <script type="text/javascript">
         $.ligerDialog.close("#addStock_in_sheetList") ;
         $(function(){
-            $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+            $.post($.URL.stock_in_sheet.list,null,listCallback,"json");
             $.post($.URL.car_Driver.list,null,listCarDriverCallback,"json");
             $.post($.URL.customer.list,null,listCustomerCallback,"json");
             $.post($.URL.contract.list,null,listContractCallback,"json");
@@ -42,7 +42,10 @@
                 });
                 $("#inputCarNumber").ligerComboBox({emptyText:null,   //实现下拉框
                     data:carNumberData,
-                    valueFieldID: 'carNumber'
+                    width:200,
+                    valueField:'type',
+                    textField:'text',
+                    valueFieldID: 'carNumberSelect'
                 });
             }
         }
@@ -52,13 +55,16 @@
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var rs=[];
-                    rs["type"]=content.id;
-                    rs["text"]=content.id;
+                    rs["text"]=content.name;
+                    rs["id"]=content.id;
                     customerIdData.push(rs);
                 });
-                $("#inputCustomerId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
+                $("#inputCustomer").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
                     data:customerIdData,
-                    valueFieldID: 'customerId'
+                    width:200,
+                    valueField:'id',
+                    textField:'text',
+                    valueFieldID: 'customerSelect'
                 });
             }
         }
@@ -68,13 +74,16 @@
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var rs=[];
-                    rs["type"]=content.id;
-                    rs["text"]=content.id;
+                    rs["text"]=content.name;
+                    rs["id"]=content.id;
                     contractIdData.push(rs);
                 });
-                $("#inputContractId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
+                $("#inputContract").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
                     data:contractIdData,
-                    valueFieldID: 'contractId'
+                    width:200,
+                    valueField:'id',
+                    textField:'text',
+                    valueFieldID: 'contractSelect'
                 });
             }
         }
@@ -84,12 +93,15 @@
             if(data.code==200){
                 $.each(data.data,function(index,content){
                     var rs=[];
-                    rs["type"]=content.id;
-                    rs["text"]=content.id;
+                    rs["text"]=content.name;
+                    rs["id"]=content.id;
                     storehouseIdData.push(rs);
                 });
-                $("#inputStorehouseId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
+                $("#inputStorehouse").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
                     data:storehouseIdData,
+                    width:200,
+                    valueField:'id',
+                    textField:'text',
                     valueFieldID: 'storehouseId'
                 });
             }
@@ -100,37 +112,38 @@
         {
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '编号',name: 'number',editor:{type:'text'}} ,
+                    { display: '入库单编号',name: 'number',editor:{type:'text'}} ,
                     { display: '车牌号',name: 'carNumber',
                         editor: { type: 'select',emptyText:null, data: carNumberData, valueField:'type',textField:'text'},
                         render:function(item){
                             return item.carNumber;
                         }
                     },
-                    { display: '用户ID', name: 'customerId',
-                        editor: { type: 'select',emptyText:null, data: customerIdData, valueField:'type',textField:'text'},
+                    { display: '用户名称', name: 'customer',
+                        editor: { type: 'select',emptyText:null, data: customerIdData, valueField:'id',textField:'text'},
                         render:function(item){
-                            return item.customerId;
+                            return item.customer;
                         }
                     },
-                    { display: '合同ID', name: 'contractId',
-                        editor: { type: 'select',emptyText:null, data: contractIdData, valueField:'type',textField:'text'},
+                    { display: '合同名称', name: 'contract',
+                        editor: { type: 'select',emptyText:null, data: contractIdData, valueField:'id',textField:'text'},
                         render:function(item){
-                            return item.contractId;
+                            return item.contract;
                         }
                     },
-                    { display: '经办人',name: 'handler',editor:{type:'text'}},
-                    { display: '仓库ID', name: 'storehouseId',
-                        editor: { type: 'select',emptyText:null, data: storehouseIdData, valueField:'type',textField:'text'},
+                    { display: '经手人',name: 'handler',editor:{type:'text'}},
+                    { display: '仓库名称', name: 'storehouse',
+                        editor: { type: 'select',emptyText:null, data: storehouseIdData, valueField:'id',textField:'text'},
                         render:function(item){
-                            return item.storehouseId;
+                            return item.storehouse;
                         }
                     },
                     { display: '描述',name: 'description',type:'string',
-                        editor: { type: 'text'}
+                        editor: { type: 'textarea'}
                     },
-                    { display: '创建时间',name: 'createTime',width:100,editor:{type:'date'}  },
+                    { display: '入库日期',name: 'createTime',width:100  },
                     { display: '创建者',name: 'creator',editor:{type:'text'}} ,
+                    { display:'运输拍照',name:'image',editor:{type:'text'}},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -176,12 +189,12 @@
 
         function updateCallback(data){
             if(data.code==200){
-                $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+                $.post($.URL.stock_in_sheet.list,null,listCallback,"json");
                 $.ligerDialog.success(data.message);
 
             }
             else{
-                $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+                $.post($.URL.stock_in_sheet.list,null,listCallback,"json");
                 $.ligerDialog.warn(data.message);
 
             }
@@ -209,24 +222,34 @@
         function f_add(){
             f_show();
             $("#addStock_in_sheetList input[name]").val("");
-            $("#addDescription").val("");
-            $.ligerDialog.open({isDrag: true,title:'添加选项', target: $("#addStock_in_sheetList"),width:500});
+            $("#inputDescription").val("");
+            $.ligerDialog.open({isDrag: true,title:'添加入库单', target: $("#addStock_in_sheetList"),width:500});
         }
 
         function f_show(){
             $('#addStock_in_sheetList').css('display','block');
         }
 
-        $("#inputCreateTime").ligerDateEditor();
+//        $("#inputCreateTime").ligerDateEditor();
 
 
         $("#submitBtn").click(function(){
-            $.post($.URL.stock_in_sheet.add, $(this).parent().serialize(),addCallBack,"json") ;
+            var data={};
+            data.number=$("#inputNumber").val();
+            data.carNumber=$("#inputCarNumber").ligerComboBox().getValue();
+            data.customerId=$("#inputCustomer").ligerComboBox().getValue();
+            data.contractId=$("#inputContract").ligerComboBox().getValue();
+            data.handler=$("#inputHandler").val();
+            data.storehouseId=$("#inputStorehouse").ligerComboBox().getValue();
+            data.description=$("#inputDescription").val();
+            data.creator=$("#inputCreator").val();
+            data.image=$("#inputImage").val();
+            $.post($.URL.stock_in_sheet.add,data,addCallBack,"json") ;
         });
 
         function addCallBack(data){
             if(data.code==200){
-                $.post($.URL.stock_in_sheet.getList,null,listCallback,"json");
+                $.post($.URL.stock_in_sheet.list,null,listCallback,"json");
                 $.ligerDialog.success(data.message);
 
             }else{
@@ -257,7 +280,7 @@
         </div>
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
-                <td align="right" class="l-table-edit-td">编号:</td>
+                <td align="right" class="l-table-edit-td">入库单编号:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="number" type="text" id="inputNumber" ltype="text" /></td>
                 <td align="left"></td>
@@ -269,46 +292,52 @@
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">用户ID:</td>
+                <td align="right" class="l-table-edit-td">用户名称:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input name="customerId" type="text" id="inputCustomerId" ltype="text" /></td>
+                    <input name="customer" type="text" id="inputCustomer" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">合同ID:</td>
+                <td align="right" class="l-table-edit-td">合同名称:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input name="contractId" type="text" id="inputContractId" ltype="text" /></td>
+                    <input name="contract" type="text" id="inputContract" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">经办人:</td>
+                <td align="right" class="l-table-edit-td">经手人:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="handler" type="text" id="inputHandler" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">仓库ID:</td>
+                <td align="right" class="l-table-edit-td">仓库名称:</td>
                 <td align="left" class="l-table-edit-td">
-                    <input name="storehouseId" type="text" id="inputStorehouseId" ltype="text" /></td>
+                    <input name="storehouse" type="text" id="inputStorehouse" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">描述:</td>
                 <td align="left" class="l-table-edit-td">
-                    <textarea name="description" class="l-textarea" id="addDescription" cols="50" rows="2" style="width:160px">
+                    <textarea name="description" class="l-textarea" id="inputDescription" cols="50" rows="2" style="width:160px">
                     </textarea></td>
                 <td align="left"></td>
             </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">创建时间:</td>
-                <td align="left" class="l-table-edit-td">
-                    <input name="createTime" type="text" id="inputCreateTime"/></td>
-                <td align="left"></td>
-            </tr>
+            <!--<tr>-->
+                <!--<td align="right" class="l-table-edit-td">创建时间:</td>-->
+                <!--<td align="left" class="l-table-edit-td">-->
+                    <!--<input name="createTime" type="text" id="inputCreateTime"/></td>-->
+                <!--<td align="left"></td>-->
+            <!--</tr>-->
             <tr>
                 <td align="right" class="l-table-edit-td">创建者:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="creator" type="text" id="inputCreator" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">运输拍照:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="image" type="text" id="inputImage" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
         </table>

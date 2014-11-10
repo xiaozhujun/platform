@@ -37,4 +37,7 @@ public class PreBuryService {
     public List<Map<String,String>> getPreburyList(Map<String,Object> condition){
         return preBuryMapper.getPreburyList(condition);
     }
+    public List<Map<String,String>> findByCondition(String contractName ,long appId){
+        return preBuryMapper.findByCondition(contractName,appId);
+    }
 }

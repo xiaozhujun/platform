@@ -28,10 +28,15 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="PreBuryResultMap">
+<!--    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="PreBuryResultMap">
         select *
         from prebury
         where APPID=#{appId}
+    </select>-->
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+      select c.name contractName,p.preBuryMan,p.preBuryTime,p.preBuryStatus,p.id
+           from prebury AS p,contract AS c
+           where p.appId=#{appId} AND p.contractId=c.id
     </select>
     <update id="update" parameterType="PreBury">
         UPDATE prebury
@@ -63,5 +68,11 @@
         <if test="user!=null">AND prebury.preBuryMan like CONCAT('%',#{user},'%') </if>
         <if test="startTime!=null"><![CDATA[ AND prebury.preBuryTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND prebury.preBuryTime<=#{endTime} ]]> </if>
+    </select>
+    <select id="findByCondition" parameterType="map" resultType="map">
+        select c.name contractName,p.preBuryMan,p.preBuryTime,p.preBuryStatus
+        from  prebury AS p,contract AS c
+        where p.appId=#{appId} AND p.contractId=c.id
+        <if test="contractName!=null">AND c.name LIKE #{contractName}</if>
     </select>
 </mapper>

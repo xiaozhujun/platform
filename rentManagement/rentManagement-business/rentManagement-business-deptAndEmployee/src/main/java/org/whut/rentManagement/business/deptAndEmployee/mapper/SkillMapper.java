@@ -16,5 +16,6 @@ public interface SkillMapper extends AbstractMapper<Skill> {
     public Skill getById(long id);
     public List<Skill> list(long appId);
     public String getSkillNameById(long id);
+    public long getIdBySkillName(String name);
 
 }

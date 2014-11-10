@@ -49,7 +49,15 @@
             "list":"rs/installation/list",
             "add":"rs/installation/add",
             "update":"rs/installation/update",
-            "delete":"rs/installation/delete"
+            "delete":"rs/installation/delete",
+            "findByCondition":"rs/installation/findByCondition"
+        },
+        "transport":{
+            "list":"rs/transport/list",
+            "add":"rs/transport/add",
+            "update":"rs/transport/update",
+            "delete":"rs/transport/delete",
+            "findByCondition":"rs/transport/findByCondition"
         },
         "employee":{
             "list":"rs/employee/list",
@@ -93,7 +101,7 @@
         },
         "stock_in_sheet":{
             "add":"rs/stock_in_sheet/add" ,
-            "getList":"rs/stock_in_sheet/getList",
+            "list":"rs/stock_in_sheet/list",
             "update":"rs/stock_in_sheet/update",
             "delete":"rs/stock_in_sheet/delete"
         },
@@ -119,7 +127,8 @@
             "add":"rs/prebury/add"  ,
             "update":"rs/prebury/update",
             "delete":"rs/prebury/delete" ,
-            "list":"rs/prebury/list"
+            "list":"rs/prebury/list",
+            "findByCondition":"rs/prebury/findByCondition"
         },
         "bad_Debt_Sheet":{
             "add":"rs/bad_Debt_Sheet/add",

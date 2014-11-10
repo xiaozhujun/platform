@@ -48,29 +48,58 @@ public class EmployeeServiceWeb {
         if (departmentId==null|| departmentId.trim().equals("") ||name==null|| name.trim().equals("") ||sex==null|| sex.trim().equals("")||skillId==null|| skillId.trim().equals("")||telephone==null||telephone.trim().equals("")||email==null||email.trim().equals("")||employedTime==null||position==null||position.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
-        Employee employee = new Employee();
-        long appId= UserContext.currentUserAppId();
-        Date employeedate = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try{
-            employeedate = sdf.parse(employedTime);
-        }catch (Exception e){
-            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+        if(!"".equals(name.trim())){
+            if(!name.matches("^[\\u4E00-\\u9FA5A-Za-z]+$")){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "请输入为中文或英文的姓名!");
+            }
         }
-        Date createdate=new Date();
+        if(!"".equals(email.trim())){
+            if(!email.matches("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "邮箱格式不正确!");
+            }
+        }
+        if(!"".equals(telephone.trim())){
+            if(!telephone.matches("^[0-9]*$")){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "联系电话必须是数字!");
+            }
+        }
+        long id;
+        try
+        {
+            id=employeeService.getIdByName(name);
+            System.out.println("employeeId的值为："+id);
+        }
+        catch (Exception e)
+        {
+            id=0;
+        }
+        if(id==0)
+        {
+            Employee employee = new Employee();
+            long appId= UserContext.currentUserAppId();
+            Date employeedate = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try{
+                employeedate = sdf.parse(employedTime);
+            }catch (Exception e){
+                JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+            }
+            Date createdate=new Date();
 
-        employee.setDepartmentId(Long.parseLong(departmentId.replace(" ","")));
-        employee.setName(name);
-        employee.setSex(sex);
-        employee.setSkillId(Long.parseLong(skillId.replace(" ","")));
-        employee.setTelephone(telephone);
-        employee.setEmail(email);
-        employee.setEmployedTime(employeedate);
-        employee.setPosition(position);
-        employee.setCreateTime(createdate);
-        employee.setAppId(appId);
-        employeeService.add(employee);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+            employee.setDepartmentId(Long.parseLong(departmentId.replace(" ","")));
+            employee.setName(name);
+            employee.setSex(sex);
+            employee.setSkillId(Long.parseLong(skillId.replace(" ","")));
+            employee.setTelephone(telephone);
+            employee.setEmail(email);
+            employee.setEmployedTime(employeedate);
+            employee.setPosition(position);
+            employee.setCreateTime(createdate);
+            employee.setAppId(appId);
+            employeeService.add(employee);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"用户已经存在！");
 
     }
 

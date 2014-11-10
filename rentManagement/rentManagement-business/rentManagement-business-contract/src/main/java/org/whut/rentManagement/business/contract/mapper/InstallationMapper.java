@@ -18,4 +18,5 @@ public interface InstallationMapper extends AbstractMapper<Installation> {
     public List<Map<String,String>> getListByAppId(long appId);
     public long getIdByDeviceId(@Param("installDeviceId")long installDeviceId);
     public List<Map<String,String>> getInstallList(Map<String,Object> condition);
+    public List<Map<String,String>> findByCondition(@Param("contractName") String contractName,@Param("deviceName") String deviceName,@Param("appId") long appId);
 }

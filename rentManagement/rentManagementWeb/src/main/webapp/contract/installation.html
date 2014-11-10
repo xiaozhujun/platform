@@ -116,12 +116,12 @@
         }
         $("#submitBtn").click(function(){
             var data={};
-            data.contractId=$("#contractId").val();
+            data.contractId=$("#icontractId").val();
             data.type=$("input[name='type']:checked").val();
-            data.installDeviceId=$("#installDeviceId").val();
-            data.installMan=$("#installMan").val();
-            data.installTime=$("#installTime").val();
-            data.installStatus=$("#installStatus").val();
+            data.installDeviceId=$("#iinstallDeviceId").val();
+            data.installMan=$("#iinstallMan").val();
+            data.installTime=$("#iinstallTime").val();
+            data.installStatus=$("#iinstallStatus").val();
 
 
             $.post($.URL.installation.add,data,addCallBack,"json");

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.transport.mapper.TransportDeviceMapper">
+    <sql id="TransportDevice_fields">
+          ID,TRANSPORTID,DEVICEID
+    </sql>
+    <resultMap id="TransportDeviceResultMap" type="TransportDevice">
+        <id property="id" column="ID" />
+        <result property="transport_deviceId" column="TRANSPORTID"/>
+        <result property="deviceId" column="DEVICEID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="TransportDevice"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        transport_device(
+        <include refid="TransportDevice_fields" />
+        )
+        VALUES (#{id}, #{transportId},#{deviceId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select transport_device.*
+           from  transport,transport_device
+           where transport.id=transport_device.transportId and transport.appId=#{appId}
+    </select>
+
+    <update id="update" parameterType="TransportDevice">
+        UPDATE transport_device
+        <set>
+            <if test="transportId!=null">TRANSPORTID=#{transportId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="TransportDevice">
+        DELETE from transport_device
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="listByTransportId" parameterType="map" resultType="map">
+        select device.*,device_type.name as deviceType
+        from transport_device,device,device_type
+        where transport_device.deviceId=device.id AND device.typeId=device_type.id
+        <if test="transportId!=null">AND transport_device.transportId=#{transportId} </if>
+        <if test="appId!=null">AND device.APPID=#{appId}</if>
+    </select>
+
+</mapper>

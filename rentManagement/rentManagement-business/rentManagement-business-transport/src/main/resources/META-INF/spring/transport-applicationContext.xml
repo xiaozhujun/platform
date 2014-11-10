@@ -4,4 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="transportService" class="org.whut.rentManagement.business.transport.service.TransportService" depends-on="mappers"/>
+    <bean id="transportDeviceService" class="org.whut.rentManagement.business.transport.service.TransportDeviceService" depends-on="mappers"/>
 </beans>

@@ -44,4 +44,8 @@ public class DeviceService {
     public List<Map<String,String>> getMainDeviceList(long appId) {
         return deviceMapper.getMainDeviceList(appId);
     }
+
+    public List<Map<String,String>> findByCondition(Map<String,Object> condition){
+        return deviceMapper.findByCondition(condition);
+    }
 }

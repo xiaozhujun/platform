@@ -77,8 +77,14 @@ public class TransportDeviceServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/listByTransportId")
     @POST
-    public String listByTransportId(@FormParam("transportId")long transportId){
-        List<Map<String,String>> list=transportDeviceService.listByTransportId(transportId, UserContext.currentUserAppId());
+    public String listByTransportId(@FormParam("transportId")String transportId){
+        if(transportId==null||transportId.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        Map<String,Object> condition = new HashMap<String, Object>();
+        condition.put("id",Long.parseLong(transportId));
+        condition.put("appId",UserContext.currentUserAppId());
+        List<Map<String,Object>> list=transportDeviceService.listByTransportId(condition);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 

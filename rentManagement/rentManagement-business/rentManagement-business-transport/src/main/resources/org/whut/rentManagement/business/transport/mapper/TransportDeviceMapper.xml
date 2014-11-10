@@ -47,12 +47,12 @@
         </where>
     </delete>
 
-    <select id="listByTransportId" parameterType="java.lang.Long" resultType="map">
-        select device.*
-        from transport_device,device
-        where transport_device.deviceId=device.id
-        <if test="appId!=null">AND transport.APPID=#{appId}</if>
+    <select id="listByTransportId" parameterType="map" resultType="map">
+        select device.*,device_type.name as deviceType
+        from transport_device,device,device_type
+        where transport_device.deviceId=device.id AND device.typeId=device_type.id
         <if test="transportId!=null">AND transport_device.transportId=#{transportId} </if>
+        <if test="appId!=null">AND device.APPID=#{appId}</if>
     </select>
 
 </mapper>

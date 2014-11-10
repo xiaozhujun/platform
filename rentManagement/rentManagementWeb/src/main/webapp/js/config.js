@@ -57,7 +57,8 @@
             "add":"rs/transport/add",
             "update":"rs/transport/update",
             "delete":"rs/transport/delete",
-            "findByCondition":"rs/transport/findByCondition"
+            "findByCondition":"rs/transport/findByCondition",
+            "info":"rs/transport/info"
         },
         "transportDevice":{
             "list":"rs/transportDevice/list",

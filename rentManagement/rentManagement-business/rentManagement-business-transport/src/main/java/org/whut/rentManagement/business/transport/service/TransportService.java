@@ -33,4 +33,8 @@ public class TransportService {
     public List<Map<String,String>> findByCondition(Map<String,Object> condition){
         return transportMapper.findByCondition(condition);
     }
+
+    public Map<String,Object> getInfo(Map<String,Object> condition){
+        return transportMapper.getInfo(condition);
+    }
 }

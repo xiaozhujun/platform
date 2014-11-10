@@ -29,7 +29,7 @@ public class TransportDeviceService {
     public int delete(TransportDevice TransportDevice){
         return transportDeviceMapper.delete(TransportDevice);
     }
-    public List<Map<String,String>> listByTransportId(long transportId,long appId){
-        return transportDeviceMapper.listByTransportId(transportId,appId);
+    public List<Map<String,Object>> listByTransportId(Map<String,Object> condition){
+        return transportDeviceMapper.listByTransportId(condition);
     }
 }

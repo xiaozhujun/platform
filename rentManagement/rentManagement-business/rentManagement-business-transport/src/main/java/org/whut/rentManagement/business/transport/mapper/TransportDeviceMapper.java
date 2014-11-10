@@ -15,5 +15,5 @@ import java.util.Map;
  */
 public interface TransportDeviceMapper  extends AbstractMapper<TransportDevice> {
     public List<Map<String,String>> getListByAppId(long appId);
-    public List<Map<String,String>> listByTransportId(long transportId,long appId);
+    public List<Map<String,Object>> listByTransportId(Map<String,Object> condition);
 }

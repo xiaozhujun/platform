@@ -68,4 +68,12 @@
         <if test="endTime!=null"><![CDATA[ AND transport.createTime<=#{endTime} ]]> </if>
     </select>
 
+    <select id="getInfo" parameterType="map" resultType="map">
+        select transport.*
+        from transport
+        where
+        <if test="appId!=null"> transport.APPID=#{appId}</if>
+        <if test="transportId!=null">AND transport.id=#{transportId}</if>
+    </select>
+
 </mapper>

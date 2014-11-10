@@ -53,27 +53,23 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         JSONArray sNum= dataJson.getJSONArray("sensors");
         //得到前台发来的命令：取消订阅、订阅
         String command=dataJson.getString("c");
-        for(int i=0;i<sNum.length();i++){
-            wssList=wsImpMap.get(appId+":"+sNum.get(i).toString());
-            if (command.equals("Subscribe")){    //订阅
-                if(wssList==null){
-                    wssList=new ArrayList<WebSocketSession>();
-                }
-
-                wssList.add(session);
-
-                wsImpMap.put(appId+":"+sNum.get(i).toString(),wssList);
-                wsuImpMap.put(appId+":"+userId+":"+sNum.get(i).toString(),session);
-            }
-
-            else{
+        if (command.equals("cancelSubscribe")){    //取消订阅
                 logger.info("进行取消订阅！");
-                if (command.equals("cancelSubscribe")){    //订阅
-                    cancelSubscribe(ReceivedMessage,appId,userId);   //这样做有问题
+                logger.info("wsImpMap1为"+wsImpMap);
+                cancelSubscribe(ReceivedMessage,appId,userId);
+                logger.info("wsImpMap1为"+wsImpMap);
+        } else{
+            if (command.equals("Subscribe")){    //订阅
+                 for(int i=0;i<sNum.length();i++){
+                    wssList=wsImpMap.get(appId+":"+sNum.get(i).toString());
+                   if(wssList==null){
+                       wssList=new ArrayList<WebSocketSession>();
+                   }
+                   wssList.add(session);
+                   wsImpMap.put(appId+":"+sNum.get(i).toString(),wssList);
+                   wsuImpMap.put(appId+":"+userId+":"+sNum.get(i).toString(),session);
                 }
-            }
-            wssList=null;
-        }
+        }}
         super.handleTextMessage(session, message);
     }
 
@@ -93,6 +89,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
             logger.info("wsImpMap为"+wsImpMap);
             List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
             webSocketSessionList.remove(session);
+            if(webSocketSessionList.isEmpty()){
+                wsImpMap.remove(appId+":"+sNum.get(i).toString());
+            }
             logger.info("wsImpMap为"+wsImpMap);
         }
         map.remove(session);
@@ -103,10 +102,13 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         JSONObject dataJson=new JSONObject(msg);
         JSONArray sNum= dataJson.getJSONArray("sensors");
         for(int i=0;i<sNum.length();i++){
-            WebSocketSession webSocketSession=wsuImpMap.get(appId+":"+userId+":"+sNum.get(i).toString());
-            List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
-             webSocketSessionList.remove(webSocketSession);
-            wsuImpMap.remove(appId+":"+userId+":"+sNum.get(i).toString());
+           WebSocketSession webSocketSession=wsuImpMap.get(appId+":"+userId+":"+sNum.get(i).toString());
+           List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
+           webSocketSessionList.remove(webSocketSession);
+            if(webSocketSessionList.isEmpty()){
+                wsImpMap.remove(appId+":"+sNum.get(i).toString());
+            }
+           wsuImpMap.remove(appId+":"+userId+":"+sNum.get(i).toString());
         }
     }
 

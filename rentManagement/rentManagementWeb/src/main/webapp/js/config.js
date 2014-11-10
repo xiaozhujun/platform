@@ -59,6 +59,13 @@
             "delete":"rs/transport/delete",
             "findByCondition":"rs/transport/findByCondition"
         },
+        "transportDevice":{
+            "list":"rs/transportDevice/list",
+            "add":"rs/transportDevice/add",
+            "update":"rs/transportDevice/update",
+            "delete":"rs/transportDevice/delete",
+            "listByTransportId":"rs/transportDevice/listByTransportId"
+        },
         "employee":{
             "list":"rs/employee/list",
             "add":"rs/employee/add",
@@ -83,7 +90,8 @@
             "update":"rs/device/update",
             "delete":"rs/device/delete",
             "list":"rs/device/list",
-            "getIdByNumber":"rs/device/getIdByNumber"
+            "getIdByNumber":"rs/device/getIdByNumber",
+            "findByCondition":"rs/device/findByCondition"
         },
         "contract":{
             "add":"rs/contract/add",

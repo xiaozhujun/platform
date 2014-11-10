@@ -57,7 +57,7 @@ public class TransportServiceWeb {
         transport.setCreateTime(new Date());
         transport.setHandler(UserContext.currentUserName());
         transportService.add(transport);
-        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
+        return  JsonResultUtils.getObjectResultByStringAsDefault(transport.getId(),JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

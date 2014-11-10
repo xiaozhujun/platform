@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -164,6 +165,19 @@ public class DeviceServiceWeb {
     public String getMainDeviceList(){
         long appId= UserContext.currentUserAppId();
         List<Map<String,String>> list=deviceService.getMainDeviceList(appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/findByCondition")
+    @POST
+    public String listByCondition(@FormParam("jsonString") String jsonString){
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        Map<String,Object> condition = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class);
+        condition.put("appId",UserContext.currentUserAppId());
+        List<Map<String,String>> list = deviceService.findByCondition(condition);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 }

@@ -20,6 +20,7 @@
             $.post($.URL.contract.list,null,listContractCallback,"json");
             $.post($.URL.device.list,null,listDeviceIdCallback,"json");
             $.post($.URL.car_Driver.list,null,listCarDriverCallback,"json");
+            $.post($.URL.storehouse.list,null,listStorehouseCallback,"json");
         });
         var gridData = {};
         function listCallback(data){
@@ -38,12 +39,31 @@
                     j["text"]=content.carNumber;
                     CarDriverNumberData.push(j);
                 });
-                $("#carNumber").ligerComboBox({emptyText:null,   //实现下拉框
+                $("#carNumber").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,   //实现下拉框
                     data:CarDriverNumberData,
                     valueFieldID: 'carNumberSelect'
                 });
             }
         }
+        var storehouseIdData = [];
+        function listStorehouseCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var rs=[];
+                    rs["type"]=content.id;
+                    rs["text"]=content.id;
+                    storehouseIdData.push(rs);
+                });
+                $("#storehouseId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
+                    data:storehouseIdData,
+                    width:200,
+                    valueField:'id',
+                    textField:'text',
+                    valueFieldID: 'storehouseId'
+                });
+            }
+        }
+
         var contractIdData = [];
         function listContractCallback(data){
             if(data.code==200){
@@ -53,7 +73,7 @@
                     rs["text"]=content.id;
                     contractIdData.push(rs);
                 });
-                $("#contractId").ligerComboBox({emptyText:null,    /*实现下拉表*/
+                $("#contractId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
                     data:contractIdData,
                     valueFieldID: 'contractIdSelect'
                 });
@@ -68,7 +88,7 @@
                     rs["text"]=content.id;
                     customerIdData.push(rs);
                 });
-                $("#customerId").ligerComboBox({emptyText:null,    /*实现下拉表*/
+                $("#customerId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
                     data:customerIdData,
                     valueFieldID: 'customerIdSelect'
                 });
@@ -86,7 +106,7 @@
                     deviceIdData.push(rs);
 
                 });
-                $("#deviceId").ligerComboBox({emptyText:null,    /*实现下拉表*/
+                $("#deviceId").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,  /*实现下拉表*/
                     data:deviceIdData,
                     valueFieldID: 'deviceIdSelect'
                 });
@@ -127,7 +147,10 @@
                     { display: '经手人',name: 'handler',
                         editor: { type: 'text'}
                     },{ display: '仓库号',name: 'storehouseId',
-                        editor: { type: 'int'}
+                        editor: { type: 'select',emptyText:null, data: storehouseIdData, valueField:'type',textField:'text'},
+                        render:function(item){
+                            return item.contractId;
+                        }
                     },
                     { display: '描述',name: 'description',
                         editor: { type: 'text'}
@@ -309,14 +332,16 @@
                 <td align="right" class="l-table-edit-td">经手人:</td>
                 <td align="left" class="l-table-edit-td"><input name="handler" type="text" id="handler" ltype="text" /></td>
                 <td align="left"></td>
-            </tr>  <tr>
-            <td align="right" class="l-table-edit-td">仓库号:</td>
-            <td align="left" class="l-table-edit-td"><input name="storehouseId" type="text" id="storehouseId" ltype="text" /></td>
-            <td align="left"></td>
-        </tr>
+            </tr>
+
             <tr>
                 <td align="right" class="l-table-edit-td">创建者:</td>
                 <td align="left" class="l-table-edit-td"><input name="creator" type="text" id="creator" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">仓库号:</td>
+                <td align="left" class="l-table-edit-td"><input name="storehouseId" type="text" id="storehouseId" ltype="text" /></td>
                 <td align="left"></td>
             </tr>
             <tr>
@@ -333,6 +358,7 @@
 
         <input type="button" value="返回" id="returnBtn" class="l-button l-button-submit" />
     </form>
+
 
 </div>
 <div class="l-clear"></div>

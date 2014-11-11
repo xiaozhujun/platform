@@ -22,6 +22,9 @@ public class Transport {
     private Date createTime;
     private long appId;
 
+    //缓存用，并不进行持久化
+    private String deviceId;
+
     public long getId() {
         return id;
     }
@@ -108,5 +111,13 @@ public class Transport {
 
     public void setAppId(long appId) {
         this.appId = appId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

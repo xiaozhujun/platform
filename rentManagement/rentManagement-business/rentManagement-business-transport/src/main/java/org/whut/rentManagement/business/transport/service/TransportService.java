@@ -23,11 +23,11 @@ public class TransportService {
     public List<Map<String,String>> getListByAppId(long appId){
         return transportMapper.getListByAppId(appId);
     }
-    public int update(Transport installation){
-        return transportMapper.update(installation);
+    public int update(Transport transport){
+        return transportMapper.update(transport);
     }
-    public int delete(Transport installation){
-        return transportMapper.delete(installation);
+    public int delete(Transport transport){
+        return transportMapper.delete(transport);
     }
 
     public List<Map<String,String>> findByCondition(Map<String,Object> condition){

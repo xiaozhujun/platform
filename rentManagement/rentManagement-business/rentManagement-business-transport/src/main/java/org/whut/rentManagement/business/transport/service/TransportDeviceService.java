@@ -32,4 +32,7 @@ public class TransportDeviceService {
     public List<Map<String,Object>> listByTransportId(Map<String,Object> condition){
         return transportDeviceMapper.listByTransportId(condition);
     }
+    public void deleteByTransportId(TransportDevice transportDevice){
+        transportDeviceMapper.deleteByTransportId(transportDevice);
+    }
 }

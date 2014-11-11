@@ -110,42 +110,8 @@ function f_peopleRecord(grid)
 
 function abnormal(rowid){
     var rowPicture = manager.getRow(rowid);
-    var jsonString  = $.toJSON(rowPicture);
-    var itemId = $.evalJSON(jsonString).itemId;
-    var userName = $.evalJSON(jsonString).userName;
-    var deviceName = $.evalJSON(jsonString).deviceName;
-    var itemRecordId = $.evalJSON(jsonString).id;
-    $.post($.URL.imageUpload.getImageByNames,{"userName":userName,"deviceName":deviceName,"itemRecordId":itemRecordId,"itemId":itemId},showImage,"json");
-    showAbnormalPic(rowPicture);
-}
-function showImage(data){
-    if(data.code==500){
-        $("#image").attr("src","");
-    }else{
-        $("#image").attr("src",data.data);
-    }
-
-}
-function showAbnormalPic(rowPicture){
-    if(rowPicture.inspectChoiceValue!="异常"){
-        $("#Suggestion").attr("readonly","readonly");
-    }
-    else{
-        $("#Suggestion").removeAttr("readonly");
-    };
-    $("#NameTr").attr("hidden","true");
-    $("#NameTr1").removeAttr("hidden");
-    $("#image").removeAttr("hidden");
-    $("#submitBtn1").attr("hidden","true");
-    $("#suggestionTr").attr("hidden","true");
-    $("#Name1").text(rowPicture.userName);
-    $("#Choice").val(rowPicture.inspectChoiceValue);
-    $("#Device").text(rowPicture.deviceName);
-    $("#Item").text(rowPicture.tableName);
-    $("#Unit").text(rowPicture.itemName);
-    $("#ItemId").val(rowPicture.itemId);
-    $("#Suggestion").val("");
-    $('#addTableList').css({display:'block'});
+    var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
+    $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"运输拍照" });
 }
 
 var tempItemRecordId;

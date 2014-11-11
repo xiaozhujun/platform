@@ -47,6 +47,13 @@
         </where>
     </delete>
 
+    <delete id="deleteByTransportId" parameterType="TransportDevice">
+        DELETE from transport_device
+        <where>
+            <if test="transportId!=null">TRANSPORTID=#{transportId}</if>
+        </where>
+    </delete>
+
     <select id="listByTransportId" parameterType="map" resultType="map">
         select device.*,device_type.name as deviceType
         from transport_device,device,device_type

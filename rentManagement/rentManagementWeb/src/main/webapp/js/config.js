@@ -1,5 +1,8 @@
 (function($){
     $.URL = {
+        "common":{
+          "rootPath":"http://localhost/"
+        },
         "power":{
             "add":"rs/power/add",
             "update":"rs/power/update",

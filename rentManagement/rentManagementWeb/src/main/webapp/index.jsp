@@ -12,6 +12,7 @@
     <title>租赁管理平台-首页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-dialog.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
     <!--<script src="js/jquery-1.10.2.js" type="text/javascript"></script>-->
@@ -35,6 +36,9 @@
             margin:0; padding:0;}
         #accordion1 { height:270px;}
         h4{ margin:20px;}
+        .l-dialog-tc {
+            background: none repeat scroll 0 0 #E0EDFF;
+        }
     </style>
 </head>
 <body>

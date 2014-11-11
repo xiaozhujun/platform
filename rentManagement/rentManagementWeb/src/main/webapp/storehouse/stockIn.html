@@ -40,7 +40,7 @@
                     j["text"]=content.carNumber;
                     carNumberData.push(j);
                 });
-                $("#inputCarNumber").ligerComboBox({emptyText:null,   //实现下拉框
+                $("#inputCarNumber").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
                     data:carNumberData,
                     width:200,
                     valueField:'type',
@@ -354,7 +354,7 @@
 </div>
 
 <div id="list">
-    <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
+    <div><input type="button" value="添加入库单" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
     <!--<div align="center"><H2>入库信息</H2></div>-->
     <div class="l-clear"></div>
     <div id="maingrid" style="margin-top:5px"></div> <br />

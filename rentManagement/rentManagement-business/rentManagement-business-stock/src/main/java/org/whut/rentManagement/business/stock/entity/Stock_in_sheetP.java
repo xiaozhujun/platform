@@ -1,5 +1,7 @@
 package org.whut.rentManagement.business.stock.entity;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Jiaju
@@ -18,8 +20,8 @@ public class Stock_in_sheetP {
     private String description;
     private String createTime;
     private String creator;
+    private String image;
     private long appId;
-
 
     public long getId() {
         return id;
@@ -99,6 +101,14 @@ public class Stock_in_sheetP {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getAppId() {

@@ -40,7 +40,7 @@
                     j["text"]=content.carNumber;
                     carNumberData.push(j);
                 });
-                $("#inputCarNumber").ligerComboBox({emptyText:null,   //实现下拉框
+                $("#inputCarNumber").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
                     data:carNumberData,
                     width:200,
                     valueField:'type',
@@ -119,27 +119,27 @@
                             return item.carNumber;
                         }
                     },
-                    { display: '用户名称', name: 'customer',
-                        editor: { type: 'select',emptyText:null, data: customerIdData, valueField:'id',textField:'text'},
+                    { display: '用户姓名', name: 'customerName',
+                        editor: { type: 'select',emptyText:null, data: customerIdData, valueField:'id',valueFieldID:'cusId',textField:'text'},
                         render:function(item){
-                            return item.customer;
+                            return item.customerName;
                         }
                     },
-                    { display: '合同名称', name: 'contract',
-                        editor: { type: 'select',emptyText:null, data: contractIdData, valueField:'id',textField:'text'},
+                    { display: '合同名称', name: 'contractName',
+                        editor: { type: 'select',emptyText:null, data: contractIdData, valueField:'id',valueFieldID:'conId',textField:'text'},
                         render:function(item){
-                            return item.contract;
+                            return item.contractName;
                         }
                     },
                     { display: '经手人',name: 'handler',editor:{type:'text'}},
-                    { display: '仓库名称', name: 'storehouse',
-                        editor: { type: 'select',emptyText:null, data: storehouseIdData, valueField:'id',textField:'text'},
+                    { display: '仓库名称', name: 'storehouseName',
+                        editor: { type: 'select',emptyText:null, data: storehouseIdData, valueField:'id',valueFieldID:'stoId',textField:'text'},
                         render:function(item){
-                            return item.storehouse;
+                            return item.storehouseName;
                         }
                     },
                     { display: '描述',name: 'description',type:'string',
-                        editor: { type: 'textarea'}
+                        editor: { type: 'text'}
                     },
                     { display: '入库日期',name: 'createTime',width:100  },
                     { display: '创建者',name: 'creator',editor:{type:'text'}} ,
@@ -183,6 +183,11 @@
         {
             manager.endEdit(rowid);
             var row = manager.getRow(rowid);
+
+            row.customerId=$('#cusId').val();
+            row.contractId=$("#conId").val();
+            row.storehouseId=$("#stoId").val();
+//            console.log(row);
             var jsonString  = $.toJSON(row);
             $.post($.URL.stock_in_sheet.update,{"jsonString":jsonString},updateCallback,"json");
         }
@@ -223,6 +228,7 @@
             f_show();
             $("#addStock_in_sheetList input[name]").val("");
             $("#inputDescription").val("");
+//            document.getElementById('form1').reset();
             $.ligerDialog.open({isDrag: true,title:'添加入库单', target: $("#addStock_in_sheetList"),width:500});
         }
 
@@ -292,7 +298,7 @@
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">用户名称:</td>
+                <td align="right" class="l-table-edit-td">用户姓名:</td>
                 <td align="left" class="l-table-edit-td">
                     <input name="customer" type="text" id="inputCustomer" ltype="text" /></td>
                 <td align="left"></td>
@@ -348,8 +354,8 @@
 </div>
 
 <div id="list">
-    <div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
-    <div align="center"><H2>入库信息</H2></div>
+    <div><input type="button" value="添加入库单" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
+    <!--<div align="center"><H2>入库信息</H2></div>-->
     <div class="l-clear"></div>
     <div id="maingrid" style="margin-top:5px"></div> <br />
 </div>

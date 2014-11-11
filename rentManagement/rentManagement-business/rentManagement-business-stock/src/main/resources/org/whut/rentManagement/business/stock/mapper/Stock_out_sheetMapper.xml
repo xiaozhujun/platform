@@ -61,10 +61,10 @@
         FROM stock_out_sheet
         WHERE appId=#{appId}
     </select>
-    <select id="getIdByCustomerIdAndContractId" parameterType="map" resultType="java.lang.Long">
+    <select id="getIdByCustomerIdAndContractIdAndNumber" parameterType="map" resultType="java.lang.Long">
         SELECT id
         FROM stock_out_sheet
-        WHERE customerId=#{customerId} AND contractId=#{contractId}
+        WHERE customerId=#{customerId} AND contractId=#{contractId} AND NUMBER=#{number}
     </select>
     <select id="getStockOutId" parameterType="map" resultType="java.lang.Long">
         SELECT id
@@ -72,6 +72,7 @@
          WHERE NUMBER=#{number} AND CARNUMBER=#{carNumber} AND CUSTOMERID=#{customerId}
                 AND CONTRACTID=#{contractId} AND STOREHOUSEID=#{storehouseId} AND APPID=#{appId}
     </select>
+
 
     <select id="getOutStockList" parameterType="map" resultType="map">
         select stock_out_sheet.*,storehouse.name as storeHouse,contract.name as contractName,contract.customerName

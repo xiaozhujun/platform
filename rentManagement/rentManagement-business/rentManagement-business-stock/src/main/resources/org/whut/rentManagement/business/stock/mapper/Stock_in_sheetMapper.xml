@@ -34,10 +34,17 @@
         </selectKey>
     </insert>
 
-    <select id="getListByAppId" parameterType="java.lang.Long"  resultMap="stock_in_sheetResultMap">
-        SELECT *
-        FROM stock_in_sheet
-        WHERE appId=#{appId}
+    <!--<select id="getListByAppId" parameterType="java.lang.Long"  resultMap="stock_in_sheetResultMap">-->
+        <!--SELECT *-->
+        <!--FROM stock_in_sheet-->
+        <!--WHERE appId=#{appId}-->
+    <!--</select>-->
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select st.id,st.number,st.carNumber,cu.name customerName,c.name contractName,st.handler,s.name storehouseName,st.description,
+           st.createTime,st.creator,st.image
+           from  stock_in_sheet AS st,customer AS cu,contract AS c,storehouse AS s,car_driver AS car
+           where st.appId=#{appId} AND st.customerId=cu.id AND st.contractId=c.id AND st.storehouseId=s.id
+           AND st.carNumber=car.carNumber
     </select>
 
     <update id="update" parameterType="Stock_in_sheet">
@@ -46,11 +53,12 @@
             <if test="number!= null">NUMBER=#{number},</if>
             <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
             <if test="customerId!=null">CUSTOMERID=#{customerId},</if>
+            <!--<if test="customerName!=null">CUSTOMERID=#{customerId},</if>-->
             <if test="contractId!=null">CONTRACTID=#{contractId},</if>
             <if test="handler!=null">HANDLER=#{handler},</if>
             <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
-            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+            <!--<if test="createTime!=null">CREATETIME=#{createTime},</if>-->
             <if test="creator!=null">CREATOR=#{creator},</if>
             <if test="image!=null">IMAGE=#{image},</if>
             <if test="appId!=null">APPID=#{appId},</if>

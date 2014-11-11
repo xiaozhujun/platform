@@ -17,10 +17,8 @@ import java.util.Map;
 public interface Stock_out_sheetMapper extends AbstractMapper<Stock_out_sheet> {
     public List<Stock_out_sheet> findByCondition(@Param("appId") long appId, @Param("customerId") long customerId, @Param("contractId") long contractId, @Param("storehouseId") long storehouseId);
     public List<Stock_out_sheet> getListByAppId(long appId);
-    public List<Map<String,String>> getListByCondition(@Param("appId") long appId, @Param("customerId") long customerId, @Param("contractId") long contractId, @Param("storehouseId") long storehouseId);
-    public long getIdByCustomerIdAndContractId(@Param("customerId") String customerId, @Param("contractId") String contractId);
-    public Long getDeviceId(@Param("number") String number,@Param("carNumber") String carNumber,@Param("customerId") long customerId,@Param("contractId") long contractId,@Param("storehouseId")long storehouseId,@Param("appId")long appId);
-
-
-    public List<Map<String,String>> getOutStockList(Map<String,Object> condition);
+    public List<Map<String,String>> getIdByCustomerIdAndContractIdAndNumber(@Param("appId") long appId, @Param("customerId") long customerId, @Param("contractId") long contractId, @Param("storehouseId") long storehouseId);
+    public long getIdByCustomerIdAndContractId(@Param("customerId") String customerId, @Param("contractId") String contractId, @Param("number") String number);
+    public Long getDeviceId(@Param("number") String number, @Param("carNumber") String carNumber, @Param("customerId") long customerId, @Param("contractId") long contractId, @Param("storehouseId") long storehouseId, @Param("appId") long appId);
+    public List<Map<String,String>> getOutStockList(Map<String, Object> condition);
 }

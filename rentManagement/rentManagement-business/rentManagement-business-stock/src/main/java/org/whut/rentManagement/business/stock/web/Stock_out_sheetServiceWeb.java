@@ -70,10 +70,11 @@ public class Stock_out_sheetServiceWeb {
         }
         long id;
         try {
-            id=stock_out_sheetService.getIdByCustomerIdAndContractId(customerId, contractId);
+            id=stock_out_sheetService.getIdByCustomerIdAndContractIdAndNumber(customerId, contractId, number);
         }catch (Exception e){
             id=0;
         }
+
         if(id!=0){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "已存在");
         }

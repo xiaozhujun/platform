@@ -101,19 +101,52 @@ public class Stock_in_sheetServiceWeb {
     @POST
     public String update(@FormParam("jsonString") String jsonString){
 //        long appId= UserContext.currentUserAppId();
-        Stock_in_sheet stockInSheet=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
+//        Stock_in_sheet stockInSheet=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheet.class);
 
-        if(stockInSheet.getNumber()==null||stockInSheet.getNumber().equals("")
-                ||stockInSheet.getCarNumber()==null||stockInSheet.getCarNumber().equals("")
-                ||stockInSheet.getHandler()==null||stockInSheet.getHandler().equals("")
-                ||stockInSheet.getDescription()==null||stockInSheet.getDescription().equals("")
-                ||stockInSheet.getCreator()==null||stockInSheet.getCreator().equals("")
-                ||stockInSheet.getImage()==null||stockInSheet.getImage().equals("")){
+//        if(stockInSheet.getNumber()==null||stockInSheet.getNumber().equals("")
+//                ||stockInSheet.getCarNumber()==null||stockInSheet.getCarNumber().equals("")
+//                ||stockInSheet.getHandler()==null||stockInSheet.getHandler().equals("")
+//                ||stockInSheet.getDescription()==null||stockInSheet.getDescription().equals("")
+//                ||stockInSheet.getCreator()==null||stockInSheet.getCreator().equals("")
+//                ||stockInSheet.getImage()==null||stockInSheet.getImage().equals("")){
+//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
+//        }
+
+        long appId= UserContext.currentUserAppId();
+        Stock_in_sheetP stockInSheetp=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
+        if(stockInSheetp.getNumber()==null||stockInSheetp.getNumber().equals("")
+                ||stockInSheetp.getCarNumber()==null||stockInSheetp.getCarNumber().equals("")
+                ||stockInSheetp.getHandler()==null||stockInSheetp.getHandler().equals("")
+                ||stockInSheetp.getDescription()==null||stockInSheetp.getDescription().equals("")
+                ||stockInSheetp.getCreator()==null||stockInSheetp.getCreator().equals("")
+                ||stockInSheetp.getImage()==null||stockInSheetp.getImage().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
 
+        Date date = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            date = sdf.parse(stockInSheetp.getCreateTime());
+        }catch (Exception e){
+            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+        }
+
+        Stock_in_sheet stockInSheet=new Stock_in_sheet();
+        stockInSheet.setId(stockInSheetp.getId());
+        stockInSheet.setNumber(stockInSheetp.getNumber());
+        stockInSheet.setCarNumber(stockInSheetp.getCarNumber());
+        stockInSheet.setCustomerId(stockInSheetp.getCustomerId());
+        stockInSheet.setContractId(stockInSheetp.getContractId());
+        stockInSheet.setHandler(stockInSheetp.getHandler());
+        stockInSheet.setStorehouseId(stockInSheetp.getStorehouseId());
+        stockInSheet.setDescription(stockInSheetp.getDescription());
+        stockInSheet.setCreateTime(date);
+        stockInSheet.setCreator(stockInSheetp.getCreator());
+        stockInSheet.setImage(stockInSheetp.getImage());
+        stockInSheet.setAppId(appId);
+
         stockInSheetService.update(stockInSheet);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"更新成功!");
     }
 //        Stock_in_sheetP stockInSheetp = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Stock_in_sheetP.class);
 //

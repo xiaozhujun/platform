@@ -2,57 +2,63 @@
 <html>
 <head>
     <title></title>
-    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="../js/config.js" type="text/javascript"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
-    <script src="../js/jquery.json-2.4.min.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="../css/report.css">
-    <link rel="stylesheet" href="../css/reportShow.css">
-    <script src="../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/reportShow.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
     <script type="text/javascript">
+        $.ligerDialog.close("#uploadInfo");
         $(function(){
-            $.post("../"+$.URL.transport.info,{"transportId":parent.transportId},transportDetailCallback,"json");
+            var d=new Date();
+            var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            $("#transportStartTime").ligerDateEditor({initValue: dd});
+            $("#transportEndTime").ligerDateEditor({initValue: dd});
+
+            getTransportList();
         });
 
-        function transportDetailCallback(data){
+        function getTransportList(){
+            var user=$("#transportUserName").val();
+            var device=$("#transportDeviceName").val();
+            var sTime=$("#transportStartTime").val();
+            var eTime=$("#transportEndTime").val();
+            $.post($.URL.transport.findByCondition,{"user":user,"device":device,"sTime":sTime,"eTime":eTime},getTransportListCallback,"json");
+        }
+
+        $("#getTransportListBtn").click(function(){
+            getTransportList();
+        });
+
+        function getTransportListCallback(data){
             if(data.code==200){
-                showTransportDetail(data.data);
-            }else{
-                alert(data.message);
+                if(data.data==null){
+                    $.ligerDialog.alert("抱歉,记录不存在!");
+                }else{
+                    $("#transportShow").html("");
+                    showGrid(data.data);
+                }
             }
         }
 
-        function showTransportDetail(info){
-            $("#handler").val(info.handler);
-            $("#driver").val(info.driver);
-            $("#telephone").val(info.telephone);
-            $("#address").val(info.address);
-            $("#destination").val(info.destination);
-            $("#createTime").val(info.createTime);
-            showGrid(info.deviceList);
-        }
 
-        var transportDetailData={};
+        var transportData={};
         function showGrid(data){
             var grid = $("<div id='transportGrid'></div>");
-            $("#transportDetailShow").append(grid);
-            transportDetailData.Rows=data;
+            $("#transportShow").append(grid);
+            transportData.Rows=data;
             f_peopleRecord(grid);
         }
         var manager, g;
@@ -61,22 +67,25 @@
         {
             g = manager = grid.ligerGrid({
                 columns: [
-                    { display: '设备名', name: 'name',
+                    { display: '经手人', name: 'handler',
                         editor: { type: 'text' }
                     },
-                    { display: '编号', name: 'number',
+                    { display: '运输日期', name: 'createTime',
                         editor: { type: 'text' }
                     },
-                    { display: '类型', name: 'deviceType', type: 'string',
+                    { display: '始发地', name: 'address',
                         editor: { type: 'text' }
                     },
-                    { display: '生产日期', name: 'produceTime',
+                    { display: '目的地', name: 'destination', type: 'string',
                         editor: { type: 'text' }
                     },
-                    { display: '设备价格', name: 'price',width:'auto',
+                    { display: '司机', name: 'driver',
                         editor: { type: 'text' }
                     },
-                    { display: '设备拍照', name:'image', editor:{type:'text'},
+                    { display: '电话', name: 'telephone', type: 'string',
+                        editor: { type: 'text' }
+                    },
+                    { display: '运输拍照', name:'abnormalPicture', editor:{type:'text'},
                         render:function(rowdata, rowindex, value){
                             var image = rowdata.image;
                             if(rowdata.image != null) {
@@ -86,6 +95,11 @@
                                 return "无";
                             }
                         }
+                    },
+                    { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
+                    {
+                        return "<a href='javascript:resolve(" + rowindex + ")'>详情</a> ";
+                    }
                     }
                 ],
                 onSelectRow: function (rowdata, rowindex)
@@ -93,7 +107,7 @@
                     $("#txtrowindex").val(rowindex);
                 },
                 enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
-                data: transportDetailData,
+                data: transportData,
                 width: '100%'
             });
         }
@@ -101,20 +115,42 @@
         function abnormal(rowid){
             var rowPicture = manager.getRow(rowid);
             var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
-            $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"设备照片" });
+            $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"运输拍照" });
+        }
+
+        var transportId;
+        function resolve(rowid){
+            var rowInfo = manager.getRow(rowid);
+            var jsonString  = $.toJSON(rowInfo);
+            transportId = $.evalJSON(jsonString).id;
+            $.ligerDialog.open({
+                height:600,
+                width: 800,
+                title : '运输详情',
+                url: 'transport/transportDetail.html',
+                showMax: false,
+                showToggle: true,
+                showMin: false,
+                isResize: true,
+                slide: false,
+                data: {
+                    name: $("#txtValue").val()
+                },
+                //自定义参数
+                myDataName: $("#txtValue").val()
+            });
         }
 
     </script>
 </head>
 <body>
-<div class="transportDetailContainer">
-    <div class="searchItem"><span class="item_font">经手人:</span><span class="item_input"><input id="handler" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">司机:</span><span class="item_input"><input id="driver" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">电话:</span><span class="item_input"><input id="telephone" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">运输时间:</span><span class="item_input"><input id="createTime" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">运输地点:</span><span class="item_input"><input id="address" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">运输地点:</span><span class="item_input"><input id="destination" type="text"></span></div>
+<div class="searchContainer">
+    <div class="searchItem"><span class="item_font">经手人:</span><span class="item_input"><input id="transportUserName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">司机:</span><span class="item_input"><input id="transportDeviceName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="transportStartTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="transportEndTime" type="text"></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="getTransportListBtn" class="l-button l-button-submit" /></span></div>
 </div>
-<div class="reportContent" id="transportDetailShow"></div>
+<div class="reportContent" id="transportShow"></div>
 </body>
 </html>

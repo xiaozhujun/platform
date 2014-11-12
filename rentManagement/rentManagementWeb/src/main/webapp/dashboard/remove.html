@@ -76,7 +76,7 @@ function f_peopleRecord(grid)
             { display: '拆卸人员', name: 'removeMan', type: 'string',
                 editor: { type: 'text' }
             },
-            { display: '拆卸日期', name: 'removeTime',
+            { display: '拆卸日期', name: 'createTime',
                 editor: { type: 'text' }
             },
             { display: '状态', name: 'removeStatus',width:'auto',
@@ -112,7 +112,7 @@ function f_peopleRecord(grid)
 function abnormal(rowid){
     var rowPicture = manager.getRow(rowid);
     var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
-    $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"运输拍照" });
+    $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"拆卸拍照" });
 }
 
 var removeId;

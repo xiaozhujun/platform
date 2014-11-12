@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.contract.mapper.InstallationDeviceMapper">
+    <sql id="InstallationDevice_fields">
+          ID,INSTALLATIONID,DEVICEID
+    </sql>
+    <resultMap id="InstallationDeviceResultMap" type="InstallationDevice">
+        <id property="id" column="ID" />
+        <result property="installationId" column="INSTALLATIONID"/>
+        <result property="deviceId" column="DEVICEID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="InstallationDevice"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        installation_device(
+        <include refid="InstallationDevice_fields" />
+        )
+        VALUES (#{id}, #{installationId},#{deviceId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select installation_device.*
+           from  installation,installation_device
+           where installation.id=installation_device.installationId and installation.appId=#{appId}
+    </select>
+
+    <update id="update" parameterType="InstallationDevice">
+        UPDATE installation_device
+        <set>
+            <if test="installationId!=null">INSTALLATIONID=#{installationId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="InstallationDevice">
+        DELETE from installation_device
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <delete id="deleteByInstallationId" parameterType="InstallationDevice">
+        DELETE from installation_device
+        <where>
+            <if test="installationId!=null">INSTALLATIONID=#{installationId}</if>
+        </where>
+    </delete>
+
+    <select id="listByInstallationId" parameterType="map" resultType="map">
+        select device.*,device_type.name as deviceType
+        from installation_device,device,device_type
+        where installation_device.deviceId=device.id AND device.typeId=device_type.id
+        <if test="installationId!=null">AND installation_device.installationId=#{installationId} </if>
+        <if test="appId!=null">AND device.APPID=#{appId}</if>
+    </select>
+
+</mapper>

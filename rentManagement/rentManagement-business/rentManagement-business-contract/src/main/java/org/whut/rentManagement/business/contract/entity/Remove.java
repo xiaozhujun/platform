@@ -12,11 +12,13 @@ import java.util.Date;
 public class Remove {
     private long id;
     private long contractId;
-    private long removeDeviceId;
     private String removeMan;
     private String  removeStatus;
-    private Date  removeTime;
+    private Date  createTime;
+    private String image;
     private long  appId;
+
+    private String deviceId;
 
     public long getId() {
         return id;
@@ -32,14 +34,6 @@ public class Remove {
 
     public void setContractId(long contractId) {
         this.contractId = contractId;
-    }
-
-    public long getRemoveDeviceId() {
-        return removeDeviceId;
-    }
-
-    public void setRemoveDeviceId(long removeDeviceId) {
-        this.removeDeviceId = removeDeviceId;
     }
 
     public String getRemoveMan() {
@@ -58,12 +52,20 @@ public class Remove {
         this.removeStatus = removeStatus;
     }
 
-    public Date getRemoveTime() {
-        return removeTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setRemoveTime(Date removeTime) {
-        this.removeTime = removeTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getAppId() {
@@ -72,5 +74,13 @@ public class Remove {
 
     public void setAppId(long appId) {
         this.appId = appId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

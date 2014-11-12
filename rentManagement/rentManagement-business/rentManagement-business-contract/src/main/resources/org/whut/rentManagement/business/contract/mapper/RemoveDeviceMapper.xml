@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.contract.mapper.RemoveDeviceMapper">
+    <sql id="RemoveDevice_fields">
+          ID,REMOVEID,DEVICEID
+    </sql>
+    <resultMap id="RemoveDeviceResultMap" type="RemoveDevice">
+        <id property="id" column="ID" />
+        <result property="removeId" column="REMOVEID"/>
+        <result property="deviceId" column="DEVICEID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="RemoveDevice"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        remove_device(
+        <include refid="RemoveDevice_fields" />
+        )
+        VALUES (#{id}, #{removeId},#{deviceId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select remove_device.*
+           from  remove,remove_device
+           where remove.id=remove_device.removeId and remove.appId=#{appId}
+    </select>
+
+    <update id="update" parameterType="RemoveDevice">
+        UPDATE remove_device
+        <set>
+            <if test="removeId!=null">REMOVEID=#{removeId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="RemoveDevice">
+        DELETE from remove_device
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <delete id="deleteByRemoveId" parameterType="RemoveDevice">
+        DELETE from remove_device
+        <where>
+            <if test="removeId!=null">REMOVEID=#{removeId}</if>
+        </where>
+    </delete>
+
+    <select id="listByRemoveId" parameterType="map" resultType="map">
+        select device.*,device_type.name as deviceType
+        from remove_device,device,device_type
+        where remove_device.deviceId=device.id AND device.typeId=device_type.id
+        <if test="removeId!=null">AND remove_device.removeId=#{removeId} </if>
+        <if test="appId!=null">AND device.APPID=#{appId}</if>
+    </select>
+
+</mapper>

@@ -5,7 +5,9 @@
 
     <bean id="contractService" class="org.whut.rentManagement.business.contract.service.ContractService" depends-on="mappers"/>
     <bean id="installationService" class="org.whut.rentManagement.business.contract.service.InstallationService" depends-on="mappers"/>
+    <bean id="installationDeviceService" class="org.whut.rentManagement.business.contract.service.InstallationDeviceService" depends-on="mappers"/>
     <bean id="removeService" class="org.whut.rentManagement.business.contract.service.RemoveService" depends-on="mappers"/>
+    <bean id="removeDeviceService" class="org.whut.rentManagement.business.contract.service.RemoveDeviceService" depends-on="mappers"/>
     <bean id="selfInspectService" class="org.whut.rentManagement.business.contract.service.SelfInspectService" depends-on="mappers"/>
     <bean id="preBuryService" class="org.whut.rentManagement.business.contract.service.PreBuryService" depends-on="mappers"/>
 </beans>

@@ -164,8 +164,8 @@
         },
         "dashboard":{
             "mainDeviceList":"rs/device/getMainDeviceList",
-            "installationList":"rs/installation/getInstallList",
-            "removeList":"rs/remove/getRemoveList",
+            "installationList":"rs/installation/findByCondition",
+            "removeList":"rs/remove/findByCondition",
             "preburyList":"rs/prebury/getPreburyList",
             "contractList":"rs/contract/getContractList",
             "inStockList":"rs/stock_in_sheet/getInStockList",

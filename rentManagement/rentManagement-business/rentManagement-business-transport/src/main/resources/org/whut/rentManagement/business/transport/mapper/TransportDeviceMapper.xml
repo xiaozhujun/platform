@@ -8,7 +8,7 @@
     </sql>
     <resultMap id="TransportDeviceResultMap" type="TransportDevice">
         <id property="id" column="ID" />
-        <result property="transport_deviceId" column="TRANSPORTID"/>
+        <result property="transportId" column="TRANSPORTID"/>
         <result property="deviceId" column="DEVICEID"/>
     </resultMap>
 

@@ -13,12 +13,13 @@ public class Installation {
     private long id;
     private long contractId;
     private String type;
-    private long installDeviceId;
     private String installMan;
     private Date installTime;
     private String installStatus;
     private String image;
     private long appId;
+
+    private String deviceId;
 
     public long getId() {
         return id;
@@ -42,14 +43,6 @@ public class Installation {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public long getInstallDeviceId() {
-        return installDeviceId;
-    }
-
-    public void setInstallDeviceId(long installDeviceId) {
-        this.installDeviceId = installDeviceId;
     }
 
     public String getInstallMan() {
@@ -90,5 +83,13 @@ public class Installation {
 
     public void setAppId(long appId) {
         this.appId = appId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

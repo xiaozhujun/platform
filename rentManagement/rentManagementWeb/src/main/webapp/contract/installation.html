@@ -12,6 +12,8 @@
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
+    <script src="js/jquery.form.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
             $.post($.URL.installation.list,null,listCallBack,"json");
@@ -110,25 +112,80 @@
             }
         }
 
+        function moveToLeft()
+        {
+            var box1 = liger.get("installationListbox1"), box2 = liger.get("installationListbox2");
+            var selecteds = box2.getSelectedItems();
+            if (!selecteds || !selecteds.length) return;
+            box2.removeItems(selecteds);
+            box1.addItems(selecteds);
+        }
+        function moveToRight()
+        {
+            var box1 = liger.get("installationListbox1");
+            var box2 = liger.get("installationListbox2");
+            var selecteds = box1.getSelectedItems();
+            if (!selecteds || !selecteds.length) return;
+            box1.removeItems(selecteds);
+            box2.addItems(selecteds);
+        }
+        function moveAllToLeft()
+        {
+            var box1 = liger.get("installationListbox1"), box2 = liger.get("installationListbox2");
+            var selecteds = box2.data;
+            if (!selecteds || !selecteds.length) return;
+            box1.addItems(selecteds);
+            box2.removeItems(selecteds);
+        }
+        function moveAllToRight()
+        {
+            var box1 = liger.get("installationListbox1"), box2 = liger.get("installationListbox2");
+            var selecteds = box1.data;
+            if (!selecteds || !selecteds.length) return;
+            box2.addItems(selecteds);
+            box1.removeItems(selecteds);
+        }
+
         function f_add() {
             $("#addinstall").css('display','block');
-            $.ligerDialog.open({title:'添加安装/加装信息', target: $("#addinstall"),width:500});
+            $.ligerDialog.open({title:'添加安装/加装信息', target: $("#addinstall"),width:550});
+
+            $("#installationListbox1").ligerListBox({
+                isShowCheckBox: true,
+                isMultiSelect: true,
+                height: 140
+            });
+
+            $("#installationListbox2").ligerListBox({
+                isShowCheckBox: true,
+                isMultiSelect: true,
+                height: 140,valueFieldID:'installationDeviceList'
+            });
         }
-        $("#submitBtn").click(function(){
+        $("#installationSubmitBtn").click(function(){
             var data={};
             data.contractId=$("#icontractId").val();
             data.type=$("input[name='type']:checked").val();
-            data.installDeviceId=$("#iinstallDeviceId").val();
             data.installMan=$("#iinstallMan").val();
-            data.installTime=$("#iinstallTime").val();
             data.installStatus=$("#iinstallStatus").val();
 
+            var installationDeviceList = liger.get("installationListbox2").data;
+            var deviceId = ",";
+            if(installationDeviceList!=null){
+                for(var i=0;i<installationDeviceList.length;i++){
+                    if(deviceId.indexOf(","+installationDeviceList[i].id+",")==-1){
+                        deviceId +=installationDeviceList[i].id+",";
+                    }
+                }
+            }
+            data.deviceId = deviceId;
 
-            $.post($.URL.installation.add,data,addCallBack,"json");
+
+            $.post($.URL.installation.add,{"jsonString": $.toJSON(data)},addCallBack,"json");
         })
         function addCallBack(data){
             if(data.code==200){
-                $.ligerDialog.success("操作成功！");
+                uploadImage(data.data);
                 $.post($.URL.installation.list,null,listCallBack,"json");
             }
             else if(data.code==500)
@@ -137,10 +194,28 @@
                 $.post($.URL.installation.list,null,listCallBack,"json");
             }
         }
-        $("#searchBtn").click(function(){
+
+        function uploadImage(installationId){
+            alert(installationId);
+            $("#installationIdInput").val(installationId);
+            $("#installationImageUploadForm").ajaxSubmit({success:uploadImageCallback,dataType:'json',type:'post',url:'rs/installation/upload'});
+        }
+
+        function uploadImageCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("操作成功！");
+            }
+            else if(data.code==500)
+            {
+                $.ligerDialog.error(data.message);
+                $.post($.URL.installation.list,null,listCallBack,"json");
+            }
+        }
+
+        $("#installationSearchBtn").click(function(){
             var data={};
-            data.contractName=$("#scontractName").val();
-            data.deviceName=$("#sdeviceName").val();
+            data.contractName=$("#installationContractName").val();
+            data.deviceName=$("#installationDeviceName").val();
             if(data.contractName==""&&data.deviceName==""){
                 $.post($.URL.installation.list,null,listCallBack,"json");
             }else{
@@ -157,6 +232,24 @@
                 $.ligerDialog.error(data.message);
             }
         };
+
+        $("#deviceSearchBtn").click(function(){
+            var condition = {};
+            condition.number = $("#deviceNumQueryInput").val();
+            $.post($.URL.device.findByCondition, {"jsonString":$.toJSON(condition)},deviceSearchCallback,"json");
+
+        });
+
+        function deviceSearchCallback(data){
+            if(data.code==200){
+                for(var i=0;i<data.data.length;i++){
+                    data.data[i].text = data.data[i].name+"-"+data.data[i].number;
+                }
+                liger.get("installationListbox1").setData(data.data);
+            }else{
+                alert(data.message);
+            }
+        }
 
     </script>
     <style type="text/css">
@@ -185,25 +278,12 @@
             </tr>
 
 
-            <tr>
-                <td align="right" class="l-table-edit-td">安装设备号:</td>
-                <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="iinstallDeviceId">
-                </td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-
+            <tr style="border-bottom: 1px #666 dashed">
                 <td align="right" class="l-table-edit-td">安装人员:</td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text"  id="iinstallMan">
                 </td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">安装时间:</td>
-                <td align="left" class="l-table-edit-td">
-                    <input type="text"  id="iinstallTime">
-                </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-
                 <td align="right" class="l-table-edit-td">安装状态:</td>
                 <td align="left" class="l-table-edit-td">
                     <select name="installStatus" id="iinstallStatus" ltype="select" >
@@ -211,22 +291,64 @@
                         <option value="完成">完成</option>
                     </select>
                 </td>
+
             </tr>
 
+            <tr>
+                <td align="right" class="l-table-edit-td">设备编号:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="deviceNumQueryInput" type="text" id="deviceNumQueryInput" ltype="text" />
+                    &nbsp;
+                    <input name="deviceSearchBtn" type="button" id="deviceSearchBtn" value="筛选"/>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td align="right" class="l-table-edit-td"></td>
+                <td align="left" class="l-table-edit-td">
+
+                </td><td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">运输设备:</td>
+                <td align="left" class="l-table-edit-td" colspan="4">
+                    <div style="margin:4px;float:left;">
+                        <div id="installationListbox1"></div>
+                    </div>
+                    <div style="margin:4px;float:left;" class="middle">
+                        <input type="button" onclick="moveToLeft()" value="<" />
+                        <input type="button" onclick="moveToRight()" value=">" />
+                        <input type="button" onclick="moveAllToLeft()" value="<<" />
+                        <input type="button" onclick="moveAllToRight()" value=">>" />
+                    </div>
+                    <div style="margin:4px;float:left;">
+                        <div id="installationListbox2"></div>
+                    </div>
+            </form>
+            </td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">运输拍照:</td>
+                <td align="left" class="l-table-edit-td" colspan="4">
+                    <form id="installationImageUploadForm" action="rs/installation/upload" method="POST" enctype="multipart/form-data">
+                        <input name="filename" type="file" >
+                        <input id="installationIdInput" name="installationId" type="hidden">
+                    </form>
+                </td>
+            </tr>
         </table>
         <br />
-        <input type="button" value="提交" id="submitBtn" onclick="i_submit()" class="l-button l-button-submit" />
-    </form>
+        <input type="button" value="提交" id="installationSubmitBtn" class="l-button l-button-submit" />
 </div>
 <div id="list">
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
             <td align="right" class="l-table-edit-td">合同名称:</td>
-            <td align="left" class="l-table-edit-td"><input name="scontractName" type="text" id="scontractName" ltype="text" /></td>
+            <td align="left" class="l-table-edit-td"><input name="installationContractName" type="text" id="installationContractName" ltype="text" /></td>
             <td align="right" class="l-table-edit-td">安装设备:</td>
-            <td align="left" class="l-table-edit-td"><input name="sdeviceName" type="text" id="sdeviceName" ltype="text"/></td>
-            <td align="right"><input type="button" value="查询" id="searchBtn" class="l-button l-button-submit" /></td>
-            <td align="right"><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></td>
+            <td align="left" class="l-table-edit-td"><input name="installationDeviceName" type="text" id="installationDeviceName" ltype="text"/></td>
+            <td align="right"><input type="button" value="查询" id="installationSearchBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="添加" id="installationAddSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></td>
         </tr>
     </table>
     <div class="l-clear"></div>

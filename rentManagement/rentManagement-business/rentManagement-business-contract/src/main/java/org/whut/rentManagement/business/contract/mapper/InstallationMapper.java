@@ -1,8 +1,7 @@
 package org.whut.rentManagement.business.contract.mapper;
 
-import org.apache.ibatis.annotations.Param;
-import org.whut.rentManagement.business.contract.entity.Installation;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
+import org.whut.rentManagement.business.contract.entity.Installation;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,5 @@ import java.util.Map;
  */
 public interface InstallationMapper extends AbstractMapper<Installation> {
     public List<Map<String,String>> getListByAppId(long appId);
-    public long getIdByDeviceId(@Param("installDeviceId")long installDeviceId);
-    public List<Map<String,String>> getInstallList(Map<String,Object> condition);
-    public List<Map<String,String>> findByCondition(@Param("contractName") String contractName,@Param("deviceName") String deviceName,@Param("appId") long appId);
+    public List<Map<String,String>> findByCondition(Map<String,Object> condition);
 }

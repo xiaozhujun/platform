@@ -4,14 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.contract.mapper.RemoveMapper">
     <sql id="Remove_fields">
-          ID,CONTRACTID,REMOVEDEVICEID,REMOVEMAN,REMOVESTATUS,REMOVETIME,APPID
+          ID,CONTRACTID,REMOVEMAN,CREATETIME,REMOVESTATUS,APPID
     </sql>
     <resultMap id="RemoveResultMap" type="Remove">
         <id property="id" column="ID" />
         <result property="contractId" column="CONTRACTID"/>
-        <result property="removeDeviceId" column="REMOVEDEVICEID"/>
         <result property="removeMan" column="REMOVEMAN"/>
-        <result property="removeTime" column="REMOVETIME"/>
+        <result property="createTime" column="CREATETIME"/>
         <result property="removeStatus" column="REMOVESTATUS"/>
         <result property="appId" column="APPID"/>
     </resultMap>
@@ -22,7 +21,7 @@
         remove(
         <include refid="Remove_fields" />
         )
-        VALUES (#{id}, #{contractId},#{removeDeviceId},#{removeMan},#{removeTime},#{removeStatus},#{appId});
+        VALUES (#{id}, #{contractId},#{removeMan},#{createTime},#{removeStatus},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -38,10 +37,10 @@
         UPDATE remove
         <set>
             <if test="contractId!=null"> CONTRACTID=#{contractId},</if>
-            <if test="removeDeviceId!=null"> REMOVEDEVICEID=#{removeDeviceId},</if>
             <if test="removeMan!=null"> REMOVEMAN=#{removeMan},</if>
-            <if test="removeTime!=null"> REMOVETIME=#{removeTime},</if>
+            <if test="createTime!=null"> CREATETIME=#{createTime},</if>
             <if test="removeStatus!=null"> REMOVESTATUS=#{removeStatus},</if>
+            <if test="image!=null"> IMAGE=#{image},</if>
 
         </set>
         WHERE ID=#{id}
@@ -53,21 +52,15 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
-    <select id="getRemoveDeviceIdById" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select
-       id
-        from remove
-        where REMOVEDEVICEID=#{removeDeviceId}
-    </select>
 
-    <select id="getRemoveList" parameterType="map" resultType="map">
+    <select id="findByCondition" parameterType="map" resultType="map">
         select remove.*,contract.name,contract.customerName
-        from remove,contract,device
-        where remove.contractId=contract.id and remove.removeDeviceId=device.id
+        from remove,contract
+        where remove.contractId=contract.id
         <if test="appId!=null"> AND remove.APPID=#{appId}</if>
         <if test="user!=null">AND remove.removeMan like CONCAT('%',#{user},'%') </if>
-        <if test="device!=null">AND device.name like CONCAT('%',#{device},'%')</if>
-        <if test="startTime!=null"><![CDATA[ AND remove.removeTime>=#{startTime}]]></if>
-        <if test="endTime!=null"><![CDATA[ AND remove.removeTime<=#{endTime} ]]> </if>
+        <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND remove.createTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND remove.createTime<=#{endTime} ]]> </if>
     </select>
 </mapper>

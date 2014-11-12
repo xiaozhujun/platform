@@ -29,13 +29,7 @@ public class InstallationService {
     public int delete(Installation installation){
         return installationmapper.delete(installation);
     }
-    public long getIdByDeviceId(long installDeviceId){
-        return installationmapper.getIdByDeviceId(installDeviceId);
-    }
-    public List<Map<String,String>> getInstallList(Map<String,Object> condition){
-        return installationmapper.getInstallList(condition);
-    }
-    public List<Map<String,String>> findByCondition(String contractName ,String deviceName,long appId){
-        return installationmapper.findByCondition(contractName,deviceName,appId);
+    public List<Map<String,String>> findByCondition(Map<String,Object> condition){
+        return installationmapper.findByCondition(condition);
     }
 }

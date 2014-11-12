@@ -45,7 +45,7 @@ public class RemoveService {
     }
 
     public List<Map<String,String>> getRemoveList(Map<String,Object> condition){
-        return removeMapper.getRemoveList(condition);
+        return removeMapper.findByCondition(condition);
     }
 
 }

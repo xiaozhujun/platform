@@ -4,13 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.contract.mapper.InstallationMapper">
     <sql id="Installation_fields">
-          ID,CONTRACTID,TYPE,INSTALLDEVICEID,INSTALLMAN,INSTALLTIME,INSTALLSTATUS,IMAGE,APPID
+          ID,CONTRACTID,TYPE,INSTALLMAN,INSTALLTIME,INSTALLSTATUS,IMAGE,APPID
     </sql>
     <resultMap id="InstallationResultMap" type="Installation">
         <id property="id" column="ID" />
         <result property="contractId" column="CONTRACTID"/>
         <result property="type" column="TYPE"/>
-        <result property="installDeviceId" column="INSTALLDEVICEID"/>
         <result property="installMan" column="INSTALLMAN"/>
         <result property="installTime" column="INSTALLTIME"/>
         <result property="installStatus" column="INSTALLSTATUS"/>
@@ -24,7 +23,7 @@
         installation(
         <include refid="Installation_fields" />
         )
-        VALUES (#{id}, #{contractId},#{type},#{installDeviceId},#{installMan},#{installTime},#{installStatus},#{image},#{appId});
+        VALUES (#{id}, #{contractId},#{type},#{installMan},#{installTime},#{installStatus},#{image},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -36,16 +35,14 @@
         where APPID=#{appId}
     </select>-->
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
-           select c.name contractName,i.type,d.name deviceName,i.installMan,i.installTime,i.installStatus,i.id
-           from  installation AS i,contract AS c,device AS d
-           where i.appId=#{appId} AND i.contractId=c.id AND i.installDeviceId=d.id
+           select c.name contractName,i.type,i.installMan,i.installTime,i.installStatus,i.id
+           from  installation AS i,contract AS c
+           where i.appId=#{appId} AND i.contractId=c.id
     </select>
     <update id="update" parameterType="Installation">
         UPDATE installation
         <set>
-            <!--<if test="contractId!=null">CONTRACTID=#{contractId},</if>-->
             <if test="type!=null">TYPE=#{type},</if>
-            <!--<if test="installDeviceId!=null">INSTALLDEVICEID=#{installDeviceId},</if>-->
             <if test="installMan!=null">INSTALLMAN=#{installMan},</if>
             <if test="installStatus!=null">INSTALLSTATUS=#{installStatus},</if>
             <if test="installTime!=null">INSTALLTIME=#{installTime},</if>
@@ -60,27 +57,23 @@
             <if test="id!=null">ID=#{id}</if>
         </where>
     </delete>
-    <select id="getIdByDeviceId" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select id
-        from installation
-        <if test="installDeviceId!=null">where INSTALLDEVICEID=#{installDeviceId}</if>
-    </select>
 
-    <select id="getInstallList" parameterType="map" resultType="map">
+    <select id="findByCondition" parameterType="map" resultType="map">
         select installation.*,contract.name,contract.customerName
-        from installation,contract,device
-        where installation.contractId=contract.id and installation.installDeviceId=device.id
+        from installation,contract
+        where installation.contractId=contract.id
         <if test="appId!=null"> AND installation.APPID=#{appId}</if>
         <if test="user!=null">AND installation.installMan like CONCAT('%',#{user},'%') </if>
-        <if test="device!=null">AND device.name like CONCAT('%',#{device},'%')</if>
+        <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND installation.installTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND installation.installTime<=#{endTime} ]]> </if>
     </select>
-    <select id="findByCondition" parameterType="map" resultType="map">
-        select c.name contractName,i.type,d.name deviceName,i.installMan,i.installTime,i.installStatus
-        from  installation AS i,contract AS c,device AS d
-        where i.appId=#{appId} AND i.contractId=c.id AND i.installDeviceId=d.id
-        <if test="contractName!=null">AND c.name LIKE #{contractName}</if>
-        <if test="deviceName!=null">AND d.name LIKE #{deviceName}</if>
+
+    <select id="getInfo" parameterType="map" resultType="map">
+        select installation.*
+        from installation
+        where
+        <if test="appId!=null"> APPID=#{appId}</if>
+        <if test="transportId!=null">AND id=#{transportId}</if>
     </select>
 </mapper>

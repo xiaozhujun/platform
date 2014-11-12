@@ -114,7 +114,7 @@ function deleteCallBack(data){
 
 function moveToLeft()
 {
-    var box1 = liger.get("listbox1"), box2 = liger.get("listbox2");
+    var box1 = liger.get("transportListbox1"), box2 = liger.get("transportListbox2");
     var selecteds = box2.getSelectedItems();
     if (!selecteds || !selecteds.length) return;
     box2.removeItems(selecteds);
@@ -122,8 +122,8 @@ function moveToLeft()
 }
 function moveToRight()
 {
-    var box1 = liger.get("listbox1");
-    var box2 = liger.get("listbox2");
+    var box1 = liger.get("transportListbox1");
+    var box2 = liger.get("transportListbox2");
     var selecteds = box1.getSelectedItems();
     if (!selecteds || !selecteds.length) return;
     box1.removeItems(selecteds);
@@ -131,7 +131,7 @@ function moveToRight()
 }
 function moveAllToLeft()
 {
-    var box1 = liger.get("listbox1"), box2 = liger.get("listbox2");
+    var box1 = liger.get("transportListbox1"), box2 = liger.get("transportListbox2");
     var selecteds = box2.data;
     if (!selecteds || !selecteds.length) return;
     box1.addItems(selecteds);
@@ -139,7 +139,7 @@ function moveAllToLeft()
 }
 function moveAllToRight()
 {
-    var box1 = liger.get("listbox1"), box2 = liger.get("listbox2");
+    var box1 = liger.get("transportListbox1"), box2 = liger.get("transportListbox2");
     var selecteds = box1.data;
     if (!selecteds || !selecteds.length) return;
     box2.addItems(selecteds);
@@ -149,16 +149,15 @@ function moveAllToRight()
 function f_add() {
     $("#addtransport").css('display','block');
     $.ligerDialog.open({title:'设备运输', target: $("#addtransport"),width:500});
-    //$("#imageUploadForm").ajaxForm({success:uploadImageCallback,type:'post',url:'rs/transport/upload'});
 
 
-    $("#listbox1").ligerListBox({
+    $("#transportListbox1").ligerListBox({
         isShowCheckBox: true,
         isMultiSelect: true,
         height: 140
     });
 
-    $("#listbox2").ligerListBox({
+    $("#transportListbox2").ligerListBox({
         isShowCheckBox: true,
         isMultiSelect: true,
         height: 140,valueFieldID:'transportDeviceList'
@@ -166,14 +165,14 @@ function f_add() {
 
 }
 
-$("#submitBtn").click(function(){
+$("#transportSubmitBtn").click(function(){
     var data={};
     data.driver=$("#driver").val();
     data.telephone=$("#telephone").val();
     data.destination=$("#destination").val();
     data.address=$("#address").val();
 
-    var transportDeviceList = liger.get("listbox2").data;
+    var transportDeviceList = liger.get("transportListbox2").data;
     var deviceId = ",";
     if(transportDeviceList!=null){
         for(var i=0;i<transportDeviceList.length;i++){
@@ -202,7 +201,7 @@ function addCallBack(data){
 function uploadImage(transportId){
     alert(transportId);
     $("#transportIdInput").val(transportId);
-    $("#imageUploadForm").ajaxSubmit({success:uploadImageCallback,dataType:'json',type:'post',url:'rs/transport/upload'});
+    $("#transportImageUploadForm").ajaxSubmit({success:uploadImageCallback,dataType:'json',type:'post',url:'rs/transport/upload'});
 }
 
 function uploadImageCallback(data){
@@ -237,19 +236,19 @@ function queryListCallback(data){
     }
 };
 
-$("#deviceSearchBtn").click(function(){
+$("#transportDeviceSearchBtn").click(function(){
     var condition = {};
     condition.number = $("#deviceNumQueryInput").val();
-    $.post($.URL.device.findByCondition, {"jsonString":$.toJSON(condition)},deviceSearchCallback,"json");
+    $.post($.URL.device.findByCondition, {"jsonString":$.toJSON(condition)},transportDeviceSearchCallback,"json");
 
 });
 
-function deviceSearchCallback(data){
+function transportDeviceSearchCallback(data){
     if(data.code==200){
         for(var i=0;i<data.data.length;i++){
             data.data[i].text = data.data[i].name+"-"+data.data[i].number;
         }
-        liger.get("listbox1").setData(data.data);
+        liger.get("transportListbox1").setData(data.data);
     }else{
         alert(data.message);
     }
@@ -299,7 +298,7 @@ function deviceSearchCallback(data){
                 <td align="left" class="l-table-edit-td">
                     <input name="deviceNumQueryInput" type="text" id="deviceNumQueryInput" ltype="text" />
                     &nbsp;
-                    <input name="deviceSearchBtn" type="button" id="deviceSearchBtn" value="筛选"/>
+                    <input name="transportDeviceSearchBtn" type="button" id="transportDeviceSearchBtn" value="筛选"/>
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td align="right" class="l-table-edit-td"></td>
@@ -312,7 +311,7 @@ function deviceSearchCallback(data){
                 <td align="right" class="l-table-edit-td">运输设备:</td>
                 <td align="left" class="l-table-edit-td" colspan="4">
                     <div style="margin:4px;float:left;">
-                        <div id="listbox1"></div>
+                        <div id="transportListbox1"></div>
                     </div>
                     <div style="margin:4px;float:left;" class="middle">
                         <input type="button" onclick="moveToLeft()" value="<" />
@@ -321,7 +320,7 @@ function deviceSearchCallback(data){
                         <input type="button" onclick="moveAllToRight()" value=">>" />
                     </div>
                     <div style="margin:4px;float:left;">
-                        <div id="listbox2"></div>
+                        <div id="transportListbox2"></div>
                     </div>
                    </form>
                 </td>
@@ -330,7 +329,7 @@ function deviceSearchCallback(data){
             <tr>
                 <td align="right" class="l-table-edit-td">运输拍照:</td>
                 <td align="left" class="l-table-edit-td" colspan="4">
-                    <form id="imageUploadForm" action="rs/transport/upload" method="POST" enctype="multipart/form-data">
+                    <form id="transportImageUploadForm" action="rs/transport/upload" method="POST" enctype="multipart/form-data">
                         <input name="filename" type="file" >
                         <input id="transportIdInput" name="transportId" type="hidden">
                     </form>
@@ -339,10 +338,10 @@ function deviceSearchCallback(data){
 
         </table>
         <br />
-        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+        <input type="button" value="提交" id="transportSubmitBtn" class="l-button l-button-submit" />
 
 </div>
-<div id="list">
+<div>
     <table cellpadding="0" cellspacing="0" class="l-table-edit" >
         <tr>
             <td align="right" class="l-table-edit-td">经手人:</td>

@@ -159,6 +159,22 @@ public class InstallationServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/info")
+    @POST
+    public String info(@FormParam("installationId") String installationId){
+        if(installationId==null||installationId.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        Map<String,Object> condition = new HashMap<String, Object>();
+        condition.put("installationId",Long.parseLong(installationId));
+        condition.put("appId",UserContext.currentUserAppId());
+        Map<String,Object> installationInfo = installationservice.getInfo(condition);
+        List<Map<String,Object>> deviceList = installationDeviceService.listByInstallationId(condition);
+        installationInfo.put("deviceList",deviceList);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(installationInfo,JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/findByCondition")
     @POST
     public String findByCondition(@FormParam("user")String user,@FormParam("device")String device,@FormParam("sTime")String sTime,@FormParam("eTime")String eTime){

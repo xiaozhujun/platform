@@ -27,32 +27,31 @@
     <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
-            $.post("../"+$.URL.transport.info,{"transportId":parent.transportId},transportDetailCallback,"json");
+            $.post("../"+$.URL.remove.info,{"removeId":parent.removeId},removeDetailCallback,"json");
         });
 
-        function transportDetailCallback(data){
+        function removeDetailCallback(data){
             if(data.code==200){
-                showTransportDetail(data.data);
+                showRemoveDetail(data.data);
             }else{
                 alert(data.message);
             }
         }
 
-        function showTransportDetail(info){
-            $("#handler").val(info.handler);
-            $("#driver").val(info.driver);
-            $("#telephone").val(info.telephone);
+        function showRemoveDetail(info){
+            $("#removeMan").val(info.removeMan);
+            $("#contractName").val(info.contractName);
+            $("#customerName").val(info.customerName);
             $("#address").val(info.address);
-            $("#destination").val(info.destination);
             $("#createTime").val(info.createTime);
             showGrid(info.deviceList);
         }
 
-        var transportDetailData={};
+        var removeDetailData={};
         function showGrid(data){
-            var grid = $("<div id='transportGrid'></div>");
-            $("#transportDetailShow").append(grid);
-            transportDetailData.Rows=data;
+            var grid = $("<div id='removeGrid'></div>");
+            $("#removeDetailShow").append(grid);
+            removeDetailData.Rows=data;
             f_peopleRecord(grid);
         }
         var manager, g;
@@ -93,7 +92,7 @@
                     $("#txtrowindex").val(rowindex);
                 },
                 enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
-                data: transportDetailData,
+                data: removeDetailData,
                 width: '100%'
             });
         }
@@ -107,14 +106,13 @@
     </script>
 </head>
 <body>
-<div class="transportDetailContainer">
-    <div class="searchItem"><span class="item_font">经手人:</span><span class="item_input"><input id="handler" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">司机:</span><span class="item_input"><input id="driver" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">电话:</span><span class="item_input"><input id="telephone" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">运输时间:</span><span class="item_input"><input id="createTime" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">运输地点:</span><span class="item_input"><input id="address" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">运输地点:</span><span class="item_input"><input id="destination" type="text"></span></div>
+<div class="removeDetailContainer">
+    <div class="searchItem"><span class="item_font">拆卸人员:</span><span class="item_input"><input id="removeMan" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">项目名称:</span><span class="item_input"><input id="contractName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">客户名称:</span><span class="item_input"><input id="customerName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">安装时间:</span><span class="item_input"><input id="createTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">安装地点:</span><span class="item_input"><input id="address" type="text"></span></div>
 </div>
-<div class="reportContent" id="transportDetailShow"></div>
+<div class="reportContent" id="removeDetailShow"></div>
 </body>
 </html>

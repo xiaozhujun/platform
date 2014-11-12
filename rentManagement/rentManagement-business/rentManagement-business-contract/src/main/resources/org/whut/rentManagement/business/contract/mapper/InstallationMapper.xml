@@ -45,9 +45,7 @@
             <if test="type!=null">TYPE=#{type},</if>
             <if test="installMan!=null">INSTALLMAN=#{installMan},</if>
             <if test="installStatus!=null">INSTALLSTATUS=#{installStatus},</if>
-            <if test="installTime!=null">INSTALLTIME=#{installTime},</if>
             <if test="image!=null">IMAGE=#{image},</if>
-            <if test="appId!=null">APPID=#{appId},</if>
         </set>
         WHERE ID=#{id}
     </update>
@@ -70,10 +68,10 @@
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
-        select installation.*
-        from installation
-        where
-        <if test="appId!=null"> APPID=#{appId}</if>
-        <if test="transportId!=null">AND id=#{transportId}</if>
+        select installation.*,contract.name as contractName,contract.customerName
+        from installation,contract
+        where installation.contractId=contract.id
+        <if test="appId!=null">AND installation.APPID=#{appId}</if>
+        <if test="installationId!=null">AND installation.id=#{installationId}</if>
     </select>
 </mapper>

@@ -16,4 +16,5 @@ import java.util.Map;
 public interface InstallationMapper extends AbstractMapper<Installation> {
     public List<Map<String,String>> getListByAppId(long appId);
     public List<Map<String,String>> findByCondition(Map<String,Object> condition);
+    public Map<String,Object> getInfo(Map<String,Object> condition);
 }

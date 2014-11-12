@@ -36,9 +36,7 @@
     <update id="update" parameterType="Remove">
         UPDATE remove
         <set>
-            <if test="contractId!=null"> CONTRACTID=#{contractId},</if>
             <if test="removeMan!=null"> REMOVEMAN=#{removeMan},</if>
-            <if test="createTime!=null"> CREATETIME=#{createTime},</if>
             <if test="removeStatus!=null"> REMOVESTATUS=#{removeStatus},</if>
             <if test="image!=null"> IMAGE=#{image},</if>
 
@@ -62,5 +60,13 @@
         <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND remove.createTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND remove.createTime<=#{endTime} ]]> </if>
+    </select>
+
+    <select id="getInfo" parameterType="map" resultType="map">
+        select remove.*,contract.name as contractName,contract.customerName
+        from remove,contract
+        where remove.contractId=contract.id
+        <if test="appId!=null">AND remove.APPID=#{appId}</if>
+        <if test="removeId!=null">AND remove.id=#{removeId}</if>
     </select>
 </mapper>

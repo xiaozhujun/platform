@@ -98,7 +98,7 @@ function f_peopleRecord(grid)
             },
             { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
             {
-                return "<a href='javascript:resolve(" + rowindex + ")'>处理</a> ";
+                return "<a href='javascript:resolve(" + rowindex + ")'>详情</a> ";
             }
             }
         ],
@@ -114,138 +114,31 @@ function f_peopleRecord(grid)
 
 function abnormal(rowid){
     var rowPicture = manager.getRow(rowid);
-    var jsonString  = $.toJSON(rowPicture);
-    var itemId = $.evalJSON(jsonString).itemId;
-    var userName = $.evalJSON(jsonString).userName;
-    var deviceName = $.evalJSON(jsonString).deviceName;
-    var itemRecordId = $.evalJSON(jsonString).id;
-    $.post($.URL.imageUpload.getImageByNames,{"userName":userName,"deviceName":deviceName,"itemRecordId":itemRecordId,"itemId":itemId},showImage,"json");
-    showAbnormalPic(rowPicture);
-}
-function showImage(data){
-    if(data.code==500){
-        $("#image").attr("src","");
-    }else{
-        $("#image").attr("src",data.data);
-    }
-
-}
-function showAbnormalPic(rowPicture){
-    if(rowPicture.inspectChoiceValue!="异常"){
-        $("#Suggestion").attr("readonly","readonly");
-    }
-    else{
-        $("#Suggestion").removeAttr("readonly");
-    };
-    $("#NameTr").attr("hidden","true");
-    $("#NameTr1").removeAttr("hidden");
-    $("#image").removeAttr("hidden");
-    $("#submitBtn1").attr("hidden","true");
-    $("#suggestionTr").attr("hidden","true");
-    $("#Name1").text(rowPicture.userName);
-    $("#Choice").val(rowPicture.inspectChoiceValue);
-    $("#Device").text(rowPicture.deviceName);
-    $("#Item").text(rowPicture.tableName);
-    $("#Unit").text(rowPicture.itemName);
-    $("#ItemId").val(rowPicture.itemId);
-    $("#Suggestion").val("");
-    $('#addTableList').css({display:'block'});
-    $.ligerDialog.open({isDrag: true,title:'处理描述', target: $("#uploadInfo"),width:400,height:640,isResize:true});
+    var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
+    $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"运输拍照" });
 }
 
-var tempItemRecordId;
+var installationId;
 function resolve(rowid){
     var rowInfo = manager.getRow(rowid);
     var jsonString  = $.toJSON(rowInfo);
-    tempItemRecordId = $.evalJSON(jsonString).id;
-
-    showAbnormalInfo(rowInfo);
-}
-function showAbnormalInfo(rowInfo){
-    $("#image").attr("hidden","true");
-    $("#submitBtn1").removeAttr("hidden");
-    $("#suggestionTr").removeAttr("hidden");
-
-    if(rowInfo.inspectChoiceValue=="正常"){        //正常时点击处理
-        $("#Suggestion").attr("readonly","readonly");
-
-        $("#NameTr").attr("hidden","true");
-        $("#NameTr1").removeAttr("hidden");
-
-        $.post($.URL.employee.getById,{"employeeId":rowInfo.maintainId},function setName1(data){
-            if(data.data!=null){
-                $("#Name1").text(data.data.name);
-            }
-            else{
-                $("#Name1").text("暂无");
-            }
-        },"json");
-        $("#submitBtn1").attr("hidden","true")
-        $("#Choice").val(rowInfo.inspectChoiceValue);
-        $("#Device").text(rowInfo.deviceName);
-        $("#Item").text(rowInfo.tableName);
-        $("#Unit").text(rowInfo.itemName);
-        $("#ItemId").val(rowInfo.itemId);
-        $("#Suggestion").val(rowInfo.maintainSuggest);
-
-    }
-    else{
-
-        $("#Suggestion").removeAttr("readonly");
-
-        $("#NameTr1").attr("hidden","true");
-        $("#NameTr").removeAttr("hidden");
-
-        $("#Choice").val(rowInfo.inspectChoiceValue);
-        $("#Device").text(rowInfo.deviceName);
-        $("#Item").text(rowInfo.tableName);
-        $("#Unit").text(rowInfo.itemName);
-        $("#ItemId").val(rowInfo.itemId);
-        $("#Suggestion").val("");
-
-        if (rowInfo.inspectChoiceValue!="异常") //处理中时点击，下拉框选中当先人员
-        {
-            $("#Suggestion").val(rowInfo.maintainSuggest);
-            $.post($.URL.employee.getTelById,{"employeeId":rowInfo.maintainId},function selectname(data){
-                $("#Name").ligerGetComboBoxManager().selectValue(data.data);
-
-            },"json");
-        }else   //异常中点击，下拉框置空
-        { $("#Name").ligerGetComboBoxManager().selectValue();
-        }
-    }
-    $('#addTableList').css({display:'block'});
-    $.ligerDialog.open({isDrag: true,title:'处理描述', target: $("#uploadInfo"),width:400,height:400});
-}
-
-
-$("#submitBtn1").click(function(){
-    var data = {};
-    data.Name = $("#Name").val();
-    if(data.Name==null){
-        $.ligerDialog.warn("请选择维修人员！");
-    }else{
-        data.tel = $("#Name").ligerComboBox().getValue(),
-                data.Device = $("#Device").text();
-        data.Item = $("#Item").text();
-        data.ItemId = $("#ItemId").val();
-        data.Choice=$("Choice").val();
-        data.Unit = $("#Unit").text();
-        data.Suggestion = $("#Suggestion").val();
-        data.itemRecordId = tempItemRecordId;
-        var d= $.toJSON(data);
-        $.post($.URL.inspectItemRecord.updateMaintainIdAndSuggest,{"jsonString":d},addCallBack,"json") ;
-    }
-});
-function addCallBack(data){
-    if(data.code==200){
-        $.ligerDialog.success(data.message);
-        getInstallList();
-    }
-
-    else{
-        $.ligerDialog.warn(data.message);
-    }
+    installationId = $.evalJSON(jsonString).id;
+    $.ligerDialog.open({
+        height:600,
+        width: 800,
+        title : '安装详情',
+        url: 'contract/installationDetail.html',
+        showMax: false,
+        showToggle: true,
+        showMin: false,
+        isResize: true,
+        slide: false,
+        data: {
+            name: $("#txtValue").val()
+        },
+        //自定义参数
+        myDataName: $("#txtValue").val()
+    });
 }
 
 </script>
@@ -258,62 +151,7 @@ function addCallBack(data){
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="installEndTime" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="getInstallListBtn" class="l-button l-button-submit" /></span></div>
 </div>
-<div class="exportDiv" id="exportDeviceDiv">
-                 <span class="exportType">
-                    <span class="type_font">导出类型:</span>
-                     <span class="type_input"><input type="text" id="exportDeviceType"></span>
-                 </span>
-    <span class="exportBtn"><span><input type="button" value="导出" id="exportDeviceBtn"  class="l-button l-button-submit"/></span></span>
-</div>
 <div class="reportContent" id="installShow"></div>
 
-<div id="uploadInfo" style="display: none">
-    <form name="form1" method="post" action="" id="form1"  >
-        <div>
-        </div>
-        <table cellpadding="20" cellspacing="12" class="l-table-edit" >
-            <tr id="NameTr" hidden="true">
-                <td align="right" class="l-table-edit-td">维修人员 : </td>
-                <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="Name"  /></td>
-            </tr>
-            <tr id="NameTr1" hidden="true">
-                <td align="right" class="l-table-edit-td">维修人员 : </td>
-                <td align="left" class="l-table-edit-td"><div name="Name" type="text" id="Name1"></div></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">点检设备 : </td>
-                <td align="left" class="l-table-edit-td"><div name="Device" type="text" id="Device"> </div></td>
-            </tr>
-
-            <tr hidden="true">
-                <td align="right" class="l-table-edit-td">ItemId:</td>
-                <td align="left" class="l-table-edit-td"><input name="ItemId" type="text" id="ItemId" readonly="readonly"></td>
-            </tr>
-            <tr hidden="true">
-                <td align="right" class="l-table-edit-td">Choice:</td>
-                <td align="left" class="l-table-edit-td"><input name="Choice" type="text" id="Choice" readonly="readonly"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">点检项目 : </td>
-                <td align="left" class="l-table-edit-td"><div name="Item" type="text" id="Item"></div></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">点检单元 : </td>
-                <td align="left" class="l-table-edit-td"><div name="Unit" type="text" id="Unit"></div></td>
-            </tr>
-            <tr id="suggestionTr" hidden="true">
-                <td align="right" valign="top" class="l-table-edit-td">点检建议 : </td>
-
-                <td align="left" class="l-table-edit-td">
-                    <textarea id="Suggestion" class="l-textarea" name="Suggestion" cols="40" rows="6" style="width:300px;height:200px">
-                    </textarea>
-                <td align="left"></td>
-            </tr>
-        </table>
-        <br />
-        <input type="button" value="提交" hidden="true" id="submitBtn1" class="l-button l-button-submit" />
-        <img id="image" hidden="true" src="" width="320" height="480">
-    </form>
-</div>
 </body>
 </html>

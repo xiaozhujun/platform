@@ -32,4 +32,8 @@ public class InstallationService {
     public List<Map<String,String>> findByCondition(Map<String,Object> condition){
         return installationmapper.findByCondition(condition);
     }
+
+    public Map<String,Object> getInfo(Map<String,Object> condition){
+        return installationmapper.getInfo(condition);
+    }
 }

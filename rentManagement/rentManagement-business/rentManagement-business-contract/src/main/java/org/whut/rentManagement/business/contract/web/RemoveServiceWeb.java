@@ -161,6 +161,22 @@ public class RemoveServiceWeb{
         }
     }
 
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/info")
+    @POST
+    public String info(@FormParam("removeId") String removeId){
+        if(removeId==null||removeId.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        Map<String,Object> condition = new HashMap<String, Object>();
+        condition.put("removeId",Long.parseLong(removeId));
+        condition.put("appId",UserContext.currentUserAppId());
+        Map<String,Object> removeInfo = removeService.getInfo(condition);
+        List<Map<String,Object>> deviceList = removeDeviceService.listByRemoveId(condition);
+        removeInfo.put("deviceList",deviceList);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(removeInfo,JsonResultUtils.Code.SUCCESS);
+    }
+
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/findByCondition")
     @POST

@@ -53,7 +53,8 @@
             "add":"rs/installation/add",
             "update":"rs/installation/update",
             "delete":"rs/installation/delete",
-            "findByCondition":"rs/installation/findByCondition"
+            "findByCondition":"rs/installation/findByCondition",
+            "info":"rs/installation/info"
         },
         "transport":{
             "list":"rs/transport/list",
@@ -134,7 +135,8 @@
             "add":"rs/remove/add"  ,
             "update":"rs/remove/update",
             "delete":"rs/remove/delete" ,
-            "list":"rs/remove/list"
+            "list":"rs/remove/list",
+            "info":"rs/remove/info"
         },
         "prebury":{
             "add":"rs/prebury/add"  ,

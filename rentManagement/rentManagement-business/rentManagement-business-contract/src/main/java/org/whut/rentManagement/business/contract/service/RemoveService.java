@@ -48,4 +48,8 @@ public class RemoveService {
         return removeMapper.findByCondition(condition);
     }
 
+    public Map<String,Object> getInfo(Map<String,Object> condition){
+        return removeMapper.getInfo(condition);
+    }
+
 }

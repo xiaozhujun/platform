@@ -214,7 +214,6 @@
         }
 
         function uploadImage(installationId){
-            alert(installationId);
             $("#installationIdInput").val(installationId);
             $("#installationImageUploadForm").ajaxSubmit({success:uploadImageCallback,dataType:'json',type:'post',url:'rs/installation/upload'});
         }

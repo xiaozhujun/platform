@@ -213,7 +213,6 @@
         });
 
         function uploadImage(removeId){
-            alert(removeId);
             $("#removeIdInput").val(removeId);
             $("#removeImageUploadForm").ajaxSubmit({success:uploadImageCallback,dataType:'json',type:'post',url:'rs/remove/upload'});
         }

@@ -199,7 +199,6 @@ function addCallBack(data){
 }
 
 function uploadImage(transportId){
-    alert(transportId);
     $("#transportIdInput").val(transportId);
     $("#transportImageUploadForm").ajaxSubmit({success:uploadImageCallback,dataType:'json',type:'post',url:'rs/transport/upload'});
 }

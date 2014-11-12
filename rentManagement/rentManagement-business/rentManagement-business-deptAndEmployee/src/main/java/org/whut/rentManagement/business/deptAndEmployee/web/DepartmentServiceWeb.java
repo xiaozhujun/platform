@@ -74,45 +74,45 @@ public class DepartmentServiceWeb
         if(subDepartment.getName()==null||subDepartment.getName().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "部门名不能为空");
         }
-        if(subDepartment.getCreateTime()==null){
-            Department departmentNoDate = new Department();
-            departmentNoDate.setId(subDepartment.getId());
-            departmentNoDate.setAppId(appId);
-            departmentNoDate.setDescription(subDepartment.getDescription());
-            departmentNoDate.setName(subDepartment.getName());
-            long idNoDate;
-            try{
-                idNoDate=departmentService.getIdByName(subDepartment.getName(), appId);
-            }catch (Exception e) {
-                idNoDate = 0;
-            }
-            if(idNoDate!=0){
-                if (idNoDate!=subDepartment.getId()){
-                    return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "修改的部门名已存在！");
-                }
-            }
-            departmentService.update(departmentNoDate);
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        }
+//        if(subDepartment.getCreateTime()==null){
+//            Department departmentNoDate = new Department();
+//            departmentNoDate.setId(subDepartment.getId());
+//            departmentNoDate.setAppId(appId);
+//            departmentNoDate.setDescription(subDepartment.getDescription());
+//            departmentNoDate.setName(subDepartment.getName());
+//            long idNoDate;
+//            try{
+//                idNoDate=departmentService.getIdByName(subDepartment.getName(), appId);
+//            }catch (Exception e) {
+//                idNoDate = 0;
+//            }
+//            if(idNoDate!=0){
+//                if (idNoDate!=subDepartment.getId()){
+//                    return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "修改的部门名已存在！");
+//                }
+//            }
+//            departmentService.update(departmentNoDate);
+//            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        }
         Department department = new Department();
-        Date date = null;
+//        Date date = null;
         department.setId(subDepartment.getId());
         department.setName(subDepartment.getName());
         department.setDescription(subDepartment.getDescription());
         department.setAppId(appId);
-        SimpleDateFormat DFT = new SimpleDateFormat("yyyy-MM-dd");
-        try{
-            date=DFT.parse(subDepartment.getCreateTime());
-        }catch (Exception e){
-            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
-        }
-        //调节时区，解决更新时间会显示前一天的问题
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        int day = c.get(Calendar.DATE);
-        c.set(Calendar.DATE, day + 1);
-        Date dateAfter = c.getTime();
-        department.setCreateTime(dateAfter);
+//        SimpleDateFormat DFT = new SimpleDateFormat("yyyy-MM-dd");
+//        try{
+//            date=DFT.parse(subDepartment.getCreateTime());
+//        }catch (Exception e){
+//            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+//        }
+//        //调节时区，解决更新时间会显示前一天的问题
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(date);
+//        int day = c.get(Calendar.DATE);
+//        c.set(Calendar.DATE, day + 1);
+//        Date dateAfter = c.getTime();
+//        department.setCreateTime(dateAfter);
         long id;
         try{
             id=departmentService.getIdByName(subDepartment.getName(), appId);

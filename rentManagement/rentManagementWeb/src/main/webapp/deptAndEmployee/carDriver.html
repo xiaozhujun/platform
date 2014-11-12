@@ -37,7 +37,7 @@
         {
             g = manager = $("#Maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+                    //{ display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '车主',name: 'name',
                         editor: { type: 'text'}
                     },
@@ -47,7 +47,7 @@
                     {display:'车型',name:'carType',
                         editor:{type:'text'}
                     },
-                    { display: '创建时间', name: 'createTime',width:100 ,editor:{type:'date'}},
+                    { display: '创建时间', name: 'createTime',width:100 ,type: 'date'},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -75,19 +75,31 @@
             });
         }
         function c_add(){
-
+            $("#name").val("");
+            $("#carNumber").val("");
+            $("#carType").val("");
+            $("#createTime").val("");
             c_show();
-            $.ligerDialog.open({title:'添加司机', target: $("#addCar_driver")});
+            $.ligerDialog.open({title:'添加司机(带*号的为必填项)', target: $("#addCar_driver"),width:550});
         };
 
-
+        $("#submitBtn").click(function(){
+            var data={};
+            data.name =$("#name1").val();
+            data.carNumber=$("#carNumber1").val();
+            if(data.name==""&&data.carNumber==""){
+                $.post($.URL.car_Driver.list,null,listCallback,"json");
+            }
+            else{
+                $.post($.URL.car_Driver.listCar_DriverByNameAndCar_Number,data,queryListCallback,"json");
+            }
+        });
         $("#submitBtn1").click(function(){
             var addData={};
             addData.name = $("#Name").val();
             addData.carNumber = $("#CarNumber").val();
             addData.carType = $("#CarType").val();
             $.post($.URL.car_Driver.add,addData,addCar_driverCallback,"json");
-
         });
 
         function addCar_driverCallback(data){
@@ -100,6 +112,16 @@
             {
                 $.ligerDialog.error(data.message);
 
+            }
+        }
+        function queryListCallback(data){
+            if(data.code==200){
+                gridData.Rows=data.data;
+                gridData.Total=data.data.length;
+                c_initGrid();
+            }
+            else if(data.code==500) {
+                $.ligerDialog.error(data.message);
             }
         }
 
@@ -172,13 +194,13 @@
     <form name="form1" method="post" action="" id="form1">
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
-                <td align="right" class="l-table-edit-td">名称:</td>
-                <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="Name" ltype="text" /></td>
+                <td align="right" class="l-table-edit-td">司机名称:</td>
+                <td align="left" class="l-table-edit-td"><input name="Name" type="text" id="Name" ltype="text" /><font color="red">* </font></td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">车牌号:</td>
-                <td align="left" class="l-table-edit-td"><input name="CarNumber" type="text" id="CarNumber" ltype="text" /></td>
+                <td align="left" class="l-table-edit-td"><input name="CarNumber" type="text" id="CarNumber" ltype="text" /><font color="red">* </font></td>
                 <td align="left"></td>
             </tr>
             <tr>
@@ -194,8 +216,17 @@
 </div>
 <div class="l-clear"></div>
 <div id="list">
-    <div><input type="button" value="添加" id="addSubmitBtn" onclick="c_add()" class="l-button l-button-submit" /></div>
-    <div class="l-clear"></div>
+    <table cellpadding="0" cellspacing="0" class="1_table-edit">
+        <tr>
+            <td align="right" class="1_table-edit-td">司机名称:</td>
+            <td align="left" class="1-table_edit-td"><input name="name" type="text" id="name1" ltype="text"/></td>
+            <td align="right" class="l-table-edit-td">车牌号:</td>
+            <td align="left" class="l-table-edit-td"><input name="carNumber" type="text" id="carNumber1" ltype="text"/></td>
+            <td align="right"><input type="button" value="查询" id="submitBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="添加" id="addSubmitBtn" onclick="c_add()" class="l-button l-button-submit" /></td>
+        </tr>
+    </table>
+<div class="l-clear"></div>
     <div id="Maingrid" style="margin-top:20px"></div> <br />
 </div>
 <div style="display:none;">

@@ -27,5 +27,8 @@ public class CarDriverService {
     public String getCarNumberById(long id){
         return carDriverMapper.getCarNumberById(id);
     }
+    public List<CarDriver> getByNameAndCar_Number(String name,String carNumber,long appId){
+        return  carDriverMapper.getByNameAndCar_Number(name,carNumber,appId);
+    }
 
 }

@@ -8,4 +8,5 @@ public interface CarDriverMapper extends AbstractMapper<CarDriver> {
     public long getIdByCarNumber(@Param("carNumber") String carNumber, @Param("appId") long appId);
     public String getCarNumberById(long id);
     public List<CarDriver> list(@Param("appId") long appId);
+    public List<CarDriver> getByNameAndCar_Number(@Param("name") String name, @Param("carNumber") String carNumber, @Param("appId") long appId);
 }

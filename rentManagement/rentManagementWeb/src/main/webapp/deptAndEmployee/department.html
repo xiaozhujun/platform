@@ -36,14 +36,14 @@
         {
             g = manager = $("#maingrid").ligerGrid({
                 columns: [
-                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+//                    { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '名称',name: 'name',
                         editor: { type: 'text'}
                     },
                     {display:'说明',name:'description',
                         editor:{type:'text'}
                     },
-                    { display: '创建时间', name: 'createTime',width:100 ,editor:{type:'date'}},
+                    { display: '创建时间', name: 'createTime',width:100 ,type: 'date'},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";

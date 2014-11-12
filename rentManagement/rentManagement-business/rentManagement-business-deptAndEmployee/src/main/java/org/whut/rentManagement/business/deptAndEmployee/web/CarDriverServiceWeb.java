@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -71,47 +72,47 @@ public class CarDriverServiceWeb {
         if ((subCarDriver.getCarNumber()==null||subCarDriver.getCarNumber().equals(""))){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "车牌号不能为空");
         }
-        if ((subCarDriver.getCreateTime()==null)){
-            CarDriver carDriverNoDate = new CarDriver();
-            carDriverNoDate.setId(subCarDriver.getId());
-            carDriverNoDate.setName(subCarDriver.getName());
-            carDriverNoDate.setCarNumber(subCarDriver.getCarNumber());
-            carDriverNoDate.setCarType(subCarDriver.getCarType());
-            carDriverNoDate.setAppId(appId);
-            long dpsNoDate;
-            try{
-                dpsNoDate=carDriverService.getIdByCarNumber(subCarDriver.getCarNumber(), appId);
-            }catch (Exception e) {
-                dpsNoDate = 0;
-            }
-            if(dpsNoDate!=0) {
-                if(dpsNoDate!=subCarDriver.getId()){
-                    return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "修改的车牌已存在！");
-                }
-            }
-            carDriverService.update(carDriverNoDate);
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        }
+//        if ((subCarDriver.getCreateTime()==null)){
+//            CarDriver carDriverNoDate = new CarDriver();
+//            carDriverNoDate.setId(subCarDriver.getId());
+//            carDriverNoDate.setName(subCarDriver.getName());
+//            carDriverNoDate.setCarNumber(subCarDriver.getCarNumber());
+//            carDriverNoDate.setCarType(subCarDriver.getCarType());
+//            carDriverNoDate.setAppId(appId);
+//            long dpsNoDate;
+//            try{
+//                dpsNoDate=carDriverService.getIdByCarNumber(subCarDriver.getCarNumber(), appId);
+//            }catch (Exception e) {
+//                dpsNoDate = 0;
+//            }
+//            if(dpsNoDate!=0) {
+//                if(dpsNoDate!=subCarDriver.getId()){
+//                    return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "修改的车牌已存在！");
+//                }
+//            }
+//            carDriverService.update(carDriverNoDate);
+//            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        }SUCCESS
         CarDriver carDriver = new CarDriver();
-        Date date= null;
+//        Date date= null;
         carDriver.setId(subCarDriver.getId());
         carDriver.setName(subCarDriver.getName());
         carDriver.setCarNumber(subCarDriver.getCarNumber());
         carDriver.setCarType(subCarDriver.getCarType());
         carDriver.setAppId(appId);
-        SimpleDateFormat DFT = new SimpleDateFormat("yyyy-MM-dd");
-        try{
-            date=DFT.parse(subCarDriver.getCreateTime());
-        }catch (Exception e){
-            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
-        }
-        //调节时区，解决更新时间会显示前一天的问题
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        int day = c.get(Calendar.DATE);
-        c.set(Calendar.DATE, day + 1);
-        Date dateAfter = c.getTime();
-        carDriver.setCreateTime(dateAfter);
+//        SimpleDateFormat DFT = new SimpleDateFormat("yyyy-MM-dd");
+//        try{
+//            date=DFT.parse(subCarDriver.getCreateTime());
+//        }catch (Exception e){
+//            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
+//        }
+//        //调节时区，解决更新时间会显示前一天的问题
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(date);
+//        int day = c.get(Calendar.DATE);
+//        c.set(Calendar.DATE, day + 1);
+//        Date dateAfter = c.getTime();
+//        carDriver.setCreateTime(dateAfter);
         long dps;
         try{
             dps=carDriverService.getIdByCarNumber(subCarDriver.getCarNumber(), appId);
@@ -142,5 +143,39 @@ public class CarDriverServiceWeb {
         long appId= UserContext.currentUserAppId();
         List<CarDriver> list = carDriverService.list(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+    @Path("/listCar_DriverByNameAndCar_Number")
+    @POST
+    public String listCar_DriverByNameAndCar_Number(@FormParam("name") String name,@FormParam("carNumber") String carNumber){
+        if((name==null||name.equals(""))&&(carNumber==null||carNumber.equals(""))){
+            name="";
+            carNumber="";
+        }
+        else if((name!=null||!name.equals(""))&&(carNumber==null||carNumber.equals(""))){
+            carNumber="";
+        }
+        else if((name==null||name.equals(""))&&(carNumber!=null||!carNumber.equals(""))){
+            name="";
+        }
+        long appId = UserContext.currentUserAppId();
+        name="%"+name+"%";
+        carNumber="%"+carNumber+"%";
+        List<CarDriver> list = carDriverService.getByNameAndCar_Number(name,carNumber,appId);
+        List<CarDriver> carDriverList=new ArrayList<CarDriver>();
+        for(CarDriver carDriver:list){
+            CarDriver subCarDriver = new CarDriver();
+            subCarDriver.setName(carDriver.getName());
+            subCarDriver.setCarNumber(carDriver.getCarNumber());
+            subCarDriver.setCarType(carDriver.getCarType());
+            subCarDriver.setAppId(appId);
+            subCarDriver.setCreateTime(carDriver.getCreateTime());
+            carDriverList.add(subCarDriver);
+        }
+        if (carDriverList.toArray().length==0)  {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "查询不到结果!");
+        }
+        return JsonResultUtils.getObjectResultByStringAsDefault(carDriverList, JsonResultUtils.Code.SUCCESS);
+
+
     }
 }

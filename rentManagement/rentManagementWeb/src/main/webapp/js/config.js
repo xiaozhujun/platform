@@ -87,7 +87,8 @@
             "add":"rs/car_Driver/add",
             "list":"rs/car_Driver/list",
             "update":"rs/car_Driver/update",
-            "delete":"rs/car_Driver/delete"
+            "delete":"rs/car_Driver/delete",
+            "listCar_DriverByNameAndCar_Number":"rs/car_Driver/listCar_DriverByNameAndCar_Number"
         },
         "device":{
             "add":"rs/device/add",

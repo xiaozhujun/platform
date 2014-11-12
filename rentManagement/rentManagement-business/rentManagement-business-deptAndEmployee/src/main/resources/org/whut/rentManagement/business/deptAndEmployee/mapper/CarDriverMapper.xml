@@ -32,7 +32,7 @@
             <if test="name!=null">NAME=#{name},</if>
             <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
             <if test="carType!=null">CARTYPE=#{carType},</if>
-            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+            <!--<if test="createTime!=null">CREATETIME=#{createTime},</if>-->
             <if test="appId!=null">APPID=#{appId}</if>
         </set>
         where ID=#{id};
@@ -63,6 +63,16 @@
         select carNumber
         from car_driver
         where ID=#{id}
+    </select>
+    <select id="getByNameAndCar_Number" parameterType="map" resultMap="CarDriverResultMapper">
+        select
+        <include refid="Car_driver_fields"/>
+        from car_driver
+        <where>
+            <if test="name !=null"> NAME LIKE #{name}</if>
+            <if test="carNumber !=null">and CARNUMBER like #{carNumber}</if>
+            <if test="appId !=null"> and APPID=#{appId}</if>
+        </where>
     </select>
 
 </mapper>

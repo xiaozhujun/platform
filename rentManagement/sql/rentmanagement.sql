@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-10 01:15:58
+Date: 2014-11-13 11:51:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -299,19 +299,41 @@ CREATE TABLE `installation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `contractId` bigint(20) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
-  `installDeviceId` bigint(20) DEFAULT NULL,
   `installMan` varchar(255) DEFAULT NULL,
-  `installTime` date DEFAULT NULL,
+  `installTime` datetime DEFAULT NULL,
   `installStatus` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of installation
 -- ----------------------------
-INSERT INTO `installation` VALUES ('1', '1', '安装', '1', '肖竹军', '2014-11-09', '未完成', null, '1');
+INSERT INTO `installation` VALUES ('9', '1', '安装', '肖竹军、王洪柱', '2014-11-13 03:28:08', '完成', '/rentManagementResource/rentImage/1/installation/9_towerCrane.jpg', '1');
+INSERT INTO `installation` VALUES ('10', '1', '安装', '测试', '2014-11-13 03:34:00', '完成', '/rentManagementResource/rentImage/1/installation/10_towerCrane.jpg', '1');
+INSERT INTO `installation` VALUES ('11', '1', '安装', '安装人员', '2014-11-13 04:06:37', '完成', '/rentManagementResource/rentImage/1/installation/11_towerCrane.jpg', '1');
+
+-- ----------------------------
+-- Table structure for installation_device
+-- ----------------------------
+DROP TABLE IF EXISTS `installation_device`;
+CREATE TABLE `installation_device` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `installationId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of installation_device
+-- ----------------------------
+INSERT INTO `installation_device` VALUES ('15', '9', '1');
+INSERT INTO `installation_device` VALUES ('16', '9', '2');
+INSERT INTO `installation_device` VALUES ('17', '10', '1');
+INSERT INTO `installation_device` VALUES ('18', '10', '2');
+INSERT INTO `installation_device` VALUES ('19', '11', '1');
+INSERT INTO `installation_device` VALUES ('20', '11', '2');
 
 -- ----------------------------
 -- Table structure for power
@@ -361,18 +383,40 @@ DROP TABLE IF EXISTS `remove`;
 CREATE TABLE `remove` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `contractId` bigint(20) DEFAULT NULL,
-  `removeDeviceId` bigint(20) DEFAULT NULL,
   `removeMan` varchar(255) DEFAULT NULL,
   `removeStatus` varchar(255) DEFAULT NULL,
-  `removeTime` date DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of remove
 -- ----------------------------
-INSERT INTO `remove` VALUES ('1', '1', '1', '肖竹军', '完成', '2014-11-09', '1');
+INSERT INTO `remove` VALUES ('1', '1', '肖竹军', '完成', null, '1', null);
+INSERT INTO `remove` VALUES ('2', '1', 'sdfsdf', '完成', null, '1', '2014-11-13 00:00:00');
+INSERT INTO `remove` VALUES ('10', '1', '肖竹军、刘关四', '完成', '/rentManagementResource/rentImage/1/remove/10_towerCrane.jpg', '1', '2014-11-13 03:26:34');
+INSERT INTO `remove` VALUES ('11', '1', '拆除人员', '完成', '/rentManagementResource/rentImage/1/remove/11_towerCrane.jpg', '1', '2014-11-13 04:07:49');
+
+-- ----------------------------
+-- Table structure for remove_device
+-- ----------------------------
+DROP TABLE IF EXISTS `remove_device`;
+CREATE TABLE `remove_device` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `removeId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of remove_device
+-- ----------------------------
+INSERT INTO `remove_device` VALUES ('14', '10', '1');
+INSERT INTO `remove_device` VALUES ('15', '10', '2');
+INSERT INTO `remove_device` VALUES ('16', '11', '1');
+INSERT INTO `remove_device` VALUES ('17', '11', '2');
 
 -- ----------------------------
 -- Table structure for selfinspect
@@ -554,13 +598,19 @@ CREATE TABLE `transport` (
   `createTime` datetime DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transport
 -- ----------------------------
 INSERT INTO `transport` VALUES ('1', 'xiaozhujun', '肖竹军', '18511451799', '武汉市武昌区', '武汉市青山区', null, null, null, '2014-11-10 00:42:30', '1');
-INSERT INTO `transport` VALUES ('2', 'xiaozhujun', '张三', '13511459876', '武汉市武昌区', '武汉市汉阳区', null, null, null, '2014-11-10 01:11:22', '1');
+INSERT INTO `transport` VALUES ('2', 'xiaozhujun', '张三', '13511459876', '武汉市武昌区', '武汉市汉阳区', null, null, '/rentManagementResource/rentImage/1/transport/2_towerCrane.jpg', '2014-11-10 01:11:22', '1');
+INSERT INTO `transport` VALUES ('5', 'xiaozhujun', '张三', '18387630976', '武汉市黄陂区', '武汉市江夏区', null, null, null, '2014-11-11 01:45:30', '1');
+INSERT INTO `transport` VALUES ('6', 'xiaozhujun', '李四', '187643234', '武汉市新洲区', '武汉市洪山区', null, null, null, '2014-11-11 01:48:37', '1');
+INSERT INTO `transport` VALUES ('47', 'xiaozhujun', '王五', '234234234', '武汉市黄陂区', '武汉市蔡甸区', null, null, '/rentManagementResource/rentImage/1/transport/47_towerCrane.jpg', '2014-11-12 00:55:44', '1');
+INSERT INTO `transport` VALUES ('48', 'xiaozhujun', 'sdf', '123123', 'weq', 'qweqwe', null, null, '/rentManagementResource/rentImage/1/transport/48_towerCrane.jpg', '2014-11-12 23:35:19', '1');
+INSERT INTO `transport` VALUES ('49', 'xiaozhujun', 'sdf', 'sdf', 'sdfsdf', 'sdf', null, null, '/rentManagementResource/rentImage/1/transport/49_towerCrane.jpg', '2014-11-13 03:38:02', '1');
+INSERT INTO `transport` VALUES ('50', 'xiaozhujun', '运输人员', '1987342342', '武汉市武昌区', '武汉市黄陂区', null, null, '/rentManagementResource/rentImage/1/transport/50_towerCrane.jpg', '2014-11-13 04:07:21', '1');
 
 -- ----------------------------
 -- Table structure for transport_device
@@ -571,11 +621,26 @@ CREATE TABLE `transport_device` (
   `transportId` bigint(20) DEFAULT NULL,
   `deviceId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of transport_device
 -- ----------------------------
+INSERT INTO `transport_device` VALUES ('1', '5', '1');
+INSERT INTO `transport_device` VALUES ('2', '5', '2');
+INSERT INTO `transport_device` VALUES ('3', '6', '2');
+INSERT INTO `transport_device` VALUES ('6', '8', '1');
+INSERT INTO `transport_device` VALUES ('7', '8', '2');
+INSERT INTO `transport_device` VALUES ('8', '9', '1');
+INSERT INTO `transport_device` VALUES ('9', '9', '2');
+INSERT INTO `transport_device` VALUES ('82', '47', '1');
+INSERT INTO `transport_device` VALUES ('83', '47', '2');
+INSERT INTO `transport_device` VALUES ('84', '48', '1');
+INSERT INTO `transport_device` VALUES ('85', '48', '2');
+INSERT INTO `transport_device` VALUES ('86', '49', '1');
+INSERT INTO `transport_device` VALUES ('87', '49', '2');
+INSERT INTO `transport_device` VALUES ('88', '50', '1');
+INSERT INTO `transport_device` VALUES ('89', '50', '2');
 
 -- ----------------------------
 -- Table structure for user

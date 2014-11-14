@@ -47,7 +47,8 @@
         });
         function getListByGroupNameGridCallback(data){
             if(data.code==200){
-                s=subscription(data);
+                s=subscription(data);     //拼接订阅字符串
+                //将拼接订阅字符串，发布到websocket通道中，通过回调函数得到服务器返回的数据
                 $.initWebSocket(s,webSocketCallback);
             }
         }
@@ -83,7 +84,7 @@
                         initSingleCharts(singleMap,sensorNum);  //给被点击的单个传感器绘图
                     }
                 }
-            };
+            }
         function gridCallback(data) {
             if(data.code == 200) {
                 cgData = data.data;
@@ -113,9 +114,8 @@
             }
         }
         function changeGroupName(data){
-            if(ws!=null){
-                ws.close();
-                ws=null;
+            if($.WebSocketConnect()!=null){    //websocket通道如果打开，则关闭
+                $.WebSocketClose();
             }
             $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameGridCallback,'json');
             creatMenu(data);

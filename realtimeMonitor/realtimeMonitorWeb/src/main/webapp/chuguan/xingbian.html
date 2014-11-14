@@ -260,11 +260,10 @@ function creatSensorTable(data){
 var num="";
 var s="";
 function changeGroupName(data){
-//    s ="{c:'cancelSubscribe',sensors:["+num+"]}";    //取消订阅 之前的
+//    s ="{c:'cancelSubscribe',sensors:["+num+"]}";    //用message进行取消订阅
 //    ws.send(s);
-    if(ws!=null){
-        ws.close();
-        ws=null;
+    if($.WebSocketConnect()!=null){                 //用session方法进行取消订阅
+        $.WebSocketClose();                         //websocket通道如果打开，则关闭
     }
     nowGName=data;
     parent.gName=nowGName;

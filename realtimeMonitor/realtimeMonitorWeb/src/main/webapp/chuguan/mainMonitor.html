@@ -11,46 +11,47 @@
 <script src="js/map.js" type="text/javascript"></script>
 <script src="js/config.js" type="text/javascript"></script>
 <script src="js/webSocket.js" type="text/javascript"></script>
+<script src="js/initPage.js" type="text/javascript"></script>
+<script src="js/dataApplication.js" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
             $.post($.URL.sensor.homePage,{"fStatus":"false"},sNumCallback,"json");
         });
-
-        var cgData="";
-        function gridCallback(data) {
+        var m = new Map();
+        var sensorList=new Array();
+        function gridCallback(data){
             if(data.code == 200) {
-                cgData = data.data;
-                console.log(cgData);
-                createShowingTable();
+                var cgData = data.data;
+              $.createShowingTable(cgData);
+              $(".lookXingbian").click(function(){
+                    var hang = $(this).parent("tr").prevAll().length;
+                    var lie = $(this).prevAll().length;
+                    hang =Number(hang)+1;//字符串变为数字
+                    lie = Number(lie);
+                    var oTable = document.getElementById("DataGrid34430");
+                    if(navigator.appName.indexOf("Explorer")>-1)      {
+                        parent.gName=oTable.rows[hang].cells[lie-4].innerText;
+                        parent.gName= parent.gName.replace(/[ ]/g,""); }
+                    else   {
+                        parent.gName=oTable.rows[hang].cells[lie-4].textContent;
+                        parent.gName= parent.gName.replace(/[ ]/g,""); }
+                    window.parent.jumpURL("xingbian.html");
+                    window.parent.jumpTab(1);
+                });
             }
         }
-
         var sNumList= new Array();
-        var num="";
-        function sNumCallback(data) {
+        function sNumCallback(data){
             if(data.code == 200) {
-                    for(var i=0;i<data.data.length;i++)  {
-                      sNumList[i]=data.data[i].number;
-                        if(i==0){
-                            num=data.data[i].number+",";
-                        }
-                        else {
-                            num=num+data.data[i].number+",";
-                        }
-                    }
-                    var lastIndex = num.lastIndexOf(',');
-                    if (lastIndex > -1) {
-                        num = num.substring(0, lastIndex) + num.substring(lastIndex + 1, num.length);
-                    }
-                }
-            var s="{c:'Subscribe',sensors:["+num+"]}";
-            $.initWebSocket(s,webSocketCallback);
-        }
-        function webSocketCallback(data){//回调函数
-
-                console.log ("收到消息！"+event.data);
-                var jsonData = eval("(" +event.data+ ")");
+              for(var i=0;i<data.data.length;i++)  {
+                  sNumList[i]=data.data[i].number;
+              }
+            $.initWebSocket($.subscription(data),webSocketCallback);
+        }}
+        function webSocketCallback(data){
+                console.log ("收到消息！"+data);
+                var jsonData = eval("(" +data+ ")");
                 wsData=jsonData.sensors[0].data;
                 var groupName= jsonData.sensors[0].groupName;
                 var sensorNum= jsonData.sensors[0].sensorNum;
@@ -66,7 +67,7 @@
                     sensorList[sizeOfSensorNum]=sensorNum;
                 }
                 m.put(groupName+":"+sensorNum,max);
-                updataXingbian();
+                $.updataXingbian(m);
                 $(".lookXingbian").click(function(){
                     var hang = $(this).parent("tr").prevAll().length;
                     var lie = $(this).prevAll().length;
@@ -82,134 +83,7 @@
                 $(".lookLongdu").click(function(){
                     window.parent.jumpURL("longdu.html");
                     window.parent.jumpTab(3);
-                });
-         }
-        var m = new Map();
-        var sensorList=new Array();
-        function updataXingbian(){
-            var oTable = document.getElementById("DataGrid34430");
-            var updateException='<td class="wijgridtd wijdata-type-string lookXingbian" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">'
-            +'<div class="wijmo-wijgrid-innercell" style="text-align: center;color: rgb(255,0,0);">'+'异常（查看）'+'</div></td>';
-            var update='<td class="wijgridtd wijdata-type-string lookXingbian" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">'
-                    +'<div class="wijmo-wijgrid-innercell" style="text-align: center;">'+'正常（查看）'+'</div></td>';
-            for(var i=1;i<oTable.rows.length-1;i++)
-            {
-               var gName="";
-                if(navigator.appName.indexOf("Explorer")>-1)
-                   gName=oTable.rows[i].cells[0].innerText;
-                else
-                    gName=oTable.rows[i].cells[0].textContent;
-                var sName=gName.replace(/[ ]/g,"");
-                var k=0;
-                for(var j=0;j<sensorList.length;j++){
-                    if(parseInt(m.get(sName+":"+sensorList[j]))>400){
-                        k=1;
-                        oTable.rows[i].cells[4].innerHTML =updateException;
-                        break;
-                    }
-                    if(k==0){
-                        oTable.rows[i].cells[4].innerHTML =update;
-                }
-
-              }
-            }
-
-        }
-        //动态的创建一个table，同时将后台获取的数据动态的填充到相应的单元格
-
-        function creatTableHead(){
-            var tableHead="";
-            tableHead ='<table cellspacing="0" cellpadding="0" border="0" id="DataGrid34430" style="border-collapse: separate; width: 100%; table-layout: fixed;" class="wijmo-wijgrid-root wijmo-wijobserver-visibility wijmo-wijgrid-table" role="grid" aria-disabled="false" tabindex="0">';
-            tableHead=tableHead+'<thead>';
-            tableHead=tableHead+'<tr role="row" class="wijmo-wijgrid-headerrow">';
-            tableHead=tableHead+'<th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field" role="columnheader" scope="col" style="width: 145px;">';
-            tableHead=tableHead+'<div class="wijmo-wijgrid-innercell">';
-            tableHead=tableHead+'<a role="button" href="#" class="wijmo-wijgrid-headertext" style="color: rgb(0, 0, 0);">';
-            tableHead=tableHead+'油罐编号'+' </a></div></th>';
-            tableHead=tableHead+'<th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field" role="columnheader" scope="col" style="width: 186px;">';
-            tableHead=tableHead+'<div class="wijmo-wijgrid-innercell">';
-            tableHead=tableHead+'<a role="button" href="#"class="wijmo-wijgrid-headertext" style="color: rgb(0, 0, 0);">';
-            tableHead=tableHead+'油罐类型'+' </a></div></th>';
-            tableHead=tableHead+'<th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field" role="columnheader" scope="col" style="width: 143px;">';
-            tableHead=tableHead+'<div class="wijmo-wijgrid-innercell">';
-            tableHead=tableHead+'<a role="button" href="#" class="wijmo-wijgrid-headertext" style="color: rgb(0, 0, 0);">';
-            tableHead=tableHead+'工作介质'+' </a></div></th>';
-            tableHead=tableHead+'<th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field" role="columnheader" scope="col" style="width: 163px;">';
-            tableHead=tableHead+'<div class="wijmo-wijgrid-innercell">';
-            tableHead=tableHead+'<a role="button" href="#" class="wijmo-wijgrid-headertext" style="color: rgb(0, 0, 0);">';
-            tableHead=tableHead+'油罐容积'+' </a></div></th>';
-            tableHead=tableHead+'<th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field" role="columnheader" scope="col" style="width: 201px;">';
-            tableHead=tableHead+'<a role="button" href="#" class="wijmo-wijgrid-headertext" style="color: rgb(0, 0, 0);">';
-            tableHead=tableHead+'应力状态'+' </a></div></th>';
-            tableHead=tableHead+'<th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field" role="columnheader" scope="col" style="width: 201px;">';
-            tableHead=tableHead+'<div class="wijmo-wijgrid-innercell">';
-            tableHead=tableHead+'<a role="button" href="#" class="wijmo-wijgrid-headertext" style="color: rgb(0, 0, 0);">';
-            tableHead=tableHead+'温度状态'+' </a></div></th>';
-            tableHead=tableHead+'<th class="wijgridth ui-widget wijmo-c1basefield ui-state-default wijmo-c1field" role="columnheader" scope="col" style="width: 204px;">';
-            tableHead=tableHead+'<div class="wijmo-wijgrid-innercell">';
-            tableHead=tableHead+'<a role="button" href="#" class="wijmo-wijgrid-headertext" style="color: rgb(0, 0, 0);">';
-            tableHead=tableHead+'可燃气体浓度监测'+' </a></div></th>';
-            tableHead=tableHead+'</tr></thead><colgroup>';
-            tableHead=tableHead+'<col style="width: 146px;">';
-            tableHead=tableHead+'<col style="width: 187px;">';
-            tableHead=tableHead+'<col style="width: 144px;">';
-            tableHead=tableHead+'<col style="width: 164px;">';
-            tableHead=tableHead+'<col style="width: 202px;">';
-            tableHead=tableHead+'<col style="width: 202px;">';
-            tableHead=tableHead+'<col style="width: 205px;"> ';
-            tableHead=tableHead+'</colgroup>';
-            tableHead=tableHead+'<tbody class="ui-widget-content wijmo-wijgrid-data">';
-            return  tableHead;
-        }
-        function creatTableGrid(){
-            var  tableGrid="";
-            for(var i=0 ;i<cgData.length ; i++){
-                tableGrid=tableGrid+'<tr role="row" class="wijmo-wijgrid-row ui-widget-content wijmo-wijgrid-datarow" style="border-top-color: rgb(170, 170, 170); height: 35px;"> ';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7F16%u53F7" tabindex="0" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;"> ';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;"> '+cgData[i].name+'</div></td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u7C7B%u578B" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">双盘式浮顶油罐</div></td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u5DE5%u4F5C%u4ECB%u8D28" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">原油</div></td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string" role="gridcell" headers="%u6CB9%u7F50%u5BB9%u79EF" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">100000m?</div></td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string lookXingbian" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell" style="text-align: center;">正常（查看）</div></td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string lookWendu" role="gridcell" headers="%u6E29%u5EA6%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;"> ';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell"  style="text-align: center;">正常（查看）</div> </td>';
-                tableGrid=tableGrid+'<td class="wijgridtd wijdata-type-string lookLongdu" role="gridcell" headers="%u53EF%u71C3%u6C14%u4F53%u6D53%u5EA6%u76D1%u6D4B" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">';
-                tableGrid=tableGrid+'<div class="wijmo-wijgrid-innercell"  style="text-align: center;">正常（查看）</div></td></tr> ';
-            }
-            tableGrid=tableGrid+'</tbody></table>';
-            return tableGrid;
-        }
-        function createShowingTable(){
-            var tableStr="";
-            tableStr=creatTableHead()+creatTableGrid();
-            $("#showData").html(tableStr);
-            $(".lookXingbian").click(function(){
-                var hang = $(this).parent("tr").prevAll().length;
-                var lie = $(this).prevAll().length;
-                hang =Number(hang)+1;//字符串变为数字
-                lie = Number(lie);
-                var oTable = document.getElementById("DataGrid34430");
-                if(navigator.appName.indexOf("Explorer")>-1)      {
-                    parent.gName=oTable.rows[hang].cells[lie-4].innerText;
-                    parent.gName=parent.gName.replace(/[ ]/g,""); }
-                else   {
-                    parent.gName=oTable.rows[hang].cells[lie-4].textContent;
-                parent.gName=parent.gName.replace(/[ ]/g,""); }
-                window.parent.jumpURL("xingbian.html");
-                window.parent.jumpTab(1);
-            });
-            $(".lookWendu").click(function(){
-                window.parent.jumpURL("wendu.html");
-                window.parent.jumpTab(2);
-            });
-            $(".lookLongdu").click(function(){
-                window.parent.jumpURL("longdu.html");
-                window.parent.jumpTab(3);
-            });
+                })
         }
         </script>
 </head><body>

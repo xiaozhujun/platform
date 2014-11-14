@@ -18,8 +18,9 @@
     <script src="js/chartTool.js" type="text/javascript"></script>
     <script src="js/chartToolOfData.js" type="text/javascript"></script>
     <script src="js/statisticCharTool.js" type="text/javascript"></script>
-    <script src="js/subscription.js" type="text/javascript"></script>
+    <script src="js/dataApplication.js" type="text/javascript"></script>
     <script src="js/webSocket.js" type="text/javascript"></script>
+    <script src="js/initPage.js" type="text/javascript"></script>
     <script>
         var  groupName=parent.gName;
         var locMap=[];
@@ -29,8 +30,6 @@
         var count=[];
         var countSum=[];
         var singleMap={};
-        var sNum="";
-        var cgData="";
         var clickAreaName="";
         var sensorNum="";
         var first=1;
@@ -38,7 +37,7 @@
         var num=1;
         var areaClick=0; //是否点击了菜单中的区域，默认是最上面的那个区域
         var single=0;    //是否点击了菜单中的单个传感器，默认没有点击
-        var s;
+        var s='';
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
             $("#backBtn").click(function(){
@@ -47,7 +46,7 @@
         });
         function getListByGroupNameGridCallback(data){
             if(data.code==200){
-                s=subscription(data);     //拼接订阅字符串
+                s= $.subscription(data);     //拼接订阅字符串
                 //将拼接订阅字符串，发布到websocket通道中，通过回调函数得到服务器返回的数据
                 $.initWebSocket(s,webSocketCallback);
             }
@@ -87,12 +86,12 @@
             }
         function gridCallback(data) {
             if(data.code == 200) {
-                cgData = data.data;
+                var cgData = data.data;
                 if(parent.gName==""){
                     groupName=cgData[0].name;
                 }
                 $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameGridCallback,'json');
-                creatSelectHead(cgData);
+                $.creatSelectHead(groupName,cgData);
                 creatMenu(groupName);
                 $("div.tree-node").click(function(){
                     $(this).parent().find("ul").toggle();
@@ -114,23 +113,11 @@
             }
         }
         function changeGroupName(data){
-            if($.WebSocketConnect()!=null){    //websocket通道如果打开，则关闭
+            if($.WebSocketConnect()!=null){
                 $.WebSocketClose();
             }
             $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameGridCallback,'json');
             creatMenu(data);
-        }
-        function creatSelectHead(data){
-            var tableHead="";
-            if(navigator.appName.indexOf("Explorer")>-1)    {       <!--IE 和 火狐浏览器的不兼容-->
-                document.getElementById("selectTank").innerText=groupName;
-            }
-            else
-                document.getElementById("selectTank").textContent=groupName;
-            for(var i=0 ;i<data.length ; i++){
-                tableHead=tableHead+ '<li data-value="'+i+1+'"><a href="#" tabindex="-1">'+data[i].name+'</a></li>'
-            }
-            document.getElementById("selectOptions").innerHTML=tableHead;
         }
         function initSingleCharts(data,s){
             if(dataFirst==1){

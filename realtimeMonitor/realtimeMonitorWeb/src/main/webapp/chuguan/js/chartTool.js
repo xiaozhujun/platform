@@ -1,5 +1,4 @@
 function drawChartOfMap(container,map,d,sensorNum){
-    var x="",y="", i=0;
     a();
     //定义时间
     Highcharts.setOptions({
@@ -8,10 +7,9 @@ function drawChartOfMap(container,map,d,sensorNum){
         }
     });
     function a(){
-
-        if(d==1){
-            $(container).highcharts({
-        chart: {
+     if(d==1){
+       $(container).highcharts({
+         chart: {
             type: 'spline',
             defaultSeriesType: 'line',
             marginRight: 10,
@@ -120,7 +118,8 @@ function drawChartOfMap(container,map,d,sensorNum){
         credits: {
             enabled: false
         }
-    });}
+    });
+  }
         else  if(d>1){
             $(container).highcharts().destroy();
             d=1;
@@ -130,12 +129,11 @@ function drawChartOfMap(container,map,d,sensorNum){
             for(var j=0;j<8;j++){
                 var name =  $(container).highcharts().series[j].name;
                 if(sensorNum==name){
-                    i=j;
+                    var  i=j;
                     break;
                 }
             }
-                x= new Date();
-                $(container).highcharts().series[i].addPoint([x.getTime(),map[sensorNum]],true,true);
+          $(container).highcharts().series[i].addPoint([new Date().getTime(),map[sensorNum]],true,true);
         }
 
     }

@@ -30,9 +30,10 @@ $(document).ready(function () {
         success:(function(data){
             if(data.code == 200) {
                var cgData = data.data;
-                if(parent.gName=""){
+                if(parent.gName==""){
                     groupName=cgData[0].name;
                 }
+
                 $.creatSelectHead(groupName,cgData);
                 $("#tankSelect").click(function(){
                     $("#selectOptions").toggle();

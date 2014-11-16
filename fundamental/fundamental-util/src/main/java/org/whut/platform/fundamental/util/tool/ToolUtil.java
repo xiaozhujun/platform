@@ -21,11 +21,19 @@ public class ToolUtil {
         String date=null;
         if(str.length()>8){
         try{
+            if(str.contains("/")){
             String[] tempDate=str.split("/");
             String year=tempDate[2];
             String month=tempDate[1];
             String day=tempDate[0];
             date=year+"/"+month+"/"+day;
+            }else if(str.contains("-")){
+            String[] tempDate=str.split("-");
+            String year=tempDate[2];
+            String month=tempDate[1];
+            String day=tempDate[0];
+            date=year+"/"+month+"/"+day;
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -77,6 +85,21 @@ public class ToolUtil {
               return "0";
          }
     }
+    public String parseAddress0(String address){
+        String province=null;
+        String city=null;
+        String area=null;
+        if(address==null)
+            return "0";
+        if(address.contains("省")&&address.contains("市")&&address.contains("区")){
+        province=address.substring(0,address.indexOf("省"));
+        city=address.substring(address.indexOf("省")+1,address.indexOf("市"))+"市";
+        area=address.substring(address.indexOf("市")+1,address.indexOf("区"))+"区";
+        return province+","+city+","+area;
+        }else{
+         return "0";
+        }
+    }
     /*
     解析下面格式的字串
     {
@@ -108,7 +131,7 @@ public class ToolUtil {
     }
      public static void main(String[] args){
          ToolUtil toolUtil=new ToolUtil();
-         System.out.print(toolUtil.parseAddress("湖北省武汉市汉阳区建港一路特1号"));
+         System.out.print(toolUtil.parseAddress0("武汉市经济开发区建港一路特1号"));
 
      }
 }

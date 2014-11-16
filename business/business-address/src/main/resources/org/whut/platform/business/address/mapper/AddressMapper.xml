@@ -188,6 +188,11 @@
         from address a,craneinspectreport cr
         where a.id=cr.addressId group by a.id
     </select>
+    <select id="getAddressInfoByAddressId0" resultMap="addressResultMap">
+        select a.province,a.city
+        from address a,craneinspectreport cr
+        where a.id=cr.addressId group by a.province,a.city
+    </select>
     <select id="getProvinceCity" resultMap="addressResultMap">
          SELECT a.province,a.city
          FROM address a,craneinspectreport cr

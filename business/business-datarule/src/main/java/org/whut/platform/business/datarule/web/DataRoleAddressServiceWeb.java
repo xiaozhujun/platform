@@ -142,17 +142,18 @@ public class DataRoleAddressServiceWeb {
         List<Map<String,String>> provinceList=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(null,"0","0","0",0f,0f);
         List<Address> list=addressService.getProvince();
         boolean flag=false;
-        for(Address address:list){
+       /* for(Address address:list){
             Map<String,String> repeatProvinceMap=dataRoleAddressService.validateProvinceRiskValueIsExistByProvince(address.getProvince());
             if(repeatProvinceMap==null){
                 flag=true;
             }else{
                 dataRoleAddressService.updateProvinceRiskValue(repeatProvinceMap.get("province"),Float.parseFloat(repeatProvinceMap.get("riskvalue")));
             }
-        }
-        if(flag){
+            if(flag){
+                dataRoleAddressService.batchInsertToProvinceRiskValue(provinceList);
+            }
+        }*/
         dataRoleAddressService.batchInsertToProvinceRiskValue(provinceList);
-        }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

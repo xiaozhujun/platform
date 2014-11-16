@@ -144,10 +144,10 @@ public class CraneInspectReportService {
         return map;
         }
     private Address getAddressFromExcel(ExcelMap excelMap,int i){
-        if(toolUtil.parseAddress(excelMap.getContents().get(i).get(1)).equals("0")){
+        if(toolUtil.parseAddress0(excelMap.getContents().get(i).get(1)).equals("0")){
             return null;
         }else{
-        String str[]=toolUtil.parseAddress(excelMap.getContents().get(i).get(1)).split(",");
+        String str[]=toolUtil.parseAddress0(excelMap.getContents().get(i).get(1)).split(",");
         Address address=new Address();
         address.setProvince(str[0]);
         address.setCity(str[1]);
@@ -517,7 +517,8 @@ public class CraneInspectReportService {
         if(map==null){
         mapper.insertToUploadedReport(reportName,d,user.getId(),userName,"","未计算");
         }else{
-        mapper.updateUploadedReport(reportName,d,user.getId(),userName,"","未计算",Long.parseLong(map.get("id")));
+        Long id=Long.parseLong(String.valueOf(map.get("id")));
+        mapper.updateUploadedReport(reportName,d,user.getId(),userName,"","未计算",id);
         }
     }
     public long findIdFromUploadedReportByName(String reportName){

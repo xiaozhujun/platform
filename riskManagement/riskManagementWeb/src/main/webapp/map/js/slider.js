@@ -7,7 +7,7 @@
  */
 $.extend({
   mySlider:function mySlider(provinceId,cityId,areaId,equipVarietyId,useTimeId){
-      jQuery("#Slider4").slider({ from: 1, to: 9, scale: [1, '|', 3, '|', '5', '|', 7, '|', 9], limits: false, step: 1, dimension: '', skin: "plastic",
+      jQuery("#Slider4").slider({ from: 0, to: 10, scale: [0, '|', 2, '|', '4', '|', 6, '|', 8 ,'|',10], limits: false, step: 1, dimension: '', skin: "plastic",
           callback: function(value){
               var pId="#"+provinceId;
               var cId="#"+cityId;

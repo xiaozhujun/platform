@@ -36,4 +36,5 @@ public interface AddressMapper extends AbstractMapper {
     public List<Address>getAddressInfoByAddressId();
     public List<Address>getProvinceCity();
     public List<Address>getProvince();
+    public List<Address>getAddressInfoByAddressId0();
 }

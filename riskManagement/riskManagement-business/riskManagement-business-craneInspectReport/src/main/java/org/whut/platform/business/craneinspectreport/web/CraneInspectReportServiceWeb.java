@@ -678,7 +678,7 @@ public class CraneInspectReportServiceWeb {
     }
     //获取所有的地址
     public List<Address> getAllAddress(){
-         List<Address> list=addressService.getAddressInfoByAddressId();
+         List<Address> list=addressService.getAddressInfoByAddressId0();
          return list;
     }
     //查出相关联的省市
@@ -704,9 +704,9 @@ public class CraneInspectReportServiceWeb {
                 craneInspectReportService.updateAreaRiskValue(Long.parseLong(String.valueOf(addressRiskValue.get("addressid"))),Long.parseLong(String.valueOf(addressRiskValue.get("riskvalue"))));
             }
             areaList=craneInspectReportService.getAreaInfoByCondition(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
-        }
-        if(flag){
-           craneInspectReportService.batchInsertToAddressRiskValue(areaList);
+            if(flag){
+                craneInspectReportService.batchInsertToAddressRiskValue(areaList);
+            }
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -727,9 +727,9 @@ public class CraneInspectReportServiceWeb {
                 craneInspectReportService.updateCityRiskValue(cityRiskValueMap.get("province"),cityRiskValueMap.get("city"),Float.parseFloat(cityRiskValueMap.get("riskvalue")));
             }
             cityList=craneInspectReportService.getCityInfoByCondition(address.getProvince(),"0","0","0",0f,0f);
-        }
-        if(flag){
-        craneInspectReportService.batchInsertToCityRiskValue(cityList);
+            if(flag){
+                craneInspectReportService.batchInsertToCityRiskValue(cityList);
+            }
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

@@ -21,6 +21,7 @@
     <script src="js/dataApplication.js" type="text/javascript"></script>
     <script src="js/webSocket.js" type="text/javascript"></script>
     <script src="js/initPage.js" type="text/javascript"></script>
+    <script src="js/drawHighCharts.js" type="text/javascript"></script>
     <script>
         var  groupName=parent.gName;
         var locMap=[];
@@ -37,7 +38,12 @@
         var num=1;
         var areaClick=0; //是否点击了菜单中的区域，默认是最上面的那个区域
         var single=0;    //是否点击了菜单中的单个传感器，默认没有点击
+        var firstDrawBelowCharts=1;
         var s='';
+        var shapeValue=0;
+        var l;
+        var sum=0;
+
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
             $("#backBtn").click(function(){
@@ -69,8 +75,30 @@
                         if (countSum[i]==8){
                             countSum[i]=0;
                             var iValue=i;
-                            initBelowCharts( iValue,locMapSum[i],locName,locName[i]);
+                            //initBelowCharts( iValue,locMapSum[i],locName,locName[i]);
+
+                            if(locName[i]==locName[0]){
+                                l= Math.PI*(80*1000+24);
+                            }
+                            else if(locName[i]==locName[1]){
+                                l= Math.PI*(80*1000+38);
+                            }
+                            else if(locName[i]==locName[2]){
+                                l= Math.PI*(80*1000+58);
+                            }
+
+                            for(var key in locMapSum[i]){
+                                sum=sum+Number(locMapSum[i][key]);
+                            }
+                            shapeValue=(sum/8)*l;
+                            sum=0;
+
+
+                            initBelowCharts(locMapSum[i],locName,locName[i],shapeValue);
+
+
                             locMapSum[i]= { } ;
+
                         }
                     }
                 }
@@ -81,6 +109,7 @@
                     if(sensorNum==wsDataNum) {
                         singleMap[wsDataNum]=wsData;
                         initSingleCharts(singleMap,sensorNum);  //给被点击的单个传感器绘图
+                        singleMap={};
                     }
                 }
             }
@@ -116,43 +145,53 @@
             if($.WebSocketConnect()!=null){
                 $.WebSocketClose();
             }
+            single=0;
             $.post($.URL.sensor.getListByGroupName,{"groupName":data},getListByGroupNameGridCallback,'json');
             creatMenu(data);
         }
         function initSingleCharts(data,s){
             if(dataFirst==1){
-                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
+//                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
+                $.initHighChart("#DynamicChart861722", data) ;
                 dataFirst=0;
             }
             if(dataFirst==2){
-                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
+//                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
+                $.destroy("#DynamicChart861722", data);
                 dataFirst=0;
             }
             else
-                drawChartSingleMap("#DynamicChart861722", data, dataFirst,s);
+                $.addPointOnChart("#DynamicChart861722", data,s) ;
+//                drawChartSingleMap("#DynamicChart861722", data, dataFirst,s);
         }
-        var firstDrawBelowCharts=1;
-        function initBelowCharts(i,map,locName,loc){
-            if(firstDrawBelowCharts==1 && belowFirst[i]==1 ){
-                drawBelowChartOfMap("#DynamicChart552271",map,belowFirst[i],loc,locName);
+
+        function initBelowCharts(map,locName,loc,shapeValue){
+            if(firstDrawBelowCharts==1 ){
+
+                //drawBelowChartOfMap("#DynamicChart552271",map,1,loc,locName);
+                $.initAlgorithmHighChart("#DynamicChart552271",locName,shapeValue);
                 firstDrawBelowCharts=2;
             }
             else
-                drawBelowChartOfMap("#DynamicChart552271",map,0,loc,locName);
+                $.addPointOnAlgorithmChart("#DynamicChart552271",loc,locName,shapeValue) ;
+               // drawBelowChartOfMap("#DynamicChart552271",map,0,loc,locName);
         }
         function initMapCharts(map,n,lineName){
             if(first==1){
-            drawChartOfMap("#DynamicChart861722", map,first,lineName);
+            //drawChartOfMap("#DynamicChart861722", map,first,lineName);
+                $.initHighChart("#DynamicChart861722", map);
                 if(n==8){
                     first=0;
                 }
           }
            else if(first==2){
-                drawChartOfMap("#DynamicChart861722", map,first,lineName);
+//                drawChartOfMap("#DynamicChart861722", map,first,lineName);
+                $.destroyChart("#DynamicChart861722",map);
                 first=0;
             }
             else
-               drawChartOfMap("#DynamicChart861722", map,first,lineName);
+//               drawChartOfMap("#DynamicChart861722", map,first,lineName);
+            $.addPointOnChart("#DynamicChart861722", map,lineName);
         }
         function creatMenuHead(data){
             var menuHead="";

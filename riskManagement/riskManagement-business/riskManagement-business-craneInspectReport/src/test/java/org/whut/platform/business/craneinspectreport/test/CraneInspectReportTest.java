@@ -161,12 +161,12 @@ public class CraneInspectReportTest {
         //test.insertToCraneInspectReportMaxValueCollection();
         System.out.println(test.getCraneInspectReportMaxValue());*/
        /* MongoConnector mongoConnector=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
-        System.out.println(mongoConnector.getMaxValueByCraneType("1").get("maxRatedLiftWeight"));*/
+      /*  System.out.println(mongoConnector.getMaxValueByCraneType("1").get("maxRatedLiftWeight"));*//*
         dbObjectList=new MongoConnector("craneInspectReportDB","craneInspectReportCollection").getDbArrayListFromMongo();
         for(List<DBObject> d:dbObjectList){
             for(DBObject dd:d){
                System.out.println(dd);
             }
-        }
+        }*/
     }
 }

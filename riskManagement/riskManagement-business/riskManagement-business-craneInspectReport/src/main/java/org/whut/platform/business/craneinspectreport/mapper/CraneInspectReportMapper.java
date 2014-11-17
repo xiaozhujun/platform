@@ -88,4 +88,6 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public Map<String,String>validateCityRiskValueIsExistByProvinceAndCity(@Param("province")String province,@Param("city")String city);
     public void updateCityRiskValue(@Param("province")String province,@Param("city")String city,@Param("riskValue")Float riskValue);
     public void updateProvinceRiskValue(@Param("province")String province,@Param("riskValue")Long riskValue);
+    public int deleteCityRiskValue(@Param("province")String province,@Param("city")String city);
+    public int deleteAreaRiskValue(@Param("addressId")Long addressId);
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-13 11:51:26
+Date: 2014-11-18 02:54:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -456,6 +456,33 @@ CREATE TABLE `skill` (
 INSERT INTO `skill` VALUES ('1', '安装', '安装技能', '2014-11-06', '1');
 
 -- ----------------------------
+-- Table structure for stock_in
+-- ----------------------------
+DROP TABLE IF EXISTS `stock_in`;
+CREATE TABLE `stock_in` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `number` varchar(255) DEFAULT NULL,
+  `contractId` bigint(20) DEFAULT NULL,
+  `driver` varchar(255) DEFAULT NULL,
+  `carNumber` varchar(255) DEFAULT NULL,
+  `transportId` bigint(20) DEFAULT NULL,
+  `handler` varchar(255) DEFAULT NULL,
+  `storehouseId` bigint(20) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createTime` date DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of stock_in
+-- ----------------------------
+INSERT INTO `stock_in` VALUES ('1', '123123', '1', null, 'x12345', null, '肖竹军', '1', '没有描述', '2014-11-09', null, '1');
+INSERT INTO `stock_in` VALUES ('2', 'sdfd', '1', 'sdfsdf', 'sdfsd', '0', 'xiaozhujun', '1', 'sdfsdf', '2014-11-18', '/rentManagementResource/rentImage/1/stockIn/2_towerCrane.jpg', '1');
+INSERT INTO `stock_in` VALUES ('3', 'rk019809', '1', '肖竹军', '鄂A908B1', '0', 'xiaozhujun', '1', '设备有损耗', '2014-11-18', '/rentManagementResource/rentImage/1/stockIn/3_towerCrane.jpg', '1');
+
+-- ----------------------------
 -- Table structure for stock_in_device
 -- ----------------------------
 DROP TABLE IF EXISTS `stock_in_device`;
@@ -464,36 +491,42 @@ CREATE TABLE `stock_in_device` (
   `stockInId` bigint(20) DEFAULT NULL,
   `deviceId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stock_in_device
 -- ----------------------------
+INSERT INTO `stock_in_device` VALUES ('1', '2', '1');
+INSERT INTO `stock_in_device` VALUES ('2', '2', '2');
+INSERT INTO `stock_in_device` VALUES ('3', '3', '1');
+INSERT INTO `stock_in_device` VALUES ('4', '3', '2');
 
 -- ----------------------------
--- Table structure for stock_in_sheet
+-- Table structure for stock_out
 -- ----------------------------
-DROP TABLE IF EXISTS `stock_in_sheet`;
-CREATE TABLE `stock_in_sheet` (
+DROP TABLE IF EXISTS `stock_out`;
+CREATE TABLE `stock_out` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `number` varchar(255) DEFAULT NULL,
-  `carNumber` varchar(255) DEFAULT NULL,
-  `customerId` bigint(20) DEFAULT NULL,
   `contractId` bigint(20) DEFAULT NULL,
+  `driver` varchar(255) DEFAULT NULL,
+  `carNumber` varchar(255) DEFAULT NULL,
   `handler` varchar(255) DEFAULT NULL,
+  `transportId` bigint(20) DEFAULT NULL,
   `storehouseId` bigint(20) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `createTime` date DEFAULT NULL,
-  `creator` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of stock_in_sheet
+-- Records of stock_out
 -- ----------------------------
-INSERT INTO `stock_in_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-09', '肖竹军', null, '1');
+INSERT INTO `stock_out` VALUES ('1', '123123', '1', null, 'x1234', '肖竹军', null, '1', '没有描述', '2014-11-09', null, '1');
+INSERT INTO `stock_out` VALUES ('2', 'asd', '1', 'asd', 'adsas', 'xiaozhujun', '0', '1', 'sdfsdf', '2014-11-18', '/rentManagementResource/rentImage/1/stockOut/2_towerCrane.jpg', '1');
+INSERT INTO `stock_out` VALUES ('3', 'ck08834', '1', '肖竹军', '鄂A983B1', 'xiaozhujun', '0', '1', '设备完好', '2014-11-18', '/rentManagementResource/rentImage/1/stockOut/3_towerCrane.jpg', '1');
 
 -- ----------------------------
 -- Table structure for stock_out_device
@@ -504,37 +537,16 @@ CREATE TABLE `stock_out_device` (
   `stockOutId` bigint(20) DEFAULT NULL,
   `deviceId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stock_out_device
 -- ----------------------------
 INSERT INTO `stock_out_device` VALUES ('1', '0', '1');
-
--- ----------------------------
--- Table structure for stock_out_sheet
--- ----------------------------
-DROP TABLE IF EXISTS `stock_out_sheet`;
-CREATE TABLE `stock_out_sheet` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `number` varchar(255) DEFAULT NULL,
-  `carNumber` varchar(255) DEFAULT NULL,
-  `customerId` bigint(20) DEFAULT NULL,
-  `contractId` bigint(20) DEFAULT NULL,
-  `handler` varchar(255) DEFAULT NULL,
-  `storehouseId` bigint(20) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `createTime` date DEFAULT NULL,
-  `creator` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `appId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of stock_out_sheet
--- ----------------------------
-INSERT INTO `stock_out_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-09', '肖竹军', null, '1');
+INSERT INTO `stock_out_device` VALUES ('2', '2', '1');
+INSERT INTO `stock_out_device` VALUES ('3', '2', '2');
+INSERT INTO `stock_out_device` VALUES ('4', '3', '1');
+INSERT INTO `stock_out_device` VALUES ('5', '3', '2');
 
 -- ----------------------------
 -- Table structure for storehouse

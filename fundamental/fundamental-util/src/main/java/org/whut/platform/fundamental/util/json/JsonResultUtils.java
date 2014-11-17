@@ -10,7 +10,7 @@ public final class JsonResultUtils {
     public enum Code {
         SUCCESS(200, "操作成功！"), ERROR(500, "对不起，操作出错！"), NOTFOUND(404,
                 "对不起，您请求的资源不存在！"), DUPLICATE(302, "重复操作！"), NOPERM(403,
-                "对不起，您没有进行此项操作的权限"), ILLEGA(422, "请求服务参数异常");
+                "对不起，您没有进行此项操作的权限"), ILLEGA(422, "请求服务参数异常"),MONGOUNCONNECT(515,"Mongo未连接!");
         private final int code;
         private final String message;
 

@@ -51,7 +51,7 @@ public class CraneInspectReportServiceWeb {
     private static List<Map<String,String>> mList=new ArrayList<Map<String, String>>();
     //缓存查出的所有地址
     private static List<Address> addressList=new ArrayList<Address>();
-
+    private static List<Address> idList=new ArrayList<Address>();
 
     @Produces(MediaType.MULTIPART_FORM_DATA)
     @Path("/upload")
@@ -634,8 +634,13 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/calculateMaxValue")
     public String calculateMaxValue(){
-        craneInspectReportService.insertToCraneInspectReportMaxValueCollection();
+        String r=craneInspectReportService.insertToCraneInspectReportMaxValueCollection();
+        if(r.equals("0")){
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.MONGOUNCONNECT);
+        }else if(r.equals("1")){
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+        return null;
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -648,6 +653,9 @@ public class CraneInspectReportServiceWeb {
     @POST
     @Path("/updateRiskValueByChooseReport")
     public String updateRiskValueByChooseReport(@FormParam("reportId")String reportId){
+          if(reportId.equals("")||reportId.trim().equals("")){
+              return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+          }
           List<Map<String,String>>updateRiskValueList=new ArrayList<Map<String, String>>();
           String[] str=reportId.split(",");
           for(int i=0;i<str.length;i++){
@@ -678,7 +686,7 @@ public class CraneInspectReportServiceWeb {
     }
     //获取所有的地址
     public List<Address> getAllAddress(){
-         List<Address> list=addressService.getAddressInfoByAddressId0();
+         List<Address> list=addressService.getProvinceCity();
          return list;
     }
     //查出相关联的省市
@@ -694,21 +702,23 @@ public class CraneInspectReportServiceWeb {
         //查出所有的区
         addressList=getAllAddress();
         List<Map<String,Float>> areaList=new ArrayList<Map<String, Float>>();
-        boolean flag=false;
-        for(Address address:addressList){
+        idList=getId();
             //根据省市
+        for(Address address:idList){
             Map<String,String> addressRiskValue=craneInspectReportService.validateAddressRiskValueIsExistByAddressId(address.getId());
             if(addressRiskValue==null){
-                flag=true;
             }else{
-                craneInspectReportService.updateAreaRiskValue(Long.parseLong(String.valueOf(addressRiskValue.get("addressid"))),Long.parseLong(String.valueOf(addressRiskValue.get("riskvalue"))));
-            }
-            areaList=craneInspectReportService.getAreaInfoByCondition(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
-            if(flag){
-                craneInspectReportService.batchInsertToAddressRiskValue(areaList);
+                craneInspectReportService.deleteAreaRiskValue(Long.parseLong(String.valueOf(addressRiskValue.get("addressid"))));
             }
         }
+        for(Address address:addressList){
+            areaList=craneInspectReportService.getAreaInfoByCondition(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
+            craneInspectReportService.batchInsertToAddressRiskValue(areaList);
+        }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    public List<Address> getId(){
+        return addressService.getId();
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
@@ -717,19 +727,16 @@ public class CraneInspectReportServiceWeb {
         //通过区查出有多少unitAddress,然后根据每家unitAddress求出区域风险平均值
         //查出所有的区
         List<Map<String,Float>> cityList=new ArrayList<Map<String, Float>>();
-        boolean flag=false;
         List<Address> addresses=getProvinceCity();
         for(Address address:addresses){
             Map<String,String> cityRiskValueMap=craneInspectReportService.validateCityRiskValueIsExistByProvinceAndCity(address.getProvince(),address.getCity());
             if(cityRiskValueMap==null){
-                flag=true;
+
             }else{
-                craneInspectReportService.updateCityRiskValue(cityRiskValueMap.get("province"),cityRiskValueMap.get("city"),Float.parseFloat(cityRiskValueMap.get("riskvalue")));
+            craneInspectReportService.deleteCityRiskValue(cityRiskValueMap.get("province"), cityRiskValueMap.get("city"));
             }
             cityList=craneInspectReportService.getCityInfoByCondition(address.getProvince(),"0","0","0",0f,0f);
-            if(flag){
-                craneInspectReportService.batchInsertToCityRiskValue(cityList);
-            }
+            craneInspectReportService.batchInsertToCityRiskValue(cityList);
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

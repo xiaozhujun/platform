@@ -35,4 +35,5 @@ public interface DataRoleAddressMapper extends AbstractMapper<DataRoleAddress>{
     public void batchInsertToProvinceRiskValue(List<Map<String,String>> mapList);
     public void updateProvinceRiskValue(@Param("province")String province,@Param("riskValue")Float riskValue);
     public Map<String,String>validateProvinceRiskValueIsExistByProvince(@Param("province")String province);
+    public int deleteProvinceRiskValue(@Param("province")String province);
 }

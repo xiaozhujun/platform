@@ -579,7 +579,7 @@
         FROM
         addressriskvalue addr,address a
         WHERE  addr.addressId=a.id
-        AND addr.addressId=#{addressId}
+        AND addr.addressId=#{addressId} group by addr.addressId
     </select>
     <update id="updateAreaRiskValue" parameterType="map">
         UPDATE
@@ -628,4 +628,23 @@
           WHERE province=#{province}
         </if>
     </update>
+    <delete id="deleteCityRiskValue" parameterType="map">
+        DELETE
+        FROM
+        city_riskvalue
+        <if test="province!=null">
+        WHERE province=#{province}
+        </if>
+        <if test="city!=null">
+        AND city=#{city}
+        </if>
+    </delete>
+    <delete id="deleteAreaRiskValue" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        addressriskvalue
+        <if test="addressId!=null">
+        WHERE addressId=#{addressId}
+        </if>
+    </delete>
 </mapper>

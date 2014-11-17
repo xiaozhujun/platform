@@ -385,11 +385,21 @@ public class CraneInspectReportService {
         }
         return documentJson+"]}";
     }
-    public void insertToCraneInspectReportMaxValueCollection(){
+    public String insertToCraneInspectReportMaxValueCollection(){
         MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportMaxValue");
         //在插入之前先删除表
-        mongo.dropCollection();
-        mongo.insertDocument(getCraneInspectReportMaxValue());
+        String result=null;
+        if(mongo!=null){
+            mongo.dropCollection();
+            String r=mongo.insertDocument(getCraneInspectReportMaxValue());
+            if(r!=null){
+            result="1";
+            }
+        }else{
+           //没有连接
+           result="0";
+        }
+        return result;
     }
     public DBObject getDBObjectByReportNumber(String reportNumber){
         for(List<DBObject> dd:dbObjectList){
@@ -547,5 +557,11 @@ public class CraneInspectReportService {
     }
     public void updateProvinceRiskValue(String province,Long riskValue){
        mapper.updateProvinceRiskValue(province,riskValue);
+    }
+    public int deleteCityRiskValue(String province,String city){
+        return mapper.deleteCityRiskValue(province,city);
+    }
+    public int deleteAreaRiskValue(Long addressId){
+        return mapper.deleteAreaRiskValue(addressId);
     }
 }

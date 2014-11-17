@@ -97,13 +97,13 @@ public class AddressService {
     public List<Address> getAddressInfoByAddressId(){
         return mapper.getAddressInfoByAddressId();
     }
-    public List<Address> getAddressInfoByAddressId0(){
-        return mapper.getAddressInfoByAddressId0();
-    }
     public List<Address> getProvinceCity(){
         return mapper.getProvinceCity();
     }
     public List<Address> getProvince(){
         return mapper.getProvince();
+    }
+    public List<Address>getId(){
+        return mapper.getId();
     }
 }

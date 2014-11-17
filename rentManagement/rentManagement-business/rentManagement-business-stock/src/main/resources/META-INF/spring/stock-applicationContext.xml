@@ -3,4 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
       <bean id="stock_in_sheetService" class="org.whut.rentManagement.business.stock.service.Stock_in_sheetService" depends-on="mappers" />
+    <bean id="stockInService" class="org.whut.rentManagement.business.stock.service.StockInService" depends-on="mappers"/>
+    <bean id="stockInDeviceService" class="org.whut.rentManagement.business.stock.service.StockInDeviceService" depends-on="mappers"/>
+    <bean id="stockOutService" class="org.whut.rentManagement.business.stock.service.StockOutService" depends-on="mappers"/>
+    <bean id="stockOutDeviceService" class="org.whut.rentManagement.business.stock.service.StockOutDeviceService" depends-on="mappers"/>
 </beans>

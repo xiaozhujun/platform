@@ -113,11 +113,27 @@
             "delete":"rs/deviceType/delete",
             "getIdByName":"rs/deviceType/getIdByName"
         },
+        "stockIn":{
+            "list":"rs/stockIn/list",
+            "add":"rs/stockIn/add",
+            "update":"rs/stockIn/update",
+            "delete":"rs/stockIn/delete",
+            "findByCondition":"rs/stockIn/findByCondition",
+            "info":"rs/stockIn/info"
+        },
         "stock_in_sheet":{
             "add":"rs/stock_in_sheet/add" ,
             "list":"rs/stock_in_sheet/list",
             "update":"rs/stock_in_sheet/update",
             "delete":"rs/stock_in_sheet/delete"
+        },
+        "stockOut":{
+            "list":"rs/stockOut/list",
+            "add":"rs/stockOut/add",
+            "update":"rs/stockOut/update",
+            "delete":"rs/stockOut/delete",
+            "findByCondition":"rs/stockOut/findByCondition",
+            "info":"rs/stockOut/info"
         },
         "stock_out_sheet":{
             "add" :"rs/stock_out_sheet/add" ,

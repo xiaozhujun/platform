@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="../js/config.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script src="../js/jquery.json-2.4.min.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../css/report.css">
+    <link rel="stylesheet" href="../css/reportShow.css">
+    <script src="../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.post("../"+$.URL.stockOut.info,{"stockOutId":parent.stockOutId},stockOutDetailCallback,"json");
+        });
+
+        function stockOutDetailCallback(data){
+            if(data.code==200){
+                showInstallationDetail(data.data);
+            }else{
+                alert(data.message);
+            }
+        }
+
+
+        var stockOutDetailData={};
+        function showGrid(data){
+            var grid = $("<div id='stockOutGrid'></div>");
+            $("#stockOutDetailShow").append(grid);
+            stockOutDetailData.Rows=data;
+            stockOut_record(grid);
+        }
+        var manager, g;
+        var h = "";
+        function stockOut_record(grid)
+        {
+            g = manager = grid.ligerGrid({
+                columns: [
+                    { display: '设备名', name: 'name',
+                        editor: { type: 'text' }
+                    },
+                    { display: '编号', name: 'number',
+                        editor: { type: 'text' }
+                    },
+                    { display: '类型', name: 'deviceType', type: 'string',
+                        editor: { type: 'text' }
+                    },
+                    { display: '生产日期', name: 'produceTime',
+                        editor: { type: 'text' }
+                    },
+                    { display: '设备价格', name: 'price',width:'auto',
+                        editor: { type: 'text' }
+                    },
+                    { display: '设备拍照', name:'image', editor:{type:'text'},
+                        render:function(rowdata, rowindex, value){
+                            var image = rowdata.image;
+                            if(rowdata.image != null) {
+                                return "<a href='javascript:abnormal(" + rowindex+ ")'>查看</a> ";
+                            }
+                            else {
+                                return "无";
+                            }
+                        }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
+                data: stockOutDetailData,
+                width: '100%'
+            });
+        }
+
+        function abnormal(rowid){
+            var rowPicture = manager.getRow(rowid);
+            var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
+            $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"设备照片" });
+        }
+
+        function showInstallationDetail(info){
+            $("#storehouseName").val(info.storehouseName);
+            $("#number").val(info.number);
+            $("#handler").val(info.handler);
+            $("#contractName").val(info.contractName);
+            $("#driver").val(info.driver);
+            $("#carNumber").val(info.carNumber);
+            $("#createTime").val(info.createTime);
+            showGrid(info.deviceList);
+        }
+
+    </script>
+</head>
+<body>
+<div class="stockOutDetailContainer">
+    <div class="searchItem"><span class="item_font">仓库:</span><span class="item_input"><input id="storehouseName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">出库编号:</span><span class="item_input"><input id="number" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">经手人:</span><span class="item_input"><input id="handler" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">项目名称:</span><span class="item_input"><input id="contractName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">司机:</span><span class="item_input"><input id="driver" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">运输车辆:</span><span class="item_input"><input id="carNumber" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">出库时间:</span><span class="item_input"><input id="createTime" type="text"></span></div>
+</div>
+<div class="reportContent" id="stockOutDetailShow"></div>
+</body>
+</html>

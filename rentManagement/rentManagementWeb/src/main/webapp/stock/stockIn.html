@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/json2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
+    <script src="js/jquery.form.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.post($.URL.contract.list,null,stockIn_listContractCallback,"json");
+            $.post($.URL.stockIn.list,null,stockIn_ListCallBack,"json");
+            $.post($.URL.storehouse.list,null,stockIn_listStorehouseCallback,"json");
+        });
+
+        var stockInStorehouseIdData = [];
+        function stockIn_listStorehouseCallback(data){
+            if(data.code==200){
+                $.each(data.data,function(index,content){
+                    var rs=[];
+                    rs["id"]=content.id;
+                    rs["text"]=content.name;
+                    stockInStorehouseIdData.push(rs);
+                });
+                $("#stockInStorehouseIdInput").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,emptyText:null,    /*实现下拉表*/
+                    data:stockInStorehouseIdData,
+                    width:200,
+                    valueField:'id',
+                    textField:'text',
+                    valueFieldID: 'stockInStorehouseId'
+                });
+            }
+        }
+
+        function stockIn_listContractCallback(data){
+            if(data.code==200){
+                var stockInContractIdData=[];
+                $.each(data.data,function(index,content){
+                    var j=[];
+                    j["text"]=content.name;
+                    j["id"]=content.id;
+                    stockInContractIdData.push(j);
+                });
+                $("#stockInContractId").ligerComboBox({emptyText:null,   //实现下拉框
+                    data:stockInContractIdData,
+                    valueFieldID: 'stockContractFieldId',
+                    label:'选择合同',labelWidth:200,labelAlign:'center'
+                });
+            }
+        }
+
+        var installData = {};
+        function stockIn_ListCallBack(data) {
+            if(data.code == 200) {
+                installData.Rows = data.data;
+                installData.total = data.data.length;
+                stockIn_f_initGrid();
+            }
+        }
+
+
+
+        var stockIn_manager;
+        function stockIn_f_initGrid(){
+            stockIn_manager = $("#stockMainGridId").ligerGrid( {
+
+                enabledEdit:true,clickToEdit:false,isScroll:false,
+                data: installData,
+                width:'100%',
+
+                columns:[
+                    {display:'项目名称',name:'contractName',width:80,type:'int',frozen:true} ,
+                    {display:'入库编号',name:'number',width:100,editor:{type:'text'}},
+                    {display:'经手人',name:'handler',width:100,editor:{type:'text'}},
+                    {display:'司机',name:'createTime',width:100,editor:{type:'text'}},
+                    {display:'车牌号',name:'carNumber',width:100,editor:{type:'text'}},
+                    {display:'操作',isSort:false,render:function(rowdata,rowindex,value)
+                    {
+                        var h="";
+                        if(!rowdata._editing)
+                        {
+                            h += "<a href='javascript:stockIn_beginEdit(" + rowindex + ")'>修改</a> ";
+                            h +="<a href='javascript:stockIn_deleteRow("+ rowindex +")'>删除</a> " ;
+                        }
+                        else{
+                            h +="<a href='javascript:stockIn_endEdit("+ rowindex +")'>提交</a> "  ;
+                            h +="<a href='javascript:stockIn_cancelEdit("+ rowindex +")'>取消</a> ";
+                        }
+                        return h;
+                    }
+                    }
+                ] ,
+                onSelectRow:function(rowdata,rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                }
+            });
+        }
+
+        function stockIn_beginEdit(rowid){
+            stockIn_manager.beginEdit(rowid);
+        }
+        function stockIn_cancelEdit(rowid){
+            stockIn_manager.cancelEdit(rowid);
+        }
+        function stockIn_endEdit(rowid){
+            stockIn_manager.endEdit(rowid);
+            var row=stockIn_manager.getRow(rowid);
+            var jsonString= $.toJSON(row);
+            $.post($.URL.stockIn.update,{"jsonString":jsonString},stockIn_updateCallBack,"json");
+        }
+        function stockIn_updateCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success("修改成功") ;
+            }
+            else{
+                $.ligerDialog.error("修改失败！");
+            }
+        }
+        function stockIn_deleteRow(rowid){
+            if(confirm("确认删除？"))
+            {
+                var row=stockIn_manager.getRow(rowid);
+                var jsonString= $.toJSON(row);
+                $.post($.URL.stockIn.delete,{"jsonString":jsonString},stockIn_deleteCallBack,"json");
+                stockIn_manager.deleteRow(rowid);
+            }
+        }
+        function stockIn_deleteCallBack(data){
+            if(data.code==200)
+            {
+                $.ligerDialog.success("成功删除！");
+            }
+            else{
+                $.ligerDialog.error("删除失败！");
+            }
+        }
+
+        function stockIn_moveToLeft()
+        {
+            var box1 = liger.get("stockInListbox1"), box2 = liger.get("stockInListbox2");
+            var selecteds = box2.getSelectedItems();
+            if (!selecteds || !selecteds.length) return;
+            box2.removeItems(selecteds);
+            box1.addItems(selecteds);
+        }
+        function stockIn_moveToRight()
+        {
+            var box1 = liger.get("stockInListbox1");
+            var box2 = liger.get("stockInListbox2");
+            var selecteds = box1.getSelectedItems();
+            if (!selecteds || !selecteds.length) return;
+            box1.removeItems(selecteds);
+            box2.addItems(selecteds);
+        }
+        function stockIn_moveAllToLeft()
+        {
+            var box1 = liger.get("stockInListbox1"), box2 = liger.get("stockInListbox2");
+            var selecteds = box2.data;
+            if (!selecteds || !selecteds.length) return;
+            box1.addItems(selecteds);
+            box2.removeItems(selecteds);
+        }
+        function stockIn_moveAllToRight()
+        {
+            var box1 = liger.get("stockInListbox1"), box2 = liger.get("stockInListbox2");
+            var selecteds = box1.data;
+            if (!selecteds || !selecteds.length) return;
+            box2.addItems(selecteds);
+            box1.removeItems(selecteds);
+        }
+
+        function stockIn_add() {
+            $("#addStockIn").css('display','block');
+            $.ligerDialog.open({title:'入库信息', target: $("#addStockIn"),width:550});
+
+            $("#stockInListbox1").ligerListBox({
+                isShowCheckBox: true,
+                isMultiSelect: true,
+                height: 140
+            });
+
+            $("#stockInListbox2").ligerListBox({
+                isShowCheckBox: true,
+                isMultiSelect: true,
+                height: 140,valueFieldID:'stockInDeviceList'
+            });
+        }
+        $("#stockInSubmitBtn").click(function(){
+            var data={};
+            data.storehouseId=$("#stockInStorehouseId").val();
+            data.number=$("#stockInNumberInput").val();
+            data.contractId=$("#stockContractFieldId").val();
+            data.driver=$("#stockInDriverInput").val();
+            data.carNumber=$("#stockInCarNumberInput").val();
+            data.description=$("#stockInDescriptionInput").val();
+
+            var stockInDeviceList = liger.get("stockInListbox2").data;
+            var deviceId = ",";
+            if(stockInDeviceList!=null){
+                for(var i=0;i<stockInDeviceList.length;i++){
+                    if(deviceId.indexOf(","+stockInDeviceList[i].id+",")==-1){
+                        deviceId +=stockInDeviceList[i].id+",";
+                    }
+                }
+            }
+            data.deviceId = deviceId;
+
+
+            $.post($.URL.stockIn.add,{"jsonString": $.toJSON(data)},stockIn_addCallback,"json");
+        })
+        function stockIn_addCallback(data){
+            if(data.code==200){
+                stockIn_uploadImage(data.data);
+                $.post($.URL.stockIn.list,null,stockIn_ListCallBack,"json");
+            }
+            else if(data.code==500)
+            {
+                $.ligerDialog.error(data.message);
+                $.post($.URL.stockIn.list,null,stockIn_ListCallBack,"json");
+            }
+        }
+
+        function stockIn_uploadImage(stockInId){
+            $("#stockInIdInput").val(stockInId);
+            $("#stockInImageUploadForm").ajaxSubmit({success:stockIn_uploadImageCallback,dataType:'json',type:'post',url:'rs/stockIn/upload'});
+        }
+
+        function stockIn_uploadImageCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("操作成功！");
+            }
+            else if(data.code==500)
+            {
+                $.ligerDialog.error(data.message);
+                $.post($.URL.stockIn.list,null,stockIn_ListCallBack,"json");
+            }
+        }
+
+        $("#stockInSearchBtn").click(function(){
+            var data={};
+            data.user=$("#stockInHandlerName").val();
+            data.device=$("#stockInContractName").val();
+            if(data.user==""&&data.device==""){
+                $.post($.URL.stockIn.list,null,stockIn_ListCallBack,"json");
+            }else{
+                $.post($.URL.stockIn.findByCondition,data,stockIn_queryListCallback,"json");
+            }
+        });
+        function stockIn_queryListCallback(data){
+            if(data.code==200){
+                installData.Rows=data.data;
+                installData.Total=data.data.length;
+                stockIn_f_initGrid();
+            }
+            else if(data.code==500) {
+                $.ligerDialog.error(data.message);
+            }
+        };
+
+        $("#stockInDeviceSearchBtn").click(function(){
+            var condition = {};
+            condition.number = $("#stockInDeviceNumQueryInput").val();
+            $.post($.URL.device.findByCondition, {"jsonString":$.toJSON(condition)},stockIn_deviceSearchCallback,"json");
+
+        });
+
+        function stockIn_deviceSearchCallback(data){
+            if(data.code==200){
+                for(var i=0;i<data.data.length;i++){
+                    data.data[i].text = data.data[i].name+"-"+data.data[i].number;
+                }
+                liger.get("stockInListbox1").setData(data.data);
+            }else{
+                alert(data.message);
+            }
+        }
+
+    </script>
+    <style type="text/css">
+        .l-button-submit {width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF;}
+        {background:#E0EDFF; }
+    </style>
+</head>
+<body  style="padding:10px">
+<div id="addStockIn" style="display:none">
+    <form name="form1" method="post" action="" id="form1">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">仓库:</td>
+                <td align="left" class="l-table-edit-td"><input name="stockInStorehouseIdInput" type="text" id="stockInStorehouseIdInput" ltype="text" /></td>
+                <td align="left"></td>
+                <td align="right" class="l-table-edit-td">入库编号:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="number" type="text" id="stockInNumberInput" ltype="text" /></td><td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">司机:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text"  id="stockInDriverInput">
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td align="right" class="l-table-edit-td">车牌号:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text"  id="stockInCarNumberInput">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">项目名称:</td>
+                <td align="left" class="l-table-edit-td" colspan="4">
+                    <input name="contractId" type="text" id="stockInContractId" ltype="text" />
+                </td>
+            </tr>
+            <tr style="border-bottom: 1px #666 dashed">
+                <td align="right" class="l-table-edit-td">说明:</td>
+                <td align="left" class="l-table-edit-td" colspan="4">
+                    <textarea rows="2" cols="70" name="description" id="stockInDescriptionInput"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">设备编号:</td>
+                <td align="left" class="l-table-edit-td">
+                    <input name="stockInDeviceNumQueryInput" type="text" id="stockInDeviceNumQueryInput" ltype="text" />
+                    &nbsp;
+                    <input name="stockInDeviceSearchBtn" type="button" id="stockInDeviceSearchBtn" value="筛选"/>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td align="right" class="l-table-edit-td"></td>
+                <td align="left" class="l-table-edit-td">
+                </td><td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">运输设备:</td>
+                <td align="left" class="l-table-edit-td" colspan="4">
+                    <div style="margin:4px;float:left;">
+                        <div id="stockInListbox1"></div>
+                    </div>
+                    <div style="margin:4px;float:left;" class="middle">
+                        <input type="button" onclick="stockIn_moveToLeft()" value="<" />
+                        <input type="button" onclick="stockIn_moveToRight()" value=">" />
+                        <input type="button" onclick="stockIn_moveAllToLeft()" value="<<" />
+                        <input type="button" onclick="stockIn_moveAllToRight()" value=">>" />
+                    </div>
+                    <div style="margin:4px;float:left;">
+                        <div id="stockInListbox2"></div>
+                    </div>
+            </form>
+            </td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">运输拍照:</td>
+                <td align="left" class="l-table-edit-td" colspan="4">
+                    <form id="stockInImageUploadForm" action="rs/stockIn/upload" method="POST" enctype="multipart/form-data">
+                        <input name="filename" type="file" >
+                        <input id="stockInIdInput" name="stockInId" type="hidden">
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <input type="button" value="提交" id="stockInSubmitBtn" class="l-button l-button-submit" />
+</div>
+<div id="list">
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">经手人:</td>
+            <td align="left" class="l-table-edit-td"><input name="stockInHandlerName" type="text" id="stockInHandlerName" ltype="text"/></td>
+            <td align="right" class="l-table-edit-td">项目名称:</td>
+            <td align="left" class="l-table-edit-td"><input name="stockInContractName" type="text" id="stockInContractName" ltype="text" /></td>
+            <td align="right"><input type="button" value="查询" id="stockInSearchBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="添加" id="stockInAddSubmitBtn" onclick="stockIn_add()" class="l-button l-button-submit" /></td>
+        </tr>
+    </table>
+    <div class="l-clear"></div>
+    <div id="stockMainGridId" style="margin-top:5px"></div> <br />
+</div>
+<div style="display:none;">
+</div>
+</body>
+</html>

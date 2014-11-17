@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.stock.mapper.StockInMapper">
+    <sql id="StockIn_fields">
+          ID,NUMBER,CONTRACTID,DRIVER,CARNUMBER,HANDLER,TRANSPORTID,STOREHOUSEID,DESCRIPTION,CREATETIME,IMAGE,APPID
+    </sql>
+    <resultMap id="StockInResultMap" type="StockIn">
+        <id property="id" column="ID" />
+        <result property="number" column="NUMBER"/>
+        <result property="contractId" column="CONTRACTID"/>
+        <result property="driver" column="DRIVER"/>
+        <result property="carNumber" column="CARNUMBER"/>
+        <result property="handler" column="HANDLER"/>
+        <result property="transportId" column="TRANSPORTID"/>
+        <result property="storehouseId" column="STOREHOUSEID"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createTime" column="CREATETIME"/>
+        <result property="image" column="IMAGE"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    <insert id="add" parameterType="StockIn"  keyProperty="id"
+            useGeneratedKeys="true">
+
+        INSERT INTO
+        stock_in(
+        <include refid="StockIn_fields" />
+        )
+        VALUES (#{id}, #{number},#{contractId},#{driver},#{carNumber},#{handler},#{transportId},#{storehouseId},#{description},#{createTime},#{image},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select c.name contractName,s.*
+           from  stock_in AS s,contract AS c
+           where s.appId=#{appId} AND s.contractId=c.id
+    </select>
+
+    <update id="update" parameterType="StockIn">
+        UPDATE stock_in
+        <set>
+            <if test="driver!=null">DRIVER=#{driver},</if>
+            <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
+            <if test="image!=null">IMAGE=#{image},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <delete id="delete" parameterType="StockIn">
+        DELETE from stock_in
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="findByCondition" parameterType="map" resultType="map">
+        select stock_in.*,contract.name as contractName,contract.customerName,storehouse.name as storehouseName
+        from stock_in,contract,storehouse
+        where stock_in.contractId=contract.id AND stock_in.storehouseId=storehouse.id
+        <if test="appId!=null"> AND stock_in.APPID=#{appId}</if>
+        <if test="user!=null">AND stock_in.handler like CONCAT('%',#{user},'%') </if>
+        <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND stock_in.createTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND stock_in.createTime<=#{endTime} ]]> </if>
+    </select>
+
+    <select id="getInfo" parameterType="map" resultType="map">
+        select stock_in.*,contract.name as contractName,contract.customerName,storehouse.name as storehouseName
+        from stock_in,contract,storehouse
+        where stock_in.contractId=contract.id AND stock_in.storehouseId=storehouse.id
+        <if test="appId!=null">AND stock_in.APPID=#{appId}</if>
+        <if test="stockInId!=null">AND stock_in.id=#{stockInId}</if>
+    </select>
+</mapper>

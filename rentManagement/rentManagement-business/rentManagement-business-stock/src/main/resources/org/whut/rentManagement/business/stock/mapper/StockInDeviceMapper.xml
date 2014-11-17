@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.stock.mapper.StockInDeviceMapper">
+    <sql id="StockInDevice_fields">
+          ID,STOCKINID,DEVICEID
+    </sql>
+    <resultMap id="StockInDeviceResultMap" type="StockInDevice">
+        <id property="id" column="ID" />
+        <result property="stockInId" column="STOCKINID"/>
+        <result property="deviceId" column="DEVICEID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="StockInDevice"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        stock_in_device(
+        <include refid="StockInDevice_fields" />
+        )
+        VALUES (#{id}, #{stockInId},#{deviceId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select stock_in_device.*
+           from  stock_in,stock_in_device
+           where stock_in.id=stock_in_device.stockInId and stock_in.appId=#{appId}
+    </select>
+
+    <update id="update" parameterType="StockInDevice">
+        UPDATE stock_in_device
+        <set>
+            <if test="stockInId!=null">STOCKINID=#{stockInId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="StockInDevice">
+        DELETE from stock_in_device
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <delete id="deleteByStockInId" parameterType="StockInDevice">
+        DELETE from stock_in_device
+        <where>
+            <if test="stockInId!=null">STOCKINID=#{stockInId}</if>
+        </where>
+    </delete>
+
+    <select id="listByStockInId" parameterType="map" resultType="map">
+        select device.*,device_type.name as deviceType
+        from stock_in_device,device,device_type
+        where stock_in_device.deviceId=device.id AND device.typeId=device_type.id
+        <if test="stockInId!=null">AND stock_in_device.stockInId=#{stockInId} </if>
+        <if test="appId!=null">AND device.APPID=#{appId}</if>
+    </select>
+
+</mapper>

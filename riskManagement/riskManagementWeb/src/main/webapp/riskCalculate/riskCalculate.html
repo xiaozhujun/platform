@@ -115,6 +115,9 @@
             if(data.code==200){
                     $.ligerDialog.closeWaitting();
                     $.ligerDialog.success("计算完成!");
+            }else if(data.code==515){
+                    $.ligerDialog.closeWaitting();
+                    $.ligerDialog.error(data.message);
             }
         }
         var repeatData={};
@@ -181,6 +184,9 @@
               if(data.code==200){
                   $.ligerDialog.closeWaitting();
                   $.ligerDialog.success("更新完成!");
+              }else if(data.code==500){
+                  $.ligerDialog.closeWaitting();
+                  $.ligerDialog.success("没有选择要覆盖的文件!");
               }
         }
         var reportManager, greport;

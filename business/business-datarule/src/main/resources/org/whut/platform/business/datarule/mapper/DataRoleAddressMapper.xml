@@ -188,4 +188,12 @@
          WHERE province=#{province}
          </if>
     </select>
+    <delete id="deleteProvinceRiskValue" parameterType="java.lang.String" >
+       DELETE
+       FROM
+       province_riskvalue
+       <if test="province!=null">
+       WHERE province=#{province}
+       </if>
+    </delete>
 </mapper>

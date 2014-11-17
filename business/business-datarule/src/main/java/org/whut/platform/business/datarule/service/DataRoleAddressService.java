@@ -96,4 +96,7 @@ public class DataRoleAddressService {
     public Map<String,String> validateProvinceRiskValueIsExistByProvince(String province){
            return dataRoleAddressMapper.validateProvinceRiskValueIsExistByProvince(province);
     }
+    public int deleteProvinceRiskValue(String province){
+          return dataRoleAddressMapper.deleteProvinceRiskValue(province);
+    }
 }

@@ -140,19 +140,18 @@ public class DataRoleAddressServiceWeb {
     @Path("/calculateProvinceRisk")
     public String  calculateProvinceRisk(){
         List<Map<String,String>> provinceList=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(null,"0","0","0",0f,0f);
-        List<Address> list=addressService.getProvince();
-        boolean flag=false;
-        for(Address address:list){
+        for(Map<String,String> addressMap:provinceList){
+            Address address=new Address();
+            address.setProvince(addressMap.get("province"));
             Map<String,String> repeatProvinceMap=dataRoleAddressService.validateProvinceRiskValueIsExistByProvince(address.getProvince());
             if(repeatProvinceMap==null){
-                flag=true;
+
             }else{
-                dataRoleAddressService.updateProvinceRiskValue(repeatProvinceMap.get("province"),Float.parseFloat(repeatProvinceMap.get("riskvalue")));
+                //如果存在,则删掉
+                dataRoleAddressService.deleteProvinceRiskValue(repeatProvinceMap.get("province"));
             }
         }
-        if(flag){
         dataRoleAddressService.batchInsertToProvinceRiskValue(provinceList);
-        }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

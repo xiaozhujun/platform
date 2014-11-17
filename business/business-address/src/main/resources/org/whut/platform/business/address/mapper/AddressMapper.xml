@@ -193,6 +193,11 @@
          FROM address a,craneinspectreport cr
          WHERE a.id=cr.addressId GROUP BY a.province,a.city
     </select>
+    <select id="getId" resultMap="addressResultMap">
+         SELECT a.id
+         FROM address a,craneinspectreport cr
+         WHERE a.id=cr.addressId GROUP BY a.id
+    </select>
     <select id="getProvince" resultMap="addressResultMap">
          SELECT a.province
          FROM address a,craneinspectreport cr

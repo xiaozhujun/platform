@@ -103,4 +103,7 @@ public class AddressService {
     public List<Address> getProvince(){
         return mapper.getProvince();
     }
+    public List<Address>getId(){
+        return mapper.getId();
+    }
 }

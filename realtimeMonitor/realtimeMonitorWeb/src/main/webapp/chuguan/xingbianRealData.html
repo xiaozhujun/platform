@@ -77,8 +77,6 @@
                         if (countSum[i]==8){
                             countSum[i]=0;
                             var iValue=i;
-                            //initBelowCharts( iValue,locMapSum[i],locName,locName[i]);
-
                             if(locName[i]==locName[0]){
                                 l= Math.PI*(80*1000+24);
                             }
@@ -153,47 +151,37 @@
         }
         function initSingleCharts(data,s){
             if(dataFirst==1){
-//                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
                 $.initHighChart("#DynamicChart861722", data) ;
                 dataFirst=0;
             }
             if(dataFirst==2){
-//                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
                 $.destroyChart("#DynamicChart861722", data);
                 dataFirst=0;
             }
             else
                 $.addPointOnChart("#DynamicChart861722", data,s) ;
-//                drawChartSingleMap("#DynamicChart861722", data, dataFirst,s);
         }
 
         function initBelowCharts(map,locName,loc,shapeValue){
             if(firstDrawBelowCharts==1 ){
-
-                //drawBelowChartOfMap("#DynamicChart552271",map,1,loc,locName);
                 $.initAlgorithmHighChart("#DynamicChart552271",locName,shapeValue);
                 firstDrawBelowCharts=2;
             }
             else
                 $.addPointOnAlgorithmChart("#DynamicChart552271",loc,locName,shapeValue) ;
-               // drawBelowChartOfMap("#DynamicChart552271",map,0,loc,locName);
         }
         function initMapCharts(map,n,lineName){
             if(first==1){
-            //drawChartOfMap("#DynamicChart861722", map,first,lineName);
                 $.initHighChart("#DynamicChart861722", map);
                 if(n==8){
                     first=0;
                 }
           }
            else if(first==2){
-//                drawChartOfMap("#DynamicChart861722", map,first,lineName);
-                //$.destroyChart("#DynamicChart861722",map);
                 $.destroyChart("#DynamicChart861722",map);
                 first=0;
             }
             else
-//               drawChartOfMap("#DynamicChart861722", map,first,lineName);
             $.addPointOnChart("#DynamicChart861722", map,lineName);
         }
         function creatMenuHead(data){
@@ -224,6 +212,7 @@
                             count[i]=0;
                             countSum[i]=0;
                             num=num+1;
+                            first=1;
                             areaClick=0;
                             var result=sensoResult.data;
                             for(var j=0 ;j<result.length ;j++){

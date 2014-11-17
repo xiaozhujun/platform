@@ -61,6 +61,7 @@
            var jsonData = eval("(" +data+ ")");
            wsData=jsonData.sensors[0].data[0];
            wsDataNum= jsonData.sensors[0].sensorNum ;
+           belowGroupNum= jsonData.sensors[0].groupName;
            var aName=jsonData.sensors[0].areaName ;
            console.log("areaName:"+aName);
            for(var i=0;i<locName.length;i++){
@@ -68,6 +69,7 @@
                         if(clickAreaName==locName[i]){
                             areaClick=i;          //被点击的是第几个区域，如上、中、下分别为0、1、2
                         }
+                        if(belowGroupNum=groupName){
                         locMap[i][wsDataNum]=wsData;
                         locMapSum[i][wsDataNum]=wsData;
                         count[i]++;
@@ -97,7 +99,7 @@
                             initBelowCharts(locMapSum[i],locName,locName[i],shapeValue);
 
 
-                            locMapSum[i]= { } ;
+                            locMapSum[i]= { } ;   }
 
                         }
                     }
@@ -157,7 +159,7 @@
             }
             if(dataFirst==2){
 //                drawChartSingleMap("#DynamicChart861722", data,dataFirst,s);
-                $.destroy("#DynamicChart861722", data);
+                $.destroyChart("#DynamicChart861722", data);
                 dataFirst=0;
             }
             else
@@ -186,6 +188,7 @@
           }
            else if(first==2){
 //                drawChartOfMap("#DynamicChart861722", map,first,lineName);
+                //$.destroyChart("#DynamicChart861722",map);
                 $.destroyChart("#DynamicChart861722",map);
                 first=0;
             }

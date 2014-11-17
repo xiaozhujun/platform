@@ -41,8 +41,8 @@
         var firstDrawBelowCharts=1;
         var s='';
         var shapeValue=0;
-        var l;
-        var sum=0;
+
+
 
         $(document).ready(function () {
             $.post($.URL.group.list,null,gridCallback);
@@ -76,27 +76,8 @@
                         countSum[i]++;
                         if (countSum[i]==8){
                             countSum[i]=0;
-                            var iValue=i;
-                            if(locName[i]==locName[0]){
-                                l= Math.PI*(80*1000+24);
-                            }
-                            else if(locName[i]==locName[1]){
-                                l= Math.PI*(80*1000+38);
-                            }
-                            else if(locName[i]==locName[2]){
-                                l= Math.PI*(80*1000+58);
-                            }
-
-                            for(var key in locMapSum[i]){
-                                sum=sum+Number(locMapSum[i][key]);
-                            }
-                            shapeValue=(sum/8)*l;
-                            sum=0;
-
-
-                            initBelowCharts(locMapSum[i],locName,locName[i],shapeValue);
-
-
+                            shapeValue=$.belowAlgorithmProcess(i,locName,locName[i],locMapSum[i]);
+                        initBelowCharts(locMapSum[i],locName,locName[i],shapeValue);
                             locMapSum[i]= { } ;   }
 
                         }

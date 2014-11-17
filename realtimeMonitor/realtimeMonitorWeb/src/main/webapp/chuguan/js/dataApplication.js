@@ -138,5 +138,25 @@ $.extend({
                     tbody.rows[i].cells[5].textContent="UP0_ST "+max;
             }
         }
+    } ,
+    belowAlgorithmProcess:function belowAlgorithmProcess(i,locName,loc,map){
+      sum=0;
+         var l;
+        var shapeValue=0
+        if(loc==locName[0]){
+            l= Math.PI*(80*1000+24);
+        }
+        else if(loc==locName[1]){
+            l= Math.PI*(80*1000+38);
+        }
+        else if(loc==locName[2]){
+            l= Math.PI*(80*1000+58);
+        }
+
+        for(var key in map){
+            sum=sum+Number(map[key]);
+        }
+        shapeValue=(sum/8)*l;
+       return shapeValue;
     }
 });

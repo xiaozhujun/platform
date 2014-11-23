@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/json2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.post($.URL.batch.list,null,batchListCallBack,"json");
+        }) ;
+        var gridData={};
+        function batchListCallBack(data){
+            if(data.code==200)
+            {
+                gridData.Rows=data.data;
+                gridData.Total=data.data.length;
+                f_initGrid();
+            }
+        }
+
+        var d=new Date();      /*实现时间的选择*/
+        var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+        $("#createTime").ligerDateEditor({initValue: dd});
+
+        var manager,g;
+        function f_initGrid(){
+            g = manager = $("#maingrid").ligerGrid( {
+
+                columns:[
+                    {display:'主键',name:'id',width:50,type:'int',frozen:true} ,
+                    {display:'批次编号',name:'number',
+                        editor:{type:'text'}
+                    } ,
+                    {display:'批次描述',name:'description',
+                        editor:{type:'text'}
+                    },
+                    { display: '创建时间', name: 'createTime', width: 100,type:"date"},
+                    {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
+                    {
+                        var h="";
+                        if(!rowdata._editing)
+                        {
+                            h += "<a href='javascript:batchBeginEdit(" + rowindex + ")'>修改</a> ";
+                            h +="<a href='javascript:batchDeleteRow("+ rowindex +")'>删除</a> " ;
+                        }
+                        else{
+                            h +="<a href='javascript:batchEndEdit("+ rowindex +")'>提交</a> "  ;
+                            h +="<a href='javascript:batchCancelEdit("+ rowindex +")'>取消</a> ";
+                        }
+                        return h;
+                    }
+                    }
+                ] ,
+                onSelectRow:function(rowdata,rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+
+                enabledEdit:true,clickToEdit:false,isScroll:false,
+                data: gridData,
+                width:'100%'
+            }) ;
+
+
+        }
+        function batchBeginEdit(rowid){
+            manager.beginEdit(rowid);
+        }
+        function batchCancelEdit(rowid){
+            manager.cancelEdit(rowid);
+        }
+        function batchEndEdit(rowid){
+            manager.endEdit(rowid);
+            var row=manager.getRow(rowid);
+            var jsonString= $.toJSON(row);
+            $.post($.URL.batch.update,{"jsonString":jsonString},batchUpdateCallBack,"json");
+        }
+        function batchUpdateCallBack(data){
+            $.post($.URL.batch.list,null,batchListCallBack,"json");
+            if(data.code==200){
+                $.ligerDialog.success("修改成功") ;
+            }
+            else{
+                $.ligerDialog.error(data.message);
+            }
+        }
+        function batchDeleteRow(rowid){
+            if(confirm("确认删除？"))
+            {
+                var row=manager.getRow(rowid);
+                var jsonString= $.toJSON(row);
+                $.post($.URL.batch.delete,{"jsonString":jsonString},batchDeleteCallBack,"json");
+                manager.batchDeleteRow(rowid);
+            }
+        }
+        function batchDeleteCallBack(data){
+            if(data.code==200)
+            {
+                $.ligerDialog.success("成功删除！");
+            }
+            else{
+                $.ligerDialog.error("删除失败！");
+            }
+        }
+        $("#batchAddSubmitBtn").click(function(){
+            document.getElementById('form1').reset();
+            batch_f_show();
+            $.ligerDialog.open({title:'添加设备批次', target: $("#addBatch"),width:500});
+        });
+
+        function batch_f_show(){
+            $('#addBatch').css('display','block');
+        }
+
+        $("#batchSubmitBtn").click(function(){
+            var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
+            data.number=$("#batchNumber").val();
+            data.description=$("#batchDescription").val();
+            $.post($.URL.batch.add,{"jsonString": $.toJSON(data)},batchAddCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+        });
+
+        function batchAddCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success('操作成功');
+                $.post($.URL.batch.list,null,batchListCallBack,"json");
+            }
+            else
+            {
+                $.ligerDialog.error(data.message);
+            }
+        }
+    </script>
+    <style type="text/css">
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF; }
+    </style>
+</head>
+<body  style="padding:10px">
+<div id="addBatch" style="display: none">
+    <form name="form1" method="post" action="" id="form1">
+        <div>
+        </div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">批次编号:</td>
+                <td align="left" class="l-table-edit-td"><input name="number" type="text" id="batchNumber" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">描述:</td>
+                <td align="left" class="l-table-edit-td"><textarea name="description" type="text" id="batchDescription" cols="20" rows="2" class="l-textarea" style="width:400px"></textarea>
+                </td><td align="left"></td>
+            </tr>
+        </table>
+        <br />
+        <input type="button" value="提交" id="batchSubmitBtn" class="l-button l-button-submit" />
+    </form>
+</div>
+<div id="list">
+    <div><input type="button" value="添加" id="batchAddSubmitBtn" class="l-button l-button-submit" /></div>
+    <div class="l-clear"></div>
+    <div id="maingrid" style="margin-top:20px"></div> <br />
+</div>
+<div style="display:none;">
+    <!-- g data total ttt -->
+</div>
+</body>
+</html>

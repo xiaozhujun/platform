@@ -4,4 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="deviceService" class="org.whut.rentManagement.business.device.service.DeviceService" depends-on="mappers"/>
     <bean id="deviceTypeService" class="org.whut.rentManagement.business.device.service.DeviceTypeService" depends-on="mappers"/>
+    <bean id="batchService" class="org.whut.rentManagement.business.device.service.BatchService" depends-on="mappers"/>
 </beans>

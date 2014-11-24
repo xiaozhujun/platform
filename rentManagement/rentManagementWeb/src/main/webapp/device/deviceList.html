@@ -20,34 +20,35 @@ $(function () {
     $.post($.URL.deviceType.list, null, deviceTypeListCallBack, "json");
     $.post($.URL.contract.list, null, listContractCallback, "json");
     $.post($.URL.storehouse.list, null, storehouseListCallback, "json");
+    $.post($.URL.batch.list, null, batchListCallBack, "json");
 })
 var gridData = {};
 function deviceCallback(data) {
     if (data.code== 200) {
         gridData.Rows = data.data;
         gridData.Total = data.data.length;
-        f_initGrid();
-        mainDevice(data);
+        device_f_initGrid();
     }
 }
-//var mainDeviceData =[];  mainDevice字段的相关部分功能添加
-//function mainDevice(data){
-//    if (data.code == 200) {
-//        $.each(data.data, function (index, content) {
-//            var j = {};
-//            j["text"] = content.name;
-//            j["id"] = content.id;
-//            mainDeviceData.push(j);
-//        });
-//        $("#mainDevice").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
-//            data:mainDeviceData,
-//            width:200,
-//            valueField:'id',
-//            textField:'text'
-////            valueFieldID:'mainDevice'   /*下拉表Id是Device*/
-//        });
-//    }
-//};
+
+var batchData = [];
+function batchListCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j["text"] = content.number;
+            j["id"] = content.id;
+            batchData.push(j);
+        });
+        $("#batchBox").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:batchData,
+            width:200,
+            valueField:'id',
+            textField:'text',
+            valueFieldID:'batchSelect'   /*下拉表Id是Batch*/
+        });
+    }
+};
 
 var deviceTypeData = [];
 function deviceTypeListCallBack(data) {
@@ -114,8 +115,8 @@ var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
 $("#produceTime").ligerDateEditor({initValue: dd});
 
 var manager, g;
-function f_initGrid() {
-    g = manager = $("#maingrid").ligerGrid({
+function device_f_initGrid() {
+    g = manager = $("#deviceMainGrid").ligerGrid({
         columns: [
             { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
             { display: '设备名', name: 'name',
@@ -129,6 +130,13 @@ function f_initGrid() {
                 },
                 render: function (item) {
                     return item.deviceType;
+                }
+            },
+            { display: '设备批次', name: 'batch',type: 'text',
+                editor: { type: 'select', emptyText: null, data:batchData, valueField: 'id', textField: 'text'
+                },
+                render: function (item) {
+                    return item.batchNumber;
                 }
             },
             { display: '所属仓库', name: 'storehouse',type: 'text',
@@ -231,12 +239,11 @@ $("#submitBtn").click(function(){
     data.name=$("#deviceName").val();
     data.number=$("#deviceNumber").val();
     data.deviceTypeId=$("#deviceType").ligerComboBox().getValue();
+    data.batchId=$("#batchBox").ligerComboBox().getValue();
     data.storehouseId=$("#storehouse").ligerComboBox().getValue();
     data.contractId=$("#contract").ligerComboBox().getValue();
     data.status=$("#deviceStatus").val();
     data.produceTime=$("#produceTime").val();
-    //var toData = JSON.stringify(data);
-    //alert(toData);
     $.post($.URL.device.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
 });
 
@@ -297,6 +304,12 @@ function addCallBack(data){
             </tr>
 
             <tr>
+                <td align="right" class="l-table-edit-td">设备批次:</td>
+                <td align="left" class="l-table-edit-td"><input name="batch" type="text"  id="batchBox"></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
                 <td align="right" class="l-table-edit-td">所属仓库:</td>
                 <td align="left" class="l-table-edit-td"><input name="storehouse" type="text" id="storehouse"></td>
                 <td align="left"></td>
@@ -315,7 +328,7 @@ function addCallBack(data){
 <div id="list">
     <div><input type="button" value="添加设备" id="addSubmitBtn" class="l-button l-button-submit"/></div>
     <div class="l-clear"></div>
-    <div id="maingrid" style="margin-top:5px"></div>
+    <div id="deviceMainGrid" style="margin-top:5px"></div>
     <br/>
 </div>
 <div style="display:none;">

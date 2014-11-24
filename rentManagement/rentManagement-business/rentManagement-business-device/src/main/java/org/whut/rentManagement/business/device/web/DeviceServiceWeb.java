@@ -37,7 +37,7 @@ public class DeviceServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-   public String add(@FormParam("name") String name,@FormParam("deviceTypeId")String deviceTypeId,@FormParam("storehouseId")String storehouseId,@FormParam("contractId")String contractId,
+   public String add(@FormParam("name") String name,@FormParam("batchId")String batchId,@FormParam("deviceTypeId")String deviceTypeId,@FormParam("storehouseId")String storehouseId,@FormParam("contractId")String contractId,
                       @FormParam("status")String status,@FormParam("number")String number,@FormParam("produceTime")String produceTime
                      )throws ParseException{
         if(name==null||name.trim().equals("")){
@@ -64,8 +64,10 @@ public class DeviceServiceWeb {
             device.setProduceTime(sdf.parse(produceTime));
             try{
                 device.setTypeId(Long.parseLong(deviceTypeId));
+                device.setBatchId(Long.parseLong(batchId));
             }catch (Exception e){
                 device.setTypeId(null);
+                device.setBatchId(null);
             }
             try{
                 device.setStorehouseId(Long.parseLong(storehouseId));

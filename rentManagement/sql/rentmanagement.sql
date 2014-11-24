@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-18 02:54:23
+Date: 2014-11-24 10:16:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -114,6 +114,24 @@ CREATE TABLE `bad_debt_sheet` (
 -- Records of bad_debt_sheet
 -- ----------------------------
 INSERT INTO `bad_debt_sheet` VALUES ('1', '123123', 'x1234', '1', '1', '肖竹军', '1', '没有描述', '2014-11-06', '肖竹军', '1');
+
+-- ----------------------------
+-- Table structure for batch
+-- ----------------------------
+DROP TABLE IF EXISTS `batch`;
+CREATE TABLE `batch` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `number` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of batch
+-- ----------------------------
+INSERT INTO `batch` VALUES ('1', 'sdfsd', '123123123', '2014-11-23 11:04:38', '1');
 
 -- ----------------------------
 -- Table structure for car_driver
@@ -221,6 +239,7 @@ DROP TABLE IF EXISTS `device`;
 CREATE TABLE `device` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `mainDeviceId` bigint(20) DEFAULT NULL,
+  `batchId` bigint(20) DEFAULT NULL,
   `typeId` bigint(20) DEFAULT NULL,
   `storehouseId` bigint(20) DEFAULT NULL,
   `carDriverId` bigint(20) DEFAULT NULL,
@@ -238,13 +257,17 @@ CREATE TABLE `device` (
   `lat` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', '1', '1', '1', null, '1', null, null, '使用', '司机室001', 'sjs001', null, '2013-11-01', '2014-11-09', null, '114.380494', '30.507115', '1');
-INSERT INTO `device` VALUES ('2', '2', '1', '1', null, '1', null, null, '使用', '司机室002', 'sjs002', null, '2013-11-14', '2014-11-09', null, '114.380494', '30.506115', '1');
+INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', null, '1', null, null, '使用', '司机室001', 'sjs001', null, '2013-11-01', '2014-11-09', null, '114.380494', '30.507115', '1');
+INSERT INTO `device` VALUES ('2', '2', '1', '1', '1', null, '1', null, null, '使用', '司机室002', 'sjs002', null, '2013-11-14', '2014-11-09', null, '114.380494', '30.506115', '1');
+INSERT INTO `device` VALUES ('3', '3', '1', '1', '1', null, '1', null, null, '在用', '批次设备 ', 'pc123sdf', null, '2014-11-04', '2014-11-23', null, null, null, '1');
+INSERT INTO `device` VALUES ('4', '0', '0', '1', '1', null, '1', null, null, '在用', '塔吊0003', 'td003', null, '2014-07-07', '2014-11-24', null, null, null, '1');
+INSERT INTO `device` VALUES ('5', '0', '1', '1', '1', null, '1', null, null, 'sdf', 'dfdf', '12123', null, '2014-10-28', '2014-11-24', null, null, null, '1');
+INSERT INTO `device` VALUES ('6', '0', '1', '1', '1', null, '1', null, null, 'sdf', 'gggg', 'sdfs', null, '2014-10-26', '2014-11-24', null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for device_type

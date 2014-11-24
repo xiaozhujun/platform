@@ -12,6 +12,7 @@ import java.util.Date;
 public class Device {
     private long id;
     private long mainDeviceId;
+    private long batchId;
     private Long typeId;
     private Long storehouseId;
     private Long contractId;
@@ -131,6 +132,14 @@ public class Device {
 
     public void setMainDeviceId(long mainDeviceId) {
         this.mainDeviceId = mainDeviceId;
+    }
+
+    public long getBatchId() {
+        return batchId;
+    }
+
+    public void setBatchId(Long batchId) {
+        this.batchId = batchId;
     }
 
     public Long getTypeId() {

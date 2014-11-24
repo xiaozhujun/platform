@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.device.mapper.BatchMapper">
+    <sql id="batch_fields">
+         ID,NUMBER,DESCRIPTION,CREATETIME,APPID
+     </sql>
+    <resultMap id="batchResultMap" type="Batch">
+        <id property="id" column="ID"/>
+        <result property="number" column="NUMBER"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createTime" column="CREATETIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Batch"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        batch(
+        <include refid="batch_fields" />
+        )
+        VALUES (#{id}, #{number},#{description},#{createTime},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Batch">
+        UPDATE batch
+        <set>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+        </set>
+        WHERE ID=#{id} AND batch.appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="Batch">
+        DELETE  batch,device FROM batch LEFT JOIN device ON batch.id=device.typeId
+        WHERE batch.id=#{id} AND batch.appId=#{appId}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE  batch,device FROM batch LEFT JOIN device ON batch.id=device.batchId
+        WHERE batch.id=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="batchResultMap">
+        select
+        <include refid="batch_fields"/>
+        from batch
+        where APPID=#{appId}
+    </select>
+
+    <select id="getIdByNumber" parameterType="map" resultType="java.lang.Long">
+        select id
+        from batch
+        where NUMBER=#{number} and APPID=#{appId}
+    </select>
+
+</mapper>

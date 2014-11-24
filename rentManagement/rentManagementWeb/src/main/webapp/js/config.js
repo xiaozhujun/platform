@@ -91,6 +91,14 @@
             "delete":"rs/car_Driver/delete",
             "listCar_DriverByNameAndCar_Number":"rs/car_Driver/listCar_DriverByNameAndCar_Number"
         },
+        "batch":{
+            "add":"rs/batch/add",
+            "update":"rs/batch/update",
+            "delete":"rs/batch/delete",
+            "list":"rs/batch/list",
+            "getIdByNumber":"rs/batch/getIdByNumber",
+            "findByCondition":"rs/batch/findByCondition"
+        },
         "device":{
             "add":"rs/device/add",
             "update":"rs/device/update",

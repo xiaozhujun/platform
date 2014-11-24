@@ -407,61 +407,67 @@
         GROUP BY cr.unitaddress  ORDER BY  craneNumber desc
     </select>
     <select id="getCityInfoByCondition" parameterType="map" resultType="map">
-        SELECT addressId as id,city,avgRiskValue,craneNumber,color
-        FROM  city_riskvalue_temp
+        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
-        WHERE province=#{province}
+            AND a.province=#{province}
         </if>
         <if test='equipmentVariety!="0"'>
-            AND equipmentvariety=#{equipmentVariety}
+            AND cr.equipmentvariety=#{equipmentVariety}
         </if>
         <if test='sTime!="0"'>
-            AND manufacturedate between #{sTime}
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
         </if>
         <if test='eTime!="0"'>
             and #{eTime}
         </if>
         <if test="startValue!=0f">
-            AND riskval BETWEEN #{startValue}
+            AND r.riskvalue BETWEEN #{startValue}
         </if>
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
+        GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
     <select id="getCityInfoByCondition0" parameterType="map" resultType="map">
-        SELECT addressId as id,city,avgRiskValue,craneNumber,color
-        FROM  city_riskvalue_temp
+        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
-         WHERE province=#{province}
+            AND a.province=#{province}
         </if>
         <if test="city!=null">
-            AND city=#{city}
+            AND a.city=#{city}
         </if>
+        GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
     <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
-         SELECT addressId as id,area,avgRiskValue,craneNumber,color
-        FROM   area_riskvalue_temp
+         SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
          <if test="province!=null">
-          WHERE province=#{province}
+             AND a.province=#{province}
          </if>
         <if test="city!=null">
-            AND city=#{city}
+            AND a.city=#{city}
         </if>
         <if test='equipmentVariety!="0"'>
-            AND equipmentvariety=#{equipmentVariety}
+            AND cr.equipmentvariety=#{equipmentVariety}
         </if>
         <if test='sTime!="0"'>
-            AND manufacturedate between #{sTime}
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
         </if>
         <if test='eTime!="0"'>
            and #{eTime}
         </if>
         <if test="startValue!=0f">
-            AND riskval BETWEEN #{startValue}
+            AND r.riskvalue BETWEEN #{startValue}
         </if>
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
+        GROUP BY a.area  ORDER BY  craneNumber desc
     </select>
     <select id="getCraneListByUploadReportId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
          select *

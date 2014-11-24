@@ -327,6 +327,9 @@ public class CraneInspectReportService {
     public List<Map<String,Float>> getCityInfoByCondition(String province,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
          return mapper.getCityInfoByCondition(province,equipmentVariety,sTime,eTime,startValue,endValue);
     }
+    public Map<String,Float> getCityInfoByCondition0(String province,String city){
+        return mapper.getCityInfoByCondition0(province,city);
+    }
     public  List<Map<String,Float>>getAreaInfoByCondition(String province,String city,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
           return mapper.getAreaInfoByCondition(province,city,equipmentVariety,sTime,eTime,startValue,endValue);
     }
@@ -563,5 +566,9 @@ public class CraneInspectReportService {
     }
     public int deleteAreaRiskValue(Long addressId){
         return mapper.deleteAreaRiskValue(addressId);
+    }
+    public void dropCraneInspectReportCollection(){
+        MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
+        mongo.dropCollection();
     }
 }

@@ -713,7 +713,9 @@ public class CraneInspectReportServiceWeb {
         }
         for(Address address:addressList){
             areaList=craneInspectReportService.getAreaInfoByCondition(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
+            if(areaList!=null&&areaList.size()!=0){
             craneInspectReportService.batchInsertToAddressRiskValue(areaList);
+            }
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -735,9 +737,21 @@ public class CraneInspectReportServiceWeb {
             }else{
             craneInspectReportService.deleteCityRiskValue(cityRiskValueMap.get("province"), cityRiskValueMap.get("city"));
             }
-            cityList=craneInspectReportService.getCityInfoByCondition(address.getProvince(),"0","0","0",0f,0f);
+            Map<String,Float> map=craneInspectReportService.getCityInfoByCondition0(address.getProvince(),address.getCity());
+            cityList.add(map);
+        }
+        if(cityList!=null&&cityList.size()!=0){
             craneInspectReportService.batchInsertToCityRiskValue(cityList);
         }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/deleteRiskData")
+    public void deleteRiskData(){
+        //删除计算值
+        //drop craneInspectReportCollection
+        craneInspectReportService.dropCraneInspectReportCollection();
+        //删除
     }
 }

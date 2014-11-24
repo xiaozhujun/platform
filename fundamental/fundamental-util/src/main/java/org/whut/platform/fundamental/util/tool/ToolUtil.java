@@ -89,12 +89,24 @@ public class ToolUtil {
         String province=null;
         String city=null;
         String area=null;
+        int cityCount=0;
         if(address==null)
             return "0";
-        if(address.contains("省")&&address.contains("市")&&address.contains("区")){
+        for(int i=0;i<address.length();i++){
+            if(address.substring(i,i+1).equals("市")){
+                cityCount++;
+            }
+        }
+        if(address.contains("省")&&address.contains("市")){
         province=address.substring(0,address.indexOf("省"));
         city=address.substring(address.indexOf("省")+1,address.indexOf("市"))+"市";
+        if(address.contains("区")&&address.contains("县")||address.contains("区")){
         area=address.substring(address.indexOf("市")+1,address.indexOf("区"))+"区";
+        }else if(address.contains("县")){
+        area=address.substring(address.indexOf("市")+1,address.indexOf("县"))+"县";
+        }else if(!address.contains("县")&&cityCount==2){
+        area=address.substring(address.indexOf("市")+1,address.lastIndexOf("市"))+"市";
+        }
         return province+","+city+","+area;
         }else{
          return "0";
@@ -131,7 +143,7 @@ public class ToolUtil {
     }
      public static void main(String[] args){
          ToolUtil toolUtil=new ToolUtil();
-         System.out.print(toolUtil.parseAddress0("武汉市经济开发区建港一路特1号"));
+         System.out.print(toolUtil.parseAddress0("福建省福州市福清市江阴镇下垄村"));
 
      }
 }

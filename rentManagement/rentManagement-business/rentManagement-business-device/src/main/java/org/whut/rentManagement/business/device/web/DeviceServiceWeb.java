@@ -11,9 +11,7 @@ import org.whut.rentManagement.business.device.service.DeviceService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,48 +34,25 @@ public class DeviceServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/add")
     @POST
-   public String add(@FormParam("name") String name,@FormParam("batchId")String batchId,@FormParam("deviceTypeId")String deviceTypeId,@FormParam("storehouseId")String storehouseId,@FormParam("contractId")String contractId,
-                      @FormParam("status")String status,@FormParam("number")String number,@FormParam("produceTime")String produceTime
-                     )throws ParseException{
-        if(name==null||name.trim().equals("")){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"设备名不能为空");
+   public String add(@FormParam("jsonString") String jsonString)throws ParseException{
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
-        if (produceTime==null||produceTime.trim().equals("")){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"生产时间不能为空");
+        Device device = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Device.class);
+        if(device==null||device.getNumber()==null||device.getNumber().trim().equals("")
+                ||device.getTypeId()==null){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空!");
         }
-        long appId= UserContext.currentUserAppId();
+
+        Long appId= UserContext.currentUserAppId();
         Long id;
         try{
-            id=deviceService.getIdByNumber(number,appId);
+            device.setCreateTime(new Date());
+            id=deviceService.getIdByNumber(device.getNumber(),appId);
         }catch(Exception e){
             id=null;
         }
         if(id==null){
-            Device device=new Device();
-            Date createTime=new Date();
-            device.setName(name);
-            device.setNumber(number);
-            device.setStatus(status);
-            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //定义时间格式
-            device.setCreateTime(createTime);  //String搞成date类型
-            device.setProduceTime(sdf.parse(produceTime));
-            try{
-                device.setTypeId(Long.parseLong(deviceTypeId));
-                device.setBatchId(Long.parseLong(batchId));
-            }catch (Exception e){
-                device.setTypeId(null);
-                device.setBatchId(null);
-            }
-            try{
-                device.setStorehouseId(Long.parseLong(storehouseId));
-            }catch (Exception e){
-                device.setStorehouseId(null);
-            }
-            try{
-                device.setContractId(Long.parseLong(contractId));
-            }catch (Exception e){
-                device.setContractId(null);
-            }
             device.setAppId(appId);
             deviceService.add(device);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "添加成功!");

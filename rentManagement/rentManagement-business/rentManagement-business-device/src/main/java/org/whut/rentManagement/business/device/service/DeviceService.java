@@ -30,7 +30,7 @@ public class DeviceService {
         return deviceMapper.update(device);
     }
 
-    public Long getIdByNumber(String number, long appId) {
+    public Long getIdByNumber(String number, Long appId) {
         return deviceMapper.getIdByNumber(number,appId);
     }
     public int deleteById(long id){

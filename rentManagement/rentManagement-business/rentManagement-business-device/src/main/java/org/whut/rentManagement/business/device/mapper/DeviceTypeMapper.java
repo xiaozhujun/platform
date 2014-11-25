@@ -14,7 +14,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface DeviceTypeMapper extends AbstractMapper<DeviceType> {
-    public long getIdByName(@Param("name")String name, @Param("appId")long appId);
+    public Long getIdByName(@Param("name")String name, @Param("appId")long appId);
     public  int deleteById(long id);
     public List<DeviceType> getListByAppId(Long appId);
 }

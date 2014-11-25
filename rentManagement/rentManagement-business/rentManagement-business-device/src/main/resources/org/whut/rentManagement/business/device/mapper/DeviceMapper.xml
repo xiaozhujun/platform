@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.device.mapper.DeviceMapper">
     <sql id="device_fields">
-          ID,MAINDEVICEID,BATCHID,SUPPLIERID,TYPEID,STOREHOUSEID,CONTRACTID,ADDRESS,STATUS,NAME,NUMBER,PRICE,PRODUCETIME,CREATETIME,PRICEUNIT,LNG,LAT,APPID
+          ID,MAINDEVICEID,BATCHID,SUPPLIERID,TYPEID,STOREHOUSEID,CONTRACTID,ADDRESS,STATUS,OPTIONTYPE,NAME,NUMBER,PRICE,PRODUCETIME,CREATETIME,PRICEUNIT,LNG,LAT,APPID
     </sql>
     <resultMap id="deviceResultMap" type="device">
         <id property="id" column="ID" />
@@ -16,6 +16,7 @@
         <result property="contractId" column="CONTRACTID"/>
         <result property="address" column="ADDRESS"/>
         <result property="status" column="STATUS"/>
+        <result property="optionType" column="OPTIONTYPE"/>
         <result property="name" column="NAME"/>
         <result property="number" column="NUMBER"/>
         <result property="price" column="PRICE"/>
@@ -32,7 +33,7 @@
         device(
         <include refid="device_fields" />
         )
-        VALUES (#{id}, #{mainDeviceId},#{batchId},#{supplierId},#{typeId},#{storehouseId},#{contractId},#{address},#{status},#{name},#{number},#{price},#{produceTime},#{createTime},#{priceUnit},#{lng},#{lat},#{appId});
+        VALUES (#{id}, #{mainDeviceId},#{batchId},#{supplierId},#{typeId},#{storehouseId},#{contractId},#{address},#{status},#{optionType},#{name},#{number},#{price},#{produceTime},#{createTime},#{priceUnit},#{lng},#{lat},#{appId});
         <selectKey resultType="java.lang.Long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -44,6 +45,7 @@
         <set>
             <if test="batchId!=null">BATCHID=#{batchId},</if>
             <if test="supplierId!=null">SUPPLIERID=#{supplierId},</if>
+            <if test="optionType!=null">OPTIONTYPE=#{optionType},</if>
             <if test="typeId!=null">TYPEID=#{typeId},</if>
             <if test="storehouseId!=null">STOREHOUSEID=#{storehouseId},</if>
             <if test="contractId!=null">CONTRACTID=#{contractId},</if>
@@ -67,11 +69,15 @@
     </delete>
 
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
-        select device.id,device.name as name,device.number,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
-                device.produceTime,device.price,device.status,batch.number as batchNumber
-        from device,device_type,storehouse,contract,batch,supplier
-        where device.typeId=device_type.id and device.storehouseId=storehouse.id and device.contractId=contract.id  and device.batchId=batch.id and device.supplierId=supplier.id
-         and device.appId=#{appId}
+        select device.id,device.name,device.optionType,device.number,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
+                device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId
+        from device
+        LEFT JOIN device_type ON device.typeId=device_type.id
+        LEFT JOIN storehouse ON device.storehouseId=storehouse.id
+        LEFT JOIN contract ON device.contractId=contract.id
+        LEFT JOIN batch ON device.batchId=batch.id
+        LEFT JOIN supplier ON device.supplierId=supplier.id
+        where device.appId=#{appId}
         <!--联查错误，改后台传name -->
     </select>
 
@@ -82,19 +88,27 @@
     </select>
 
     <select id="getMainDeviceList" parameterType="java.lang.Long" resultType="map">
-        select device.id,device.name as name,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
-        device.produceTime,device.price,device.status,device.lng,device.lat,batch.number as batchNumber
-        from device,device_type,storehouse,contract,batch,supplier
-        where device_type.mainDevice=1 and  device.typeId=device_type.id and device.storehouseId=storehouse.id and device.contractId=contract.id and device.batchId=batch.id and device.supplierId=supplier.id
-        and device.appId=#{appId}
+        select device.id,device.name,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
+        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,device.lng,device.lat,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId
+        from device
+        LEFT JOIN device_type ON device.typeId=device_type.id
+        LEFT JOIN storehouse ON device.storehouseId=storehouse.id
+        LEFT JOIN contract ON device.contractId=contract.id
+        LEFT JOIN batch ON device.batchId=batch.id
+        LEFT JOIN supplier ON device.supplierId=supplier.id
+        where device_type.mainDevice=1 and device.appId=#{appId}
     </select>
 
     <select id="findByCondition" parameterType="map" resultType="map">
-        select device.id,device.name as name,device.number,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
-        device.produceTime,device.price,device.status,batch.number as batchNumber
-        from device,device_type,storehouse,contract,batch,supplier
-        where device.typeId=device_type.id and device.storehouseId=storehouse.id and device.contractId=contract.id and device.batchId=batch.id and device.supplierId=supplier.id
-        and device.appId=#{appId}
+        select device.id,device.name,device.number,device.optionType,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
+        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId
+        from device
+        LEFT JOIN device_type ON device.typeId=device_type.id
+        LEFT JOIN storehouse ON device.storehouseId=storehouse.id
+        LEFT JOIN contract ON device.contractId=contract.id
+        LEFT JOIN batch ON device.batchId=batch.id
+        LEFT JOIN supplier ON device.supplierId=supplier.id
+        where device.appId=#{appId}
         <if test="appId!=null"> AND device.APPID=#{appId}</if>
         <if test="optionType!=null"> AND device.optionType=#{optionType}</if>
         <if test="storehouseId!=null"> AND device.storehouseId=#{storehouseId}</if>

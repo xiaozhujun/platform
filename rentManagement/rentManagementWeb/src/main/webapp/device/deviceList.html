@@ -16,12 +16,12 @@
 <script type="text/javascript">
 $.ligerDialog.close("#addDevice");
 $(function () {
-    $.post($.URL.device.list, null, deviceCallback, "json");
     $.post($.URL.deviceType.list, null, deviceTypeListCallBack, "json");
     $.post($.URL.contract.list, null, listContractCallback, "json");
     $.post($.URL.storehouse.list, null, storehouseListCallback, "json");
     $.post($.URL.batch.list, null, batchListCallBack, "json");
     $.post($.URL.supplier.list, null, supplierListCallBack, "json");
+    $.post($.URL.device.list, null, deviceCallback, "json");
 })
 
 var deviceSupplierData = [];
@@ -29,14 +29,14 @@ function supplierListCallBack(data) {
     if (data.code == 200) {
         $.each(data.data, function (index, content) {
             var j = {};
-            j["text"] = content.name;
-            j["id"] = content.id;
+            j.text = content.name;
+            j.value = content.id;
             deviceSupplierData.push(j);
         });
         $("#deviceSupplier").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
             data:deviceSupplierData,
             width:200,
-            valueField:'id',
+            valueField:'value',
             textField:'text',
             valueFieldID:'deviceSupplierSelect'   /*下拉表Id是Device*/
         });
@@ -57,14 +57,14 @@ function batchListCallBack(data) {
     if (data.code == 200) {
         $.each(data.data, function (index, content) {
             var j = {};
-            j["text"] = content.number;
-            j["id"] = content.id;
+            j.text = content.number;
+            j.value = content.id;
             batchData.push(j);
         });
         $("#batchBox").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
             data:batchData,
             width:200,
-            valueField:'id',
+            valueField:'value',
             textField:'text',
             valueFieldID:'batchSelect'   /*下拉表Id是Batch*/
         });
@@ -76,14 +76,14 @@ function deviceTypeListCallBack(data) {
     if (data.code == 200) {
         $.each(data.data, function (index, content) {
             var j = {};
-            j["text"] = content.name;
-            j["id"] = content.id;
+            j.text = content.name;
+            j.value = content.id;
             deviceTypeData.push(j);
         });
         $("#deviceType").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
             data:deviceTypeData,
             width:200,
-            valueField:'id',
+            valueField:'value',
             textField:'text',
             valueFieldID:'deviceTypeSelect'   /*下拉表Id是Device*/
         });
@@ -95,14 +95,14 @@ function storehouseListCallback(data) {
     if (data.code == 200) {
         $.each(data.data, function (index, content) {
             var j = {};
-            j["text"] = content.name;
-            j["id"] = content.id;
+            j.text = content.name;
+            j.value = content.id;
             storehouseData.push(j);
         });
         $("#storehouse").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
             data:storehouseData,
             width:200,
-            valueField:'id',
+            valueField:'value',
             textField:'text',
             valueFieldID:'storehouseSelect'
         });
@@ -112,15 +112,15 @@ var contractData=[];
 function listContractCallback(data){
     if(data.code==200){
         $.each(data.data,function(index,content){
-            var j=[];
-            j["id"]=content.id;
-            j["text"]=content.name;
+            var j={};
+            j.value=content.id;
+            j.text=content.name;
             contractData.push(j);
         });
         $("#contract").ligerComboBox({isShowCheckBox:true,emptyText:null,  //实现下拉框
             data:contractData,
             width:200,
-            valueField:'id',
+            valueField:'value',
             textField:'text',
             valueFieldID:'contractSelect'
         });
@@ -147,45 +147,67 @@ function device_f_initGrid() {
                 editor: { type: 'text'}
             },
             { display: '设备类型', name: 'typeId',type: 'int',
-                editor: { type: 'select', emptyText: null, data:deviceTypeData, valueField: 'id', textField: 'text'
+                editor: { type: 'select', emptyText: null, data:deviceTypeData, valueField: 'value', textField: 'text'
                 },
                 render: function (item) {
                     return item.deviceType;
                 }
             },
             { display: '供应商', name: 'supplierId',type: 'int',
-                editor: { type: 'select', emptyText: null, data:deviceSupplierData, valueField: 'id', textField: 'text'
+                editor: { type: 'select', emptyText: null, data:deviceSupplierData, valueField: 'value', textField: 'text'
                 },
                 render: function (item) {
                     return item.supplierName;
                 }
             },
             { display: '设备批次', name: 'batchId',type: 'int',
-                editor: { type: 'select', emptyText: null, data:batchData, valueField: 'id', textField: 'text'
+                editor: { type: 'select', emptyText: null, data:batchData, valueField: 'value', textField: 'text'
                 },
                 render: function (item) {
                     return item.batchNumber;
                 }
             },
             { display: '所属仓库', name: 'storehouseId',type: 'int',
-                editor: { type: 'select', emptyText: null, data: storehouseData, valueField: 'id', textField: 'text'
+                editor: { type: 'select', emptyText: null, data: storehouseData, valueField: 'value', textField: 'text'
                 },
                 render: function (item) {
                     return item.storehouse;
                 }
             },
             { display: '所属合同', name: 'contractId',type: 'int',
-                editor: { type: 'select', emptyText: null, data: contractData, valueField: 'id', textField: 'text'
-                },
+                editor: { type: 'select', emptyText: null, data: contractData, valueField: 'value', textField: 'text'},
                 render: function (item) {
                     return item.contract;
                 }
             },
             { display: '价格', name: 'price',
-                editor: { type: 'text'}
+                editor: { type: 'text'},
+                render: function (item) {
+                    if(item.priceUnit!=null&&item.priceUnit!=undefined){
+                        return item.price+" "+item.priceUnit;
+                    }else{
+                        return item.price;
+                    }
+                }
             },
-            { display: '设备状态', name: 'status',
-                editor: { type: 'text'}
+            { display: '使用状态', name: 'optionType',type:'int',
+                editor: { type: 'select', emptyText: null, data: [{value:'1',text:'入库'},{value:'2',text:'出库'},{value:'3',text:'运输'},{value:'4',text:'安装'},{value:'5',text:'拆除'}], valueField: 'value', textField: 'text'},
+                render: function (item) {
+                    if(item.optionType==1){
+                        return '入库';
+                    }else if(item.optionType==2){
+                        return '出库';
+                    }else if(item.optionType==3){
+                        return '运输';
+                    }else if(item.optionType==4){
+                        return '安装';
+                    }else if(item.optionType==5){
+                        return '拆卸';
+                    }
+                }
+            },
+            { display: '健康状态', name: 'status',
+                editor: { type: 'select', emptyText: null, data: [{value:'正常',text:'正常'},{value:'维修',text:'维修'},{value:'报废',text:'报废'}], valueField: 'value', textField: 'text'}
             },
             { display: '创建时间', name: 'createTime', width: 100},
             { display:'生产时间',name:'produceTime',width:100,editor:{type:'date'}},
@@ -267,13 +289,16 @@ $("#submitBtn").click(function(){
     data.name=$("#deviceName").val();
     data.number=$("#deviceNumber").val();
     data.supplierId=$("#deviceSupplier").ligerComboBox().getValue();
-    data.deviceTypeId=$("#deviceType").ligerComboBox().getValue();
+    data.typeId=$("#deviceType").ligerComboBox().getValue();
     data.batchId=$("#batchBox").ligerComboBox().getValue();
     data.storehouseId=$("#storehouse").ligerComboBox().getValue();
     data.contractId=$("#contract").ligerComboBox().getValue();
     data.status=$("#deviceStatus").val();
     data.produceTime=$("#produceTime").val();
-    $.post($.URL.device.add,data,device_addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+    data.price=$("#devicePrice").val();
+    data.priceUnit=$("#devicePriceUnit").val();
+    data.optionType=$("#deviceOptionType").val();
+    $.post($.URL.device.add,{"jsonString": $.toJSON(data)},device_addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
 });
 
 
@@ -315,8 +340,14 @@ function device_addCallBack(data){
             </tr>
 
             <tr>
-                <td align="right" class="l-table-edit-td">设备状态:</td>
-                <td align="left" class="l-table-edit-td"><input name="deviceStatus" type="text" id="deviceStatus"></td>
+                <td align="right" class="l-table-edit-td">价格:</td>
+                <td align="left" class="l-table-edit-td"><input name="price" type="text"  id="devicePrice"></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">价格单位:</td>
+                <td align="left" class="l-table-edit-td"><input name="priceUnit" type="text"  id="devicePriceUnit">（元、美元等）</td>
                 <td align="left"></td>
             </tr>
 
@@ -329,6 +360,20 @@ function device_addCallBack(data){
             <tr>
                 <td align="right" class="l-table-edit-td">供应商:</td>
                 <td align="left" class="l-table-edit-td"><input name="supplier" type="text"  id="deviceSupplier"></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">设备状态:</td>
+                <td align="left" class="l-table-edit-td">
+                    <select name="optionType" id="deviceOptionType" ltype="select" >
+                        <option value="1">入库</option>
+                        <option value="2">出库</option>
+                        <option value="3">运输</option>
+                        <option value="4">安装</option>
+                        <option value="5">拆卸</option>
+                    </select>
+                </td>
                 <td align="left"></td>
             </tr>
 

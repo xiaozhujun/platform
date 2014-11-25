@@ -20,6 +20,7 @@ public class Device {
     private Long typeId;
     private Long storehouseId;
     private Long contractId;
+    private Long optionType;
     private String address;
     private String status;
     private String name;
@@ -33,7 +34,6 @@ public class Device {
 
     private String lng;
     private String lat;
-
     private Long appId;
 
     public long getId() {
@@ -90,6 +90,14 @@ public class Device {
 
     public void setContractId(Long contractId) {
         this.contractId = contractId;
+    }
+
+    public Long getOptionType() {
+        return optionType;
+    }
+
+    public void setOptionType(Long optionType) {
+        this.optionType = optionType;
     }
 
     public String getAddress() {

@@ -151,7 +151,9 @@ public class DataRoleAddressServiceWeb {
                 dataRoleAddressService.deleteProvinceRiskValue(repeatProvinceMap.get("province"));
             }
         }
+        if(provinceList!=null&&provinceList.size()!=0){
         dataRoleAddressService.batchInsertToProvinceRiskValue(provinceList);
+        }
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

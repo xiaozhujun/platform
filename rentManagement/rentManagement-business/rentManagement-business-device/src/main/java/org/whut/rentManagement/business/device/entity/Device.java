@@ -1,5 +1,8 @@
 package org.whut.rentManagement.business.device.entity;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
+
 import java.util.Date;
 
 /**
@@ -11,8 +14,9 @@ import java.util.Date;
  */
 public class Device {
     private long id;
-    private long mainDeviceId;
-    private long batchId;
+    private Long mainDeviceId;
+    private Long batchId;
+    private Long supplierId;
     private Long typeId;
     private Long storehouseId;
     private Long contractId;
@@ -21,30 +25,16 @@ public class Device {
     private String name;
     private String number;
     private String price;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date produceTime;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date createTime;
     private String priceUnit;
 
     private String lng;
     private String lat;
 
-    private long appId;
-
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLng() {
-        return lng;
-    }
-
-    public void setLng(String lng) {
-        this.lng = lng;
-    }
+    private Long appId;
 
     public long getId() {
         return id;
@@ -52,6 +42,54 @@ public class Device {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Long getMainDeviceId() {
+        return mainDeviceId;
+    }
+
+    public void setMainDeviceId(Long mainDeviceId) {
+        this.mainDeviceId = mainDeviceId;
+    }
+
+    public Long getBatchId() {
+        return batchId;
+    }
+
+    public void setBatchId(Long batchId) {
+        this.batchId = batchId;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+    }
+
+    public Long getStorehouseId() {
+        return storehouseId;
+    }
+
+    public void setStorehouseId(Long storehouseId) {
+        this.storehouseId = storehouseId;
+    }
+
+    public Long getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(Long contractId) {
+        this.contractId = contractId;
     }
 
     public String getAddress() {
@@ -118,51 +156,27 @@ public class Device {
         this.priceUnit = priceUnit;
     }
 
-    public long getAppId() {
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public Long getAppId() {
         return appId;
     }
 
-    public void setAppId(long appId) {
+    public void setAppId(Long appId) {
         this.appId = appId;
-    }
-
-    public long getMainDeviceId() {
-        return mainDeviceId;
-    }
-
-    public void setMainDeviceId(long mainDeviceId) {
-        this.mainDeviceId = mainDeviceId;
-    }
-
-    public long getBatchId() {
-        return batchId;
-    }
-
-    public void setBatchId(Long batchId) {
-        this.batchId = batchId;
-    }
-
-    public Long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
-    }
-
-    public Long getStorehouseId() {
-        return storehouseId;
-    }
-
-    public void setStorehouseId(Long storehouseId) {
-        this.storehouseId = storehouseId;
-    }
-
-    public Long getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
     }
 }

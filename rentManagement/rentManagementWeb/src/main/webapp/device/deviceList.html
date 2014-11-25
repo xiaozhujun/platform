@@ -21,12 +21,33 @@ $(function () {
     $.post($.URL.contract.list, null, listContractCallback, "json");
     $.post($.URL.storehouse.list, null, storehouseListCallback, "json");
     $.post($.URL.batch.list, null, batchListCallBack, "json");
+    $.post($.URL.supplier.list, null, supplierListCallBack, "json");
 })
-var gridData = {};
+
+var deviceSupplierData = [];
+function supplierListCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j["text"] = content.name;
+            j["id"] = content.id;
+            deviceSupplierData.push(j);
+        });
+        $("#deviceSupplier").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:deviceSupplierData,
+            width:200,
+            valueField:'id',
+            textField:'text',
+            valueFieldID:'deviceSupplierSelect'   /*下拉表Id是Device*/
+        });
+    }
+};
+
+var deviceGridData = {};
 function deviceCallback(data) {
     if (data.code== 200) {
-        gridData.Rows = data.data;
-        gridData.Total = data.data.length;
+        deviceGridData.Rows = data.data;
+        deviceGridData.Total = data.data.length;
         device_f_initGrid();
     }
 }
@@ -114,9 +135,9 @@ var d=new Date();      /*实现时间的选择*/
 var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
 $("#produceTime").ligerDateEditor({initValue: dd});
 
-var manager, g;
+var device_manager, g;
 function device_f_initGrid() {
-    g = manager = $("#deviceMainGrid").ligerGrid({
+    g = device_manager = $("#deviceMainGrid").ligerGrid({
         columns: [
             { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
             { display: '设备名', name: 'name',
@@ -125,28 +146,35 @@ function device_f_initGrid() {
             { display: '设备编号', name: 'number', type: 'text',
                 editor: { type: 'text'}
             },
-            { display: '设备类型', name: 'deviceType',type: 'text',
+            { display: '设备类型', name: 'typeId',type: 'int',
                 editor: { type: 'select', emptyText: null, data:deviceTypeData, valueField: 'id', textField: 'text'
                 },
                 render: function (item) {
                     return item.deviceType;
                 }
             },
-            { display: '设备批次', name: 'batch',type: 'text',
+            { display: '供应商', name: 'supplierId',type: 'int',
+                editor: { type: 'select', emptyText: null, data:deviceSupplierData, valueField: 'id', textField: 'text'
+                },
+                render: function (item) {
+                    return item.supplierName;
+                }
+            },
+            { display: '设备批次', name: 'batchId',type: 'int',
                 editor: { type: 'select', emptyText: null, data:batchData, valueField: 'id', textField: 'text'
                 },
                 render: function (item) {
                     return item.batchNumber;
                 }
             },
-            { display: '所属仓库', name: 'storehouse',type: 'text',
+            { display: '所属仓库', name: 'storehouseId',type: 'int',
                 editor: { type: 'select', emptyText: null, data: storehouseData, valueField: 'id', textField: 'text'
                 },
                 render: function (item) {
                     return item.storehouse;
                 }
             },
-            { display: '所属合同', name: 'contract',type: 'text',
+            { display: '所属合同', name: 'contractId',type: 'int',
                 editor: { type: 'select', emptyText: null, data: contractData, valueField: 'id', textField: 'text'
                 },
                 render: function (item) {
@@ -164,12 +192,12 @@ function device_f_initGrid() {
             { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value) {
                 var h = "";
                 if (!rowdata._editing) {
-                    h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
-                    h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a> ";
+                    h += "<a href='javascript:device_beginEdit(" + rowindex + ")'>修改</a> ";
+                    h += "<a href='javascript:device_deleteRow(" + rowindex + ")'>删除</a> ";
                 }
                 else {
-                    h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
-                    h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
+                    h += "<a href='javascript:device_endEdit(" + rowindex + ")'>提交</a> ";
+                    h += "<a href='javascript:device_cancelEdit(" + rowindex + ")'>取消</a> ";
                 }
                 return h;
             }
@@ -179,24 +207,24 @@ function device_f_initGrid() {
             $("#txtrowindex").val(rowindex);
         },
         enabledEdit: true, clickToEdit: false, isScroll: false,
-        data: gridData,
+        data: deviceGridData,
         width: '100%'
     });
 }
-function beginEdit(rowid) {
-    manager.beginEdit(rowid);
+function device_beginEdit(rowid) {
+    device_manager.beginEdit(rowid);
 }
-function cancelEdit(rowid) {
-    manager.cancelEdit(rowid);
+function device_cancelEdit(rowid) {
+    device_manager.cancelEdit(rowid);
 }
-function endEdit(rowid) {
-    manager.endEdit(rowid);
-    var row = manager.getRow(rowid);
+function device_endEdit(rowid) {
+    device_manager.endEdit(rowid);
+    var row = device_manager.getRow(rowid);
     var jsonString = $.toJSON(row);
-    $.post($.URL.device.update, {"jsonString": jsonString}, updateCallback, "json");
+    $.post($.URL.device.update, {"jsonString": jsonString}, device_updateCallback, "json");
 }
 
-function updateCallback(data) {
+function device_updateCallback(data) {
     if (data.code == 200) {
         $.post($.URL.device.list, null, deviceCallback, "json");
         $.ligerDialog.success("修改成功");
@@ -207,16 +235,16 @@ function updateCallback(data) {
     }
 }
 
-function deleteRow(rowid) {
+function device_deleteRow(rowid) {
     if (confirm('确定删除?')) {
-        var row = manager.getRow(rowid);
+        var row = device_manager.getRow(rowid);
         var jsonString = $.toJSON(row);
-        $.post($.URL.device.delete, {"jsonString": jsonString}, deleteCallback, "json");
-        manager.deleteRow(rowid);
+        $.post($.URL.device.delete, {"jsonString": jsonString}, device_deleteCallback, "json");
+        device_manager.deleteRow(rowid);
     }
 }
 
-function deleteCallback(data) {
+function device_deleteCallback(data) {
     if (data.code == 200) {
         $.ligerDialog.success("成功删除！");
     } else {
@@ -238,17 +266,18 @@ $("#submitBtn").click(function(){
     var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
     data.name=$("#deviceName").val();
     data.number=$("#deviceNumber").val();
+    data.supplierId=$("#deviceSupplier").ligerComboBox().getValue();
     data.deviceTypeId=$("#deviceType").ligerComboBox().getValue();
     data.batchId=$("#batchBox").ligerComboBox().getValue();
     data.storehouseId=$("#storehouse").ligerComboBox().getValue();
     data.contractId=$("#contract").ligerComboBox().getValue();
     data.status=$("#deviceStatus").val();
     data.produceTime=$("#produceTime").val();
-    $.post($.URL.device.add,data,addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+    $.post($.URL.device.add,data,device_addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
 });
 
 
-function addCallBack(data){
+function device_addCallBack(data){
     if(data.code==200){
         $.ligerDialog.success('操作成功');
         $.post($.URL.device.list,null,deviceCallback,"json");
@@ -294,6 +323,12 @@ function addCallBack(data){
             <tr>
                 <td align="right" class="l-table-edit-td">生产时间:</td>
                 <td align="left" class="l-table-edit-td"><input name="produceTime" type="date" id="produceTime" ltype="date" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">供应商:</td>
+                <td align="left" class="l-table-edit-td"><input name="supplier" type="text"  id="deviceSupplier"></td>
                 <td align="left"></td>
             </tr>
 

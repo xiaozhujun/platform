@@ -1,5 +1,8 @@
 package org.whut.rentManagement.business.device.entity;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
+
 import java.util.Date;
 
 /**
@@ -13,6 +16,8 @@ public class Batch {
     private long id;
     private String number;
     private String description;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
+    private Date produceTime;
     private Date createTime;
     private long appId;
 
@@ -38,6 +43,14 @@ public class Batch {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getProduceTime() {
+        return produceTime;
+    }
+
+    public void setProduceTime(Date produceTime) {
+        this.produceTime = produceTime;
     }
 
     public Date getCreateTime() {

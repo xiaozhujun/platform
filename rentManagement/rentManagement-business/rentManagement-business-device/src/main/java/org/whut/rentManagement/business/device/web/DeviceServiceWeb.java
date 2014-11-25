@@ -7,7 +7,6 @@ import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.device.entity.Device;
-import org.whut.rentManagement.business.device.entity.SubDevice;
 import org.whut.rentManagement.business.device.service.DeviceService;
 
 import javax.ws.rs.*;
@@ -83,7 +82,7 @@ public class DeviceServiceWeb {
             deviceService.add(device);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "添加成功!");
         }else{
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "已存在该设备!");
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "设备编号已存在!");
         }
     }
 
@@ -91,40 +90,19 @@ public class DeviceServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString) throws ParseException{
-            long appId= UserContext.currentUserAppId();
-            SubDevice subdevice = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubDevice.class);
-            if(subdevice==null){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空!");
-            }
-            long id;
-            try{
-                id=deviceService.getIdByNumber(subdevice.getNumber(),appId);
-            }catch (Exception e){
-                id=0;
-            }
-            if(id!=0 && id!=subdevice.getId())
-            {
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"设备编号已存在");
-            }
-            else
-            {
-                Device device=new Device();
-                device.setId(subdevice.getId());
-                device.setName(subdevice.getName());
-                device.setTypeId(Long.parseLong(subdevice.getDeviceType()));
-                device.setStorehouseId(Long.parseLong(subdevice.getStorehouse()));
-                device.setAddress(subdevice.getAddress());
-                device.setContractId(Long.parseLong(subdevice.getContract()));
-                device.setNumber(subdevice.getNumber());
-                device.setPrice(subdevice.getPrice());
-                device.setPriceUnit(subdevice.getPriceUnit());
-                device.setStatus(subdevice.getStatus());
-                device.setAppId(appId);
-                DateFormat DF=new SimpleDateFormat("yyyy-MM-dd");
-                device.setProduceTime(DF.parse(subdevice.getProduceTime()));
-                deviceService.update(device);
-                return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-            }
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空!");
+        }
+        Device device = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Device.class);
+        if(device==null){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空!");
+        }
+        long id;
+        long appId= UserContext.currentUserAppId();
+        device.setCreateTime(null);
+        device.setAppId(appId);
+        deviceService.update(device);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
 

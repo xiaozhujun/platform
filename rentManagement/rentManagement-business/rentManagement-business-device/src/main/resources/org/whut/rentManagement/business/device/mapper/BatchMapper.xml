@@ -4,12 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.device.mapper.BatchMapper">
     <sql id="batch_fields">
-         ID,NUMBER,DESCRIPTION,CREATETIME,APPID
+         ID,NUMBER,DESCRIPTION,PRODUCETIME,CREATETIME,APPID
      </sql>
     <resultMap id="batchResultMap" type="Batch">
         <id property="id" column="ID"/>
         <result property="number" column="NUMBER"/>
         <result property="description" column="DESCRIPTION"/>
+        <result property="produceTime" column="PRODUCETIME"/>
         <result property="createTime" column="CREATETIME"/>
         <result property="appId" column="APPID"/>
     </resultMap>
@@ -20,7 +21,7 @@
         batch(
         <include refid="batch_fields" />
         )
-        VALUES (#{id}, #{number},#{description},#{createTime},#{appId});
+        VALUES (#{id}, #{number},#{description},#{produceTime},#{createTime},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -31,6 +32,7 @@
         UPDATE batch
         <set>
             <if test="number!=null">NUMBER=#{number},</if>
+            <if test="produceTime!=null">PRODUCETIME=#{produceTime},</if>
             <if test="description!=null">DESCRIPTION=#{description},</if>
         </set>
         WHERE ID=#{id} AND batch.appId=#{appId}

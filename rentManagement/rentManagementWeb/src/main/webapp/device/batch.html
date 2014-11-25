@@ -28,11 +28,11 @@
 
         var d=new Date();      /*实现时间的选择*/
         var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-        $("#createTime").ligerDateEditor({initValue: dd});
+        $("#batchProduceTime").ligerDateEditor({initValue: dd});
 
         var manager,g;
         function f_initGrid(){
-            g = manager = $("#maingrid").ligerGrid( {
+            g = manager = $("#produceMainGrid").ligerGrid( {
 
                 columns:[
                     {display:'主键',name:'id',width:50,type:'int',frozen:true} ,
@@ -42,7 +42,7 @@
                     {display:'批次描述',name:'description',
                         editor:{type:'text'}
                     },
-                    { display: '创建时间', name: 'createTime', width: 100,type:"date"},
+                    { display: '采购时间', name: 'produceTime', width: 100,type:"date"},
                     {display:'操作',isSort:false,width:120,render:function(rowdata,rowindex,value)
                     {
                         var h="";
@@ -123,6 +123,7 @@
         $("#batchSubmitBtn").click(function(){
             var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
             data.number=$("#batchNumber").val();
+            data.produceTime=$("#batchProduceTime").val();
             data.description=$("#batchDescription").val();
             $.post($.URL.batch.add,{"jsonString": $.toJSON(data)},batchAddCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
         });
@@ -158,6 +159,12 @@
             </tr>
 
             <tr>
+                <td align="right" class="l-table-edit-td">采购时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="produceTime" type="text" id="batchProduceTime"/>
+                </td><td align="left"></td>
+            </tr>
+
+            <tr>
                 <td align="right" class="l-table-edit-td">描述:</td>
                 <td align="left" class="l-table-edit-td"><textarea name="description" type="text" id="batchDescription" cols="20" rows="2" class="l-textarea" style="width:400px"></textarea>
                 </td><td align="left"></td>
@@ -170,7 +177,7 @@
 <div id="list">
     <div><input type="button" value="添加" id="batchAddSubmitBtn" class="l-button l-button-submit" /></div>
     <div class="l-clear"></div>
-    <div id="maingrid" style="margin-top:20px"></div> <br />
+    <div id="produceMainGrid" style="margin-top:20px"></div> <br />
 </div>
 <div style="display:none;">
     <!-- g data total ttt -->

@@ -110,6 +110,8 @@
         LEFT JOIN supplier ON device.supplierId=supplier.id
         where device.appId=#{appId}
         <if test="appId!=null"> AND device.APPID=#{appId}</if>
+        <if test="batchId!=null"> AND device.batchId=#{batchId}</if>
+        <if test="typeId!=null"> AND device.typeId=#{typeId}</if>
         <if test="optionType!=null"> AND device.optionType=#{optionType}</if>
         <if test="storehouseId!=null"> AND device.storehouseId=#{storehouseId}</if>
         <if test="mainDevice!=null"> AND device_type.mainDevice=#{mainDevice}</if>

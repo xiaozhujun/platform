@@ -68,6 +68,13 @@ function batchListCallBack(data) {
             textField:'text',
             valueFieldID:'batchSelect'   /*下拉表Id是Batch*/
         });
+        $("#deviceSearchBatchInput").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:batchData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'batchSearchSelect'   /*下拉表Id是Batch*/
+        });
     }
 };
 
@@ -86,6 +93,13 @@ function deviceTypeListCallBack(data) {
             valueField:'value',
             textField:'text',
             valueFieldID:'deviceTypeSelect'   /*下拉表Id是Device*/
+        });
+        $("#deviceSearchDeviceTypeInput").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:deviceTypeData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'deviceTypeSearchSelect'   /*下拉表Id是Device*/
         });
     }
 };
@@ -274,7 +288,7 @@ function device_deleteCallback(data) {
     }
 }
 
-$("#addSubmitBtn").click(function(){
+$("#deviceAddSubmitBtn").click(function(){
     document.getElementById('form1').reset();
     c_show();
     $.ligerDialog.open({title:'添加设备', target: $("#addDevice"),width:500});
@@ -312,6 +326,34 @@ function device_addCallBack(data){
         $.ligerDialog.error(data.message);
     }
 }
+
+$("#deviceSearchBtn").click(function(){
+    var data={};
+    if($("#deviceSearchNumberInput").val()!=""){
+        data.number=$("#deviceSearchNumberInput").val();
+    }
+    if($("#deviceTypeSearchSelect").val()!=""){
+        data.typeId=$("#deviceTypeSearchSelect").val();
+    }
+    if($("#batchSearchSelect").val()!=""){
+        data.batchId=$("#batchSearchSelect").val();
+    }
+    if(data.number==undefined&&data.typeId==undefined&&data.batchId==undefined){
+        $.post($.URL.device.list,null,deviceCallback,"json");
+    }else{
+        $.post($.URL.device.findByCondition,{"jsonString": $.toJSON(data)},deviceQueryListCallback,"json");
+    }
+});
+function deviceQueryListCallback(data){
+    if(data.code==200){
+        deviceGridData.Rows=data.data;
+        deviceGridData.Total=data.data.length;
+        device_f_initGrid();
+    }
+    else if(data.code==500) {
+        $.ligerDialog.error(data.message);
+    }
+};
 
 
 
@@ -406,7 +448,24 @@ function device_addCallBack(data){
     </form>
 </div>
 <div id="list">
-    <div><input type="button" value="添加设备" id="addSubmitBtn" class="l-button l-button-submit"/></div>
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">设备编号:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="deviceNumber" type="text" id="deviceSearchNumberInput" ltype="text" />
+            </td>
+            <td align="right" class="l-table-edit-td">设备类型:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="typeId" type="text"  id="deviceSearchDeviceTypeInput">
+            </td>
+            <td align="right" class="l-table-edit-td">设备批次:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="batchId" type="text"  id="deviceSearchBatchInput">
+            </td>
+            <td align="right"><input type="button" value="查询" id="deviceSearchBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="添加" id="deviceAddSubmitBtn"  class="l-button l-button-submit" /></td>
+        </tr>
+    </table>
     <div class="l-clear"></div>
     <div id="deviceMainGrid" style="margin-top:5px"></div>
     <br/>

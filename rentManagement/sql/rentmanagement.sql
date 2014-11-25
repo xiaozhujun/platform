@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-24 10:16:12
+Date: 2014-11-25 20:31:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -123,15 +123,17 @@ CREATE TABLE `batch` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `number` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `produceTime` datetime DEFAULT NULL,
   `createTime` datetime DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of batch
 -- ----------------------------
-INSERT INTO `batch` VALUES ('1', 'sdfsd', '123123123', '2014-11-23 11:04:38', '1');
+INSERT INTO `batch` VALUES ('1', 'sdfsd', '123123123', null, '2014-11-23 11:04:38', '1');
+INSERT INTO `batch` VALUES ('2', 'pc20141125-01', '20141125从中联重科采购10台标准塔吊', '2014-11-01 00:00:00', '2014-11-25 10:06:58', '1');
 
 -- ----------------------------
 -- Table structure for car_driver
@@ -240,6 +242,7 @@ CREATE TABLE `device` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `mainDeviceId` bigint(20) DEFAULT NULL,
   `batchId` bigint(20) DEFAULT NULL,
+  `supplierId` bigint(20) DEFAULT NULL,
   `typeId` bigint(20) DEFAULT NULL,
   `storehouseId` bigint(20) DEFAULT NULL,
   `carDriverId` bigint(20) DEFAULT NULL,
@@ -257,17 +260,18 @@ CREATE TABLE `device` (
   `lat` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', null, '1', null, null, '使用', '司机室001', 'sjs001', null, '2013-11-01', '2014-11-09', null, '114.380494', '30.507115', '1');
-INSERT INTO `device` VALUES ('2', '2', '1', '1', '1', null, '1', null, null, '使用', '司机室002', 'sjs002', null, '2013-11-14', '2014-11-09', null, '114.380494', '30.506115', '1');
-INSERT INTO `device` VALUES ('3', '3', '1', '1', '1', null, '1', null, null, '在用', '批次设备 ', 'pc123sdf', null, '2014-11-04', '2014-11-23', null, null, null, '1');
-INSERT INTO `device` VALUES ('4', '0', '0', '1', '1', null, '1', null, null, '在用', '塔吊0003', 'td003', null, '2014-07-07', '2014-11-24', null, null, null, '1');
-INSERT INTO `device` VALUES ('5', '0', '1', '1', '1', null, '1', null, null, 'sdf', 'dfdf', '12123', null, '2014-10-28', '2014-11-24', null, null, null, '1');
-INSERT INTO `device` VALUES ('6', '0', '1', '1', '1', null, '1', null, null, 'sdf', 'gggg', 'sdfs', null, '2014-10-26', '2014-11-24', null, null, null, '1');
+INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', '1', null, '1', null, null, '使用', '司机室001', 'sjs001', null, '2013-11-01', '2014-11-09', null, '114.380494', '30.507115', '1');
+INSERT INTO `device` VALUES ('2', '2', '1', '1', '1', '1', null, '1', null, null, '使用', '司机室002', 'sjs002', null, '2013-11-14', '2014-11-09', null, '114.380494', '30.506115', '1');
+INSERT INTO `device` VALUES ('3', '3', '1', '1', '1', '1', null, '1', null, null, '在用', '批次设备 ', 'pc123sdf', null, '2014-11-04', '2014-11-23', null, null, null, '1');
+INSERT INTO `device` VALUES ('4', '0', '1', '1', '1', '1', null, '1', null, null, '在用', '塔吊0003', 'td003', null, '2014-07-07', '2014-11-24', null, null, null, '1');
+INSERT INTO `device` VALUES ('5', '0', '1', '1', '1', '1', null, '1', null, null, 'sdf', 'dfdf', '12123', null, '2014-10-28', '2014-11-24', null, null, null, '1');
+INSERT INTO `device` VALUES ('6', '0', '1', '2', '1', '1', null, '1', null, null, 'sdf', 'gggg', 'sdfs', '1000', '2014-10-31', '2014-11-24', null, null, null, '1');
+INSERT INTO `device` VALUES ('8', null, '1', '1', '1', '1', null, '1', '2', null, '维修', '塔吊0003', 'td0003', '500000', '2014-11-01', '2014-11-25', '元', null, null, '1');
 
 -- ----------------------------
 -- Table structure for device_type
@@ -288,7 +292,7 @@ CREATE TABLE `device_type` (
 -- ----------------------------
 -- Records of device_type
 -- ----------------------------
-INSERT INTO `device_type` VALUES ('1', '司机室', '司机室', '2014-11-06', '台', '0', '5', '1');
+INSERT INTO `device_type` VALUES ('1', '司机室', '司机室', '2014-11-06', '台', '1', '5', '1');
 
 -- ----------------------------
 -- Table structure for employee
@@ -335,7 +339,7 @@ CREATE TABLE `installation` (
 -- ----------------------------
 INSERT INTO `installation` VALUES ('9', '1', '安装', '肖竹军、王洪柱', '2014-11-13 03:28:08', '完成', '/rentManagementResource/rentImage/1/installation/9_towerCrane.jpg', '1');
 INSERT INTO `installation` VALUES ('10', '1', '安装', '测试', '2014-11-13 03:34:00', '完成', '/rentManagementResource/rentImage/1/installation/10_towerCrane.jpg', '1');
-INSERT INTO `installation` VALUES ('11', '1', '安装', '安装人员', '2014-11-13 04:06:37', '完成', '/rentManagementResource/rentImage/1/installation/11_towerCrane.jpg', '1');
+INSERT INTO `installation` VALUES ('11', '1', '加装', '安装人员', '2014-11-13 04:06:37', '未完成', '/rentManagementResource/rentImage/1/installation/11_towerCrane.jpg', '1');
 
 -- ----------------------------
 -- Table structure for installation_device
@@ -613,8 +617,8 @@ CREATE TABLE `supplier` (
 -- ----------------------------
 -- Records of supplier
 -- ----------------------------
-INSERT INTO `supplier` VALUES ('1', 'xxx公司', 'sdfsdf', 'xxx地址', 'xxx', '1234123123', 'sdfsdf@163.com', '888888', '2014-10-29', '1');
-INSERT INTO `supplier` VALUES ('2', 'sss公司', 'sssss', 'sss地址', 'sss', '54545345', 'sdfsdf@163.com', '65645451', '2014-10-29', '1');
+INSERT INTO `supplier` VALUES ('1', '三一重工', '三一重工', 'xxx地址', '张三', '1234123123', 'sdfsdf@163.com', '888888', '2014-10-29', '1');
+INSERT INTO `supplier` VALUES ('2', '中联重科', '中联重科', 'sss地址', '李四', '54545345', 'sdfsdf@163.com', '65645451', '2014-10-29', '1');
 
 -- ----------------------------
 -- Table structure for transport

@@ -1,5 +1,6 @@
 package org.whut.platform.business.report.web;
 import org.springframework.stereotype.Component;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.report.PlatformReport;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -22,7 +23,7 @@ import java.util.Map;
 @Path("/report")
 public class ReportServiceWeb {
     private static PlatformLogger logger=PlatformLogger.getLogger(ReportServiceWeb.class);
-    private PlatformReport platformReport=new PlatformReport();
+    private PlatformReport platformReport=new PlatformReport(FundamentalConfigProvider.get("dbcp.riskmanagement.driverClassName"),FundamentalConfigProvider.get("dbcp.riskmanagement.url"),FundamentalConfigProvider.get("dbcp.riskmanagement.username"),FundamentalConfigProvider.get("dbcp.riskmanagement.password"));
     @Context HttpServletRequest request;
     @Context HttpServletResponse response;
     @Path("/showCraneReport")

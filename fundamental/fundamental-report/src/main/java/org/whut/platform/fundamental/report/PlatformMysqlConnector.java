@@ -12,35 +12,29 @@ import java.sql.*;
  * To change this template use File | Settings | File Templates.
  */
 public class PlatformMysqlConnector {
-    private static String className= FundamentalConfigProvider.get("dbcp.riskmanagement.driverClassName");
-    private String url=FundamentalConfigProvider.get("dbcp.riskmanagement.url");
-    private String inspectUrl=FundamentalConfigProvider.get("dbcp.inspectmanagement.url");
-    private String username=FundamentalConfigProvider.get("dbcp.riskmanagement.username");
-    private String password=FundamentalConfigProvider.get("dbcp.riskmanagement.password");
-    static {
-        try{
-            Class.forName(className);
-        }catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
+    private static String className= null;
+    private String url=null;
+    private String username=null;
+    private String password=null;
+    PlatformMysqlConnector(String className,String url,String username,String password){
+        this.className=className;
+        this.url=url;
+        this.username=username;
+        this.password=password;
     }
     public Connection getConnection(){
         Connection connection=null;
         try{
+            try{
+                Class.forName(className);
+            }catch (ClassNotFoundException e){
+                e.printStackTrace();
+            }
             connection= DriverManager.getConnection(url,username,password);
         }catch (SQLException e){
             e.printStackTrace();
         }
        return connection;
-    }
-    public Connection getInspectConnection(){
-        Connection connection=null;
-        try{
-            connection= DriverManager.getConnection(inspectUrl,username,password);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return connection;
     }
     public void close(Connection connection,PreparedStatement statement,ResultSet rs){
         if(rs!=null){
@@ -66,8 +60,6 @@ public class PlatformMysqlConnector {
         }
     }
     public static void main(String[] args){
-        PlatformMysqlConnector ds=new PlatformMysqlConnector();
-        System.out.print(ds.getConnection());
 
     }
 }

@@ -223,7 +223,7 @@ public class NIOServer implements Runnable{
     public void run(){
 
             String portString = FundamentalConfigProvider.get("communication.port");
-            System.out.println("socket server listen:"+portString);
+            logger.info("socket server listen:"+portString);
             int port = Integer.parseInt(portString);
             try{
 
@@ -239,10 +239,13 @@ public class NIOServer implements Runnable{
                 selector = Selector.open();
                 // 注册到selector，等待连接
                 serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-                System.out.println("socket server start----8282:");
+                logger.info("socket server start----8282:");
 
                 listen();
-            }catch (Exception e){}
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
         }
 
 

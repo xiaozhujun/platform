@@ -23,7 +23,7 @@ public class SensorService {
     private AreaMapper areaMapper;
     @Autowired
     private GroupMapper groupMapper;
-    public long getSensorId(String number,long appId){
+    public Long getSensorId(String number,long appId){
          return sensorMapper.getSensorId(number,appId);
     }
     public void add(Sensor sensor){

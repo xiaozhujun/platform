@@ -27,8 +27,10 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class PlatformReport {
-          private PlatformMysqlConnector ds=new PlatformMysqlConnector();
-
+          private PlatformMysqlConnector ds;
+          public PlatformReport(String className,String url,String username,String password){
+              ds=new PlatformMysqlConnector(className,url,username,password);
+          }
          /*
          传入报表模板，一个map集合，还有导出报表的类型,导出报表
           */

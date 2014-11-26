@@ -12,6 +12,7 @@ import org.whut.monitor.business.monitor.service.SensorService;
 import org.whut.monitor.business.monitor.service.WarnConditionService;
 import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
@@ -26,6 +27,8 @@ import java.util.*;
  */
 @Service
 public class SensorDataService {
+    private static final PlatformLogger logger = PlatformLogger.getLogger(SensorDataService.class);
+
     private String sensorDB;
     private String sensorCollection;
     private RedisConnector redisConnector;
@@ -71,13 +74,13 @@ public class SensorDataService {
             observer.setAlgorithmService(algorithmService);
             observer.setCollectorService(collectorService);
             observer.setWsMessageDispatcher(wsMessageDispatcher);
-            System.out.println("完成注入");
+            logger.info("完成注入");
         }
         System.out.println("sssssssssssss " + observer.getSensorService());
         try{
             DBObject dbObject = (DBObject) JSON.parse(msg);
             ArrayList sensors = (ArrayList)dbObject.get("sensors");
-            System.out.println("dddddddddddddddddd " + sensors.size() + " dddddddddddddddddd " + sensors);
+            logger.info("dddddddddddddddddd " + sensors.size() + " dddddddddddddddddd " + sensors);
             DBObject curSensor;
             for(int i=0;i<sensors.size();i++){
                 curSensor = (DBObject)sensors.get(i);
@@ -91,6 +94,7 @@ public class SensorDataService {
                 }
             }
         }catch (Exception e){
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return objectID;

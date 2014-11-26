@@ -32,7 +32,9 @@ public class WebsocketMessageDispatcher implements WsMessageDispatcher {
                 ActiveMQTextMessage message=new ActiveMQTextMessage();
                 message.setText(messageBody);
                 platformMessageProducer.sendTopic(destination,message);
+                logger.info("dispatch message: "+messageBody);
             }catch(MessageNotWriteableException e){
+                logger.error(e.getMessage());
                 e.printStackTrace();
             }
         }

@@ -46,6 +46,7 @@ public class SensorMessageDispatcher implements MessageDispatcher {
                 message.setText(messageBody);
                 platformMessageProducer.sendTopic(destination,message);
             } catch (MessageNotWriteableException e) {
+                logger.error(e.getMessage());
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
 
@@ -69,7 +70,7 @@ public class SensorMessageDispatcher implements MessageDispatcher {
         List<String> sensorNumbers = sensorService.getSensorNumByCNum(collectorNum);
         for (int i=0; i<sensorNumbers.size(); i++) {
             String number = sensorNumbers.get(i).toString();
-            System.out.println("jjjjjjjjjjjjjjjjjj " + number);
+            logger.info("jjjjjjjjjjjjjjjjjj " + number);
             wsMessageDispatcher.dispatchMessage("{sensors:[{sensorNum:'" + sensorNumbers.get(i) + "',dataType:'Route',time:'"+new Date().toString()+"',data:[],id:" + sensorService.getSensorId(sensorNum,1) +
                     ",appId:" + appId + ",meanVariance:0,MaxValue:0,MinValue:0,warnCount:'暂无数据',collectorNum:'" + collectorNum + "',lastCommunicateTime:'"+redisConnector.get("sensor:{"+sensorNum+"}:lastDate")+"',"+"isConnected:'"+"false"+"'"+"}]}");
         }

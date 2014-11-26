@@ -9,11 +9,9 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
-import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
 
 import javax.jms.Message;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -53,9 +51,11 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                     sendMsg(wsNumber.toString(),appId, messageText);//向websocket通道发数据
                 }
                 catch (JSONException e){
+                    logger.error(e.getMessage());
                     e.printStackTrace();
                 }
             }catch (Exception e){
+                logger.error(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -73,6 +73,7 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                     }
             }
         } catch (Exception exception) {
+            logger.error(exception.getMessage());
             exception.printStackTrace();
         }
     }

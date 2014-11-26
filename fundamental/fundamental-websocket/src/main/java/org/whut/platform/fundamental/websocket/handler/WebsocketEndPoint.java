@@ -47,9 +47,13 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         //得到前台发来的命令：取消订阅、订阅
         String command=dataJson.getString("c");
         if (command.equals("cancelSubscribe")){    //取消订阅
+            logger.info("取消订阅: "+ReceivedMessage);
             CommandProcessing.cancelSubscribe(ReceivedMessage, appId, userId);
         } else if (command.equals("Subscribe")){    //订阅
+            logger.info("订阅: "+ReceivedMessage);
             CommandProcessing.subscribe(appId, userId, sNum, session);
+        }else{
+            logger.info("无法解析的消息: "+ReceivedMessage);
         }
         super.handleTextMessage(session, message);
     }

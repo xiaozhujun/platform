@@ -197,6 +197,10 @@
             "contractList":"rs/contract/getContractList",
             "inStockList":"rs/stock_in_sheet/getInStockList",
             "outStockList":"rs/stock_out_sheet/getOutStockList"
+        },
+        "rentReport":{
+            "reportSearch":"rs/RentReport/reportSearch",
+            "ShowRentReport":"rs/RentReport/ShowRentReport"
         }
     }
 })(jQuery);

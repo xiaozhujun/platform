@@ -21,6 +21,7 @@
         <module>rentManagement-business-stock</module>
         <module>rentManagement-business-badDebt</module>
         <module>rentManagement-business-transport</module>
+        <module>rentManagement-business-rentReport</module>
     </modules>
 
 

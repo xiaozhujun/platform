@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.rentManagement.business.rentReport.mapper.RentReportMapper">
+    <resultMap id="SearchReportBeanMap" type="SearchReportBean">
+        <result property="devnum" column="DEVNUM" />
+        <result property="devname" column="DEVNAME" />
+        <result property="devtype" column="DEVTYPE"/>
+        <result property="price" column="PRICE" />
+        <result property="priceunit" column="PRICEUNIT" />
+        <result property="producetime" column="PRODUCETIME" />
+        <result property="devstatus" column="DEVSTATUS" />
+        <result property="devaddress" column="DEVADDRESS" />
+    </resultMap>
+    <select id="getRentTableRecordList" parameterType="map" resultType="map">
+        SELECT
+        itr.number as devnum,itr.name as devname ,dt.name as devtype,itr.price,itr.priceunit,itr.optiontype as devstatus,itr.address as devaddress
+        FROM
+        device itr INNER JOIN device_type dt ON itr.typeId=dt.id
+        WHERE
+        <if test='deviceType!="null"'>
+            dt.name=#{deviceType}
+        </if>
+        <if test='deviceStatus!="null"'>
+            AND itr.status=#{deviceStatus}
+        </if>
+        <if test='sTime!="" and eTime!=""'>
+            AND  itr.createTime BETWEEN #{sTime} AND #{eTime}
+        </if>
+        <if test='appId!=0'>
+            AND  itr.appId=#{appId}
+        </if>
+        order by itr.number desc
+    </select>
+
+    <select id="getRentTableRecordByBean" parameterType="map" resultMap="SearchReportBeanMap">
+        SELECT *
+        FROM
+        device itr INNER JOIN device_type dt ON itr.typeId=dt.id
+        WHERE
+        <if test='deviceType!="null"'>
+            dt.name=#{deviceType}
+        </if>
+        <if test='deviceStatus!="null"'>
+            AND itr.status=#{deviceStatus}
+        </if>
+        <if test='sTime!="" and eTime!=""'>
+            AND  itr.createTime BETWEEN #{sTime} AND #{eTime}
+        </if>
+        <if test='appId!=0'>
+            AND  itr.appId=#{appId}
+        </if>
+        order by itr.number desc
+    </select>
+
+    <!--<select id="aaa" parameterType="java.lang.Long" resultType="map">
+        SELECT *
+        FROM device
+        WHERE device.appId=#{appId}
+    </select>-->
+
+</mapper>

@@ -13,8 +13,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class Contract {
-    private long id;
-    private long customerId;
+    private Long id;
+    private Long customerId;
     private String customerName;
     private String name;
     private String number;
@@ -26,13 +26,14 @@ public class Contract {
     @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date signTime;
     private String projectLocation;
+    private String attachment;
     private String chargeMan;
     private String preBuryMan;
     @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date preBuryTime;
     private String preBuryStatus;
-    private long needInstallCount;
-    private long installCount;
+    private Long needInstallCount;
+    private Long installCount;
     private String netRegisterMan;
     @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date netRegisterTime;
@@ -43,21 +44,21 @@ public class Contract {
     private String removeStatus;
     @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date removeTime;
-    private long appId;
+    private Long appId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
@@ -157,19 +158,19 @@ public class Contract {
         this.preBuryStatus = preBuryStatus;
     }
 
-    public long getNeedInstallCount() {
+    public Long getNeedInstallCount() {
         return needInstallCount;
     }
 
-    public void setNeedInstallCount(long needInstallCount) {
+    public void setNeedInstallCount(Long needInstallCount) {
         this.needInstallCount = needInstallCount;
     }
 
-    public long getInstallCount() {
+    public Long getInstallCount() {
         return installCount;
     }
 
-    public void setInstallCount(long installCount) {
+    public void setInstallCount(Long installCount) {
         this.installCount = installCount;
     }
 
@@ -229,11 +230,19 @@ public class Contract {
         this.removeTime = removeTime;
     }
 
-    public long getAppId() {
+    public Long getAppId() {
         return appId;
     }
 
-    public void setAppId(long appId) {
+    public void setAppId(Long appId) {
         this.appId = appId;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }

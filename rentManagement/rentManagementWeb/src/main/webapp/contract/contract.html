@@ -13,10 +13,11 @@
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="js/jquery.form.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
-//            $.get($.URL.contract.getNumber,null,null,"json");
-            $.post($.URL.contract.list,null,listCallback,"json");
+            $.post($.URL.contract.list,null,contract_listCallback,"json");
+            $.post($.URL.customer.list,null,contract_customerCallback,"json");
             $("#customerName").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
             $("#submitBtn").click(function(){
                 var data = {};
@@ -24,29 +25,30 @@
                 data.number = $("#contractNumber").val();
                 data.customerId=$("#customerName").ligerComboBox().getValue();
                 data.customerName = $("#customerName").val();
+                data.status=$("#contractStatusSelect").val();
                 data.chargeMan = $("#chargeMan").val();
                 data.projectLocation = $("#projectLocation").val();
                 data.startTime = $("#startTime").val();
                 data.endTime = $("#endTime").val();
                 data.signTime = $("#signTime").val();
                 var jsonString  = $.toJSON(data);
-                $.post($.URL.contract.add,{"jsonString":jsonString},addCallBack,"json") ;
+                $.post($.URL.contract.add,{"jsonString":jsonString},contract_addCallBack,"json") ;
             });
         });
 
 
-        var gridData = {};
-        function listCallback(data){
+        var contract_gridData = {};
+        function contract_listCallback(data){
             if(data.code==200){
-                gridData.Rows = data.data;
-                gridData.Total = data.data.length;
-                f_initGrid();
+                contract_gridData.Rows = data.data;
+                contract_gridData.Total = data.data.length;
+                contract_f_initGrid();
             }
         }
-        var manager, g;
-        function f_initGrid()
+        var contract_manager, contract_g;
+        function contract_f_initGrid()
         {
-            g = manager = $("#maingrid").ligerGrid({
+            contract_g = contract_manager = $("#contract_maingrid").ligerGrid({
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
                     { display: '合同名称',name: 'name',width: 100,editor:{type:'text'},frozen: true} ,
@@ -68,73 +70,64 @@
                     { display: '移除人',name: 'removeMan',width: 100},
                     { display: '移除时间',name: 'removeTime',width: 100},
                     { display: '移除状态',name: 'removeStatus',width: 100},
-//                    { display: '描述',name: 'description',type:'string',editor: { type: 'text'}
-//                    },
                     { display: '操作', isSort: false, width: 120, frozen: true,render: function (rowdata, rowindex, value)
                     {
                         var h = "";
                         if (!rowdata._editing)
                         {
-                            h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
-                            h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a> ";
+                            h += "<a href='javascript:contract_beginEdit(" + rowindex + ")'>修改</a> ";
+                            h += "<a href='javascript:contract_deleteRow(" + rowindex + ")'>删除</a> ";
                         }
                         else
                         {
-                            h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
-                            h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
+                            h += "<a href='javascript:contract_endEdit(" + rowindex + ")'>提交</a> ";
+                            h += "<a href='javascript:contract_cancelEdit(" + rowindex + ")'>取消</a> ";
                         }
                         return h;
                     }
                     }
                 ],
-                onSelectRow: function (rowdata, rowindex)
-                {
-                    $("#txtrowindex").val(rowindex);
-                },
                 enabledEdit: true,clickToEdit:false, isScroll: false,
-                data: gridData,
+                data: contract_gridData,
                 width: '100%'
             });
         }
-        function beginEdit(rowid) {
-            manager.beginEdit(rowid);
+        function contract_beginEdit(rowid) {
+            contract_manager.beginEdit(rowid);
         }
-        function cancelEdit(rowid) {
-            manager.cancelEdit(rowid);
+        function contract_cancelEdit(rowid) {
+            contract_manager.cancelEdit(rowid);
         }
-        function endEdit(rowid)
+        function contract_endEdit(rowid)
         {
-            manager.endEdit(rowid);
-            var row = manager.getRow(rowid);
+            contract_manager.endEdit(rowid);
+            var row = contract_manager.getRow(rowid);
             var jsonString  = $.toJSON(row);
-            $.post($.URL.contract.update,{"jsonString":jsonString},updateCallback,"json");
-            function updateCallback(data){
+            $.post($.URL.contract.update,{"jsonString":jsonString},contract_updateCallback,"json");
+            function contract_updateCallback(data){
                 if(data.code==200){
-                    // $("#mainContainer").load("InspectTable/inspectTableList.html");
-                    $.post($.URL.contract.list,null,listCallback,"json");
+                    $.post($.URL.contract.list,null,contract_listCallback,"json");
                     $.ligerDialog.success(data.message);
 
                 }
                 else{
-                    $.post($.URL.contract.list,null,listCallback,"json");
-                    // $("#mainContainer").load("InspectTable/inspectTableList.html");
-
+                    $.post($.URL.contract.list,null,contract_listCallback,"json");
                     $.ligerDialog.warn(data.message);
                 }
             }
         }
-        function deleteRow(rowid)
+        function contract_deleteRow(rowid)
         {
             if (confirm('确定删除?'))
             {
-                var row = manager.getRow(rowid);
+                var row = contract_manager.getRow(rowid);
                 var jsonString  = $.toJSON(row);
-                $.post($.URL.contract.delete,{"id":row.id},deleteCallback,"json");
-                manager.deleteRow(rowid);
+                $.post($.URL.contract.delete,{"id":row.id},contract_deleteCallback,"json");
+                contract_manager.deleteRow(rowid);
             }
         }
 
-        function deleteCallback(data){
+        function contract_deleteCallback(data){
             if(data.code==200){
                 $.ligerDialog.success("成功删除！");
             }else{
@@ -142,24 +135,20 @@
             }
         }
 
-        var newrowid = 100;
-        function addNewRow()
+        function contract_addNewRow()
         {
-            manager.addEditRow();
+            contract_manager.addEditRow();
         }
 
-        function f_add() {
-//            $("#maingrid").load("contract/addContract.html");
-//            $.ligerDialog.open({ url: 'addContract.html', height: 500,weight:500,isResize: true });
-            document.getElementById('form1').reset();
-            $.post($.URL.customer.list,null,customerCallback,"json");
+        function contract_f_add() {
+            document.getElementById('contractForm').reset();
             $("#startTime").ligerDateEditor();
             $("#endTime").ligerDateEditor();
             $("#signTime").ligerDateEditor();
             $.ligerDialog.open({ target: $("#addContract"),width:500,title:'添加合同'});
         }
 
-        function customerCallback(data){
+        function contract_customerCallback(data){
             if(data.code==200){
                 var customerData=[];
                 $.each(data.data,function(index,content){
@@ -172,20 +161,34 @@
             }
         }
 
-        function addCallBack(data){
+        function contract_addCallBack(data){
             if(data.code==200){
-                $.ligerDialog.success(data.message);
-                document.getElementById('form1').reset();
-                $.post($.URL.contract.list,null,listCallback,"json");
+                uploadContractAttachment(data.data);
             }
             else{
                 $.ligerDialog.warn(data.message);
             }
         }
-        //            $("#returnBtn").click(function(){
-        //                $("#mainContainer").load("contract/contract.html");
-        //            });
-        //        $("#returnBtn").click(function (item, dialog) { dialog.close(); });
+
+        function uploadContractAttachmentCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("操作成功！");
+                document.getElementById('contractForm').reset();
+            }
+            else if(data.code==500)
+            {
+                $.ligerDialog.error(data.message);
+            }
+            $.post($.URL.contract.list,null,contract_listCallback,"json");
+        }
+
+        function uploadContractAttachment(contractId){
+            $("#contractIdInput").val(contractId);
+            $("#contractAttachmentUploadForm").ajaxSubmit({success:uploadContractAttachmentCallback,dataType:'json',type:'post',url:'rs/contract/upload'});
+        }
+
+
+
 
     </script>
     <style type="text/css">
@@ -198,15 +201,15 @@
 </head>
 <body  style="padding:10px">
 
-<div><input type="button" value="添加" id="addSubmitBtn" onclick="f_add()" class="l-button l-button-submit" /></div>
+<div><input type="button" value="添加" id="addSubmitBtn" onclick="contract_f_add()" class="l-button l-button-submit" /></div>
 <br/><br/>
 <div style="display:none;">
     <!-- g data total ttt -->
 </div>
-<div id="maingrid" style="margin-top:5px"></div>
+<div id="contract_maingrid" style="margin-top:5px"></div>
 
 <div id="addContract" style=" margin:3px; display:none;">
-    <form name="form1" method="post" action="" id="form1" style="margin-left: 15px">
+    <form name="contractForm" method="post" action="" id="contractForm" style="margin-left: 15px">
 
         <table cellpadding="0" cellspacing="0" class="l-table-edit" >
             <tr>
@@ -214,17 +217,28 @@
                 <td align="left" class="l-table-edit-td"><input name="contractName" class="l-table-edit-input" type="text" id="contractName" ></td>
                 <td align="left"></td>
                 </tr>
-                <tr>
+            <tr>
                 <td align="right" class="l-table-edit-td">合同编号:</td>
                 <td align="left" class="l-table-edit-td"><input name="contractNumber" class="l-table-edit-input" type="text" id="contractNumber" ></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">合同状态:</td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="contractStatusSelect">
+                        <option value="签订">签订</option>
+                        <option value="开始">开始</option>
+                        <option value="完结">完结</option>
+                    </select>
+                </td>
                 <td align="left"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">客户名称:</td>
                 <td align="left" class="l-table-edit-td"><input name="customerName" type="text" id="customerName" ></td>
                 <td align="left"></td>
-                </tr>
-                <tr>
+            </tr>
+            <tr>
                 <td align="right" class="l-table-edit-td">负责人:</td>
                 <td align="left" class="l-table-edit-td"><input name="chargeMan" class="l-table-edit-input" type="text" id="chargeMan" ></td>
                 <td align="left"></td>
@@ -234,7 +248,7 @@
                 <td align="left" class="l-table-edit-td"><input name="projectLocation" class="l-table-edit-input" type="text" id="projectLocation" ></td>
                 <td align="left"></td>
                 </tr>
-                <tr>
+             <tr>
                 <td align="right" class="l-table-edit-td">签订时间:</td>
                 <td align="left" class="l-table-edit-td"><input name="signTime" type="text" id="signTime" ></td>
                 <td align="left"></td>
@@ -244,16 +258,28 @@
                 <td align="left" class="l-table-edit-td"><input name="startTime" type="text" id="startTime" ></td>
                 <td align="left"></td>
                 </tr>
-                <tr>
+            <tr>
                 <td align="right" class="l-table-edit-td">结束时间:</td>
                 <td align="left" class="l-table-edit-td"><input name="endTime" type="text" id="endTime" ></td>
                 <td align="left"></td>
             </tr>
+    </form>
+            <tr>
+                <td align="right" class="l-table-edit-td">合同附件:</td>
+                <td align="left" class="l-table-edit-td">
+                    <form id="contractAttachmentUploadForm" action="rs/contract/upload" method="POST" enctype="multipart/form-data">
+                        <input name="filename" type="file" >
+                        <input id="contractIdInput" name="contractId" type="hidden">
+                    </form>
+                </td>
+                <td align="left"></td>
+            </tr>
+
+
         </table>
         <br />
         <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
-        <!--<input type="button" value="返回" id="returnBtn" class="l-button l-button-reset" />-->
-    </form>
+
 </div>
 </body>
 </html>

@@ -1,5 +1,8 @@
 package org.whut.rentManagement.business.contract.entity;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
+
 import java.util.Date;
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +15,7 @@ public class PreBury {
     private long id;
     private long contractId;
     private String preBuryMan;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date preBuryTime;
     private String preBuryStatus;
     private String image;

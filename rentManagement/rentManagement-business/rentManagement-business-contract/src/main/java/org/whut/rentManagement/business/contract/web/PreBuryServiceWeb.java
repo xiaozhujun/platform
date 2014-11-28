@@ -6,7 +6,6 @@ import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.contract.entity.PreBury;
-import org.whut.rentManagement.business.contract.entity.subPreBury;
 import org.whut.rentManagement.business.contract.service.PreBuryService;
 
 import javax.ws.rs.FormParam;
@@ -76,24 +75,11 @@ public class PreBuryServiceWeb {
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString")String jsonString)  {
-        subPreBury subprebury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,subPreBury.class);
-        if(subprebury.getPreBuryStatus()==null||"".equals(subprebury.getPreBuryStatus().trim())){
+        PreBury preBury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,PreBury.class);
+        if(preBury.getPreBuryStatus()==null||"".equals(preBury.getPreBuryStatus().trim())){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "预埋状态不能为空!");
         }
-        long appId = UserContext.currentUserAppId();
-        Date date = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try{
-            date = sdf.parse(subprebury.getPreBuryTime());
-        }catch (Exception e){
-            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
-        }
-        PreBury preBury = new PreBury();
-        preBury.setId(subprebury.getId());
-        preBury.setPreBuryTime(date);
-        preBury.setPreBuryStatus(subprebury.getPreBuryStatus());
-        preBury.setPreBuryMan(subprebury.getPreBuryMan());
-        preBury.setAppId(appId);
+        preBury.setAppId(UserContext.currentUserAppId());
         preBuryService.update(preBury);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"更新成功!");
 
@@ -102,9 +88,7 @@ public class PreBuryServiceWeb {
     @Path("/delete")
     @POST
     public String delete(@FormParam("jsonString")String jsonString) {
-        subPreBury subprebury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,subPreBury.class);
-        PreBury preBury = new PreBury();
-        preBury.setId(subprebury.getId());
+        PreBury preBury = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,PreBury.class);
         preBuryService.delete(preBury);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

@@ -1,12 +1,15 @@
 package org.whut.rentManagement.business.contract.entity;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
+
 import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Administrator
- * Date: 14-10-14
- * Time: 上午8:46
+ * User: xiaozhujun
+ * Date: 14-11-28
+ * Time: 下午11:25
  * To change this template use File | Settings | File Templates.
  */
 public class SelfInspect {
@@ -14,7 +17,8 @@ public class SelfInspect {
     private long contractId;
     private long selfInspectDeviceId;
     private String selfInspectMan;
-    private Date  selfInspectTime;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
+    private Date selfInspectTime;
     private String selfInspectStatus;
     private long  appId;
 

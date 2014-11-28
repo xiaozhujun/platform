@@ -13,7 +13,6 @@ import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.contract.entity.Installation;
 import org.whut.rentManagement.business.contract.entity.InstallationDevice;
-import org.whut.rentManagement.business.contract.entity.subInstallation;
 import org.whut.rentManagement.business.contract.service.InstallationDeviceService;
 import org.whut.rentManagement.business.contract.service.InstallationService;
 
@@ -97,49 +96,14 @@ public class InstallationServiceWeb {
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/oldadd")
-    @POST
-    public String oldadd(@FormParam("contractId") String contractId ,@FormParam("type") String type,@FormParam("installDeviceId") String installDeviceId,
-                      @FormParam("installMan") String installMan,@FormParam("installTime") String installTime,
-                      @FormParam("installStatus") String installStatus){
-        if(contractId==null||"".equals(contractId.trim())||"".equals(type)||type==null||installDeviceId==null||"".equals(installDeviceId.trim())
-                ||installMan==null||"".equals(installMan)||"".equals(installTime.trim())||installTime==null||"".equals(installStatus)||installStatus==null){
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
-        }
-        long contractIdnew = Long.parseLong(contractId.replace(" ",""));
-        long appId = UserContext.currentUserAppId();
-        Date date = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try{
-            date = sdf.parse(installTime);
-        }catch (Exception e){
-            JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误");
-        }
-        Long id;
-            Installation Installation = new Installation();
-            Installation.setAppId(appId);
-            Installation.setContractId(contractIdnew);
-            Installation.setType(type);
-            Installation.setInstallMan(installMan);
-            Installation.setInstallStatus(installStatus);
-            Installation.setInstallTime(date);
-            installationservice.add(Installation);
-            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");
-        }
-
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString")String jsonString)  {
-        subInstallation subinstallation = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,subInstallation.class);
-        if ("".equals(subinstallation.getInstallStatus().trim())){
+        Installation installation = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Installation.class);
+        if ("".equals(installation.getInstallStatus().trim())){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空");
         }
-        Installation installation = new Installation();
-        installation.setId(subinstallation.getId());
-        installation.setType(subinstallation.getType());
-        installation.setInstallStatus(subinstallation.getInstallStatus());
-        installation.setInstallMan(subinstallation.getInstallMan());
+
         installation.setAppId(UserContext.currentUserAppId());
         installationservice.update(installation);
         return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(),"添加成功!");

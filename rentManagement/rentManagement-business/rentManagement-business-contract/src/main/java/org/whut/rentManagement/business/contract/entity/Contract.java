@@ -1,5 +1,8 @@
 package org.whut.rentManagement.business.contract.entity;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
+
 import java.util.Date;
 
 /**
@@ -16,22 +19,29 @@ public class Contract {
     private String name;
     private String number;
     private String status;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date startTime;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date endTime;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date signTime;
     private String projectLocation;
     private String chargeMan;
     private String preBuryMan;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date preBuryTime;
     private String preBuryStatus;
     private long needInstallCount;
     private long installCount;
     private String netRegisterMan;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date netRegisterTime;
     private String selfInspectStatus;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date selfInspectTime;
     private String removeMan;
     private String removeStatus;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date removeTime;
     private long appId;
 

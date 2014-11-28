@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-11-25 20:31:02
+Date: 2014-11-29 01:56:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -170,6 +170,7 @@ CREATE TABLE `contract` (
   `signTime` date DEFAULT NULL,
   `projectLocation` varchar(255) DEFAULT NULL,
   `chargeMan` varchar(255) DEFAULT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
   `preBuryMan` varchar(255) DEFAULT NULL,
   `preBuryTime` date DEFAULT NULL,
   `preBuryStatus` varchar(255) DEFAULT NULL,
@@ -184,12 +185,23 @@ CREATE TABLE `contract` (
   `removeTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of contract
 -- ----------------------------
-INSERT INTO `contract` VALUES ('1', '1', 'xxx', '合同1', '1111', null, '2014-11-04', '2014-11-14', '2014-11-09', '武汉市', '肖竹军', null, null, null, '0', '0', null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('1', '1', 'xxx', '合同1', '2222', '', '2014-11-04', '2014-11-14', '2014-11-09', '武汉市', '肖竹军', null, null, null, null, '0', '0', null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('10', '1', 'xxx', 'sdasd', 'asd', null, '2014-11-13', '2014-11-26', '2014-11-01', 'asd', 'asd', '/rentManagementResource/attachment/1/attachment/10_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('11', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-21', '2014-12-03', '2014-11-04', 'sdf', 'sdf', '/rentManagementResource/attachment/1/attachment/11_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('12', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-13', '2015-01-01', '2014-11-03', 'sdf', 'df', '/rentManagementResource/attachment/1/attachment/12_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('13', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-12', '2014-11-21', '2014-10-28', 'sdf', 'sdfsdf', '/rentManagementResource/attachment/1/attachment/13_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('14', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-20', '2014-11-27', '2014-10-02', 'sdf', 'sdf', '/rentManagementResource/attachment/1/attachment/14_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('15', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-20', '2014-12-05', '2014-10-01', 'sdf', 'sdf', '/rentManagementResource/attachment/1/attachment/15_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('16', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-20', '2015-01-09', '2014-10-02', 'sdf', 'sdf', '/rentManagementResource/attachment/1/attachment/16_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('17', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-13', '2015-01-31', '2014-10-01', 'sdf', 'sdf', '/rentManagementResource/attachment/1/attachment/17_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('18', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-13', '2015-01-30', '2014-10-01', 'sdf', 'sdf', '/rentManagementResource/attachment/1/attachment/18_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('19', '1', 'xxx', 'sdf', 'sdf', null, '2014-11-14', '2015-01-31', '2014-10-09', 'sdf', 'sdf', '/rentManagementResource/attachment/1/attachment/19_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
+INSERT INTO `contract` VALUES ('20', '1', 'xxx', 'sdf', 'sdf', '开始', '2014-11-20', '2014-12-05', '2014-10-29', 'sdf', 'sdfsdf', '/rentManagementResource/attachment/1/attachment/20_towerCrane.jpg', null, null, null, null, null, null, null, null, null, null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for customer
@@ -337,7 +349,7 @@ CREATE TABLE `installation` (
 -- ----------------------------
 -- Records of installation
 -- ----------------------------
-INSERT INTO `installation` VALUES ('9', '1', '安装', '肖竹军、王洪柱', '2014-11-13 03:28:08', '完成', '/rentManagementResource/rentImage/1/installation/9_towerCrane.jpg', '1');
+INSERT INTO `installation` VALUES ('9', '1', '安装', '肖竹军、王洪柱', '2014-11-13 03:28:08', '未完成', '/rentManagementResource/rentImage/1/installation/9_towerCrane.jpg', '1');
 INSERT INTO `installation` VALUES ('10', '1', '安装', '测试', '2014-11-13 03:34:00', '完成', '/rentManagementResource/rentImage/1/installation/10_towerCrane.jpg', '1');
 INSERT INTO `installation` VALUES ('11', '1', '加装', '安装人员', '2014-11-13 04:06:37', '未完成', '/rentManagementResource/rentImage/1/installation/11_towerCrane.jpg', '1');
 
@@ -401,7 +413,7 @@ CREATE TABLE `prebury` (
 -- ----------------------------
 -- Records of prebury
 -- ----------------------------
-INSERT INTO `prebury` VALUES ('1', '1', '肖竹军', '2014-11-09', '完成', null, '1');
+INSERT INTO `prebury` VALUES ('1', '1', '肖竹军', '2014-11-09', '未完成', null, '1');
 
 -- ----------------------------
 -- Table structure for remove
@@ -421,7 +433,7 @@ CREATE TABLE `remove` (
 -- ----------------------------
 -- Records of remove
 -- ----------------------------
-INSERT INTO `remove` VALUES ('1', '1', '肖竹军', '完成', null, '1', null);
+INSERT INTO `remove` VALUES ('1', '1', '肖竹军', '未完成', null, '1', null);
 INSERT INTO `remove` VALUES ('2', '1', 'sdfsdf', '完成', null, '1', '2014-11-13 00:00:00');
 INSERT INTO `remove` VALUES ('10', '1', '肖竹军、刘关四', '完成', '/rentManagementResource/rentImage/1/remove/10_towerCrane.jpg', '1', '2014-11-13 03:26:34');
 INSERT INTO `remove` VALUES ('11', '1', '拆除人员', '完成', '/rentManagementResource/rentImage/1/remove/11_towerCrane.jpg', '1', '2014-11-13 04:07:49');
@@ -642,7 +654,7 @@ CREATE TABLE `transport` (
 -- ----------------------------
 -- Records of transport
 -- ----------------------------
-INSERT INTO `transport` VALUES ('1', 'xiaozhujun', '肖竹军', '18511451799', '武汉市武昌区', '武汉市青山区', null, null, null, '2014-11-10 00:42:30', '1');
+INSERT INTO `transport` VALUES ('1', 'xiaozhujun', '肖竹军', '18511451744', '武汉市武昌区', '武汉市青山区', null, null, null, '2014-11-10 00:42:30', '1');
 INSERT INTO `transport` VALUES ('2', 'xiaozhujun', '张三', '13511459876', '武汉市武昌区', '武汉市汉阳区', null, null, '/rentManagementResource/rentImage/1/transport/2_towerCrane.jpg', '2014-11-10 01:11:22', '1');
 INSERT INTO `transport` VALUES ('5', 'xiaozhujun', '张三', '18387630976', '武汉市黄陂区', '武汉市江夏区', null, null, null, '2014-11-11 01:45:30', '1');
 INSERT INTO `transport` VALUES ('6', 'xiaozhujun', '李四', '187643234', '武汉市新洲区', '武汉市洪山区', null, null, null, '2014-11-11 01:48:37', '1');

@@ -5,4 +5,7 @@
     <bean id="deviceService" class="org.whut.rentManagement.business.device.service.DeviceService" depends-on="mappers"/>
     <bean id="deviceTypeService" class="org.whut.rentManagement.business.device.service.DeviceTypeService" depends-on="mappers"/>
     <bean id="batchService" class="org.whut.rentManagement.business.device.service.BatchService" depends-on="mappers"/>
+    <bean id="messageDispatcher" class="org.whut.rentManagement.business.device.communication.DeviceMessageDispatcher"/>
+    <bean id="deviceMessageListener" class="org.whut.rentManagement.business.device.communication.DeviceMessageListener" depends-on="platformMessageDistributer"/>
+    <bean id="deviceDataService" class="org.whut.rentManagement.business.device.service.DeviceDataService"/>
 </beans>

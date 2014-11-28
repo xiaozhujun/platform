@@ -109,12 +109,15 @@
             "getIdByNumber":"rs/device/getIdByNumber",
             "findByCondition":"rs/device/findByCondition"
         },
-        "contract":{
-            "add":"rs/contract/add",
-            "update":"rs/contract/update",
-            "delete":"rs/contract/delete",
-            "list":"rs/contract/list",
-            "getContractById":"rs/contract/getContractById"
+//        "contract":{
+//            "add":"rs/contract/add",
+//            "update":"rs/contract/update",
+//            "delete":"rs/contract/delete",
+//            "list":"rs/contract/list",
+//            "getContractById":"rs/contract/getContractById"
+//        },
+        "deviceData":{
+            "getDeviceData":"rs/deviceData/getDeviceData"
         },
         "deviceType":{
             "list":"rs/deviceType/list",

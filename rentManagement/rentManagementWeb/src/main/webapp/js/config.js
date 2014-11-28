@@ -54,7 +54,8 @@
             "update":"rs/installation/update",
             "delete":"rs/installation/delete",
             "findByCondition":"rs/installation/findByCondition",
-            "info":"rs/installation/info"
+            "info":"rs/installation/info",
+            "upload":"rs/installation/upload"
         },
         "transport":{
             "list":"rs/transport/list",
@@ -62,7 +63,8 @@
             "update":"rs/transport/update",
             "delete":"rs/transport/delete",
             "findByCondition":"rs/transport/findByCondition",
-            "info":"rs/transport/info"
+            "info":"rs/transport/info",
+            "upload":"rs/transport/upload"
         },
         "transportDevice":{
             "list":"rs/transportDevice/list",
@@ -127,7 +129,8 @@
             "update":"rs/stockIn/update",
             "delete":"rs/stockIn/delete",
             "findByCondition":"rs/stockIn/findByCondition",
-            "info":"rs/stockIn/info"
+            "info":"rs/stockIn/info",
+            "upload":"rs/stockIn/upload"
         },
         "stock_in_sheet":{
             "add":"rs/stock_in_sheet/add" ,
@@ -141,7 +144,8 @@
             "update":"rs/stockOut/update",
             "delete":"rs/stockOut/delete",
             "findByCondition":"rs/stockOut/findByCondition",
-            "info":"rs/stockOut/info"
+            "info":"rs/stockOut/info",
+            "upload":"rs/stockOut/upload"
         },
         "stock_out_sheet":{
             "add" :"rs/stock_out_sheet/add" ,
@@ -160,7 +164,8 @@
             "update":"rs/remove/update",
             "delete":"rs/remove/delete" ,
             "list":"rs/remove/list",
-            "info":"rs/remove/info"
+            "info":"rs/remove/info",
+            "upload":"rs/remove/upload"
         },
         "prebury":{
             "add":"rs/prebury/add"  ,

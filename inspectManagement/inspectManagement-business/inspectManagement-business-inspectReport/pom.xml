@@ -110,6 +110,11 @@
             <artifactId>spring-orm</artifactId>
             <version>3.2.5.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>fundamental-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

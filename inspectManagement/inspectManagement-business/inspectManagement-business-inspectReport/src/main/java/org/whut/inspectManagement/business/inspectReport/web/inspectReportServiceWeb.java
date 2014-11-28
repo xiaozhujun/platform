@@ -14,6 +14,7 @@ import org.whut.inspectManagement.business.inspectResult.entity.InspectTableReco
 import org.whut.inspectManagement.business.inspectResult.service.InspectTableRecordService;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.business.user.service.UserService;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.report.PlatformReport;
 import org.whut.platform.fundamental.util.json.JsonMapper;
@@ -57,7 +58,8 @@ public class inspectReportServiceWeb {
     @Autowired
     private DeviceService deviceService;
 
-    private PlatformReport platformReport=new PlatformReport();
+    private PlatformReport platformReport=new PlatformReport(FundamentalConfigProvider.get("dbcp.inspectmanagement.driverClassName"),FundamentalConfigProvider.get("dbcp.inspectmanagement.url"),
+            FundamentalConfigProvider.get("dbcp.inspectmanagement.username"),FundamentalConfigProvider.get("dbcp.inspectmanagement.password"));
 
     private static List<Map<String,String>> reportInfoList=new ArrayList<Map<String, String>>();
 

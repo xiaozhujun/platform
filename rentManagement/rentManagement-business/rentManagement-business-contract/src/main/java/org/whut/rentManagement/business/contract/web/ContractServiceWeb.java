@@ -22,8 +22,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,49 +46,30 @@ public class ContractServiceWeb {
     @Path("/add")
     @POST
     public String add(@FormParam("jsonString") String jsonString){
-        long appId= UserContext.currentUserAppId();
-        Map<String, String> map = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class);
-        if(map.get("name")==null||map.get("name").equals("")||map.get("customerName")==null||map.get("customerName").equals("")
-                ||map.get("number")==null||map.get("number").equals("")||map.get("projectLocation")==null||map.get("projectLocation").equals("")
-                ||map.get("signTime")==null||map.get("startTime")==null
-                ||map.get("endTime")==null||map.get("chargeMan")==null||map.get("chargeMan").equals("")
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+        }
+        Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
+        if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
+                ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
+                ||contract.getSignTime()==null||contract.getStartTime()==null
+                ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
                 ){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
+        contract.setAppId(UserContext.currentUserAppId());
+        contractService.add(contract);
+        return JsonResultUtils.getObjectResultByStringAsDefault(contract.getId(), JsonResultUtils.Code.SUCCESS);
 
-            Date startTime = null;
-            Date endTime = null;
-            Date signTime = null;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try{
-                startTime = sdf.parse(map.get("startTime"));
-                endTime = sdf.parse(map.get("endTime"));
-                signTime = sdf.parse(map.get("signTime"));
-            }catch (Exception e){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误！");
-            }
-            if(endTime.before(startTime)){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"结束时间早于开始时间，请确认！");
-            }
-            Contract contract=new Contract();
-            contract.setAppId(appId);
-            contract.setName(map.get("name"));
-            contract.setNumber(map.get("number"));
-            contract.setCustomerId(Long.parseLong(map.get("customerId")));
-            contract.setCustomerName(map.get("customerName"));
-            contract.setChargeMan(map.get("chargeMan"));
-            contract.setProjectLocation(map.get("projectLocation"));
-            contract.setEndTime(endTime);
-            contract.setSignTime(signTime);
-            contract.setStartTime(startTime);
-            contractService.add(contract);
-            return JsonResultUtils.getObjectResultByStringAsDefault(contract.getId(), JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+        }
         Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
         if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
                 ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")

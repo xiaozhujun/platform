@@ -77,7 +77,6 @@ public class StockOutServiceWeb {
         stockOut.setAppId(UserContext.currentUserAppId());
         stockOut.setHandler(UserContext.currentUserName());
         stockOut.setCreateTime(new Date());
-        stockOutService.add(stockOut);
 
         //添加安装的设备明细
         if(stockOut.getDeviceId()!=null&&!stockOut.getDeviceId().equals("")){

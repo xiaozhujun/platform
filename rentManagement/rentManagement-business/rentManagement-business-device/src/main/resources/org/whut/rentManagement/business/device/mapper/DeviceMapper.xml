@@ -133,19 +133,40 @@
     </select>
 
     <update id="installDevice" parameterType="map" >
-        update device
-        <set>
-            <if test="mainDeviceId!=null">MAINDEVICEID=#{mainDeviceId},</if>
-        </set>
-        where ID in
+        update device set mainDeviceId=#{mainDeviceId},optionType=4
+        where device.appId=#{appId} and  ID in
         <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
             #{item}
         </foreach>
     </update>
 
     <update id="removeDevice" parameterType="map" >
-        update device set mainDeviceId=0
-        where ID in
+        update device set mainDeviceId=0,optionType=5
+        where device.appId=#{appId} and ID in
+        <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="transportDevice" parameterType="map" >
+        update device set optionType=3
+        where device.appId=#{appId} and ID in
+        <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="stockIn" parameterType="map" >
+        update device set optionType=1
+        where device.appId=#{appId} and ID in
+        <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="stockOut" parameterType="map" >
+        update device set optionType=2
+        where device.appId=#{appId} and ID in
         <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
             #{item}
         </foreach>

@@ -106,7 +106,7 @@ public class RemoveServiceWeb{
                     rd.setRemoveId(remove.getId());
                     removeDeviceService.add(rd);
                 }
-                deviceService.removeDevice(mainDeviceIdList.get(0),new ArrayList<String>(set));
+                deviceService.removeDevice(UserContext.currentUserAppId(),mainDeviceIdList.get(0),new ArrayList<String>(set));
                 return  JsonResultUtils.getObjectResultByStringAsDefault(remove.getId(),JsonResultUtils.Code.SUCCESS);
             }
         }

@@ -54,11 +54,23 @@ public class DeviceService {
         return deviceMapper.findMainDeviceList(appId,deviceIdList);
     }
 
-    public void installDevice(long mainDeviceId,List<String> deviceIdList){
-        deviceMapper.installDevice(mainDeviceId,deviceIdList);
+    public void installDevice(long appId,long mainDeviceId,List<String> deviceIdList){
+        deviceMapper.installDevice(appId,mainDeviceId,deviceIdList);
     }
 
-    public void removeDevice(long mainDeviceId,List<String> deviceIdList){
-        deviceMapper.removeDevice(mainDeviceId,deviceIdList);
+    public void removeDevice(long appId,long mainDeviceId,List<String> deviceIdList){
+        deviceMapper.removeDevice(appId,mainDeviceId,deviceIdList);
+    }
+
+    public void transportDevice(long appId,List<String> deviceIdList){
+        deviceMapper.transportDevice(appId,deviceIdList);
+    }
+
+    public void stockIn(long appId,List<String> deviceIdList){
+        deviceMapper.stockIn(appId,deviceIdList);
+    }
+
+    public void stockOut(long appId,List<String> deviceIdList){
+        deviceMapper.stockOut(appId,deviceIdList);
     }
 }

@@ -11,6 +11,7 @@ import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
+import org.whut.rentManagement.business.device.service.DeviceService;
 import org.whut.rentManagement.business.stock.entity.StockOut;
 import org.whut.rentManagement.business.stock.entity.StockOutDevice;
 import org.whut.rentManagement.business.stock.service.StockOutDeviceService;
@@ -48,6 +49,9 @@ public class StockOutServiceWeb {
     @Autowired
     StockOutDeviceService stockOutDeviceService;
 
+    @Autowired
+    DeviceService deviceService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")
     @POST
@@ -73,22 +77,29 @@ public class StockOutServiceWeb {
         stockOut.setAppId(UserContext.currentUserAppId());
         stockOut.setHandler(UserContext.currentUserName());
         stockOut.setCreateTime(new Date());
-        stockOutService.add(stockOut);
 
         //添加安装的设备明细
         if(stockOut.getDeviceId()!=null&&!stockOut.getDeviceId().equals("")){
             String[] deviceList = stockOut.getDeviceId().split(",");
             Set set = new TreeSet();
             StockOutDevice stockOutDevice;
+            ArrayList<StockOutDevice> stockOutDeviceList = new ArrayList<StockOutDevice>();
             for(String deviceToTransport:deviceList){
                 if(!set.contains(deviceToTransport)&&!deviceToTransport.trim().equals("")){
                     stockOutDevice = new StockOutDevice();
                     stockOutDevice.setDeviceId(Long.parseLong(deviceToTransport));
-                    stockOutDevice.setStockOutId(stockOut.getId());
-                    stockOutDeviceService.add(stockOutDevice);
+                    stockOutDeviceList.add(stockOutDevice);
                 }
                 set.add(deviceToTransport);
             }
+
+            stockOutService.add(stockOut);
+            for(StockOutDevice std:stockOutDeviceList){
+                std.setStockOutId(stockOut.getId());
+                stockOutDeviceService.add(std);
+            }
+            deviceService.stockOut(UserContext.currentUserAppId(),new ArrayList<String>(set));
+            return  JsonResultUtils.getObjectResultByStringAsDefault(stockOut.getId(),JsonResultUtils.Code.SUCCESS);
         }
 
         return  JsonResultUtils.getObjectResultByStringAsDefault(stockOut.getId(), JsonResultUtils.Code.SUCCESS);

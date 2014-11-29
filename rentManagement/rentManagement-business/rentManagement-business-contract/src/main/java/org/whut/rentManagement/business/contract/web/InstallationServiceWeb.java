@@ -104,7 +104,7 @@ public class InstallationServiceWeb {
                     id.setInstallationId(installation.getId());
                     installationDeviceService.add(id);
                 }
-                deviceService.installDevice(mainDeviceIdList.get(0),new ArrayList<String>(set));
+                deviceService.installDevice(UserContext.currentUserAppId(),mainDeviceIdList.get(0),new ArrayList<String>(set));
                 return  JsonResultUtils.getObjectResultByStringAsDefault(installation.getId(),JsonResultUtils.Code.SUCCESS);
             }
         }

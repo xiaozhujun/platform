@@ -95,20 +95,14 @@ public class RemoveServiceWeb{
                 }
                 set.add(deviceToTransport);
             }
-            ArrayList<Long> mainDeviceIdList = deviceService.findMainDeviceList(UserContext.currentUserAppId(),new ArrayList<String>(set));
-            if(mainDeviceIdList.size()==0){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"未提供主设备编号！");
-            }else if(mainDeviceIdList.size()>1){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"提供多个主设备编号！");
-            }else if(mainDeviceIdList.size()==1){
-                removeService.add(remove);
-                for(RemoveDevice rd:removeDeviceList){
-                    rd.setRemoveId(remove.getId());
-                    removeDeviceService.add(rd);
-                }
-                deviceService.removeDevice(mainDeviceIdList.get(0),new ArrayList<String>(set));
-                return  JsonResultUtils.getObjectResultByStringAsDefault(remove.getId(),JsonResultUtils.Code.SUCCESS);
+
+            removeService.add(remove);
+            for(RemoveDevice rd:removeDeviceList){
+                rd.setRemoveId(remove.getId());
+                removeDeviceService.add(rd);
             }
+            deviceService.removeDevice(UserContext.currentUserAppId(),new ArrayList<String>(set));
+            return  JsonResultUtils.getObjectResultByStringAsDefault(remove.getId(),JsonResultUtils.Code.SUCCESS);
         }
 
         return  JsonResultUtils.getObjectResultByStringAsDefault(remove.getId(), JsonResultUtils.Code.SUCCESS);

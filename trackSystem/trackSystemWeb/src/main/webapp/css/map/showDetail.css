@@ -1,0 +1,645 @@
+@CHARSET "UTF-8";
+body{
+    font-size:13px;
+    margin:0px
+}
+#main{
+    /* background-color:#999999; */
+    width:100%;
+    height:100%;
+}
+#leftcontainer{
+    width: 100%;
+    height: 100%;
+}
+#leftTab{
+    background-color: #F7F7F7;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #72C2FF;
+}
+.searchTab{
+    border: 1px solid #72C2FF;
+    float: left;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+}
+.searchTab:hover{
+    background-color: #3399FF;
+    color:#ffffff;
+}
+.lineTab{
+    border: 1px solid #0095E2;
+    float: left;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+}
+.lineTab:hover{
+    background-color: #0095E2;
+    color:#ffffff;
+}
+.lineTabClick{
+    border: 1px solid #0095E2;
+    float: left;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+    background-color: #0095E2;
+    color:#ffffff;
+}
+.searchTabClick{
+    background-color: #0095E2;
+    color:#ffffff;
+    border: 1px solid #0095E2;
+    float: left;
+    margin-left: 10px;
+    width: 80px;
+    height: 30px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+}
+.searchShow{
+    background-color: #F7F7F7;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #72C2FF;
+    z-index: 1;
+    position: absolute;
+}
+.searchHide{
+    background-color: #F7F7F7;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #999999;
+    display: none;
+}
+#titleSearch{
+    display: inline-block;
+    float: left;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 9px;
+    width:auto;
+}
+.searchItem{
+    margin-left:10px;
+}
+#container{
+    width:100%;
+    height:100%;
+}
+#rightRank{
+    width:400px;
+    height:100%;
+    float: left;
+    margin-left:2px;
+    overflow: auto;
+}
+#rightshow{
+    height:100%;
+    float: left;
+    margin-left:2px;
+    overflow: auto;
+}
+.righttitle{
+    width:400px;
+    height:50px;
+    float: left;
+    background-color: #F6F6F6;
+    text-align: center;
+    line-height: 50px;
+    color: #888888;
+    font-weight: bold;
+    font-size: 15px;
+    border-bottom: 1px solid #AAAAAA;
+}
+.rightcontent{
+    width:400px;
+    height:595px;
+    float: left;
+    margin-top:0px;
+    /* overflow: auto; */
+}
+.rightitem{
+    width:100%;
+    height:auto;
+    cursor: pointer;
+}
+.righttop{
+    width:100%;
+    height:80px;
+    margin-top: 1px;
+    border-bottom: 1px solid #72C2FF;
+}
+.righttopClick{
+    background-color: #D1E7F1;
+    color: #454545 ;
+    width:100%;
+    height:80px;
+    margin-top: 1px;
+    border-bottom: 1px solid #72C2FF;
+}
+.righttop:HOVER{
+    background-color: #D1E7F1;
+    color: #454545 ;
+
+}
+.pic{
+    width: 110px;
+    height: 80px;
+    display: inline-block;
+    float: left;
+    margin-left: 4px;
+}
+.info{
+    width: 260px;
+    height: 80px;
+    display: inline-block;
+    float: left;
+    line-height: 80px;
+}
+.avgRiskValue
+{
+    height: 80px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    line-height: 80px;
+}
+.riskvalue{
+    height: 80px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    line-height: 80px;
+}
+.pic img{
+    width: 85px;
+    height: 60px;
+    margin-left: 9px;
+    margin-top: 10px;
+}
+.itemfont{
+    margin-left: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    color:#888888;
+}
+._itemfont{
+    font-size: 15px;
+    font-weight: bold;
+    color:#888888;
+    margin-left: 30px;
+}
+.titleFont{
+    margin-left: 4px;
+}
+._titleFont{
+    margin-left: 40px;
+    width: 200px;
+    margin-top: 6px;
+    height: 25px;
+    display: inline-block;
+    color:#888888;
+}
+.infofont{
+    margin-left: 12px;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    float: right;
+    color:#888888;
+}
+.errorInfo{
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+}
+.itemInfo{
+    /*display: none;*/
+    width: 400px;
+    height: auto;
+    /*position: absolute;*/
+    /* clear: both;*/
+    float: left;
+}
+.itemInfoHide{
+    display: none;
+    width: 400px;
+    height: auto;
+    /*position: absolute;*/
+    /* clear: both;*/
+    border: 1px solid #999999;
+    float: left;
+}
+._infoTitle{
+    width: 400px;
+    height: 30px;
+    border-bottom: 1px solid #DDDDDD;
+    /*background-color: #ffffff;*/
+    display: inline-block;
+}
+._info{
+    border-bottom: 1px solid #999999;
+    width: 400px;
+    height: auto;
+    float: left;
+    background-color: #E7EFF6;
+}
+.titleItem{
+    width: 234px;
+    height: 25px;
+    margin-left: 2px;
+    margin-top: 2px;
+    background-color: #ffffff;
+    float: left;
+}
+.itemInfo img{
+    width: 300px;
+    height: 180px;
+    margin-top: 2px;
+    margin-left: 5px;
+}
+.infoImg{
+    width: 310px;
+    height: 188px;
+    margin-left: 35px;
+    float: left;
+}
+.infoImg img{
+    width: 310px;
+    height: 188px;
+}
+.infoMsg{
+    width: 300px;
+    height: 235px;
+    float: right;
+    margin-left: 40px;
+    float: left;
+    overflow:auto;
+    background-color: #f5f5f5;
+}
+.msgItem{
+    width: 240px;
+    height: 30px;
+    display: inline-block;
+    margin-top: 2px;
+    color:#888888;
+}
+.msgItemFont{
+    margin-top: 4px;
+    margin-left: 5px;
+    display: inline-block;
+}
+.hideField{
+    display: none;
+
+}
+.cl{
+    clear: both;
+}
+.detailMsg{
+    width:300px ;
+    height: 30px;
+    margin-left: 40px;
+    text-align: center;
+    line-height: 30px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    float: left;
+    background-color: #ffffff;
+    cursor: pointer;
+    color:#888888;
+}
+.detailMsg:hover{
+    background-color:#999999;
+    color: #FFFFFF;
+}
+.riskRank{
+    float: left;
+    display: inline-block;
+    width: 192px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid #0095E2;
+    margin-top: 1px;
+    height:35px;
+    line-height: 35px;
+    color:#666666;
+}
+.riskRankClick{
+    float: left;
+    display: inline-block;
+    width: 192px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid #0095E2;
+    margin-top: 1px;
+    height:35px;
+    line-height: 35px;
+    background-color:#0095E2;
+    color: #ffffff;
+}
+.riskRank:hover{
+    background-color: #0095E2;
+    color:white
+}
+.riskInfo{
+    width: 190px;
+    float: left;
+    cursor: pointer;
+    border-bottom: 1px solid #0095E2;
+    border-right: 1px solid #0095E2;
+    margin-top: 1px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    color:#666666;
+}
+.riskInfoClick{
+    width: 190px;
+    float: left;
+    cursor: pointer;
+    border-bottom: 1px solid #3399FF;
+    border-right: 1px solid #3399FF;
+    margin-top: 1px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    background-color:#0095E2;
+    color: #ffffff;
+}
+.riskInfo:hover{
+    background-color: #3399FF;
+    color:white
+}
+#riskttitle{
+    background-color: #3399FF;
+    width: 385px;
+    height: 35px;
+}
+.rtitleItem{
+    width: 225px;
+    text-align: center;
+    height: 28px;
+    color: #ffffff;
+    margin-top: 1px;
+    display: inline-block;
+    line-height: 28px;
+}
+.rtitleriskItem{
+    width: 80px;
+    text-align: center;
+    height: 28px;
+    color: #ffffff;
+    margin-top: 1px;
+    display: inline-block;
+    line-height:28px;
+}
+#riskcontent{
+    width: 385px;
+    height: auto;
+}
+
+.rtitlerank{
+    width: 60px;
+    text-align: center;
+    height: 28px;
+    display: inline-block;
+    color:white;
+    margin-left: 10px;
+}
+.rrank{
+    width: 60px;
+    text-align: center;
+    height: 28px;
+    float:left;
+    line-height: 28px;
+    margin-top: 6px;
+}
+.riskItem{
+    width: 40px;
+    text-align: center;
+    height: 28px;
+    line-height: 28px;
+    float: left;
+}
+.rcontentItem{
+    width: 245px;
+    text-align: center;
+    height: 28px;
+    float: left;
+}
+.unitFont{
+    margin-left: 6px;
+    display: inline-block;
+    margin-top: 9px;
+}
+.riskFont{
+    margin-left: 10px;
+    display: inline-block;
+    margin-top: 6px;
+}
+.riskcontenthead{
+    width: 385px;
+    height: 30px;
+    margin: 1px;
+    background-color: #999999;
+    color:white;
+}
+._riskcontenthead{
+    width: 385px;
+    height: 30px;
+    margin: 1px;
+    background-color: #cccccc;
+}
+
+.firmtitle{
+    color: #000000;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 1px;
+    width: 250px;
+}
+.firmtitleFont{
+    margin-left: 75px;
+}
+.riskvaluetitle{
+    color: #000000;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 1px;
+    width: 135px;
+}
+.riskvaluetitleFont{
+    margin-left: 16px;
+}
+.riskcontent{
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+    background-color:#EFEFEF;
+}
+.riskcontentClick{
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+    background-color:#72C2FF;
+    color:#ffffff;
+}
+.riskcontentEven{
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+.riskcontentEvenClick{
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+    background-color: #72C2FF;
+    color: #ffffff;
+}
+.riskcontentEven:hover{
+    background-color: #72C2FF;
+    color: #ffffff;
+}
+.city{
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    width: 240px;
+}
+
+.area
+{
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    width: 240px;
+}
+
+.unitaddress{
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    text-align: center;
+    width: 240px;
+}
+.riskvalue2{
+    float: left;
+    height: 27px;
+    margin-top: 6px;
+    width: 120px;
+}
+.riskvalue2Font{
+    margin-left: 35px;
+}
+.riskrankvalue{
+    width: 100px;
+    text-align: left;
+    height: 28px;
+    float: left;
+    margin-right: 1px;
+    line-height: 28px;
+}
+.riskranktitle{
+    float:left;
+    height: 28px;
+    text-align: right;
+    width: 120px;
+    line-height: 28px;
+}
+.riskmarktitle{
+    float:left;
+    height: 28px;
+    text-align: center;
+    width: 164px;
+    line-height: 28px;
+}
+.backcol{
+    float: left;
+    width: 385px;
+    height: auto;
+    position: relative;
+    border:1px solid #999999;
+}
+.riskcontent:hover{
+    background-color: #72C2FF;
+    color: #ffffff;
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+}
+.mouseEvent{
+    background-color: #72C2FF;
+    color: #ffffff;
+    width: 385px;
+    height: 40px;
+    margin: 2px;
+    cursor: pointer;
+}
+.layout-slider{
+    margin-bottom: 60px; width: 50%;
+}
+.slider{
+    margin-left: 12px;
+    margin-top: 8px;
+    width: 650px;
+    height: 30px;
+    float:left;
+}
+#input_search{
+    width: 385px;
+    z-index: 1;
+    margin: 0px;
+    height: 35px;
+    background-color:#F7F7F7;
+    border-bottom: 1px solid #72C2FF;
+    margin-top: 1px;
+}
+.inputSearchBtn{
+    width: 60px;
+    height: 22px;
+    display: inline-block;
+    background-color: #999999;
+    color: #ffffff;
+    text-align: center;
+    line-height: 22px;
+    margin-left: 4px;
+    cursor: pointer;
+}
+.more{
+    margin-left: 12px;
+    margin-top: 10px;
+    display: inline-block;
+}
+#alert{
+    color:red;
+}

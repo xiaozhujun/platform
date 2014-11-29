@@ -21,11 +21,6 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
 
-    <listener>
-        <description>设备追踪位置信息监听器</description>
-        <listener-class>org.whut.rentManagement.business.device.communication.DeviceServerStartListener</listener-class>
-    </listener>
-
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

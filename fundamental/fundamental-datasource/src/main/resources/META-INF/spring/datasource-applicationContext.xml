@@ -14,5 +14,7 @@
     <bean id="rentmanagement" class="platform.fundamental.datasource.DbcpFactoryBean">
         <property name="dbname" value="rentmanagement"></property>
     </bean>
-
+    <bean id="tracksystem" class="platform.fundamental.datasource.DbcpFactoryBean">
+        <property name="dbname" value="tracksystem"></property>
+    </bean>
 </beans>

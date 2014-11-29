@@ -6,7 +6,7 @@
     <sql id="device_fields">
           ID,MAINDEVICEID,BATCHID,SUPPLIERID,TYPEID,STOREHOUSEID,CONTRACTID,ADDRESS,STATUS,OPTIONTYPE,NAME,NUMBER,PRICE,PRODUCETIME,CREATETIME,PRICEUNIT,LNG,LAT,APPID
     </sql>
-    <resultMap id="deviceResultMap" type="device">
+    <resultMap id="device_resultMap" type="Device">
         <id property="id" column="ID" />
         <result property="mainDeviceId" column="MAINDEVICEID" />
         <result property="batchId" column="BATCHID"/>
@@ -27,7 +27,8 @@
         <result property="lat" column="LAT"/>
         <result property="appId" column="APPID"/>
     </resultMap>
-    <insert id="add" parameterType="device"  keyProperty="id"
+
+    <insert id="add" parameterType="Device"  keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
         device(
@@ -87,7 +88,7 @@
         where NUMBER=#{number} and APPID=#{appId}
     </select>
 
-    <select id="getMainDeviceList" parameterType="java.lang.Long" resultType="map">
+    <select id="getMainDeviceListByAppId" parameterType="java.lang.Long" resultType="map">
         select device.id,device.name,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
         device.produceTime,device.price,device.priceUnit,device.status,device.optionType,device.lng,device.lat,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId
         from device
@@ -120,5 +121,34 @@
         <if test="startTime!=null"><![CDATA[ AND device.produceTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND device.produceTime<=#{endTime} ]]> </if>
     </select>
+
+    <select id="findMainDeviceList" parameterType="map" resultType="java.lang.Long">
+        select device.id
+        from device
+        LEFT JOIN device_type ON device.typeId=device_type.id
+        where device_type.mainDevice=1 and device.appId=#{appId} and device.id in
+        <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="installDevice" parameterType="map" >
+        update device
+        <set>
+            <if test="mainDeviceId!=null">MAINDEVICEID=#{mainDeviceId},</if>
+        </set>
+        where ID in
+        <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="removeDevice" parameterType="map" >
+        update device set mainDeviceId=0
+        where ID in
+        <foreach item="item" index="index" collection="deviceIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

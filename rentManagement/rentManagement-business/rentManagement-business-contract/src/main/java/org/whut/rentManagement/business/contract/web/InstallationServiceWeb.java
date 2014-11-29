@@ -15,6 +15,7 @@ import org.whut.rentManagement.business.contract.entity.Installation;
 import org.whut.rentManagement.business.contract.entity.InstallationDevice;
 import org.whut.rentManagement.business.contract.service.InstallationDeviceService;
 import org.whut.rentManagement.business.contract.service.InstallationService;
+import org.whut.rentManagement.business.device.service.DeviceService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -27,7 +28,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -49,6 +49,9 @@ public class InstallationServiceWeb {
     @Autowired
     InstallationDeviceService installationDeviceService;
 
+    @Autowired
+    DeviceService deviceService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")
     @POST
@@ -67,28 +70,42 @@ public class InstallationServiceWeb {
         }
 
         Installation installation = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Installation.class);
-        if(installation.getContractId()==0||installation.getType()==null
+        if(installation.getDeviceId()==null||installation.getDeviceId().trim().equals("")||installation.getContractId()==0||installation.getType()==null
                 ||installation.getInstallMan()==null||installation.getInstallMan().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
 
         installation.setAppId(UserContext.currentUserAppId());
         installation.setInstallTime(new Date());
-        installationservice.add(installation);
 
         //添加安装的设备明细
         if(installation.getDeviceId()!=null&&!installation.getDeviceId().equals("")){
             String[] deviceList = installation.getDeviceId().split(",");
             Set set = new TreeSet();
             InstallationDevice installationDevice;
+            ArrayList<InstallationDevice> installationDeviceList = new ArrayList<InstallationDevice>();
             for(String deviceToTransport:deviceList){
                 if(!set.contains(deviceToTransport)&&!deviceToTransport.trim().equals("")){
                     installationDevice = new InstallationDevice();
                     installationDevice.setDeviceId(Long.parseLong(deviceToTransport));
-                    installationDevice.setInstallationId(installation.getId());
-                    installationDeviceService.add(installationDevice);
+                    installationDeviceList.add(installationDevice);
                 }
                 set.add(deviceToTransport);
+            }
+
+            ArrayList<Long> mainDeviceIdList = deviceService.findMainDeviceList(UserContext.currentUserAppId(),new ArrayList<String>(set));
+            if(mainDeviceIdList.size()==0){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"未提供主设备编号！");
+            }else if(mainDeviceIdList.size()>1){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"提供多个主设备编号！");
+            }else if(mainDeviceIdList.size()==1){
+                installationservice.add(installation);
+                for(InstallationDevice id:installationDeviceList){
+                    id.setInstallationId(installation.getId());
+                    installationDeviceService.add(id);
+                }
+                deviceService.installDevice(mainDeviceIdList.get(0),new ArrayList<String>(set));
+                return  JsonResultUtils.getObjectResultByStringAsDefault(installation.getId(),JsonResultUtils.Code.SUCCESS);
             }
         }
 

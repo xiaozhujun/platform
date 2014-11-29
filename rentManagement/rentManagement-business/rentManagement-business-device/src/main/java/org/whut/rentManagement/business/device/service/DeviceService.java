@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.rentManagement.business.device.entity.Device;
 import org.whut.rentManagement.business.device.mapper.DeviceMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +42,23 @@ public class DeviceService {
         return deviceMapper.getListByAppId(appId);
     }
 
-    public List<Map<String,String>> getMainDeviceList(long appId) {
-        return deviceMapper.getMainDeviceList(appId);
+    public List<Map<String,String>> getMainDeviceListByAppId(long appId) {
+        return deviceMapper.getMainDeviceListByAppId(appId);
     }
 
     public List<Map<String,String>> findByCondition(Map<String,Object> condition){
         return deviceMapper.findByCondition(condition);
+    }
+
+    public ArrayList<Long> findMainDeviceList(long appId,List<String> deviceIdList){
+        return deviceMapper.findMainDeviceList(appId,deviceIdList);
+    }
+
+    public void installDevice(long mainDeviceId,List<String> deviceIdList){
+        deviceMapper.installDevice(mainDeviceId,deviceIdList);
+    }
+
+    public void removeDevice(long mainDeviceId,List<String> deviceIdList){
+        deviceMapper.removeDevice(mainDeviceId,deviceIdList);
     }
 }

@@ -16,6 +16,7 @@ import org.whut.rentManagement.business.contract.entity.Remove;
 import org.whut.rentManagement.business.contract.entity.RemoveDevice;
 import org.whut.rentManagement.business.contract.service.RemoveDeviceService;
 import org.whut.rentManagement.business.contract.service.RemoveService;
+import org.whut.rentManagement.business.device.service.DeviceService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -51,6 +52,9 @@ public class RemoveServiceWeb{
     RemoveDeviceService removeDeviceService;
 
     @Autowired
+    DeviceService deviceService;
+
+    @Autowired
     UserService userService;
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
     @Path("/list")
@@ -76,21 +80,34 @@ public class RemoveServiceWeb{
 
         remove.setAppId(UserContext.currentUserAppId());
         remove.setCreateTime(new Date());
-        removeService.add(remove);
 
         //添加拆卸的设备明细
         if(remove.getDeviceId()!=null&&!remove.getDeviceId().equals("")){
             String[] deviceList = remove.getDeviceId().split(",");
             Set set = new TreeSet();
             RemoveDevice removeDevice;
+            ArrayList<RemoveDevice> removeDeviceList = new ArrayList<RemoveDevice>();
             for(String deviceToTransport:deviceList){
                 if(!set.contains(deviceToTransport)&&!deviceToTransport.trim().equals("")){
                     removeDevice = new RemoveDevice();
                     removeDevice.setDeviceId(Long.parseLong(deviceToTransport));
-                    removeDevice.setRemoveId(remove.getId());
-                    removeDeviceService.add(removeDevice);
+                    removeDeviceList.add(removeDevice);
                 }
                 set.add(deviceToTransport);
+            }
+            ArrayList<Long> mainDeviceIdList = deviceService.findMainDeviceList(UserContext.currentUserAppId(),new ArrayList<String>(set));
+            if(mainDeviceIdList.size()==0){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"未提供主设备编号！");
+            }else if(mainDeviceIdList.size()>1){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"提供多个主设备编号！");
+            }else if(mainDeviceIdList.size()==1){
+                removeService.add(remove);
+                for(RemoveDevice rd:removeDeviceList){
+                    rd.setRemoveId(remove.getId());
+                    removeDeviceService.add(rd);
+                }
+                deviceService.removeDevice(mainDeviceIdList.get(0),new ArrayList<String>(set));
+                return  JsonResultUtils.getObjectResultByStringAsDefault(remove.getId(),JsonResultUtils.Code.SUCCESS);
             }
         }
 

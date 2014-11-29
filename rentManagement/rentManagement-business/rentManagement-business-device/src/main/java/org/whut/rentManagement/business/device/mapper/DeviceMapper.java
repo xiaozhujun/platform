@@ -23,7 +23,7 @@ public interface DeviceMapper extends AbstractMapper<Device> {
     public List<Map<String,String>> findByCondition(Map<String,Object> condition);
     public ArrayList<Long> findMainDeviceList(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);
     public void installDevice(@Param("appId") long appId,@Param("mainDeviceId") long mainDeviceId,@Param("deviceIdList") List<String> deviceIdList);
-    public void removeDevice(@Param("appId") long appId,@Param("mainDeviceId") long mainDeviceId,@Param("deviceIdList") List<String> deviceIdList);
+    public void removeDevice(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);
     public void transportDevice(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);
     public void stockIn(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);
     public void stockOut(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);

@@ -58,8 +58,8 @@ public class DeviceService {
         deviceMapper.installDevice(appId,mainDeviceId,deviceIdList);
     }
 
-    public void removeDevice(long appId,long mainDeviceId,List<String> deviceIdList){
-        deviceMapper.removeDevice(appId,mainDeviceId,deviceIdList);
+    public void removeDevice(long appId,List<String> deviceIdList){
+        deviceMapper.removeDevice(appId,deviceIdList);
     }
 
     public void transportDevice(long appId,List<String> deviceIdList){

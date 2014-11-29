@@ -11,6 +11,7 @@ import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
+import org.whut.rentManagement.business.device.service.DeviceService;
 import org.whut.rentManagement.business.transport.entity.Transport;
 import org.whut.rentManagement.business.transport.entity.TransportDevice;
 import org.whut.rentManagement.business.transport.service.TransportDeviceService;
@@ -48,6 +49,9 @@ public class TransportServiceWeb {
     @Autowired
     TransportDeviceService transportDeviceService;
 
+    @Autowired
+    DeviceService deviceService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")
     @POST
@@ -72,22 +76,29 @@ public class TransportServiceWeb {
         transport.setAppId(UserContext.currentUserAppId());
         transport.setCreateTime(new Date());
         transport.setHandler(UserContext.currentUserName());
-        transportService.add(transport);
 
         //添加运输的设备明细
         if(transport.getDeviceId()!=null&&!transport.getDeviceId().equals("")){
             String[] deviceList = transport.getDeviceId().split(",");
             Set set = new TreeSet();
             TransportDevice transportDevice;
+            ArrayList<TransportDevice> transportDeviceList = new ArrayList<TransportDevice>();
             for(String deviceToTransport:deviceList){
                 if(!set.contains(deviceToTransport)&&!deviceToTransport.trim().equals("")){
                     transportDevice = new TransportDevice();
                     transportDevice.setDeviceId(Long.parseLong(deviceToTransport));
-                    transportDevice.setTransportId(transport.getId());
-                    transportDeviceService.add(transportDevice);
+                    transportDeviceList.add(transportDevice);
                 }
                 set.add(deviceToTransport);
             }
+
+            transportService.add(transport);
+            for(TransportDevice td:transportDeviceList){
+                td.setTransportId(transport.getId());
+                transportDeviceService.add(td);
+            }
+            deviceService.transportDevice(UserContext.currentUserAppId(),new ArrayList<String>(set));
+            return  JsonResultUtils.getObjectResultByStringAsDefault(transport.getId(),JsonResultUtils.Code.SUCCESS);
         }
 
         return  JsonResultUtils.getObjectResultByStringAsDefault(transport.getId(), JsonResultUtils.Code.SUCCESS);

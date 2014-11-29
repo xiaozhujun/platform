@@ -191,7 +191,7 @@ $.extend({
             item.userId=data.data[i].id;
             item.title="设备名称:"+data.data[i].name;
 
-            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data.data[i].number+"<br>设备地址:"+data.data[i].address+"<br>生产日期:"+data.data[i].produceTime+"</div></div>";
+            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data.data[i].number+"<br>客户名称:"+data.data[i].customerName+"<br>生产日期:"+data.data[i].produceTime+"<br>设备地址:"+data.data[i].address+"<br><a mainDeviceId="+data.data[i].id+" class='showMainDeviceLink'>查看详情</a>"+"</div></div>";
             item.point=data.data[i].lng+"|"+data.data[i].lat;
             item.isOpen=0;
             item.icon={};
@@ -205,5 +205,6 @@ $.extend({
         }
         $.clearAllMarker();
         $.addMarkerWithId(riskRankArray);
+
 }
 });

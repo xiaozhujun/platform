@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="../js/config.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script src="../js/jquery.json-2.4.min.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../css/report.css">
+    <link rel="stylesheet" href="../css/reportShow.css">
+    <script src="../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.post("../"+$.URL.device.mainDeviceInfo,{"mainDeviceId":parent.mainDeviceId},mainDeviceInfoCallback,"json");
+        });
+
+        function mainDeviceInfoCallback(data){
+            if(data.code==200){
+                showMainDeviceDetail(data.data);
+            }else{
+                alert(data.message);
+            }
+        }
+
+
+        var mainDeviceDetailData={};
+        function mainDevice_showGrid(data){
+            var grid = $("<div id='mainDevice_grid'></div>");
+            $("#mainDeviceDetailShow").append(grid);
+            mainDeviceDetailData.Rows=data;
+            mainDevice_record(grid);
+        }
+        var mainDevice_manager, mainDevice_g;
+        var mainDevice_h = "";
+        function mainDevice_record(grid)
+        {
+            mainDevice_g = mainDevice_manager = grid.ligerGrid({
+                columns: [
+                    { display: '类型', name: 'deviceType', type: 'string',
+                        editor: { type: 'text' }
+                    },
+                    { display: '名称', name: 'name',
+                        editor: { type: 'text' }
+                    },
+                    { display: '编号', name: 'number',
+                        editor: { type: 'text' }
+                    },
+                    { display: '生产日期', name: 'produceTime',
+                        editor: { type: 'text' }
+                    },
+                    { display: '设备价格', name: 'price',width:'auto',
+                        editor: { type: 'text' }
+                    },
+                    { display: '设备拍照', name:'image', editor:{type:'text'},
+                        render:function(rowdata, rowindex, value){
+                            var image = rowdata.image;
+                            if(rowdata.image != null) {
+                                return "<a href='javascript:mainDevice_abnormal(" + rowindex+ ")'>查看</a> ";
+                            }
+                            else {
+                                return "无";
+                            }
+                        }
+                    }
+                ],
+                enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
+                data: mainDeviceDetailData,
+                width: '100%'
+            });
+        }
+
+        function mainDevice_abnormal(rowid){
+            var rowPicture = mainDevice_manager.getRow(rowid);
+            var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
+            $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"设备照片" });
+        }
+
+        function showMainDeviceDetail(info){
+            $("#md_name").val(info.name);
+            $("#md_number").val(info.number);
+            $("#md_customerName").val(info.customerName);
+            $("#md_startTime").val(info.startTime);
+            $("#md_endTime").val(info.endTime);
+            $("#md_produceTime").val(info.produceTime);
+            $("#md_address").val(info.address);
+            mainDevice_showGrid(info.deviceList);
+        }
+
+    </script>
+</head>
+<body>
+<div class="mainDeviceDetailContainer">
+    <div class="searchItem"><span class="item_font">主设备名:</span><span class="item_input"><input id="md_name" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">主设备编号:</span><span class="item_input"><input id="md_number" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">客户名称:</span><span class="item_input"><input id="md_customerName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">租赁日期:</span><span class="item_input"><input id="md_startTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">截止日期:</span><span class="item_input"><input id="md_endTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">生产日期:</span><span class="item_input"><input id="md_produceTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">使用地点:</span><span class="item_input"><input id="md_address" type="text"></span></div>
+</div>
+<div class="reportContent" id="mainDeviceDetailShow"></div>
+</body>
+</html>

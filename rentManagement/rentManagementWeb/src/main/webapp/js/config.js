@@ -107,15 +107,9 @@
             "delete":"rs/device/delete",
             "list":"rs/device/list",
             "getIdByNumber":"rs/device/getIdByNumber",
-            "findByCondition":"rs/device/findByCondition"
+            "findByCondition":"rs/device/findByCondition",
+            "mainDeviceInfo":"rs/device/mainDeviceInfo"
         },
-//        "contract":{
-//            "add":"rs/contract/add",
-//            "update":"rs/contract/update",
-//            "delete":"rs/contract/delete",
-//            "list":"rs/contract/list",
-//            "getContractById":"rs/contract/getContractById"
-//        },
         "deviceData":{
             "getDeviceData":"rs/deviceData/getDeviceData"
         },

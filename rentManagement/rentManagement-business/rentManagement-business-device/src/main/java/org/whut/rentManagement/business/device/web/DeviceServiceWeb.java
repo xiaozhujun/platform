@@ -135,4 +135,20 @@ public class DeviceServiceWeb {
         List<Map<String,String>> list = deviceService.findByCondition(condition);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/mainDeviceInfo")
+    @POST
+    public String mainDeviceInfo(@FormParam("mainDeviceId") String mainDeviceId){
+        if(mainDeviceId==null||mainDeviceId.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        Map<String,Object> condition = new HashMap<String, Object>();
+        condition.put("mainDeviceId",Long.parseLong(mainDeviceId));
+        condition.put("appId",UserContext.currentUserAppId());
+        Map<String,Object> mainDeviceInfo = deviceService.getMainDeviceInfo(condition);
+        List<Map<String,Object>> deviceList = deviceService.listByMainDeviceId(condition);
+        mainDeviceInfo.put("deviceList",deviceList);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(mainDeviceInfo,JsonResultUtils.Code.SUCCESS);
+    }
 }

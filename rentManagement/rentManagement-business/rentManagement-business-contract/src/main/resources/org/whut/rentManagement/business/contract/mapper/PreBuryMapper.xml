@@ -37,16 +37,6 @@
            order by p.id desc
     </select>
 
-    <select id="getListByContractId" parameterType="map" resultType="Map">
-      select prebury.*,contract.name as contractName,contract.customerName
-           from prebury
-           LEFT JOIN contract ON prebury.contractId=contract.id
-           <where>
-               <if test="appId!=null">prebury.appId=#{appId}</if>
-               <if test="contractId!=null">AND prebury.contractId=#{contractId}</if>
-           </where>
-        order by prebury.id desc
-    </select>
 
     <update id="update" parameterType="PreBury">
         UPDATE prebury
@@ -94,6 +84,17 @@
         <if test="startTime!=null"><![CDATA[ AND prebury.preBuryTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND prebury.preBuryTime<=#{endTime} ]]> </if>
         <if test="contractName!=null">AND contract.name LIKE #{contractName}</if>
+        order by prebury.id desc
+    </select>
+
+    <select id="getListByContractId" parameterType="map" resultType="Map">
+        select prebury.*,contract.name as contractName,contract.customerName
+        from prebury
+        LEFT JOIN contract ON prebury.contractId=contract.id
+        <where>
+            <if test="appId!=null">prebury.appId=#{appId}</if>
+            <if test="contractId!=null">AND prebury.contractId=#{contractId}</if>
+        </where>
         order by prebury.id desc
     </select>
 

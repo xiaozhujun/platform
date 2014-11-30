@@ -45,89 +45,6 @@
             });
         }
 
-        function beginEdit(rowid){
-            contractPreBuryList_manager.beginEdit(rowid);
-        }
-        function cancelEdit(rowid){
-            contractPreBuryList_manager.cancelEdit(rowid);
-        }
-        function endEdit(rowid){
-            contractPreBuryList_manager.endEdit(rowid);
-            var row=contractPreBuryList_manager.getRow(rowid);
-            var jsonString= $.toJSON(row);
-            $.post($.URL.preBury.update,{"jsonString":jsonString},updateCallBack,"json");
-        }
-        function updateCallBack(data){
-            if(data.code==200){
-                $.ligerDialog.success("修改成功") ;
-            }
-            else{
-                $.ligerDialog.error("修改失败！");
-            }
-        }
-        function deleteRow(rowid){
-            if(confirm("确认删除？"))
-            {
-                var row=contractPreBuryList_manager.getRow(rowid);
-                var jsonString= $.toJSON(row);
-                $.post($.URL.preBury.delete,{"jsonString":jsonString},deleteCallBack,"json");
-                contractPreBuryList_manager.deleteRow(rowid);
-            }
-        }
-        function deleteCallBack(data){
-            if(data.code==200)
-            {
-                $.ligerDialog.success("成功删除！");
-            }
-            else{
-                $.ligerDialog.error("删除失败！");
-            }
-        }
-
-        function f_add() {
-            $("#addpreBury").css('display','block');
-            $.ligerDialog.open({title:'添加预埋信息', target: $("#addpreBury"),width:500});
-        }
-        $("#submitBtn").click(function(){
-            var data={};
-            data.contractId=$("#pcontractId").val();
-            data.preBuryMan=$("#ppreBuryMan").val();
-            data.preBuryTime=$("#ppreBuryTime").val();
-            data.preBuryStatus=$("#ppreBuryStatus").val();
-
-            $.post($.URL.preBury.add,data,addCallBack,"json");
-        })
-        function addCallBack(data){
-            if(data.code==200){
-                $.ligerDialog.success("操作成功！");
-                $.post($.URL.preBury.list,null,contractPreBuryList_listCallBack,"json");
-            }
-            else if(data.code==500)
-            {
-                $.ligerDialog.error(data.message);
-                $.post($.URL.preBury.list,null,contractPreBuryList_listCallBack,"json");
-            }
-        }
-        $("#searchBtn").click(function(){
-            var data={};
-            data.contractName=$("#scontractName").val();
-            if(data.contractName==""){
-                $.post($.URL.preBury.list,null,contractPreBuryList_listCallBack,"json");
-            }else{
-                $.post($.URL.preBury.findByCondition,data,queryListCallback,"json");
-            }
-        });
-        function queryListCallback(data){
-            if(data.code==200){
-                contractPreBuryList_preBuryData.Rows=data.data;
-                contractPreBuryList_preBuryData.Total=data.data.length;
-                contractPreBuryList_f_initGrid();
-            }
-            else if(data.code==500) {
-                $.ligerDialog.error(data.message);
-            }
-        };
-
     </script>
     <style type="text/css">
         .l-button-submit {width:80px; float:left; margin-left:10px; padding-bottom:2px;}
@@ -138,7 +55,7 @@
     </style>
 </head>
 <body  style="padding:10px">
-<div id="list">
+<div>
     <div id="contractPreBuryList_mainGrid" style="margin-top:5px"></div>
 </div>
 

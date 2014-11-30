@@ -50,6 +50,7 @@
         },
         "installation":{
             "list":"rs/installation/list",
+            "listByContractId":"rs/installation/listByContractId",
             "add":"rs/installation/add",
             "update":"rs/installation/update",
             "delete":"rs/installation/delete",

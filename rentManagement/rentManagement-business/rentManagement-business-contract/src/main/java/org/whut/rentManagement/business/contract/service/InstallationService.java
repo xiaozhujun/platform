@@ -36,4 +36,7 @@ public class InstallationService {
     public Map<String,Object> getInfo(Map<String,Object> condition){
         return installationmapper.getInfo(condition);
     }
+    public List<Map<String,Object>> getListByContractId(Long appId,Long contractId){
+        return installationmapper.getListByContractId(appId,contractId);
+    }
 }

@@ -36,4 +36,7 @@ public class StockOutService {
     public Map<String,Object> getInfo(Map<String,Object> condition){
         return stockOutMapper.getInfo(condition);
     }
+    public List<Map<String,Object>> getListByContractId(Long appId,Long contractId){
+        return stockOutMapper.getListByContractId(appId,contractId);
+    }
 }

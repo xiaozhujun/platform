@@ -75,4 +75,16 @@
         <if test="appId!=null">AND stock_out.APPID=#{appId}</if>
         <if test="stockOutId!=null">AND stock_out.id=#{stockOutId}</if>
     </select>
+
+    <select id="getListByContractId" parameterType="map" resultType="Map">
+        select stock_out.*,contract.name as contractName,contract.customerName,storehouse.name as storehouseName
+        from stock_out
+        LEFT JOIN contract ON stock_out.contractId=contract.id
+        LEFT JOIN storehouse ON stock_out.storehouseId=storehouse.id
+        <where>
+            <if test="appId!=null">stock_out.appId=#{appId}</if>
+            <if test="contractId!=null">AND stock_out.contractId=#{contractId}</if>
+        </where>
+        order by stock_out.id desc
+    </select>
 </mapper>

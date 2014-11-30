@@ -51,5 +51,8 @@ public class RemoveService {
     public Map<String,Object> getInfo(Map<String,Object> condition){
         return removeMapper.getInfo(condition);
     }
+    public List<Map<String,Object>> getListByContractId(Long appId,Long contractId){
+        return removeMapper.getListByContractId(appId,contractId);
+    }
 
 }

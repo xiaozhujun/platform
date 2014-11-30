@@ -69,4 +69,15 @@
         <if test="appId!=null">AND remove.APPID=#{appId}</if>
         <if test="removeId!=null">AND remove.id=#{removeId}</if>
     </select>
+
+    <select id="getListByContractId" parameterType="map" resultType="Map">
+        select remove.*,contract.name as contractName,contract.customerName
+        from remove
+        LEFT JOIN contract ON remove.contractId=contract.id
+        <where>
+            <if test="appId!=null">remove.appId=#{appId}</if>
+            <if test="contractId!=null">AND remove.contractId=#{contractId}</if>
+        </where>
+        order by remove.id desc
+    </select>
 </mapper>

@@ -25,6 +25,7 @@ public interface RemoveMapper extends AbstractMapper<Remove> {
     public long getRemoveDeviceIdById(long removeDeviceId);
     public List<Map<String,String>> findByCondition(Map<String,Object> condition);
     public Map<String,Object> getInfo(Map<String,Object> condition);
+    public List<Map<String,Object>> getListByContractId(@Param("appId") Long appId,@Param("contractId") Long contractId);
 
 
 }

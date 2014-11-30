@@ -76,4 +76,15 @@
         <if test="transportId!=null">AND transport.id=#{transportId}</if>
     </select>
 
+    <select id="getListByContractId" parameterType="map" resultType="Map">
+        select transport.*,contract.name as contractName,contract.customerName
+        from transport
+        LEFT JOIN contract ON transport.contractId=contract.id
+        <where>
+            <if test="appId!=null">transport.appId=#{appId}</if>
+            <if test="contractId!=null">AND transport.contractId=#{contractId}</if>
+        </where>
+        order by transport.id desc
+    </select>
+
 </mapper>

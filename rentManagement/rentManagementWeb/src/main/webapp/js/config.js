@@ -60,6 +60,7 @@
         },
         "transport":{
             "list":"rs/transport/list",
+            "listByContractId":"rs/transport/listByContractId",
             "add":"rs/transport/add",
             "update":"rs/transport/update",
             "delete":"rs/transport/delete",
@@ -123,6 +124,7 @@
         },
         "stockIn":{
             "list":"rs/stockIn/list",
+            "listByContractId":"rs/stockIn/listByContractId",
             "add":"rs/stockIn/add",
             "update":"rs/stockIn/update",
             "delete":"rs/stockIn/delete",
@@ -138,6 +140,7 @@
         },
         "stockOut":{
             "list":"rs/stockOut/list",
+            "listByContractId":"rs/stockOut/listByContractId",
             "add":"rs/stockOut/add",
             "update":"rs/stockOut/update",
             "delete":"rs/stockOut/delete",
@@ -162,6 +165,7 @@
             "update":"rs/remove/update",
             "delete":"rs/remove/delete" ,
             "list":"rs/remove/list",
+            "listByContractId":"rs/remove/listByContractId",
             "info":"rs/remove/info",
             "upload":"rs/remove/upload"
         },

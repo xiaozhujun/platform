@@ -73,4 +73,12 @@ public class DeviceService {
     public void stockOut(long appId,List<String> deviceIdList){
         deviceMapper.stockOut(appId,deviceIdList);
     }
+
+    public Map<String,Object> getMainDeviceInfo(Map<String,Object> condition){
+        return deviceMapper.getMainDeviceInfo(condition);
+    }
+
+    public List<Map<String,Object>> listByMainDeviceId(Map<String,Object> condition){
+        return deviceMapper.listByMainDeviceId(condition);
+    }
 }

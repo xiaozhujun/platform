@@ -98,6 +98,27 @@ $.extend({
         $(".deviceItemHover").removeClass("deviceItem");
         $(riskcontentId).addClass("deviceItemHover");
         $(deviceInfo).removeClass("deviceInfoHide").addClass("deviceInfoClick");
+
+        $(".showMainDeviceLink").unbind("click");
+        $(".showMainDeviceLink").click(function(){
+            mainDeviceId=$(this).attr("mainDeviceId");
+            $.ligerDialog.open({
+                height:600,
+                width: 800,
+                title : '设备详情',
+                url: 'device/mainDeviceDetail.html',
+                showMax: false,
+                showToggle: true,
+                showMin: false,
+                isResize: true,
+                slide: false,
+                data: {
+                    name: $("#txtValue").val()
+                },
+                //自定义参数
+                myDataName: $("#txtValue").val()
+            });
+        });
     },
     myMouseout:function myMouseover(id){
         var deviceInfo="#deviceInfo"+id;

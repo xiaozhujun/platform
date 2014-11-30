@@ -38,7 +38,7 @@ function getInstallList(){
     $.post($.URL.dashboard.installationList,{"user":user,"device":device,"sTime":sTime,"eTime":eTime},getInstallListCallback,"json");
 }
 
-$("#getInstallListBtn").click(function(){
+$("#installSearchBtn").click(function(){
     getInstallList();
 });
 
@@ -48,24 +48,24 @@ function getInstallListCallback(data){
             $.ligerDialog.alert("抱歉,记录不存在!");
         }else{
             $("#installShow").html("");
-            showGrid(data.data);
+            install_showGrid(data.data);
         }
     }
 }
 
 
 var installData={};
-function showGrid(data){
+function install_showGrid(data){
     var grid = $("<div id='installGrid'></div>");
     $("#installShow").append(grid);
     installData.Rows=data;
-    f_peopleRecord(grid);
+    install_f_record(grid);
 }
-var manager, g;
+var install_manager, install_g;
 var h = "";
-function f_peopleRecord(grid)
+function install_f_record(grid)
 {
-    g = manager = grid.ligerGrid({
+    install_g = install_manager = grid.ligerGrid({
         columns: [
             { display: '项目名称', name: 'name',
                 editor: { type: 'text' }
@@ -85,11 +85,11 @@ function f_peopleRecord(grid)
             { display: '安装类型', name: 'type',width:'auto',
                 editor: { type: 'text' }
             },
-            { display: '安装拍照', name:'abnormalPicture', editor:{type:'text'},
+            { display: '安装拍照', name:'install_abnormalPicture', editor:{type:'text'},
                 render:function(rowdata, rowindex, value){
                     var image = rowdata.image;
                     if(rowdata.image != null) {
-                        return "<a href='javascript:abnormal(" + rowindex+ ")'>查看</a> ";
+                        return "<a href='javascript:install_abnormal(" + rowindex+ ")'>查看</a> ";
                     }
                     else {
                         return "无";
@@ -98,29 +98,25 @@ function f_peopleRecord(grid)
             },
             { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
             {
-                return "<a href='javascript:resolve(" + rowindex + ")'>详情</a> ";
+                return "<a href='javascript:install_resolve(" + rowindex + ")'>详情</a> ";
             }
             }
         ],
-        onSelectRow: function (rowdata, rowindex)
-        {
-            $("#txtrowindex").val(rowindex);
-        },
         enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
         data: installData,
         width: '100%'
     });
 }
 
-function abnormal(rowid){
-    var rowPicture = manager.getRow(rowid);
+function install_abnormal(rowid){
+    var rowPicture = install_manager.getRow(rowid);
     var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
     $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"安装拍照" });
 }
 
 var installationId;
-function resolve(rowid){
-    var rowInfo = manager.getRow(rowid);
+function install_resolve(rowid){
+    var rowInfo = install_manager.getRow(rowid);
     var jsonString  = $.toJSON(rowInfo);
     installationId = $.evalJSON(jsonString).id;
     $.ligerDialog.open({
@@ -149,7 +145,7 @@ function resolve(rowid){
     <div class="searchItem"><span class="item_font">安装人员:</span><span class="item_input"><input id="installUserName" type="text"></span></div>
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="installStartTime" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="installEndTime" type="text"></span></div>
-    <div class="btn"><span><input type="button" value="查看" id="getInstallListBtn" class="l-button l-button-submit" /></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="installSearchBtn" class="l-button l-button-submit" /></span></div>
 </div>
 <div class="reportContent" id="installShow"></div>
 

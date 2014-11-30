@@ -107,7 +107,11 @@
             "delete":"rs/device/delete",
             "list":"rs/device/list",
             "getIdByNumber":"rs/device/getIdByNumber",
-            "findByCondition":"rs/device/findByCondition"
+            "findByCondition":"rs/device/findByCondition",
+            "mainDeviceInfo":"rs/device/mainDeviceInfo"
+        },
+        "deviceData":{
+            "getDeviceData":"rs/deviceData/getDeviceData"
         },
         "deviceType":{
             "list":"rs/deviceType/list",

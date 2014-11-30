@@ -27,4 +27,6 @@ public interface DeviceMapper extends AbstractMapper<Device> {
     public void transportDevice(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);
     public void stockIn(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);
     public void stockOut(@Param("appId") long appId,@Param("deviceIdList") List<String> deviceIdList);
+    public Map<String,Object> getMainDeviceInfo(Map<String,Object> condition);
+    public List<Map<String,Object>> listByMainDeviceId(Map<String,Object> condition);
 }

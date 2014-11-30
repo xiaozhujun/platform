@@ -31,9 +31,10 @@ $(function(){
 
 function getPreBuryList(){
     var user=$("#preBuryUserName").val();
+    var device=$("#preBuryDeviceName").val();
     var sTime=$("#preBuryStartTime").val();
     var eTime=$("#preBuryEndTime").val();
-    $.post($.URL.prebury.list,{"user":user,"sTime":sTime,"eTime":eTime},getPreBuryListCallback,"json");
+    $.post($.URL.preBury.findByCondition,{"user":user,"device":device,"sTime":sTime,"eTime":eTime},getPreBuryListCallback,"json");
 }
 
 $("#preBurySearchBtn").click(function(){
@@ -65,7 +66,7 @@ function f_peopleRecord(grid)
 {
     g = manager = grid.ligerGrid({
         columns: [
-            { display: '项目名称', name: 'name',
+            { display: '项目名称', name: 'contractName',
                 editor: { type: 'text' }
             },
             { display: '客户名称', name: 'customerName',
@@ -93,7 +94,8 @@ function f_peopleRecord(grid)
             },
             { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
             {
-                return "<a href='javascript:preBury_resolve(" + rowindex + ")'>详情</a> ";
+                return "无";
+//                return "<a href='javascript:preBury_resolve(" + rowindex + ")'>详情</a> ";
             }
             }
         ],
@@ -134,8 +136,8 @@ function preBury_resolve(rowid){
 </head>
 <body>
 <div class="searchContainer">
-    <div class="searchItem"><span class="item_font">拆卸设备:</span><span class="item_input"><input id="preBuryDeviceName" type="text"></span></div>
-    <div class="searchItem"><span class="item_font">拆卸人员:</span><span class="item_input"><input id="preBuryUserName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">项目名称:</span><span class="item_input"><input id="preBuryDeviceName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">预埋人员:</span><span class="item_input"><input id="preBuryUserName" type="text"></span></div>
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="preBuryStartTime" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="preBuryEndTime" type="text"></span></div>
     <div class="btn"><span><input type="button" value="查看" id="preBurySearchBtn" class="l-button l-button-submit" /></span></div>

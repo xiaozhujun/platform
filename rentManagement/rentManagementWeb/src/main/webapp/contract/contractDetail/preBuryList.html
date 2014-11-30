@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="../lib/json2.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.post("../"+$.URL.preBury.listByContractId,{"contractId":parent.contractId},contractPreBuryList_listCallBack,"json");
+        });
+
+        var contractPreBuryList_preBuryData = {};
+        function contractPreBuryList_listCallBack(data) {
+            if(data.code == 200) {
+                contractPreBuryList_preBuryData.Rows = data.data;
+                contractPreBuryList_preBuryData.total = data.data.length;
+                contractPreBuryList_f_initGrid();
+            }
+        }
+
+        var contractPreBuryList_manager;
+        function contractPreBuryList_f_initGrid(){
+            contractPreBuryList_manager = $("#contractPreBuryList_mainGrid").ligerGrid( {
+
+                enabledEdit:true,clickToEdit:false,isScroll:false,
+                data: contractPreBuryList_preBuryData,
+                width:'100%',
+
+                columns:[
+                    {display:'预埋人员',name:'preBuryMan',width:100,editor:{type:'text'}},
+                    {display:'预埋数量',name:'count',width:100,editor:{type:'text'}},
+                    {display:'预埋时间',name:'preBuryTime',width:100,frozen:true},
+                    {display:'预埋状态',name:'preBuryStatus',width:100,
+                        editor:{type:'select',valueField:"type",data:[{type:'未完成',text:'未完成'},{type:'完成',text:'完成'}],emptyText:null}
+                    }
+                ]
+            });
+        }
+
+        function beginEdit(rowid){
+            contractPreBuryList_manager.beginEdit(rowid);
+        }
+        function cancelEdit(rowid){
+            contractPreBuryList_manager.cancelEdit(rowid);
+        }
+        function endEdit(rowid){
+            contractPreBuryList_manager.endEdit(rowid);
+            var row=contractPreBuryList_manager.getRow(rowid);
+            var jsonString= $.toJSON(row);
+            $.post($.URL.preBury.update,{"jsonString":jsonString},updateCallBack,"json");
+        }
+        function updateCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success("修改成功") ;
+            }
+            else{
+                $.ligerDialog.error("修改失败！");
+            }
+        }
+        function deleteRow(rowid){
+            if(confirm("确认删除？"))
+            {
+                var row=contractPreBuryList_manager.getRow(rowid);
+                var jsonString= $.toJSON(row);
+                $.post($.URL.preBury.delete,{"jsonString":jsonString},deleteCallBack,"json");
+                contractPreBuryList_manager.deleteRow(rowid);
+            }
+        }
+        function deleteCallBack(data){
+            if(data.code==200)
+            {
+                $.ligerDialog.success("成功删除！");
+            }
+            else{
+                $.ligerDialog.error("删除失败！");
+            }
+        }
+
+        function f_add() {
+            $("#addpreBury").css('display','block');
+            $.ligerDialog.open({title:'添加预埋信息', target: $("#addpreBury"),width:500});
+        }
+        $("#submitBtn").click(function(){
+            var data={};
+            data.contractId=$("#pcontractId").val();
+            data.preBuryMan=$("#ppreBuryMan").val();
+            data.preBuryTime=$("#ppreBuryTime").val();
+            data.preBuryStatus=$("#ppreBuryStatus").val();
+
+            $.post($.URL.preBury.add,data,addCallBack,"json");
+        })
+        function addCallBack(data){
+            if(data.code==200){
+                $.ligerDialog.success("操作成功！");
+                $.post($.URL.preBury.list,null,contractPreBuryList_listCallBack,"json");
+            }
+            else if(data.code==500)
+            {
+                $.ligerDialog.error(data.message);
+                $.post($.URL.preBury.list,null,contractPreBuryList_listCallBack,"json");
+            }
+        }
+        $("#searchBtn").click(function(){
+            var data={};
+            data.contractName=$("#scontractName").val();
+            if(data.contractName==""){
+                $.post($.URL.preBury.list,null,contractPreBuryList_listCallBack,"json");
+            }else{
+                $.post($.URL.preBury.findByCondition,data,queryListCallback,"json");
+            }
+        });
+        function queryListCallback(data){
+            if(data.code==200){
+                contractPreBuryList_preBuryData.Rows=data.data;
+                contractPreBuryList_preBuryData.Total=data.data.length;
+                contractPreBuryList_f_initGrid();
+            }
+            else if(data.code==500) {
+                $.ligerDialog.error(data.message);
+            }
+        };
+
+    </script>
+    <style type="text/css">
+        .l-button-submit {width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-dialog-tc{background:#E0EDFF;}
+        {background:#E0EDFF; }
+    </style>
+</head>
+<body  style="padding:10px">
+<div id="list">
+    <div id="contractPreBuryList_mainGrid" style="margin-top:5px"></div>
+</div>
+
+</body>
+</html>

@@ -164,12 +164,13 @@
             "info":"rs/remove/info",
             "upload":"rs/remove/upload"
         },
-        "prebury":{
-            "add":"rs/prebury/add"  ,
-            "update":"rs/prebury/update",
-            "delete":"rs/prebury/delete" ,
-            "list":"rs/prebury/list",
-            "findByCondition":"rs/prebury/findByCondition"
+        "preBury":{
+            "add":"rs/preBury/add"  ,
+            "update":"rs/preBury/update",
+            "delete":"rs/preBury/delete" ,
+            "list":"rs/preBury/list",
+            "listByContractId":"rs/preBury/listByContractId",
+            "findByCondition":"rs/preBury/findByCondition"
         },
         "bad_Debt_Sheet":{
             "add":"rs/bad_Debt_Sheet/add",
@@ -195,7 +196,7 @@
             "mainDeviceList":"rs/device/getMainDeviceList",
             "installationList":"rs/installation/findByCondition",
             "removeList":"rs/remove/findByCondition",
-            "preburyList":"rs/prebury/getPreburyList",
+            "preBuryList":"rs/preBury/getPreburyList",
             "contractList":"rs/contract/getContractList",
             "inStockList":"rs/stock_in_sheet/getInStockList",
             "outStockList":"rs/stock_out_sheet/getOutStockList"

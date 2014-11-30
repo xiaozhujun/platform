@@ -21,8 +21,11 @@ public class PreBuryService {
     public void add(PreBury preBury){
         preBuryMapper.add(preBury);
     }
-    public List<Map<String,String>> getListByAppId(long appId){
+    public List<Map<String,Object>> getListByAppId(long appId){
         return preBuryMapper.getListByAppId(appId);
+    }
+    public List<Map<String,Object>> getListByContractId(Long appId,Long contractId){
+        return preBuryMapper.getListByContractId(appId,contractId);
     }
     public int update(PreBury preBury){
         return preBuryMapper.update(preBury);
@@ -34,10 +37,10 @@ public class PreBuryService {
         return preBuryMapper.getIdByContractId(contractId);
     }
 
-    public List<Map<String,String>> getPreburyList(Map<String,Object> condition){
+    public List<Map<String,Object>> getPreburyList(Map<String,Object> condition){
         return preBuryMapper.getPreburyList(condition);
     }
-    public List<Map<String,String>> findByCondition(String contractName ,long appId){
-        return preBuryMapper.findByCondition(contractName,appId);
+    public List<Map<String,Object>> findByCondition(Map<String,Object> condition){
+        return preBuryMapper.findByCondition(condition);
     }
 }

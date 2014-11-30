@@ -92,16 +92,30 @@ public class RentReportServiceWeb {
         if(!(deviceType.trim()).equals("")&&!deviceType.equals("请选择"))
         {
             wheredeviceType="t.name="+"\""+deviceType+"\"";
+            if(!(deviceStatus.trim()).equals("")&&!deviceStatus.equals("请选择"))
+            {
+                wheredeviceStatus=" and d.status="+"\""+deviceStatus+"\"";
+            }
+        }else{
+            if(!(deviceStatus.trim()).equals("")&&!deviceStatus.equals("请选择"))
+            {
+               wheredeviceStatus="d.status="+"\""+deviceStatus+"\"";
+            }else{
+               if((!(sTime.trim()).equals("")&&!sTime.equals("请选择"))&&(!(eTime.trim()).equals("")&&!eTime.equals("请选择")))
+               {
+                   wheresTime=" and t.createTime BETWEEN "+"\""+sTime+"\"";
+                   whereeTime=" and "+"\""+eTime+"\"";
+               }else{
+                   if((!(sTime.trim()).equals("")&&!sTime.equals("请选择"))&&(!(eTime.trim()).equals("")&&!eTime.equals("请选择")))
+                   {
+                       wheresTime=" t.createTime BETWEEN "+"\""+sTime+"\"";
+                       whereeTime=" and "+"\""+eTime+"\"";
+                   }
+
+               }
+            }
         }
-        if(!(deviceStatus.trim()).equals("")&&!deviceStatus.equals("请选择"))
-        {
-            wheredeviceStatus=" and d.status="+"\""+deviceStatus+"\"";
-        }
-        if((!(sTime.trim()).equals("")&&!sTime.equals("请选择"))&&(!(eTime.trim()).equals("")&&!eTime.equals("请选择")))
-        {
-            wheresTime=" and t.createtime BETWEEN "+"\""+sTime+"\"";
-            whereeTime=" and "+"\""+eTime+"\"";
-        }
+
 
         Map parameter=new HashMap();
         parameter.put("deviceType",wheredeviceType);

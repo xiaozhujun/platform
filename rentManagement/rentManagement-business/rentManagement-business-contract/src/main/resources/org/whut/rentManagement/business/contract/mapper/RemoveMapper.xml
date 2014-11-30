@@ -32,6 +32,7 @@
         <include refid="Remove_fields" />
         from remove
         where APPID=#{appId}
+        order by remove.id desc
     </select>
     <update id="update" parameterType="Remove">
         UPDATE remove
@@ -60,6 +61,7 @@
         <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND remove.createTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND remove.createTime<=#{endTime} ]]> </if>
+        order by remove.id desc
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
@@ -68,6 +70,7 @@
         where remove.contractId=contract.id
         <if test="appId!=null">AND remove.APPID=#{appId}</if>
         <if test="removeId!=null">AND remove.id=#{removeId}</if>
+        order by remove.id desc
     </select>
 
     <select id="getListByContractId" parameterType="map" resultType="Map">

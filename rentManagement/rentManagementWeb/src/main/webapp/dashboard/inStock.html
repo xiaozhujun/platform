@@ -22,9 +22,16 @@
 <script type="text/javascript">
 $(function(){
     var d=new Date();
-    var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-    $("#inStockStartTime").ligerDateEditor({initValue: dd});
-    $("#inStockEndTime").ligerDateEditor({initValue: dd});
+    var endTime=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+    var startTime;
+    if(d.getMonth()==1){
+        startTime=(d.getFullYear()-1)+"-"+12+"-"+ d.getDate();
+
+    }else{
+        startTime=(d.getFullYear())+"-"+ (d.getMonth())+"-"+ d.getDate();
+    }
+    $("#inStockStartTime").ligerDateEditor({initValue: startTime});
+    $("#inStockEndTime").ligerDateEditor({initValue: endTime});
 
     getInStockList();
 });

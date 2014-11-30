@@ -37,6 +37,7 @@
            select *
            from  transport
            where appId=#{appId}
+        order by transport.id desc
     </select>
 
     <update id="update" parameterType="Transport">
@@ -66,6 +67,7 @@
         <if test="device!=null">AND transport.driver like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND transport.createTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND transport.createTime<=#{endTime} ]]> </if>
+        order by transport.id desc
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
@@ -74,6 +76,7 @@
         where
         <if test="appId!=null"> transport.APPID=#{appId}</if>
         <if test="transportId!=null">AND transport.id=#{transportId}</if>
+        order by transport.id desc
     </select>
 
     <select id="getListByContractId" parameterType="map" resultType="Map">

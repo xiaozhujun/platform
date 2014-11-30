@@ -22,9 +22,16 @@
 <script type="text/javascript">
 $(function(){
     var d=new Date();
-    var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-    $("#preBuryStartTime").ligerDateEditor({initValue: dd});
-    $("#preBuryEndTime").ligerDateEditor({initValue: dd});
+    var endTime=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+    var startTime;
+    if(d.getMonth()==1){
+        startTime=(d.getFullYear()-1)+"-"+12+"-"+ d.getDate();
+
+    }else{
+        startTime=(d.getFullYear())+"-"+ (d.getMonth())+"-"+ d.getDate();
+    }
+    $("#preBuryStartTime").ligerDateEditor({initValue: startTime});
+    $("#preBuryEndTime").ligerDateEditor({initValue: endTime});
 
     getPreBuryList();
 });

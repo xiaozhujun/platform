@@ -57,6 +57,7 @@
                 columns:[
                     {display:'合同名称',name:'contractName',width:100,type:'int',frozen:true} ,
                     {display:'预埋人员',name:'preBuryMan',width:100,editor:{type:'text'}},
+                    {display:'预埋数量',name:'preBuryCount',width:100,editor:{type:'text'}},
                     {display:'预埋时间',name:'preBuryTime',width:100,frozen:true},
                     {display:'预埋状态',name:'preBuryStatus',width:100,
                         editor:{type:'select',valueField:"type",data:[{type:'未完成',text:'未完成'},{type:'完成',text:'完成'}],emptyText:null}
@@ -127,7 +128,7 @@
             var data={};
             data.contractId=$("#preBury_contractFieldId").val();
             data.preBuryMan=$("#preBury_man").val();
-            data.count=$("#preBury_count").val();
+            data.preBuryCount=$("#preBury_count").val();
             data.preBuryStatus=$("#preBury_status").val();
 
             $.post($.URL.preBury.add,{"jsonString": $.toJSON(data)},preBury_addCallback,"json");

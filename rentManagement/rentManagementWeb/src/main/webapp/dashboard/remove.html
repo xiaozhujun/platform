@@ -23,9 +23,16 @@
 $.ligerDialog.close("#uploadInfo");
 $(function(){
     var d=new Date();
-    var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-    $("#removeStartTime").ligerDateEditor({initValue: dd});
-    $("#removeEndTime").ligerDateEditor({initValue: dd});
+    var endTime=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+    var startTime;
+    if(d.getMonth()==1){
+        startTime=(d.getFullYear()-1)+"-"+12+"-"+ d.getDate();
+
+    }else{
+        startTime=(d.getFullYear())+"-"+ (d.getMonth())+"-"+ d.getDate();
+    }
+    $("#removeStartTime").ligerDateEditor({initValue: startTime});
+    $("#removeEndTime").ligerDateEditor({initValue: endTime});
 
     getRemoveList();
 });

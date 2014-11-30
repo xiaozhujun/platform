@@ -65,6 +65,7 @@
         <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND installation.installTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND installation.installTime<=#{endTime} ]]> </if>
+        order by installation.id desc
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
@@ -73,6 +74,7 @@
         where installation.contractId=contract.id
         <if test="appId!=null">AND installation.APPID=#{appId}</if>
         <if test="installationId!=null">AND installation.id=#{installationId}</if>
+        order by installation.id desc
     </select>
 
     <select id="getListByContractId" parameterType="map" resultType="Map">

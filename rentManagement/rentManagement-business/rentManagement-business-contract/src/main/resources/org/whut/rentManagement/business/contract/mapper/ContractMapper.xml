@@ -122,6 +122,7 @@
             <if test="number!=null">and  NUMBER=#{number}</if>
             <if test="appId!=null">and APPID=#{appId}</if>
         </where>
+        order by contract.id desc
     </select>
 
     <select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
@@ -135,6 +136,7 @@
         <include refid="contract_fields"/>
         from contract
         where APPID=#{appId}
+        order by contract.id desc
     </select>
 
     <select id="getContractList" parameterType="map" resultType="map">
@@ -146,6 +148,7 @@
         <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND contract.signTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND contract.signTime<=#{endTime} ]]> </if>
+        order by contract.id desc
     </select>
 
 </mapper>

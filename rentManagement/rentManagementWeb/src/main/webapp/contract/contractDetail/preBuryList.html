@@ -36,13 +36,30 @@
 
                 columns:[
                     {display:'预埋人员',name:'preBuryMan',width:100,editor:{type:'text'}},
-                    {display:'预埋数量',name:'count',width:100,editor:{type:'text'}},
+                    {display:'预埋数量',name:'preBuryCount',width:100,editor:{type:'text'}},
                     {display:'预埋时间',name:'preBuryTime',width:100,editor:{type:'text'}},
                     {display:'预埋状态',name:'preBuryStatus',width:100,
                         editor:{type:'select',valueField:"type",data:[{type:'未完成',text:'未完成'},{type:'完成',text:'完成'}],emptyText:null}
+                    },
+                    { display: '预埋拍照', name:'preBury_abnormalPicture', editor:{type:'text'},
+                        render:function(rowdata, rowindex, value){
+                            var image = rowdata.image;
+                            if(rowdata.image != null) {
+                                return "<a href='javascript:preBury_abnormal(" + rowindex+ ")'>查看</a> ";
+                            }
+                            else {
+                                return "无";
+                            }
+                        }
                     }
                 ]
             });
+        }
+
+        function preBury_abnormal(rowid){
+            var rowPicture = contractPreBuryList_manager.getRow(rowid);
+            var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
+            $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"预埋拍照" });
         }
 
     </script>

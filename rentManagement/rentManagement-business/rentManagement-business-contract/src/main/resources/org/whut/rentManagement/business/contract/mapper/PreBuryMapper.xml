@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.contract.mapper.PreBuryMapper">
     <sql id="PreBury_fields">
-          ID,CONTRACTID,PREBURYMAN,COUNT,PREBURYTIME,PREBURYSTATUS,IMAGE,APPID
+          ID,CONTRACTID,PREBURYMAN,PREBURYCOUNT,PREBURYTIME,PREBURYSTATUS,IMAGE,APPID
     </sql>
     <resultMap id="PreBuryResultMap" type="PreBury">
         <id property="id" column="ID" />
         <result property="contractId" column="CONTRACTID"/>
         <result property="preBuryMan" column="PREBURYMAN"/>
-        <result property="count" column="COUNT"/>
+        <result property="preBuryCount" column="PREBURYCOUNT"/>
         <result property="preBuryTime" column="PREBURYTIME"/>
         <result property="preBuryStatus" column="PREBURYSTATUS"/>
         <result property="image" column="IMAGE"/>
@@ -23,7 +23,7 @@
         prebury(
         <include refid="PreBury_fields" />
         )
-        VALUES (#{id}, #{contractId},#{preBuryMan},#{count},#{preBuryTime},#{preBuryStatus},#{image},#{appId});
+        VALUES (#{id}, #{contractId},#{preBuryMan},#{preBuryCount},#{preBuryTime},#{preBuryStatus},#{image},#{appId});
         <selectKey resultType="long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -31,7 +31,7 @@
     </insert>
 
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
-      select c.name contractName,p.preBuryMan,p.preBuryTime,p.preBuryStatus,p.id,c.customerName
+      select p.*,c.name contractName,c.customerName
            from prebury AS p,contract AS c
            where p.appId=#{appId} AND p.contractId=c.id
            order by p.id desc
@@ -43,7 +43,7 @@
         <set>
             <if test="preBuryMan!=null">PREBURYMAN=#{preBuryMan},</if>
             <if test="preBuryStatus!=null">PREBURYSTATUS=#{preBuryStatus},</if>
-            <if test="count!=null">COUNT=#{count},</if>
+            <if test="preBuryCount!=null">PREBURYCOUNT=#{preBuryCount},</if>
             <if test="image!=null">IMAGE=#{image},</if>
             <if test="preBuryTime!=null">PREBURYTIME=#{preBuryTime},</if>
         </set>

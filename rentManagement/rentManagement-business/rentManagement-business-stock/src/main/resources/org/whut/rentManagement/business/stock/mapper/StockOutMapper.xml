@@ -38,6 +38,7 @@
            select c.name contractName,s.*
            from  stock_out AS s,contract AS c
            where s.appId=#{appId} AND s.contractId=c.id
+        order by stock_out.id desc
     </select>
 
     <update id="update" parameterType="StockOut">
@@ -66,6 +67,7 @@
         <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND stock_out.createTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND stock_out.createTime<=#{endTime} ]]> </if>
+        order by stock_out.id desc
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
@@ -74,6 +76,7 @@
         where stock_out.contractId=contract.id AND stock_out.storehouseId=storehouse.id
         <if test="appId!=null">AND stock_out.APPID=#{appId}</if>
         <if test="stockOutId!=null">AND stock_out.id=#{stockOutId}</if>
+        order by stock_out.id desc
     </select>
 
     <select id="getListByContractId" parameterType="map" resultType="Map">

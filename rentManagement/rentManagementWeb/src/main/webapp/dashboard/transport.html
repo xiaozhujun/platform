@@ -23,9 +23,16 @@
         $.ligerDialog.close("#uploadInfo");
         $(function(){
             var d=new Date();
-            var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
-            $("#transportStartTime").ligerDateEditor({initValue: dd});
-            $("#transportEndTime").ligerDateEditor({initValue: dd});
+            var endTime=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+            var startTime;
+            if(d.getMonth()==1){
+                startTime=(d.getFullYear()-1)+"-"+12+"-"+ d.getDate();
+
+            }else{
+                startTime=(d.getFullYear())+"-"+ (d.getMonth())+"-"+ d.getDate();
+            }
+            $("#transportStartTime").ligerDateEditor({initValue: startTime});
+            $("#transportEndTime").ligerDateEditor({initValue: endTime});
 
             getTransportList();
         });

@@ -15,7 +15,7 @@ public class PreBury {
     private Long id;
     private Long contractId;
     private String preBuryMan;
-    private int count;
+    private Integer preBuryCount;
     @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date preBuryTime;
     private String preBuryStatus;
@@ -46,12 +46,12 @@ public class PreBury {
         this.preBuryMan = preBuryMan;
     }
 
-    public int getCount() {
-        return count;
+    public Integer getPreBuryCount() {
+        return preBuryCount;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setPreBuryCount(Integer preBuryCount) {
+        this.preBuryCount = preBuryCount;
     }
 
     public Date getPreBuryTime() {

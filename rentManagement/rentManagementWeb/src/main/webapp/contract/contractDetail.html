@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="../js/config.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <script src="../js/jquery.json-2.4.min.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../css/report.css">
+    <link rel="stylesheet" href="../css/reportShow.css">
+    <script src="../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(function(){
+            $("#contractTab").ligerTab();
+            navtab = $("#contractTab").ligerGetTabManager();
+
+            $("#contractTab").ligerTab({onAfterSelectTabItem: function (tabid) {
+                loadTabPage(tabid);
+            }});
+
+            loadTabPage('contractPreBuryTab');
+
+            $.post("../"+$.URL.contract.getContractById,{"id":parent.contractId},contractDetailCallback,"json");
+        });
+
+        var navtab = null;
+        function loadTabPage(tabid){
+            var tab =$("#"+tabid);
+            if(tab.attr("url")!=""){
+                tab.load(tab.attr("url"))
+            }
+        }
+
+        function contractDetailCallback(data){
+            if(data.code==200){
+                showContractDetail(data.data);
+            }else{
+                alert(data.message);
+            }
+        }
+
+        function showContractDetail(info){
+            $("#cd_name").val(info.name);
+            $("#cd_number").val(info.number);
+            $("#cd_customerName").val(info.customerName);
+            $("#cd_startTime").val(info.startTime);
+            $("#cd_endTime").val(info.endTime);
+            $("#cd_chargeMan").val(info.chargeMan)
+        }
+
+    </script>
+</head>
+<body>
+<table style="margin-top:5px;width: 100%">
+    <tr>
+        <td>
+            <div class="contractDetailContainer">
+                <table style="width: 100%">
+                    <tr>
+                        <td><div class="searchItem"><span class="item_font">项目名称:</span><span class="item_input"><input id="cd_name" type="text"></span></div></td>
+                        <td><div class="searchItem"><span class="item_font">项目编号:</span><span class="item_input"><input id="cd_number" type="text"></span></div></td>
+                        <td><div class="searchItem"><span class="item_font">客户名称:</span><span class="item_input"><input id="cd_customerName" type="text"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="searchItem"><span class="item_font">开始日期:</span><span class="item_input"><input id="cd_startTime" type="text"></span></div></td>
+                        <td><div class="searchItem"><span class="item_font">结束日期:</span><span class="item_input"><input id="cd_endTime" type="text"></span></div></td>
+                        <td><div class="searchItem"><span class="item_font">负责人:</span><span class="item_input"><input id="cd_chargeMan" type="text"></span></div></td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="reportContent" id="contractDetailShow">
+                <div id="contractTab" style="height: 100%;">
+                    <div id="contractPreBuryTab" tabid="contractPreBuryTab" url="contractDetail/preBuryDetail.html" title="预埋" style="height: 100%;">
+                    </div>
+                    <div id="contractInstallTab" tabid="contractInstallTab" url="contractDetail/installDetail.html"  title="安装" style="height: 100%;">
+                    </div>
+                    <div id="contractRemoveTab" tabid="contractRemoveTab" url="contractDetail/removeDetail.html"  title="拆卸" style="height: 100%;">
+                    </div>
+                    <div id="contractStockInTab" tabid="contractStockInTab" url="contractDetail/stockInDetail.html"  title="入库" style="height: 100%;">
+                    </div>
+                    <div id="contractStockOutTab" tabid="contractStockOutTab" url="contractDetail/stockOutDetail.html"  title="出库" style="height: 100%;">
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -59,13 +59,13 @@
             var grid = $("<div id='transportGrid'></div>");
             $("#transportShow").append(grid);
             transportData.Rows=data;
-            f_peopleRecord(grid);
+            transport_f_record(grid);
         }
-        var manager, g;
+        var transport_manager, transport_g;
         var h = "";
-        function f_peopleRecord(grid)
+        function transport_f_record(grid)
         {
-            g = manager = grid.ligerGrid({
+            transport_g = transport_manager = grid.ligerGrid({
                 columns: [
                     { display: '经手人', name: 'handler',
                         editor: { type: 'text' }
@@ -85,11 +85,11 @@
                     { display: '电话', name: 'telephone', type: 'string',
                         editor: { type: 'text' }
                     },
-                    { display: '运输拍照', name:'abnormalPicture', editor:{type:'text'},
+                    { display: '运输拍照', name:'transport_abnormalPicture', editor:{type:'text'},
                         render:function(rowdata, rowindex, value){
                             var image = rowdata.image;
                             if(rowdata.image != null) {
-                                return "<a href='javascript:abnormal(" + rowindex+ ")'>查看</a> ";
+                                return "<a href='javascript:transport_abnormal(" + rowindex+ ")'>查看</a> ";
                             }
                             else {
                                 return "无";
@@ -98,29 +98,25 @@
                     },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
-                        return "<a href='javascript:resolve(" + rowindex + ")'>详情</a> ";
+                        return "<a href='javascript:transport_resolve(" + rowindex + ")'>详情</a> ";
                     }
                     }
                 ],
-                onSelectRow: function (rowdata, rowindex)
-                {
-                    $("#txtrowindex").val(rowindex);
-                },
                 enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
                 data: transportData,
                 width: '100%'
             });
         }
 
-        function abnormal(rowid){
-            var rowPicture = manager.getRow(rowid);
+        function transport_abnormal(rowid){
+            var rowPicture = transport_manager.getRow(rowid);
             var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
             $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"运输拍照" });
         }
 
         var transportId;
-        function resolve(rowid){
-            var rowInfo = manager.getRow(rowid);
+        function transport_resolve(rowid){
+            var rowInfo = transport_manager.getRow(rowid);
             var jsonString  = $.toJSON(rowInfo);
             transportId = $.evalJSON(jsonString).id;
             $.ligerDialog.open({
@@ -132,12 +128,7 @@
                 showToggle: true,
                 showMin: false,
                 isResize: true,
-                slide: false,
-                data: {
-                    name: $("#txtValue").val()
-                },
-                //自定义参数
-                myDataName: $("#txtValue").val()
+                slide: false
             });
         }
 

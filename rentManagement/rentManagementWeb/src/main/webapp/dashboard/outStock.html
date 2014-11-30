@@ -38,7 +38,7 @@
             $.post($.URL.stockOut.findByCondition,{"user":user,"device":device,"sTime":sTime,"eTime":eTime},getOutStockListCallback,"json");
         }
 
-        $("#getOutStockListBtn").click(function(){
+        $("#outStockSearchBtn").click(function(){
             getOutStockList();
         });
 
@@ -48,24 +48,24 @@
                     $.ligerDialog.alert("抱歉,记录不存在!");
                 }else{
                     $("#outStockShow").html("");
-                    showGrid(data.data);
+                    outStock_showGrid(data.data);
                 }
             }
         }
 
 
         var outStockData={};
-        function showGrid(data){
+        function outStock_showGrid(data){
             var grid = $("<div id='outStockGrid'></div>");
             $("#outStockShow").append(grid);
             outStockData.Rows=data;
-            f_peopleRecord(grid);
+            outStock_f_record(grid);
         }
-        var manager, g;
+        var outStock_manager, outStock_g;
         var h = "";
-        function f_peopleRecord(grid)
+        function outStock_f_record(grid)
         {
-            g = manager = grid.ligerGrid({
+            outStock_g = outStock_manager = grid.ligerGrid({
                 columns: [
                     { display: '仓库名称', name: 'storehouseName',
                         editor: { type: 'text' }
@@ -86,7 +86,7 @@
                         render:function(rowdata, rowindex, value){
                             var image = rowdata.image;
                             if(rowdata.image != null) {
-                                return "<a href='javascript:abnormal(" + rowindex+ ")'>查看</a> ";
+                                return "<a href='javascript:outStock_abnormal(" + rowindex+ ")'>查看</a> ";
                             }
                             else {
                                 return "无";
@@ -95,14 +95,10 @@
                     },
                     { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
                     {
-                        return "<a href='javascript:resolve(" + rowindex + ")'>详情</a> ";
+                        return "<a href='javascript:outStock_resolve(" + rowindex + ")'>详情</a> ";
                     }
                     }
                 ],
-                onSelectRow: function (rowdata, rowindex)
-                {
-                    $("#txtrowindex").val(rowindex);
-                },
                 enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
                 data: outStockData,
                 width: '100%'
@@ -110,15 +106,15 @@
         }
 
 
-        function abnormal(rowid){
-            var rowPicture = manager.getRow(rowid);
+        function outStock_abnormal(rowid){
+            var rowPicture = outStock_manager.getRow(rowid);
             var image = $("<img src=''>").attr("src", $.URL.common.rootPath+rowPicture.image);
             $.ligerDialog.open({isDrag:true,target: image,width:600,height:500,title:"出库拍照" });
         }
 
         var stockOutId;
-        function resolve(rowid){
-            var rowInfo = manager.getRow(rowid);
+        function outStock_resolve(rowid){
+            var rowInfo = outStock_manager.getRow(rowid);
             var jsonString  = $.toJSON(rowInfo);
             stockOutId = $.evalJSON(jsonString).id;
             $.ligerDialog.open({
@@ -130,12 +126,7 @@
                 showToggle: true,
                 showMin: false,
                 isResize: true,
-                slide: false,
-                data: {
-                    name: $("#txtValue").val()
-                },
-                //自定义参数
-                myDataName: $("#txtValue").val()
+                slide: false
             });
         }
 
@@ -147,7 +138,7 @@
     <div class="searchItem"><span class="item_font">仓库名称:</span><span class="item_input"><input id="outStockUserName" type="text"></span></div>
     <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="outStockStartTime" type="text"></span></div>
     <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="outStockEndTime" type="text"></span></div>
-    <div class="btn"><span><input type="button" value="查看" id="getOutStockListBtn" class="l-button l-button-submit" /></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="outStockSearchBtn" class="l-button l-button-submit" /></span></div>
 </div>
 <div class="reportContent" id="outStockShow"></div>
 </body>

@@ -34,7 +34,7 @@ public class ContractService {
         return contractMapper.deleteById(id,appId);
     }
 
-    public List<Contract> getListByAppId(long appId){
+    public List<Map<String,Object>> getListByAppId(long appId){
         return contractMapper.getListByAppId(appId);
     }
 

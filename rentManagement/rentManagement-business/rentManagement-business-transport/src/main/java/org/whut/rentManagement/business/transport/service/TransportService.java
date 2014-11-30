@@ -37,7 +37,4 @@ public class TransportService {
     public Map<String,Object> getInfo(Map<String,Object> condition){
         return transportMapper.getInfo(condition);
     }
-    public List<Map<String,Object>> getListByContractId(Long appId,Long contractId){
-        return transportMapper.getListByContractId(appId,contractId);
-    }
 }

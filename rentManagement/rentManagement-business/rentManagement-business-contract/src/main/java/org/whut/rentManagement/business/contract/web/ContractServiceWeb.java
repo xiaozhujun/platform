@@ -50,7 +50,7 @@ public class ContractServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
-        if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
+        if(contract.getName()==null||contract.getName().equals("")
                 ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
                 ||contract.getSignTime()==null||contract.getStartTime()==null
                 ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
@@ -71,7 +71,7 @@ public class ContractServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
         Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
-        if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
+        if(contract.getName()==null||contract.getName().equals("")
                 ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
                 ||contract.getSignTime()==null||contract.getStartTime()==null
                 ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
@@ -106,7 +106,7 @@ public class ContractServiceWeb {
     @POST
     public String list(){
         long appId=UserContext.currentUserAppId();
-        List<Contract> list=contractService.getListByAppId(appId);
+        List<Map<String,Object>> list=contractService.getListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 

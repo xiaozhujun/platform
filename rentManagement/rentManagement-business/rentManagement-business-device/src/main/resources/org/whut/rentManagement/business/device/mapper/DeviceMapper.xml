@@ -78,6 +78,7 @@
         LEFT JOIN contract ON device.contractId=contract.id
         LEFT JOIN batch ON device.batchId=batch.id
         LEFT JOIN supplier ON device.supplierId=supplier.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         where device.appId=#{appId}
         <!--联查错误，改后台传name -->
     </select>
@@ -90,13 +91,14 @@
 
     <select id="getMainDeviceListByAppId" parameterType="java.lang.Long" resultType="map">
         select device.id,device.name,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
-        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,device.lng,device.lat,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,contract.customerName,contract.startTime,contract.endTime
+        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,device.lng,device.lat,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,customer.name as customerName,contract.startTime,contract.endTime
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
         LEFT JOIN storehouse ON device.storehouseId=storehouse.id
         LEFT JOIN contract ON device.contractId=contract.id
         LEFT JOIN batch ON device.batchId=batch.id
         LEFT JOIN supplier ON device.supplierId=supplier.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         where device_type.mainDevice=1 and device.appId=#{appId}
     </select>
 
@@ -109,6 +111,7 @@
         LEFT JOIN contract ON device.contractId=contract.id
         LEFT JOIN batch ON device.batchId=batch.id
         LEFT JOIN supplier ON device.supplierId=supplier.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         where device.appId=#{appId}
         <if test="appId!=null"> AND device.APPID=#{appId}</if>
         <if test="batchId!=null"> AND device.batchId=#{batchId}</if>
@@ -174,13 +177,14 @@
 
     <select id="getMainDeviceInfo" parameterType="map" resultType="map">
         select device.id,device.name,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
-        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,contract.customerName,contract.startTime,contract.endTime
+        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,customer.name as customerName,contract.startTime,contract.endTime
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
         LEFT JOIN storehouse ON device.storehouseId=storehouse.id
         LEFT JOIN contract ON device.contractId=contract.id
         LEFT JOIN batch ON device.batchId=batch.id
         LEFT JOIN supplier ON device.supplierId=supplier.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         <where>
             <if test="mainDeviceId!=null">device.id=#{mainDeviceId}</if>
             <if test="appId!=null">AND device.APPID=#{appId}</if>
@@ -189,13 +193,14 @@
 
     <select id="listByMainDeviceId" parameterType="map" resultType="map">
         select device.id,device.name,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
-        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,contract.customerName,contract.startTime,contract.endTime
+        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,customer.name as customerName,contract.startTime,contract.endTime
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
         LEFT JOIN storehouse ON device.storehouseId=storehouse.id
         LEFT JOIN contract ON device.contractId=contract.id
         LEFT JOIN batch ON device.batchId=batch.id
         LEFT JOIN supplier ON device.supplierId=supplier.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         <where>
             <if test="mainDeviceId!=null">device.mainDeviceId=#{mainDeviceId} </if>
             <if test="appId!=null">AND device.APPID=#{appId}</if>

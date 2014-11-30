@@ -15,7 +15,6 @@ import java.util.Date;
 public class Contract {
     private Long id;
     private Long customerId;
-    private String customerName;
     private String name;
     private String number;
     private String status;
@@ -60,14 +59,6 @@ public class Contract {
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public String getName() {

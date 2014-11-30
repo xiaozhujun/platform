@@ -240,13 +240,4 @@ public class TransportServiceWeb {
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @Path("/listByContractId")
-    @POST
-    public String listByContractId(@FormParam("contractId") Long contractId){
-        long appId = UserContext.currentUserAppId();
-        List<Map<String,Object>> list=transportService.getListByContractId(appId, contractId);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
-    }
-
 }

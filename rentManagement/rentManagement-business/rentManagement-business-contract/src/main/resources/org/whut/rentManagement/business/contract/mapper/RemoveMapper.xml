@@ -53,30 +53,37 @@
     </delete>
 
     <select id="findByCondition" parameterType="map" resultType="map">
-        select remove.*,contract.name,contract.customerName
-        from remove,contract
-        where remove.contractId=contract.id
-        <if test="appId!=null"> AND remove.APPID=#{appId}</if>
-        <if test="user!=null">AND remove.removeMan like CONCAT('%',#{user},'%') </if>
-        <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
-        <if test="startTime!=null"><![CDATA[ AND remove.createTime>=#{startTime}]]></if>
-        <if test="endTime!=null"><![CDATA[ AND remove.createTime<=#{endTime} ]]> </if>
+        select remove.*,contract.name,customer.name as customerName
+        from remove
+        LEFT JOIN contract ON remove.contractId=contract.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        <where>
+            <if test="appId!=null"> remove.APPID=#{appId}</if>
+            <if test="user!=null">AND remove.removeMan like CONCAT('%',#{user},'%') </if>
+            <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
+            <if test="startTime!=null"><![CDATA[ AND remove.createTime>=#{startTime}]]></if>
+            <if test="endTime!=null"><![CDATA[ AND remove.createTime<=#{endTime} ]]> </if>
+        </where>
         order by remove.id desc
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
-        select remove.*,contract.name as contractName,contract.customerName
-        from remove,contract
-        where remove.contractId=contract.id
-        <if test="appId!=null">AND remove.APPID=#{appId}</if>
-        <if test="removeId!=null">AND remove.id=#{removeId}</if>
+        select remove.*,contract.name as contractName,customer.name as customerName
+        from remove
+        LEFT JOIN contract ON remove.contractId=contract.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        <where>
+            <if test="appId!=null">remove.APPID=#{appId}</if>
+            <if test="removeId!=null">AND remove.id=#{removeId}</if>
+        </where>
         order by remove.id desc
     </select>
 
     <select id="getListByContractId" parameterType="map" resultType="Map">
-        select remove.*,contract.name as contractName,contract.customerName
+        select remove.*,contract.name as contractName,customer.name as customerName
         from remove
         LEFT JOIN contract ON remove.contractId=contract.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         <where>
             <if test="appId!=null">remove.appId=#{appId}</if>
             <if test="contractId!=null">AND remove.contractId=#{contractId}</if>

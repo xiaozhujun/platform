@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.rentManagement.business.contract.mapper.ContractMapper">
     <sql id="contract_fields">
-          ID,CUSTOMERID,CUSTOMERNAME,NAME,NUMBER,STATUS,
+          ID,CUSTOMERID,NAME,NUMBER,STATUS,
           STARTTIME,ENDTIME,SIGNTIME,PROJECTLOCATION,ATTACHMENT,CHARGEMAN,
           PREBURYMAN,PREBURYTIME,PREBURYSTATUS,NEEDINSTALLCOUNT,INSTALLCOUNT,
           SELFINSPECTTIME,SELFINSPECTSTATUS,NETREGISTERMAN,NETREGISTERTIME,REMOVEMAN,
@@ -13,7 +13,6 @@
     <resultMap id="contractResultMap" type="Contract">
         <id property="id" column="ID" />
         <result property="customerId" column="CUSTOMERID" />
-        <result property="customerName" column="CUSTOMERNAME" />
         <result property="name" column="NAME"/>
         <result property="number" column="NUMBER"/>
         <result property="status" column="STATUS"/>
@@ -44,7 +43,7 @@
         contract(
         <include refid="contract_fields" />
         )
-        VALUES (#{id},#{customerId},#{customerName},#{name},#{number},#{status},
+        VALUES (#{id},#{customerId},#{name},#{number},#{status},
         #{startTime},#{endTime},#{signTime},#{projectLocation},#{attachment},#{chargeMan},
         #{preBuryMan},#{preBuryTime},#{preBuryStatus},#{needInstallCount}, #{installCount},
         #{selfInspectTime},#{selfInspectStatus},#{netRegisterMan},#{netRegisterTime},#{removeMan},
@@ -59,7 +58,6 @@
         update contract
         <set>
             <if test="customerId!=null"> CUSTOMERID=#{customerId},</if>
-            <if test="customerName!=null"> CUSTOMERNAME=#{customerName},</if>
             <if test="name!=null"> NAME=#{name},</if>
             <if test="number!=null"> NUMBER=#{number},</if>
             <if test="status!=null"> STATUS=#{status},</if>
@@ -113,14 +111,15 @@
         and  appId=#{appId}
     </select>
 
-    <select id="findByCondition" parameterType="Contract" resultMap="contractResultMap">
+    <select id="findByCondition" parameterType="Contract" resultType="map">
         select
-        <include refid="contract_fields"/>
+        contract.*,customer.name as customerName
         from contract
+        LEFT JOIN customer ON contract.customerId=customer.id
         <where>
-            <if test="name!=null">NAME=#{name}</if>
-            <if test="number!=null">and  NUMBER=#{number}</if>
-            <if test="appId!=null">and APPID=#{appId}</if>
+            <if test="name!=null">contract.NAME=#{name}</if>
+            <if test="number!=null">and  contract.NUMBER=#{number}</if>
+            <if test="appId!=null">and contract.APPID=#{appId}</if>
         </where>
         order by contract.id desc
     </select>
@@ -131,20 +130,22 @@
         where ID=#{id}
     </select>
 
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="contractResultMap">
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
         select
-        <include refid="contract_fields"/>
+        contract.*,customer.name as customerName
         from contract
-        where APPID=#{appId}
+        LEFT JOIN customer ON contract.customerId=customer.id
+        where contract.APPID=#{appId}
         order by contract.id desc
     </select>
 
     <select id="getContractList" parameterType="map" resultType="map">
-        select contract.*
+        select contract.*,customer.name as customerName
         from contract
+        LEFT JOIN customer ON contract.customerId=customer.id
         where
         <if test="appId!=null"> contract.APPID=#{appId}</if>
-        <if test="user!=null">AND contract.customerName like CONCAT('%',#{user},'%') </if>
+        <if test="user!=null">AND customer.name like CONCAT('%',#{user},'%') </if>
         <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND contract.signTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND contract.signTime<=#{endTime} ]]> </if>

@@ -31,10 +31,12 @@
     </insert>
 
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
-      select p.*,c.name contractName,c.customerName
-           from prebury AS p,contract AS c
-           where p.appId=#{appId} AND p.contractId=c.id
-           order by p.id desc
+      select prebury.*,contract.name contractName,customer.name as customerName
+           from prebury
+        LEFT JOIN contract ON prebury.contractId=contract.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+           where prebury.appId=#{appId}
+           order by prebury.id desc
     </select>
 
 
@@ -64,33 +66,40 @@
     </select>
 
     <select id="getPreburyList" parameterType="map" resultType="map">
-        select prebury.*,contract.name as contractName,contract.customerName
-        from prebury,contract
-        where prebury.contractId=contract.id
-        <if test="appId!=null"> AND prebury.APPID=#{appId}</if>
+        select prebury.*,contract.name as contractName,customer.name as customerName
+        from prebury
+        LEFT JOIN contract ON prebury.contractId=contract.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        <where>
+        <if test="appId!=null"> prebury.APPID=#{appId}</if>
         <if test="user!=null">AND prebury.preBuryMan like CONCAT('%',#{user},'%') </if>
         <if test="startTime!=null"><![CDATA[ AND prebury.preBuryTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND prebury.preBuryTime<=#{endTime} ]]> </if>
+        </where>
         order by prebury.id desc
     </select>
 
     <select id="findByCondition" parameterType="map" resultType="map">
-        select prebury.*,contract.name as contractName,contract.customerName
-        from prebury,contract
-        where prebury.contractId=contract.id
-        <if test="appId!=null"> AND prebury.APPID=#{appId}</if>
-        <if test="user!=null">AND prebury.preBuryMan like CONCAT('%',#{user},'%') </if>
-        <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
-        <if test="startTime!=null"><![CDATA[ AND prebury.preBuryTime>=#{startTime}]]></if>
-        <if test="endTime!=null"><![CDATA[ AND prebury.preBuryTime<=#{endTime} ]]> </if>
-        <if test="contractName!=null">AND contract.name LIKE #{contractName}</if>
+        select prebury.*,contract.name as contractName,customer.name as customerName
+        from prebury
+        LEFT JOIN contract ON prebury.contractId=contract.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        <where>
+            <if test="appId!=null"> prebury.APPID=#{appId}</if>
+            <if test="user!=null">AND prebury.preBuryMan like CONCAT('%',#{user},'%') </if>
+            <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
+            <if test="startTime!=null"><![CDATA[ AND prebury.preBuryTime>=#{startTime}]]></if>
+            <if test="endTime!=null"><![CDATA[ AND prebury.preBuryTime<=#{endTime} ]]> </if>
+            <if test="contractName!=null">AND contract.name LIKE #{contractName}</if>
+        </where>
         order by prebury.id desc
     </select>
 
     <select id="getListByContractId" parameterType="map" resultType="Map">
-        select prebury.*,contract.name as contractName,contract.customerName
+        select prebury.*,contract.name as contractName,customer.name as customerName
         from prebury
         LEFT JOIN contract ON prebury.contractId=contract.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         <where>
             <if test="appId!=null">prebury.appId=#{appId}</if>
             <if test="contractId!=null">AND prebury.contractId=#{contractId}</if>

@@ -35,9 +35,12 @@
     </insert>
 
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
-           select c.name contractName,s.*
-           from  stock_in AS s,contract AS c
-           where s.appId=#{appId} AND s.contractId=c.id
+           select stock_in.*,contract.name as contractName,customer.name as customerName,storehouse.name as storehouseName
+           from  stock_in
+        LEFT JOIN contract ON stock_in.contractId=contract.id
+        LEFT JOIN storehouse ON stock_in.storehouseId=storehouse.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+           where stock_in.appId=#{appId}
         order by stock_in.id desc
     </select>
 
@@ -59,31 +62,40 @@
     </delete>
 
     <select id="findByCondition" parameterType="map" resultType="map">
-        select stock_in.*,contract.name as contractName,contract.customerName,storehouse.name as storehouseName
-        from stock_in,contract,storehouse
-        where stock_in.contractId=contract.id AND stock_in.storehouseId=storehouse.id
-        <if test="appId!=null"> AND stock_in.APPID=#{appId}</if>
-        <if test="user!=null">AND stock_in.handler like CONCAT('%',#{user},'%') </if>
-        <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
-        <if test="startTime!=null"><![CDATA[ AND stock_in.createTime>=#{startTime}]]></if>
-        <if test="endTime!=null"><![CDATA[ AND stock_in.createTime<=#{endTime} ]]> </if>
+        select stock_in.*,contract.name as contractName,customer.name as customerName,storehouse.name as storehouseName
+        from stock_in
+        LEFT JOIN contract ON stock_in.contractId=contract.id
+        LEFT JOIN storehouse ON stock_in.storehouseId=storehouse.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        <where>
+            <if test="appId!=null"> stock_in.APPID=#{appId}</if>
+            <if test="user!=null">AND stock_in.handler like CONCAT('%',#{user},'%') </if>
+            <if test="device!=null">AND contract.name like CONCAT('%',#{device},'%')</if>
+            <if test="startTime!=null"><![CDATA[ AND stock_in.createTime>=#{startTime}]]></if>
+            <if test="endTime!=null"><![CDATA[ AND stock_in.createTime<=#{endTime} ]]> </if>
+        </where>
         order by stock_in.id desc
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
-        select stock_in.*,contract.name as contractName,contract.customerName,storehouse.name as storehouseName
-        from stock_in,contract,storehouse
-        where stock_in.contractId=contract.id AND stock_in.storehouseId=storehouse.id
-        <if test="appId!=null">AND stock_in.APPID=#{appId}</if>
-        <if test="stockInId!=null">AND stock_in.id=#{stockInId}</if>
+        select stock_in.*,contract.name as contractName,customer.name as customerName,storehouse.name as storehouseName
+        from stock_in
+        LEFT JOIN contract ON stock_in.contractId=contract.id
+        LEFT JOIN storehouse ON stock_in.storehouseId=storehouse.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        <where>
+            <if test="appId!=null">stock_in.APPID=#{appId}</if>
+            <if test="stockInId!=null">AND stock_in.id=#{stockInId}</if>
+        </where>
         order by stock_in.id desc
     </select>
 
     <select id="getListByContractId" parameterType="map" resultType="Map">
-        select stock_in.*,contract.name as contractName,contract.customerName,storehouse.name as storehouseName
+        select stock_in.*,contract.name as contractName,customer.name as customerName,storehouse.name as storehouseName
         from stock_in
         LEFT JOIN contract ON stock_in.contractId=contract.id
         LEFT JOIN storehouse ON stock_in.storehouseId=storehouse.id
+        LEFT JOIN customer ON contract.customerId=customer.id
         <where>
             <if test="appId!=null">stock_in.appId=#{appId}</if>
             <if test="contractId!=null">AND stock_in.contractId=#{contractId}</if>

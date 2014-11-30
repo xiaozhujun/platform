@@ -34,9 +34,9 @@
     </insert>
 
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
-           select *
+           select transport.*
            from  transport
-           where appId=#{appId}
+           where transport.appId=#{appId}
         order by transport.id desc
     </select>
 
@@ -61,31 +61,22 @@
     <select id="findByCondition" parameterType="map" resultType="map">
         select transport.*
         from transport
-        where
+        <where>
         <if test="appId!=null"> transport.APPID=#{appId}</if>
         <if test="user!=null">AND transport.handler like CONCAT('%',#{user},'%') </if>
         <if test="device!=null">AND transport.driver like CONCAT('%',#{device},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND transport.createTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND transport.createTime<=#{endTime} ]]> </if>
+        </where>
         order by transport.id desc
     </select>
 
     <select id="getInfo" parameterType="map" resultType="map">
         select transport.*
         from transport
-        where
-        <if test="appId!=null"> transport.APPID=#{appId}</if>
-        <if test="transportId!=null">AND transport.id=#{transportId}</if>
-        order by transport.id desc
-    </select>
-
-    <select id="getListByContractId" parameterType="map" resultType="Map">
-        select transport.*,contract.name as contractName,contract.customerName
-        from transport
-        LEFT JOIN contract ON transport.contractId=contract.id
         <where>
-            <if test="appId!=null">transport.appId=#{appId}</if>
-            <if test="contractId!=null">AND transport.contractId=#{contractId}</if>
+            <if test="appId!=null"> transport.APPID=#{appId}</if>
+            <if test="transportId!=null">AND transport.id=#{transportId}</if>
         </where>
         order by transport.id desc
     </select>

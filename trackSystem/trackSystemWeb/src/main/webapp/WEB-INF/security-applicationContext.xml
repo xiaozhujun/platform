@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans  xmlns="http://www.springframework.org/schema/security"
+              xmlns:beans="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- 以下文件不检查权限 -->
+    <http  auto-config="true"><!-- 访问权限 -->
+        <!--<custom-filter position="CAS_FILTER" ref="casAuthenticationFilter"></custom-filter>-->
+        <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter" />
+        <form-login login-page="/login.html"
+                    authentication-failure-url="/login.html?error=true"
+                    login-processing-url="/j_spring_security_check"/>
+        <logout logout-url="/logout"/>
+    </http>
+
+    <!-- 配置过滤器 -->
+    <beans:bean id="myFilter"
+                class="org.whut.platform.business.user.security.MySecurityInterceptorFilter">
+        <!-- 用户拥有的权限 -->
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <!-- 用户是否拥有所请求资源的权限 -->
+        <beans:property name="accessDecisionManager" ref="myAccessDecisionManager" />
+        <!-- 资源与权限对应关系 -->
+        <beans:property name="securityMetadataSource" ref="mySecurityMetadataSource" />
+    </beans:bean>
+
+    <beans:bean id="myAccessDecisionManager"
+                class="org.whut.platform.business.user.security.MyAccessDecisionManager">
+    </beans:bean>
+    <!-- 系统运行时加载 系统要拦截的资源   与用户请求时要过滤的资源 -->
+    <beans:bean id="mySecurityMetadataSource"
+                class="org.whut.platform.business.user.security.MySecurityMetadataSource"
+            >
+    </beans:bean>
+
+    <!--
+14	        Required for the casProcessingFilter, so define it explicitly set and
+15	        specify an Id Even though the authenticationManager is created by
+16	        default when namespace based config is used.
+17	    -->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider
+                user-service-ref="myUserDeatailsService">
+            <password-encoder hash="md5" />
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="myUserDeatailsService" class="org.whut.platform.business.user.security.MyUserDetailsService"/>
+</beans:beans>

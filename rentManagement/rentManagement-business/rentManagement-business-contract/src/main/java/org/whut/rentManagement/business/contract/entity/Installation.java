@@ -1,5 +1,8 @@
 package org.whut.rentManagement.business.contract.entity;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
+
 import java.util.Date;
 
 /**
@@ -14,6 +17,7 @@ public class Installation {
     private long contractId;
     private String type;
     private String installMan;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date installTime;
     private String installStatus;
     private String image;

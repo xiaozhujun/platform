@@ -2,16 +2,26 @@ package org.whut.rentManagement.business.contract.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.contract.entity.Contract;
 import org.whut.rentManagement.business.contract.service.ContractService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,110 +36,40 @@ import java.util.Map;
 @Component
 @Path("/contract")
 public class ContractServiceWeb {
+
+    private static final PlatformLogger logger = PlatformLogger.getLogger(ContractServiceWeb.class);
+
     @Autowired
     private ContractService contractService;
-//    @Autowired
-//    org.whut.rentManagement.business.customer.service.CustomerService customerService;
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/add")
     @POST
     public String add(@FormParam("jsonString") String jsonString){
-        long appId= UserContext.currentUserAppId();
-//        Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
-        Map<String, String> map = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class);
-//        if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
-//                ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
-//                ||contract.getSignTime()==null||contract.getStartTime()==null
-//                ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
-//                ){
-//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
-//        }
-        if(map.get("name")==null||map.get("name").equals("")||map.get("customerName")==null||map.get("customerName").equals("")
-//                ||map.get("customerId")==null||map.get("customerId").equals("")
-                ||map.get("number")==null||map.get("number").equals("")||map.get("projectLocation")==null||map.get("projectLocation").equals("")
-                ||map.get("signTime")==null||map.get("startTime")==null
-                ||map.get("endTime")==null||map.get("chargeMan")==null||map.get("chargeMan").equals("")
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+        }
+        Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
+        if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
+                ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
+                ||contract.getSignTime()==null||contract.getStartTime()==null
+                ||contract.getEndTime()==null||contract.getChargeMan()==null||contract.getChargeMan().equals("")
                 ){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
         }
-
-  /*
-        Contract subContract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
-        Contract contract=new Contract();
-        contract.setCustomerId(subContract.getCustomerId);
-        contract.setCustomerName(subContract.getCustomerName);
-        contract.setName(subContract.getName);
-        contract.setStatus(subContract.getStatus);
-        contract.setStartTime(subContract.getStartTime);
-        contract.setEndTime(subContract.getEndTime);
-        contract.setSignTime(subContract.getSignTime);
-        contract.setProjectLocation(subContract.getProjectLocation);
-        contract.setChargeMan(subContract.getChargeMan);
-        contract.setPreBuryMan(subContract.getPreBuryMan);
-        contract.setPreBuryTime(subContract.getPreBurtTime);
-        contract.setPreBuryStatus(subContract.getPreBuryStatus);
-        contract.setNeedInstallCount(subContract.getNeedInstallCount);
-        contract.setInstallCount(subContract.getInstallCount);
-        contract.setSelfInspectTime(subContract.getSelfInspectTime);
-        contract.setSelfInspectStatus(subContract.getSelfInspectStatus);
-        contract.setNetRegisterMan(subContract.getNetRegisterMan);
-        contract.setNetRegisterTime(subContract.getNetRegisterTime);
-        contract.setRemoveMan(subContract.getRemoveMan);
-        contract.setRemoveStatus(subContract.RemoveStatus);
-        contract.setRemoveTime(subContract.getRemoveTime);
-        contract.setAppId(appId);
+        contract.setAppId(UserContext.currentUserAppId());
         contractService.add(contract);
-    */
-//        Long id;
-//        try
-//        {
-//            id=customerService.getIdByName(map.get("customerName"),appId);
-//        }
-//        catch (Exception e){
-//            id= null;
-//        }
-//        if(id!=null)
-//        {
+        return JsonResultUtils.getObjectResultByStringAsDefault(contract.getId(), JsonResultUtils.Code.SUCCESS);
 
-            Date startTime = null;
-            Date endTime = null;
-            Date signTime = null;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try{
-                startTime = sdf.parse(map.get("startTime"));
-                endTime = sdf.parse(map.get("endTime"));
-                signTime = sdf.parse(map.get("signTime"));
-            }catch (Exception e){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"日期格式错误！");
-            }
-            if(endTime.before(startTime)){
-                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"结束时间早于开始时间，请确认！");
-            }
-            Contract contract=new Contract();
-            contract.setAppId(appId);
-            contract.setName(map.get("name"));
-            contract.setNumber(map.get("number"));
-            contract.setCustomerId(Long.parseLong(map.get("customerId")));
-            contract.setCustomerName(map.get("customerName"));
-            contract.setChargeMan(map.get("chargeMan"));
-            contract.setProjectLocation(map.get("projectLocation"));
-            contract.setEndTime(endTime);
-            contract.setSignTime(signTime);
-            contract.setStartTime(startTime);
-            contractService.add(contract);
-            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-//        }
-//        else
-//        {
-//            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"不存在此客户");
-//        }
     }
 
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString") String jsonString){
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+        }
         Contract contract= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
         if(contract.getName()==null||contract.getName().equals("")||contract.getCustomerName()==null||contract.getCustomerName().equals("")
                 ||contract.getNumber()==null||contract.getNumber().equals("")||contract.getProjectLocation()==null||contract.getProjectLocation().equals("")
@@ -150,11 +90,8 @@ public class ContractServiceWeb {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/delete")
     @POST
-//    public  String delete(@FormParam("jsonString") String jsonString)
     public  String delete(@FormParam("id") long id){
         long appId=UserContext.currentUserAppId();
-//        Contract contract=JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Contract.class);
-//        int result=contractService.deleteById(contract.getId(),appId);
         int result=contractService.deleteById(id,appId);
         if(result>0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
@@ -210,5 +147,63 @@ public class ContractServiceWeb {
         condition.put("appId", UserContext.currentUserAppId());
         List<Map<String,String>> list=contractService.getContractList(condition);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/upload")
+    @POST
+    public String upload(@Context HttpServletRequest request
+    ) {
+        if (request == null) {
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+        try {
+            MultipartFile file = multipartRequest.getFile("filename");
+            String filename = file.getOriginalFilename();
+            String [] s = filename.split("\\.");
+
+            long contractId = Long.parseLong(multipartRequest.getParameter("contractId"));
+            long appId = UserContext.currentUserAppId();
+
+            String contractAttachmentRootPath =  FundamentalConfigProvider.get("rentManagement.attachment.root.path") ;
+            String contractAttachmentRelativePath =  FundamentalConfigProvider.get("rentManagement.attachment.relative.path") ;
+            String attachmentDir = contractAttachmentRootPath + contractAttachmentRelativePath+"/"+appId+"/contract";
+            String attachment = contractAttachmentRelativePath+"/"+appId+"/attachment/" + contractId +"_"+ filename;
+            String attachmentPath = attachmentDir + "/" + contractId +"_"+ filename;
+
+            //判断文件夹是否存在，不存在则创建
+            File dir = new File(attachmentDir);
+            if(!dir.exists()){
+                dir.mkdirs();
+            }
+            File attachmentFile = new File(attachmentPath);
+            if(attachmentFile.exists()){
+                attachmentFile.delete();
+            }
+            attachmentFile.createNewFile();
+
+
+            InputStream inputStream = file.getInputStream();
+            byte[] bs = new byte[1024 * 2];
+            int len;
+            OutputStream outputStream = new FileOutputStream(attachmentPath);
+            while ((len = inputStream.read(bs)) != -1) {
+                outputStream.write(bs,0,len);
+            }
+            outputStream.close();
+            inputStream.close();
+            Contract contract = new Contract();
+            contract.setId(contractId);
+            contract.setAppId(UserContext.currentUserAppId());
+            contract.setAttachment(attachment);
+            contractService.update(contract);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

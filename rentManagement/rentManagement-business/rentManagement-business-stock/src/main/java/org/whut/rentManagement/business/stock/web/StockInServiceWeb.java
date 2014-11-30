@@ -11,6 +11,7 @@ import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
+import org.whut.rentManagement.business.device.service.DeviceService;
 import org.whut.rentManagement.business.stock.entity.StockIn;
 import org.whut.rentManagement.business.stock.entity.StockInDevice;
 import org.whut.rentManagement.business.stock.service.StockInDeviceService;
@@ -48,6 +49,9 @@ public class StockInServiceWeb {
     @Autowired
     StockInDeviceService stockInDeviceService;
 
+    @Autowired
+    DeviceService deviceService;
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @Path("/list")
     @POST
@@ -73,22 +77,29 @@ public class StockInServiceWeb {
         stockIn.setAppId(UserContext.currentUserAppId());
         stockIn.setHandler(UserContext.currentUserName());
         stockIn.setCreateTime(new Date());
-        stockInService.add(stockIn);
 
         //添加安装的设备明细
         if(stockIn.getDeviceId()!=null&&!stockIn.getDeviceId().equals("")){
             String[] deviceList = stockIn.getDeviceId().split(",");
             Set set = new TreeSet();
             StockInDevice stockInDevice;
+            ArrayList<StockInDevice> stockInDeviceList = new ArrayList<StockInDevice>();
             for(String deviceToTransport:deviceList){
                 if(!set.contains(deviceToTransport)&&!deviceToTransport.trim().equals("")){
                     stockInDevice = new StockInDevice();
                     stockInDevice.setDeviceId(Long.parseLong(deviceToTransport));
-                    stockInDevice.setStockInId(stockIn.getId());
-                    stockInDeviceService.add(stockInDevice);
+                    stockInDeviceList.add(stockInDevice);
                 }
                 set.add(deviceToTransport);
             }
+
+            stockInService.add(stockIn);
+            for(StockInDevice std:stockInDeviceList){
+                std.setStockInId(stockIn.getId());
+                stockInDeviceService.add(std);
+            }
+            deviceService.stockIn(UserContext.currentUserAppId(),new ArrayList<String>(set));
+            return  JsonResultUtils.getObjectResultByStringAsDefault(stockIn.getId(),JsonResultUtils.Code.SUCCESS);
         }
 
         return  JsonResultUtils.getObjectResultByStringAsDefault(stockIn.getId(), JsonResultUtils.Code.SUCCESS);

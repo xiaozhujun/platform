@@ -109,13 +109,6 @@
             "getIdByNumber":"rs/device/getIdByNumber",
             "findByCondition":"rs/device/findByCondition"
         },
-        "contract":{
-            "add":"rs/contract/add",
-            "update":"rs/contract/update",
-            "delete":"rs/contract/delete",
-            "list":"rs/contract/list",
-            "getContractById":"rs/contract/getContractById"
-        },
         "deviceType":{
             "list":"rs/deviceType/list",
             "add":"rs/deviceType/add",

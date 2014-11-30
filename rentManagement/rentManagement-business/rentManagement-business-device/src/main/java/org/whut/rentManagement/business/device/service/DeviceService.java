@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.rentManagement.business.device.entity.Device;
 import org.whut.rentManagement.business.device.mapper.DeviceMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +42,35 @@ public class DeviceService {
         return deviceMapper.getListByAppId(appId);
     }
 
-    public List<Map<String,String>> getMainDeviceList(long appId) {
-        return deviceMapper.getMainDeviceList(appId);
+    public List<Map<String,String>> getMainDeviceListByAppId(long appId) {
+        return deviceMapper.getMainDeviceListByAppId(appId);
     }
 
     public List<Map<String,String>> findByCondition(Map<String,Object> condition){
         return deviceMapper.findByCondition(condition);
+    }
+
+    public ArrayList<Long> findMainDeviceList(long appId,List<String> deviceIdList){
+        return deviceMapper.findMainDeviceList(appId,deviceIdList);
+    }
+
+    public void installDevice(long appId,long mainDeviceId,List<String> deviceIdList){
+        deviceMapper.installDevice(appId,mainDeviceId,deviceIdList);
+    }
+
+    public void removeDevice(long appId,List<String> deviceIdList){
+        deviceMapper.removeDevice(appId,deviceIdList);
+    }
+
+    public void transportDevice(long appId,List<String> deviceIdList){
+        deviceMapper.transportDevice(appId,deviceIdList);
+    }
+
+    public void stockIn(long appId,List<String> deviceIdList){
+        deviceMapper.stockIn(appId,deviceIdList);
+    }
+
+    public void stockOut(long appId,List<String> deviceIdList){
+        deviceMapper.stockOut(appId,deviceIdList);
     }
 }

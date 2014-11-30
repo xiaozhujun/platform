@@ -175,7 +175,7 @@ public class NIOServer implements Runnable{
         StringBuffer msgBuffer = getMsgBuffer(key);
         String localMsg = msg;
         while (true){
-            int startIndex = localMsg.indexOf("{sensors:[{");
+            int startIndex = localMsg.indexOf("{"+FundamentalConfigProvider.get("nioServer.type")+":[{");
             int endIndex = localMsg.indexOf("}]}",startIndex);
             if(endIndex>=0&&startIndex>=0){
                 if(endIndex<startIndex){

@@ -119,7 +119,7 @@ public class DeviceServiceWeb {
     @GET
     public String getMainDeviceList(){
         long appId= UserContext.currentUserAppId();
-        List<Map<String,String>> list=deviceService.getMainDeviceList(appId);
+        List<Map<String,String>> list=deviceService.getMainDeviceListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 

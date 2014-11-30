@@ -1,0 +1,39 @@
+.reportContent{
+    margin-top: 5px;
+}
+.reportBlock{
+    width: 100%;
+    float: left;
+    margin-left: 5px;
+    margin-top: 1px;
+    margin-bottom: 5px;
+}
+.exportDiv{
+    width: 100%;
+    display: none;
+    margin-left: 5px;
+    margin-top: 8px;
+    height: 18px;
+}
+.exportType{
+    float: left;
+    height: 18px;
+}
+.exportBtn{
+    float: left;
+    height: 18px;
+}
+.exportBtn{
+    margin-left: 5px;
+}
+.type_font{
+   float: left;
+    height: 18px;
+    margin-top: 5px;
+}
+.type_input{
+    float:left;
+    height: 18px;
+    margin-left: 10px;
+    margin-top: 2px;
+}

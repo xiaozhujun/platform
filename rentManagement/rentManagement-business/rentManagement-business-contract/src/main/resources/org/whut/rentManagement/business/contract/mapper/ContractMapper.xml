@@ -5,7 +5,7 @@
 <mapper namespace="org.whut.rentManagement.business.contract.mapper.ContractMapper">
     <sql id="contract_fields">
           ID,CUSTOMERID,CUSTOMERNAME,NAME,NUMBER,STATUS,
-          STARTTIME,ENDTIME,SIGNTIME,PROJECTLOCATION,CHARGEMAN,
+          STARTTIME,ENDTIME,SIGNTIME,PROJECTLOCATION,ATTACHMENT,CHARGEMAN,
           PREBURYMAN,PREBURYTIME,PREBURYSTATUS,NEEDINSTALLCOUNT,INSTALLCOUNT,
           SELFINSPECTTIME,SELFINSPECTSTATUS,NETREGISTERMAN,NETREGISTERTIME,REMOVEMAN,
           REMOVESTATUS,REMOVETIME,APPID
@@ -21,6 +21,7 @@
         <result property="endTime" column="ENDTIME"/>
         <result property="signTime" column="SIGNTIME"/>
         <result property="projectLocation" column="PROJECTLOCATION"/>
+        <result property="attachment" column="ATTACHMENT"/>
         <result property="chargeMan" column="CHARGEMAN"/>
         <result property="preBuryMan" column="PREBURYMAN"/>
         <result property="preBuryTime" column="PREBURYTIME"/>
@@ -44,7 +45,7 @@
         <include refid="contract_fields" />
         )
         VALUES (#{id},#{customerId},#{customerName},#{name},#{number},#{status},
-        #{startTime},#{endTime},#{signTime},#{projectLocation},#{chargeMan},
+        #{startTime},#{endTime},#{signTime},#{projectLocation},#{attachment},#{chargeMan},
         #{preBuryMan},#{preBuryTime},#{preBuryStatus},#{needInstallCount}, #{installCount},
         #{selfInspectTime},#{selfInspectStatus},#{netRegisterMan},#{netRegisterTime},#{removeMan},
         #{removeStatus},#{removeTime},#{appId});
@@ -66,6 +67,7 @@
             <if test="endTime!=null"> ENDTIME=#{endTime},</if>
             <if test="signTime!=null"> SIGNTIME=#{signTime},</if>
             <if test="projectLocation!=null"> PROJECTLOCATION=#{projectLocation},</if>
+            <if test="attachment!=null"> ATTACHMENT=#{attachment},</if>
             <if test="chargeMan!=null"> CHARGEMAN=#{chargeMan},</if>
             <if test="preBuryMan!=null"> PREBURYMAN=#{preBuryMan},</if>
             <if test="preBuryTime!=null"> PREBURYTIME=#{preBuryTime},</if>

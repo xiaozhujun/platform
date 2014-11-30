@@ -14,9 +14,9 @@ import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.contract.entity.Remove;
 import org.whut.rentManagement.business.contract.entity.RemoveDevice;
-import org.whut.rentManagement.business.contract.entity.SubRemove;
 import org.whut.rentManagement.business.contract.service.RemoveDeviceService;
 import org.whut.rentManagement.business.contract.service.RemoveService;
+import org.whut.rentManagement.business.device.service.DeviceService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -29,9 +29,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -52,6 +50,9 @@ public class RemoveServiceWeb{
     RemoveService removeService;
     @Autowired
     RemoveDeviceService removeDeviceService;
+
+    @Autowired
+    DeviceService deviceService;
 
     @Autowired
     UserService userService;
@@ -79,22 +80,29 @@ public class RemoveServiceWeb{
 
         remove.setAppId(UserContext.currentUserAppId());
         remove.setCreateTime(new Date());
-        removeService.add(remove);
 
         //添加拆卸的设备明细
         if(remove.getDeviceId()!=null&&!remove.getDeviceId().equals("")){
             String[] deviceList = remove.getDeviceId().split(",");
             Set set = new TreeSet();
             RemoveDevice removeDevice;
+            ArrayList<RemoveDevice> removeDeviceList = new ArrayList<RemoveDevice>();
             for(String deviceToTransport:deviceList){
                 if(!set.contains(deviceToTransport)&&!deviceToTransport.trim().equals("")){
                     removeDevice = new RemoveDevice();
                     removeDevice.setDeviceId(Long.parseLong(deviceToTransport));
-                    removeDevice.setRemoveId(remove.getId());
-                    removeDeviceService.add(removeDevice);
+                    removeDeviceList.add(removeDevice);
                 }
                 set.add(deviceToTransport);
             }
+
+            removeService.add(remove);
+            for(RemoveDevice rd:removeDeviceList){
+                rd.setRemoveId(remove.getId());
+                removeDeviceService.add(rd);
+            }
+            deviceService.removeDevice(UserContext.currentUserAppId(),new ArrayList<String>(set));
+            return  JsonResultUtils.getObjectResultByStringAsDefault(remove.getId(),JsonResultUtils.Code.SUCCESS);
         }
 
         return  JsonResultUtils.getObjectResultByStringAsDefault(remove.getId(), JsonResultUtils.Code.SUCCESS);
@@ -104,19 +112,15 @@ public class RemoveServiceWeb{
     @Path("/update")
     @POST
     public String update(@FormParam("jsonString")String jsonString) throws ParseException {
-        long appId = UserContext.currentUserAppId();
-        SubRemove subRemove = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,SubRemove.class);
-        long contractId = Long.parseLong(subRemove.getContractId());
-        long removeDeviceId = Long.parseLong(subRemove.getRemoveDeviceId());
-        Remove remove = new Remove();
-        remove.setAppId(appId);
-        remove.setContractId(contractId);
-        remove.setRemoveMan(subRemove.getRemoveMan());
-        remove.setRemoveStatus(subRemove.getRemoveStatus());
-        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        remove.setCreateTime(format.parse(subRemove.getRemoveTime()));
-        Remove remove1= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Remove.class);
-        int result=removeService.update(remove1);
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        Remove remove = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Remove.class);
+        if(remove.getId()==null){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
+        }
+
+        int result=removeService.update(remove);
         if(result>0){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS) ;
         }

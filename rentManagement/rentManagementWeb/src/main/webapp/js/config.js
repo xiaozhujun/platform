@@ -206,6 +206,9 @@
             "inStockList":"rs/stock_in_sheet/getInStockList",
             "outStockList":"rs/stock_out_sheet/getOutStockList"
         },
+        "deviceReport":{
+            "deviceAccountReport":"rs/deviceReport/deviceAccountReport"
+        },
         "rentReport":{
             "reportSearch":"rs/RentReport/reportSearch",
             "ShowRentReport":"rs/RentReport/ShowRentReport"

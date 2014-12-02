@@ -89,30 +89,26 @@ public class RentReportServiceWeb {
         String wheredeviceStatus="";
         String wheresTime="";
         String whereeTime="";
+        boolean flag=false;
         if(!(deviceType.trim()).equals("")&&!deviceType.equals("请选择"))
         {
             wheredeviceType="t.name="+"\""+deviceType+"\"";
-            if(!(deviceStatus.trim()).equals("")&&!deviceStatus.equals("请选择"))
-            {
-                wheredeviceStatus=" and d.status="+"\""+deviceStatus+"\"";
+            flag=true;
+        }
+        if(!(deviceStatus.trim()).equals("")&&!deviceStatus.equals("请选择"))
+        {
+            wheredeviceStatus=" d.status="+"\""+deviceStatus+"\"";
+            if(flag){
+                wheredeviceStatus=" and " +wheredeviceStatus;
             }
-        }else{
-            if(!(deviceStatus.trim()).equals("")&&!deviceStatus.equals("请选择"))
-            {
-               wheredeviceStatus="d.status="+"\""+deviceStatus+"\"";
-            }else{
-               if((!(sTime.trim()).equals("")&&!sTime.equals("请选择"))&&(!(eTime.trim()).equals("")&&!eTime.equals("请选择")))
-               {
-                   wheresTime=" and t.createTime BETWEEN "+"\""+sTime+"\"";
-                   whereeTime=" and "+"\""+eTime+"\"";
-               }else{
-                   if((!(sTime.trim()).equals("")&&!sTime.equals("请选择"))&&(!(eTime.trim()).equals("")&&!eTime.equals("请选择")))
-                   {
-                       wheresTime=" t.createTime BETWEEN "+"\""+sTime+"\"";
-                       whereeTime=" and "+"\""+eTime+"\"";
-                   }
-
-               }
+            flag=true;
+        }
+        if((!(sTime.trim()).equals("")&&!sTime.equals("请选择"))&&(!(eTime.trim()).equals("")&&!eTime.equals("请选择")))
+        {
+            wheresTime=" t.createTime BETWEEN "+"\""+sTime+"\"";
+            whereeTime=" and "+"\""+eTime+"\"";
+            if(flag){
+                wheresTime=" and " +wheresTime;
             }
         }
 

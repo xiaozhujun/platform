@@ -132,7 +132,7 @@ public class DeviceServiceWeb {
         }
         Map<String,Object> condition = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class);
         condition.put("appId",UserContext.currentUserAppId());
-        List<Map<String,String>> list = deviceService.findByCondition(condition);
+        List<Map<String,Object>> list = deviceService.findByCondition(condition);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
 

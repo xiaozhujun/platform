@@ -103,8 +103,8 @@
     </select>
 
     <select id="findByCondition" parameterType="map" resultType="map">
-        select device.id,device.name,device.number,device.optionType,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
-        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId
+        select device.id,device.name,device.number,device.optionType,device_type.name as deviceType,storehouse.name as storehouseName,contract.name as contractName,device.price,device.createTime,supplier.name as supplierName,
+        device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName,customer.name as customerName
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
         LEFT JOIN storehouse ON device.storehouseId=storehouse.id
@@ -112,10 +112,11 @@
         LEFT JOIN batch ON device.batchId=batch.id
         LEFT JOIN supplier ON device.supplierId=supplier.id
         LEFT JOIN customer ON contract.customerId=customer.id
-        where device.appId=#{appId}
-        <if test="appId!=null"> AND device.APPID=#{appId}</if>
+        where
+        <if test="appId!=null"> device.APPID=#{appId}</if>
         <if test="batchId!=null"> AND device.batchId=#{batchId}</if>
         <if test="typeId!=null"> AND device.typeId=#{typeId}</if>
+        <if test="deviceType!=null">AND device_type.name like CONCAT('%',#{deviceType},'%')</if>
         <if test="optionType!=null"> AND device.optionType=#{optionType}</if>
         <if test="storehouseId!=null"> AND device.storehouseId=#{storehouseId}</if>
         <if test="mainDevice!=null"> AND device_type.mainDevice=#{mainDevice}</if>

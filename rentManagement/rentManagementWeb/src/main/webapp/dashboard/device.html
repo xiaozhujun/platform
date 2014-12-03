@@ -70,7 +70,7 @@
                     condition.endTime = $("#endTimeInput").val();
                 }
                 condition.reportType=type;
-                location.href= "rs/deviceReport/exportDeviceAccount/"+ $.toJSON(condition);
+                location.href= "rs/deviceReport/exportDeviceAccount?jsonString="+ $.toJSON(condition);
             }else{
                 $.ligerDialog().alert("请输入导出报表类型!");
             }

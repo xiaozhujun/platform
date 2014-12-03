@@ -66,8 +66,8 @@ public class DeviceReportServiceWeb {
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
-    @Path("/exportDeviceAccount/{jsonString}")
-    public String exportSearchReport(@PathParam("jsonString") String jsonString){
+    @Path("/exportDeviceAccount")
+    public String exportSearchReport(@QueryParam("jsonString") String jsonString){
 
         if(jsonString==null||jsonString.trim().equals("")){
             return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);

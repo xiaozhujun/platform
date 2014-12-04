@@ -138,7 +138,7 @@ $.extend({
         tableGrid=tableGrid+'</tbody></table>';
         return tableGrid;
     },
-    updataXingbian: function updataXingbian(m){
+    updataXingbian: function updataXingbian(sensorMap,warnMap){
         var oTable = document.getElementById("DataGrid34430");
         var updateException='<td class="wijgridtd wijdata-type-string lookXingbian" role="gridcell" headers="%u5E94%u529B%u72B6%u6001" aria-selected="true" style="color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(255, 255, 255); border-right-color: rgb(170, 170, 170); font-family: Microsoft YaHei; font-weight: normal;">'
             +'<div class="wijmo-wijgrid-innercell" style="text-align: center;color: rgb(255,0,0);">'+'异常（查看）'+'</div></td>';
@@ -151,10 +151,10 @@ $.extend({
                 gName=oTable.rows[i].cells[0].innerText;
             else
                 gName=oTable.rows[i].cells[0].textContent;
-            var sName=gName.replace(/[ ]/g,"");
+                gName=gName.replace(/[ ]/g,"");
             var k=0;
             for(var j=0;j<sensorList.length;j++){
-                if(parseInt(m.get(sName+":"+sensorList[j]))>400){
+                if(parseInt(sensorMap.get(gName+":"+sensorList[j]))>parseInt(warnMap.get(gName+":"+sensorList[j]))){
                     k=1;
                     oTable.rows[i].cells[4].innerHTML =updateException;
                     break;

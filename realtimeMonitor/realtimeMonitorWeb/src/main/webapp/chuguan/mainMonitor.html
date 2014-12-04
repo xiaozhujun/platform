@@ -18,7 +18,8 @@
             $.post($.URL.group.list,null,gridCallback);
             $.post($.URL.sensor.homePage,{"fStatus":"false"},sNumCallback,"json");
         });
-        var m = new Map();
+        var sensorMap = new Map();
+        var warnMap = new Map();
         var sensorList=new Array();
         function gridCallback(data){
             if(data.code == 200) {
@@ -56,6 +57,7 @@
                 var groupName= jsonData.sensors[0].groupName;
                 var sensorNum= jsonData.sensors[0].sensorNum;
                 var max=wsData[0];
+                var warnValue= jsonData.sensors[0].warnValue;
                 var sizeOfSensorNum=sensorList.length;
                 var eq=0;
                 for(var i=0;i<sizeOfSensorNum;i++){
@@ -66,8 +68,9 @@
                 if(eq==0){
                     sensorList[sizeOfSensorNum]=sensorNum;
                 }
-                m.put(groupName+":"+sensorNum,max);
-                $.updataXingbian(m);
+                sensorMap.put(groupName+":"+sensorNum,max);
+                warnMap.put(groupName+":"+sensorNum,warnValue);
+                $.updataXingbian(sensorMap,warnMap);
                 $(".lookXingbian").click(function(){
                     var hang = $(this).parent("tr").prevAll().length;
                     var lie = $(this).prevAll().length;

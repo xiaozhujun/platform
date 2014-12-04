@@ -49,7 +49,6 @@ $(document).ready(function () {
     });
     $.creatTable(groupName);
     $.post($.URL.sensor.getListByGroupName,{"groupName":groupName},getListByGroupNameCallback);
-
 });
 
 function changeGroupName(data){
@@ -63,8 +62,8 @@ function changeGroupName(data){
 }
 function getListByGroupNameCallback(data){
     if(data.code==200){
-        var s=$.subscription(data);
-        $.initWebSocket(s,$.webSocketCallback);
+        var subs=$.subscription(data);
+        $.initWebSocket(subs, $.webSocketCallback);
     }
 }
 </script>

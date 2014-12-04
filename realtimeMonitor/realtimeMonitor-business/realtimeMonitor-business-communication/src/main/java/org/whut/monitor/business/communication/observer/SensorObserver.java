@@ -144,7 +144,8 @@ public class SensorObserver implements Observer {
         Long appId=sensorService.getAppIdBySNum(number);
         String groupName=sensorService.getGroupNameBySNum(number);
         String areaName=sensorService.getAreaNameBySNum(number);
-        String s = "areaName:"+"'"+areaName +"'"+","+"groupName:"+"'"+groupName +"'"+","+"appId:"+appId+","+"id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',isConnected:" + "'true'";
+        Double warnValue = Double.parseDouble(redisConnector.get("sensor:{"+number+"}:warnValue"));
+        String s = "warnValue:"+warnValue+","+"areaName:"+"'"+areaName +"'"+","+"groupName:"+"'"+groupName +"'"+","+"appId:"+appId+","+"id:1,"+"meanVariance:"+meanVariance+","+"MaxValue:"+MaxValue+"," +"MinValue:"+MinValue+"," +"warnCount:"+warnCount+"," +"collectorNum:" +"'"+collectorNum+"'"+"," +"lastCommunicateTime:"+"'"+lastCommunicateTime+"',isConnected:" + "'true'";
         String s2 = "{sensors:[{sensorNum:'" + number + "',dataType:'" + dataType + "',time:'" + time +"',data:" + dataList + "," + s + "}]}";
         System.out.println("s2:" + s2);
         wsMessageDispatcher.dispatchMessage(s2);

@@ -16,6 +16,9 @@ $.extend({
         return s;
 
     },
+    showWarnValue:function showWarnValue(){
+        alert(data);
+    },
     webSocketCallback:function webSocketCallback(data){
         var jsonData = eval("(" +data+ ")");
         console.log ("收到消息！"+jsonData);
@@ -24,7 +27,7 @@ $.extend({
         var sensorNumber=jsonData.sensors[0].sensorNum;
         var warnValue= jsonData.sensors[0].warnValue;
         var max=wsData[0];
-        var beforeS='<div style="color: red">';
+        var beforeS='<div style="color: red" onmouseover="alert(123)">';
         var afterS='</div>';
         var s="";
         if(gn==groupName){

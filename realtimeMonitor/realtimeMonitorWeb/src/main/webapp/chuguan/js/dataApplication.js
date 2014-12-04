@@ -16,18 +16,21 @@ $.extend({
         return s;
 
     },
-    showWarnValue:function showWarnValue(){
+    showWarnValue:function showWarnValue(data){
         alert(data);
+        this.title="warnValue:"+data;
     },
     webSocketCallback:function webSocketCallback(data){
+        map={ };
         var jsonData = eval("(" +data+ ")");
         console.log ("收到消息！"+jsonData);
-        wsData=jsonData.sensors[0].data;
+        var wsData=jsonData.sensors[0].data;
         var gn=jsonData.sensors[0].groupName;
         var sensorNumber=jsonData.sensors[0].sensorNum;
         var warnValue= jsonData.sensors[0].warnValue;
+        map[sensorNumber]=warnValue;
         var max=wsData[0];
-        var beforeS='<div style="color: red" onmouseover="alert(123)">';
+        var beforeS='<div style="color: red">';
         var afterS='</div>';
         var s="";
         if(gn==groupName){
@@ -37,6 +40,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s1").innerHTML=s;
+                document.getElementById("s1").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0001'){
                 s='UP45_ST&nbsp;&nbsp;&nbsp'+max;
@@ -44,6 +48,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s2").innerHTML=s;
+                document.getElementById("s2").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0002'){
                 s='UP90_ST&nbsp;&nbsp;&nbsp'+max;
@@ -51,6 +56,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s3").innerHTML=s;
+                document.getElementById("s3").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0003'){
                 s='UP135_ST&nbsp;&nbsp;&nbsp'+max;
@@ -58,6 +64,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s4").innerHTML=s;
+                document.getElementById("s4").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0004'){
                 s='UP180_ST&nbsp;&nbsp;&nbsp'+max;
@@ -65,76 +72,87 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s5").innerHTML=s;
+                document.getElementById("s5").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0005') {
+            if(sensorNumber==prefix+'0005'){
                 s='UP225_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s6").innerHTML=s;
+                document.getElementById("s6").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0006')  {
+            if(sensorNumber==prefix+'0006'){
                 s='UP270_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s7").innerHTML=s;
+                document.getElementById("s7").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0007')   {
+            if(sensorNumber==prefix+'0007'){
                 s='UP315_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("s8").innerHTML=s;
+                document.getElementById("s8").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0008')   {
+            if(sensorNumber==prefix+'0008'){
                 s='MID0_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z1").innerHTML=s;
+                document.getElementById("z1").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0009')  {
+            if(sensorNumber==prefix+'0009'){
                 s='MID45_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z2").innerHTML=s;
+                document.getElementById("z2").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0010')    {
+            if(sensorNumber==prefix+'0010'){
                 s='MID90_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z3").innerHTML=s;
+                document.getElementById("z3").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0011')    {
+            if(sensorNumber==prefix+'0011'){
                 s='MID135_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z4").innerHTML=s;
+                document.getElementById("z4").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0012')  {
+            if(sensorNumber==prefix+'0012'){
                 s='MID180_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z5").innerHTML=s;
+                document.getElementById("z5").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0013')   {
+            if(sensorNumber==prefix+'0013'){
                 s='MID225_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z6").innerHTML=s;
+                document.getElementById("z6").title="报警值:"+map[sensorNumber];
             }
-            if(sensorNumber==prefix+'0014')   {
+            if(sensorNumber==prefix+'0014'){
                 s='MID270_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z7").innerHTML=s;
+                document.getElementById("z7").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0015')    {
                 s='MID315_ST&nbsp;&nbsp;&nbsp'+max;
@@ -142,6 +160,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("z8").innerHTML=s;
+                document.getElementById("z8").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0016')   {
                 s='DOWN0_ST&nbsp;&nbsp;&nbsp'+max;
@@ -149,6 +168,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("x1").innerHTML=s;
+                document.getElementById("x1").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0017')    {
                 s='DOWN45_ST&nbsp;&nbsp;&nbsp'+max;
@@ -156,6 +176,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("x2").innerHTML=s;
+                document.getElementById("x2").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0018')    {
                 s='DOWN90_ST&nbsp;&nbsp;&nbsp'+max;
@@ -163,6 +184,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("x3").innerHTML=s;
+                document.getElementById("x3").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0019')   {
                 s='DOWN135_ST&nbsp;&nbsp;&nbsp'+max;
@@ -170,6 +192,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("x4").innerHTML=s;
+                document.getElementById("x4").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0020')    {
                 s='DOWN180_ST&nbsp;&nbsp;&nbsp'+max;
@@ -177,6 +200,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("x5").innerHTML=s;
+                document.getElementById("x5").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0021')    {
                 s='DOWN225_ST&nbsp;&nbsp;&nbsp'+max;
@@ -184,6 +208,7 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("x6").innerHTML=s;
+                document.getElementById("x6").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0022')  {
                 s='DOWN270_ST&nbsp;&nbsp;&nbsp'+max;
@@ -191,19 +216,24 @@ $.extend({
                     s=beforeS+s+afterS;
                 }
                 document.getElementById("x7").innerHTML=s;
+                document.getElementById("x7").title="报警值:"+map[sensorNumber];
             }
             if(sensorNumber==prefix+'0023')     {
-                s='UP45_ST&nbsp;&nbsp;&nbsp'+max;
+                s='DOWN315_ST&nbsp;&nbsp;&nbsp'+max;
                 if(parseInt(max)>parseInt(warnValue)) {
                     s=beforeS+s+afterS;
                 }
-                document.getElementById("x8").innerHTML='DOWN315_ST&nbsp;&nbsp;&nbsp'+max;
+                document.getElementById("x8").innerHTML=s;
+                document.getElementById("x8").title="报警值:"+map[sensorNumber];
+            }
                 if(sensorNumber==prefix+'0024' )   {
                     s='UP0_ST&nbsp;&nbsp;&nbsp'+max;
                     if(parseInt(max)>parseInt(warnValue)) {
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s1").innerHTML=s;
+                    document.getElementById("s1").title="报警值:"+map[sensorNumber];
+
                 }
                 if(sensorNumber==prefix+'0025')   {
                     s='UP45_ST&nbsp;&nbsp;&nbsp'+max;
@@ -211,6 +241,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s2").innerHTML=s;
+                    document.getElementById("s2").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0026')  {
                     s='UP90_ST&nbsp;&nbsp;&nbsp'+max;
@@ -218,6 +249,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s3").innerHTML=s;
+                    document.getElementById("s3").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0027')   {
                     s='UP135_ST&nbsp;&nbsp;&nbsp'+max;
@@ -225,6 +257,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s4").innerHTML=s;
+                    document.getElementById("s4").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0028')   {
                     s='UP180_ST&nbsp;&nbsp;&nbsp'+max;
@@ -232,6 +265,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s5").innerHTML=s;
+                    document.getElementById("s5").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0029')  {
                     s='UP225_ST&nbsp;&nbsp;&nbsp'+max;
@@ -239,6 +273,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s6").innerHTML=s;
+                    document.getElementById("s6").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0030')  {
                     s='UP270_ST&nbsp;&nbsp;&nbsp'+max;
@@ -246,6 +281,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s7").innerHTML=s;
+                    document.getElementById("s7").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0031')   {
                     s='UP315_ST&nbsp;&nbsp;&nbsp'+max;
@@ -253,6 +289,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("s8").innerHTML=s;
+                    document.getElementById("s8").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0032')   {
                     s='MID0_ST&nbsp;&nbsp;&nbsp'+max;
@@ -260,6 +297,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z1").innerHTML=s;
+                    document.getElementById("z1").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0033')  {
                     s='MID45_ST&nbsp;&nbsp;&nbsp'+max;
@@ -267,6 +305,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z2").innerHTML=s;
+                    document.getElementById("z2").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0034')    {
                     s='MID90_ST&nbsp;&nbsp;&nbsp'+max;
@@ -274,6 +313,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z3").innerHTML=s;
+                    document.getElementById("z3").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0035')    {
                     s='MID135_ST&nbsp;&nbsp;&nbsp'+max;
@@ -281,6 +321,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z4").innerHTML=s;
+                    document.getElementById("z4").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0036')  {
                     s='MID180_ST&nbsp;&nbsp;&nbsp'+max;
@@ -288,6 +329,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z5").innerHTML=s;
+                    document.getElementById("z5").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0037')   {
                     s='MID225_ST&nbsp;&nbsp;&nbsp'+max;
@@ -295,6 +337,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z6").innerHTML=s;
+                    document.getElementById("z6").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0038')   {
                     s='MID270_ST&nbsp;&nbsp;&nbsp'+max;
@@ -302,6 +345,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z7").innerHTML=s;
+                    document.getElementById("z7").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0039')    {
                     s='MID315_ST&nbsp;&nbsp;&nbsp'+max;
@@ -309,6 +353,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("z8").innerHTML=s;
+                    document.getElementById("z8").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0040')   {
                     s='DOWN0_ST&nbsp;&nbsp;&nbsp'+max;
@@ -316,6 +361,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x1").innerHTML=s;
+                    document.getElementById("x1").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0041')    {
                     s='DOWN45_ST&nbsp;&nbsp;&nbsp'+max;
@@ -323,6 +369,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x2").innerHTML=s;
+                    document.getElementById("x2").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0042')    {
                     s='DOWN90_ST&nbsp;&nbsp;&nbsp'+max;
@@ -330,6 +377,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x3").innerHTML=s;
+                    document.getElementById("x3").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0043')   {
                     s='DOWN135_ST&nbsp;&nbsp;&nbsp'+max;
@@ -337,6 +385,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x4").innerHTML=s;
+                    document.getElementById("x4").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0044')    {
                     s='DOWN180_ST&nbsp;&nbsp;&nbsp'+max;
@@ -344,6 +393,7 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x5").innerHTML=s;
+                    document.getElementById("x5").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0045')    {
                     s='DOWN225_ST&nbsp;&nbsp;&nbsp'+max;
@@ -351,20 +401,23 @@ $.extend({
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x6").innerHTML=s;
+                    document.getElementById("x6").title="报警值:"+map[sensorNumber];
                 }
                 if(sensorNumber==prefix+'0046')  {
                     s='DOWN270_ST&nbsp;&nbsp;&nbsp'+max;
-                    if(parseInt(max)>parseInt(warnValue)) {
+                    if(parseInt(max)>parseInt(warnValue)){
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x7").innerHTML=s;
+                    document.getElementById("x7").title="报警值:"+map[sensorNumber];
                 }
-                if(sensorNumber==prefix+'0047')     {
+                if(sensorNumber==prefix+'0047'){
                     s='DOWN315_ST&nbsp;&nbsp;&nbsp'+max;
                     if(parseInt(max)>parseInt(warnValue)) {
                         s=beforeS+s+afterS;
                     }
                     document.getElementById("x8").innerHTML=s;
+                    document.getElementById("x8").title="报警值:"+map[sensorNumber];
                 }
             }
             var sName="";
@@ -383,8 +436,8 @@ $.extend({
                         tbody.rows[i].cells[5].textContent="UP0_ST "+max;
                 }
             }
-        }
-    } ,
+        },
+
     belowAlgorithmProcess:function belowAlgorithmProcess(i,locName,loc,map){
       sum=0;
          var l;

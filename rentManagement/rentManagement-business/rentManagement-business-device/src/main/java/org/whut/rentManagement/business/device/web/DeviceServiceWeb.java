@@ -47,12 +47,13 @@ public class DeviceServiceWeb {
         Long appId= UserContext.currentUserAppId();
         Long id;
         try{
-            device.setCreateTime(new Date());
             id=deviceService.getIdByNumber(device.getNumber(),appId);
         }catch(Exception e){
             id=null;
         }
         if(id==null){
+            device.setCreateTime(new Date());
+            device.setHavePrint(0);
             device.setAppId(appId);
             deviceService.add(device);
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.SUCCESS.getCode(), "添加成功!");
@@ -69,10 +70,9 @@ public class DeviceServiceWeb {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空!");
         }
         Device device = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Device.class);
-        if(device==null){
+        if(device==null||device.getId()==null){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能是空!");
         }
-        long id;
         long appId= UserContext.currentUserAppId();
         device.setCreateTime(null);
         device.setAppId(appId);
@@ -151,4 +151,21 @@ public class DeviceServiceWeb {
         mainDeviceInfo.put("deviceList",deviceList);
         return  JsonResultUtils.getObjectResultByStringAsDefault(mainDeviceInfo,JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/setPrint")
+    @POST
+    public String setPrint(@FormParam("deviceId") String deviceId,@FormParam("havePrint") String havePrint){
+        if(havePrint==null||havePrint.trim().equals("")||deviceId==null||deviceId.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+        Device device = new Device();
+        device.setId(Long.parseLong(deviceId));
+        device.setHavePrint(Integer.parseInt(havePrint));
+        device.setAppId(UserContext.currentUserAppId());
+        deviceService.update(device);
+        return  JsonResultUtils.getObjectResultByStringAsDefault(device.getId(),JsonResultUtils.Code.SUCCESS);
+    }
+
+
 }

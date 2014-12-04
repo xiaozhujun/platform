@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50533
 File Encoding         : 65001
 
-Date: 2014-12-01 01:43:40
+Date: 2014-12-04 17:02:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -185,7 +185,7 @@ CREATE TABLE `contract` (
   `removeTime` date DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of contract
@@ -259,6 +259,7 @@ CREATE TABLE `device` (
   `priceUnit` varchar(255) DEFAULT NULL,
   `lng` varchar(255) DEFAULT NULL,
   `lat` varchar(255) DEFAULT NULL,
+  `havePrint` int(11) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
@@ -266,19 +267,19 @@ CREATE TABLE `device` (
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', '1', null, '1', '4', null, '使用', '塔吊001', 'sjs001', null, '2013-11-01', '2014-11-09', null, '114.380494', '30.507115', '1');
-INSERT INTO `device` VALUES ('2', '0', '1', '1', '1', '1', null, '1', '2', null, '使用', '塔吊002', 'sjs002', null, '2013-11-14', '2014-11-09', null, '114.380494', '30.506115', '1');
-INSERT INTO `device` VALUES ('8', null, '1', '1', '1', '1', null, '1', '2', null, '维修', '塔吊0003', 'td0003', '500000', '2014-11-01', '2014-11-25', '元', null, null, '1');
-INSERT INTO `device` VALUES ('9', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0001', 'bzj0001', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('10', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0002', 'bzj0002', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('11', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0003', 'bzj0003', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('12', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0004', 'bzj0004', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('13', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0005', 'bzj0005', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('14', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0006', 'bzj0006', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('15', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0007', 'bzj0007', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('16', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0008', 'bzj0008', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('17', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0009', 'bzj0009', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
-INSERT INTO `device` VALUES ('18', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0010', 'bzj0010', '20000', '2014-11-29', '2014-11-29', '元', null, null, '1');
+INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', '1', null, '1', '4', null, '使用', '塔吊001', 'sjs001', null, '2013-11-01', '2014-11-09', null, '114.380494', '30.507115', '0', '1');
+INSERT INTO `device` VALUES ('2', '0', '1', '1', '1', '1', null, '1', '2', null, '使用', '塔吊002', 'sjs002', null, '2013-11-14', '2014-11-09', null, '114.380494', '30.506115', '0', '1');
+INSERT INTO `device` VALUES ('8', null, '1', '1', '1', '1', null, '1', '2', null, '维修', '塔吊0003', 'td0003', '500000', '2014-11-01', '2014-11-25', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('9', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0001', 'bzj0001', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('10', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0002', 'bzj0002', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('11', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0003', 'bzj0003', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('12', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0004', 'bzj0004', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('13', '1', '3', '2', '2', '1', null, '1', '4', null, null, '标准节0005', 'bzj0005', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('14', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0006', 'bzj0006', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('15', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0007', 'bzj0007', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('16', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0008', 'bzj0008', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('17', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0009', 'bzj0009', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
+INSERT INTO `device` VALUES ('18', '0', '3', '2', '2', '1', null, '1', '2', null, null, '标准节0010', 'bzj0010', '20000', '2014-11-29', '2014-11-29', '元', null, null, '0', '1');
 
 -- ----------------------------
 -- Table structure for device_type

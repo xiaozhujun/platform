@@ -13,7 +13,7 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class Device {
-    private long id;
+    private Long id;
     private Long mainDeviceId;
     private Long batchId;
     private Long supplierId;
@@ -34,13 +34,14 @@ public class Device {
 
     private String lng;
     private String lat;
+    private Integer havePrint;
     private Long appId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -178,6 +179,15 @@ public class Device {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+
+    public Integer getHavePrint() {
+        return havePrint;
+    }
+
+    public void setHavePrint(Integer havePrint) {
+        this.havePrint = havePrint;
     }
 
     public Long getAppId() {

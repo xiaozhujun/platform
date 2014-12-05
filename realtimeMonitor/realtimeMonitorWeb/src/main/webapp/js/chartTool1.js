@@ -1,4 +1,4 @@
-function drawChart2(container,data,unit){
+function drawChart1(container,data,unit){
   $(container).highcharts('StockChart',{
         chart: {
             marginRight: 20,

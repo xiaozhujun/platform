@@ -5,13 +5,13 @@
     <title>物联实时监控平台-首页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <!--<script src="js/jquery-1.10.2.js" type="text/javascript"></script>-->
+    <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <%--<script src="js/jquery-1.11.0.js" type="text/javascript"></script>--%>
     <script src="js/jquery.json-2.4.min.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
     <script src="js/config.js" type="text/javascript"></script>
-
+    <script src="lib/json2.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function ()
         {

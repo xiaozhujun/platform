@@ -211,4 +211,31 @@
         order by device.typeId
     </select>
 
+    <select id="findMainDeviceByCondition" parameterType="map" resultType="map">
+        select device.id,device.name,device.number,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,device.address,device.havePrint,device.number,device.optionType,device_type.name as deviceType,storehouse.name as storehouseName,contract.name as contractName,device.price,device.createTime,supplier.name as supplierName,
+        device.produceTime,device.price,device.priceUnit,device.status,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName,customer.name as customerName
+        ,(case device.optionType WHEN 1 THEN '安装' WHEN 2 THEN '运输' WHEN 3 THEN '运输' WHEN 4 THEN '入库' WHEN 5 THEN '出库' END) as optionType
+        from device
+        LEFT JOIN device_type ON device.typeId=device_type.id
+        LEFT JOIN storehouse ON device.storehouseId=storehouse.id
+        LEFT JOIN contract ON device.contractId=contract.id
+        LEFT JOIN batch ON device.batchId=batch.id
+        LEFT JOIN supplier ON device.supplierId=supplier.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        LEFT JOIN device as mainDevice  ON device.mainDeviceId=mainDevice.id
+        where device.mainDeviceId!=0
+        <if test="appId!=null"> AND device.APPID=#{appId}</if>
+        <if test="batchId!=null"> AND device.batchId=#{batchId}</if>
+        <if test="typeId!=null"> AND device.typeId=#{typeId}</if>
+        <if test="deviceType!=null">AND device_type.name like CONCAT('%',#{deviceType},'%')</if>
+        <if test="optionType!=null"> AND device.optionType=#{optionType}</if>
+        <if test="storehouseId!=null"> AND device.storehouseId=#{storehouseId}</if>
+        <if test="mainDevice!=null"> AND device_type.mainDevice=#{mainDevice}</if>
+        <if test="number!=null">AND device.number like CONCAT('%',#{number},'%') </if>
+        <if test="name!=null">AND device.name like CONCAT('%',#{name},'%')</if>
+        <if test="startTime!=null"><![CDATA[ AND device.produceTime>=#{startTime}]]></if>
+        <if test="endTime!=null"><![CDATA[ AND device.produceTime<=#{endTime} ]]> </if>
+        order by mainDeviceNumber asc
+    </select>
+
 </mapper>

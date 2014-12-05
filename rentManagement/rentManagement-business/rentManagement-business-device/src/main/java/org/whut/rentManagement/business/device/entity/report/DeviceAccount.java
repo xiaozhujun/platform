@@ -26,11 +26,13 @@ public class DeviceAccount {
     private Long storehouseName;
     private Long contractId;
     private String contractName;
-    private Long optionType;
+    private String optionType;
     private String address;
     private String status;
     private String name;
     private String number;
+    private String mainDeviceName;
+    private String mainDeviceNumber;
     private String price;
     @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date produceTime;
@@ -138,11 +140,11 @@ public class DeviceAccount {
         this.contractName = contractName;
     }
 
-    public Long getOptionType() {
+    public String getOptionType() {
         return optionType;
     }
 
-    public void setOptionType(Long optionType) {
+    public void setOptionType(String optionType) {
         this.optionType = optionType;
     }
 
@@ -176,6 +178,22 @@ public class DeviceAccount {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getMainDeviceName() {
+        return mainDeviceName;
+    }
+
+    public void setMainDeviceName(String mainDeviceName) {
+        this.mainDeviceName = mainDeviceName;
+    }
+
+    public String getMainDeviceNumber() {
+        return mainDeviceNumber;
+    }
+
+    public void setMainDeviceNumber(String mainDeviceNumber) {
+        this.mainDeviceNumber = mainDeviceNumber;
     }
 
     public String getPrice() {

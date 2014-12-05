@@ -429,14 +429,16 @@
         </if>
     </select>
     <select id="getCityInfoByCondition0" parameterType="map" resultType="map">
-        SELECT addressId as id,city,avgRiskValue,craneNumber,color
-        FROM  city_riskvalue_temp
+        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
-         WHERE province=#{province}
+            AND a.province=#{province}
         </if>
         <if test="city!=null">
-            AND city=#{city}
+            AND a.city=#{city}
         </if>
+        GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
     <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
          SELECT addressId as id,area,avgRiskValue,craneNumber,color
@@ -462,6 +464,33 @@
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
+    </select>
+    <select id="getAreaInfoByCondition0" parameterType="map" resultType="map">
+        SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test="city!=null">
+            AND a.city=#{city}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.area  ORDER BY  craneNumber desc
     </select>
     <select id="getCraneListByUploadReportId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
          select *
@@ -653,4 +682,36 @@
         WHERE addressId=#{addressId}
         </if>
     </delete>
+    <insert id="dumpDataToProvinceRiskTemp" keyProperty="id"
+            useGeneratedKeys="true">
+      INSERT
+      INTO
+      province_riskvalue_temp
+      (addressId,province,avgRiskValue,craneNumber,color,userId,equipmentvariety,manufacturedate,riskvalue)
+      SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,u.id as userId,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskvalue
+      FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+      WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+      AND a.id=cr.addressId
+      GROUP BY a.province order by craneNumber desc;
+    </insert>
+    <insert id="dumpDataToCityRiskTemp" keyProperty="id"
+            useGeneratedKeys="true">
+     INSERT
+     INTO city_riskvalue_temp(addressId,province,city,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+     SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)as equipmentvariety,cr.manufacturedate as manufacturedate,r.riskvalue as riskval,u.id as userId
+     FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+     WHERE  cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+     AND a.id=cr.addressId
+     GROUP BY a.city order by avgRiskValue desc;
+    </insert>
+    <insert id="dumpDataToAreaRiskTemp" keyProperty="id"
+            useGeneratedKeys="true">
+     INSERT
+     INTO area_riskvalue_temp(addressId,province,city,area,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+     SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskval,u.id as userId
+     FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+     WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+     AND a.id=cr.addressId
+     GROUP BY a.area order by avgRiskValue desc
+     </insert>
 </mapper>

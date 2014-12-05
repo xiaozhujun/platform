@@ -84,6 +84,9 @@ public class DataRoleAddressService {
     public   List<Map<String,String>> getProvinceInfoWithDataRuleByCondition(Long userId,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
         return dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,sTime,eTime,startValue,endValue);
     }
+    public   List<Map<String,String>> getProvinceInfoWithDataRuleByCondition0(Long userId,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
+        return dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition0(userId,equipmentVariety,sTime,eTime,startValue,endValue);
+    }
     public List<Map<String,String>>getProvinceListWithDataRole(long userId){
            return dataRoleAddressMapper.getProvinceListWithDataRole(userId);
     }

@@ -151,8 +151,13 @@
         }
         function calculateProvinceRiskCallback(data){
             if(data.code=200){
-                    $.ligerDialog.closeWaitting();
-                    $.ligerDialog.success("计算完成!");
+                $.post($.URL.craneinspectreport.dumpDataToTempTable,null,dumpDataToTempTableCallback,"json");
+            }
+        }
+        function dumpDataToTempTableCallback(data){
+            if(data.code==200){
+                $.ligerDialog.closeWaitting();
+                $.ligerDialog.success("计算完成!");
             }
         }
         function openDialog(){

@@ -712,7 +712,7 @@ public class CraneInspectReportServiceWeb {
             }
         }
         for(Address address:addressList){
-            areaList=craneInspectReportService.getAreaInfoByCondition(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
+            areaList=craneInspectReportService.getAreaInfoByCondition0(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
             if(areaList!=null&&areaList.size()!=0){
             craneInspectReportService.batchInsertToAddressRiskValue(areaList);
             }
@@ -753,5 +753,22 @@ public class CraneInspectReportServiceWeb {
         //drop craneInspectReportCollection
         craneInspectReportService.dropCraneInspectReportCollection();
         //删除
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/dumpDataToTempTable")
+    public String dumpDataToTempTable(){
+        //插入数据到三个临时表中
+        int a=craneInspectReportService.dumpDataToProvinceRiskTemp();
+        if(a!=0){
+            int b=craneInspectReportService.dumpDataToCityRiskTemp();
+            if(b!=0){
+                int c=craneInspectReportService.dumpDataToAreaRiskTemp();
+                if(c!=0){
+                    return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+                }
+            }
+        }
+        return null;
     }
 }

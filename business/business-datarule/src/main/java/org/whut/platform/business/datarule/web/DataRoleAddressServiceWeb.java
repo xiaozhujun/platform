@@ -139,7 +139,7 @@ public class DataRoleAddressServiceWeb {
     @POST
     @Path("/calculateProvinceRisk")
     public String  calculateProvinceRisk(){
-        List<Map<String,String>> provinceList=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(null,"0","0","0",0f,0f);
+        List<Map<String,String>> provinceList=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition0(null,"0","0","0",0f,0f);
         for(Map<String,String> addressMap:provinceList){
             Address address=new Address();
             address.setProvince(addressMap.get("province"));

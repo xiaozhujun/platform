@@ -333,6 +333,9 @@ public class CraneInspectReportService {
     public  List<Map<String,Float>>getAreaInfoByCondition(String province,String city,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
           return mapper.getAreaInfoByCondition(province,city,equipmentVariety,sTime,eTime,startValue,endValue);
     }
+    public  List<Map<String,Float>>getAreaInfoByCondition0(String province,String city,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
+        return mapper.getAreaInfoByCondition0(province,city,equipmentVariety,sTime,eTime,startValue,endValue);
+    }
     public List<CraneInspectReport> getCraneListByUploadReportId(long reportId){
         return  mapper.getCraneListByUploadReportId(reportId);
     }
@@ -570,5 +573,14 @@ public class CraneInspectReportService {
     public void dropCraneInspectReportCollection(){
         MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
         mongo.dropCollection();
+    }
+    public int dumpDataToProvinceRiskTemp(){   //将计算风险值插入到省风险的临时表中
+        return mapper.dumpDataToProvinceRiskTemp();
+    }
+    public int dumpDataToCityRiskTemp(){       //将计算风险值插入到市风险的临时表中
+        return mapper.dumpDataToCityRiskTemp();
+    }
+    public int dumpDataToAreaRiskTemp(){        //将计算风险值插入到区域风险的临时表中
+        return mapper.dumpDataToAreaRiskTemp();
     }
 }

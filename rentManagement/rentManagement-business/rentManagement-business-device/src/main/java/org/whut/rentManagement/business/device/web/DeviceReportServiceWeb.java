@@ -56,7 +56,7 @@ public class DeviceReportServiceWeb {
         }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
         condition.put("appId", UserContext.currentUserAppId());
-        List<Map<String,Object>> reportInfoList=deviceService.findByCondition(condition);
+        List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceAccountReport);
         String type = (String)condition.get("reportType");
         exportReport(reportTemplate,type,reportInfoList);

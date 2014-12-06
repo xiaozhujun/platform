@@ -45,13 +45,19 @@
 	<field name="mainDeviceId" class="java.lang.Long">
 		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
 	</field>
+	<field name="mainDeviceName" class="java.lang.String">
+		<fieldDescription><![CDATA[mainDeviceName]]></fieldDescription>
+	</field>
+	<field name="mainDeviceNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[mainDeviceNumber]]></fieldDescription>
+	</field>
 	<field name="name" class="java.lang.String">
 		<fieldDescription><![CDATA[name]]></fieldDescription>
 	</field>
 	<field name="number" class="java.lang.String">
 		<fieldDescription><![CDATA[number]]></fieldDescription>
 	</field>
-	<field name="optionType" class="java.lang.Long">
+	<field name="optionType" class="java.lang.String">
 		<fieldDescription><![CDATA[optionType]]></fieldDescription>
 	</field>
 	<field name="price" class="java.lang.String">
@@ -79,81 +85,6 @@
 		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
 	</field>
 	<field name="typeId" class="java.lang.Long">
-		<fieldDescription><![CDATA[typeId]]></fieldDescription>
-	</field>
-	<field name="address_1" class="java.lang.String">
-		<fieldDescription><![CDATA[address]]></fieldDescription>
-	</field>
-	<field name="appId_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[appId]]></fieldDescription>
-	</field>
-	<field name="batchId_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[batchId]]></fieldDescription>
-	</field>
-	<field name="batchNumber_1" class="java.lang.String">
-		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
-	</field>
-	<field name="class_1" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
-	<field name="contractId_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[contractId]]></fieldDescription>
-	</field>
-	<field name="contractName_1" class="java.lang.String">
-		<fieldDescription><![CDATA[contractName]]></fieldDescription>
-	</field>
-	<field name="createTime_1" class="java.util.Date">
-		<fieldDescription><![CDATA[createTime]]></fieldDescription>
-	</field>
-	<field name="deviceType_1" class="java.lang.String">
-		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
-	</field>
-	<field name="id_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[id]]></fieldDescription>
-	</field>
-	<field name="lat_1" class="java.lang.String">
-		<fieldDescription><![CDATA[lat]]></fieldDescription>
-	</field>
-	<field name="lng_1" class="java.lang.String">
-		<fieldDescription><![CDATA[lng]]></fieldDescription>
-	</field>
-	<field name="mainDeviceId_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
-	</field>
-	<field name="name_1" class="java.lang.String">
-		<fieldDescription><![CDATA[name]]></fieldDescription>
-	</field>
-	<field name="number_1" class="java.lang.String">
-		<fieldDescription><![CDATA[number]]></fieldDescription>
-	</field>
-	<field name="optionType_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[optionType]]></fieldDescription>
-	</field>
-	<field name="price_1" class="java.lang.String">
-		<fieldDescription><![CDATA[price]]></fieldDescription>
-	</field>
-	<field name="priceUnit_1" class="java.lang.String">
-		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
-	</field>
-	<field name="produceTime_1" class="java.util.Date">
-		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
-	</field>
-	<field name="status_1" class="java.lang.String">
-		<fieldDescription><![CDATA[status]]></fieldDescription>
-	</field>
-	<field name="storehouseId_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
-	</field>
-	<field name="storehouseName_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
-	</field>
-	<field name="supplierId_1" class="java.lang.Long">
-		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
-	</field>
-	<field name="supplierName_1" class="java.lang.String">
-		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
-	</field>
-	<field name="typeId_1" class="java.lang.Long">
 		<fieldDescription><![CDATA[typeId]]></fieldDescription>
 	</field>
 	<background>

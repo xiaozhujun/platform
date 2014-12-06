@@ -22,8 +22,6 @@
             $("#deviceReportSearch_submitBtn").click(function(){
                 showDeviceReport();
             });
-
-//            $("#optionTypeInput").ligerCheckBox();
         });
         function showDeviceReport(){
             var condition={};
@@ -82,6 +80,8 @@
                 { text: 'excel', id: '3' }
             ], valueFieldID: 'DeviceInfType'
         });
+
+        $("#deviceReportSearch_submitBtn").trigger("click");
     </script>
 </head>
 <body>

@@ -212,7 +212,7 @@
     </select>
 
     <select id="findMainDeviceByCondition" parameterType="map" resultType="map">
-        select device.id,device.name,device.number,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,device.address,device.havePrint,device.number,device.optionType,device_type.name as deviceType,storehouse.name as storehouseName,contract.name as contractName,device.price,device.createTime,supplier.name as supplierName,
+        select device.id,device.name,device.number,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,device.address,device.havePrint,device.number,device_type.name as deviceType,storehouse.name as storehouseName,contract.name as contractName,device.price,device.createTime,supplier.name as supplierName,
         device.produceTime,device.price,device.priceUnit,device.status,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName,customer.name as customerName
         ,(case device.optionType WHEN 1 THEN '安装' WHEN 2 THEN '运输' WHEN 3 THEN '运输' WHEN 4 THEN '入库' WHEN 5 THEN '出库' END) as optionType
         from device

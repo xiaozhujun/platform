@@ -574,13 +574,22 @@ public class CraneInspectReportService {
         MongoConnector mongo=new MongoConnector("craneInspectReportDB","craneInspectReportCollection");
         mongo.dropCollection();
     }
-    public int dumpDataToProvinceRiskTemp(){   //将计算风险值插入到省风险的临时表中
-        return mapper.dumpDataToProvinceRiskTemp();
+    public int dumpDataToProvinceRiskTemp(List<Map<String,String>> list){   //将计算风险值插入到省风险的临时表中
+        return mapper.dumpDataToProvinceRiskTemp(list);
     }
-    public int dumpDataToCityRiskTemp(){       //将计算风险值插入到市风险的临时表中
-        return mapper.dumpDataToCityRiskTemp();
+    public int dumpDataToCityRiskTemp(List<Map<String,String>> list){       //将计算风险值插入到市风险的临时表中
+        return mapper.dumpDataToCityRiskTemp(list);
     }
-    public int dumpDataToAreaRiskTemp(){        //将计算风险值插入到区域风险的临时表中
-        return mapper.dumpDataToAreaRiskTemp();
+    public int dumpDataToAreaRiskTemp(List<Map<String,String>> list){        //将计算风险值插入到区域风险的临时表中
+        return mapper.dumpDataToAreaRiskTemp(list);
+    }
+    public List<Map<String,String>>selectProvinceRiskTemp(){
+        return mapper.selectProvinceRiskTemp();
+    }
+    public List<Map<String,String>>selectCityRiskTemp(){
+        return mapper.selectCityRiskTemp();
+    }
+    public List<Map<String,String>>selectAreaRiskTemp(){
+        return mapper.selectAreaRiskTemp();
     }
 }

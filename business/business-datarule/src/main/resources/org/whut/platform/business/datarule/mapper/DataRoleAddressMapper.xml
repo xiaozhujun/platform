@@ -103,10 +103,10 @@
         FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
         where
         <if test="userId!=null">
-            u.id=#{userId}
+            u.id=#{userId}  and
         </if>
         <if test='equipmentVariety!="0"'>
-            and cr.equipmentvariety=#{equipmentVariety}
+           cr.equipmentvariety=#{equipmentVariety}
         </if>
         <if test='sTime!="0"'>
             and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}

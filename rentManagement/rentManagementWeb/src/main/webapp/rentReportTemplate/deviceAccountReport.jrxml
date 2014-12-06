@@ -114,7 +114,7 @@
 	<columnHeader>
 		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="30"/>
+				<reportElement x="100" y="0" width="100" height="30"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -128,7 +128,7 @@
 				<text><![CDATA[设备编号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="100" height="30"/>
+				<reportElement x="200" y="0" width="100" height="30"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -156,7 +156,7 @@
 				<text><![CDATA[价格]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="100" height="30"/>
+				<reportElement x="0" y="0" width="100" height="30"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -167,7 +167,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[类型]]></text>
+				<text><![CDATA[设备类型]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="400" y="0" width="100" height="30"/>
@@ -230,7 +230,7 @@
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="100" height="30"/>
+				<reportElement x="100" y="0" width="100" height="30"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -244,7 +244,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{number}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="0" width="100" height="30"/>
+				<reportElement x="200" y="0" width="100" height="30"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -270,20 +270,6 @@
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{price}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="200" y="0" width="100" height="30"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceType}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="400" y="0" width="100" height="30"/>
@@ -341,6 +327,31 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{produceTime}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<elementGroup>
+				<textField>
+					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="100" height="30"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceType}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
 		</band>
 	</detail>
 	<columnFooter>
@@ -350,6 +361,15 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="36" splitType="Stretch"/>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="800" height="36"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>

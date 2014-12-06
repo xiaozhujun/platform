@@ -56,6 +56,7 @@ public class DeviceReportServiceWeb {
         }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
         condition.put("appId", UserContext.currentUserAppId());
+        condition.put("orderByCondition"," order by deviceType,mainDeviceNumber asc");
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceAccountReport);
         String type = (String)condition.get("reportType");
@@ -77,7 +78,8 @@ public class DeviceReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceAccountReport);
         String reportType=(String)condition.get("reportType");
         condition.put("appId",UserContext.currentUserAppId());
-        List<Map<String,Object>> reportInfoList=deviceService.findByCondition(condition);
+        condition.put("orderByCondition"," order by deviceType,mainDeviceNumber asc");
+        List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         exportReport(reportTemplate,reportType,reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
@@ -91,6 +93,7 @@ public class DeviceReportServiceWeb {
         }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
         condition.put("appId", UserContext.currentUserAppId());
+        condition.put("orderByCondition"," order by contractName,mainDeviceNumber,deviceType asc");
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.rentedDeviceAccountReport);
         String type = (String)condition.get("reportType");
@@ -112,6 +115,7 @@ public class DeviceReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.rentedDeviceAccountReport);
         String reportType=(String)condition.get("reportType");
         condition.put("appId",UserContext.currentUserAppId());
+        condition.put("orderByCondition"," order by contractName,mainDeviceNumber,deviceType asc");
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         exportReport(reportTemplate,reportType,reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

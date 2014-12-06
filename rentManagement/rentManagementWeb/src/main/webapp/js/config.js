@@ -212,11 +212,6 @@
             "rentDeviceReport":"rs/deviceReport/rentDeviceReport",
             "exportRentDeviceAccount":"rs/deviceReport/exportRentDeviceAccount"
 
-        },
-        "rentReport":{
-            "reportSearch":"rs/RentReport/reportSearch",
-
-            "ShowRentReport":"rs/RentReport/ShowRentReport"
         }
     }
 })(jQuery);

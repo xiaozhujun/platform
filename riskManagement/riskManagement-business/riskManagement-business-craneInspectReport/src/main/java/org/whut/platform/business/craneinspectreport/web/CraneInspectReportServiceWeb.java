@@ -759,11 +759,14 @@ public class CraneInspectReportServiceWeb {
     @Path("/dumpDataToTempTable")
     public String dumpDataToTempTable(){
         //插入数据到三个临时表中
-        int a=craneInspectReportService.dumpDataToProvinceRiskTemp();
+        List<Map<String,String>> provinceRiskList=craneInspectReportService.selectProvinceRiskTemp();
+        List<Map<String,String>> cityRiskList=craneInspectReportService.selectCityRiskTemp();
+        List<Map<String,String>> areaRiskList=craneInspectReportService.selectAreaRiskTemp();
+        int a=craneInspectReportService.dumpDataToProvinceRiskTemp(provinceRiskList);
         if(a!=0){
-            int b=craneInspectReportService.dumpDataToCityRiskTemp();
+            int b=craneInspectReportService.dumpDataToCityRiskTemp(cityRiskList);
             if(b!=0){
-                int c=craneInspectReportService.dumpDataToAreaRiskTemp();
+                int c=craneInspectReportService.dumpDataToAreaRiskTemp(areaRiskList);
                 if(c!=0){
                     return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
                 }

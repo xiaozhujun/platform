@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.datarule.service.DataRoleAddressService;
+import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
@@ -139,7 +140,9 @@ public class DataRoleAddressServiceWeb {
     @POST
     @Path("/calculateProvinceRisk")
     public String  calculateProvinceRisk(){
-        List<Map<String,String>> provinceList=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition0(null,"0","0","0",0f,0f);
+        String userName=userService.getMyUserDetailFromSession().getUsername();
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> provinceList=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition0(userId,"0","0","0",0f,0f);
         for(Map<String,String> addressMap:provinceList){
             Address address=new Address();
             address.setProvince(addressMap.get("province"));

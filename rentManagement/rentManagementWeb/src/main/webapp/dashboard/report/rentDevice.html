@@ -41,7 +41,7 @@
             }
             condition.reportType="html";
 
-            $("#deviceShow").load($.URL.deviceReport.deviceAccountReport,{"jsonString": $.toJSON(condition)},reportSearchCallback,"json");
+            $("#deviceShow").load($.URL.deviceReport.rentDeviceReport,{"jsonString": $.toJSON(condition)},reportSearchCallback,"json");
 
         }
         function reportSearchCallback(data){
@@ -70,7 +70,7 @@
                     condition.endTime = $("#endTimeInput").val();
                 }
                 condition.reportType=type;
-                location.href= $.URL.rentReport.exportDeviceAccount+"?jsonString="+ $.toJSON(condition);
+                location.href= $.URL.rentReport.exportRentDeviceAccount+"?jsonString="+ $.toJSON(condition);
             }else{
                 $.ligerDialog().alert("请输入导出报表类型!");
             }

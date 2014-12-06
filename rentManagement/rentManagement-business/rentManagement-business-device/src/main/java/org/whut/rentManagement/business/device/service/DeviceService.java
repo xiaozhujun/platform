@@ -81,4 +81,8 @@ public class DeviceService {
     public List<Map<String,Object>> listByMainDeviceId(Map<String,Object> condition){
         return deviceMapper.listByMainDeviceId(condition);
     }
+
+    public List<Map<String,Object>> findMainDeviceByCondition(Map<String,Object> condition){
+        return deviceMapper.findMainDeviceByCondition(condition);
+    }
 }

@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rentedDeviceAccount" language="groovy" pageWidth="900" pageHeight="842" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="0.6830134553650707"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="number" class="java.lang.String"/>
+	<field name="mainDeviceName" class="java.lang.String"/>
+	<field name="mainDeviceNumber" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="havePrint" class="java.lang.Integer"/>
+	<field name="optionType" class="java.lang.Long"/>
+	<field name="deviceType" class="java.lang.String"/>
+	<field name="storehouseName" class="java.lang.String"/>
+	<field name="contractName" class="java.lang.String"/>
+	<field name="price" class="java.lang.String"/>
+	<field name="createTime" class="java.sql.Date"/>
+	<field name="supplierName" class="java.lang.String"/>
+	<field name="produceTime" class="java.sql.Date"/>
+	<field name="priceUnit" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="batchNumber" class="java.lang.String"/>
+	<field name="contractId" class="java.lang.Long"/>
+	<field name="batchId" class="java.lang.Long"/>
+	<field name="storehouseId" class="java.lang.Long"/>
+	<field name="typeId" class="java.lang.Long"/>
+	<field name="supplierId" class="java.lang.Long"/>
+	<field name="customerName" class="java.lang.String"/>
+	<field name="address_1" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="appId" class="java.lang.Long">
+		<fieldDescription><![CDATA[appId]]></fieldDescription>
+	</field>
+	<field name="batchId_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[batchId]]></fieldDescription>
+	</field>
+	<field name="batchNumber_1" class="java.lang.String">
+		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="contractId_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[contractId]]></fieldDescription>
+	</field>
+	<field name="contractName_1" class="java.lang.String">
+		<fieldDescription><![CDATA[contractName]]></fieldDescription>
+	</field>
+	<field name="createTime_1" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="deviceType_1" class="java.lang.String">
+		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
+	</field>
+	<field name="id_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="lat" class="java.lang.String">
+		<fieldDescription><![CDATA[lat]]></fieldDescription>
+	</field>
+	<field name="lng" class="java.lang.String">
+		<fieldDescription><![CDATA[lng]]></fieldDescription>
+	</field>
+	<field name="mainDeviceId" class="java.lang.Long">
+		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
+	</field>
+	<field name="name_1" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="number_1" class="java.lang.String">
+		<fieldDescription><![CDATA[number]]></fieldDescription>
+	</field>
+	<field name="optionType_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[optionType]]></fieldDescription>
+	</field>
+	<field name="price_1" class="java.lang.String">
+		<fieldDescription><![CDATA[price]]></fieldDescription>
+	</field>
+	<field name="priceUnit_1" class="java.lang.String">
+		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
+	</field>
+	<field name="produceTime_1" class="java.util.Date">
+		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
+	</field>
+	<field name="status_1" class="java.lang.String">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<field name="storehouseId_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
+	</field>
+	<field name="storehouseName_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
+	</field>
+	<field name="supplierId_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
+	</field>
+	<field name="supplierName_1" class="java.lang.String">
+		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
+	</field>
+	<field name="typeId_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[typeId]]></fieldDescription>
+	</field>
+	<field name="address_2" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="appId_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[appId]]></fieldDescription>
+	</field>
+	<field name="batchId_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[batchId]]></fieldDescription>
+	</field>
+	<field name="batchNumber_2" class="java.lang.String">
+		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
+	</field>
+	<field name="class_1" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="contractId_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[contractId]]></fieldDescription>
+	</field>
+	<field name="contractName_2" class="java.lang.String">
+		<fieldDescription><![CDATA[contractName]]></fieldDescription>
+	</field>
+	<field name="createTime_2" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="deviceType_2" class="java.lang.String">
+		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
+	</field>
+	<field name="id_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="lat_1" class="java.lang.String">
+		<fieldDescription><![CDATA[lat]]></fieldDescription>
+	</field>
+	<field name="lng_1" class="java.lang.String">
+		<fieldDescription><![CDATA[lng]]></fieldDescription>
+	</field>
+	<field name="mainDeviceId_1" class="java.lang.Long">
+		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
+	</field>
+	<field name="name_2" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="number_2" class="java.lang.String">
+		<fieldDescription><![CDATA[number]]></fieldDescription>
+	</field>
+	<field name="optionType_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[optionType]]></fieldDescription>
+	</field>
+	<field name="price_2" class="java.lang.String">
+		<fieldDescription><![CDATA[price]]></fieldDescription>
+	</field>
+	<field name="priceUnit_2" class="java.lang.String">
+		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
+	</field>
+	<field name="produceTime_2" class="java.util.Date">
+		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
+	</field>
+	<field name="status_2" class="java.lang.String">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<field name="storehouseId_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
+	</field>
+	<field name="storehouseName_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
+	</field>
+	<field name="supplierId_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
+	</field>
+	<field name="supplierName_2" class="java.lang.String">
+		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
+	</field>
+	<field name="typeId_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[typeId]]></fieldDescription>
+	</field>
+	<field name="address_3" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="appId_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[appId]]></fieldDescription>
+	</field>
+	<field name="batchId_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[batchId]]></fieldDescription>
+	</field>
+	<field name="batchNumber_3" class="java.lang.String">
+		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
+	</field>
+	<field name="class_2" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="contractId_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[contractId]]></fieldDescription>
+	</field>
+	<field name="contractName_3" class="java.lang.String">
+		<fieldDescription><![CDATA[contractName]]></fieldDescription>
+	</field>
+	<field name="createTime_3" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="deviceType_3" class="java.lang.String">
+		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
+	</field>
+	<field name="id_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="lat_2" class="java.lang.String">
+		<fieldDescription><![CDATA[lat]]></fieldDescription>
+	</field>
+	<field name="lng_2" class="java.lang.String">
+		<fieldDescription><![CDATA[lng]]></fieldDescription>
+	</field>
+	<field name="mainDeviceId_2" class="java.lang.Long">
+		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
+	</field>
+	<field name="name_3" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="number_3" class="java.lang.String">
+		<fieldDescription><![CDATA[number]]></fieldDescription>
+	</field>
+	<field name="optionType_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[optionType]]></fieldDescription>
+	</field>
+	<field name="price_3" class="java.lang.String">
+		<fieldDescription><![CDATA[price]]></fieldDescription>
+	</field>
+	<field name="priceUnit_3" class="java.lang.String">
+		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
+	</field>
+	<field name="produceTime_3" class="java.util.Date">
+		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
+	</field>
+	<field name="status_3" class="java.lang.String">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<field name="storehouseId_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
+	</field>
+	<field name="storehouseName_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
+	</field>
+	<field name="supplierId_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
+	</field>
+	<field name="supplierName_3" class="java.lang.String">
+		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
+	</field>
+	<field name="typeId_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[typeId]]></fieldDescription>
+	</field>
+	<field name="address_4" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="appId_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[appId]]></fieldDescription>
+	</field>
+	<field name="batchId_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[batchId]]></fieldDescription>
+	</field>
+	<field name="batchNumber_4" class="java.lang.String">
+		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
+	</field>
+	<field name="class_3" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="contractId_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[contractId]]></fieldDescription>
+	</field>
+	<field name="contractName_4" class="java.lang.String">
+		<fieldDescription><![CDATA[contractName]]></fieldDescription>
+	</field>
+	<field name="createTime_4" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="deviceType_4" class="java.lang.String">
+		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
+	</field>
+	<field name="id_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="lat_3" class="java.lang.String">
+		<fieldDescription><![CDATA[lat]]></fieldDescription>
+	</field>
+	<field name="lng_3" class="java.lang.String">
+		<fieldDescription><![CDATA[lng]]></fieldDescription>
+	</field>
+	<field name="mainDeviceId_3" class="java.lang.Long">
+		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
+	</field>
+	<field name="name_4" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="number_4" class="java.lang.String">
+		<fieldDescription><![CDATA[number]]></fieldDescription>
+	</field>
+	<field name="optionType_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[optionType]]></fieldDescription>
+	</field>
+	<field name="price_4" class="java.lang.String">
+		<fieldDescription><![CDATA[price]]></fieldDescription>
+	</field>
+	<field name="priceUnit_4" class="java.lang.String">
+		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
+	</field>
+	<field name="produceTime_4" class="java.util.Date">
+		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
+	</field>
+	<field name="status_4" class="java.lang.String">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<field name="storehouseId_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
+	</field>
+	<field name="storehouseName_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
+	</field>
+	<field name="supplierId_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
+	</field>
+	<field name="supplierName_4" class="java.lang.String">
+		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
+	</field>
+	<field name="typeId_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[typeId]]></fieldDescription>
+	</field>
+	<field name="address_5" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="appId_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[appId]]></fieldDescription>
+	</field>
+	<field name="batchId_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[batchId]]></fieldDescription>
+	</field>
+	<field name="batchNumber_5" class="java.lang.String">
+		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
+	</field>
+	<field name="class_4" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="contractId_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[contractId]]></fieldDescription>
+	</field>
+	<field name="contractName_5" class="java.lang.String">
+		<fieldDescription><![CDATA[contractName]]></fieldDescription>
+	</field>
+	<field name="createTime_5" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="deviceType_5" class="java.lang.String">
+		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
+	</field>
+	<field name="id_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="lat_4" class="java.lang.String">
+		<fieldDescription><![CDATA[lat]]></fieldDescription>
+	</field>
+	<field name="lng_4" class="java.lang.String">
+		<fieldDescription><![CDATA[lng]]></fieldDescription>
+	</field>
+	<field name="mainDeviceId_4" class="java.lang.Long">
+		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
+	</field>
+	<field name="name_5" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="number_5" class="java.lang.String">
+		<fieldDescription><![CDATA[number]]></fieldDescription>
+	</field>
+	<field name="optionType_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[optionType]]></fieldDescription>
+	</field>
+	<field name="price_5" class="java.lang.String">
+		<fieldDescription><![CDATA[price]]></fieldDescription>
+	</field>
+	<field name="priceUnit_5" class="java.lang.String">
+		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
+	</field>
+	<field name="produceTime_5" class="java.util.Date">
+		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
+	</field>
+	<field name="status_5" class="java.lang.String">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<field name="storehouseId_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
+	</field>
+	<field name="storehouseName_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
+	</field>
+	<field name="supplierId_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
+	</field>
+	<field name="supplierName_5" class="java.lang.String">
+		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
+	</field>
+	<field name="typeId_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[typeId]]></fieldDescription>
+	</field>
+	<field name="address_6" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="appId_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[appId]]></fieldDescription>
+	</field>
+	<field name="batchId_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[batchId]]></fieldDescription>
+	</field>
+	<field name="batchNumber_6" class="java.lang.String">
+		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
+	</field>
+	<field name="class_5" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="contractId_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[contractId]]></fieldDescription>
+	</field>
+	<field name="contractName_6" class="java.lang.String">
+		<fieldDescription><![CDATA[contractName]]></fieldDescription>
+	</field>
+	<field name="createTime_6" class="java.util.Date">
+		<fieldDescription><![CDATA[createTime]]></fieldDescription>
+	</field>
+	<field name="deviceType_6" class="java.lang.String">
+		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
+	</field>
+	<field name="id_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="lat_5" class="java.lang.String">
+		<fieldDescription><![CDATA[lat]]></fieldDescription>
+	</field>
+	<field name="lng_5" class="java.lang.String">
+		<fieldDescription><![CDATA[lng]]></fieldDescription>
+	</field>
+	<field name="mainDeviceId_5" class="java.lang.Long">
+		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
+	</field>
+	<field name="name_6" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="number_6" class="java.lang.String">
+		<fieldDescription><![CDATA[number]]></fieldDescription>
+	</field>
+	<field name="optionType_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[optionType]]></fieldDescription>
+	</field>
+	<field name="price_6" class="java.lang.String">
+		<fieldDescription><![CDATA[price]]></fieldDescription>
+	</field>
+	<field name="priceUnit_6" class="java.lang.String">
+		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
+	</field>
+	<field name="produceTime_6" class="java.util.Date">
+		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
+	</field>
+	<field name="status_6" class="java.lang.String">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<field name="storehouseId_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
+	</field>
+	<field name="storehouseName_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
+	</field>
+	<field name="supplierId_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
+	</field>
+	<field name="supplierName_6" class="java.lang.String">
+		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
+	</field>
+	<field name="typeId_6" class="java.lang.Long">
+		<fieldDescription><![CDATA[typeId]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="900" height="35"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[出租设备详情]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="600" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[状态]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[单位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[类型]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[设备编号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="700" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[设备地点]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="800" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[生产日期]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[价格]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[设备名称]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[塔机]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="800" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{produceTime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="600" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{optionType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{priceUnit}]]></textFieldExpression>
+			</textField>
+			<elementGroup/>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<elementGroup>
+				<textField>
+					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="100" height="30"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{mainDeviceNumber}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="900" height="42"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

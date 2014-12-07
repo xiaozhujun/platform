@@ -22,6 +22,7 @@
             $("#deviceReportSearch_submitBtn").click(function(){
                 showDeviceReport();
             });
+
         });
         function showDeviceReport(){
             var condition={};
@@ -39,7 +40,7 @@
             }
             condition.reportType="html";
 
-            $("#deviceShow").load($.URL.deviceReport.deviceAccountReport,{"jsonString": $.toJSON(condition)},reportSearchCallback,"json");
+            $("#deviceShow").load($.URL.deviceReport.deviceTrendReport,{"jsonString": $.toJSON(condition)},reportSearchCallback,"json");
 
         }
         function reportSearchCallback(data){
@@ -68,7 +69,7 @@
                     condition.endTime = $("#endTimeInput").val();
                 }
                 condition.reportType=type;
-                location.href= $.URL.deviceReport.exportDeviceAccountReport+"?jsonString="+ $.toJSON(condition);
+                location.href= $.URL.deviceReport.exportDeviceTrendReport+"?jsonString="+ $.toJSON(condition);
             }else{
                 $.ligerDialog().alert("请输入导出报表类型!");
             }

@@ -10,5 +10,6 @@ package org.whut.rentManagement.business.device.misc;
 public class JasperReportTemplate {
      public static String deviceAccountReport="/rentReportTemplate/deviceAccountReport.jasper";
     public static String rentedDeviceAccountReport="/rentReportTemplate/rentedDeviceAccount.jasper";
+    public static String deviceTrendReport="/rentReportTemplate/deviceTrendReport.jasper";
      public static String reportTemplateDir="/rentReportTemplate/";
 }

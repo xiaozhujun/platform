@@ -208,9 +208,11 @@
         },
         "deviceReport":{
             "deviceAccountReport":"rs/deviceReport/deviceAccountReport",
-            "exportDeviceAccount":"rs/deviceReport/exportDeviceAccount",
+            "exportDeviceAccountReport":"rs/deviceReport/exportDeviceAccountReport",
             "rentDeviceReport":"rs/deviceReport/rentDeviceReport",
-            "exportRentDeviceAccount":"rs/deviceReport/exportRentDeviceAccount"
+            "exportRentDeviceReport":"rs/deviceReport/exportRentDeviceReport",
+            "deviceTrendReport":"rs/deviceReport/deviceTrendReport",
+            "exportDeviceTrendReport":"rs/deviceReport/exportDeviceTrendReport"
 
         }
     }

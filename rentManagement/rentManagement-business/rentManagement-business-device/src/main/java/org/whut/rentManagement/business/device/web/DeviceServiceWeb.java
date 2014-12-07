@@ -4,6 +4,7 @@ package org.whut.rentManagement.business.device.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.device.entity.Device;
@@ -28,6 +29,9 @@ import java.util.Map;
 @Component
 @Path("/device")
 public class DeviceServiceWeb {
+
+    private static final PlatformLogger logger = PlatformLogger.getLogger(DeviceServiceWeb.class);
+
     @Autowired
     private DeviceService deviceService;
 
@@ -127,9 +131,11 @@ public class DeviceServiceWeb {
     @Path("/findByCondition")
     @POST
     public String listByCondition(@FormParam("jsonString") String jsonString){
+        logger.error("jsonString="+jsonString);
         if(jsonString==null||jsonString.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
         }
+
         Map<String,Object> condition = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class);
         condition.put("appId",UserContext.currentUserAppId());
         List<Map<String,Object>> list = deviceService.findByCondition(condition);

@@ -67,8 +67,8 @@ public class DeviceReportServiceWeb {
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
-    @Path("/exportDeviceAccount")
-    public String exportDeviceAccount(@QueryParam("jsonString") String jsonString){
+    @Path("/exportDeviceAccountReport")
+    public String exportDeviceAccountReport(@QueryParam("jsonString") String jsonString){
 
         if(jsonString==null||jsonString.trim().equals("")){
             return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
@@ -104,8 +104,8 @@ public class DeviceReportServiceWeb {
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
-    @Path("/exportRentDeviceAccount")
-    public String exportRentDeviceAccount(@QueryParam("jsonString") String jsonString){
+    @Path("/exportRentDeviceReport")
+    public String exportRentDeviceReport(@QueryParam("jsonString") String jsonString){
 
         if(jsonString==null||jsonString.trim().equals("")){
             return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
@@ -116,6 +116,43 @@ public class DeviceReportServiceWeb {
         String reportType=(String)condition.get("reportType");
         condition.put("appId",UserContext.currentUserAppId());
         condition.put("orderByCondition"," order by contractName,mainDeviceNumber,deviceType asc");
+        List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
+        exportReport(reportTemplate,reportType,reportInfoList);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/deviceTrendReport")
+    public String deviceTrendReport(@FormParam("jsonString")String jsonString){
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
+        }
+        HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
+        condition.put("appId", UserContext.currentUserAppId());
+        condition.put("orderByCondition"," order by age desc,deviceType desc");
+        List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
+        String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceTrendReport);
+        String type = (String)condition.get("reportType");
+        exportReport(reportTemplate,type,reportInfoList);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
+    //根据不同的类型导出相应的报表
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @GET
+    @Path("/exportDeviceTrendReport")
+    public String exportDeviceTrendReport(@QueryParam("jsonString") String jsonString){
+
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
+        }
+        HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
+
+        String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceTrendReport);
+        String reportType=(String)condition.get("reportType");
+        condition.put("appId",UserContext.currentUserAppId());
+        condition.put("orderByCondition"," order by age desc,deviceType desc");
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         exportReport(reportTemplate,reportType,reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

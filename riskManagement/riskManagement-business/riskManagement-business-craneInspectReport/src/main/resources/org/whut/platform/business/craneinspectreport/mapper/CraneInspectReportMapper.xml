@@ -740,4 +740,34 @@
             LAST_INSERT_ID() as id
         </selectKey>
      </insert>
+    <select id="getReportNumberFromRiskValue" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        reportNumber
+        FROM
+        riskvalue
+        WHERE
+        reportNumber=#{reportNumber}
+    </select>
+    <delete id="deleteRiskValueByReportNumber" parameterType="java.lang.String">
+        DELETE
+        FROM
+        riskvalue
+        WHERE
+        reportNumber=#{reportNumber}
+    </delete>
+    <delete id="deleteProvinceRiskTempTable">
+     DELETE
+     FROM
+     province_riskvalue_temp
+    </delete>
+    <delete id="deleteCityRiskTempTable">
+     DELETE
+     FROM
+     city_riskvalue_temp
+    </delete>
+    <delete id="deleteAreaRiskTempTable">
+     DELETE
+     FROM
+     area_riskvalue_temp
+    </delete>
 </mapper>

@@ -97,4 +97,9 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<Map<String,String>> selectProvinceRiskTemp();
     public List<Map<String,String>> selectCityRiskTemp();
     public List<Map<String,String>> selectAreaRiskTemp();
+    public String getReportNumberFromRiskValue(@Param("reportNumber") String reportNumber);
+    public int deleteRiskValueByReportNumber(@Param("reportNumber") String reportNumber);
+    public int deleteProvinceRiskTempTable();
+    public int deleteCityRiskTempTable();
+    public int deleteAreaRiskTempTable();
 }

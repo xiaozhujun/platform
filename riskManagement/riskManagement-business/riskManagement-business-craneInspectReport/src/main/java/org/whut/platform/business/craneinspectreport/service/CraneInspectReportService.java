@@ -501,6 +501,14 @@ public class CraneInspectReportService {
         return craneInspectReport;
     }
     public boolean InsertToRiskValue(List<Map<String,String>> list){
+        //去重复
+        for(Map<String,String> m:list){
+            String reportNumber=getReportNumberFromRiskValue(m.get("reportNumber").toString());
+            if(reportNumber==null){
+            }else{
+            deleteRiskValueByReportNumber(reportNumber);
+            }
+        }
         mapper.batchInsertToRiskValue(list);
         return true;
     }
@@ -591,5 +599,20 @@ public class CraneInspectReportService {
     }
     public List<Map<String,String>>selectAreaRiskTemp(){
         return mapper.selectAreaRiskTemp();
+    }
+    public String getReportNumberFromRiskValue(String reportNumber){
+        return mapper.getReportNumberFromRiskValue(reportNumber);
+    }
+    public int deleteRiskValueByReportNumber(String reportNumber){
+        return mapper.deleteRiskValueByReportNumber(reportNumber);
+    }
+    public int deleteProvinceRiskTempTable(){
+        return mapper.deleteProvinceRiskTempTable();
+    }
+    public int deleteCityRiskTempTable(){
+        return mapper.deleteCityRiskTempTable();
+    }
+    public int deleteAreaRiskTempTable(){
+        return mapper.deleteAreaRiskTempTable();
     }
 }

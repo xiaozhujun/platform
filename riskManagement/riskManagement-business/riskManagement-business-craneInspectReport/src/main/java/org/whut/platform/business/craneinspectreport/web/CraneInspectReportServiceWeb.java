@@ -774,4 +774,14 @@ public class CraneInspectReportServiceWeb {
         }
         return null;
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/clearRiskTempTable")
+    public String clearRiskTempTable(){
+         //在复制数据的时候先清空三张临时表
+        craneInspectReportService.deleteProvinceRiskTempTable();
+        craneInspectReportService.deleteCityRiskTempTable();
+        craneInspectReportService.deleteAreaRiskTempTable();
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+ }
 }

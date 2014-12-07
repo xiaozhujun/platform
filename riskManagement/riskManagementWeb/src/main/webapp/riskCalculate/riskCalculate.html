@@ -22,7 +22,8 @@
                             [
                                 { text: '计算最大风险',id:'maxRisk', click: itemclick },
                                 { text: '计算风险值', id: 'risk', click: itemclick },
-                                { text: '计算省市区风险', id: 'proRisk', click: itemclick }
+                                { text: '计算省市区风险', id: 'proRisk', click: itemclick },
+                                { text: '复制数据', id: 'dumpData', click: itemclick}
                             ]
                     }]
         };
@@ -107,7 +108,10 @@
                     case 'proRisk':
                         $.ligerDialog.waitting('正在努力计算中,请稍候...');
                         $.post($.URL.craneinspectreport.calculateAreaRisk,null,calculateAreaRiskCallback,"json");
-
+                        break;
+                    case 'dumpData':
+                        $.ligerDialog.waitting('正在复制数据中,请稍候...');
+                        $.post($.URL.craneinspectreport.clearRiskTempTable,null,clearRiskTempTableCallback,"json");
                 }
             }
         }
@@ -151,13 +155,20 @@
         }
         function calculateProvinceRiskCallback(data){
             if(data.code=200){
+                $.ligerDialog.closeWaitting();
+                $.ligerDialog.success("计算完成!");
+            }
+        }
+        function clearRiskTempTableCallback(data){
+            if(data.code==200){
+                $.ligerDialog.closeWaitting();
                 $.post($.URL.craneinspectreport.dumpDataToTempTable,null,dumpDataToTempTableCallback,"json");
             }
         }
         function dumpDataToTempTableCallback(data){
             if(data.code==200){
                 $.ligerDialog.closeWaitting();
-                $.ligerDialog.success("计算完成!");
+                $.ligerDialog.success("复制完成!");
             }
         }
         function openDialog(){

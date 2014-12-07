@@ -1,7 +1,7 @@
 (function($){
     $.URL = {
         "common":{
-          "rootPath":"http://localhost/"
+          "rootPath":"http://localhost:8080/"
         },
         "power":{
             "add":"rs/power/add",
@@ -207,11 +207,11 @@
             "outStockList":"rs/stock_out_sheet/getOutStockList"
         },
         "deviceReport":{
-            "deviceAccountReport":"rs/deviceReport/deviceAccountReport"
-        },
-        "rentReport":{
-            "reportSearch":"rs/RentReport/reportSearch",
-            "ShowRentReport":"rs/RentReport/ShowRentReport"
+            "deviceAccountReport":"rs/deviceReport/deviceAccountReport",
+            "exportDeviceAccount":"rs/deviceReport/exportDeviceAccount",
+            "rentDeviceReport":"rs/deviceReport/rentDeviceReport",
+            "exportRentDeviceAccount":"rs/deviceReport/exportRentDeviceAccount"
+
         }
     }
 })(jQuery);

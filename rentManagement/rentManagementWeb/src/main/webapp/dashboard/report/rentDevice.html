@@ -23,7 +23,6 @@
                 showDeviceReport();
             });
 
-//            $("#optionTypeInput").ligerCheckBox();
         });
         function showDeviceReport(){
             var condition={};
@@ -70,7 +69,7 @@
                     condition.endTime = $("#endTimeInput").val();
                 }
                 condition.reportType=type;
-                location.href= $.URL.rentReport.exportRentDeviceAccount+"?jsonString="+ $.toJSON(condition);
+                location.href= $.URL.deviceReport.exportRentDeviceAccount+"?jsonString="+ $.toJSON(condition);
             }else{
                 $.ligerDialog().alert("请输入导出报表类型!");
             }
@@ -82,6 +81,8 @@
                 { text: 'excel', id: '3' }
             ], valueFieldID: 'DeviceInfType'
         });
+
+        $("#deviceReportSearch_submitBtn").trigger("click");
     </script>
 </head>
 <body>

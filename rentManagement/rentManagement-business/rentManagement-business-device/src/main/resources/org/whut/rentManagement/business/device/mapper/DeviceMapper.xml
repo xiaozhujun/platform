@@ -212,8 +212,8 @@
     </select>
 
     <select id="findMainDeviceByCondition" parameterType="map" resultType="map">
-        select device.id,device.name,device.number,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,device.address,device.havePrint,device.number,device.optionType,device_type.name as deviceType,storehouse.name as storehouseName,contract.name as contractName,device.price,device.createTime,supplier.name as supplierName,
-        device.produceTime,device.price,device.priceUnit,device.status,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName,customer.name as customerName
+        select contract.name as contractName,customer.name as customerName,device_type.name as deviceType,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,device.id,device.name,device.number,device.address,device.havePrint,device.number,storehouse.name as storehouseName,device.price,device.createTime,supplier.name as supplierName,
+        device.produceTime,device.price,device.priceUnit,device.status,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName
         ,(case device.optionType WHEN 1 THEN '安装' WHEN 2 THEN '运输' WHEN 3 THEN '运输' WHEN 4 THEN '入库' WHEN 5 THEN '出库' END) as optionType
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
@@ -235,7 +235,8 @@
         <if test="name!=null">AND device.name like CONCAT('%',#{name},'%')</if>
         <if test="startTime!=null"><![CDATA[ AND device.produceTime>=#{startTime}]]></if>
         <if test="endTime!=null"><![CDATA[ AND device.produceTime<=#{endTime} ]]> </if>
-        order by mainDeviceNumber asc
+        <if test="orderByCondition!=null"> ${orderByCondition}</if>
+
     </select>
 
 </mapper>

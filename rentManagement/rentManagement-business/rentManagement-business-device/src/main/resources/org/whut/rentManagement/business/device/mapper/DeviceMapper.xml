@@ -72,7 +72,7 @@
     </delete>
 
     <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
-        select device.id,device.name,device.havePrint,device.optionType,device.number,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
+        select device.id,device.name,device.havePrint,device.optionType,device.number,device_type.name as deviceType,device_type.mainDevice as isMainDevice,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
                 device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
@@ -92,7 +92,7 @@
     </select>
 
     <select id="getMainDeviceListByAppId" parameterType="java.lang.Long" resultType="map">
-        select device.id,device.name,device.havePrint,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
+        select device.id,device.name,device.havePrint,device.optionType,device.number,device.address,device_type.name as deviceType,device_type.mainDevice as isMainDevice,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
         device.produceTime,device.price,device.priceUnit,device.status,device.optionType,device.lng,device.lat,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,customer.name as customerName,contract.startTime,contract.endTime
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
@@ -105,7 +105,7 @@
     </select>
 
     <select id="findByCondition" parameterType="map" resultType="map">
-        select device.id,device.name,device.havePrint,device.number,device.optionType,device_type.name as deviceType,storehouse.name as storehouseName,contract.name as contractName,device.price,device.createTime,supplier.name as supplierName,
+        select device.id,device.name,device.havePrint,device.number,device.optionType,device_type.name as deviceType,device_type.mainDevice as isMainDevice,storehouse.name as storehouseName,contract.name as contractName,device.price,device.createTime,supplier.name as supplierName,
         device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName,customer.name as customerName
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
@@ -179,7 +179,7 @@
     </update>
 
     <select id="getMainDeviceInfo" parameterType="map" resultType="map">
-        select device.id,device.name,device.havePrint,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
+        select device.id,device.name,device.havePrint,device.optionType,device.number,device.address,device_type.name as deviceType,device_type.mainDevice as isMainDevice,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
         device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,customer.name as customerName,contract.startTime,contract.endTime
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
@@ -195,7 +195,7 @@
     </select>
 
     <select id="listByMainDeviceId" parameterType="map" resultType="map">
-        select device.id,device.name,device.havePrint,device.optionType,device.number,device.address,device_type.name as deviceType,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
+        select device.id,device.name,device.havePrint,device.optionType,device.number,device.address,device_type.name as deviceType,device_type.mainDevice as isMainDevice,storehouse.name as storehouse,contract.name as contract,device.price,device.createTime,supplier.name as supplierName,
         device.produceTime,device.price,device.priceUnit,device.status,device.optionType,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,customer.name as customerName,contract.startTime,contract.endTime
         from device
         LEFT JOIN device_type ON device.typeId=device_type.id
@@ -212,7 +212,7 @@
     </select>
 
     <select id="findMainDeviceByCondition" parameterType="map" resultType="map">
-        select device.id,device.name,device.number,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,contract.name as contractName,customer.name as customerName,device_type.name as deviceType,device.address,device.havePrint,device.number,storehouse.name as storehouseName,device.price,device.createTime,supplier.name as supplierName,
+        select device.id,device.name,device.number,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,contract.name as contractName,customer.name as customerName,device_type.name as deviceType,device_type.mainDevice as isMainDevice,device.address,device.havePrint,device.number,storehouse.name as storehouseName,device.price,device.createTime,supplier.name as supplierName,
         device.produceTime,(year(now())-year(device.produceTime)+1) as age ,device.price,device.priceUnit,device.status,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName
         ,(case device.optionType WHEN 1 THEN '安装' WHEN 2 THEN '运输' WHEN 3 THEN '运输' WHEN 4 THEN '入库' WHEN 5 THEN '出库' END) as optionType
         from device

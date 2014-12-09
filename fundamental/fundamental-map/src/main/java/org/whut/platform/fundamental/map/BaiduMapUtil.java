@@ -98,6 +98,61 @@ public class BaiduMapUtil {
         map.put("minLat",minLat);
         return map;
     }
+    public Map<String,String> parseAddressToGetProvinceCityArea(String lng,String lat) throws IOException{
+        Map<String, String> map = new HashMap<String, String>();
+        String location=lat+","+lng;
+        String key = FundamentalConfigProvider.get("key");
+        String url = String
+                .format(FundamentalConfigProvider.get("addressUrl"),
+                        key,location);
+        URL myURL = null;
+        URLConnection httpsConn = null;
+        try {
+            myURL = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        InputStreamReader insr = null;
+        BufferedReader br = null;
+        try {
+            httpsConn = (URLConnection) myURL.openConnection();// 不使用代理
+            if (httpsConn != null) {
+                insr = new InputStreamReader(
+                        httpsConn.getInputStream(), "UTF-8");
+                br = new BufferedReader(insr);
+                String dataInfo="";
+                String data = null;
+                while((data= br.readLine())!=null){
+                    dataInfo+=data;
+                }
+                // System.out.println(dataInfo);
+                ToolUtil toolUtil=new ToolUtil();
+                map=toolUtil.parseJsonString0(dataInfo);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(insr!=null){
+                insr.close();
+            }
+            if(br!=null){
+                br.close();
+            }
+        }
+        return map;
+    }
+    public Map<String,String> parseAddToProCityArea(String add){
+        Map<String,String> m=new HashMap<String, String>();
+        try{
+            Map map=getCoordinate(add);
+            if(map!=null){
+                m=parseAddressToGetProvinceCityArea(map.get("lng").toString(), map.get("lat").toString());
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return m;
+    }
     public static void main(String[] args) throws IOException {
        BaiduMapUtil baiduMapUtil = new BaiduMapUtil();
        Map map=baiduMapUtil.getCoordinate("中国台湾");

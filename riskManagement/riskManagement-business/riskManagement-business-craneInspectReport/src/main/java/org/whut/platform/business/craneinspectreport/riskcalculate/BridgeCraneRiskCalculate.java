@@ -63,7 +63,9 @@ public class BridgeCraneRiskCalculate implements ICalculateRisk{
         S1=P6*P7/WeightFactor.constant;
         S2=P4*S1/WeightFactor.constant;
         S3=1f;
+        if(P1!=null&P2!=null&&P3!=null&&P4!=null&&P5!=null&&P6!=null&&P7!=null&&P8!=null&&P9!=null){
         ap=WeightFactor.alpha1*P1+WeightFactor.alpha2*P2+WeightFactor.alpha3*P3+WeightFactor.alpha4*P4+WeightFactor.alpha5*P5+WeightFactor.alpha6*P6+WeightFactor.alpha7*P7+WeightFactor.alpha8*P8+WeightFactor.alpha9*P9;
+        }
         P=WeightFactor.f1*WeightFactor.f2*WeightFactor.f3*WeightFactor.f4*ap;
         S=WeightFactor.beta1*S1+WeightFactor.beta2*S2+WeightFactor.beta3*S3;
         R=P*S;

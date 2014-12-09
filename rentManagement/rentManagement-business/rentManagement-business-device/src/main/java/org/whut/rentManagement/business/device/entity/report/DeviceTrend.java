@@ -8,12 +8,11 @@ import java.util.Date;
 /**
  * Created with IntelliJ IDEA.
  * User: xiaozhujun
- * Date: 14-12-2
- * Time: 下午4:19
+ * Date: 14-12-7
+ * Time: 下午9:57
  * To change this template use File | Settings | File Templates.
  */
-public class DeviceAccount {
-
+public class DeviceTrend {
     private Long id;
     private Long mainDeviceId;
     private Long batchId;
@@ -45,7 +44,7 @@ public class DeviceAccount {
     private String lat;
     private Long appId;
 
-    private String deviceAge;
+    private Integer age;
 
     public Long getId() {
         return id;
@@ -53,14 +52,6 @@ public class DeviceAccount {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getDeviceAge() {
-        return deviceAge;
-    }
-
-    public void setDeviceAge(String deviceAge) {
-        this.deviceAge = deviceAge;
     }
 
     public Long getMainDeviceId() {
@@ -223,7 +214,6 @@ public class DeviceAccount {
         this.produceTime = produceTime;
     }
 
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -264,4 +254,11 @@ public class DeviceAccount {
         this.appId = appId;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }

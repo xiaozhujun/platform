@@ -4,89 +4,57 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[select device.id,device.name,device.number,mainDevice.name as mainDeviceName,mainDevice.number as mainDeviceNumber,contract.name as contractName,customer.name as customerName,device_type.name as deviceType,device_type.mainDevice as isMainDevice,device.address,device.havePrint,device.number,storehouse.name as storehouseName,device.price,device.createTime,supplier.name as supplierName,
+        device.produceTime,(year(now())-year(device.produceTime)+1) as age ,device.price,device.priceUnit,device.status,batch.number as batchNumber,device.contractId,device.batchId,device.storehouseId,device.typeId,device.supplierId,supplier.name as supplierName
+        ,(case device.optionType WHEN 1 THEN '安装' WHEN 2 THEN '运输' WHEN 3 THEN '运输' WHEN 4 THEN '入库' WHEN 5 THEN '出库' END) as optionType
+        from device
+        LEFT JOIN device_type ON device.typeId=device_type.id
+        LEFT JOIN storehouse ON device.storehouseId=storehouse.id
+        LEFT JOIN contract ON device.contractId=contract.id
+        LEFT JOIN batch ON device.batchId=batch.id
+        LEFT JOIN supplier ON device.supplierId=supplier.id
+        LEFT JOIN customer ON contract.customerId=customer.id
+        LEFT JOIN device as mainDevice  ON device.mainDeviceId=mainDevice.id
+        where device.mainDeviceId!=0]]>
 	</queryString>
-	<field name="address" class="java.lang.String">
-		<fieldDescription><![CDATA[address]]></fieldDescription>
-	</field>
-	<field name="appId" class="java.lang.Long">
-		<fieldDescription><![CDATA[appId]]></fieldDescription>
-	</field>
-	<field name="batchId" class="java.lang.Long">
-		<fieldDescription><![CDATA[batchId]]></fieldDescription>
-	</field>
-	<field name="batchNumber" class="java.lang.String">
-		<fieldDescription><![CDATA[batchNumber]]></fieldDescription>
-	</field>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
-	<field name="contractId" class="java.lang.Long">
-		<fieldDescription><![CDATA[contractId]]></fieldDescription>
-	</field>
-	<field name="contractName" class="java.lang.String">
-		<fieldDescription><![CDATA[contractName]]></fieldDescription>
-	</field>
-	<field name="createTime" class="java.util.Date">
-		<fieldDescription><![CDATA[createTime]]></fieldDescription>
-	</field>
-	<field name="deviceType" class="java.lang.String">
-		<fieldDescription><![CDATA[deviceType]]></fieldDescription>
-	</field>
-	<field name="id" class="java.lang.Long">
-		<fieldDescription><![CDATA[id]]></fieldDescription>
-	</field>
-	<field name="lat" class="java.lang.String">
-		<fieldDescription><![CDATA[lat]]></fieldDescription>
-	</field>
-	<field name="lng" class="java.lang.String">
-		<fieldDescription><![CDATA[lng]]></fieldDescription>
-	</field>
-	<field name="mainDeviceId" class="java.lang.Long">
-		<fieldDescription><![CDATA[mainDeviceId]]></fieldDescription>
-	</field>
-	<field name="mainDeviceName" class="java.lang.String">
-		<fieldDescription><![CDATA[mainDeviceName]]></fieldDescription>
-	</field>
-	<field name="mainDeviceNumber" class="java.lang.String">
-		<fieldDescription><![CDATA[mainDeviceNumber]]></fieldDescription>
-	</field>
-	<field name="name" class="java.lang.String">
-		<fieldDescription><![CDATA[name]]></fieldDescription>
-	</field>
-	<field name="number" class="java.lang.String">
-		<fieldDescription><![CDATA[number]]></fieldDescription>
-	</field>
-	<field name="optionType" class="java.lang.String">
-		<fieldDescription><![CDATA[optionType]]></fieldDescription>
-	</field>
-	<field name="price" class="java.lang.String">
-		<fieldDescription><![CDATA[price]]></fieldDescription>
-	</field>
-	<field name="priceUnit" class="java.lang.String">
-		<fieldDescription><![CDATA[priceUnit]]></fieldDescription>
-	</field>
-	<field name="produceTime" class="java.util.Date">
-		<fieldDescription><![CDATA[produceTime]]></fieldDescription>
-	</field>
-	<field name="status" class="java.lang.String">
-		<fieldDescription><![CDATA[status]]></fieldDescription>
-	</field>
-	<field name="storehouseId" class="java.lang.Long">
-		<fieldDescription><![CDATA[storehouseId]]></fieldDescription>
-	</field>
-	<field name="storehouseName" class="java.lang.Long">
-		<fieldDescription><![CDATA[storehouseName]]></fieldDescription>
-	</field>
-	<field name="supplierId" class="java.lang.Long">
-		<fieldDescription><![CDATA[supplierId]]></fieldDescription>
-	</field>
-	<field name="supplierName" class="java.lang.String">
-		<fieldDescription><![CDATA[supplierName]]></fieldDescription>
-	</field>
-	<field name="typeId" class="java.lang.Long">
-		<fieldDescription><![CDATA[typeId]]></fieldDescription>
-	</field>
+	<field name="id" class="java.lang.Long"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="number" class="java.lang.String"/>
+	<field name="mainDeviceName" class="java.lang.String"/>
+	<field name="mainDeviceNumber" class="java.lang.String"/>
+	<field name="contractName" class="java.lang.String"/>
+	<field name="customerName" class="java.lang.String"/>
+	<field name="deviceType" class="java.lang.String"/>
+	<field name="isMainDevice" class="java.lang.Long"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="havePrint" class="java.lang.Integer"/>
+	<field name="storehouseName" class="java.lang.String"/>
+	<field name="price" class="java.lang.String"/>
+	<field name="createTime" class="java.sql.Date"/>
+	<field name="supplierName" class="java.lang.String"/>
+	<field name="produceTime" class="java.sql.Date"/>
+	<field name="age" class="java.lang.Long"/>
+	<field name="priceUnit" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="batchNumber" class="java.lang.String"/>
+	<field name="contractId" class="java.lang.Long"/>
+	<field name="batchId" class="java.lang.Long"/>
+	<field name="storehouseId" class="java.lang.Long"/>
+	<field name="typeId" class="java.lang.Long"/>
+	<field name="supplierId" class="java.lang.Long"/>
+	<field name="optionType" class="java.lang.String"/>
+	<variable name="device_count_by_type" class="java.lang.Integer" resetType="Group" resetGroup="deviceGroup" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
+	<group name="deviceGroup">
+		<groupExpression><![CDATA[$F{deviceType}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -336,22 +304,20 @@
 				<textElement/>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<elementGroup>
-				<textField>
-					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="100" height="30"/>
-					<box>
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.0"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="14"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceType}]]></textFieldExpression>
-				</textField>
-			</elementGroup>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="100" height="30"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceType}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -361,15 +327,70 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="36" splitType="Stretch">
+		<band height="240" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="800" height="36"/>
+				<reportElement x="0" y="0" width="800" height="0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 				</box>
 				<textElement/>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<pieChart>
+				<chart>
+					<reportElement x="0" y="0" width="400" height="240"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+					</box>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{deviceType}]]></keyExpression>
+					<valueExpression><![CDATA[$V{device_count_by_type}]]></valueExpression>
+					<labelExpression><![CDATA[$V{device_count_by_type}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+				</piePlot>
+			</pieChart>
+			<barChart>
+				<chart>
+					<reportElement x="400" y="0" width="400" height="240"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+					</box>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{deviceType}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{deviceType}]]></categoryExpression>
+						<valueExpression><![CDATA[$V{device_count_by_type}]]></valueExpression>
+						<labelExpression><![CDATA[$F{deviceType}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
 		</band>
 	</summary>
 </jasperReport>

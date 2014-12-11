@@ -5,18 +5,14 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
-import org.apache.commons.dbcp.BasicDataSource;
-import org.whut.platform.fundamental.config.FundamentalConfigProvider;
-import platform.fundamental.datasource.DbcpFactoryBean;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.sql.Connection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /**
@@ -58,7 +54,7 @@ public class PlatformReport {
         /*
         传入模板，类型，map集合来根据map集合，输出不同类型的报表
          */
-        private void exportReportByType(String reportTemplate,String type,Map parameters,HttpServletRequest request,HttpServletResponse response,String reportName){
+        public void exportReportByType(String reportTemplate,String type,Map parameters,HttpServletRequest request,HttpServletResponse response,String reportName){
             File reportFile=null;
             reportFile=new File(reportTemplate);
             Connection connection=ds.getConnection();
@@ -209,6 +205,11 @@ public class PlatformReport {
                 JRHtmlExporter exporter=new JRHtmlExporter();
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint);
                 exporter.setParameter(JRExporterParameter.OUTPUT_WRITER,out);
+
+                String imageDIR = request.getSession().getServletContext().getRealPath("d://images");
+                exporter.setParameter(JRHtmlExporterParameter.IMAGES_DIR_NAME,imageDIR);//设置图片文件存放路径，此路径为服务器上的绝对路径
+
+
                 exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI,"image?random="+Math.random()+"&image=");
                 exporter.exportReport();
                 out.flush();

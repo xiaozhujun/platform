@@ -154,6 +154,7 @@ public class DeviceReportServiceWeb {
         condition.put("appId",UserContext.currentUserAppId());
         condition.put("orderByCondition"," order by age desc,deviceType desc");
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
+        //platformReport.exportReportByType(reportTemplate,reportType,new HashMap<String, String>(),request,response,"report");
         exportReport(reportTemplate,reportType,reportInfoList);
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }

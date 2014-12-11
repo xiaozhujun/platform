@@ -585,8 +585,14 @@ public class CraneInspectReportService {
     public int dumpDataToProvinceRiskTemp(List<Map<String,String>> list){   //将计算风险值插入到省风险的临时表中
         return mapper.dumpDataToProvinceRiskTemp(list);
     }
+    public int dumpDataToProvinceRisk(){
+        return mapper.dumpDataToProvinceRisk();
+    }
     public int dumpDataToCityRiskTemp(List<Map<String,String>> list){       //将计算风险值插入到市风险的临时表中
         return mapper.dumpDataToCityRiskTemp(list);
+    }
+    public int dumpDataToCityRisk(){
+        return mapper.dumpDataToCityRisk();
     }
     public int dumpDataToAreaRiskTemp(List<Map<String,String>> list){        //将计算风险值插入到区域风险的临时表中
         return mapper.dumpDataToAreaRiskTemp(list);

@@ -95,6 +95,8 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public int dumpDataToCityRiskTemp(List<Map<String,String>> list);
     public int dumpDataToAreaRiskTemp(List<Map<String,String>> list);
     public int dumpDataToAreaRisk();
+    public int dumpDataToCityRisk();
+    public int dumpDataToProvinceRisk();
     public List<Map<String,String>> selectProvinceRiskTemp();
     public List<Map<String,String>> selectCityRiskTemp();
     public List<Map<String,String>> selectAreaRiskTemp();

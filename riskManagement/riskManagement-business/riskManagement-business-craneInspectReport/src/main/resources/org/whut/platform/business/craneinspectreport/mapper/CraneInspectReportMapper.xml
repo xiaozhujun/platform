@@ -702,6 +702,16 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+    <insert id="dumpDataToProvinceRisk">
+      INSERT INTO
+      province_riskvalue_temp(
+      addressId,province,avgRiskValue,craneNumber,color,userId,equipmentvariety,manufacturedate,riskvalue)
+      SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,u.id as userId,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskvalue
+      FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+      WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+      AND a.id=cr.addressId
+      GROUP BY a.province order by craneNumber desc;
+    </insert>
     <select id="selectCityRiskTemp" resultType="map">
      SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)as equipmentvariety,cr.manufacturedate as manufacturedate,r.riskvalue as riskval,u.id as userId
      FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
@@ -720,6 +730,15 @@
             select
             LAST_INSERT_ID() as id
         </selectKey>
+    </insert>
+    <insert id="dumpDataToCityRisk">
+      INSERT INTO
+      city_riskvalue_temp(addressId,province,city,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+      SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)as equipmentvariety,cr.manufacturedate as manufacturedate,r.riskvalue as riskval,u.id as userId
+      FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+      WHERE  cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+      AND a.id=cr.addressId
+     GROUP BY a.city order by avgRiskValue desc;
     </insert>
     <select id="selectAreaRiskTemp" resultType="map">
      SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskval,u.id as userId

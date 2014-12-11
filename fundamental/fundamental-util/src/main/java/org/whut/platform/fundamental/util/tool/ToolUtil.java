@@ -112,6 +112,21 @@ public class ToolUtil {
          return "0";
         }
     }
+    public Map<String,String> parseJsonString0(String str){
+        Map coordinateMap=new HashMap();
+        String[] strArray=str.split("\\{|\\}");
+        if(strArray.length<4){
+            return null;
+        }else{
+            String parseStr="{"+strArray[5]+"}";
+            HashMap<String,String> jsonObject= JsonMapper.buildNonDefaultMapper().fromJson(parseStr,HashMap.class);
+            //JSONObject jsonObject=JSONObject.fromObject(parseStr);
+            coordinateMap.put("province",jsonObject.get("province"));
+            coordinateMap.put("city",jsonObject.get("city"));
+            coordinateMap.put("area",jsonObject.get("district"));
+        }
+        return coordinateMap;
+    }
     /*
     解析下面格式的字串
     {

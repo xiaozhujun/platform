@@ -144,14 +144,14 @@ public class CraneInspectReportService {
         return map;
         }
     private Address getAddressFromExcel(ExcelMap excelMap,int i){
-        if(toolUtil.parseAddress0(excelMap.getContents().get(i).get(1)).equals("0")){
+        if(baiduMapUtil.parseAddToProCityArea(excelMap.getContents().get(i).get(1))==null){
             return null;
         }else{
-        String str[]=toolUtil.parseAddress0(excelMap.getContents().get(i).get(1)).split(",");
+        Map<String,String> m=baiduMapUtil.parseAddToProCityArea(excelMap.getContents().get(i).get(1));
         Address address=new Address();
-        address.setProvince(str[0]);
-        address.setCity(str[1]);
-        address.setArea(str[2]);
+        address.setProvince(m.get("province"));
+        address.setCity(m.get("city"));
+        address.setArea(m.get("area"));
         return address;
         }
     }

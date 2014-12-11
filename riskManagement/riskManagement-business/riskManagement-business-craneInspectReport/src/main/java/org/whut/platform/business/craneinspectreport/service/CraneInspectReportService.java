@@ -591,6 +591,9 @@ public class CraneInspectReportService {
     public int dumpDataToAreaRiskTemp(List<Map<String,String>> list){        //将计算风险值插入到区域风险的临时表中
         return mapper.dumpDataToAreaRiskTemp(list);
     }
+    public int dumpDataToAreaRisk(){
+        return mapper.dumpDataToAreaRisk();
+    }
     public List<Map<String,String>>selectProvinceRiskTemp(){
         return mapper.selectProvinceRiskTemp();
     }

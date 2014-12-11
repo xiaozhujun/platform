@@ -766,7 +766,7 @@ public class CraneInspectReportServiceWeb {
         if(a!=0){
             int b=craneInspectReportService.dumpDataToCityRiskTemp(cityRiskList);
             if(b!=0){
-                int c=craneInspectReportService.dumpDataToAreaRiskTemp(areaRiskList);
+                int c=craneInspectReportService.dumpDataToAreaRisk();
                 if(c!=0){
                     return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
                 }

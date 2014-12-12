@@ -90,6 +90,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>realtimeMonitor</groupId>
+            <artifactId>realtimeMonitor-business-dataTest</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

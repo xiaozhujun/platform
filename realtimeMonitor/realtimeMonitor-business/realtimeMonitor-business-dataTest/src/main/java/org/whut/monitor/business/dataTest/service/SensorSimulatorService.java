@@ -34,4 +34,12 @@ public class SensorSimulatorService {
     public void setInterval(int interval){
         SimulatorThread.setInterval(interval);
     }
+
+    /**
+     * 设置编号前缀
+     * @param prefix
+     */
+    public void setPrefix(String prefix){
+        SimulatorThread.setPrefix(prefix);
+    }
 }

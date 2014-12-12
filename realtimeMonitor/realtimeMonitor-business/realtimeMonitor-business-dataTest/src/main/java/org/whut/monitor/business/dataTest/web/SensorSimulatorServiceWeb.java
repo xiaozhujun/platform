@@ -52,5 +52,16 @@ public class SensorSimulatorServiceWeb {
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
+    @Path("/setPrefix/{prefix}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public String setPrefix(@PathParam("prefix") String prefix){
+        if(prefix==null||prefix.trim().equals("")){
+            return JsonResultUtils.getObjectResultByStringAsDefault("参数不能为空！", JsonResultUtils.Code.ERROR);
+        }
+        sensorSimulatorService.setPrefix(prefix);
+        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
+
 
 }

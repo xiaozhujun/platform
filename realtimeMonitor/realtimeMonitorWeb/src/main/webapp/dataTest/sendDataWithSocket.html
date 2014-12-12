@@ -19,6 +19,10 @@
             $("#setIntervalBtn").click(function(){
                 $.get($.URL.simulator.setInterval+$("#intervalInput").val(),null,setSimulatorIntervalCallback,"json");
             });
+
+            $("#setPrefixBtn").click(function(){
+                $.get($.URL.simulator.setPrefix+$("#prefixInput").val(),null,setSimulatorPrefixCallback,"json");
+            });
         });
 
         function startSimulatorCallback(data){
@@ -44,6 +48,14 @@
                 alert(data.msg)
             }
         }
+
+        function setSimulatorPrefixCallback(data){
+            if(data.code==200){
+                alert("操作成功！");
+            }else{
+                alert(data.msg)
+            }
+        }
     </script>
 </head>
 <body>
@@ -54,7 +66,10 @@
             <td><button id="startBtn">启动</button>&nbsp;<button id="stopBtn">停止</button></td>
         </tr>
         <tr>
-            <td>时间间隔：<input id="intervalInput">&nbsp;<button id="setIntervalBtn">设置间隔</button></td>
+            <td>时间间隔：<input id="intervalInput" value="5000">&nbsp;<button id="setIntervalBtn">设置间隔</button></td>
+        </tr>
+        <tr>
+            <td>编号前缀：<input id="prefixInput" value="310000000001">&nbsp;<button id="setPrefixBtn">设置前缀</button></td>
         </tr>
 
     </table>

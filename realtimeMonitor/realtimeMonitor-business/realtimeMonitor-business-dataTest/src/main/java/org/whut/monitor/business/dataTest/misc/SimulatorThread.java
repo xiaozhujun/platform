@@ -25,6 +25,7 @@ public class SimulatorThread implements Runnable{
     private int port;
     private Socket client;
     private Writer writer;
+    private String prefix;
 
     private boolean flag=false;
     private long interval = 5000;
@@ -97,12 +98,21 @@ public class SimulatorThread implements Runnable{
          }
     }
 
+    public static void setPrefix(String prefix){
+        if (singleton!=null){
+            singleton.prefix = prefix;
+        }else{
+            logger.info("simulator not started!");
+        }
+    }
+
     /**
      * 初始化
      */
     private void ini(){
         this.host = FundamentalConfigProvider.get("realtimemonitor.simulator.host");
         this.port = Integer.parseInt(FundamentalConfigProvider.get("realtimemonitor.simulator.port").trim());
+        this.prefix=FundamentalConfigProvider.get("realtimemonitor.simulator.sensor.prefix").trim();
         try{
             client = new Socket(host, port);
             writer = new OutputStreamWriter(client.getOutputStream());
@@ -122,7 +132,7 @@ public class SimulatorThread implements Runnable{
             for(int x=0;x<24;x++){
                 random[x] = Math.round(Math.random()*600);
             }
-            String prefix="310000000001";
+
             Date now = new Date();
             String json = "{sensors:["+"{sensorNum:'"+prefix+"0000',dataType:'Route',time:'"+format.format(now)+"',data:["+random[0]+"]},"
                     +"{sensorNum:'"+prefix+"0001',dataType:'Route',time:'"+format.format(now)+"',data:["+random[1]+"]},"

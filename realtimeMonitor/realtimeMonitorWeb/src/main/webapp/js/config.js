@@ -90,7 +90,8 @@
         "simulator":{
             "start":"rs/simulator/startSimulator",
             "stop":"rs/simulator/stopSimulator",
-            "setInterval":"rs/simulator/setInterval/"
+            "setInterval":"rs/simulator/setInterval/",
+            "setPrefix":"rs/simulator/setPrefix/"
         }
     }
 })(jQuery);

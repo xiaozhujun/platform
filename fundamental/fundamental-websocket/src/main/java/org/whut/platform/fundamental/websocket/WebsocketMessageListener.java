@@ -7,6 +7,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
 import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
@@ -42,9 +43,9 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                 logger.info("onMessage data: "+messageText);
                 try{
                     JSONObject dataJson=new JSONObject(messageText);
-                    JSONArray data= dataJson.getJSONArray("sensors");
+                    JSONArray data= dataJson.getJSONArray(FundamentalConfigProvider.get("message.nioServer.type"));
                     JSONObject info=data.getJSONObject(0);
-                    number=info.getString("sensorNum");
+                    number=info.getString(FundamentalConfigProvider.get("message.activemq.number"));
                     Long appId=Long.parseLong(info.getString("appId"));
                     Long wsNumber = Long.parseLong(number);
                     logger.info("number1:" + wsNumber);

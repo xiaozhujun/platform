@@ -8,7 +8,6 @@ import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.report.PlatformReport;
 import org.whut.platform.fundamental.util.json.JsonMapper;
-import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.rentManagement.business.device.misc.JasperReportTemplate;
 import org.whut.rentManagement.business.device.service.DeviceService;
 
@@ -50,10 +49,10 @@ public class DeviceReportServiceWeb {
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/deviceAccountReport")
-    public String deviceAccountReport(@FormParam("jsonString")String jsonString){
-        if(jsonString==null||jsonString.trim().equals("")){
+    public void deviceAccountReport(@FormParam("jsonString")String jsonString){
+        /*if(jsonString==null||jsonString.trim().equals("")){
            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
-        }
+        }*/
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
         condition.put("appId", UserContext.currentUserAppId());
         condition.put("orderByCondition"," order by deviceType,mainDeviceNumber asc");
@@ -61,18 +60,18 @@ public class DeviceReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceAccountReport);
         String type = (String)condition.get("reportType");
         exportReport(reportTemplate,type,reportInfoList);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
     @Path("/exportDeviceAccountReport")
-    public String exportDeviceAccountReport(@QueryParam("jsonString") String jsonString){
+    public void exportDeviceAccountReport(@QueryParam("jsonString") String jsonString){
 
-        if(jsonString==null||jsonString.trim().equals("")){
-            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
-        }
+//        if(jsonString==null||jsonString.trim().equals("")){
+//            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
+//        }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
 
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceAccountReport);
@@ -81,16 +80,16 @@ public class DeviceReportServiceWeb {
         condition.put("orderByCondition"," order by deviceType,mainDeviceNumber asc");
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         exportReport(reportTemplate,reportType,reportInfoList);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/rentDeviceReport")
-    public String rentDeviceReport(@FormParam("jsonString")String jsonString){
-        if(jsonString==null||jsonString.trim().equals("")){
-            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
-        }
+    public void rentDeviceReport(@FormParam("jsonString")String jsonString){
+//        if(jsonString==null||jsonString.trim().equals("")){
+//            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
+//        }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
         condition.put("appId", UserContext.currentUserAppId());
         condition.put("orderByCondition"," order by contractName,mainDeviceNumber,deviceType asc");
@@ -98,18 +97,18 @@ public class DeviceReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.rentedDeviceAccountReport);
         String type = (String)condition.get("reportType");
         exportReport(reportTemplate,type,reportInfoList);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
     @Path("/exportRentDeviceReport")
-    public String exportRentDeviceReport(@QueryParam("jsonString") String jsonString){
+    public void exportRentDeviceReport(@QueryParam("jsonString") String jsonString){
 
-        if(jsonString==null||jsonString.trim().equals("")){
-            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
-        }
+//        if(jsonString==null||jsonString.trim().equals("")){
+//            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
+//        }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
 
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.rentedDeviceAccountReport);
@@ -118,16 +117,16 @@ public class DeviceReportServiceWeb {
         condition.put("orderByCondition"," order by contractName,mainDeviceNumber,deviceType asc");
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         exportReport(reportTemplate,reportType,reportInfoList);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/deviceTrendReport")
-    public String deviceTrendReport(@FormParam("jsonString")String jsonString){
-        if(jsonString==null||jsonString.trim().equals("")){
-            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
-        }
+    public void deviceTrendReport(@FormParam("jsonString")String jsonString){
+//        if(jsonString==null||jsonString.trim().equals("")){
+//            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
+//        }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
         condition.put("appId", UserContext.currentUserAppId());
         condition.put("orderByCondition"," order by age desc,deviceType desc");
@@ -135,18 +134,18 @@ public class DeviceReportServiceWeb {
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceTrendReport);
         String type = (String)condition.get("reportType");
         exportReport(reportTemplate,type,reportInfoList);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
     //根据不同的类型导出相应的报表
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @GET
     @Path("/exportDeviceTrendReport")
-    public String exportDeviceTrendReport(@QueryParam("jsonString") String jsonString){
+    public void exportDeviceTrendReport(@QueryParam("jsonString") String jsonString){
 
-        if(jsonString==null||jsonString.trim().equals("")){
-            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
-        }
+//        if(jsonString==null||jsonString.trim().equals("")){
+//            return JsonResultUtils.getObjectResultByStringAsDefault("查询条件不能为空！", JsonResultUtils.Code.ERROR);
+//        }
         HashMap<String,Object> condition= JsonMapper.buildNormalMapper().fromJson(jsonString,HashMap.class);
 
         String reportTemplate=request.getSession().getServletContext().getRealPath(JasperReportTemplate.deviceTrendReport);
@@ -156,7 +155,7 @@ public class DeviceReportServiceWeb {
         List<Map<String,Object>> reportInfoList=deviceService.findMainDeviceByCondition(condition);
         //platformReport.exportReportByType(reportTemplate,reportType,new HashMap<String, String>(),request,response,"report");
         exportReport(reportTemplate,reportType,reportInfoList);
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+//        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 
 

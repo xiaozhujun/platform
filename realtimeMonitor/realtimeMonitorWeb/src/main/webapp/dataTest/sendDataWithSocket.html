@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript">
+
+        $(function(){
+
+            $("#startBtn").click(function(){
+                $.get($.URL.simulator.start,null,startSimulatorCallback,"json");
+            });
+
+            $("#stopBtn").click(function(){
+                $.get($.URL.simulator.stop,null,stopSimulatorCallback,"json");
+            });
+
+            $("#setIntervalBtn").click(function(){
+                $.get($.URL.simulator.setInterval+$("#intervalInput").val(),null,setSimulatorIntervalCallback,"json");
+            });
+
+            $("#setPrefixBtn").click(function(){
+                $.get($.URL.simulator.setPrefix+$("#prefixInput").val(),null,setSimulatorPrefixCallback,"json");
+            });
+        });
+
+        function startSimulatorCallback(data){
+           if(data.code==200){
+               alert("操作成功！");
+           }else{
+               alert(data.msg)
+           }
+        }
+
+        function stopSimulatorCallback(data){
+            if(data.code==200){
+                alert("操作成功！");
+            }else{
+                alert(data.msg)
+            }
+        }
+
+        function setSimulatorIntervalCallback(data){
+            if(data.code==200){
+                alert("操作成功！");
+            }else{
+                alert(data.msg)
+            }
+        }
+
+        function setSimulatorPrefixCallback(data){
+            if(data.code==200){
+                alert("操作成功！");
+            }else{
+                alert(data.msg)
+            }
+        }
+    </script>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+
+            <td><button id="startBtn">启动</button>&nbsp;<button id="stopBtn">停止</button></td>
+        </tr>
+        <tr>
+            <td>时间间隔：<input id="intervalInput" value="5000">&nbsp;<button id="setIntervalBtn">设置间隔</button></td>
+        </tr>
+        <tr>
+            <td>编号前缀：<input id="prefixInput" value="310000000001">&nbsp;<button id="setPrefixBtn">设置前缀</button></td>
+        </tr>
+
+    </table>
+</div>
+</body>
+</html>

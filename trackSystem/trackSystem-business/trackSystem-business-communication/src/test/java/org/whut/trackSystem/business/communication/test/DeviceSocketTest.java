@@ -14,7 +14,7 @@ import java.util.Date;
  * Time: 下午11:35
  * To change this template use File | Settings | File Templates.
  */
-public class SocketTest {
+public class DeviceSocketTest {
     public static void main(String[] args)  {
         //为了简单起见，所有的异常都直接往外抛
 //        String host = "www.cseicms.com";  //要连接的服务端IP地址

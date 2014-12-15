@@ -86,6 +86,12 @@
         } ,
         "websocket":{
             "register":"ws://localhost:8080/realtimeMonitor/websocket/hello"
+        },
+        "simulator":{
+            "start":"rs/simulator/startSimulator",
+            "stop":"rs/simulator/stopSimulator",
+            "setInterval":"rs/simulator/setInterval/",
+            "setPrefix":"rs/simulator/setPrefix/"
         }
     }
 })(jQuery);

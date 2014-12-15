@@ -1,7 +1,7 @@
 (function($){
     $.URL = {
         "common":{
-          "rootPath":"http://localhost:8080/"
+          "rootPath":"http://www.cseicms.com/"
         },
         "power":{
             "add":"rs/power/add",

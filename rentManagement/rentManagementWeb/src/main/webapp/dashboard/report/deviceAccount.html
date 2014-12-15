@@ -68,7 +68,7 @@
                     condition.endTime = $("#endTimeInput").val();
                 }
                 condition.reportType=type;
-                location.href= $.URL.deviceReport.exportDeviceAccountReport+"?jsonString="+ $.toJSON(condition);
+                window.open($.URL.deviceReport.exportDeviceAccountReport+"?jsonString="+ $.toJSON(condition),"_blank");
             }else{
                 $.ligerDialog().alert("请输入导出报表类型!");
             }

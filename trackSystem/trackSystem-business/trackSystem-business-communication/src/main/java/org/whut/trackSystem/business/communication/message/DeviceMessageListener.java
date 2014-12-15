@@ -2,6 +2,7 @@ package org.whut.trackSystem.business.communication.message;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
 import org.whut.trackSystem.business.communication.service.DeviceDataService;
@@ -20,6 +21,8 @@ public class DeviceMessageListener extends PlatformMessageListenerBase{
     public static final PlatformLogger logger = PlatformLogger.getLogger(DeviceMessageListener.class);
     @Autowired
     private DeviceDataService deviceDataService;
+    @Autowired
+    private WsMessageDispatcher wsMessageDispatcher;
 
     public DeviceDataService getDeviceDataService() {
         return deviceDataService;
@@ -41,6 +44,7 @@ public class DeviceMessageListener extends PlatformMessageListenerBase{
                 String messageText = ((ActiveMQTextMessage) message).getText();
                 logger.info("onMessage that DeviceLocation Information is:" + messageText);
                 deviceDataService.saveMessage(messageText);
+                wsMessageDispatcher.dispatchMessage(messageText);
             } catch (JMSException e) {
                 logger.info("message not text,but " + message.getClass().getName());
             }

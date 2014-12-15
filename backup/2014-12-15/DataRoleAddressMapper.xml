@@ -72,30 +72,13 @@
     </select>
 
     <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
-        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr
-        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
-        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
-        LEFT JOIN address a ON cr.addressId=a.id
-        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
-        LEFT JOIN drole dr ON draddr.droleId=dr.id
-        LEFT JOIN user_drole udr ON dr.id=udr.droleId
-        LEFT JOIN user u ON u.id=udr.userId
-        <if test="userId!=null">
-        WHERE userId=#{userId}
-        </if>
-        GROUP BY a.province order by craneNumber desc
+          SELECT addressId as id,province,avgRiskValue,craneNumber,color
+          FROM province_riskvalue_temp
+          WHERE userId=#{userId}
     </select>
     <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
-        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr
-        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
-        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
-        LEFT JOIN address a ON cr.addressId=a.id
-        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
-        LEFT JOIN drole dr ON draddr.droleId=dr.id
-        LEFT JOIN user_drole udr ON dr.id=udr.droleId
-        LEFT JOIN user u ON u.id=udr.userId
+          SELECT addressId as id,province,avgRiskValue,craneNumber,color
+          FROM province_riskvalue_temp
          <if test="userId!=null">
           WHERE userId=#{userId}
           </if>
@@ -114,7 +97,6 @@
            <if test="endValue!=0f">
                AND #{endValue}
            </if>
-        GROUP BY a.province order by craneNumber desc
     </select>
     <select id="getProvinceInfoWithDataRuleByCondition0" parameterType="map" resultType="map">
         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color

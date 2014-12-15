@@ -21,6 +21,7 @@ import org.whut.platform.fundamental.logger.PlatformLogger;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 /**
  * 简单封装Jackson实现JSON<->Java Object的Mapper.
@@ -193,5 +194,9 @@ public class JsonMapper {
      */
     public ObjectMapper getMapper() {
         return mapper;
+    }
+    public static void main(String[] args){
+        String jsonString="{\"192.168.100.38\":{\"cpu\":\"0.0\",\"mem\":\"0.702204\",\"net\":\"0.0\",\"thread\":\"8\"}}";
+        System.out.println(JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class));
     }
 }

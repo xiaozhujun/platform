@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>trackSystem-business-communication</module>
+        <module>trackSystem-business-device</module>
     </modules>
 
 

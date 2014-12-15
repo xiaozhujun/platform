@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.trackSystem.business.device.mapper.DeviceMapper">
+    <sql id="device_fields">
+        ID,NAME,NUMBER,LNG,LAT,ADDRESS,DEVICETYPEID,APPID
+    </sql>
+    <resultMap id="device_resultMap" type="Device">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="number" column="number"/>
+        <result property="lng" column="LNG"/>
+        <result property="lat" column="LAT"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+    
+    <select id="getAppIdByDeviceNum" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT appId
+        FROM device
+        WHERE number=#{number}
+    </select>
+</mapper>

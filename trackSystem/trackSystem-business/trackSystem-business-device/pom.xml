@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>trackSystem-business-communication</artifactId>
+    <artifactId>trackSystem-business-device</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -92,41 +92,7 @@
             <artifactId>business-user</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-message</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-communication</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-redisConnector</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-mongoConnector</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-websocket</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>business-user</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>trackSystem-business-device</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
     </dependencies>
 
 </project>

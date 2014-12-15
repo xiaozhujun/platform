@@ -371,16 +371,36 @@ public class CraneInspectReportService {
             String maxLiftMoment=null;
             //计算之前先初始化数据
             calculateTools.getDbArrayListFromMongo();
+            if(calculateTools.getMaxUseTime(equipmentVariety)!=null){
             maxUseTime=String.valueOf(calculateTools.getMaxUseTime(equipmentVariety));
+            }
+            if(calculateTools.getMaxRatedLiftWeight(equipmentVariety)!=null){
             maxRatedLiftWeight=String.valueOf(calculateTools.getMaxRatedLiftWeight(equipmentVariety));
+            }
+            if(calculateTools.getMaxSpan(equipmentVariety)!=null){
             maxSpan=String.valueOf(calculateTools.getMaxSpan(equipmentVariety));
+            }
+            if(calculateTools.getMaxRange(equipmentVariety)!=null){
             maxRange=String.valueOf(calculateTools.getMaxRange(equipmentVariety));
+            }
+            if(calculateTools.getMaxLiftHeight(equipmentVariety)!=null){
             maxLiftHeight=String.valueOf(calculateTools.getMaxLiftHeight(equipmentVariety));
+            }
+            if(calculateTools.getMaxLiftSpeed(equipmentVariety)!=null){
             maxLiftSpeed=String.valueOf(calculateTools.getMaxLiftSpeed(equipmentVariety));
+            }
+            if(calculateTools.getMaxRunSpeed(equipmentVariety)!=null){
             maxRunSpeed=String.valueOf(calculateTools.getMaxRunSpeed(equipmentVariety));
+            }
+            if(calculateTools.getMaxCartSpeed(equipmentVariety)!=null){
             maxCartSpeed=String.valueOf(calculateTools.getMaxCartSpeed(equipmentVariety));
+            }
+            if(calculateTools.getMaxCarSpeed(equipmentVariety)!=null){
             maxCarSpeed=String.valueOf(calculateTools.getMaxCarSpeed(equipmentVariety));
+            }
+            if(calculateTools.getMaxLiftMoment(equipmentVariety)!=null){
             maxLiftMoment=String.valueOf(calculateTools.getMaxLiftMoment(equipmentVariety));
+            }
             if(i<craneTypeIdList.size()-1){
                 documentJson+="maxUseTime:'"+maxUseTime+"',maxRatedLiftWeight:'"+maxRatedLiftWeight+"',maxSpan:'"+maxSpan+"',maxRange:'"+maxRange+"',maxLiftHeight:'"+maxLiftHeight+"',maxLiftSpeed:'"+maxLiftSpeed+"',maxRunSpeed:'"+maxRunSpeed+"',maxCartSpeed:'"+maxCartSpeed+"',maxCarSpeed:'"+maxCarSpeed+"',maxLiftMoment:'"+maxLiftMoment+"'},";
             }

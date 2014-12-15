@@ -144,7 +144,7 @@ public class CalculateTools {
         return 0L;
     }
     public Float getMax(List<Float> f){    //List<Float>的冒泡排序
-        if(f.size()!=0){
+        if(f!=null&&f.size()!=0){
         for(int i=0;i<f.size()-1;i++){
             for(int j=0;j<f.size()-i-1;j++){
                 if(f.get(j)>f.get(j+1)){

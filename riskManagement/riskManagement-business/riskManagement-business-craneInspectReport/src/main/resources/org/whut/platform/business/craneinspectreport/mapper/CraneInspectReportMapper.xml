@@ -485,7 +485,7 @@
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
         WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
-            AND a.province=#{province}+
+            AND a.province=#{province}
         </if>
         <if test="city!=null">
             AND a.city=#{city}

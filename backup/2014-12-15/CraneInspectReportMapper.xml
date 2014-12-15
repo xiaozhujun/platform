@@ -95,7 +95,7 @@
         FROM craneinspectreport WHERE ID=#{id}
     </select>
 
-    <select id="getReportNumber" parameterType="java.lang.String" resultType="java.lang.String">
+     <select id="getReportNumber" parameterType="java.lang.String" resultType="java.lang.String">
          SELECT reportNumber
          FROM craneinspectreport
          WHERE REPORTNUMBER=#{reportNumber}
@@ -130,16 +130,16 @@
     </select>
     <delete id="delete" parameterType="CraneInspectReport">
         DELETE FROM craneinspectreport
-        <where>
-            <if test="id!=null">ID=#{id}</if>
-        </where>
+            <where>
+                <if test="id!=null">ID=#{id}</if>
+            </where>
     </delete>
 
     <select id="getInfoByAddressId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
-        SELECT
-        <include refid="craneInspectReport_fields"/>
-        FROM  craneinspectreport
-        where addressId=#{addressId}
+       SELECT
+       <include refid="craneInspectReport_fields"/>
+       FROM  craneinspectreport
+       where addressId=#{addressId}
     </select>
     <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
      SELECT
@@ -390,10 +390,10 @@
         <if test="area!=null">
             AND a.area=#{area}
         </if>
-        <if test='equipmentVariety!="0"'>
+       <if test='equipmentVariety!="0"'>
             AND cr.equipmentvariety=#{equipmentVariety}
         </if>
-        <if test='sTime!="0"'>
+      <if test='sTime!="0"'>
             AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
         </if>
         <if test='eTime!="0"'>
@@ -408,16 +408,10 @@
         GROUP BY cr.unitaddress  ORDER BY  craneNumber desc
     </select>
     <select id="getCityInfoByCondition" parameterType="map" resultType="map">
-        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr
-        LEFT JOIN address a
-        ON cr.addressid=a.id
-        LEFT JOIN riskvalue r
-        ON cr.reportnumber=r.reportnumber
-        LEFT JOIN riskcolor col
-        ON r.riskvalue=col.riskvalue
+        SELECT addressId as id,city,avgRiskValue,craneNumber,color
+        FROM  city_riskvalue_temp
         <if test="province!=null">
-            WHERE province=#{province}
+        WHERE province=#{province}
         </if>
         <if test='equipmentVariety!="0"'>
             AND equipmentvariety=#{equipmentVariety}
@@ -434,7 +428,6 @@
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
-        GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
     <select id="getCityInfoByCondition0" parameterType="map" resultType="map">
         SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
@@ -449,17 +442,11 @@
         GROUP BY a.city  ORDER BY  craneNumber desc
     </select>
     <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
-        SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr
-        LEFT JOIN address a
-        ON cr.addressid=a.id
-        LEFT JOIN riskvalue r
-        ON cr.reportnumber=r.reportnumber
-        LEFT JOIN riskcolor col
-        ON r.riskvalue=col.riskvalue
-        <if test="province!=null">
-            WHERE province=#{province}
-        </if>
+         SELECT addressId as id,area,avgRiskValue,craneNumber,color
+        FROM   area_riskvalue_temp
+         <if test="province!=null">
+          WHERE province=#{province}
+         </if>
         <if test="city!=null">
             AND city=#{city}
         </if>
@@ -470,7 +457,7 @@
             AND manufacturedate between #{sTime}
         </if>
         <if test='eTime!="0"'>
-            AND #{eTime}
+           and #{eTime}
         </if>
         <if test="startValue!=0f">
             AND riskval BETWEEN #{startValue}
@@ -478,7 +465,6 @@
         <if test="endValue!=0f">
             AND #{endValue}
         </if>
-        GROUP BY a.area  ORDER BY  craneNumber desc
     </select>
     <select id="getAreaInfoByCondition0" parameterType="map" resultType="map">
         SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
@@ -550,7 +536,7 @@
             LAST_INSERT_ID() as id
         </selectKey>
         INSERT INTO
-        addressriskvalue(addressid,riskvalue)
+         addressriskvalue(addressid,riskvalue)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.id},#{item.riskvalue})
@@ -636,10 +622,10 @@
         addressriskvalue
         SET
         <if test="riskValue!=null">
-            riskvalue=#{riskValue}
+         riskvalue=#{riskValue}
         </if>
         <if test="addressId!=null">
-            WHERE addressId=#{addressId}
+        WHERE addressId=#{addressId}
         </if>
     </update>
     <select id="validateCityRiskValueIsExistByProvinceAndCity" parameterType="map" resultType="map">
@@ -648,10 +634,10 @@
         FROM
         city_riskvalue
         <if test="province!=null">
-            WHERE province=#{province}
+        WHERE province=#{province}
         </if>
         <if test="city!=null">
-            AND city=#{city}
+        AND city=#{city}
         </if>
     </select>
     <update id="updateCityRiskValue" parameterType="map">
@@ -661,10 +647,10 @@
         riskvalue=#{riskValue}
         WHERE
         <if test="province!=null">
-            province=#{province}
+         province=#{province}
         </if>
         <if test="city!=null">
-            AND city=#{city}
+         AND city=#{city}
         </if>
     </update>
     <update id="updateProvinceRiskValue" parameterType="map">
@@ -672,10 +658,10 @@
         province_riskvalue
         SET
         <if test="riskValue!=null">
-            riskvalue=#{riskValue}
+         riskvalue=#{riskValue}
         </if>
         <if test="province!=null">
-            WHERE province=#{province}
+          WHERE province=#{province}
         </if>
     </update>
     <delete id="deleteCityRiskValue" parameterType="map">
@@ -683,10 +669,10 @@
         FROM
         city_riskvalue
         <if test="province!=null">
-            WHERE province=#{province}
+        WHERE province=#{province}
         </if>
         <if test="city!=null">
-            AND city=#{city}
+        AND city=#{city}
         </if>
     </delete>
     <delete id="deleteAreaRiskValue" parameterType="java.lang.Long">
@@ -694,7 +680,7 @@
         FROM
         addressriskvalue
         <if test="addressId!=null">
-            WHERE addressId=#{addressId}
+        WHERE addressId=#{addressId}
         </if>
     </delete>
     <select id="selectProvinceRiskTemp" resultType="map">
@@ -783,7 +769,7 @@
             select
             LAST_INSERT_ID() as id
         </selectKey>
-    </insert>
+     </insert>
     <select id="getReportNumberFromRiskValue" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
         reportNumber
@@ -816,18 +802,18 @@
      area_riskvalue_temp
     </delete>
     <insert id="dumpDataToAreaRisk">
-        INSERT
-        INTO area_riskvalue_temp(addressId,province,city,area,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
-        SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskval,u.id as userId
-        FROM craneinspectreport cr
-        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
-        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
-        LEFT JOIN address a ON cr.addressId=a.id
-        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
-        LEFT JOIN drole dr ON draddr.droleId=dr.id
-        LEFT JOIN user_drole udr ON dr.id=udr.droleId
-        LEFT JOIN user u ON u.id=udr.userId
-        GROUP BY a.area order by avgRiskValue desc
+       INSERT
+       INTO area_riskvalue_temp(addressId,province,city,area,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+       SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskval,u.id as userId
+       FROM craneinspectreport cr
+       LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
+       LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
+       LEFT JOIN address a ON cr.addressId=a.id
+       LEFT JOIN drole_address draddr ON a.id=draddr.addressId
+       LEFT JOIN drole dr ON draddr.droleId=dr.id
+       LEFT JOIN user_drole udr ON dr.id=udr.droleId
+       LEFT JOIN user u ON u.id=udr.userId
+       GROUP BY a.area order by avgRiskValue desc
         <selectKey resultType="long" keyProperty="id" order="AFTER">
             select
             LAST_INSERT_ID() as id

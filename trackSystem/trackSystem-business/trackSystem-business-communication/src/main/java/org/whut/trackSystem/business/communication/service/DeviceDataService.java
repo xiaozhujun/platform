@@ -2,11 +2,14 @@ package org.whut.trackSystem.business.communication.service;
 
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
+import org.whut.trackSystem.business.device.service.DeviceService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +31,11 @@ public class DeviceDataService {
     private MongoConnector mongoConnector;
     private int keyExpireTime;
 
+    @Autowired
+    private WsMessageDispatcher wsMessageDispatcher;
+    @Autowired
+    private DeviceService deviceService;
+
     public DeviceDataService() {
         deviceDB = FundamentalConfigProvider.get("device.mongo.deviceDB");
         deviceCollection = FundamentalConfigProvider.get("device.mongo.deviceCollection");
@@ -47,6 +55,7 @@ public class DeviceDataService {
             for (int i=0; i<devices.size(); i++) {
                 curDevice = (DBObject)devices.get(i);
                 String device = curDevice.get(FundamentalConfigProvider.get("device.mongo.id")).toString();
+                handleMessage(curDevice);
                 String temp = mongoConnector.insertDocumentObject(curDevice);
                 if (objectId != null) {
                     if (redisConnector.set(device,keyExpireTime,temp)) {
@@ -80,5 +89,16 @@ public class DeviceDataService {
         map.put("lng",dbObject.get(lng).toString());
         map.put("lat",dbObject.get(lat).toString());
         return map;
+    }
+
+    private void handleMessage(DBObject dbObject) {
+        String deviceNum = dbObject.get(FundamentalConfigProvider.get("device.mongo.id")).toString();
+        String time = dbObject.get(FundamentalConfigProvider.get("device.mongo.time")).toString();
+        String lng = dbObject.get(FundamentalConfigProvider.get("device.mongo.lng")).toString();
+        String lat = dbObject.get(FundamentalConfigProvider.get("device.mongo.lat")).toString();
+        long appId = deviceService.getAppIdByDeviceNum(deviceNum);
+        String jsonString = "{devices:["+"{deviceNum:'"+deviceNum+"',time:'"+time+"',lng:'"+lng+"',lat:'"+lat+"',appId:'"+appId+"'}]}";
+        logger.info("deviceTrack wsMessageDispatcher: " + wsMessageDispatcher);
+        wsMessageDispatcher.dispatchMessage(jsonString);
     }
 }

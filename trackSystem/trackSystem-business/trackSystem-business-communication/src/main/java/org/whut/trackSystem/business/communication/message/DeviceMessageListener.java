@@ -21,8 +21,8 @@ public class DeviceMessageListener extends PlatformMessageListenerBase{
     public static final PlatformLogger logger = PlatformLogger.getLogger(DeviceMessageListener.class);
     @Autowired
     private DeviceDataService deviceDataService;
-    @Autowired
-    private WsMessageDispatcher wsMessageDispatcher;
+//    @Autowired
+//    private WsMessageDispatcher wsMessageDispatcher;
 
     public DeviceDataService getDeviceDataService() {
         return deviceDataService;
@@ -44,7 +44,7 @@ public class DeviceMessageListener extends PlatformMessageListenerBase{
                 String messageText = ((ActiveMQTextMessage) message).getText();
                 logger.info("onMessage that DeviceLocation Information is:" + messageText);
                 deviceDataService.saveMessage(messageText);
-                wsMessageDispatcher.dispatchMessage(messageText);
+//                wsMessageDispatcher.dispatchMessage(messageText);
             } catch (JMSException e) {
                 logger.info("message not text,but " + message.getClass().getName());
             }

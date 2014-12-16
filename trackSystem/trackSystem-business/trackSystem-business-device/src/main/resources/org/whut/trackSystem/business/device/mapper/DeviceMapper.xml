@@ -21,4 +21,10 @@
         FROM device
         WHERE number=#{number}
     </select>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="device_resultMap">
+        SELECT *
+        FROM device
+        WHERE appId=#{appId}
+    </select>
 </mapper>

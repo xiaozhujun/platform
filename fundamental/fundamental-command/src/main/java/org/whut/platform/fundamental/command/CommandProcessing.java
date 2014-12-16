@@ -4,6 +4,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.web.socket.WebSocketSession;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class CommandProcessing {
   }
     public static void cancelSubscribe(String message,long appId,long userId) throws JSONException {
         JSONObject dataJson=new JSONObject(message);
-        JSONArray sNum= dataJson.getJSONArray("sensors");
+        JSONArray sNum= dataJson.getJSONArray(FundamentalConfigProvider.get("message.nioServer.type"));
         for(int i=0;i<sNum.length();i++){
             WebSocketSession webSocketSession=wsuImpMap.get(appId+":"+userId+":"+sNum.get(i).toString());
             List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());
@@ -53,7 +54,7 @@ public class CommandProcessing {
         logger.info("msg:"+msg);
         Long appId=sessionAndAppIdMap.get(session);
         JSONObject dataJson=new JSONObject(msg);
-        JSONArray sNum= dataJson.getJSONArray("sensors");
+        JSONArray sNum= dataJson.getJSONArray(FundamentalConfigProvider.get("message.nioServer.type"));
         logger.info("wsImpMap前"+wsImpMap);
         for(int i=0;i<sNum.length();i++){
             List<WebSocketSession> webSocketSessionList=wsImpMap.get(appId+":"+sNum.get(i).toString());

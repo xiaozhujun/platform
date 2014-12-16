@@ -47,11 +47,25 @@
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>org.whut.platform.business,org.whut.trackSystem.business</param-value>
         </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>jerseyServlet</servlet-name>
         <url-pattern>/rs/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>websocketServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:META-INF/spring/websocketmessage-applicationContext.xml</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>websocketServlet</servlet-name>
+        <url-pattern>/websocket/*</url-pattern>
     </servlet-mapping>
     <!--<servlet>-->
         <!--<servlet-name>JasperReportImageServlet</servlet-name>-->

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/map/data.js"></script>
+    <script type="text/javascript" src="js/map/initMap.js"></script>
+    <script type="text/javascript" src="js/map/addMarker.js"></script>
+    <script type="text/javascript" src="lib/json2.js"></script>
+    <script type="text/javascript">
+        var num = "";
+        $(document).ready(function(){
+            $.post($.URL.device.list,null,deviceCallback,"json");
+        });
+
+        function connect() {
+            var url= $.URL.websocket.register;
+            var s="{c:'Subscribe',devices:["+num+"]}";
+            ws =  new WebSocket(url);
+            ws.onopen = function () {
+                console.log('Info: connection opened.');
+                ws.send(s);
+                ws.onclose = function (event) {
+                    console.log('Info: connection closed.');
+                    console.log(event);			};
+            } ;
+            ws.onmessage = function (event) {
+                console.log ("收到消息！"+event.data);
+                var jsonData = eval("(" +event.data+ ")");
+            };
+        }
+
+        function deviceCallback(data) {
+            for(var i=0;i<data.data.length;i++) {
+                if(i==0){
+                    num=data.data[i].number+",";
+                }
+                else {
+                    num=num+data.data[i].number+",";
+                }
+            }
+            console.log(num);
+            connect();
+        }
+
+        $.initMap("中国",5);
+    </script>
+    <style type="text/css">
+        #container{
+            width: 100%;
+           /* min-height:500px;*/
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>

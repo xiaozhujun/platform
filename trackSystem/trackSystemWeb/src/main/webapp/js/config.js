@@ -29,6 +29,12 @@
         },
         "deviceData":{
             "getDeviceData":"rs/deviceData/getDeviceData"
+        },
+        "device":{
+            "list":"rs/device/list"
+        },
+        "websocket":{
+            "register":"ws://localhost:8080/trackSystem/websocket/hello"
         }
     }
 })(jQuery);

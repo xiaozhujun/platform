@@ -46,7 +46,7 @@ public class SocketTest {
                 }
                 Date now = new Date();
                 String json = "{sensors:["+"{sensorNum:'2100000000010000',dataType:'Route',time:'"+format.format(now)+"',data:["+data+"]},"
-                        +"{sensorNum:'01',dataType:'Route',time:'"+format.format(now)+"',data:["+data1+"]}]}";
+                        +"{sensorNum:'2100000000010001',dataType:'Route',time:'"+format.format(now)+"',data:["+data1+"]}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);

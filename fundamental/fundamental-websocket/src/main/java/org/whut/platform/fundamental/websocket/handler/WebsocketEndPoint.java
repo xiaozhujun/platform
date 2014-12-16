@@ -9,6 +9,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.whut.platform.business.user.security.MyUserDetail;
 import org.springframework.security.core.context.SecurityContext;
 import org.whut.platform.fundamental.command.CommandProcessing;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 
 import java.util.HashMap;
@@ -43,7 +44,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
         map.put(session,ReceivedMessage);
         JSONObject dataJson=new JSONObject(ReceivedMessage);
         //得到sNum的数组
-        JSONArray sNum= dataJson.getJSONArray("sensors");
+        JSONArray sNum= dataJson.getJSONArray(FundamentalConfigProvider.get("message.nioServer.type"));
         //得到前台发来的命令：取消订阅、订阅
         String command=dataJson.getString("c");
         if (command.equals("cancelSubscribe")){    //取消订阅

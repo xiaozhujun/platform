@@ -46,7 +46,7 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
                     JSONArray data= dataJson.getJSONArray(FundamentalConfigProvider.get("message.nioServer.type"));
                     JSONObject info=data.getJSONObject(0);
                     number=info.getString(FundamentalConfigProvider.get("message.activemq.number"));
-                    Long appId=Long.parseLong(info.getString("appId"));
+                    Long appId=Long.parseLong(info.getString(FundamentalConfigProvider.get("message.activemq.appId")));
                     Long wsNumber = Long.parseLong(number);
                     logger.info("number1:" + wsNumber);
                     sendMsg(wsNumber.toString(),appId, messageText);//向websocket通道发数据
@@ -66,7 +66,7 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
         logger.info("wsImpMap中有："+wsImpMap);
         TextMessage wsMessage = new TextMessage(messageText);
         try {
-                logger.info("number+appId："+number+appId);
+                logger.info("number+appId："+number+"|"+appId);
                 List<WebSocketSession> wSSList=wsImpMap.get(appId+":"+number);
                 if (wSSList!=null){
                     for(int i=0;i<wSSList.size();i++){

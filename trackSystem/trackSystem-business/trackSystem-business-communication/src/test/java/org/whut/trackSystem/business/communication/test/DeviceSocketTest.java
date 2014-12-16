@@ -30,19 +30,28 @@ public class DeviceSocketTest {
             long count = 1000000;
             StringBuffer lng = new StringBuffer("");
             StringBuffer lat = new StringBuffer("");
+            StringBuffer lng1 = new StringBuffer("");
+            StringBuffer lat1 = new StringBuffer("");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Long lngData = Math.round(Math.random()*120);
+            Long lngData1 = Math.round(Math.random()*120+3);
             Long latData = Math.round(Math.random()*30);
+            Long latData1 = Math.round(Math.random()*30+3);
             for (long j=0;j<count;j++){
                 lng.append(lngData + 0.5*j);
                 lat.append(latData + 0.1*j);
+                lng1.append(lngData1 + 0.5*j);
+                lat1.append(latData1 + 0.1*j);
                 Date now = new Date();
-                String json = "{devices:["+"{deviceNum:'001',time:'"+format.format(now)+"',lng:'"+lng+"',lat:'"+lat+"'}]}";
+                String json = "{devices:["+"{deviceNum:'001',time:'"+format.format(now)+"',lng:'"+lng+"',lat:'"+lat+"'},"+
+                        "{deviceNum:'002',time:'"+format.format(now)+"',lng:'"+lng1+"',lat:'"+lat1+"'}]}";
                 writer.write(json);
                 writer.flush();//写完后要记得flush
                 System.out.println(json);
                 lng.delete(0,lng.length());
                 lat.delete(0,lat.length());
+                lng1.delete(0,lng1.length());
+                lat1.delete(0,lat1.length());
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {

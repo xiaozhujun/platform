@@ -519,6 +519,7 @@
           from craneinspectreport_cranetype crtype,cranetype type,riskModel m
           where crtype.craneTypeId=type.id and
           type.riskModelId=m.id and crtype.equipmentVariety=#{equipmentVariety}
+          GROUP BY m.className
     </select>
     <select id="getCraneTypeByCraneInspectReportInfo" resultType="java.lang.Long">
           select ctype.craneTypeId

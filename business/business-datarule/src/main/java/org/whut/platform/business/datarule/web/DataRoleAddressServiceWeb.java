@@ -8,6 +8,7 @@ import org.whut.platform.business.datarule.service.DataRoleAddressService;
 import org.whut.platform.business.user.entity.User;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.logger.PlatformLogger;
+import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 
 import javax.ws.rs.FormParam;
@@ -45,9 +46,16 @@ public class DataRoleAddressServiceWeb {
     public String getProvinceAndColorWithDataRole(){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
+
+        RedisConnector redisConnector = new RedisConnector();
+        if(redisConnector.get(userId+":getProvinceAndColorWithDataRole")!=null){
+            return redisConnector.get(userId+":getProvinceAndColorWithDataRole");
+        }
         List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
-        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+        redisConnector.set(userId+":getProvinceAndColorWithDataRole",24*60*60,JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS));
+        return redisConnector.get(userId+":getProvinceAndColorWithDataRole");
     }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getProvinceInfoWithDataRuleByCondition")

@@ -6,6 +6,7 @@ import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.riskcalculate.ICalculateRisk;
 import org.whut.platform.business.craneinspectreport.service.CraneInspectReportService;
+import org.whut.platform.business.user.entity.Power;
 import org.whut.platform.business.user.security.MyUserDetail;
 import org.whut.platform.business.user.service.UserService;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
@@ -784,4 +785,30 @@ public class CraneInspectReportServiceWeb {
         craneInspectReportService.deleteAreaRiskTempTable();
         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
  }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/updateUploadedReport")
+    @POST
+    public String updateUploadedReport(@FormParam("jsonString") String jsonString){
+        Map<String,String> map= JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Map.class);
+        int result = craneInspectReportService.updateUpdatedReport(map);
+        if(result>0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+    }
+    @Produces( MediaType.APPLICATION_JSON+ ";charset=UTF-8")
+    @Path("/deleteUploadedReport")
+    @POST
+    public String deleteUploadedReport(@FormParam("jsonString") String jsonString){
+        Map<String,String> map = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Map.class);
+        Long reportId=Long.parseLong(String.valueOf(map.get("id")));
+        int deleted = craneInspectReportService.deleteByReportId(reportId);
+        int result = craneInspectReportService.deleteUploadedReport(map);
+        if(result>0&&deleted>=0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+    }
 }

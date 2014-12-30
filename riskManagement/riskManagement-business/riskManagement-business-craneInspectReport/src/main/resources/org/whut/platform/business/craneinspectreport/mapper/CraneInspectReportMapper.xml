@@ -883,4 +883,23 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+    <update id="updateUpdatedReport" parameterType="map">
+        UPDATE uploadedreport
+        <set>
+            <if test="status!= null">status=#{status}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+    <delete id="deleteByReportId" parameterType="java.lang.Long">
+        DELETE FROM craneinspectreport
+        <where>
+            <if test="reportId != null">uploadedReportId=#{reportId}</if>
+        </where>
+    </delete>
+    <delete id="deleteUploadedReport" parameterType="map">
+        DELETE FROM uploadedreport
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
 </mapper>

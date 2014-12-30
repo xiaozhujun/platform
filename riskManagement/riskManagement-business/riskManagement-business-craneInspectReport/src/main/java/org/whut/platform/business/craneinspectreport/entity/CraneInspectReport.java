@@ -76,7 +76,7 @@ public class CraneInspectReport {
 
     private Float      maxLiftMoment;                    //最大起重力矩
 
-    private long      uploadedReportId;
+    private Long      uploadedReportId;
 
     public long getId() {
         return id;
@@ -342,11 +342,11 @@ public class CraneInspectReport {
         this.maxLiftMoment = maxLiftMoment;
     }
 
-    public long getUploadedReportId() {
+    public Long getUploadedReportId() {
         return uploadedReportId;
     }
 
-    public void setUploadedReportId(long uploadedReportId) {
+    public void setUploadedReportId(Long uploadedReportId) {
         this.uploadedReportId = uploadedReportId;
     }
 }

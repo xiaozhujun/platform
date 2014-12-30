@@ -60,17 +60,32 @@
                 checkbox:true,
                 columns: [
                     { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
-                    { display: '上传人员',name: 'userName',
-                        editor: { type: 'text'}
+                    { display: '上传人员',name: 'userName',type: 'string'
                     },
-                    { display: '上传文件',name: 'name',
-                        editor: { type: 'text'}
+                    { display: '上传文件',name: 'name', type: 'string'
+
                     },
                     { display: '上传时间',name: 'uploadtime',type:'date'
 
                     },
-                    { display: '是否计算', name: 'status', type: 'string'
-
+                    { display: '是否计算', name: 'status',
+                        editor: { type: 'text'}
+                    },
+                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+                    {
+                        var h = "";
+                        if (!rowdata._editing)
+                        {
+                            h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
+                            h += "<a href='javascript:deleteRow(" + rowindex + ")'>删除</a> ";
+                        }
+                        else
+                        {
+                            h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
+                            h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
+                        }
+                        return h;
+                    }
                     }
                 ],
                 onSelectRow: function (rowdata, rowindex)
@@ -81,6 +96,52 @@
                 data: gridData,
                 width: '100%'
             });
+        }
+        function beginEdit(rowid) {
+            manager.beginEdit(rowid);
+        }
+        function cancelEdit(rowid) {
+            manager.cancelEdit(rowid);
+        }
+        function endEdit(rowid)
+        {
+            manager.endEdit(rowid);
+            var row = manager.getRow(rowid);
+            var jsonString  = $.toJSON(row);
+            $.post($.URL.craneinspectreport.updateUploadedReport,{"jsonString":jsonString},updateCallback,"json");
+
+        }
+
+        function updateCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("修改成功");
+            }
+        }
+
+        function deleteRow(rowid)
+        {
+            if (confirm('确定删除?'))
+            {
+                var row = manager.getRow(rowid);
+                var jsonString  = $.toJSON(row);
+
+                $.post($.URL.craneinspectreport.deleteUploadedReport,{"jsonString":jsonString},deleteCallback,"json");
+                manager.deleteRow(rowid);
+            }
+        }
+
+        function deleteCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success("成功删除！");
+            }else{
+                $.ligerDialog.error("删除失败！");
+            }
+        }
+
+        var newrowid = 100;
+        function addNewRow()
+        {
+            manager.addEditRow();
         }
         function itemclick(item){
             if(item.id)
@@ -225,6 +286,7 @@
                 width: '100%'
             });
         }
+
     </script>
 </head>
 <body  style="padding:10px">

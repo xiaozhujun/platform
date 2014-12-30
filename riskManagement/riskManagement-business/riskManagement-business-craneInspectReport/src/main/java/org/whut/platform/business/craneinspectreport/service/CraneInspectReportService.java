@@ -644,4 +644,13 @@ public class CraneInspectReportService {
     public int deleteAreaRiskTempTable(){
         return mapper.deleteAreaRiskTempTable();
     }
+    public int updateUpdatedReport(Map<String,String> map){
+        return mapper.updateUpdatedReport(map);
+    }
+    public int deleteByReportId(Long reportId){
+        return mapper.deleteByReportId(reportId);
+    }
+    public int deleteUploadedReport(Map<String,String> map){
+        return mapper.deleteUploadedReport(map);
+    }
 }

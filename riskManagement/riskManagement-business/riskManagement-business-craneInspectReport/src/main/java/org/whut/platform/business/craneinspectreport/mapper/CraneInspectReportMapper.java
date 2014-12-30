@@ -105,4 +105,7 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public int deleteProvinceRiskTempTable();
     public int deleteCityRiskTempTable();
     public int deleteAreaRiskTempTable();
+    public int updateUpdatedReport(Map<String,String> map);
+    public int deleteByReportId(@Param("reportId")Long reportId);
+    public int deleteUploadedReport(Map<String,String> map);
 }

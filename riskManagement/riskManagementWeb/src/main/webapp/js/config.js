@@ -66,7 +66,9 @@
             "calculateAreaRisk":'rs/craneinspectreport/calculateAreaRisk',
             "calculateCityRisk":'rs/craneinspectreport/calculateCityRisk',
             "dumpDataToTempTable":'rs/craneinspectreport/dumpDataToTempTable',
-            "clearRiskTempTable":'rs/craneinspectreport/clearRiskTempTable'
+            "clearRiskTempTable":'rs/craneinspectreport/clearRiskTempTable',
+            "updateUploadedReport":'rs/craneinspectreport/updateUploadedReport',
+            "deleteUploadedReport":'rs/craneinspectreport/deleteUploadedReport'
         },
         /*"authority":{
             "add":"rs/authority/add"

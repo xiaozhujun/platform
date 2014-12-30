@@ -71,7 +71,7 @@
         FROM drole_address WHERE droleName=#{name}
     </select>
 
-    <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
+    <!--<select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr
         LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
@@ -85,8 +85,14 @@
         WHERE userId=#{userId}
         </if>
         GROUP BY a.province order by craneNumber desc
+    </select>-->
+    <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
+          SELECT addressId as id,province,avgRiskValue,craneNumber,color
+          FROM province_riskvalue_temp
+          WHERE userId=#{userId}
+          ORDER BY craneNumber DESC
     </select>
-    <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
+    <!--<select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr
         LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
@@ -115,6 +121,29 @@
                AND #{endValue}
            </if>
         GROUP BY a.province order by craneNumber desc
+    </select>-->
+    <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
+        SELECT addressId as id,province,avgRiskValue,craneNumber,color
+        FROM province_riskvalue_temp
+        <if test="userId!=null">
+            WHERE userId=#{userId}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            and equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            and manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskval BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        ORDER BY craneNumber DESC
     </select>
     <select id="getProvinceInfoWithDataRuleByCondition0" parameterType="map" resultType="map">
         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color

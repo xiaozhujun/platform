@@ -68,7 +68,7 @@
             "dumpDataToTempTable":'rs/craneinspectreport/dumpDataToTempTable',
             "clearRiskTempTable":'rs/craneinspectreport/clearRiskTempTable',
             "updateUploadedReport":'rs/craneinspectreport/updateUploadedReport',
-            "deleteUploadedReport":'rs/craneinspectreport/deleteUploadedReport'
+            "deleteUpdatedReport":'rs/craneinspectreport/deleteUpdatedReport'
         },
         /*"authority":{
             "add":"rs/authority/add"
@@ -124,6 +124,13 @@
             "delete":"rs/riskModel/delete",
             "list":"rs/riskModel/list",
             "getClassNameFromPackage":"rs/riskModel/getClassNameFromPackage"
+        },
+        "craneType":{
+            "add":"rs/craneType/add",
+            "update":"rs/craneType/update",
+            "delete":"rs/craneType/delete",
+            "list":"rs/craneType/list",
+            "listModel":"rs/craneType/listModel"
         }
     }
 })(jQuery);

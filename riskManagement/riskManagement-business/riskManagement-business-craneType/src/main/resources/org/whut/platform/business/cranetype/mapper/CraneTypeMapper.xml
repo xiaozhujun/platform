@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.cranetype.mapper.CraneTypeMapper">
+    <sql id="craneType_fields">
+		ID,NAME,RISKMODELID,DESCRIPTION
+	</sql>
+
+    <resultMap id="craneTypeResultMap" type="CraneType">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="riskmodelId" column="RISKMODELID"/>
+        <result property="description" column="DESCRIPTION" />
+    </resultMap>
+
+    <insert id="add" parameterType="CraneType" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        cranetype(
+        <include refid="craneType_fields" />
+        )
+        VALUES (#{id}, #{name}, #{riskmodelId},#{description});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="CraneType">
+        UPDATE cranetype
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            <if test="riskmodelId != null">RISKMODELID=#{riskmodelId},</if>
+            <if test="description != null">DESCRIPTION=#{description}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="CraneType">
+        DELETE FROM cranetype
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+
+    </delete>
+
+    <select id="get" parameterType="CraneType" resultMap="craneTypeResultMap">
+        SELECT
+        <include refid="craneType_fields" />
+        FROM cranetype WHERE ID=#{id}
+    </select>
+
+    <select id="findByCondition" parameterType="map" resultMap="craneTypeResultMap">
+        SELECT
+        <include refid="craneType_fields" />
+        FROM cranetype
+        <where>
+            <if test="name != null">NAME=#{name}</if>
+            <if test="riskmodelId != null">AND RISKMODELID=#{riskmodelId}</if>
+            <if test="description != null">AND DESCRIPTION=#{description}</if>
+        </where>
+    </select>
+    <delete id="deleteByCraneId" parameterType="java.lang.Long">
+        DELETE FROM craneinspectreport_cranetype
+        <where>
+            <if test="craneTypeId != null">craneTypeId=#{craneTypeId}</if>
+        </where>
+    </delete>
+    <select id="listModel" resultType="map">
+        SELECT
+        *
+        FROM
+        riskmodel
+    </select>
+    <select id="list" resultType="map">
+      SELECT
+      type.*,r.name as model,r.id as modelId,r.className,r.description
+      FROM
+      cranetype type,riskmodel r
+      WHERE
+      type.riskmodelId=r.id
+    </select>
+    <select id="findIdByModelName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        id
+        FROM
+        riskmodel
+        <if test="modelName!=null">
+        WHERE
+        name=#{modelName}
+        </if>
+    </select>
+</mapper>

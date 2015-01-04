@@ -17,6 +17,7 @@
         <module>riskManagement-business-report</module>
         <module>riskManagement-business-riskcolor</module>
         <module>riskManagement-business-riskmodel</module>
+        <module>riskManagement-business-craneType</module>
     </modules>
 
 

@@ -1,15 +1,64 @@
+<link type="text/css" href="css/usernav.css" rel="stylesheet"/>
+<script type=text/javascript src="js/usernav.js"></script>
 <style type="text/css">
+    #titleDiv{
+        width:100%;
+        font-size: 30px;
+        height: 50px;
+        position: relative;
+        z-index: 11;
+    }
     #title{
         width:100%;
         text-align: center;
         font-size: 30px;
+        height: 20px;
     }
-    #webDiv{position:absolute;top:19px;right: 110px;font-size: 16px;}
+    .titleContent{
+       float:right;
+       height: 25px;
+    }
+    #userDiv{float:left;font-size: 16px;color:#787878;display: none}
+    .user{top:19px;font-size: 16px;color:#787878;float: left;margin-left: 2px;cursor: pointer}
+    #wel{top:19px;font-size: 16px;color:#787878;float: left }
+    #webDiv{float:left;font-size: 16px;margin-right: 5px}
     #webDiv a{text-decoration: none;color: #787878;}
-    #mobileDiv{position:absolute;top:20px;right: 50px;font-size: 16px;}
+    #mobileDiv{float:left;font-size: 16px;margin-right: 5px}
     #mobileDiv a{text-decoration: none;color: #787878;}
     #title a{text-decoration: none;color: #787878;}
 </style>
+<script type="text/javascript">
+    var currentUser = null;
+    $(document).ready(function(){
+        $.get($.URL.user.currentUser,null,userInfoCallback,"json");
+    });
+    function userInfoCallback(data){
+        if(data!=null){
+            currentUser = data.data;
+            var userName = currentUser.name;
+            if(userName==null){
+                userName = currentUser.userName;
+            }
+            $("#userDiv").show();
+            $("#user").html(userName);
+        }
+    }
+</script>
+<div id="titleDiv">
 <div id="title"><a href="index.html">基于物联网的起重机械风险管理平台</a></div>
-<div id="webDiv"><a href="admin.html">管理平台</a></div>
-<div id="mobileDiv"><a href="appDownload.html">手机版</a></div>
+<div class="titleContent">
+    <div id="userDiv"><div id="wel">欢迎您!</div>
+        <div id="userMain" class="user">
+            <ul id="nav">
+                <li><a href="#" id="user"></a>
+                    <ul>
+                        <li><a href="#">个人中心</a></li>
+                        <li><a href="logout">安全退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div></div>
+    <div id="webDiv"><a href="admin.html">管理平台</a></div>
+    <div id="mobileDiv"><a href="appDownload.html">手机版</a></div>
+</div>
+</div>

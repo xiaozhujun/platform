@@ -78,7 +78,8 @@
             "update":"rs/user/update",
             "delete":"rs/user/delete",
             "list":"rs/user/list",
-            "getId":"rs/user/getIdByName"
+            "getId":"rs/user/getIdByName",
+            "currentUser":"rs/user/currentUser"
         },
         "authority":{
              "add":"rs/authority/add",

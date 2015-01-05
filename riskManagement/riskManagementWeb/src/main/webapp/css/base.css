@@ -161,7 +161,7 @@ body .fn-hide {
 .fullMainContainer{margin: 0; padding: 0;}
 .borderContainer{border: solid #ccc 1px;}
 
-#title{width: 100%;font-size: 40px;font-family: 黑体;text-align: center;}
+#title{width: 100%;/*font-size: 40px*/;font-family: 黑体;text-align: center;}
 #dashbord{position: absolute;right: 5px;top: 34px;}
 #dashbordMenu{position: absolute;right: 5px;top: 65px;border-radius: 3px;}
 #dashbordMenu li{cursor: pointer;padding: 0px 25px;}

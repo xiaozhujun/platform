@@ -452,7 +452,7 @@
             and #{eTime}
         </if>
         <if test="startValue!=0f">
-            AND riskval BETWEEN #{startValue}
+            AND riskvalue BETWEEN #{startValue}
         </if>
         <if test="endValue!=0f">
             AND #{endValue}
@@ -522,7 +522,7 @@
             and #{eTime}
         </if>
         <if test="startValue!=0f">
-            AND riskval BETWEEN #{startValue}
+            AND riskvalue BETWEEN #{startValue}
         </if>
         <if test="endValue!=0f">
             AND #{endValue}

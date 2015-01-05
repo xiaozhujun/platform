@@ -51,6 +51,7 @@ public class CraneInspectReportService {
     //返回MongoString
     public String getMongoStringFromRequest(InputStream inputStream,String fileName){
              String mString;
+             excelMap=new ExcelMap();
              excelMap=jxlExportImportUtils.analysisExcel(inputStream);
              List<List<String>> listContents=new ArrayList<List<String>>();
              List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
@@ -652,5 +653,29 @@ public class CraneInspectReportService {
     }
     public int deleteUploadedReport(Map<String,String> map){
         return mapper.deleteUploadedReport(map);
+    }
+    public List<CraneInspectReport>getEquipmentVarietyByUploadedReportId(Long reportId){
+        return mapper.getEquipmentVarietyByUploadedReportId(reportId);
+    }
+    public String findEquipmentVarietyFromCraneType(String equipmentVariety){
+        return mapper.findEquipmentVarietyFromCraneType(equipmentVariety);
+    }
+    public List<String> getUnExistInCraneType(InputStream inputStream){
+        excelMap=jxlExportImportUtils.analysisExcel(inputStream);
+        List<String> list=new ArrayList<String>();
+        List<String> unExistEquipmentVarietyInCraneType=new ArrayList<String>();
+        for(int i=0;i<excelMap.getContents().size();i++){
+        String equipmentVariety=excelMap.getContents().get(i).get(6);
+        list.add(equipmentVariety);
+        }
+        for(String s:list){
+            String equipmentVariety=findEquipmentVarietyFromCraneType(s);
+            if(equipmentVariety==null){
+                if(!unExistEquipmentVarietyInCraneType.contains(s)){
+                unExistEquipmentVarietyInCraneType.add(s);
+                }
+            }
+        }
+        return unExistEquipmentVarietyInCraneType;
     }
 }

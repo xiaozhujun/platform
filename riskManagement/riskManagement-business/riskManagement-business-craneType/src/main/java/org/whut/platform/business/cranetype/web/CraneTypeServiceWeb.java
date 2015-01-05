@@ -8,6 +8,7 @@ import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,4 +91,60 @@ public class CraneTypeServiceWeb {
         List<Map<String,String>> list = craneTypeService.listModel();
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/addEquipmentVarAndCraneType")
+    @POST
+    public String addEquipmentVarAndCraneType(@FormParam("equipmentVariety") String equipmentVariety,@FormParam("craneType") String craneType){
+        if(equipmentVariety==null || craneType=="" || equipmentVariety.trim().equals("") || craneType.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
+        }
+        List<Map<String,String>> craneTypeList = craneTypeService.findEquipmentAndCraneType(equipmentVariety,craneType);
+        if(craneTypeList.size()>0){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"类型已存在！");
+        }
+        else{
+            String craneTypeId=craneTypeService.findCraneTypeIdByName(craneType);
+            Map<String,String> map=new HashMap<String, String>();
+            map.put("equipmentVariety",equipmentVariety);
+            map.put("craneTypeId",craneTypeId);
+            map.put("craneTypeName",craneType);
+            craneTypeService.addCraneInspectReportCraneType(map);
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }
+    }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/listCraneInspectAndType")
+    @GET
+    public String listCraneInspectAndType(){
+        List<Map<String,String>> list = craneTypeService.listCraneInspectAndType();
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Path("/updateCraneInspectAndType")
+    @POST
+    public String updateCraneInspectAndType(@FormParam("jsonString") String jsonString){
+        Map<String,String> map = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Map.class);
+        Long craneTypeId=craneTypeService.findIdByName(map.get("crane").toString());
+        map.put("craneTypeId",String.valueOf(craneTypeId));
+        int result = craneTypeService.updateCraneInspectAndType(map);
+        if(result>0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+    }
+    @Produces( MediaType.APPLICATION_JSON+ ";charset=UTF-8")
+    @Path("/deleteCraneInspectAndType")
+    @POST
+    public String deleteCraneInspectAndType(@FormParam("jsonString") String jsonString){
+        Map<String,String> map = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Map.class);
+        int result = craneTypeService.deleteCraneInspectAndType(map);
+        if(result>0){
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+        }else{
+            return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
+        }
+    }
+
+
 }

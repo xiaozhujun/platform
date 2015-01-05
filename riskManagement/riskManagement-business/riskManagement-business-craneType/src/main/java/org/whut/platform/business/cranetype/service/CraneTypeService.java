@@ -45,4 +45,26 @@ public class CraneTypeService {
     public String findIdByModelName(String modelName){
        return mapper.findIdByModelName(modelName);
     }
+    public List<Map<String,String>>findEquipmentAndCraneType(String equipmentVariety,String craneType){
+        return mapper.findEquipmentAndCraneType(equipmentVariety,craneType);
+    }
+    public  String findCraneTypeIdByName(String name){
+        return mapper.findCraneTypeIdByName(name);
+    }
+    public void addCraneInspectReportCraneType(Map<String,String> map){
+        mapper.addCraneInspectReportCraneType(map);
+
+    }
+    public List<Map<String,String>> listCraneInspectAndType(){
+        return mapper.listCraneInspectAndType();
+    }
+    public Long findIdByName(String name){
+        return mapper.findIdByName(name);
+    }
+    public int updateCraneInspectAndType(Map<String,String> map){
+        return mapper.updateCraneInspectAndType(map);
+    }
+    public int deleteCraneInspectAndType(Map<String,String> map){
+        return mapper.deleteCraneInspectAndType(map);
+    }
 }

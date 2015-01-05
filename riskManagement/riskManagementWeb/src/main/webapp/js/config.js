@@ -130,7 +130,11 @@
             "update":"rs/craneType/update",
             "delete":"rs/craneType/delete",
             "list":"rs/craneType/list",
-            "listModel":"rs/craneType/listModel"
+            "listModel":"rs/craneType/listModel",
+            "addEquipmentVarAndCraneType":"rs/craneType/addEquipmentVarAndCraneType",
+            "listCraneInspectAndType":"rs/craneType/listCraneInspectAndType",
+            "updateCraneInspectAndType":"rs/craneType/updateCraneInspectAndType",
+            "deleteCraneInspectAndType":"rs/craneType/deleteCraneInspectAndType"
         }
     }
 })(jQuery);

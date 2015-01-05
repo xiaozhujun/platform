@@ -545,6 +545,30 @@
                                         $.post($.URL.craneinspectreport.addRepeat,null,null,"json");
                                     }
 
+                                }else if(_data.code==505){
+                                    var table1=document.createElement("table");
+                                    table1.border=1;
+                                    table1.width="100%";
+                                    table1.align="left";
+                                    table1.isScroll=true;
+                                    table1.draggable=true;
+                                    table1.overflowX="scroll";
+                                    table1.overflowY="scroll";
+                                    var caption= table1.createCaption();
+                                    caption.innerHTML="以下类型在起重机类别中不存在,请补全后再上传  <a href='craneInspectReport/addCraneType.html'>前往输入</a>";
+                                    //表头
+                                    var tr=table1.insertRow(0);
+                                    var td=tr.insertCell(0);
+                                    td.innerHTML="起重机类型";
+
+                                    for(var i=0;i<_data.data.length;i++){
+
+                                        var j=i+1;
+                                        var tr=table1.insertRow(j);
+                                        var td=tr.insertCell(0);
+                                        td.innerHTML=_data.data[i];
+                                    }
+                                    document.getElementById("maingrid").appendChild(table1);
                                 }
                         afterEachUpload($form.attr('id'), data );
                     })

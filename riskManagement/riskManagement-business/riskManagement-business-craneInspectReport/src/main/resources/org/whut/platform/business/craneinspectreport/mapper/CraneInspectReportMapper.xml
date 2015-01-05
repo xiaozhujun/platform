@@ -902,4 +902,25 @@
             <if test="id != null">ID=#{id}</if>
         </where>
     </delete>
+    <select id="getEquipmentVarietyByUploadedReportId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+        SELECT
+        equipmentVariety
+        FROM
+        craneInspectReport
+        <if test="reportId!=null">
+         WHERE  uploadedReportId=#{reportId}
+        </if>
+    </select>
+    <select id="findEquipmentVarietyFromCraneType" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        cr.equipmentVariety
+        FROM
+        craneinspectreport_cranetype cr
+        <if test="equipmentVariety!=null">
+        WHERE
+        cr.equipmentVariety=#{equipmentVariety}
+        </if>
+        GROUP BY
+        cr.equipmentVariety
+    </select>
 </mapper>

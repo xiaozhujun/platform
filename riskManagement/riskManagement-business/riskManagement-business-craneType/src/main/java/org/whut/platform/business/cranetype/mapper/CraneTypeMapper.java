@@ -21,4 +21,11 @@ public interface CraneTypeMapper extends AbstractMapper<CraneType> {
     public List<Map<String,String>>listModel();
     public List<Map<String,String>>list();
     public String findIdByModelName(@Param("modelName") String modelName);
+    public String findCraneTypeIdByName(@Param("name") String name);
+    public List<Map<String,String>> findEquipmentAndCraneType(@Param("equipmentVariety") String equipmentVariety,@Param("craneType") String craneType);
+    public void addCraneInspectReportCraneType(Map<String,String> map);
+    public List<Map<String,String>>listCraneInspectAndType();
+    public Long findIdByName(@Param("name") String name);
+    public int updateCraneInspectAndType(Map<String,String> map);
+    public int deleteCraneInspectAndType(Map<String,String> map);
 }

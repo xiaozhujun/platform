@@ -62,6 +62,7 @@ public class CraneInspectReportServiceWeb {
             return JsonResultUtils
                     .getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
+        List<String> unExistEquipmentVarietyInCraneType=new ArrayList<String>();
         try {
             request.setCharacterEncoding("UTF-8");
             int uploadMaxSize= Integer.parseInt(FundamentalConfigProvider.get("uploadMaxSize"));
@@ -71,8 +72,20 @@ public class CraneInspectReportServiceWeb {
             if(fileInfo.getName()==null){
                 //文件名为空
             }else{
-
+                unExistEquipmentVarietyInCraneType=craneInspectReportService.getUnExistInCraneType(fileInfo.getInputStream());
+                if(unExistEquipmentVarietyInCraneType==null||unExistEquipmentVarietyInCraneType.size()==0){
                 craneInspectReportService.upload(fileInfo.getInputStream(),fileInfo.getName());
+                    // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
+                    List<CraneInspectReport> list=craneInspectReportService.getRepeatList();
+                    if (list.size()==0||list==null){
+                        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+                    }
+                    else {
+                        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.DUPLICATE);
+                    }
+                }else{
+                return JsonResultUtils.getObjectResultByStringAsDefault(unExistEquipmentVarietyInCraneType,JsonResultUtils.Code.QUESTION);
+                }
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -80,15 +93,8 @@ public class CraneInspectReportServiceWeb {
             logger.error(e.getMessage());
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-        // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
-        List<CraneInspectReport> list=craneInspectReportService.getRepeatList();
-        if (list.size()==0||list==null){
-            return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
-        }
-        else{
-            return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.DUPLICATE);
-        }
-    }
+        return null;
+}
       public FileInfo parseRequst(@Context HttpServletRequest request,MultipartRequestParser multipartRequestParser,FileService fileService,int uploadMaxSize){
                FileInfo fileInfo=null;
                try{

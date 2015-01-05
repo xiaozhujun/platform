@@ -91,4 +91,70 @@
         name=#{modelName}
         </if>
     </select>
+    <select id="findCraneTypeIdByName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        id
+        FROM
+        craneType
+        <if test="name!=null">
+        WHERE
+        name=#{name}
+        </if>
+    </select>
+    <select id="findEquipmentAndCraneType" parameterType="map" resultType="map">
+        SELECT
+        *
+        FROM
+        craneinspectreport_craneType
+        <if test="equipmentVariety!=null">
+        WHERE
+        equipmentVariety=#{equipmentVariety}
+        </if>
+        <if test="craneType!=null">
+        AND craneTypeName=#{craneType}
+        </if>
+    </select>
+    <insert id="addCraneInspectReportCraneType" parameterType="map" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        craneinspectreport_craneType(
+        id,equipmentVariety,craneTypeId,craneTypeName
+        )
+        VALUES (#{id}, #{equipmentVariety}, #{craneTypeId},#{craneTypeName});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="listCraneInspectAndType"  resultType="map">
+        SELECT
+        c.id,c.equipmentVariety,c.craneTypeId,c.craneTypeName as crane
+        FROM
+        craneinspectreport_cranetype c
+        ORDER BY  craneTypeId
+    </select>
+    <select id="findIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT
+        id
+        FROM
+        cranetype
+        <if test="name!=null">
+        WHERE name=#{name}
+        </if>
+    </select>
+    <update id="updateCraneInspectAndType" parameterType="map">
+        UPDATE craneinspectreport_cranetype
+        <set>
+            <if test="equipmentVariety != null">equipmentVariety=#{equipmentVariety},</if>
+            <if test="craneTypeId != null">craneTypeId=#{craneTypeId},</if>
+            <if test="crane != null">craneTypeName=#{crane}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+    <delete id="deleteCraneInspectAndType" parameterType="map">
+        DELETE FROM craneinspectreport_cranetype
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
 </mapper>

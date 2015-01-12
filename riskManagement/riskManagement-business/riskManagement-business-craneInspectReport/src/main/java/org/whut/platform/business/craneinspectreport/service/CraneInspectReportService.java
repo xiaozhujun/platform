@@ -705,5 +705,8 @@ public class CraneInspectReportService {
         }
         return unExistEquipmentVarietyInCraneType;
     }
+    public String getCalculateStatus(){
+        return mapper.getCalculateStatus();
+    }
 
 }

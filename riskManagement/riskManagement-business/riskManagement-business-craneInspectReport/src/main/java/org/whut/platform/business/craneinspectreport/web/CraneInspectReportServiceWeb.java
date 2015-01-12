@@ -817,4 +817,18 @@ public class CraneInspectReportServiceWeb {
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/getCalculateStatus")
+    @POST
+    public String getCalculateStatus(){
+        String status=craneInspectReportService.getCalculateStatus();
+        return JsonResultUtils.getObjectResultByStringAsDefault(status,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/calculateRiskValueInThread")
+    public String calculateRiskValueInThread(@FormParam("reportId") String reportId){
+
+         return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
+    }
 }

@@ -68,7 +68,8 @@
             "dumpDataToTempTable":'rs/craneinspectreport/dumpDataToTempTable',
             "clearRiskTempTable":'rs/craneinspectreport/clearRiskTempTable',
             "updateUploadedReport":'rs/craneinspectreport/updateUploadedReport',
-            "deleteUploadedReport":'rs/craneinspectreport/deleteUploadedReport'
+            "deleteUploadedReport":'rs/craneinspectreport/deleteUploadedReport',
+            "getCalculateStatus":'rs/craneinspectreport/getCalculateStatus'
         },
         /*"authority":{
             "add":"rs/authority/add"

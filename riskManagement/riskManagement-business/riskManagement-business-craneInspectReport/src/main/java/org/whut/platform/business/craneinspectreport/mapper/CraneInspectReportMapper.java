@@ -110,4 +110,5 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public int deleteUploadedReport(Map<String,String> map);
     public List<CraneInspectReport>getEquipmentVarietyByUploadedReportId(@Param("reportId") Long reportId);
     public String findEquipmentVarietyFromCraneType(@Param("equipmentVariety")String equipmentVariety);
+    public String getCalculateStatus();
 }

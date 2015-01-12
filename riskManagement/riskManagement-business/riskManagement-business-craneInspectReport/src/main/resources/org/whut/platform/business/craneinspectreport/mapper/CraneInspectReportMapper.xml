@@ -923,4 +923,10 @@
         GROUP BY
         cr.equipmentVariety
     </select>
+    <select id="getCalculateStatus" resultType="java.lang.String">
+        SELECT
+        status
+        FROM
+        riskcalculate_status
+    </select>
 </mapper>

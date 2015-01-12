@@ -1,0 +1,23 @@
+/**{margin:0;padding:0;list-style-type:none;}*/
+/*a,img{border:0;}*/
+/*body{background:#f2f2f2;font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}*/
+/* stepInfo 
+	border-radius：0为正方形，0~N，由正方形向圆形转化，N越大越圆。
+	padding：图形的内边距
+	background：图形背景色
+	text-align：文本对齐
+	line-height：行高
+	color：文字颜色
+	position：定位
+	width：宽度
+	height：高度
+*/
+.stepInfo{position:relative;background:#f2f2f2;margin:20px auto 0 auto;width:500px;}
+.stepInfo li{float:left;width:48%;height:0.15em;background:#bbb;}
+.stepIco{border-radius:1em;padding:0.03em;background:#bbb;text-align:center;line-height:1.5em;color:#fff; position:absolute;width:1.4em;height:1.4em;}
+.stepIco1{top:-0.7em;left:-1%;}
+.stepIco2{top:-0.7em;left:21%;}
+.stepIco3{top:-0.7em;left:46%;}
+.stepIco4{top:-0.7em;left:71%;}
+.stepIco5{top:-0.7em;left:95%;}
+.stepText{color:#666;margin-top:0.2em;width:4em;text-align:center;margin-left:-1.4em;}

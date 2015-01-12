@@ -6,6 +6,8 @@ import org.whut.platform.business.address.service.AddressService;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.riskcalculate.ICalculateRisk;
 import org.whut.platform.business.craneinspectreport.service.CraneInspectReportService;
+import org.whut.platform.business.craneinspectreport.thread.CraneInspectReportThread;
+import org.whut.platform.business.datarule.service.DataRoleAddressService;
 import org.whut.platform.business.user.entity.Power;
 import org.whut.platform.business.user.security.MyUserDetail;
 import org.whut.platform.business.user.service.UserService;
@@ -40,11 +42,13 @@ import java.util.Map;
 public class CraneInspectReportServiceWeb {
     private static PlatformLogger logger = PlatformLogger.getLogger(CraneInspectReportServiceWeb.class);
     @Autowired
-    private CraneInspectReportService craneInspectReportService;
+    private  CraneInspectReportService craneInspectReportService;
     @Autowired
-    private AddressService addressService;
+    private  AddressService addressService;
     @Autowired
-    private UserService userService;
+    private  UserService userService;
+    @Autowired
+    private  DataRoleAddressService dataRoleAddressService;
 
     private String singlePicURL="";
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
@@ -822,13 +826,15 @@ public class CraneInspectReportServiceWeb {
     @POST
     public String getCalculateStatus(){
         String status=craneInspectReportService.getCalculateStatus();
-        return JsonResultUtils.getObjectResultByStringAsDefault(status,JsonResultUtils.Code.SUCCESS);
+        return JsonResultUtils.getObjectResultByStringAsDefault(status, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/calculateRiskValueInThread")
     public String calculateRiskValueInThread(@FormParam("reportId") String reportId){
-
+         String userName=userService.getMyUserDetailFromSession().getUsername();
+         CraneInspectReportThread thread=new CraneInspectReportThread(reportId,craneInspectReportService,addressService,userService,dataRoleAddressService,userName);
+         new Thread(thread).start();
          return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
 }

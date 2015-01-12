@@ -23,7 +23,8 @@
                                 { text: '计算最大风险',id:'maxRisk', click: itemclick },
                                 { text: '计算风险值', id: 'risk', click: itemclick },
                                 { text: '计算省市区风险', id: 'proRisk', click: itemclick },
-                                { text: '复制数据', id: 'dumpData', click: itemclick}
+                                { text: '复制数据', id: 'dumpData', click: itemclick},
+                                { text: '后台计算风险值',id:'cRisk',click:itemclick}
                             ]
                     }]
         };
@@ -173,6 +174,19 @@
                     case 'dumpData':
                         $.ligerDialog.waitting('正在复制数据中,请稍候...');
                         $.post($.URL.craneinspectreport.clearRiskTempTable,null,clearRiskTempTableCallback,"json");
+                        break;
+                    case 'cRisk':
+                        var s="";
+                        var rows= g.getCheckedRows();
+                        $(rows).each(function(){
+                            s+=this.id+",";
+                        });
+                        if(s!=""){
+                            $.post($.URL.craneinspectreport.calculateRiskValueInThread,{"reportId":s},calculateRiskValueInThreadCallback,"json");
+                            /*$.ligerDialog.waitting('正在努力计算中,请稍候...');*/
+                        }else if(s==""){
+                            $.ligerDialog.alert("请选择计算报告!");
+                        }
                 }
             }
         }
@@ -231,6 +245,11 @@
                 $.ligerDialog.closeWaitting();
                 $.ligerDialog.success("复制完成!");
             }
+        }
+        function calculateRiskValueInThreadCallback(data){
+                if(data.code==200){
+                    $.ligerDialog.success("计算任务已提交!");
+                }
         }
         function openDialog(){
             $.ligerDialog.open({

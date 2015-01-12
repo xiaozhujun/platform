@@ -929,4 +929,11 @@
         FROM
         riskcalculate_status
     </select>
+    <update id="updateRiskCalculateStatus" parameterType="map">
+        UPDATE riskcalculate_status
+        <set>
+            <if test="status!= null">status=#{status}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
 </mapper>

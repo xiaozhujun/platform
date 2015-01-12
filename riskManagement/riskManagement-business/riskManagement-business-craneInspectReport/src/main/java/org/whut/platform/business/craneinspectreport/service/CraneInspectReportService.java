@@ -708,5 +708,7 @@ public class CraneInspectReportService {
     public String getCalculateStatus(){
         return mapper.getCalculateStatus();
     }
-
+    public int updateRiskCalculateStatus(String status,long id){
+        return mapper.updateRiskCalculateStatus(status,id);
+    }
 }

@@ -100,6 +100,11 @@
             <artifactId>business-user</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>business-datarule</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

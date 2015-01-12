@@ -69,7 +69,8 @@
             "clearRiskTempTable":'rs/craneinspectreport/clearRiskTempTable',
             "updateUploadedReport":'rs/craneinspectreport/updateUploadedReport',
             "deleteUploadedReport":'rs/craneinspectreport/deleteUploadedReport',
-            "getCalculateStatus":'rs/craneinspectreport/getCalculateStatus'
+            "getCalculateStatus":'rs/craneinspectreport/getCalculateStatus',
+            "calculateRiskValueInThread":'rs/craneinspectreport/calculateRiskValueInThread'
         },
         /*"authority":{
             "add":"rs/authority/add"

@@ -72,9 +72,9 @@ public class CraneInspectReportServiceWeb {
             if(fileInfo.getName()==null){
                 //文件名为空
             }else{
-                unExistEquipmentVarietyInCraneType=craneInspectReportService.getUnExistInCraneType(fileInfo.getInputStream());
+                unExistEquipmentVarietyInCraneType=craneInspectReportService.getUnExistInCraneType(fileInfo.getInputStream(),fileInfo.getName());
                 if(unExistEquipmentVarietyInCraneType==null||unExistEquipmentVarietyInCraneType.size()==0){
-                craneInspectReportService.upload(fileInfo.getInputStream(),fileInfo.getName());
+                /*craneInspectReportService.upload(fileInfo.getInputStream(),fileInfo.getName());*/
                     // 新增操作时，返回操作状态和状态码给客户端，数据区是为空的
                     List<CraneInspectReport> list=craneInspectReportService.getRepeatList();
                     if (list.size()==0||list==null){

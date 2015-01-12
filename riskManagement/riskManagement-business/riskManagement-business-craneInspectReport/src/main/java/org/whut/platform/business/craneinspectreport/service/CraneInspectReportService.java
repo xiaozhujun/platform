@@ -14,6 +14,7 @@ import org.whut.platform.fundamental.jxl.model.ExcelMap;
 import org.whut.platform.fundamental.jxl.utils.JxlExportImportUtils;
 import org.whut.platform.fundamental.map.BaiduMapUtil;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
+import org.whut.platform.fundamental.util.string.StringUtil;
 import org.whut.platform.fundamental.util.tool.ToolUtil;
 
 import java.io.InputStream;
@@ -44,15 +45,15 @@ public class CraneInspectReportService {
     public void getDbArrayListFromMongo(){
         dbObjectList= mongoConnector.getDbArrayListFromMongo();
     }
-    public void upload(InputStream inputStream,String fileName){
-      String documentJson=getMongoStringFromRequest(inputStream,fileName);
+    public void upload(ExcelMap excelMap,String fileName){
+      String documentJson=getMongoStringFromRequest(excelMap,fileName);
       mongoConnector.insertDocument(documentJson);
     }
     //返回MongoString
-    public String getMongoStringFromRequest(InputStream inputStream,String fileName){
+    public String getMongoStringFromRequest(ExcelMap excelMap,String fileName){
              String mString;
-             excelMap=new ExcelMap();
-             excelMap=jxlExportImportUtils.analysisExcel(inputStream);
+             //excelMap=new ExcelMap();
+            // excelMap=jxlExportImportUtils.analysisExcel(inputStream);
              List<List<String>> listContents=new ArrayList<List<String>>();
              List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
              listRepeat.clear();
@@ -65,10 +66,11 @@ public class CraneInspectReportService {
                  listContents.add(excelMap.getContents().get(i));
                  }else{
                      Long addressId=addressService.findIdByArea(address.getProvince(),address.getCity(),address.getArea());
-                     if(addressId==null){
+                     if(addressId==null||addressId==0){
                          //addressId查不到
                      }else{
                          craneInspectReport=transferExcelMapToCraneInspectReportObject(excelMap,i,addressId,reportId);
+                         if(craneInspectReport!=null){
                          String s=craneInspectReport.getReportNumber();
                          String  reportNumber=mapper.getReportNumber(s);
                          if(reportNumber==null){
@@ -76,6 +78,7 @@ public class CraneInspectReportService {
                              /*mapper.insert(craneInspectReport);*/
                          }else{
                              listRepeat.add(craneInspectReport);
+                         }
                          }
                     }
                  }
@@ -95,10 +98,14 @@ public class CraneInspectReportService {
         for(int i=0;i<excelMap.getContents().size()-1;i++){
             String documentJson1="{";
             for(int j=0;j<excelMap.getContents().get(i).size()-1;j++){
-                documentJson1+=excelMap.getHeads().get(j)+":'"+excelMap.getContents().get(i).get(j)+"',";
-                if(j+1==excelMap.getContents().get(i).size()-1){
-                    documentJson1+=excelMap.getHeads().get(j+1)+":'"+excelMap.getContents().get(i).get(j+1)+"'";
+                if(StringUtil.removeN(excelMap.getContents().get(i).get(j))!=null){
+                documentJson1+=excelMap.getHeads().get(j)+":'"+StringUtil.removeN(excelMap.getContents().get(i).get(j))+"',";
                 }
+                if(j+1==excelMap.getContents().get(i).size()-1){
+                   if(StringUtil.removeN(excelMap.getContents().get(i).get(j+1))!=null){
+                    documentJson1+=excelMap.getHeads().get(j+1)+":'"+StringUtil.removeN(excelMap.getContents().get(i).get(j+1))+"'";
+                   }
+                   }
             }
             documentJson+=documentJson1+"},";
             if(i+1==excelMap.getContents().size()-1){
@@ -112,6 +119,7 @@ public class CraneInspectReportService {
     public CraneInspectReport transferExcelMapToCraneInspectReportObject(ExcelMap excelMap,int i,Long addressId,Long reportId){
              Date d=toolUtil.transferStringToDate(excelMap.getContents().get(i).get(10));
              craneInspectReport=new CraneInspectReport();
+             if(!excelMap.getContents().get(i).get(0).equals("")&&StringUtil.removeN(excelMap.getContents().get(i).get(6))!=null){
              craneInspectReport.setReportNumber(excelMap.getContents().get(i).get(0));
              craneInspectReport.setUnitAddress(excelMap.getContents().get(i).get(1));
              craneInspectReport.setAddressId(addressId);
@@ -119,7 +127,7 @@ public class CraneInspectReportService {
              craneInspectReport.setUserPoint(excelMap.getContents().get(i).get(3));
              craneInspectReport.setSafeManager(excelMap.getContents().get(i).get(4));
              craneInspectReport.setContactPhone(excelMap.getContents().get(i).get(5));
-             craneInspectReport.setEquipmentVariety(excelMap.getContents().get(i).get(6));
+             craneInspectReport.setEquipmentVariety(StringUtil.removeN(excelMap.getContents().get(i).get(6)));
              craneInspectReport.setUnitNumber(excelMap.getContents().get(i).get(7));
              craneInspectReport.setManufactureUnit(excelMap.getContents().get(i).get(8));
              craneInspectReport.setManufactureLicenseNumber(excelMap.getContents().get(i).get(9));
@@ -129,9 +137,17 @@ public class CraneInspectReportService {
              craneInspectReport.setWorkLevel(excelMap.getContents().get(i).get(13));
              craneInspectReport.setRatedLiftWeight(excelMap.getContents().get(i).get(14));
              Map map=getCoordinate(craneInspectReport.getUnitAddress());
+             if(map.get("lng")!=null&&map.get("lat")!=null){
              craneInspectReport.setLng(map.get("lng").toString());
              craneInspectReport.setLat(map.get("lat").toString());
+             }else{
+              return null;
+             }
              craneInspectReport.setUploadedReportId(reportId);
+             }else{
+             System.out.println("reportNumber为空!");
+             return null;
+             }
              return craneInspectReport;
     }
     //从execl中获取地址信息
@@ -150,9 +166,11 @@ public class CraneInspectReportService {
         }else{
         Map<String,String> m=baiduMapUtil.parseAddToProCityArea(excelMap.getContents().get(i).get(1));
         Address address=new Address();
+        if(m!=null&&m.get("province")!=null&&m.get("city")!=null&&m.get("area")!=null){
         address.setProvince(m.get("province"));
         address.setCity(m.get("city"));
         address.setArea(m.get("area"));
+        }
         return address;
         }
     }
@@ -660,14 +678,19 @@ public class CraneInspectReportService {
     public String findEquipmentVarietyFromCraneType(String equipmentVariety){
         return mapper.findEquipmentVarietyFromCraneType(equipmentVariety);
     }
-    public List<String> getUnExistInCraneType(InputStream inputStream){
+    public List<String> getUnExistInCraneType(InputStream inputStream,String fileName){
         excelMap=jxlExportImportUtils.analysisExcel(inputStream);
         List<String> list=new ArrayList<String>();
         List<String> unExistEquipmentVarietyInCraneType=new ArrayList<String>();
         for(int i=0;i<excelMap.getContents().size();i++){
-        String equipmentVariety=excelMap.getContents().get(i).get(6);
-        list.add(equipmentVariety);
+        String equipmentVar=excelMap.getContents().get(i).get(6);
+        String equipmentVariety= null;
+        if(StringUtil.removeN(equipmentVar)!=null){
+            equipmentVariety=StringUtil.removeN(equipmentVar);
+            list.add(equipmentVariety);
         }
+        }
+        if(list!=null||list.size()!=0){
         for(String s:list){
             String equipmentVariety=findEquipmentVarietyFromCraneType(s);
             if(equipmentVariety==null){
@@ -676,6 +699,11 @@ public class CraneInspectReportService {
                 }
             }
         }
+        }
+        if(unExistEquipmentVarietyInCraneType!=null||unExistEquipmentVarietyInCraneType.size()!=0){
+            upload(excelMap,fileName);
+        }
         return unExistEquipmentVarietyInCraneType;
     }
+
 }

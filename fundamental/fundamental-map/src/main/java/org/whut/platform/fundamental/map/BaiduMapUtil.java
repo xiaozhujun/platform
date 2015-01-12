@@ -145,7 +145,7 @@ public class BaiduMapUtil {
         Map<String,String> m=new HashMap<String, String>();
         try{
             Map map=getCoordinate(add);
-            if(map!=null){
+            if(map!=null&&map.get("lng")!=null&&map.get("lat")!=null){
                 m=parseAddressToGetProvinceCityArea(map.get("lng").toString(), map.get("lat").toString());
             }
         }catch (Exception e) {

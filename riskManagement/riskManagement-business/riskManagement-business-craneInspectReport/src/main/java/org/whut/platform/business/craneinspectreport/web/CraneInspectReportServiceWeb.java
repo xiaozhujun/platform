@@ -825,7 +825,7 @@ public class CraneInspectReportServiceWeb {
     @Path("/getCalculateStatus")
     @POST
     public String getCalculateStatus(){
-        String status=craneInspectReportService.getCalculateStatus();
+        String status=craneInspectReportService.getCalculateStatus("当前任务");
         return JsonResultUtils.getObjectResultByStringAsDefault(status, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -837,4 +837,19 @@ public class CraneInspectReportServiceWeb {
          new Thread(thread).start();
          return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCalculateTaskInfo")
+    public String getCalculateTaskInfo(){
+        List<Map<String,String>> list=craneInspectReportService.getCalculateTaskInfo("当前任务");
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCalculateTaskHistory")
+    public String getCalculateTaskHistory(){
+        List<Map<String,String>> list=craneInspectReportService.getCalculateTaskInfo("任务完成");
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
+    }
+
 }

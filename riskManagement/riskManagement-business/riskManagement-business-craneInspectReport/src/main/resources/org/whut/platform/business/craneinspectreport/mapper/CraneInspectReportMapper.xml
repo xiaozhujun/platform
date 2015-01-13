@@ -629,6 +629,12 @@
         set status=#{status}
         where id=#{reportId}
     </update>
+    <update id="updateTaskIdUploadedReportByReportId" parameterType="map">
+        update uploadedreport
+        set taskId=#{taskId}
+        where id=#{reportId}
+    </update>
+
     <select id="validateReportIsCalculated" parameterType="java.lang.Long" resultType="map">
         SELECT *
         FROM uploadedreport WHERE
@@ -923,17 +929,59 @@
         GROUP BY
         cr.equipmentVariety
     </select>
-    <select id="getCalculateStatus" resultType="java.lang.String">
+    <select id="getCalculateStatus" resultType="java.lang.String" parameterType="java.lang.String">
         SELECT
-        status
+        s.status
         FROM
-        riskcalculate_status
+        riskcalculate_status s,calculate_task t
+        WHERE s.taskId=t.id AND t.status=#{status}
     </select>
     <update id="updateRiskCalculateStatus" parameterType="map">
         UPDATE riskcalculate_status
         <set>
             <if test="status!= null">status=#{status}</if>
         </set>
-        WHERE ID = #{id};
+        WHERE ID = #{id} AND taskId=#{taskId};
     </update>
+    <insert id="insertToCalculateTask" parameterType="CalculateTask" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        calculate_task(
+        startTime,status
+        )
+        VALUES (#{startTime},#{status});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <insert id="insertToCalculateStatus" parameterType="CalculateStatus" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        riskcalculate_status(
+        status,taskId
+        )
+        VALUES (#{status},#{taskId});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="getCalculateTaskInfo" parameterType="java.lang.String" resultType="map">
+        SELECT
+        u.name,u.uploadtime,u.userId,u.userName,u.status as reportstatus,s.status as calculatestatus,t.startTime,t.status as taskstatus,t.endTime
+        FROM
+        uploadedreport u,riskcalculate_status s,calculate_task t
+        WHERE
+        u.taskId=t.id AND s.taskId=t.id AND t.status=#{status}
+    </select>
+    <update id="updateCalculateTask" parameterType="map">
+        UPDATE calculate_task
+        <set>
+            <if test="endTime!= null">endTime=#{endTime},</if>
+            <if test="status!= null">status=#{status}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
 </mapper>

@@ -1,12 +1,16 @@
 package org.whut.platform.business.craneinspectreport.thread;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
+import org.whut.platform.business.craneinspectreport.entity.CalculateStatus;
+import org.whut.platform.business.craneinspectreport.entity.CalculateTask;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.riskcalculate.CalculateTools;
 import org.whut.platform.business.craneinspectreport.riskcalculate.ICalculateRisk;
 import org.whut.platform.business.craneinspectreport.service.CraneInspectReportService;
 import org.whut.platform.business.datarule.service.DataRoleAddressService;
 import org.whut.platform.business.user.service.UserService;
+
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,17 +47,36 @@ public class CraneInspectReportThread implements Runnable{
         calculateRiskThread();
     }
     public void calculateRiskThread(){
+        //先插入calculate_task表
+        CalculateTask calculateTask=new CalculateTask();
+        calculateTask.setStartTime(new Date());
+        calculateTask.setStatus("当前任务");
+        craneInspectReportService.insertToCalculateTask(calculateTask);
+        long taskId=calculateTask.getId();
+        if(taskId>0){
+        CalculateStatus calculateStatus=new CalculateStatus();
+        calculateStatus.setStatus("1");
+        calculateStatus.setTaskId(taskId);
+        craneInspectReportService.insertToCalculateStatus(calculateStatus);
+        long statusId=calculateStatus.getId();
+        //取出taskId，插入状态表和uploadedreport表
+        String[] str=reportId.split(",");
+        for(int i=0;i<str.length;i++){
+            craneInspectReportService.updateTaskIdUploadedReportByReportId(Long.parseLong(str[i]), taskId);
+        }
+        if(statusId>0){
         //先计算最大值,计算完毕后将status更新为1
         if(calculateMaxValue().equals(SUCCESS)){
-          if(craneInspectReportService.updateRiskCalculateStatus("1",1)>0){
+          if(craneInspectReportService.updateRiskCalculateStatus("1",statusId,taskId)>0){
              if(calculateRiskValue().equals(SUCCESS)){
-                 if(craneInspectReportService.updateRiskCalculateStatus("2",1)>0){
+                 if(craneInspectReportService.updateRiskCalculateStatus("2",statusId,taskId)>0){
                      if(calculateProvinceCityArea().equals(SUCCESS)){
-                         if(craneInspectReportService.updateRiskCalculateStatus("3",1)>0){
+                         if(craneInspectReportService.updateRiskCalculateStatus("3",statusId,taskId)>0){
                             if(dumpData().equals(SUCCESS)){
-                                if(craneInspectReportService.updateRiskCalculateStatus("4",1)>0){
+                                if(craneInspectReportService.updateRiskCalculateStatus("4",statusId,taskId)>0){
                                     System.out.println("计算完毕!");
-                                    craneInspectReportService.updateRiskCalculateStatus("5",1);
+                                    craneInspectReportService.updateRiskCalculateStatus("5",statusId,taskId);
+                                    craneInspectReportService.updateCalculateTask(taskId,new Date(),"任务完成");
                                 }
                             }
                          }
@@ -61,6 +84,8 @@ public class CraneInspectReportThread implements Runnable{
                  }
              }
           }
+        }
+        }
         }
         //再计算勾起来的文档,计算完毕后将status更新为2
 

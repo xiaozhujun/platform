@@ -1,6 +1,8 @@
 package org.whut.platform.business.craneinspectreport.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.whut.platform.business.address.entity.Address;
+import org.whut.platform.business.craneinspectreport.entity.CalculateStatus;
+import org.whut.platform.business.craneinspectreport.entity.CalculateTask;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.fundamental.orm.mapper.AbstractMapper;
 
@@ -75,6 +77,7 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public void batchInsertToRiskValue(List<Map<String,String>> list);
     public List<Map<String,String>>listUploadedReport();
     public void updateUploadedReportByReportId(@Param("reportId")long reportId,@Param("status")String status);
+    public void updateTaskIdUploadedReportByReportId(@Param("reportId")long reportId,@Param("taskId")long taskId);
     public Map<String,String>validateReportIsCalculated(long reportId);
     public void updateRiskValueByChooseReport(@Param("reportNumber")String reportNumber,@Param("riskvalue")String riskvalue);
     public void insertToUploadedReport(@Param("name")String name,@Param("uploadtime")Date time,@Param("userId")long userId,@Param("userName")String userName,@Param("path")String path,@Param("status")String status);
@@ -110,6 +113,10 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public int deleteUploadedReport(Map<String,String> map);
     public List<CraneInspectReport>getEquipmentVarietyByUploadedReportId(@Param("reportId") Long reportId);
     public String findEquipmentVarietyFromCraneType(@Param("equipmentVariety")String equipmentVariety);
-    public String getCalculateStatus();
-    public int updateRiskCalculateStatus(@Param("status")String status,@Param("id")long id);
+    public String getCalculateStatus(@Param("status")String status);
+    public int updateRiskCalculateStatus(@Param("status")String status,@Param("id")long id,@Param("taskId")long taskId);
+    public int insertToCalculateTask(CalculateTask calculateTask);
+    public int insertToCalculateStatus(CalculateStatus calculateStatus);
+    public List<Map<String,String>>getCalculateTaskInfo(@Param("status")String status);
+    public void updateCalculateTask(@Param("id") long id,@Param("endTime") java.sql.Date d,@Param("status")String status);
 }

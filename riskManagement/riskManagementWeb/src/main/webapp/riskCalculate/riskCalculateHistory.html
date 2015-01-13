@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>jquery</title>
+    <title></title>
     <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <script src="lib/json2.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
@@ -12,28 +12,12 @@
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-    <script src="lib/ligerUI/js/plugins/ligerMenuBar.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/status.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/status.css"/>
     <script type="text/javascript">
         $(function(){
-            $.post($.URL.craneinspectreport.getCalculateStatus,null,getCalculateStatusCallback,"json");
-            function getCalculateStatusCallback(data){
-                if(data.code==200){
-                    if(data.data==undefined||data.data==null){
-                        $.ligerDialog.alert("当前没有执行的任务!");
-                    }else{
-                        $("#taskMain").css("display","block");
-                        $("#o_status").val(data.data);
-                        changeDivStyle();
-                    }
-                }
-            }
-            $.post($.URL.craneinspectreport.getCalculateTaskInfo,null,getCalculateTaskInfoCallback,"json");
+            $.post($.URL.craneinspectreport.getCalculateTaskHistory,null,listCallback,"json");
         });
         var gridData = {};
-        function getCalculateTaskInfoCallback(data){
+        function listCallback(data){
             if(data.code==200){
                 gridData.Rows = data.data;
                 gridData.Total = data.data.length;
@@ -54,6 +38,8 @@
                     },
                     { display: '任务开始时间', name: 'startTime'
                     },
+                    { display: '任务结束时间', name: 'endTime'
+                    },
                     { display: '任务状态', name: 'taskstatus'
                     }
                 ],
@@ -66,35 +52,16 @@
                 width: '100%'
             });
         }
+
+
     </script>
 </head>
-<body>
-<input type="hidden" value="" id="o_status" /><!--后台传到页面的数据-->
-<div id="taskMain" style="display: none">
-<div class="stepInfo">
-    <ul>
-        <li></li>
-        <li></li>
-    </ul>
-    <div class="stepIco stepIco1" id="create">1
-        <div class="stepText" id="createText">未计算</div>
-    </div>
-    <div class="stepIco stepIco2" id="check">2
-        <div class="stepText" id="checkText">最大值计算完毕</div>
-    </div>
-    <div class="stepIco stepIco3" id="produce">3
-        <div class="stepText" id="produceText">风险值计算完毕</div>
-    </div>
-    <div class="stepIco stepIco4" id="delivery">4
-        <div class="stepText" id="deliveryText">省市区风险值计算完毕</div>
-    </div>
-    <div class="stepIco stepIco5" id="received">5
-        <div class="stepText" id="receivedText">复制数据完毕</div>
-    </div>
-</div>
-<div style="text-align:center;margin:250px 0; font:normal 14px/24px 'MicroSoft YaHei';clear:both;">
-</div>
-<div id="maingrid" style="margin-top:340px"></div>
+<body  style="padding:10px">
+<div class="l-clear"></div>
+<div id="maingrid" style="margin-top:20px"></div> <br />
+
+<div style="display:none;">
+    <!-- g data total ttt -->
 </div>
 </body>
 </html>

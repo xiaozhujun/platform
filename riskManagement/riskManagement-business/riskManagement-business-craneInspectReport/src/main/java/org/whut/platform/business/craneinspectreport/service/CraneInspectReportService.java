@@ -3,6 +3,8 @@ import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.address.service.AddressService;
+import org.whut.platform.business.craneinspectreport.entity.CalculateStatus;
+import org.whut.platform.business.craneinspectreport.entity.CalculateTask;
 import org.whut.platform.business.craneinspectreport.entity.CraneInspectReport;
 import org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper;
 import org.whut.platform.business.craneinspectreport.riskcalculate.CalculateTools;
@@ -18,7 +20,10 @@ import org.whut.platform.fundamental.util.string.StringUtil;
 import org.whut.platform.fundamental.util.tool.ToolUtil;
 
 import java.io.InputStream;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhuzhenhua
@@ -47,7 +52,7 @@ public class CraneInspectReportService {
     }
     public void upload(ExcelMap excelMap,String fileName){
       String documentJson=getMongoStringFromRequest(excelMap,fileName);
-      mongoConnector.insertDocument(documentJson);
+      String monResult=mongoConnector.insertDocument(documentJson);
     }
     //返回MongoString
     public String getMongoStringFromRequest(ExcelMap excelMap,String fileName){
@@ -564,6 +569,9 @@ public class CraneInspectReportService {
     public void updateUploadedReportByReportId(long reportId,String status){
         mapper.updateUploadedReportByReportId(reportId,status);
     }
+    public void updateTaskIdUploadedReportByReportId(long reportId,long taskId){
+        mapper.updateTaskIdUploadedReportByReportId(reportId,taskId);
+    }
     public Map<String,String> validateReportIsCalculated(long reportId){
         return mapper.validateReportIsCalculated(reportId);
     }
@@ -705,10 +713,22 @@ public class CraneInspectReportService {
         }
         return unExistEquipmentVarietyInCraneType;
     }
-    public String getCalculateStatus(){
-        return mapper.getCalculateStatus();
+    public String getCalculateStatus(String status){
+        return mapper.getCalculateStatus(status);
     }
-    public int updateRiskCalculateStatus(String status,long id){
-        return mapper.updateRiskCalculateStatus(status,id);
+    public int updateRiskCalculateStatus(String status,long id,long taskId){
+        return mapper.updateRiskCalculateStatus(status,id,taskId);
+    }
+    public int insertToCalculateTask(CalculateTask calculateTask){
+        return  mapper.insertToCalculateTask(calculateTask);
+    }
+    public int insertToCalculateStatus(CalculateStatus calculateStatus){
+        return mapper.insertToCalculateStatus(calculateStatus);
+    }
+    public List<Map<String,String>> getCalculateTaskInfo(String status){
+        return mapper.getCalculateTaskInfo(status);
+    }
+    public void updateCalculateTask(long id,Date d,String status){
+        mapper.updateCalculateTask(id,new java.sql.Date(d.getTime()),status);
     }
 }

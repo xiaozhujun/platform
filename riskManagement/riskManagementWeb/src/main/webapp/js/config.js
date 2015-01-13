@@ -70,7 +70,9 @@
             "updateUploadedReport":'rs/craneinspectreport/updateUploadedReport',
             "deleteUploadedReport":'rs/craneinspectreport/deleteUploadedReport',
             "getCalculateStatus":'rs/craneinspectreport/getCalculateStatus',
-            "calculateRiskValueInThread":'rs/craneinspectreport/calculateRiskValueInThread'
+            "calculateRiskValueInThread":'rs/craneinspectreport/calculateRiskValueInThread',
+            "getCalculateTaskInfo":'rs/craneinspectreport/getCalculateTaskInfo',
+            "getCalculateTaskHistory":'rs/craneinspectreport/getCalculateTaskHistory'
         },
         /*"authority":{
             "add":"rs/authority/add"

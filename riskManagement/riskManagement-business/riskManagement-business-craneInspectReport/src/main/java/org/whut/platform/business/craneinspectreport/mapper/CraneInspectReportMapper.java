@@ -118,5 +118,7 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public int insertToCalculateTask(CalculateTask calculateTask);
     public int insertToCalculateStatus(CalculateStatus calculateStatus);
     public List<Map<String,String>>getCalculateTaskInfo(@Param("status")String status);
-    public void updateCalculateTask(@Param("id") long id,@Param("endTime") java.sql.Date d,@Param("status")String status);
+    public void updateCalculateTask(CalculateTask calculateTask);
+    public Map<String,String>validateIsExistCalculateStatus(CalculateStatus calculateStatus);
+    public int deleteCalculateStatus(CalculateStatus calculateStatus);
 }

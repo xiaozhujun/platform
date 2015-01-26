@@ -87,11 +87,15 @@
         GROUP BY a.province order by craneNumber desc
     </select>-->
     <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
-        SELECT a.id,a.province,pr.riskvalue as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr,province_riskvalue pr,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr,riskvalue r
-        where u.id=#{userId} AND pr.province=a.province AND pr.riskvalue=r.riskvalue AND col.riskvalue=pr.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
-        AND a.id=cr.addressId
-        GROUP BY a.province order by craneNumber desc
+          /*SELECT addressId as id,province,avgRiskValue,craneNumber,color
+          FROM province_riskvalue_temp
+          WHERE userId=#{userId}
+          ORDER BY craneNumber DESC*/
+          SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+          WHERE u.id=#{userId} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+          AND a.id=cr.addressId
+          GROUP BY a.province order by craneNumber desc
     </select>
     <!--<select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
@@ -124,11 +128,32 @@
         GROUP BY a.province order by craneNumber desc
     </select>-->
     <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
-        SELECT a.id,a.province,pr.riskvalue as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr,province_riskvalue pr,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+      <!--  SELECT addressId as id,province,avgRiskValue,craneNumber,color
+        FROM province_riskvalue_temp
+        <if test="userId!=null">
+            WHERE userId=#{userId}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            and equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            and manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        ORDER BY craneNumber DESC-->
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
         where
         <if test="userId!=null">
-            u.id=#{userId} AND
+            u.id=#{userId}
         </if>
         <if test='equipmentVariety!="0"'>
             and cr.equipmentvariety=#{equipmentVariety}
@@ -145,7 +170,7 @@
         <if test="endValue!=0f">
             AND #{endValue}  AND
         </if>
-        pr.province=a.province  AND col.riskvalue=pr.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+        cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
         AND a.id=cr.addressId
         GROUP BY a.province order by craneNumber desc
     </select>
@@ -153,23 +178,19 @@
         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
         where
-        cr.id=r.reportId AND col.riskvalue=r.riskvalue
+        cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         AND a.id=cr.addressId
         GROUP BY a.province order by craneNumber desc
     </select>
     <select id="getCityAndColorWithDataRole" parameterType="map" resultType="map">
-        SELECT a.id,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
-        WHERE u.id=#{userId} and a.province=#{province} and cr.id=r.reportId AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
-        AND a.id=cr.addressId
-        GROUP BY a.city order by avgRiskValue desc
+        SELECT addressId as id,city,avgRiskValue,craneNumber,color
+        FROM  city_riskvalue_temp
+        WHERE userId=#{userId} and province=#{province}
     </select>
     <select id="getAreaAndColorWithDataRole" parameterType="map" resultType="map">
-         SELECT a.id,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
-        WHERE u.id=#{userId} and a.province=#{province} and a.city=#{city} and cr.id=r.reportId AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
-        AND a.id=cr.addressId
-        GROUP BY a.area order by avgRiskValue desc
+         SELECT addressId as id,area,avgRiskValue,craneNumber,color
+        FROM area_riskvalue_temp
+        WHERE userId=#{userId} and province=#{province} and city=#{city}
     </select>
     <select id="findAddressIdById" parameterType="java.lang.Long"  resultType="java.lang.Long">
         Select addressId

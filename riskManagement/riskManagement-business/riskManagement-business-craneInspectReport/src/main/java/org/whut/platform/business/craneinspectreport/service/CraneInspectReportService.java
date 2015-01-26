@@ -452,10 +452,14 @@ public class CraneInspectReportService {
         return result;
     }
     public DBObject getDBObjectByReportNumber(String reportNumber){
+        if(reportNumber==null)
+            return null;
         for(List<DBObject> dd:dbObjectList){
             for(DBObject ddd:dd){
+                if(ddd.get("reportnumber")!=null){
                 if(ddd.get("reportnumber").equals(reportNumber)){
                     return ddd;
+                }
                 }
             }
         }
@@ -728,7 +732,13 @@ public class CraneInspectReportService {
     public List<Map<String,String>> getCalculateTaskInfo(String status){
         return mapper.getCalculateTaskInfo(status);
     }
-    public void updateCalculateTask(long id,Date d,String status){
-        mapper.updateCalculateTask(id,new java.sql.Date(d.getTime()),status);
+    public void updateCalculateTask(CalculateTask calculateTask){
+        mapper.updateCalculateTask(calculateTask);
+    }
+    public Map<String,String>validateIsExistCalculateStatus(CalculateStatus calculateStatus){
+        return mapper.validateIsExistCalculateStatus(calculateStatus);
+    }
+    public int deleteCalculateStatus(CalculateStatus calculateStatus){
+        return mapper.deleteCalculateStatus(calculateStatus);
     }
 }

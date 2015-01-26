@@ -47,13 +47,14 @@ public class DataRoleAddressServiceWeb {
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
 
-        RedisConnector redisConnector = new RedisConnector();
+       /* RedisConnector redisConnector = new RedisConnector();
         if(redisConnector.get(userId+":getProvinceAndColorWithDataRole")!=null){
             return redisConnector.get(userId+":getProvinceAndColorWithDataRole");
-        }
+        }*/
         List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
-        redisConnector.set(userId+":getProvinceAndColorWithDataRole",24*60*60,JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS));
-        return redisConnector.get(userId+":getProvinceAndColorWithDataRole");
+//        redisConnector.set(userId+":getProvinceAndColorWithDataRole",24*60*60,JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS));
+        /*return redisConnector.get(userId+":getProvinceAndColorWithDataRole");*/
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

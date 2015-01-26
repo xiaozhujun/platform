@@ -124,29 +124,27 @@
         GROUP BY a.province order by craneNumber desc
     </select>-->
     <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
-        SELECT a.id,a.province,pr.riskvalue as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr,province_riskvalue pr,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
-        where
-        <if test="userId!=null">
-            u.id=#{userId} AND
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskcolor col,riskvalue r
+        where  cr.id=r.reportId  AND a.id=cr.addressId AND col.riskvalue=r.riskvalue
+        <if test="province!=null">
+            AND a.province=#{province}
         </if>
         <if test='equipmentVariety!="0"'>
-            and cr.equipmentvariety=#{equipmentVariety}
+            AND cr.equipmentvariety=#{equipmentVariety}
         </if>
         <if test='sTime!="0"'>
-            and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
         </if>
         <if test='eTime!="0"'>
-            and #{eTime}
+            AND #{eTime}
         </if>
         <if test="startValue!=0f">
             AND r.riskvalue BETWEEN #{startValue}
         </if>
         <if test="endValue!=0f">
-            AND #{endValue}  AND
+            AND #{endValue}
         </if>
-        pr.province=a.province  AND col.riskvalue=pr.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
-        AND a.id=cr.addressId
         GROUP BY a.province order by craneNumber desc
     </select>
     <select id="getProvinceInfoWithDataRuleByCondition0" parameterType="map" resultType="map">
@@ -249,4 +247,14 @@
        WHERE province=#{province}
        </if>
     </delete>
+    <select id="getProvinceByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+         SELECT a.province
+        FROM address a,user u,drole dr,user_drole udr,drole_address draddr
+        where
+        <if test="userId!=null">
+        u.id=#{userId} AND
+        </if>
+        u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+        GROUP BY a.province
+    </select>
 </mapper>

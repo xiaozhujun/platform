@@ -63,11 +63,6 @@ public class DataRoleAddressServiceWeb {
     public String getProvinceInfoWithDataRuleByCondition(@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
-        /*if (equipmentVariety.trim().equals("")){
-            equipmentVariety=null;
-        }else if(useTime.trim().equals("")){
-            useTime=null;
-        }*/
         List<Map<String,String>> list=new ArrayList<Map<String, String>>();
         if(value.equals("0")&&useTime.equals("0")){
         list=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,"0","0",0f,0f);

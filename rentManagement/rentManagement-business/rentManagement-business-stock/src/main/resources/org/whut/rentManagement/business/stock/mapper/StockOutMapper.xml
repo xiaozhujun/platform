@@ -49,7 +49,10 @@
         <set>
             <if test="driver!=null">DRIVER=#{driver},</if>
             <if test="carNumber!=null">CARNUMBER=#{carNumber},</if>
-            <if test="image!=null">IMAGE=#{image},</if>
+            <if test="createTime!=null">CREATETIME=#{createTime},</if>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="handler!=null">HANDLER=#{handler},</if>
+
             <if test="description!=null">DESCRIPTION=#{description},</if>
         </set>
         WHERE ID=#{id}

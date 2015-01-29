@@ -13,6 +13,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface DeviceMapper extends AbstractMapper<Device> {
-    public List<Device> getListByAppId(long appId);
+    public List<Device> getListByAppId(Long appId);
     public Long getAppIdByDeviceNum(String number);
+    public Long getIdByNumber(String number,Long appId);
 }

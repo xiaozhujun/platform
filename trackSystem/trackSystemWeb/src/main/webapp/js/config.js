@@ -31,7 +31,16 @@
             "getDeviceData":"rs/deviceData/getDeviceData"
         },
         "device":{
-            "list":"rs/device/list"
+            "list":"rs/device/list",
+            "add":"rs/device/add",
+            "update":"rs/device/update",
+            "delete":"rs/device/delete"
+        },
+        "deviceType":{
+            "list":"rs/deviceType/list",
+            "add":"rs/deviceType/add",
+            "update":"rs/deviceType/update",
+            "delete":"rs/deviceType/delete"
         },
         "websocket":{
             "register":"ws://localhost:8080/trackSystem/websocket/hello"

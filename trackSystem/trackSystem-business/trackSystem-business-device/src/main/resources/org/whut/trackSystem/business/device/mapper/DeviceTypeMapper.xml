@@ -6,10 +6,16 @@
     <sql id="device_fields">
         ID,NAME,DESCRIPTION,APPID
     </sql>
-    <resultMap id="device_resultMap" type="Device">
+    <resultMap id="deviceType_resultMap" type="DeviceType">
         <id property="id" column="ID"/>
         <result property="name" column="NAME"/>
         <result property="description" column="DESCRIPTION"/>
         <result property="appId" column="APPID"/>
     </resultMap>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceType_resultMap">
+        SELECT *
+        FROM deviceType
+        WHERE appId=#{appId}
+    </select>
 </mapper>

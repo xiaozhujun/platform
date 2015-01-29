@@ -36,4 +36,8 @@ public class DeviceService {
     public Long getAppIdByDeviceNum(String deviceNum) {
         return deviceMapper.getAppIdByDeviceNum(deviceNum);
     }
+
+    public Long getIdByNumber(String number,Long appId) {
+        return deviceMapper.getIdByNumber(number, appId);
+    }
 }

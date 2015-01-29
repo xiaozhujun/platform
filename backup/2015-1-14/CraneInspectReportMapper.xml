@@ -437,9 +437,30 @@
         GROUP BY a.city  ORDER BY  craneNumber desc
     </select>-->
     <select id="getCityInfoByCondition" parameterType="map" resultType="map">
+        <!--SELECT addressId as id,city,avgRiskValue,craneNumber,color
+        FROM  city_riskvalue_temp
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        ORDER BY craneNumber DESC-->
         SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
-        WHERE cr.addressid=a.id AND cr.id=r.reportId AND col.riskvalue=r.riskvalue
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
             AND a.province=#{province}
         </if>
@@ -463,7 +484,7 @@
     <select id="getCityInfoByCondition0" parameterType="map" resultType="map">
         SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
-        WHERE cr.addressid=a.id AND cr.id=r.reportId AND col.riskvalue=r.riskvalue
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
             AND a.province=#{province}
         </if>
@@ -505,9 +526,33 @@
         GROUP BY a.area  ORDER BY  craneNumber desc
     </select>-->
     <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
+       <!-- SELECT addressId as id,area,avgRiskValue,craneNumber,color
+        FROM   area_riskvalue_temp
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test="city!=null">
+            AND city=#{city}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        ORDER BY craneNumber DESC-->
         SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
-        WHERE cr.addressid=a.id AND cr.id=r.reportId AND col.riskvalue=r.riskvalue
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
             AND a.province=#{province}
         </if>
@@ -534,7 +579,7 @@
     <select id="getAreaInfoByCondition0" parameterType="map" resultType="map">
         SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
-        WHERE cr.addressid=a.id AND cr.id=r.reportId AND col.riskvalue=r.riskvalue
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
         <if test="province!=null">
             AND a.province=#{province}
         </if>
@@ -778,8 +823,8 @@
     <insert id="dumpDataToProvinceRisk">
       INSERT INTO
       province_riskvalue_temp(
-      addressId,province,avgRiskValue,craneNumber,color)
-      SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+      addressId,province,avgRiskValue,craneNumber,color,userId,equipmentvariety,manufacturedate,riskvalue)
+      SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,u.id as userId,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskvalue
       FROM craneinspectreport cr
       LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
       LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
@@ -811,8 +856,8 @@
     </insert>
     <insert id="dumpDataToCityRisk">
       INSERT INTO
-      city_riskvalue_temp(addressId,province,city,avgRiskValue,craneNumber,color)
-      SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+      city_riskvalue_temp(addressId,province,city,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+      SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)as equipmentvariety,cr.manufacturedate as manufacturedate,r.riskvalue as riskval,u.id as userId
       FROM craneinspectreport cr
       LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
       LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
@@ -875,8 +920,8 @@
     </delete>
     <insert id="dumpDataToAreaRisk">
         INSERT
-        INTO area_riskvalue_temp(addressId,province,city,area,avgRiskValue,craneNumber,color)
-        SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        INTO area_riskvalue_temp(addressId,province,city,area,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+        SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskval,u.id as userId
         FROM craneinspectreport cr
         LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
         LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
@@ -978,7 +1023,7 @@
         WHERE
         u.taskId=t.id AND s.taskId=t.id AND t.status=#{status}
     </select>
-    <update id="updateCalculateTask" parameterType="CalculateTask">
+    <update id="updateCalculateTask" parameterType="map">
         UPDATE calculate_task
         <set>
             <if test="endTime!= null">endTime=#{endTime},</if>

@@ -28,13 +28,13 @@ public class CraneInspectReportThread implements Runnable{
     private AddressService addressService;
     private DataRoleAddressService dataRoleAddressService;
     private UserService userService;
-    private static List<Map<String,String>> mList=new ArrayList<Map<String, String>>();
+    //private static List<Map<String,String>> mList=new ArrayList<Map<String, String>>();
     private String userName;
     //缓存查出的所有地址
-    private static List<Address> addressList=new ArrayList<Address>();
-    private static List<Address> idList=new ArrayList<Address>();
     private String reportId;
     private String SUCCESS="success";
+    private static CraneInspectReportThread singleton;
+
     public CraneInspectReportThread(String reportId,CraneInspectReportService craneInspectReportService,AddressService addressService,UserService userService,DataRoleAddressService dataRoleAddressService,String userName){
         this.reportId=reportId;
         this.craneInspectReportService=craneInspectReportService;
@@ -45,6 +45,19 @@ public class CraneInspectReportThread implements Runnable{
     }
     public void run(){
         calculateRiskThread();
+    }
+    public static synchronized void start(String reportId,CraneInspectReportService craneInspectReportService,AddressService addressService,UserService userService,DataRoleAddressService dataRoleAddressService,String userName){
+        if(singleton==null){
+            singleton=new CraneInspectReportThread(reportId,craneInspectReportService,addressService,userService,dataRoleAddressService,userName);
+            new Thread(singleton).start();
+        }
+    }
+    public synchronized void stop(){
+        if(singleton!=null){
+            singleton=null;
+        }else{
+            System.out.println("singleton==null");
+        }
     }
     public void calculateRiskThread(){
         //先插入calculate_task表
@@ -57,6 +70,10 @@ public class CraneInspectReportThread implements Runnable{
         CalculateStatus calculateStatus=new CalculateStatus();
         calculateStatus.setStatus("1");
         calculateStatus.setTaskId(taskId);
+        Map<String,String> m=craneInspectReportService.validateIsExistCalculateStatus(calculateStatus);
+        if(m!=null){
+        craneInspectReportService.deleteCalculateStatus(calculateStatus);
+        }
         craneInspectReportService.insertToCalculateStatus(calculateStatus);
         long statusId=calculateStatus.getId();
         //取出taskId，插入状态表和uploadedreport表
@@ -76,7 +93,12 @@ public class CraneInspectReportThread implements Runnable{
                                 if(craneInspectReportService.updateRiskCalculateStatus("4",statusId,taskId)>0){
                                     System.out.println("计算完毕!");
                                     craneInspectReportService.updateRiskCalculateStatus("5",statusId,taskId);
-                                    craneInspectReportService.updateCalculateTask(taskId,new Date(),"任务完成");
+                                    CalculateTask task=new CalculateTask();
+                                    task.setEndTime(new Date());
+                                    task.setStatus("任务完成");
+                                    task.setId(taskId);
+                                    craneInspectReportService.updateCalculateTask(task);
+                                    this.stop();
                                 }
                             }
                          }
@@ -122,6 +144,7 @@ public class CraneInspectReportThread implements Runnable{
                 //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
                 CraneInspectReport craneReport=new CraneInspectReport();
                 craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber(),craneInspectReport.getEquipmentVariety());
+                craneReport.setId(craneInspectReport.getId());
                 craneInspectReportList.add(craneReport);
             }
             for(CraneInspectReport cr:craneInspectReportList){
@@ -133,8 +156,9 @@ public class CraneInspectReportThread implements Runnable{
                     if(cr!=null){
                         m.put("reportNumber",cr.getReportNumber());
                         m.put("riskvalue",String.valueOf(riskValue));
+                        m.put("reportId",String.valueOf(cr.getId()));
                         mapList.add(m);
-                        mList.add(m);
+                        //mList.add(m);
                     }
                 }
             }
@@ -201,6 +225,8 @@ public class CraneInspectReportThread implements Runnable{
     public String calculateAreaRisk(){
         //通过区查出有多少unitAddress,然后根据每家unitAddress求出区域风险平均值
         //查出所有的区
+        List<Address> addressList=new ArrayList<Address>();
+        List<Address> idList=new ArrayList<Address>();
         addressList=getAllAddress();
         List<Map<String,Float>> areaList=new ArrayList<Map<String, Float>>();
         idList=getId();

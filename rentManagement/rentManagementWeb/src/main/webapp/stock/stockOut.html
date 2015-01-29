@@ -80,7 +80,7 @@ function stockOut_f_initGrid(){
             {display:'项目名称',name:'contractName',width:80,type:'int',frozen:true} ,
             {display:'出库编号',name:'number',width:100,editor:{type:'text'}},
             {display:'经手人',name:'handler',width:100,editor:{type:'text'}},
-            {display:'司机',name:'createTime',width:100,editor:{type:'text'}},
+            {display:'时间',name:'createTime',width:100,editor:{type:'text'}},
             {display:'车牌号',name:'carNumber',width:100,editor:{type:'text'}},
             {display:'操作',isSort:false,render:function(rowdata,rowindex,value)
             {
@@ -240,7 +240,7 @@ function stockOut_uploadImageCallback(data){
     }
     else if(data.code==500)
     {
-        $.ligerDialog.error(data.message);
+        $.ligerDialog.success("未上传图片，其他信息已存入数据库");
         $.post($.URL.stockOut.list,null,stockOut_ListCallBack,"json");
     }
 }

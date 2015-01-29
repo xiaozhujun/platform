@@ -4,18 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.trackSystem.business.device.mapper.DeviceMapper">
     <sql id="device_fields">
-        ID,NAME,NUMBER,LNG,LAT,ADDRESS,DEVICETYPEID,APPID
+        ID,NAME,NUMBER,LNG,LAT,TYPENAME,DEVICETYPEID,ADDRESS,APPID
     </sql>
     <resultMap id="device_resultMap" type="Device">
         <id property="id" column="ID"/>
         <result property="name" column="NAME"/>
-        <result property="number" column="number"/>
+        <result property="number" column="NUMBER"/>
         <result property="lng" column="LNG"/>
         <result property="lat" column="LAT"/>
+        <result property="typeName" column="TYPENAME"/>
+        <result property="deviceTypeId" column="DEVICETYPEID"/>
         <result property="address" column="ADDRESS"/>
         <result property="appId" column="APPID"/>
     </resultMap>
-    
+
+    <insert id="add" parameterType="Device"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        device(
+        <include refid="device_fields" />
+        )
+        VALUES (#{id},#{name},#{number},#{lng},#{lat},#{typeName},#{deviceTypeId},#{address},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
     <select id="getAppIdByDeviceNum" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT appId
         FROM device

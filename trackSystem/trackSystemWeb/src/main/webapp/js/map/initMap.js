@@ -85,8 +85,8 @@ $.extend({
                             },delay);
                         }
                         $("#province option[value='"+data.province+"']").attr("selected",true);
-                       /* $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");*/
-                       /* $.showCityRisk(data.province,1);*/
+                        /* $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");*/
+                        /* $.showCityRisk(data.province,1);*/
                         $.showCity(data,1);
                     });
                 }
@@ -205,5 +205,30 @@ $.extend({
         }
         $.clearAllMarker();
         $.addMarkerWithId(riskRankArray);
-}
+    },
+    addDeviceMark:function add(data){
+        var riskRankArray=new Array();
+        var count = 0;
+        for(var i=0;i<data.length;i++){
+            count++;
+            var item={};
+            item.userId=data[i].id;
+            item.title="设备名称:"+data[i].name;
+
+            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data[i].deviceNum+"</div></div>";
+            item.point=data[i].lng+"|"+data[i].lat;
+            item.isOpen=0;
+            item.icon={};
+            item.icon.w=23;
+            item.icon.h=25;
+            item.icon.t=21;
+            item.icon.x=9;
+            item.icon.lb=12;
+            item.icon.l=46;
+            riskRankArray.push(item);
+            console.log(riskRankArray);
+        }
+        $.clearAllMarker();
+        $.addMarkerWithId(riskRankArray);
+    }
 });

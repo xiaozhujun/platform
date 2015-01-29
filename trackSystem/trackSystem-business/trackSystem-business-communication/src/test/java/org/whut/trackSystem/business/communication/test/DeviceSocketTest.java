@@ -33,15 +33,15 @@ public class DeviceSocketTest {
             StringBuffer lng1 = new StringBuffer("");
             StringBuffer lat1 = new StringBuffer("");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Long lngData = Math.round(Math.random()*120);
-            Long lngData1 = Math.round(Math.random()*120+3);
-            Long latData = Math.round(Math.random()*30);
-            Long latData1 = Math.round(Math.random()*30+3);
+            Long lngData = Math.round(120.0);
+            Long lngData1 = Math.round(120.0);
+            Long latData = Math.round(30.0010);
+            Long latData1 = Math.round(30.0020);
             for (long j=0;j<count;j++){
-                lng.append(lngData + 0.5*j);
-                lat.append(latData + 0.1*j);
-                lng1.append(lngData1 + 0.5*j);
-                lat1.append(latData1 + 0.1*j);
+                lng.append(lngData + 0.00005*j);
+                lat.append(latData + 0.00001*j);
+                lng1.append(lngData1 - 0.00006*j);
+                lat1.append(latData1 - 0.00002*j);
                 Date now = new Date();
                 String json = "{devices:["+"{deviceNum:'001',time:'"+format.format(now)+"',lng:'"+lng+"',lat:'"+lat+"'},"+
                         "{deviceNum:'002',time:'"+format.format(now)+"',lng:'"+lng1+"',lat:'"+lat1+"'}]}";

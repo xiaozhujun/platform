@@ -80,7 +80,7 @@
                     {display:'项目名称',name:'contractName',width:80,type:'int',frozen:true} ,
                     {display:'入库编号',name:'number',width:100,editor:{type:'text'}},
                     {display:'经手人',name:'handler',width:100,editor:{type:'text'}},
-                    {display:'司机',name:'createTime',width:100,editor:{type:'text'}},
+                    {display:'日期',name:'createTime',width:100,editor:{type:'text'}},
                     {display:'车牌号',name:'carNumber',width:100,editor:{type:'text'}},
                     {display:'操作',isSort:false,render:function(rowdata,rowindex,value)
                     {
@@ -225,6 +225,7 @@
             else if(data.code==500)
             {
                 $.ligerDialog.error(data.message);
+
                 $.post($.URL.stockIn.list,null,stockIn_ListCallBack,"json");
             }
         }
@@ -240,7 +241,8 @@
             }
             else if(data.code==500)
             {
-                $.ligerDialog.error(data.message);
+//                $.ligerDialog.error(data.message);
+                $.ligerDialog.warn("未添加图片，但信息已写入数据库！");
                 $.post($.URL.stockIn.list,null,stockIn_ListCallBack,"json");
             }
         }

@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.trackSystem.business.device.mapper.DeviceTypeMapper">
-    <sql id="device_fields">
+    <sql id="deviceType_fields">
         ID,NAME,DESCRIPTION,APPID
     </sql>
     <resultMap id="deviceType_resultMap" type="DeviceType">
@@ -13,9 +13,43 @@
         <result property="appId" column="APPID"/>
     </resultMap>
 
+    <insert id="add" parameterType="DeviceType"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        deviceType(
+        <include refid="deviceType_fields" />
+        )
+        VALUES (#{id},#{name},#{description},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="DeviceType">
+        update deviceType
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM deviceType
+        WHERE ID=#{id}
+    </delete>
+
     <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceType_resultMap">
         SELECT *
         FROM deviceType
         WHERE appId=#{appId}
+    </select>
+
+    <select id="getIdByNameAndAppId" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM deviceType
+        WHERE name=#{name} AND appId=#{appId}
     </select>
 </mapper>

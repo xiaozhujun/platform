@@ -20,4 +20,20 @@ public class DeviceTypeService {
     public List<DeviceType> getListByAppId(long appId) {
         return deviceTypeMapper.getListByAppId(appId);
     }
+
+    public Long getIdByNameAndAppId(String name,Long appId) {
+        return deviceTypeMapper.getIdByNameAndAppId(name, appId);
+    }
+
+    public void add(DeviceType deviceType) {
+        deviceTypeMapper.add(deviceType);
+    }
+
+    public int update(DeviceType deviceType) {
+        return deviceTypeMapper.update(deviceType);
+    }
+
+    public int delete(DeviceType deviceType) {
+        return deviceTypeMapper.delete(deviceType);
+    }
 }

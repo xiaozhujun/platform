@@ -34,7 +34,8 @@
             "list":"rs/device/list",
             "add":"rs/device/add",
             "update":"rs/device/update",
-            "delete":"rs/device/delete"
+            "delete":"rs/device/delete",
+            "findByCondition":"rs/device/findByCondition"
         },
         "deviceType":{
             "list":"rs/deviceType/list",

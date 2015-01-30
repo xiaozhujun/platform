@@ -16,7 +16,7 @@
         $.ligerDialog.close("#addDeviceList") ;
         var deviceTypeData = [];
         $(function(){
-            $.post($.URL.device.list,null,listCallback,"json");
+            $.post($.URL.device.findByCondition,null,listCallback,"json");
             $.post($.URL.deviceType.list,null,deviceTypeCallback,"json");
         });
         var gridData = {};
@@ -55,7 +55,11 @@
                         editor: { type: 'text'}
                     },
                     { display: '设备编号',name:'number',width:'15%',editor:{type:'text'}},
-                    {display:'设备类型',name:'typeName',width:'auto',editor:{type:'select'}},
+//                    {display:'设备类型',name:'typeName',width:'auto',editor:{type:'select'}},
+                    { display: '设备类型', name: 'typeName',type: 'int',width:'auto',
+                        editor: { type: 'select', emptyText: null, data:deviceTypeData, valueField: 'value', textField: 'text'
+                        }
+                    },
                     {display:'经度',name:'lng',width:'20%'},
                     {display:'纬度',name:'lat',width:'20%'},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
@@ -94,17 +98,25 @@
         {
             manager.endEdit(rowid);
             var row = manager.getRow(rowid);
-            var jsonString  = $.toJSON(row);
+            var jsonStr  = $.toJSON(row);
+            var id = $.evalJSON(jsonStr).id;
+            var deviceTypeId = parseInt($.evalJSON(jsonStr).typeName);
+            var name = $.evalJSON(jsonStr).name;
+            var number = $.evalJSON(jsonStr).number;
+            var lng = $.evalJSON(jsonStr).lng;
+            var lat = $.evalJSON(jsonStr).lat;
+            var t = {"id":id,"deviceTypeId":deviceTypeId,"name":name,"number":number,"lng":lng,"lat":lat};
+            var jsonString = $.toJSON(t);
             $.post($.URL.device.update,{"jsonString":jsonString},updateCallback,"json");
         }
 
         function updateCallback(data){
             if(data.code==200){
-                $.post($.URL.device.list,null,listCallback,"json");
+                $.post($.URL.device.findByCondition,null,listCallback,"json");
                 $.ligerDialog.success(data.message);
             }
             else{
-                $.post($.URL.device.list,null,listCallback,"json");
+                $.post($.URL.device.findByCondition,null,listCallback,"json");
                 $.ligerDialog.warn(data.message);
 
             }
@@ -153,7 +165,7 @@
         });
         function addCallBack(data){
             if(data.code==200){
-                $.post($.URL.device.list,null,listCallback,"json");
+                $.post($.URL.device.findByCondition,null,listCallback,"json");
                 $.ligerDialog.success(data.message);
             }
             else{

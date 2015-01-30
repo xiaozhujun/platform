@@ -5,6 +5,7 @@ import org.whut.trackSystem.business.device.entity.Device;
 import org.whut.trackSystem.business.device.mapper.DeviceMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,5 +40,9 @@ public class DeviceService {
 
     public Long getIdByNumber(String number,Long appId) {
         return deviceMapper.getIdByNumber(number, appId);
+    }
+
+    public List<Map<String,String>> findByCondition(Long appId) {
+        return deviceMapper.findByCondition(appId);
     }
 }

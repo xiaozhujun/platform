@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.trackSystem.business.device.mapper.DeviceMapper">
     <sql id="device_fields">
-        ID,NAME,NUMBER,LNG,LAT,TYPENAME,DEVICETYPEID,ADDRESS,APPID
+        ID,NAME,NUMBER,LNG,LAT,DEVICETYPEID,ADDRESS,APPID
     </sql>
     <resultMap id="device_resultMap" type="Device">
         <id property="id" column="ID"/>
@@ -12,7 +12,6 @@
         <result property="number" column="NUMBER"/>
         <result property="lng" column="LNG"/>
         <result property="lat" column="LAT"/>
-        <result property="typeName" column="TYPENAME"/>
         <result property="deviceTypeId" column="DEVICETYPEID"/>
         <result property="address" column="ADDRESS"/>
         <result property="appId" column="APPID"/>
@@ -24,12 +23,31 @@
         device(
         <include refid="device_fields" />
         )
-        VALUES (#{id},#{name},#{number},#{lng},#{lat},#{typeName},#{deviceTypeId},#{address},#{appId});
+        VALUES (#{id},#{name},#{number},#{lng},#{lat},#{deviceTypeId},#{address},#{appId});
         <selectKey resultType="java.lang.Long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
+
+    <update id="update" parameterType="Device">
+        update device
+        <set>
+            <if test="deviceTypeId!=null">DEVICETYPEID=#{deviceTypeId},</if>
+            <if test="address!=null">ADDRESS=#{address},</if>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="lng!=null">LNG=#{lng},</if>
+            <if test="lat!=null">LAT=#{lat},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM device
+        WHERE ID=#{id}
+    </delete>
 
     <select id="getAppIdByDeviceNum" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT appId
@@ -41,5 +59,17 @@
         SELECT *
         FROM device
         WHERE appId=#{appId}
+    </select>
+
+    <select id="getIdByNumber" parameterType="map" resultType="java.lang.Long">
+        SELECT id
+        FROM device
+        WHERE number=#{number} and appId=#{appId}
+    </select>
+
+    <select id="findByCondition" parameterType="java.lang.Long" resultType="map">
+        SELECT d.*,dt.name as typeName
+        FROM device as d,deviceType as dt
+        WHERE d.appId=#{appId} AND dt.id=d.deviceTypeId
     </select>
 </mapper>

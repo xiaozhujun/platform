@@ -119,7 +119,11 @@
 
         $(function(){
             $("#submitBtn").click(function(){
-                $.post($.URL.deviceType.add, $(this).parent().serialize(),addCallBack,"json");
+                var deviceType = {};
+                deviceType.name = $("#name").val();
+                deviceType.description = $("#description").val();
+
+                $.post($.URL.deviceType.add, {"jsonString": $.toJSON(deviceType)},addCallBack,"json");
             });
         });
         function addCallBack(data){

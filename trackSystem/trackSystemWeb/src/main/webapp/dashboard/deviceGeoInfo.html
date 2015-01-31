@@ -9,6 +9,9 @@
     <script type="text/javascript" src="lib/json2.js"></script>
     <script type="text/javascript">
         var num = "";
+        var t = 0,total = 0,state = 0;
+        var curDeviceLocations = {};
+        curDeviceLocations.data = [];
         $(document).ready(function(){
             $.post($.URL.device.list,null,deviceCallback,"json");
         });
@@ -25,12 +28,42 @@
                     console.log(event);			};
             } ;
             ws.onmessage = function (event) {
+                state = 1;
                 console.log ("收到消息！"+event.data);
                 var jsonData = eval("(" +event.data+ ")");
+                var curDev = {};
+                curDev.deviceNum = jsonData.devices[0].deviceNum;
+                curDev.lng = jsonData.devices[0].lng;
+                curDev.lat = jsonData.devices[0].lat;
+                curDev.id = t+1;
+                curDev.name = "设备" + jsonData.devices[0].deviceNum;
+                curDeviceLocations.data.push(curDev);
+                t++;
+                if(t == total) {
+                    t = 0;
+//                    console.log(curDeviceLocations.data);
+                    showInfo();
+                    curDeviceLocations.data = [];
+                }
             };
         }
 
         function deviceCallback(data) {
+            total = data.data.length;
+            if(data.data[0]==undefined){
+                $.initMap("中国",5);
+            }else if(state == 0){
+                $("#container").css("display","block");
+                $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
+//                console.log(data);
+                $.addMyMark(data);
+            }
+            if(data.data.length>0){
+                setTimeout(function(){
+                    window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),17);
+                },1000);
+            }
+
             for(var i=0;i<data.data.length;i++) {
                 if(i==0){
                     num=data.data[i].number+",";
@@ -39,21 +72,29 @@
                     num=num+data.data[i].number+",";
                 }
             }
-            console.log(num);
             connect();
         }
 
-        $.initMap("中国",5);
+        function showInfo() {
+            $.clearAllMarker();
+            window.map.centerAndZoom(new BMap.Point(parseFloat(curDeviceLocations.data[0].lng),parseFloat(curDeviceLocations.data[0].lat)),17);
+//            for(var i=0;i<curDeviceLocations.data.length;i++) {
+//                var point = new BMap.Point(parseFloat(curDeviceLocations.data[i].lng),parseFloat(curDeviceLocations.data[i].lat));
+//                var marker = new BMap.Marker(point);        // 创建标注
+//                window.map.addOverlay(marker);
+//            }
+            $.addDeviceMark(curDeviceLocations.data);
+        }
     </script>
     <style type="text/css">
         #container{
             width: 100%;
-           /* min-height:500px;*/
+            /* min-height:500px;*/
             height:100%;
         }
     </style>
 </head>
 <body>
-    <div id="container"></div>
+<div id="container"></div>
 </body>
 </html>

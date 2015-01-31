@@ -197,49 +197,52 @@ $.extend({
     根据数据权限给省画出轮廓
      */
     drawProvinceBoundaryWithRule:function drawProvinceBoundaryWithRule(data,flag){
-        var bdary=new BMap.Boundary();
-        bdary.get(data.province,function(rs){
-            console.log(rs);
-            var maxNum=-1,maxPly;
-            var color=data.color;
-            var count=rs.boundaries.length;
-            for(var i=0;i<count;i++){
-                var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
-                map.addOverlay(ply);
-                if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
-                }else if(flag==1){
-                    ply.addEventListener("click",function(e){
-                        name=data.province;
-                        var latlng=e.point;
-                        var info=new BMap.InfoWindow(name+" "+latlng.lat+","+latlng.lng,{width:220});
-                        map.openInfoWindow(info,latlng);
-                        //高亮闪烁显示鼠标点击的省
-                        delay=0;
-                        for (flashTimes=0;flashTimes<3;flashTimes++){
-                            delay+=400;
-                            setTimeout(function(){
-                                ply.setFillColor("#FFFF00");
-                            },delay);
+       if(data!=null){
+           var bdary=new BMap.Boundary();
+           bdary.get(data.province,function(rs){
+               console.log(rs);
+               var maxNum=-1,maxPly;
+               var color=data.color;
+               var count=rs.boundaries.length;
+               for(var i=0;i<count;i++){
+                   var ply=new BMap.Polygon(rs.boundaries[i],{strokeWeight:1,strokeOpacity:0.5,fillColor:color,fillOpacity:0.3,strokeColor:"#000000"});
+                   map.addOverlay(ply);
+                   if(flag==0){       //flag为0时有点击事件，flag为1时没有点击事件
+                   }else if(flag==1){
+                       ply.addEventListener("click",function(e){
+                           name=data.province;
+                           var latlng=e.point;
+                           var info=new BMap.InfoWindow(name+" "+latlng.lat+","+latlng.lng,{width:220});
+                           map.openInfoWindow(info,latlng);
+                           //高亮闪烁显示鼠标点击的省
+                           delay=0;
+                           for (flashTimes=0;flashTimes<3;flashTimes++){
+                               delay+=400;
+                               setTimeout(function(){
+                                   ply.setFillColor("#FFFF00");
+                               },delay);
 
-                            delay+=400;
-                            setTimeout(function(){
-                                ply.setFillColor(color);
-                            },delay);
-                        }
-                        $("#province option[value='"+data.province+"']").attr("selected",true);
-                        $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");
-                        $.showCityRisk(data.province,1);                    });
-                }
-            }
-            if(maxPly){
-                map.setViewport(maxPly.getPoints());
-            }
-        });
+                               delay+=400;
+                               setTimeout(function(){
+                                   ply.setFillColor(color);
+                               },delay);
+                           }
+                           $("#province option[value='"+data.province+"']").attr("selected",true);
+                           $.post($.URL.dataRuleAddress.getCityAndColorWithDataRole,{"province":data.province}, $.getCityByProvinceCallback,"json");
+                           $.showCityRisk(data.province,1);                    });
+                   }
+               }
+               if(maxPly){
+                   map.setViewport(maxPly.getPoints());
+               }
+           });
+       }
     },
     /*
      根据数据权限给城市画出轮廓
      */
     drawCityBoundaryWithRule:function drawCityBoundaryWithRule(province,data,flag){
+        if(data!=null){
         var bdary=new BMap.Boundary();
         bdary.get(data.city,function(rs){
             console.log(rs);
@@ -278,11 +281,13 @@ $.extend({
                 map.setViewport(maxPly.getPoints());
             }
         });
+        }
     },
     /*
      根据数据权限给地区画出轮廓
      */
     drawAreaBoundaryWithRule:function drawAreaBoundaryWithRule(province,city,data,flag){
+        if(data!=null){
         var bdary=new BMap.Boundary();
         bdary.get(data.area,function(rs){
             console.log(rs);
@@ -321,6 +326,7 @@ $.extend({
                 map.setViewport(maxPly.getPoints());
             }
         });
+        }
     },
     getProvinceWithRule:function getProvinceWithRule(data,flag){
         if(data.code==200){

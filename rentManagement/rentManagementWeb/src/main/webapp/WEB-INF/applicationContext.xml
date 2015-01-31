@@ -25,5 +25,5 @@
                   value="org.whut.platform.business,org.whut.rentManagement.business" />
     </bean>
     <!--<import resource="security-applicationContext.xml"/>-->
-    <import resource="security-applicationContext-cas.xml"/>
+    <import resource="security-applicationContext-nocas.xml"/>
 </beans>

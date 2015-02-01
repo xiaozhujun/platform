@@ -43,6 +43,12 @@
             "update":"rs/deviceType/update",
             "delete":"rs/deviceType/delete"
         },
+        "group":{
+            "list":"rs/group/list",
+            "add":"rs/group/add",
+            "update":"rs/group/update",
+            "delete":"rs/group/delete"
+        },
         "websocket":{
             "register":"ws://localhost:8080/trackSystem/websocket/hello"
         }

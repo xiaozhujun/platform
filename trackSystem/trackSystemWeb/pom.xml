@@ -88,6 +88,11 @@
             <artifactId>trackSystem-business-device</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>trackSystem-business-group</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

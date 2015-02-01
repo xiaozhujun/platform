@@ -15,6 +15,7 @@ public class Device {
     private String lat;
     private String address;
     private Long deviceTypeId;
+    private Long groupId;
     private Long appId;
 
     public Long getId() {
@@ -71,6 +72,14 @@ public class Device {
 
     public void setDeviceTypeId(Long deviceTypeId) {
         this.deviceTypeId = deviceTypeId;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public Long getAppId() {

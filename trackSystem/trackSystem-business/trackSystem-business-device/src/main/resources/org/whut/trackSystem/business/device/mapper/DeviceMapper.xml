@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whut.trackSystem.business.device.mapper.DeviceMapper">
     <sql id="device_fields">
-        ID,NAME,NUMBER,LNG,LAT,DEVICETYPEID,ADDRESS,APPID
+        ID,NAME,NUMBER,LNG,LAT,DEVICETYPEID,GROUPID,ADDRESS,APPID
     </sql>
     <resultMap id="device_resultMap" type="Device">
         <id property="id" column="ID"/>
@@ -13,6 +13,7 @@
         <result property="lng" column="LNG"/>
         <result property="lat" column="LAT"/>
         <result property="deviceTypeId" column="DEVICETYPEID"/>
+        <result property="groupId" column="GROUPID"/>
         <result property="address" column="ADDRESS"/>
         <result property="appId" column="APPID"/>
     </resultMap>
@@ -23,7 +24,7 @@
         device(
         <include refid="device_fields" />
         )
-        VALUES (#{id},#{name},#{number},#{lng},#{lat},#{deviceTypeId},#{address},#{appId});
+        VALUES (#{id},#{name},#{number},#{lng},#{lat},#{deviceTypeId},#{groupId},#{address},#{appId});
         <selectKey resultType="java.lang.Long" keyProperty="id">
             select
             LAST_INSERT_ID() as id
@@ -34,6 +35,7 @@
         update device
         <set>
             <if test="deviceTypeId!=null">DEVICETYPEID=#{deviceTypeId},</if>
+            <if test="groupId!=null">GROUPID=#{groupId},</if>
             <if test="address!=null">ADDRESS=#{address},</if>
             <if test="name!=null">NAME=#{name},</if>
             <if test="number!=null">NUMBER=#{number},</if>
@@ -68,8 +70,8 @@
     </select>
 
     <select id="findByCondition" parameterType="java.lang.Long" resultType="map">
-        SELECT d.*,dt.name as typeName
-        FROM device as d,deviceType as dt
-        WHERE d.appId=#{appId} AND dt.id=d.deviceTypeId
+        SELECT d.*,dt.name as typeName,g.name as groupName
+        FROM device as d,deviceType as dt,`group` as g
+        WHERE d.appId=#{appId} AND dt.id=d.deviceTypeId AND d.groupId=g.id
     </select>
 </mapper>

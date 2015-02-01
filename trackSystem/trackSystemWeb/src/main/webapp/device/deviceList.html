@@ -14,10 +14,11 @@
     <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script type="text/javascript">
         $.ligerDialog.close("#addDeviceList") ;
-        var deviceTypeData = [];
+        var deviceTypeData = [],groupData = [];
         $(function(){
             $.post($.URL.device.findByCondition,null,listCallback,"json");
             $.post($.URL.deviceType.list,null,deviceTypeCallback,"json");
+            $.post($.URL.group.list,null,groupCallback,"json");
         });
         var gridData = {};
         function listCallback(data){
@@ -45,6 +46,24 @@
             }
         }
 
+        function groupCallback(data) {
+            if (data.code == 200) {
+                $.each(data.data, function (index, content) {
+                    var j = {};
+                    j.text = content.name;
+                    j.value = content.id;
+                    groupData.push(j);
+                });
+                $("#group").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+                    data:groupData,
+                    width:200,
+                    valueField:'value',
+                    textField:'text',
+                    valueFieldID:'groupSelect'   /*下拉表Id是Device*/
+                });
+            }
+        }
+
         var manager, g;
         function f_initGrid()
         {
@@ -55,9 +74,12 @@
                         editor: { type: 'text'}
                     },
                     { display: '设备编号',name:'number',width:'15%',editor:{type:'text'}},
-//                    {display:'设备类型',name:'typeName',width:'auto',editor:{type:'select'}},
                     { display: '设备类型', name: 'typeName',type: 'int',width:'auto',
                         editor: { type: 'select', emptyText: null, data:deviceTypeData, valueField: 'value', textField: 'text'
+                        }
+                    },
+                    { display: '设备组', name: 'groupName',type: 'int',width:'auto',
+                        editor: { type: 'select', emptyText: null, data:groupData, valueField: 'value', textField: 'text'
                         }
                     },
                     {display:'经度',name:'lng',width:'20%'},
@@ -101,11 +123,12 @@
             var jsonStr  = $.toJSON(row);
             var id = $.evalJSON(jsonStr).id;
             var deviceTypeId = parseInt($.evalJSON(jsonStr).typeName);
+            var groupId = parseInt($.evalJSON(jsonStr).groupName);
             var name = $.evalJSON(jsonStr).name;
             var number = $.evalJSON(jsonStr).number;
             var lng = $.evalJSON(jsonStr).lng;
             var lat = $.evalJSON(jsonStr).lat;
-            var t = {"id":id,"deviceTypeId":deviceTypeId,"name":name,"number":number,"lng":lng,"lat":lat};
+            var t = {"id":id,"deviceTypeId":deviceTypeId,"groupId":groupId,"name":name,"number":number,"lng":lng,"lat":lat};
             var jsonString = $.toJSON(t);
             $.post($.URL.device.update,{"jsonString":jsonString},updateCallback,"json");
         }
@@ -160,6 +183,7 @@
                 device.name = $("#name").val();
                 device.number = $("#number").val();
                 device.deviceTypeId = $("#deviceType").ligerComboBox().getValue();
+                device.groupId = $("#group").ligerComboBox().getValue();
                 $.post($.URL.device.add, {"jsonString":$.toJSON(device)},addCallBack,"json");
             });
         });
@@ -208,6 +232,11 @@
             <tr>
                 <td align="right" class="l-table-edit-td">设备类型:</td>
                 <td align="left" class="l-table-edit-td"><input name="deviceType" type="text" id="deviceType" ltype="text" style="width: 200px"/></td>
+                <td align="left"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">设备组:</td>
+                <td align="left" class="l-table-edit-td"><input name="group" type="text" id="group" ltype="text" style="width: 200px"/></td>
                 <td align="left"></td>
             </tr>
         </table>

@@ -63,6 +63,16 @@ public class EmployeeServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "联系电话必须是数字!");
             }
         }
+        if(!"".equals(telephone.trim())){
+            if(telephone.length()<7||telephone.length()>11){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "输入的联系电话长度为7—11之间!");
+            }
+        }
+        if(!"".equals(position.trim())){
+            if(!position.matches("^[\\u4E00-\\u9FA5A-Za-z]+$")){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "请输入为中文或英文的职位!");
+            }
+        }
         long id;
         try
         {

@@ -38,6 +38,11 @@ public class SkillServiceWeb {
         if (name==null|| name.trim().equals("") ||description==null|| description.trim().equals("")) {
             return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "参数不能为空!");
         }
+        if(!"".equals(name.trim())){
+            if(!name.matches("^[\\u4E00-\\u9FA5A-Za-z]+$")){
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "请输入为中文或英文的技能!");
+            }
+        }
         long id;
         try
         {

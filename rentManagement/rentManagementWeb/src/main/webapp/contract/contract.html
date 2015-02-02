@@ -18,7 +18,7 @@
         $(function(){
             $.post($.URL.contract.list,null,contract_listCallback,"json");
             $.post($.URL.customer.list,null,contract_customerCallback,"json");
-            $("#customerName").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
+//            $("#customerName").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:null,emptyText:null});
             $("#submitBtn").click(function(){
                 var data = {};
                 data.name = $("#contractName").val();
@@ -157,7 +157,8 @@
                     c["text"]=content.name;
                     customerData.push(c);
                 });
-                liger.get("customerName").setData(customerData);
+//                liger.get("customerName").setData(customerData);
+                $("#customerName").ligerComboBox({isShowCheckBox:true,isMultiSelect:false,data:customerData,emptyText:null});
             }
         }
 
@@ -263,7 +264,6 @@
                 <td align="left" class="l-table-edit-td"><input name="endTime" type="text" id="endTime" ></td>
                 <td align="left"></td>
             </tr>
-    </form>
             <tr>
                 <td align="right" class="l-table-edit-td">合同附件:</td>
                 <td align="left" class="l-table-edit-td">
@@ -277,6 +277,7 @@
 
 
         </table>
+    </form>
         <br />
         <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
 

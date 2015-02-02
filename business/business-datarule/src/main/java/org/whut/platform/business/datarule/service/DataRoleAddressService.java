@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.business.address.entity.Address;
 import org.whut.platform.business.datarule.entity.DataRoleAddress;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /**
@@ -21,7 +23,13 @@ public class DataRoleAddressService {
        dataRoleAddressMapper.add(dataRoleAddress);
     }
     public List<Map<String,String>> getProvinceAndColorWithDataRole(long userId){
-        return dataRoleAddressMapper.getProvinceAndColorWithDataRole(userId);
+        List<String> addressIds=dataRoleAddressMapper.getProvinceByUserId(userId);
+        List<Map<String,String>> list=new ArrayList<Map<String, String>>();
+        for(String province:addressIds){
+            Map<String,String> mm=dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition(province,"0","0","0",0f,0f);
+            list.add(mm);
+        }
+        return list;
     }
     public List<Map<String,String>> getCityAndColorWithDataRole(String province,long userId){
         return dataRoleAddressMapper.getCityAndColorWithDataRole(province,userId);
@@ -82,7 +90,13 @@ public class DataRoleAddressService {
         return dataRoleAddressMapper.getCraneNumberByArea(province,city,area);
     }
     public   List<Map<String,String>> getProvinceInfoWithDataRuleByCondition(Long userId,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
-        return dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,sTime,eTime,startValue,endValue);
+        List<String> addressIds=dataRoleAddressMapper.getProvinceByUserId(userId);
+        List<Map<String,String>> list=new ArrayList<Map<String, String>>();
+        for(String province:addressIds){
+            Map<String,String> mm=dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition(province,equipmentVariety,sTime,eTime,startValue,endValue);
+            list.add(mm);
+        }
+        return list;
     }
     public   List<Map<String,String>> getProvinceInfoWithDataRuleByCondition0(Long userId,String equipmentVariety,String sTime,String eTime,float startValue,float endValue){
         return dataRoleAddressMapper.getProvinceInfoWithDataRuleByCondition0(userId,equipmentVariety,sTime,eTime,startValue,endValue);

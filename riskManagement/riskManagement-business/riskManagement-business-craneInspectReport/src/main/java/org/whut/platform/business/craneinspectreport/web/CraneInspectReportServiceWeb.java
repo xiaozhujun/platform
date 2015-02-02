@@ -54,10 +54,6 @@ public class CraneInspectReportServiceWeb {
     private BaiduMapUtil baiduMapUtil=new BaiduMapUtil();
     private MultipartRequestParser multipartRequestParser=new MultipartRequestParser();
     private static List<Map<String,String>> mList=new ArrayList<Map<String, String>>();
-    //缓存查出的所有地址
-    private static List<Address> addressList=new ArrayList<Address>();
-    private static List<Address> idList=new ArrayList<Address>();
-
     @Produces(MediaType.MULTIPART_FORM_DATA)
     @Path("/upload")
     @POST
@@ -163,6 +159,7 @@ public class CraneInspectReportServiceWeb {
             craneInspectReport.setSpecification(repeat.getSpecification());
             craneInspectReport.setpNumber(repeat.getpNumber());
             craneInspectReport.setWorkLevel(repeat.getWorkLevel());
+            craneInspectReport.setUploadedReportId(repeat.getUploadedReportId());
             craneInspectReportService.update(craneInspectReport);
         }
         list.clear();
@@ -578,83 +575,6 @@ public class CraneInspectReportServiceWeb {
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
-    @Path("/calculateRiskValue")
-    public String calculateRiskValue(@FormParam("reportId") String reportId){
-        //计算风险值，传过来的是uploaded_reportId,通过这些reportId找到对应的起重机，
-        // 将相应的信息分装到craneInspectReport对象中，然后根据equipmentVariety
-        //来查找craneTypeId，从而找到相应的riskModelId,然后找到className,动态的
-        //选择class类来进行计算
-        String[] str=reportId.split(",");
-        List<Map<String,String>>calculatedReportList=new ArrayList<Map<String, String>>();
-        for(int i=0;i<str.length;i++){
-        String className=null;
-        List<CraneInspectReport> craneList=craneInspectReportService.getCraneListByUploadReportId(Long.parseLong(str[i]));
-        List<CraneInspectReport> craneInspectReportList=new ArrayList<CraneInspectReport>();
-        List<Map<String,String>>mapList=new ArrayList<Map<String, String>>();
-        craneInspectReportService.getDbArrayListFromMongo();
-        for(CraneInspectReport craneInspectReport:craneList){
-               //根据reportnumber从mongodb中拿出数据封装到craneinspectreport中
-               className=craneInspectReportService.getClassNameByEquipmentVariety(craneInspectReport.getEquipmentVariety());
-               //通过每个reportnumber从mongodb中拿出数据封装成craneinspectreport对象，然后加载
-               CraneInspectReport craneReport=new CraneInspectReport();
-               craneReport=craneInspectReportService.getCraneInfoFromMongoByReportNumber(craneInspectReport.getReportNumber(),craneInspectReport.getEquipmentVariety());
-               craneInspectReportList.add(craneReport);
-        }
-        for(CraneInspectReport cr:craneInspectReportList){
-            Long craneTypeId=craneInspectReportService.getCraneTypeIdByCraneEquipment(cr.getEquipmentVariety());
-            if(craneTypeId!=null){
-            Float r=calculateRisk(className,cr,String.valueOf(craneTypeId));
-            int riskValue=Math.round(r);
-            Map<String,String> m=new HashMap<String,String>();
-            if(cr!=null){
-                m.put("reportNumber",cr.getReportNumber());
-                m.put("riskvalue",String.valueOf(riskValue));
-                mapList.add(m);
-                mList.add(m);
-            }
-        }
-        }
-            Map<String,String> uploadReport=craneInspectReportService.validateReportIsCalculated(Long.parseLong(str[i]));
-            if(uploadReport.get("status").equals("未计算")){
-            //批量插入riskValue
-            if(craneInspectReportService.InsertToRiskValue(mapList)){
-                //更新
-              craneInspectReportService.updateUploadedReportByReportId(Long.parseLong(str[i]),"已计算");
-            };
-        }else{
-            //将重复的记录保存到list中
-            calculatedReportList.add(uploadReport);
-        }
-    }
-        //向前台带的信息为report的信息以及计算的mapList
-        return JsonResultUtils.getObjectResultByStringAsDefault(calculatedReportList,JsonResultUtils.Code.SUCCESS);
-    }
-    public Float calculateRisk(String className,CraneInspectReport craneInspectReport,String craneType){
-         Float riskValue=0f;
-         try{
-         Class c=Class.forName(className);
-         ICalculateRisk iCalculateRisk=(ICalculateRisk)c.newInstance();
-         riskValue=iCalculateRisk.calculateRisk(craneInspectReport,craneType);
-         }catch (Exception e){
-             e.printStackTrace();
-         }
-        return riskValue;
-    }
-    //计算最大值
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/calculateMaxValue")
-    public String calculateMaxValue(){
-        String r=craneInspectReportService.insertToCraneInspectReportMaxValueCollection();
-        if(r.equals("0")){
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.MONGOUNCONNECT);
-        }else if(r.equals("1")){
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-        }
-        return null;
-    }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
     @Path("/listUploadedReport")
     public String listUploadedReport(){
         List<Map<String,String>> list=craneInspectReportService.listUploadedReport();
@@ -695,67 +615,6 @@ public class CraneInspectReportServiceWeb {
         }
         return null;
     }
-    //获取所有的地址
-    public List<Address> getAllAddress(){
-         List<Address> list=addressService.getProvinceCity();
-         return list;
-    }
-    //查出相关联的省市
-    public List<Address> getProvinceCity(){
-        List<Address> list=addressService.getProvinceCity();
-        return list;
-    }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/calculateAreaRisk")
-    public String calculateAreaRisk(){
-        //通过区查出有多少unitAddress,然后根据每家unitAddress求出区域风险平均值
-        //查出所有的区
-        addressList=getAllAddress();
-        List<Map<String,Float>> areaList=new ArrayList<Map<String, Float>>();
-        idList=getId();
-            //根据省市
-        for(Address address:idList){
-            Map<String,String> addressRiskValue=craneInspectReportService.validateAddressRiskValueIsExistByAddressId(address.getId());
-            if(addressRiskValue==null){
-            }else{
-                craneInspectReportService.deleteAreaRiskValue(Long.parseLong(String.valueOf(addressRiskValue.get("addressid"))));
-            }
-        }
-        for(Address address:addressList){
-            areaList=craneInspectReportService.getAreaInfoByCondition0(address.getProvince(),address.getCity(),"0","0","0",0f,0f);
-            if(areaList!=null&&areaList.size()!=0){
-            craneInspectReportService.batchInsertToAddressRiskValue(areaList);
-            }
-        }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-    }
-    public List<Address> getId(){
-        return addressService.getId();
-    }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/calculateCityRisk")
-    public String calculateCityAreaRisk(){
-        //通过区查出有多少unitAddress,然后根据每家unitAddress求出区域风险平均值
-        //查出所有的区
-        List<Map<String,Float>> cityList=new ArrayList<Map<String, Float>>();
-        List<Address> addresses=getProvinceCity();
-        for(Address address:addresses){
-            Map<String,String> cityRiskValueMap=craneInspectReportService.validateCityRiskValueIsExistByProvinceAndCity(address.getProvince(),address.getCity());
-            if(cityRiskValueMap==null){
-
-            }else{
-            craneInspectReportService.deleteCityRiskValue(cityRiskValueMap.get("province"), cityRiskValueMap.get("city"));
-            }
-            Map<String,Float> map=craneInspectReportService.getCityInfoByCondition0(address.getProvince(),address.getCity());
-            cityList.add(map);
-        }
-        if(cityList!=null&&cityList.size()!=0){
-            craneInspectReportService.batchInsertToCityRiskValue(cityList);
-        }
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-    }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/deleteRiskData")
@@ -765,36 +624,6 @@ public class CraneInspectReportServiceWeb {
         craneInspectReportService.dropCraneInspectReportCollection();
         //删除
     }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/dumpDataToTempTable")
-    public String dumpDataToTempTable(){
-        //插入数据到三个临时表中
-      /*  List<Map<String,String>> provinceRiskList=craneInspectReportService.selectProvinceRiskTemp();
-        List<Map<String,String>> cityRiskList=craneInspectReportService.selectCityRiskTemp();
-        List<Map<String,String>> areaRiskList=craneInspectReportService.selectAreaRiskTemp();*/
-        int a=craneInspectReportService.dumpDataToProvinceRisk();
-        if(a!=0){
-            int b=craneInspectReportService.dumpDataToCityRisk();
-            if(b!=0){
-                int c=craneInspectReportService.dumpDataToAreaRisk();
-                if(c!=0){
-                    return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
-                }
-            }
-        }
-        return null;
-    }
-    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
-    @POST
-    @Path("/clearRiskTempTable")
-    public String clearRiskTempTable(){
-         //在复制数据的时候先清空三张临时表
-        craneInspectReportService.deleteProvinceRiskTempTable();
-        craneInspectReportService.deleteCityRiskTempTable();
-        craneInspectReportService.deleteAreaRiskTempTable();
-        return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
- }
     @Produces( MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Path("/updateUploadedReport")
     @POST
@@ -833,8 +662,7 @@ public class CraneInspectReportServiceWeb {
     @Path("/calculateRiskValueInThread")
     public String calculateRiskValueInThread(@FormParam("reportId") String reportId){
          String userName=userService.getMyUserDetailFromSession().getUsername();
-         CraneInspectReportThread thread=new CraneInspectReportThread(reportId,craneInspectReportService,addressService,userService,dataRoleAddressService,userName);
-         new Thread(thread).start();
+         CraneInspectReportThread.start(reportId,craneInspectReportService,addressService,userService,dataRoleAddressService,userName);
          return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.craneinspectreport.mapper.CraneInspectReportMapper">
+    <sql id="craneInspectReport_fields">
+		ID,REPORTNUMBER,UNITADDRESS,ADDRESSID,ORGANIZECODE,USEPOINT,SAFEMANAGER,CONTACTPHONE,EQUIPMENTVARIETY,UNITNUMBER,MANUFACTUREUNIT,MANUFACTURELICENSENUMBER,MANUFACTUREDATE,SPECIFICATION,PNUMBER,WORKLEVEL,LNG,LAT,SINGLEPICURL,TYPEPICURL,RATEDLIFTWEIGHT,UPLOADEDREPORTID
+	</sql>
+
+    <resultMap id="craneInspectReportResultMap" type="CraneInspectReport">
+        <id property="id" column="ID" />
+        <result property="reportNumber" column="REPORTNUMBER" />
+        <result property="unitAddress" column="UNITADDRESS" />
+        <result property="addressId" column="ADDRESSID" />
+        <result property="organizeCode" column="ORGANIZECODE" />
+        <result property="userPoint" column="USEPOINT" />
+        <result property="safeManager" column="SAFEMANAGER" />
+        <result property="contactPhone" column="CONTACTPHONE" />
+        <result property="equipmentVariety" column="EQUIPMENTVARIETY" />
+        <result property="unitNumber" column="UNITNUMBER" />
+        <result property="manufactureUnit" column="MANUFACTUREUNIT" />
+        <result property="manufactureLicenseNumber" column="MANUFACTURELICENSENUMBER" />
+        <result property="manufactureDate" column="MANUFACTUREDATE" />
+        <result property="specification" column="SPECIFICATION" />
+        <result property="pNumber" column="PNUMBER" />
+        <result property="workLevel" column="WORKLEVEL" />
+        <result property="lng" column="LNG" />
+        <result property="lat" column="LAT" />
+        <result property="singlePicURL" column="SINGLEPICURL"/>
+        <result property="typePicURL" column="TYPEPICURL"/>
+        <result property="riskValue" column="RISKVALUE"/>
+        <result property="ratedLiftWeight" column="RATEDLIFTWEIGHT"/>
+        <result property="craneNumber" column="CRANENUMBER"/>
+        <result property="uploadedReportId" column="UPLOADEDREPORTID"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="CraneInspectReport" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        craneinspectreport(
+        <include refid="craneInspectReport_fields" />
+        )
+        VALUES (#{id}, #{reportNumber}, #{unitAddress},#{addressId},#{organizeCode},#{userPoint},#{safeManager},#{contactPhone},#{equipmentVariety},#{unitNumber},#{manufactureUnit},#{manufactureLicenseNumber},#{manufactureDate},#{specification},#{pNumber},#{workLevel},#{lng},#{lat},#{singlePicURL},#{typePicURL},#{ratedLiftWeight});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        craneinspectreport(
+        <include refid="craneInspectReport_fields"/>)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.reportNumber},#{item.unitAddress},#{item.addressId},#{item.organizeCode},#{item.userPoint},#{item.safeManager},#{item.contactPhone},#{item.equipmentVariety},#{item.unitNumber},#{item.manufactureUnit},#{item.manufactureLicenseNumber},#{item.manufactureDate},#{item.specification},#{item.pNumber},#{item.workLevel},#{item.lng},#{item.lat},#{item.singlePicURL},#{item.typePicURL},#{item.ratedLiftWeight},#{item.uploadedReportId})
+        </foreach>
+    </insert>
+    <update id="update" parameterType="CraneInspectReport">
+        UPDATE  craneinspectreport
+        <set>
+            <if test="unitAddress!=null" >UNITADDRESS=#{unitAddress},</if>
+            <if test="addressId!=null" >ADDRESSID=#{addressId},</if>
+            <if test="organizeCode!=null" >ORGANIZECODE=#{organizeCode},</if>
+            <if test="userPoint!=null" >USEPOINT=#{userPoint},</if>
+            <if test="safeManager!=null" >SAFEMANAGER=#{safeManager},</if>
+            <if test="contactPhone!=null" >CONTACTPHONE=#{contactPhone},</if>
+            <if test="equipmentVariety!=null" >EQUIPMENTVARIETY=#{equipmentVariety},</if>
+            <if test="unitNumber!=null" >UNITNUMBER=#{unitNumber},</if>
+            <if test="manufactureUnit!=null" >MANUFACTUREUNIT=#{manufactureUnit},</if>
+            <if test="manufactureLicenseNumber!=null">MANUFACTURELICENSENUMBER=#{manufactureLicenseNumber},</if>
+            <if test="manufactureDate!=null" >MANUFACTUREDATE=#{manufactureDate},</if>
+            <if test="specification!=null" >SPECIFICATION=#{specification},</if>
+            <if test="pNumber!=null" >PNUMBER=#{pNumber},</if>
+            <if test="workLevel!=null" >WORKLEVEL=#{workLevel},</if>
+            <if test="singlePicURL!=null">SINGLEPICURL=#{singlePicURL},</if>
+            <if test="typePicURL!=null">TYPEPICURL=#{typePicURL},</if>
+            <if test="ratedLiftWeight!=null">RATEDLIFTWEIGHT=#{ratedLiftWeight}</if>
+        </set>
+        WHERE  REPORTNUMBER=#{reportNumber};
+    </update>
+    <update id="updateURL" parameterType="java.lang.String">
+        UPDATE craneinspectreport
+        <set>
+            <if test="singlePicURL!=null">SINGLEPICURL=#{singlePicURL}</if>
+        </set>
+        WHERE REPORTNUMBER=#{reportNumber};
+    </update>
+    <select id="get" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM craneinspectreport WHERE ID=#{id}
+    </select>
+
+    <select id="getReportNumber" parameterType="java.lang.String" resultType="java.lang.String">
+         SELECT reportNumber
+         FROM craneinspectreport
+         WHERE REPORTNUMBER=#{reportNumber}
+         GROUP BY  reportNumber
+     </select>
+
+
+    <select id="findByCondition" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM craneinspectreport
+        <where>
+            <if test="reportNumber!=null">REPORTNUMBER=#{reportNumber}</if>
+            <if test="unitAddress!=null">AND UNITADDRESS=#{unitAddress}</if>
+            <if test="addressId!=null">AND ADDRESSID=#{addressId}</if>
+            <if test="organizeCode!=null">AND ORGANIZECODE=#{organizeCode}</if>
+            <if test="userPoint!=null">AND USEPOINT=#{userPoint}</if>
+            <if test="safeManager!=null">AND SAFEMANAGER=#{safeManager}</if>
+            <if test="contactPhone!=null">AND CONTACTPHONE=#{contactPhone}</if>
+            <if test="equipmentVariety!=null">AND EQUIPMENTVARIETY=#{equipmentVariety}</if>
+            <if test="unitNumber!=null">AND UNITNUMBER=#{unitNumber}</if>
+            <if test="manufactureUnit!=null">AND MANUFACTUREUNIT=#{manufactureUnit}</if>
+            <if test="manufactureLicenseNumber!=null">AND MANUFACTURELICENSENUMBER=#{manufactureLicenseNumber}</if>
+            <if test="manufactureDate!=null">AND MANUFACTUREDATE=#{manufactureDate}</if>
+            <if test="specification!=null">AND SPECIFICATION=#{specification}</if>
+            <if test="pNumber!=null">AND PNUMBER=#{pNumber}</if>
+            <if test="workLevel!=null">AND WORKLEVEL=#{workLevel}</if>
+            <if test="singlePicURL!=null">AND SINGLEPICURL=#{singlePicURL} </if>
+            <if test="typePicURL!=null">AND TYPEPICURL=#{typePicURL}</if>
+            <if test="ratedLiftWeight">AND RATEDLIFTWEIGHT=#{ratedLiftWeight}</if>
+        </where>
+    </select>
+    <delete id="delete" parameterType="CraneInspectReport">
+        DELETE FROM craneinspectreport
+        <where>
+            <if test="id!=null">ID=#{id}</if>
+        </where>
+    </delete>
+
+    <select id="getInfoByAddressId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM  craneinspectreport
+        where addressId=#{addressId}
+    </select>
+    <select id="getInfoByUnitAddress" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+     SELECT
+     cr.*,r.riskValue,count(cr.reportnumber) as craneNumber
+     FROM craneinspectreport cr,riskvalue r
+     WHERE cr.reportnumber=r.reportnumber
+     AND cr.unitAddress=#{unitAddress}
+     GROUP BY cr.equipmentVariety
+    </select>
+    <select id="getCraneInspectReportInfoByAddressAndEquipment" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT
+        cr.*,r.riskvalue
+        FROM craneinspectreport cr,riskvalue r
+        where cr.reportnumber=r.reportnumber AND unitAddress=#{unitAddress} and equipmentVariety=#{equipmentVariety} group by reportnumber
+    </select>
+    <select id="getCraneInspectReportByReportNumber" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
+        SELECT
+        <include refid="craneInspectReport_fields"/>
+        FROM craneinspectreport
+        WHERE reportNumber=#{reportNumber}
+    </select>
+    <select id="getUnitaddressByArea" parameterType="map"   resultMap="craneInspectReportResultMap">
+        select
+        distinct (unitaddress),lng,lat
+        from craneinspectreport
+        where
+        addressid=(
+        SELECT id
+        FROM address
+        <where>
+            <if test="province != null">
+                PROVINCE=#{province}
+            </if>
+            <if test="city != null">
+                and CITY=#{city}
+            </if>
+            <if test="area != null">
+                and AREA=#{area}
+            </if>
+        </where>
+        )
+    </select>
+    <select id="findReportNumberByUnitAddress" parameterType="java.lang.String" resultType="java.lang.Long">
+     SELECT round(avg(r.riskvalue))
+     FROM craneinspectreport cr,riskvalue r
+     WHERE cr.reportnumber=r.reportnumber
+     AND cr.unitAddress=#{unitAddress}
+    </select>
+    <select id="showRiskRank" parameterType="map" resultMap="craneInspectReportResultMap">
+         SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentVariety
+         FROM craneinspectreport cr,riskvalue r,address a
+         WHERE cr.reportnumber=r.reportnumber
+         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
+         group by cr.unitAddress order by r.riskvalue desc
+    </select>
+    <select id="showRiskRankByValueRange" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area} AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by cr.unitAddress order by r.riskvalue desc
+    </select>
+    <select id="getOneUnitAddressInfo" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
+           SELECT *
+           FROM
+           craneinspectreport
+           WHERE unitAddress=#{unitAddress}
+           GROUP BY unitAddress
+    </select>
+    <select id="getCraneInspectReportInfoById" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+          SELECT
+          *,riskvalue
+          FROM
+          craneinspectreport cr,riskvalue r
+          WHERE cr.reportnumber=r.reportnumber AND cr.id=#{id}
+    </select>
+    <select id="getCraneInspectReportInfoFromCircle" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.*,r.riskvalue
+        FROM craneinspectreport cr,riskvalue r
+        WHERE
+        cr.reportnumber=r.reportnumber
+        AND
+        lng
+        BETWEEN #{minLng}
+        AND #{maxLng}
+        AND lat
+        BETWEEN #{minLat}
+        AND #{maxLat}
+        GROUP BY unitAddress
+    </select>
+    <select id="getEquipmentVarietyList" resultMap="craneInspectReportResultMap">
+        SELECT DISTINCT(equipmentvariety)
+        FROM craneinspectreport
+    </select>
+
+    <select id="getAvgRiskValueByProvince" parameterType="java.lang.String" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM addressriskvalue prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province}
+    </select>
+    <select id="getAvgRiskValueByProvinceAndCity" parameterType="map" resultType="java.lang.Float">
+        SELECT ROUND(AVG(prs.riskvalue),2)
+        FROM addressriskvalue prs
+        INNER JOIN address a ON prs.addressid=a.id
+        WHERE a.province=#{province} AND a.city=#{city}
+    </select>
+    <select id="getProvinceAvgRiskValue" resultType="map">
+         SELECT a.province,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+         FROM addressriskvalue prs,address a
+         WHERE a.id=prs.addressid
+         group by a.province order by avgRiskValue desc
+    </select>
+    <select id="getCityAvgRiskValueByProvince" parameterType="java.lang.String" resultType="map">
+         SELECT a.city,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+         FROM addressriskvalue prs,address a
+         WHERE a.id=prs.addressid AND a.province=#{province}
+         group by a.city order by avgRiskValue desc
+    </select>
+    <select id="getAreaAvgRiskValueByProvinceAndCity" parameterType="map" resultType="map">
+        SELECT a.area,ROUND(AVG(prs.riskvalue),2) avgRiskValue
+        FROM address a,addressriskvalue prs
+        where a.id=prs.addressid AND a.province=#{province} AND a.city=#{city}
+        GROUP BY a.area ORDER BY avgRiskValue DESC
+    </select>
+    <select id="fuzzyQuery"  parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+         FROM craneinspectreport cr,riskvalue r,address a
+         WHERE cr.reportnumber=r.reportnumber
+         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
+         AND (cr.unitaddress like #{require} or  cr.usepoint like #{require} or cr.safemanager like #{require} or cr.equipmentvariety like #{require}  or cr.manufactureunit like #{require})
+         order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByUnitAddress" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.unitaddress like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByUserPoint" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.usePoint like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryBySafeManager" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.safeManager like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByEquipmentVariety" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.equipmentVariety like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="fuzzyQueryByManufactureUnit" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentvariety,cr.lng,cr.lat
+        FROM craneinspectreport cr,riskvalue r,address a
+        WHERE cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId  AND a.city=#{city} AND a.area=#{area}
+        AND cr.manufactureUnit like  #{require}
+        order by r.riskvalue desc
+    </select>
+    <select id="getAreaInfo" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
+        FROM craneinspectreport cr,address a,riskvalue r
+        WHERE cr.reportnumber=r.reportnumber AND a.id=cr.addressId
+        AND a.city=#{city} AND a.area=#{area} GROUP BY cr.unitaddress
+    </select>
+    <select id="getProvinceRiskRankFormRiskRange" parameterType="map" resultType="map">
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
+        WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.id=cr.addressId AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by a.province  order by r.riskvalue desc
+    </select>
+    <select id="getCityRiskRankFormRiskRange" parameterType="map" resultType="map">
+        SELECT a.id,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
+        WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.id=cr.addressId AND a.province=#{province}  AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by a.city  order by r.riskvalue desc
+    </select>
+    <select id="getAreaRiskRankFormRiskRange" parameterType="map" resultType="map">
+       SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
+        WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.id=cr.addressId AND a.province=#{province} AND a.city=#{city} AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        group by a.area  order by r.riskvalue desc
+    </select>
+
+    <select id="getCraneInfoByFuzzyUnitAddress" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.unitaddress
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.unitaddress LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzyUsePoint" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.usepoint
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.usepoint LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzySafeManager" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.safemanager
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.safemanager LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzyEquipmentVariety" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.equipmentvariety
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.equipmentvariety LIKE #{require}
+    </select>
+    <select id="getCraneInfoByFuzzyManufactureunit" parameterType="map" resultType="java.lang.String">
+        SELECT DISTINCT cr.manufactureunit
+        FROM craneinspectreport cr,address a
+        WHERE cr.addressid=a.id AND a.city=#{city} AND a.area=#{area}  AND cr.manufactureunit LIKE #{require}
+    </select>
+    <select id="getCraneNumberByUnitAddress" parameterType="java.lang.String" resultType="java.lang.Long">
+         SELECT
+         count(*)
+         FROM craneinspectreport cr
+         WHERE cr.unitAddress=#{unitAddress}
+         GROUP BY cr.unitAddress
+    </select>
+    <select id="getUseTimeList" resultType="java.lang.String">
+        SELECT round(DATEDIFF(NOW(),cr.manufacturedate)/365) as useTime
+        FROM craneinspectreport cr GROUP BY useTime order by useTime asc
+    </select>
+    <select id="getCraneInfoByCondition" parameterType="map" resultMap="craneInspectReportResultMap">
+        SELECT cr.*,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber
+        FROM craneinspectreport cr,address a,riskvalue r
+            WHERE cr.addressid=a.id AND cr.id=r.reportId
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test="city!=null">
+            AND a.city=#{city}
+        </if>
+        <if test="area!=null">
+            AND a.area=#{area}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            AND  #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY cr.unitaddress  ORDER BY  craneNumber desc
+    </select>
+    <!--<select id="getCityInfoByCondition" parameterType="map" resultType="map">
+        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr
+        LEFT JOIN address a
+        ON cr.addressid=a.id
+        LEFT JOIN riskvalue r
+        ON cr.reportnumber=r.reportnumber
+        LEFT JOIN riskcolor col
+        ON r.riskvalue=col.riskvalue
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskval BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.city  ORDER BY  craneNumber desc
+    </select>-->
+    <select id="getCityInfoByCondition" parameterType="map" resultType="map">
+        <!--SELECT addressId as id,city,avgRiskValue,craneNumber,color
+        FROM  city_riskvalue_temp
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        ORDER BY craneNumber DESC-->
+        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.city  ORDER BY  craneNumber desc
+    </select>
+    <select id="getCityInfoByCondition0" parameterType="map" resultType="map">
+        SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test="city!=null">
+            AND a.city=#{city}
+        </if>
+        GROUP BY a.city  ORDER BY  craneNumber desc
+    </select>
+    <!--<select id="getAreaInfoByCondition" parameterType="map" resultType="map">
+        SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr
+        LEFT JOIN address a
+        ON cr.addressid=a.id
+        LEFT JOIN riskvalue r
+        ON cr.reportnumber=r.reportnumber
+        LEFT JOIN riskcolor col
+        ON r.riskvalue=col.riskvalue
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test="city!=null">
+            AND city=#{city}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            AND #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskval BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.area  ORDER BY  craneNumber desc
+    </select>-->
+    <select id="getAreaInfoByCondition" parameterType="map" resultType="map">
+       <!-- SELECT addressId as id,area,avgRiskValue,craneNumber,color
+        FROM   area_riskvalue_temp
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test="city!=null">
+            AND city=#{city}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        ORDER BY craneNumber DESC-->
+        SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test="city!=null">
+            AND a.city=#{city}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.area  ORDER BY  craneNumber desc
+    </select>
+    <select id="getAreaInfoByCondition0" parameterType="map" resultType="map">
+        SELECT a.id,a.area,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,address a,riskvalue r,riskcolor col
+        WHERE cr.addressid=a.id AND cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        <if test="province!=null">
+            AND a.province=#{province}
+        </if>
+        <if test="city!=null">
+            AND a.city=#{city}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            AND cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            AND ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        GROUP BY a.area  ORDER BY  craneNumber desc
+    </select>
+    <select id="getCraneListByUploadReportId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+         select *
+         from
+         craneinspectreport
+         where uploadedreportId=#{reportId}
+    </select>
+    <select id="getClassNameByEquipmentVariety" parameterType="java.lang.String" resultType="java.lang.String">
+          select
+          m.className
+          from craneinspectreport_cranetype crtype,cranetype type,riskModel m
+          where crtype.craneTypeId=type.id and
+          type.riskModelId=m.id and crtype.equipmentVariety=#{equipmentVariety}
+          GROUP BY m.className
+    </select>
+    <select id="getCraneTypeByCraneInspectReportInfo" resultType="java.lang.Long">
+          select ctype.craneTypeId
+          from craneinspectreport cr,craneinspectreport_cranetype ctype
+          where cr.equipmentVariety=ctype.equipmentVariety
+          group by ctype.craneTypeId
+    </select>
+    <select id="getEquipmentVarietyByCraneType" parameterType="java.lang.Long" resultType="java.lang.String">
+           select cr.equipmentVariety
+            from craneinspectreport cr,craneinspectreport_cranetype ctype
+            where cr.equipmentVariety=ctype.equipmentVariety and ctype.craneTypeId=#{craneType}
+            group by cr.equipmentVariety
+    </select>
+    <insert id="batchInsertToRiskValue" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        riskvalue(reportnumber,riskvalue,reportId)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.reportNumber},#{item.riskvalue},#{item.reportId})
+        </foreach>
+    </insert>
+    <insert id="batchInsertToAddressRiskValue" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        addressriskvalue(addressid,riskvalue)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.riskvalue})
+        </foreach>
+    </insert>
+    <insert id="batchInsertToCityRiskValue" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        city_riskvalue(province,city,riskvalue)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.province},#{item.city},#{item.riskvalue})
+        </foreach>
+    </insert>
+    <select id="listUploadedReport" resultType="map">
+        select
+        *
+        from
+        uploadedreport
+    </select>
+    <update id="updateUploadedReportByReportId" parameterType="map">
+        update uploadedreport
+        set status=#{status}
+        where id=#{reportId}
+    </update>
+    <update id="updateTaskIdUploadedReportByReportId" parameterType="map">
+        update uploadedreport
+        set taskId=#{taskId}
+        where id=#{reportId}
+    </update>
+
+    <select id="validateReportIsCalculated" parameterType="java.lang.Long" resultType="map">
+        SELECT *
+        FROM uploadedreport WHERE
+        id=#{reportId}
+    </select>
+    <update id="updateRiskValueByChooseReport" parameterType="map" >
+            update  riskvalue
+            set
+            riskvalue=#{riskvalue}
+            where reportNumber=#{reportNumber}
+    </update>
+    <insert id="insertToUploadedReport" parameterType="map" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        uploadedreport(
+        name,uploadtime,userId,userName,path,status
+        )
+        VALUES (#{name}, #{uploadtime},#{userId},#{userName},#{path},#{status});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="updateUploadedReport" parameterType="map">
+        UPDATE
+        uploadedreport set name=#{name},
+        uploadtime=#{uploadtime},userId=#{userId},userName=#{userName},path=#{path},status=#{status}
+        WHERE id=#{reportId}
+    </update>
+    <select id="findIdFromUploadedReportByName" parameterType="java.lang.String" resultType="java.lang.Long">
+          SELECT id
+          FROM uploadedreport
+          WHERE  name=#{reportName}
+    </select>
+    <select id="getCraneTypeIdByCraneEquipment" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT
+        craneTypeId
+        FROM craneinspectreport_cranetype
+        WHERE equipmentVariety=#{equipmentVariety}
+    </select>
+    <select id="validateUploadedReport" parameterType="java.lang.String" resultType="map">
+        SELECT *
+        FROM  uploadedreport
+        WHERE  name=#{reportName}
+    </select>
+    <select id="validateAddressRiskValueIsExistByAddressId" parameterType="java.lang.Long" resultType="map">
+        SELECT addr.*,a.*
+        FROM
+        addressriskvalue addr,address a
+        WHERE  addr.addressId=a.id
+        AND addr.addressId=#{addressId} group by addr.addressId
+    </select>
+    <update id="updateAreaRiskValue" parameterType="map">
+        UPDATE
+        addressriskvalue
+        SET
+        <if test="riskValue!=null">
+            riskvalue=#{riskValue}
+        </if>
+        <if test="addressId!=null">
+            WHERE addressId=#{addressId}
+        </if>
+    </update>
+    <select id="validateCityRiskValueIsExistByProvinceAndCity" parameterType="map" resultType="map">
+        SELECT
+        *
+        FROM
+        city_riskvalue
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test="city!=null">
+            AND city=#{city}
+        </if>
+    </select>
+    <update id="updateCityRiskValue" parameterType="map">
+        UPDATE
+        city_riskvalue
+        SET
+        riskvalue=#{riskValue}
+        WHERE
+        <if test="province!=null">
+            province=#{province}
+        </if>
+        <if test="city!=null">
+            AND city=#{city}
+        </if>
+    </update>
+    <update id="updateProvinceRiskValue" parameterType="map">
+        UPDATE
+        province_riskvalue
+        SET
+        <if test="riskValue!=null">
+            riskvalue=#{riskValue}
+        </if>
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+    </update>
+    <delete id="deleteCityRiskValue" parameterType="map">
+        DELETE
+        FROM
+        city_riskvalue
+        <if test="province!=null">
+            WHERE province=#{province}
+        </if>
+        <if test="city!=null">
+            AND city=#{city}
+        </if>
+    </delete>
+    <delete id="deleteAreaRiskValue" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        addressriskvalue
+        <if test="addressId!=null">
+            WHERE addressId=#{addressId}
+        </if>
+    </delete>
+    <select id="selectProvinceRiskTemp" resultType="map">
+      SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,u.id as userId,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskvalue
+      FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+      WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+      AND a.id=cr.addressId
+      GROUP BY a.province order by craneNumber desc;
+    </select>
+    <insert id="dumpDataToProvinceRiskTemp" parameterType="java.util.List" useGeneratedKeys="true">
+        INSERT INTO
+        province_riskvalue_temp(
+        addressId,province,avgRiskValue,craneNumber,color,userId,equipmentvariety,manufacturedate,riskvalue)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.province},#{item.avgRiskValue},#{item.craneNumber},#{item.color},#{item.userId},#{item.equipmentvariety},#{item.manufacturedate},#{item.riskvalue})
+        </foreach>
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <insert id="dumpDataToProvinceRisk">
+      INSERT INTO
+      province_riskvalue_temp(
+      addressId,province,avgRiskValue,craneNumber,color,userId,equipmentvariety,manufacturedate,riskvalue)
+      SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,u.id as userId,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskvalue
+      FROM craneinspectreport cr
+      LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
+      LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
+      LEFT JOIN address a ON cr.addressId=a.id
+      LEFT JOIN drole_address draddr ON a.id=draddr.addressId
+      LEFT JOIN drole dr ON draddr.droleId=dr.id
+      LEFT JOIN user_drole udr ON dr.id=udr.droleId
+      LEFT JOIN user u ON u.id=udr.userId
+      GROUP BY a.province order by craneNumber desc;
+    </insert>
+    <select id="selectCityRiskTemp" resultType="map">
+     SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)as equipmentvariety,cr.manufacturedate as manufacturedate,r.riskvalue as riskval,u.id as userId
+     FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+     WHERE  cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+     AND a.id=cr.addressId
+     GROUP BY a.city order by avgRiskValue desc;
+    </select>
+    <insert id="dumpDataToCityRiskTemp" parameterType="java.util.List" useGeneratedKeys="true">
+        INSERT INTO
+        city_riskvalue_temp(addressId,province,city,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.province},#{item.city},#{item.avgRiskValue},#{item.craneNumber},#{item.color},#{item.equipmentvariety},#{item.manufacturedate},#{item.riskval},#{item.userId})
+        </foreach>
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <insert id="dumpDataToCityRisk">
+      INSERT INTO
+      city_riskvalue_temp(addressId,province,city,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+      SELECT a.id,a.province,a.city,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365)as equipmentvariety,cr.manufacturedate as manufacturedate,r.riskvalue as riskval,u.id as userId
+      FROM craneinspectreport cr
+      LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
+      LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
+      LEFT JOIN address a ON cr.addressId=a.id
+      LEFT JOIN drole_address draddr ON a.id=draddr.addressId
+      LEFT JOIN drole dr ON draddr.droleId=dr.id
+      LEFT JOIN user_drole udr ON dr.id=udr.droleId
+      LEFT JOIN user u ON u.id=udr.userId
+      GROUP BY a.city order by avgRiskValue desc
+    </insert>
+    <select id="selectAreaRiskTemp" resultType="map">
+     SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskval,u.id as userId
+     FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+     WHERE cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+     AND a.id=cr.addressId
+     GROUP BY a.area order by avgRiskValue desc
+    </select>
+    <insert id="dumpDataToAreaRiskTemp" parameterType="java.util.List" useGeneratedKeys="true">
+        INSERT
+        INTO area_riskvalue_temp(addressId,province,city,area,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.province},#{item.city},#{item.area},#{item.avgRiskValue},#{item.craneNumber},#{item.color},#{item.equipmentvariety},#{item.manufacturedate},#{item.riskval},#{item.userId})
+        </foreach>
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="getReportNumberFromRiskValue" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        reportNumber
+        FROM
+        riskvalue
+        WHERE
+        reportNumber=#{reportNumber}
+        GROUP BY reportNumber
+    </select>
+    <delete id="deleteRiskValueByReportNumber" parameterType="java.lang.String">
+        DELETE
+        FROM
+        riskvalue
+        WHERE
+        reportNumber=#{reportNumber}
+    </delete>
+    <delete id="deleteProvinceRiskTempTable">
+     DELETE
+     FROM
+     province_riskvalue_temp
+    </delete>
+    <delete id="deleteCityRiskTempTable">
+     DELETE
+     FROM
+     city_riskvalue_temp
+    </delete>
+    <delete id="deleteAreaRiskTempTable">
+     DELETE
+     FROM
+     area_riskvalue_temp
+    </delete>
+    <insert id="dumpDataToAreaRisk">
+        INSERT
+        INTO area_riskvalue_temp(addressId,province,city,area,avgRiskValue,craneNumber,color,equipmentVariety,manufacturedate,riskvalue,userId)
+        SELECT a.id,a.province,a.city,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color,cr.equipmentvariety as equipmentvariety,ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) as manufacturedate,r.riskvalue as riskval,u.id as userId
+        FROM craneinspectreport cr
+        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
+        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
+        LEFT JOIN address a ON cr.addressId=a.id
+        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
+        LEFT JOIN drole dr ON draddr.droleId=dr.id
+        LEFT JOIN user_drole udr ON dr.id=udr.droleId
+        LEFT JOIN user u ON u.id=udr.userId
+        GROUP BY a.area order by avgRiskValue desc
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="updateUpdatedReport" parameterType="map">
+        UPDATE uploadedreport
+        <set>
+            <if test="status!= null">status=#{status}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+    <delete id="deleteByReportId" parameterType="java.lang.Long">
+        DELETE FROM craneinspectreport
+        <where>
+            <if test="reportId != null">uploadedReportId=#{reportId}</if>
+        </where>
+    </delete>
+    <delete id="deleteUploadedReport" parameterType="map">
+        DELETE FROM uploadedreport
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </delete>
+    <select id="getEquipmentVarietyByUploadedReportId" parameterType="java.lang.Long" resultMap="craneInspectReportResultMap">
+        SELECT
+        equipmentVariety
+        FROM
+        craneInspectReport
+        <if test="reportId!=null">
+         WHERE  uploadedReportId=#{reportId}
+        </if>
+    </select>
+    <select id="findEquipmentVarietyFromCraneType" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        cr.equipmentVariety
+        FROM
+        craneinspectreport_cranetype cr
+        <if test="equipmentVariety!=null">
+        WHERE
+        cr.equipmentVariety=#{equipmentVariety}
+        </if>
+        GROUP BY
+        cr.equipmentVariety
+    </select>
+    <select id="getCalculateStatus" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT
+        s.status
+        FROM
+        riskcalculate_status s,calculate_task t
+        WHERE s.taskId=t.id AND t.status=#{status}
+        GROUP BY s.status
+    </select>
+    <update id="updateRiskCalculateStatus" parameterType="map">
+        UPDATE riskcalculate_status
+        <set>
+            <if test="status!= null">status=#{status}</if>
+        </set>
+        WHERE ID = #{id} AND taskId=#{taskId};
+    </update>
+    <insert id="insertToCalculateTask" parameterType="CalculateTask" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        calculate_task(
+        startTime,status
+        )
+        VALUES (#{startTime},#{status});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <insert id="insertToCalculateStatus" parameterType="CalculateStatus" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        riskcalculate_status(
+        status,taskId
+        )
+        VALUES (#{status},#{taskId});
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <select id="getCalculateTaskInfo" parameterType="java.lang.String" resultType="map">
+        SELECT
+        u.name,u.uploadtime,u.userId,u.userName,u.status as reportstatus,s.status as calculatestatus,t.startTime,t.status as taskstatus,t.endTime
+        FROM
+        uploadedreport u,riskcalculate_status s,calculate_task t
+        WHERE
+        u.taskId=t.id AND s.taskId=t.id AND t.status=#{status}
+    </select>
+    <update id="updateCalculateTask" parameterType="map">
+        UPDATE calculate_task
+        <set>
+            <if test="endTime!= null">endTime=#{endTime},</if>
+            <if test="status!= null">status=#{status}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+    <select id="validateIsExistCalculateStatus" parameterType="CalculateStatus" resultType="map">
+        SELECT
+        *
+        FROM
+        riskcalculate_status
+        WHERE
+        <if test="status!=null">
+        status=#{status}
+        AND
+        </if>
+        <if test="taskId!=null">
+        taskId=#{taskId}
+        </if>
+    </select>
+    <delete id="eleteCalculateStatus" parameterType="CraneInspectReport">
+    DELETE FROM riskcalculate_status
+    <where>
+        <if test="status!=null">status=#{status} AND</if>
+        <if test="taskId!=null">taskId=#{taskId}</if>
+    </where>
+</delete>
+</mapper>

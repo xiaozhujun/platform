@@ -49,9 +49,9 @@
 
         <!-- spring jersey -->
         <dependency>
-            <groupId>org.glassfish.jersey.ext</groupId>
-            <artifactId>jersey-spring3</artifactId>
-        </dependency>
+        <groupId>org.glassfish.jersey.ext</groupId>
+        <artifactId>jersey-spring3</artifactId>
+    </dependency>
 
         <dependency>
             <groupId>platform</groupId>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.platform.business.datarule.mapper.DataRoleAddressMapper">
+    <sql id="drole_address_fields">
+		ID,DROLEID,ADDRESSID,DROLENAME
+	</sql>
+
+    <resultMap id="dataRoleAddressResultMap" type="DataRoleAddress">
+        <id property="id" column="ID" />
+        <result property="dRoleId" column="DROLEID" />
+        <result property="addressId" column="ADDRESSID" />
+        <result property="dRoleName" column="DROLENAME"/>
+    </resultMap>
+
+    <insert id="add" parameterType="DataRoleAddress" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        drole_address(
+        <include refid="drole_address_fields" />
+        )
+        VALUES (#{id}, #{dRoleId}, #{addressId},#{dRoleName});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <select id="totalCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM drole_address
+        <where>
+            <if test="id != null">ID=#{id}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="DataRoleAddress">
+        UPDATE drole_address
+        <set>
+            <if test="dRoleId != null">DROLEID=#{dRoleId},</if>
+            <if test="addressId != null">ADDRESSID=#{addressId},</if>
+            <if test="dRoleName != null">DROLENAME=#{dRoleName}</if>
+        </set>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="delete" parameterType="DataRoleAddress">
+        DELETE FROM drole_address
+        <where>
+            <if test="id != null">ID=#{id}</if>
+            <if test="dRoleId != null">AND DROLEID=#{dRoleId}</if>
+        </where>
+    </delete>
+
+    <select id="get" parameterType="DataRoleAddress" resultMap="dataRoleAddressResultMap">
+        SELECT
+        <include refid="drole_address_fields" />
+        FROM drole_address WHERE ID=#{id}
+    </select>
+
+    <select id="findByCondition" parameterType="java.lang.Long" resultMap="dataRoleAddressResultMap">
+        SELECT
+        <include refid="drole_address_fields" />
+        FROM drole_address WHERE droleId=#{id}
+    </select>
+
+    <select id="findByDataRoleName" parameterType="java.lang.String" resultMap="dataRoleAddressResultMap">
+        SELECT
+        <include refid="drole_address_fields" />
+        FROM drole_address WHERE droleName=#{name}
+    </select>
+
+    <!--<select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr
+        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
+        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
+        LEFT JOIN address a ON cr.addressId=a.id
+        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
+        LEFT JOIN drole dr ON draddr.droleId=dr.id
+        LEFT JOIN user_drole udr ON dr.id=udr.droleId
+        LEFT JOIN user u ON u.id=udr.userId
+        <if test="userId!=null">
+        WHERE userId=#{userId}
+        </if>
+        GROUP BY a.province order by craneNumber desc
+    </select>-->
+    <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
+          /*SELECT addressId as id,province,avgRiskValue,craneNumber,color
+          FROM province_riskvalue_temp
+          WHERE userId=#{userId}
+          ORDER BY craneNumber DESC*/
+          SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+          FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+          WHERE u.id=#{userId} and cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+          AND a.id=cr.addressId
+          GROUP BY a.province order by craneNumber desc
+    </select>
+    <!--<select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr
+        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
+        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
+        LEFT JOIN address a ON cr.addressId=a.id
+        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
+        LEFT JOIN drole dr ON draddr.droleId=dr.id
+        LEFT JOIN user_drole udr ON dr.id=udr.droleId
+        LEFT JOIN user u ON u.id=udr.userId
+         <if test="userId!=null">
+          WHERE userId=#{userId}
+          </if>
+       <if test='equipmentVariety!="0"'>
+              and equipmentvariety=#{equipmentVariety}
+          </if>
+         <if test='sTime!="0"'>
+               and manufacturedate between #{sTime}
+           </if>
+        <if test='eTime!="0"'>
+             and #{eTime}
+        </if>
+           <if test="startValue!=0f">
+               AND riskval BETWEEN #{startValue}
+           </if>
+           <if test="endValue!=0f">
+               AND #{endValue}
+           </if>
+        GROUP BY a.province order by craneNumber desc
+    </select>-->
+    <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
+      <!--  SELECT addressId as id,province,avgRiskValue,craneNumber,color
+        FROM province_riskvalue_temp
+        <if test="userId!=null">
+            WHERE userId=#{userId}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            and equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            and manufacturedate between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}
+        </if>
+        ORDER BY craneNumber DESC-->
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
+        where
+        <if test="userId!=null">
+            u.id=#{userId}
+        </if>
+        <if test='equipmentVariety!="0"'>
+            and cr.equipmentvariety=#{equipmentVariety}
+        </if>
+        <if test='sTime!="0"'>
+            and ROUND(DATEDIFF(NOW(),cr.manufacturedate)/365) between #{sTime}
+        </if>
+        <if test='eTime!="0"'>
+            and #{eTime}
+        </if>
+        <if test="startValue!=0f">
+            AND r.riskvalue BETWEEN #{startValue}
+        </if>
+        <if test="endValue!=0f">
+            AND #{endValue}  AND
+        </if>
+        cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
+        AND a.id=cr.addressId
+        GROUP BY a.province order by craneNumber desc
+    </select>
+    <select id="getProvinceInfoWithDataRuleByCondition0" parameterType="map" resultType="map">
+        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        FROM craneinspectreport cr,riskvalue r,address a,riskcolor col
+        where
+        cr.reportnumber=r.reportnumber AND col.riskvalue=r.riskvalue
+        AND a.id=cr.addressId
+        GROUP BY a.province order by craneNumber desc
+    </select>
+    <select id="getCityAndColorWithDataRole" parameterType="map" resultType="map">
+        SELECT addressId as id,city,avgRiskValue,craneNumber,color
+        FROM  city_riskvalue_temp
+        WHERE userId=#{userId} and province=#{province}
+    </select>
+    <select id="getAreaAndColorWithDataRole" parameterType="map" resultType="map">
+         SELECT addressId as id,area,avgRiskValue,craneNumber,color
+        FROM area_riskvalue_temp
+        WHERE userId=#{userId} and province=#{province} and city=#{city}
+    </select>
+    <select id="findAddressIdById" parameterType="java.lang.Long"  resultType="java.lang.Long">
+        Select addressId
+        from   drole_address where droleId=#{id}
+    </select>
+    <select id="getAddressIdBydRoleName" parameterType="java.lang.String"  resultType="java.lang.Long">
+        Select addressId
+        from   drole_address where droleName=#{dRoleName}
+    </select>
+    <select id="getCraneNumberByProvince" parameterType="java.lang.String" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province}
+        group by a.province
+    </select>
+    <select id="getCraneNumberByCity" parameterType="map" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province} and a.city=#{city}
+        group by a.province,a.city
+    </select>
+    <select id="getCraneNumberByArea" parameterType="map" resultType="java.lang.Long">
+        select
+        count(cr.reportnumber)
+        from craneinspectreport cr,address a
+        where cr.addressId=a.id
+        and a.province=#{province} and a.city=#{city} and a.area=#{area}
+        group by a.province,a.city,a.area
+    </select>
+    <select id="getProvinceListWithDataRole" parameterType="java.lang.Long" resultType="map">
+        select a.province
+        from user u,drole dr,user_drole udr,drole_address daddr,address a
+        where u.id=udr.userId and udr.droleId=dr.id and daddr.droleId=dr.id and daddr.addressId=a.id
+        and u.id=#{userId} group by province order by a.id asc
+    </select>
+    <insert id="batchInsertToProvinceRiskValue" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO
+        province_riskvalue(province,riskvalue)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.province},#{item.avgRiskValue})
+        </foreach>
+    </insert>
+    <update id="updateProvinceRiskValue" parameterType="map">
+        UPDATE
+        province_riskvalue
+        SET
+        <if test="riskValue!=null">
+         riskvalue=#{riskValue}
+        </if>
+        <if test="province!=null">
+         WHERE province=#{province}
+        </if>
+    </update>
+    <select id="validateProvinceRiskValueIsExistByProvince" parameterType="java.lang.String" resultType="map">
+         SELECT
+         *
+         FROM
+         province_riskvalue
+         <if test="province!=null">
+         WHERE province=#{province}
+         </if>
+    </select>
+    <delete id="deleteProvinceRiskValue" parameterType="java.lang.String" >
+       DELETE
+       FROM
+       province_riskvalue
+       <if test="province!=null">
+       WHERE province=#{province}
+       </if>
+    </delete>
+</mapper>

@@ -47,13 +47,14 @@ public class DataRoleAddressServiceWeb {
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
 
-        RedisConnector redisConnector = new RedisConnector();
+       /* RedisConnector redisConnector = new RedisConnector();
         if(redisConnector.get(userId+":getProvinceAndColorWithDataRole")!=null){
             return redisConnector.get(userId+":getProvinceAndColorWithDataRole");
-        }
+        }*/
         List<Map<String,String>> list=dataRoleAddressService.getProvinceAndColorWithDataRole(userId);
-        redisConnector.set(userId+":getProvinceAndColorWithDataRole",24*60*60,JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS));
-        return redisConnector.get(userId+":getProvinceAndColorWithDataRole");
+//        redisConnector.set(userId+":getProvinceAndColorWithDataRole",24*60*60,JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS));
+        /*return redisConnector.get(userId+":getProvinceAndColorWithDataRole");*/
+        return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -62,11 +63,6 @@ public class DataRoleAddressServiceWeb {
     public String getProvinceInfoWithDataRuleByCondition(@FormParam("equipmentVariety")String equipmentVariety,@FormParam("useTime")String useTime,@FormParam("value") String value){
         String userName=userService.getMyUserDetailFromSession().getUsername();
         long userId=userService.getIdByName(userName);
-        /*if (equipmentVariety.trim().equals("")){
-            equipmentVariety=null;
-        }else if(useTime.trim().equals("")){
-            useTime=null;
-        }*/
         List<Map<String,String>> list=new ArrayList<Map<String, String>>();
         if(value.equals("0")&&useTime.equals("0")){
         list=dataRoleAddressService.getProvinceInfoWithDataRuleByCondition(userId,equipmentVariety,"0","0",0f,0f);

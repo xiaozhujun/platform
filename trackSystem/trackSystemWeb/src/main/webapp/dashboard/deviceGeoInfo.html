@@ -49,7 +49,12 @@
         }
 
         function deviceCallback(data) {
-            total = data.data.length;
+            //total = data.data.length;
+            for(var i=0;i<data.data.length;i++) {
+                if(data.data[i].lng != null) {
+                    total++;
+                }
+            }
             if(data.data[0]==undefined){
                 $.initMap("中国",5);
             }else if(state == 0){

@@ -73,6 +73,16 @@ public class GroupServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
             }
             Long appId = UserContext.currentUserAppId();
+            Long id;
+            try {
+                id = groupService.getIdByNumber(group.getNumber(),appId);
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                id = null;
+            }
+            if (id != null && id != group.getId()) {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"设备组已存在!");
+            }
             group.setAppId(appId);
             groupService.update(group);
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);

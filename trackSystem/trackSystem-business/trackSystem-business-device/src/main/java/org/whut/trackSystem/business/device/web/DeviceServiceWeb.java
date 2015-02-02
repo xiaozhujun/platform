@@ -86,8 +86,17 @@ public class DeviceServiceWeb {
                 return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"参数不能为空!");
             }
             Long appId = UserContext.currentUserAppId();
+            Long id;
+            try {
+                id = deviceService.getIdByNumber(device.getNumber(),appId);
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                id = null;
+            }
+            if (id != null && id != device.getId()) {
+                return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(),"设备已存在!");
+            }
             device.setAppId(appId);
-//            device.setDeviceTypeId(deviceTypeService.getIdByNameAndAppId(device.getTypeName(),appId));
             deviceService.update(device);
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.SUCCESS);
         }

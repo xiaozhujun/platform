@@ -96,8 +96,10 @@ public class DeviceDataService {
         String time = dbObject.get(FundamentalConfigProvider.get("device.mongo.time")).toString();
         String lng = dbObject.get(FundamentalConfigProvider.get("device.mongo.lng")).toString();
         String lat = dbObject.get(FundamentalConfigProvider.get("device.mongo.lat")).toString();
-        long appId = deviceService.getAppIdByDeviceNum(deviceNum);
+        Long appId = deviceService.getAppIdByDeviceNum(deviceNum);
+        redisConnector.set("appId",appId.toString());
         String jsonString = "{devices:["+"{deviceNum:'"+deviceNum+"',time:'"+time+"',lng:'"+lng+"',lat:'"+lat+"',appId:'"+appId+"'}]}";
+        redisConnector.set("device:{"+deviceNum+"}:jsonString",jsonString);
         logger.info("deviceTrack wsMessageDispatcher: " + wsMessageDispatcher);
         wsMessageDispatcher.dispatchMessage(jsonString);
     }

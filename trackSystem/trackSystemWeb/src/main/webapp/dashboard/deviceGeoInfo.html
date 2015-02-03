@@ -13,8 +13,15 @@
         var curDeviceLocations = {};
         curDeviceLocations.data = [];
         $(document).ready(function(){
-            $.post($.URL.device.list,null,deviceCallback,"json");
+            $.get($.URL.user.currentUserId,null,userInfoCallback,"json");
+//            $.post($.URL.device.list,null,deviceCallback,"json");
         });
+        function userInfoCallback(data) {
+            if(data.code == 200) {
+                var userId = data.data;
+                $.post($.URL.groupUser.currentGroupDeviceList,{"userId":parseInt(userId)},deviceCallback,"json");
+            }
+        }
 
         function connect() {
             var url= $.URL.websocket.register;
@@ -82,7 +89,7 @@
 
         function showInfo() {
             $.clearAllMarker();
-            window.map.centerAndZoom(new BMap.Point(parseFloat(curDeviceLocations.data[0].lng),parseFloat(curDeviceLocations.data[0].lat)),17);
+//            window.map.centerAndZoom(new BMap.Point(parseFloat(curDeviceLocations.data[0].lng),parseFloat(curDeviceLocations.data[0].lat)),17);
 //            for(var i=0;i<curDeviceLocations.data.length;i++) {
 //                var point = new BMap.Point(parseFloat(curDeviceLocations.data[i].lng),parseFloat(curDeviceLocations.data[i].lat));
 //                var marker = new BMap.Marker(point);        // 创建标注

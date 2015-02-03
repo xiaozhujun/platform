@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.trackSystem.business.group.mapper.GroupUserMapper">
+    <sql id="groupUser_fields">
+        ID,GROUPID,USERID,DEVICEID,DESCRIPTION,APPID
+    </sql>
+    <resultMap id="groupUser_resultMap" type="GroupUser">
+        <id property="id" column="ID"/>
+        <result property="groupId" column="GROUPID"/>
+        <result property="userId" column="USERID"/>
+        <result property="deviceId" column="DEVICEID"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="GroupUser"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        user_group(
+        <include refid="groupUser_fields" />
+        )
+        VALUES (#{id},#{groupId},#{userId},#{deviceId},#{description},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="GroupUser">
+        update user_group
+        <set>
+            <if test="groupId!=null">GROUPID=#{groupId},</if>
+            <if test="userId!=null">USERID=#{userId},</if>
+            <if test="deviceId!=null">DEVICEID=#{deviceId},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM user_group
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="groupUser_resultMap">
+        SELECT *
+        FROM user_group
+        WHERE appId=#{appId}
+    </select>
+
+    <select id="getGroupIdByUserId" parameterType="map" resultType="java.lang.Long">
+        SELECT groupId
+        FROM user_group
+        WHERE userId=#{userId} AND appId=#{appId}
+        GROUP BY groupId
+    </select>
+
+    <select id="findByCondition" parameterType="map" resultType="map">
+        SELECT d.*
+        FROM user_group as ug,device as d
+        WHERE ug.groupId=#{groupId} AND ug.appId=#{appId} AND ug.deviceId=d.id
+    </select>
+</mapper>

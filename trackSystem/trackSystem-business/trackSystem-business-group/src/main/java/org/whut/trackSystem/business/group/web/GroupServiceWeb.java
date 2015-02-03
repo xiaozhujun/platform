@@ -25,7 +25,7 @@ import java.util.List;
 @Component
 @Path("/group")
 public class GroupServiceWeb {
-    private static PlatformLogger logger = PlatformLogger.getLogger(GroupServiceWeb.class);
+    private static final PlatformLogger logger = PlatformLogger.getLogger(GroupServiceWeb.class);
     @Autowired
     private org.whut.trackSystem.business.group.service.GroupService groupService;
 

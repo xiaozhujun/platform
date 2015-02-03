@@ -29,7 +29,7 @@ public class DeviceTypeServiceWeb {
     @Autowired
     private DeviceTypeService deviceTypeService;
 
-    private static PlatformLogger logger = PlatformLogger.getLogger(DeviceTypeServiceWeb.class);
+    private static final PlatformLogger logger = PlatformLogger.getLogger(DeviceTypeServiceWeb.class);
 
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

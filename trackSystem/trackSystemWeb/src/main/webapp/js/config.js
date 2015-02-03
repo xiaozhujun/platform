@@ -49,6 +49,9 @@
             "update":"rs/group/update",
             "delete":"rs/group/delete"
         },
+        "groupUser":{
+            "currentGroupDeviceList":"rs/groupUser/currentGroupDeviceList"
+        },
         "websocket":{
             "register":"ws://localhost:8080/trackSystem/websocket/hello"
         }

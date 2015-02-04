@@ -71,21 +71,6 @@
         FROM drole_address WHERE droleName=#{name}
     </select>
 
-    <!--<select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
-        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr
-        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
-        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
-        LEFT JOIN address a ON cr.addressId=a.id
-        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
-        LEFT JOIN drole dr ON draddr.droleId=dr.id
-        LEFT JOIN user_drole udr ON dr.id=udr.droleId
-        LEFT JOIN user u ON u.id=udr.userId
-        <if test="userId!=null">
-        WHERE userId=#{userId}
-        </if>
-        GROUP BY a.province order by craneNumber desc
-    </select>-->
     <select id="getProvinceAndColorWithDataRole" parameterType="java.lang.String" resultType="map">
         SELECT a.id,a.province,pr.riskvalue as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,province_riskvalue pr,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr,riskvalue r
@@ -93,36 +78,7 @@
         AND a.id=cr.addressId
         GROUP BY a.province order by craneNumber desc
     </select>
-    <!--<select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
-        SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
-        FROM craneinspectreport cr
-        LEFT JOIN riskvalue r ON cr.reportnumber=r.reportnumber
-        LEFT JOIN riskcolor col ON r.riskvalue =col.riskvalue
-        LEFT JOIN address a ON cr.addressId=a.id
-        LEFT JOIN drole_address draddr ON a.id=draddr.addressId
-        LEFT JOIN drole dr ON draddr.droleId=dr.id
-        LEFT JOIN user_drole udr ON dr.id=udr.droleId
-        LEFT JOIN user u ON u.id=udr.userId
-         <if test="userId!=null">
-          WHERE userId=#{userId}
-          </if>
-       <if test='equipmentVariety!="0"'>
-              and equipmentvariety=#{equipmentVariety}
-          </if>
-         <if test='sTime!="0"'>
-               and manufacturedate between #{sTime}
-           </if>
-        <if test='eTime!="0"'>
-             and #{eTime}
-        </if>
-           <if test="startValue!=0f">
-               AND riskval BETWEEN #{startValue}
-           </if>
-           <if test="endValue!=0f">
-               AND #{endValue}
-           </if>
-        GROUP BY a.province order by craneNumber desc
-    </select>-->
+
     <select id="getProvinceInfoWithDataRuleByCondition" parameterType="map" resultType="map">
         SELECT a.id,a.province,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,address a,riskcolor col,riskvalue r

@@ -52,8 +52,8 @@
                 data: removeData,
                 width:'100%',
                 columns:[
-                    {display:'合同号',name:'contractId',width:80,type:'int',frozen:true} ,
-                    {display:'移除人员',name:'removeMan',width:100,frozen:true},
+                    {display:'合同名称',name:'contractName',width:80,type:'int',frozen:true} ,
+                    {display:'拆卸人员',name:'removeMan',width:100,frozen:true},
                     {display:'拆卸时间',name:'createTime',width:100,frozen:true},
                     {display:'移除状态',name:'removeStatus',width:450,
                         editor:{type:'select',valueField:"type",data:[{type:'未完成',text:'未完成'},{type:'完成',text:'完成'}],emptyText:null}
@@ -266,13 +266,13 @@
                 <td align="left"></td>
             </tr>
             <tr>
-                <td align="right" class="l-table-edit-td">移除人员:</td>
+                <td align="right" class="l-table-edit-td">拆除人员:</td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text"  id="removeMan" name="removeMan"></td>
                 </td>
             </tr>
             <tr style="border-bottom: 1px #666 dashed">
-                <td align="right" class="l-table-edit-td">移除状态:</td>
+                <td align="right" class="l-table-edit-td">拆除状态:</td>
                 <td align="left" class="l-table-edit-td">
                     <select name="removeStatus" id="removeStatus" ltype="select" ligeruiid="removeStatus">
                         <option value="未完成">未完成</option>
@@ -304,7 +304,6 @@
                     <div style="margin:4px;float:left;">
                         <div id="removeListbox2"></div>
                     </div>
-            </form>
             </td>
             </tr>
 
@@ -314,7 +313,7 @@
             <form id="removeImageUploadForm" action="rs/remove/upload" method="POST" enctype="multipart/form-data">
                 <input name="filename" type="file" >
                 <input id="removeIdInput" name="removeId" type="hidden">
-            </form>
+ </form>
         </td>
     </tr>
         </table>

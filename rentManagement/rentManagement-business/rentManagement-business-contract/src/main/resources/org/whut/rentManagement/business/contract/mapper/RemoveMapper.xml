@@ -27,13 +27,20 @@
             LAST_INSERT_ID() as id
         </selectKey>
     </insert>
-    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="RemoveResultMap">
+  <!--  <select id="getListByAppId" parameterType="java.lang.Long" resultMap="RemoveResultMap">
         select
         <include refid="Remove_fields" />
         from remove
         where APPID=#{appId}
         order by remove.id desc
     </select>
+    -->
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="Map">
+           select c.name contractName,i.removeMan,i.createTime,i.removeStatus,i.id
+           from  remove AS i,contract AS c
+           where i.appId=#{appId} AND i.contractId=c.id
+    </select>
+
     <update id="update" parameterType="Remove">
         UPDATE remove
         <set>

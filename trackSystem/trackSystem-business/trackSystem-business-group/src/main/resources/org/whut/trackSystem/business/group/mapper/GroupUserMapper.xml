@@ -59,8 +59,8 @@
     </select>
 
     <select id="findByCondition" parameterType="map" resultType="map">
-        SELECT d.*
-        FROM user_group as ug,device as d
-        WHERE ug.groupId=#{groupId} AND ug.appId=#{appId} AND ug.deviceId=d.id
+        SELECT d.*,g.name as groupName,u.name as userName
+        FROM user_group as ug,device as d,`group` as g,user as u
+        WHERE ug.groupId=#{groupId} AND ug.appId=#{appId} AND ug.deviceId=d.id AND d.groupId=g.id AND ug.userId=u.id
     </select>
 </mapper>

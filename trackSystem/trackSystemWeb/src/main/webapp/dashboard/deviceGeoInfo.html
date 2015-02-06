@@ -8,6 +8,7 @@
     <script type="text/javascript" src="js/map/addMarker.js"></script>
     <script type="text/javascript" src="lib/json2.js"></script>
     <script type="text/javascript">
+        var  ws=null;
         var num = "";
         var t = 0,total = 0,state = 0;
         var curDeviceLocations = {};
@@ -54,6 +55,14 @@
                 }
             };
         }
+
+        $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+            if (ws != null) {
+                console.log(1234344) ;
+                ws.close();
+                ws = null;
+            }
+        } });
 
         function deviceCallback(data) {
             //total = data.data.length;

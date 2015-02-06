@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script src="lib/json2.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var  ws=null;
+        var num = "";
+        var gridData = {};
+        var dNumList = new Array(),lngVal = new Array(),latVal = new Array();
+        $(document).ready(function() {
+            $.get($.URL.user.currentUserId,null,curUserCallback,"json");
+        });
+
+        function connect() {
+            var url= $.URL.websocket.register;
+            var s="{c:'Subscribe',devices:["+num+"]}";
+            ws =  new WebSocket(url);
+            ws.onopen = function () {
+                console.log('Info: connection opened.');
+                ws.send(s);
+                ws.onclose = function (event) {
+                    console.log('Info: connection closed.');
+                    console.log(event);			};
+            } ;
+            ws.onmessage = function (event) {
+                console.log ("收到消息！"+event.data);
+                var jsonData = eval("(" +event.data+ ")");
+                number=jsonData.devices[0].deviceNum;
+                for(var i=0;i<dNumList.length;i++){
+                    if(number==dNumList[i]){
+                        lngVal[i] = jsonData.devices[0].lng;
+                        latVal[i] = jsonData.devices[0].lat;
+                        g.updateCell("lng",lngVal[i],i);
+                        g.updateCell("lat",latVal[i],i);
+                    }
+                }
+            };
+        }
+
+        $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
+            if (ws != null) {
+                ws.close();
+                ws = null;
+            }
+        } });
+
+        function curUserCallback(data) {
+            if(data.code == 200) {
+                var userId = data.data;
+                $.post($.URL.groupUser.currentGroupDeviceList,{"userId":data.data},groupDevCallback,"json");
+            }
+        }
+
+        function groupDevCallback(data) {
+            if(data.code != 200) {
+                $.ligerDialog().warn("获取当前组设备失败!");
+            } else {
+                gridData.Rows = data.data;
+                gridData.Total = data.data.length;
+                f_initGrid();
+            }
+
+            for(var i=0;i<data.data.length;i++) {
+                dNumList[i] = data.data[i].number;
+                if(i==0){
+                    num=data.data[i].number+",";
+                }
+                else {
+                    num=num+data.data[i].number+",";
+                }
+            }
+            connect();
+        }
+
+        var manager, g;
+        function f_initGrid()
+        {
+            g = manager = $("#mainGrid").ligerGrid({
+                columns: [
+                    { display: '编号', name: 'number',width:'20%'},
+                    { display: '组名', name: 'groupName',width:'20%'},
+                    { display: '用户', name: 'userName',width:'auto'},
+                    { display: '经度', name: 'lng',width:'auto',render:function(item,rowindex) {
+                        if(lngVal[rowindex]==null) {
+                            return  "暂无数据";
+                        }
+                        else
+                            return lngVal[rowindex];
+                    }},
+                    { display: '纬度', name: 'lat',width:'auto',render:function(item,rowindex) {
+                        if(latVal[rowindex]==null) {
+                            return  "暂无数据";
+                        }
+                        else
+                            return latVal[rowindex];
+                    }}
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: gridData,
+                width: '100%'
+            });
+        }
+    </script>
+</head>
+<body  style="padding:10px">
+    <div id="mainGrid"></div>
+</body>
+</html>

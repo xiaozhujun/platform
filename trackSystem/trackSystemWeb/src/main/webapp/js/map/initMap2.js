@@ -57,7 +57,7 @@ $.extend({
             count++;
             var item={};
             item.deviceId=data[i].id;
-            item.title="设备"+data[i].number+"简要信息";
+            item.title="设备"+data[i].name+"的简要信息";
 
             item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data[i].number+
                 "</div style='width: 200px;'>设备名称:"+data[i].name+"</div>"+"</div></div>";
@@ -70,8 +70,7 @@ $.extend({
             item.icon.x=9;
             item.icon.lb=12;
             item.icon.l=46;
-            riskRankArray.push(item);
-            console.log(riskRankArray);
+            riskRankArray.push(item);;
         }
         $.clearAllMarker();
         $.addMarkerWithId(riskRankArray);

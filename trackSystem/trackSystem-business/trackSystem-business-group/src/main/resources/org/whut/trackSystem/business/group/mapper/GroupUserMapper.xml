@@ -63,4 +63,10 @@
         FROM user_group as ug,device as d,`group` as g,user as u
         WHERE ug.groupId=#{groupId} AND ug.appId=#{appId} AND ug.deviceId=d.id AND d.groupId=g.id AND ug.userId=u.id
     </select>
+
+    <select id="getExtraInfo" parameterType="map" resultType="map">
+        SELECT u.name as userName,d.name as `name`
+        FROM user_group as ug,device as d,user as u
+        WHERE d.number=#{deviceNum} AND d.id=ug.deviceId AND ug.appId=#{appId} AND u.id=ug.userId
+    </select>
 </mapper>

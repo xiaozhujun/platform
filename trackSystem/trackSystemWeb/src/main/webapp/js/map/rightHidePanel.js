@@ -21,9 +21,10 @@
          });
      },
      rightHideList:function rightHideList(data){
+         console.log(data);
          $("#rightshow").html("");
          for(i=0;i<data.length;i++){
-             var hideField={"id":data[i].id,"name":data[i].name,"number":data[i].number,"lng":data[i].lng,"lat":data[i].lat,"address":data[i].address};
+             var hideField={"id":data[i].id,"name":data[i].name,"number":data[i].number,"lng":data[i].lng,"lat":data[i].lat,"address":data[i].address,"userName":data[i].userName,"deviceName":data[i].deviceName};
              var jsonH= $.toJSON(hideField);
 
              var deviceItem="<div class='deviceAll'><div class='deviceItem' id='deviceItem"+data[i].id+"'><span class='devicecontent'><span class='deviceApp'>设备名称:"+data[i].name
@@ -38,7 +39,7 @@
                  var hideField="#hideField"+id;
                  var data= JSON2.parse($(hideField).text());
                  var deviceId=data.id;
-                 var title="设备"+data.number+"简要信息";
+                 var title="设备"+data.name+"的简要信息";
 
                  var name = data.name;
                  var number = data.number;

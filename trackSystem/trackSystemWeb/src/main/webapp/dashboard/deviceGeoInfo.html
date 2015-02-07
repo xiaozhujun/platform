@@ -42,8 +42,9 @@
                 curDev.number = jsonData.devices[0].deviceNum;
                 curDev.lng = jsonData.devices[0].lng;
                 curDev.lat = jsonData.devices[0].lat;
+                curDev.userName = jsonData.devices[0].userName;
                 curDev.id = t+1;
-                curDev.name = "设备" + jsonData.devices[0].deviceNum;
+                curDev.name = jsonData.devices[0].deviceName;
                 curDeviceLocations.data.push(curDev);
                 t++;
                 if(t == total) {
@@ -57,7 +58,6 @@
 
         $("#tab").ligerTab({onBeforeSelectTabItem:function disconnect() {        //失去焦点
             if (ws != null) {
-                console.log(1234344) ;
                 ws.close();
                 ws = null;
             }
@@ -75,7 +75,6 @@
             }else if(state == 0){
                 $("#container").css("display","block");
                 $.initMapByLat(data.data[0].lng,data.data[0].lat,14);
-//                console.log(data);
                 $.addDeviceMark(data.data);
                 $.rightHideList(data.data);
             }

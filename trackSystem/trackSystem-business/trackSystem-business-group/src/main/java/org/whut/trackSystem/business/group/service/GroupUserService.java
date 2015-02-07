@@ -41,4 +41,8 @@ public class GroupUserService {
     public List<Map<String,String>> findByCondition(Long groupId,Long appId) {
         return groupUserMapper.findByCondition(groupId, appId);
     }
+
+    public Map<String,String> getExtraInfo(String deviceNum,Long appId) {
+        return groupUserMapper.getExtraInfo(deviceNum, appId);
+    }
 }

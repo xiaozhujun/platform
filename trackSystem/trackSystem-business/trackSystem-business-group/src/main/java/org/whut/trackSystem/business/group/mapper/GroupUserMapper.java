@@ -18,4 +18,5 @@ public interface GroupUserMapper extends AbstractMapper<GroupUser> {
     public List<GroupUser> getListByAppId(Long appId);
     public Long getGroupIdByUserId(@Param("userId")Long userId,@Param("appId")Long appId);
     public List<Map<String,String>> findByCondition(@Param("groupId")Long groupId,@Param("appId")Long appId);
+    public Map<String,String> getExtraInfo(@Param("deviceNum")String deviceNum,@Param("appId")Long appId);
 }

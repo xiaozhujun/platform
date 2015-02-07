@@ -10,6 +10,7 @@ import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.trackSystem.business.device.service.DeviceService;
+import org.whut.trackSystem.business.group.service.GroupUserService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,11 +31,14 @@ public class DeviceDataService {
     private RedisConnector redisConnector;
     private MongoConnector mongoConnector;
     private int keyExpireTime;
+    private Map<String,String> extraInfoMap = new HashMap<String, String>();
 
     @Autowired
     private WsMessageDispatcher wsMessageDispatcher;
     @Autowired
     private DeviceService deviceService;
+    @Autowired
+    private GroupUserService groupUserService;
 
     public DeviceDataService() {
         deviceDB = FundamentalConfigProvider.get("device.mongo.deviceDB");
@@ -96,11 +100,19 @@ public class DeviceDataService {
         String time = dbObject.get(FundamentalConfigProvider.get("device.mongo.time")).toString();
         String lng = dbObject.get(FundamentalConfigProvider.get("device.mongo.lng")).toString();
         String lat = dbObject.get(FundamentalConfigProvider.get("device.mongo.lat")).toString();
-        Long appId = deviceService.getAppIdByDeviceNum(deviceNum);
-        redisConnector.set("appId",appId.toString());
-        String jsonString = "{devices:["+"{deviceNum:'"+deviceNum+"',time:'"+time+"',lng:'"+lng+"',lat:'"+lat+"',appId:'"+appId+"'}]}";
+        Long appId;
+        if (redisConnector.get("appId") == null) {
+            appId = deviceService.getAppIdByDeviceNum(deviceNum);
+            redisConnector.set("appId",appId.toString());
+        } else {
+            appId = Long.parseLong(redisConnector.get("appId"));
+        }
+        extraInfoMap = groupUserService.getExtraInfo(deviceNum,appId);
+        String userName = extraInfoMap.get("userName");
+        String deviceName = extraInfoMap.get("name");
+        String jsonString = "{devices:["+"{deviceNum:'"+deviceNum+"',time:'"+time+"',lng:'"+lng+"',lat:'"+lat+"',appId:'"+appId+"',userName:'"+userName+"',deviceName:'"+deviceName+"'}]}";
         redisConnector.set("device:{"+deviceNum+"}:jsonString",jsonString);
-        logger.info("deviceTrack wsMessageDispatcher: " + wsMessageDispatcher);
+        logger.info("deviceTrack wsMessageDispatcher: dispatch message " + jsonString);
         wsMessageDispatcher.dispatchMessage(jsonString);
     }
 }

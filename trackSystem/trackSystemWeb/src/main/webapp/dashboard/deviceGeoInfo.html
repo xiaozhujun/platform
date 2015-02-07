@@ -76,8 +76,8 @@
                 $("#container").css("display","block");
                 $.initMapByLat(data.data[0].lng,data.data[0].lat,14);
 //                console.log(data);
-                $.addDeviceMark(data);
-                $.rightHideList(data);
+                $.addDeviceMark(data.data);
+                $.rightHideList(data.data);
             }
             if(data.data.length>0){
                 setTimeout(function(){
@@ -105,6 +105,7 @@
 //                window.map.addOverlay(marker);
 //            }
             $.addDeviceMark(curDeviceLocations.data);
+            $.rightHideList(curDeviceLocations.data);
         }
     </script>
     <style type="text/css">

@@ -53,15 +53,15 @@ $.extend({
     addDeviceMark:function add(data){
         var riskRankArray=new Array();
         var count = 0;
-        for(var i=0;i<data.data.length;i++){
+        for(var i=0;i<data.length;i++){
             count++;
             var item={};
-            item.deviceId=data.data[i].id;
-            item.title="设备"+data.data[i].number+"简要信息";
+            item.deviceId=data[i].id;
+            item.title="设备"+data[i].number+"简要信息";
 
-            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data.data[i].number+
-                "</div style='width: 200px;'>设备名称:"+data.data[i].name+"</div>"+"</div></div>";
-            item.point=data.data[i].lng+"|"+data.data[i].lat;
+            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data[i].number+
+                "</div style='width: 200px;'>设备名称:"+data[i].name+"</div>"+"</div></div>";
+            item.point=data[i].lng+"|"+data[i].lat;
             item.isOpen=0;
             item.icon={};
             item.icon.w=23;

@@ -22,17 +22,17 @@
      },
      rightHideList:function rightHideList(data){
          $("#rightshow").html("");
-         for(i=0;i<data.data.length;i++){
-             var hideField={"id":data.data[i].id,"name":data.data[i].name,"number":data.data[i].number,"lng":data.data[i].lng,"lat":data.data[i].lat,"address":data.data[i].address};
+         for(i=0;i<data.length;i++){
+             var hideField={"id":data[i].id,"name":data[i].name,"number":data[i].number,"lng":data[i].lng,"lat":data[i].lat,"address":data[i].address};
              var jsonH= $.toJSON(hideField);
 
-             var deviceItem="<div class='deviceAll'><div class='deviceItem' id='deviceItem"+data.data[i].id+"'><span class='devicecontent'><span class='deviceApp'>设备名称:"+data.data[i].name
-                 +"</span><span class='deviceAddress'><span class='deviceFont'>设备编号:</span>"+data.data[i].number+"</span><span class='deviceAddress'><span class='deviceFont'>客户名称:</span>"
-                 +data.data[i].userName+"</span><span class='deviceFont'>使用地点:</span>"+data.data[i].address
-                 +"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+jsonH+"</span></span></span></div></div>";
+             var deviceItem="<div class='deviceAll'><div class='deviceItem' id='deviceItem"+data[i].id+"'><span class='devicecontent'><span class='deviceApp'>设备名称:"+data[i].name
+                 +"</span><span class='deviceAddress'><span class='deviceFont'>设备编号:</span>"+data[i].number+"</span><span class='deviceAddress'><span class='deviceFont'>客户名称:</span>"
+                 +data[i].userName+"</span><span class='deviceFont'>使用地点:</span>"+data[i].address
+                 +"</span><span class='hideField' id='hideField"+data[i].id+"'>"+jsonH+"</span></span></span></div></div>";
              $("#rightshow").append(deviceItem);
-             var deviceItemId="#deviceItem"+data.data[i].id;
-             var deviceInfoId="#deviceInfo"+data.data[i].id;
+             var deviceItemId="#deviceItem"+data[i].id;
+             var deviceInfoId="#deviceInfo"+data[i].id;
              $(deviceItemId).mouseover(function(){
                  var id=this.id.substring(10,this.id.length);
                  var hideField="#hideField"+id;

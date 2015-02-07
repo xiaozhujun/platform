@@ -3,8 +3,7 @@
 <head>
     <title></title>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/map/data.js"></script>
-    <script type="text/javascript" src="js/map/initMap.js"></script>
+    <script type="text/javascript" src="js/map/initMap2.js"></script>
     <script type="text/javascript" src="js/map/addMarker.js"></script>
     <script type="text/javascript" src="lib/json2.js"></script>
     <script type="text/javascript">
@@ -40,7 +39,7 @@
                 console.log ("收到消息！"+event.data);
                 var jsonData = eval("(" +event.data+ ")");
                 var curDev = {};
-                curDev.deviceNum = jsonData.devices[0].deviceNum;
+                curDev.number = jsonData.devices[0].deviceNum;
                 curDev.lng = jsonData.devices[0].lng;
                 curDev.lat = jsonData.devices[0].lat;
                 curDev.id = t+1;
@@ -75,13 +74,14 @@
                 $.initMap("中国",5);
             }else if(state == 0){
                 $("#container").css("display","block");
-                $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
+                $.initMapByLat(data.data[0].lng,data.data[0].lat,14);
 //                console.log(data);
-                $.addMyMark(data);
+                $.addDeviceMark(data);
+                $.rightHideList(data);
             }
             if(data.data.length>0){
                 setTimeout(function(){
-                    window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),17);
+                    window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),14);
                 },1000);
             }
 

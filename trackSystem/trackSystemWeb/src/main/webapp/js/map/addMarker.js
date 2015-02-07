@@ -9,7 +9,7 @@ $.extend({
     addMarkerWithId:function addMarker(markerArr){
         for(var i=0;i<markerArr.length;i++){
             var json = markerArr[i];
-            $.addOneMarkerWithId(json.userId,json.title,json.content,json.point,json.isOpen,json.icon,i);
+            $.addOneMarkerWithId(json.deviceId,json.title,json.content,json.point,json.isOpen,json.icon,i);
         }
     },
     //创建InfoWindow

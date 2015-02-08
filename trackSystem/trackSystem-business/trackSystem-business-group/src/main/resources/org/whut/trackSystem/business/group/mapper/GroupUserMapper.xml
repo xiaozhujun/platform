@@ -69,4 +69,21 @@
         FROM user_group as ug,device as d,user as u
         WHERE d.number=#{deviceNum} AND d.id=ug.deviceId AND ug.appId=#{appId} AND u.id=ug.userId
     </select>
+
+    <select id="getUserByGroupIdAndAppId" parameterType="map" resultType="map">
+        SELECT u.name as name,u.id as id
+        FROM user_group as ug,user as u
+        WHERE ug.groupId=#{groupId} AND ug.appId=#{appId} AND ug.userId=u.id
+        GROUP BY u.id
+    </select>
+
+    <select id="getListByCondition" parameterType="map" resultType="map">
+        SELECT d.name as deviceName,u.name as userName,g.name as groupName,d.number as deviceNumber
+        FROM device as d,user_group as ug,user as u,`group` as g
+        WHERE ug.appId=#{appId}
+        <if test="groupId!=null"> AND ug.groupId=#{groupId}</if>
+        <if test="userId!=null"> AND ug.userId=#{userId}</if>
+        AND ug.userId=u.id AND ug.groupId=d.groupId AND ug.deviceId=d.id
+        GROUP BY d.id
+    </select>
 </mapper>

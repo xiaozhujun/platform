@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/search.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var gridData = {},currentMonitor;
+        $(document).ready(function(){
+            $.post($.URL.group.list,null,groupCallback,"json");
+            $("#userName").ligerComboBox({
+                data:null,valueFieldID:"userNameSelect",emptyText:null
+            });
+        });
+        function groupCallback(data) {
+            if(data.code == 200) {
+                var groupData=[];
+                for(var i=0;i<data.data.length;i++){
+                    var d={};
+                    d['text']=data.data[i].name;
+                    d['id']=data.data[i].id;
+                    groupData.push(d);
+                }
+                $("#groupName").ligerComboBox({
+                    data:groupData,valueFieldID:"groupNameSelect",emptyText:null,
+                    onSelected:function(groupId){
+                        if(groupId!=null){
+                            $.post($.URL.groupUser.getUserByGroupId,{"groupId":parseInt(groupId)},function getCollectorByGroupIdCallback(data){
+                                if(data.code==200){
+                                    var userData=[];
+                                    $.each(data.data,function(index,content){
+                                        var j={};
+                                        j["text"]=content.name;
+                                        j["id"]=content.id;
+                                        userData.push(j);
+                                    })
+                                    $("#userName").ligerComboBox({data:userData});
+                                }
+                            },"json");
+                        }
+                    }
+                });
+            }
+        }
+
+        $("#dataSubmitBtn1").click(function(){
+            var groupId = $("#groupName").ligerComboBox().getValue();
+            var userId = $("#userName").ligerComboBox().getValue();
+            $.post($.URL.groupUser.getListByCondition,{"groupId":groupId,"userId":userId},deviceListCallback,"json");
+        });
+
+        function deviceListCallback(data) {
+            if(data.code==200){
+                gridData.Rows = data.data;
+                gridData.Total = data.data.length;
+                f_initGrid();
+            }
+        }
+
+        var manager, g;
+        function f_initGrid()
+        {
+            g = manager = $("#locationGrid").ligerGrid({
+                columns: [
+                    { display: '组名',name: 'groupName',width:'20%'},
+                    { display:'用户名', name:'userName',width:'20%'},
+                    { display:'设备名',name:'deviceName',width:'auto'},
+                    { display:'设备编号',name:'deviceNumber',width:'auto'},
+                    { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
+                    {
+                        var h = "";
+                        h += "<a href='javascript:getInfo(" + rowindex + ")'>查看</a> ";
+                        return h;
+                    }
+                    }
+                ],
+                onSelectRow: function (rowdata, rowindex)
+                {
+                    $("#txtrowindex").val(rowindex);
+                },
+                enabledEdit: true,clickToEdit:false, isScroll: false,
+                data: gridData,
+                width: '100%'
+            });
+        }
+
+        function getInfo(rowindex){
+            currentMonitor = g.getRow(rowindex);
+            console.log(currentMonitor);
+            $("#locationHistory").load("dashboard/allData.html");
+        }
+
+    </script>
+</head>
+<body style="padding:10px">
+    <div class="searchContainer">
+        <div class="searchItem"><span class="item_font">设备组:</span><span class="item_input"><input id="groupName" type="text"></span></div>
+        <div class="searchItem"><span class="item_font">用户名:</span><span class="item_input"><input id="userName" type="text"></span></div>
+        <div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn1" class="l-button l-button-submit" /></span></div>
+    </div>
+<div id="locationGrid"></div>
+</body>
+</html>

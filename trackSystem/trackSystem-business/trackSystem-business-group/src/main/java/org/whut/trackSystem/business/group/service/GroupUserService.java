@@ -45,4 +45,12 @@ public class GroupUserService {
     public Map<String,String> getExtraInfo(String deviceNum,Long appId) {
         return groupUserMapper.getExtraInfo(deviceNum, appId);
     }
+
+    public List<Map<String,String>> getUserByGroupId(Long groupId,Long appId) {
+        return groupUserMapper.getUserByGroupIdAndAppId(groupId,appId);
+    }
+
+    public List<Map<String,String>> getListByCondition(Long groupId,Long userId,Long appId) {
+        return groupUserMapper.getListByCondition(groupId,userId,appId);
+    }
 }

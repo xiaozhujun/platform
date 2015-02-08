@@ -40,4 +40,22 @@ public class GroupUserServiceWeb {
         logger.info("deviceNumberList: " + list);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Path("/getUserByGroupId")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    public String getUserByGroupId(@FormParam("groupId")Long groupId) {
+        Long appId = UserContext.currentUserAppId();
+        List<Map<String,String>> list = groupUserService.getUserByGroupId(groupId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Path("/getListByCondition")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    public String getListByCondition(@FormParam("groupId")Long groupId,@FormParam("userId")Long userId) {
+        Long appId = UserContext.currentUserAppId();
+        List<Map<String,String>> list = groupUserService.getListByCondition(groupId,userId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }

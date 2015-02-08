@@ -50,7 +50,9 @@
             "delete":"rs/group/delete"
         },
         "groupUser":{
-            "currentGroupDeviceList":"rs/groupUser/currentGroupDeviceList"
+            "currentGroupDeviceList":"rs/groupUser/currentGroupDeviceList",
+            "getUserByGroupId":"rs/groupUser/getUserByGroupId",
+            "getListByCondition":"rs/groupUser/getListByCondition"
         },
         "websocket":{
             "register":"ws://localhost:8080/trackSystem/websocket/hello"

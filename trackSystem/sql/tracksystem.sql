@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50151
 File Encoding         : 65001
 
-Date: 2014-12-15 20:32:58
+Date: 2015-02-10 19:48:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -81,20 +81,23 @@ INSERT INTO `authority_power` VALUES ('8', '2', '15', 'cas/**', 'ROLE_ADMIN');
 DROP TABLE IF EXISTS `device`;
 CREATE TABLE `device` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `deviceTypeId` bigint(20) DEFAULT NULL,
+  `groupId` bigint(20) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `number` varchar(255) DEFAULT NULL,
   `lng` varchar(255) DEFAULT NULL,
   `lat` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `deviceTypeId` bigint(20) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', 'device1', '001', null, null, null, null, '1');
+INSERT INTO `device` VALUES ('1', '1', '3', 'device1', '001', '120.034', '30.0068', null, '1');
+INSERT INTO `device` VALUES ('2', '2', '3', 'device2', '002', '119.9592', '29.9864', null, '1');
+INSERT INTO `device` VALUES ('4', '3', '1', '设备3', '003', null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for `devicetype`
@@ -106,11 +109,34 @@ CREATE TABLE `devicetype` (
   `description` varchar(255) DEFAULT NULL,
   `appId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of devicetype
 -- ----------------------------
+INSERT INTO `devicetype` VALUES ('1', '类型5', '类型1', '1');
+INSERT INTO `devicetype` VALUES ('2', '类型2', '类型2', '1');
+INSERT INTO `devicetype` VALUES ('3', '类型3', '类型3', '1');
+INSERT INTO `devicetype` VALUES ('4', '类型4', '类型4', '1');
+
+-- ----------------------------
+-- Table structure for `group`
+-- ----------------------------
+DROP TABLE IF EXISTS `group`;
+CREATE TABLE `group` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `number` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of group
+-- ----------------------------
+INSERT INTO `group` VALUES ('1', '组1', '001', '组1', '1');
+INSERT INTO `group` VALUES ('3', '组2', '002', '组2', '1');
 
 -- ----------------------------
 -- Table structure for `power`
@@ -178,3 +204,24 @@ INSERT INTO `user_authority` VALUES ('2', '1', '2', 'xiaozhujun', 'ROLE_ADMIN');
 INSERT INTO `user_authority` VALUES ('5', '2', '1', 'zhangsan', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('6', '3', '1', 'sunhui', 'ROLE_USER');
 INSERT INTO `user_authority` VALUES ('7', '4', '2', 'liujinxia', 'ROLE_ADMIN');
+
+-- ----------------------------
+-- Table structure for `user_group`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_group`;
+CREATE TABLE `user_group` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `groupId` bigint(20) DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_group
+-- ----------------------------
+INSERT INTO `user_group` VALUES ('1', '3', '1', '1', null, '1');
+INSERT INTO `user_group` VALUES ('2', '3', '1', '2', null, '1');
+INSERT INTO `user_group` VALUES ('3', '1', '2', '4', null, '1');

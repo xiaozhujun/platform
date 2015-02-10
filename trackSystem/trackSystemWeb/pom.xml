@@ -93,6 +93,11 @@
             <artifactId>trackSystem-business-group</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>trackSystem-business-trackRecord</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50151
 File Encoding         : 65001
 
-Date: 2015-02-10 19:48:23
+Date: 2015-02-11 03:30:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -95,8 +95,8 @@ CREATE TABLE `device` (
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', '1', '3', 'device1', '001', '120.034', '30.0068', null, '1');
-INSERT INTO `device` VALUES ('2', '2', '3', 'device2', '002', '119.9592', '29.9864', null, '1');
+INSERT INTO `device` VALUES ('1', '1', '3', 'device1', '001', '120.00355', '30.00071', null, '1');
+INSERT INTO `device` VALUES ('2', '2', '3', 'device2', '002', '119.99574', '29.99858', null, '1');
 INSERT INTO `device` VALUES ('4', '3', '1', '设备3', '003', null, null, null, '1');
 
 -- ----------------------------
@@ -158,6 +158,25 @@ INSERT INTO `power` VALUES ('2', '/user.html', 'url', null);
 INSERT INTO `power` VALUES ('3', '/admin.html', 'url', null);
 INSERT INTO `power` VALUES ('4', '/index.jsp', 'url', null);
 INSERT INTO `power` VALUES ('15', 'cas/**', 'service', 'cas client test from android');
+
+-- ----------------------------
+-- Table structure for `trackrecord`
+-- ----------------------------
+DROP TABLE IF EXISTS `trackrecord`;
+CREATE TABLE `trackrecord` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `deviceId` bigint(20) DEFAULT NULL,
+  `startTime` datetime DEFAULT NULL,
+  `endTime` datetime DEFAULT NULL,
+  `appId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of trackrecord
+-- ----------------------------
+INSERT INTO `trackrecord` VALUES ('30', '1', '2015-02-11 03:26:47', '2015-02-11 03:28:37', '1');
+INSERT INTO `trackrecord` VALUES ('31', '2', '2015-02-11 03:26:48', '2015-02-11 03:28:37', '1');
 
 -- ----------------------------
 -- Table structure for `user`

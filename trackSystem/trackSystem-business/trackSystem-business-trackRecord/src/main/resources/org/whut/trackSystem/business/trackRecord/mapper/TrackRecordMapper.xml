@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.trackSystem.business.trackRecord.mapper.TrackRecordMapper">
+    <sql id="trackRecord_fields">
+        ID,DEVICEID,STARTTIME,ENDTIME,APPID
+    </sql>
+    <resultMap id="trackRecord_resultMap" type="TrackRecord">
+        <id property="id" column="ID"/>
+        <result property="deviceId" column="DEVICEID"/>
+        <result property="startTime" column="STARTTIME"/>
+        <result property="endTime" column="ENDTIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="TrackRecord"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        `trackrecord`(
+        <include refid="trackRecord_fields" />
+        )
+        VALUES (#{id},#{deviceId},#{startTime},#{endTime},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="TrackRecord">
+        update `trackrecord`
+        <set>
+            <if test="deviceId!=null">DEVICEID=#{deviceId},</if>
+            <if test="startTime!=null">STARTTIME=#{startTime},</if>
+            <if test="endTime!=null">ENDTIME=#{endTime},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM `trackrecord`
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="trackRecord_resultMap">
+        SELECT *
+        FROM `trackrecord`
+        WHERE appId=#{appId}
+    </select>
+
+    <select id="getIdByDeviceNumAndStartTime" parameterType="map" resultType="java.lang.Long">
+        SELECT tr.id
+        FROM `trackrecord` as tr,device as d
+        WHERE tr.appId=#{appId} AND d.number=#{deviceNum} AND tr.startTime=#{startTime} AND d.id=tr.deviceId
+    </select>
+</mapper>

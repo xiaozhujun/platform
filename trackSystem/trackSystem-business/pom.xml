@@ -15,6 +15,7 @@
         <module>trackSystem-business-communication</module>
         <module>trackSystem-business-device</module>
         <module>trackSystem-business-group</module>
+        <module>trackSystem-business-trackRecord</module>
     </modules>
 
 

@@ -54,6 +54,9 @@
             "getUserByGroupId":"rs/groupUser/getUserByGroupId",
             "getListByCondition":"rs/groupUser/getListByCondition"
         },
+        "trackRecord":{
+            "list":"rs/tarckRecord/list"
+        },
         "websocket":{
             "register":"ws://localhost:8080/trackSystem/websocket/hello"
         }

@@ -5,13 +5,16 @@ import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.security.UserContext;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.trackSystem.business.trackRecord.entity.TrackRecord;
+import org.whut.trackSystem.business.trackRecord.mapper.TrackFinder;
 import org.whut.trackSystem.business.trackRecord.service.TrackRecordService;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +28,8 @@ import java.util.List;
 public class TrackRecordServiceWeb {
     @Autowired
     private TrackRecordService trackRecordService;
+    @Autowired
+    private TrackFinder trackCalculator;
 
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -33,5 +38,14 @@ public class TrackRecordServiceWeb {
         Long appId = UserContext.currentUserAppId();
         List<TrackRecord> list = trackRecordService.getListByAppId(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Path("/getMongoDataByCondition")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    public String getMongoDataByCondition(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,
+                                          @FormParam("deviceNum")String deviceNum) {
+        Map<String,List<String>> map = trackCalculator.findTrackToMap(sTime, eTime, deviceNum);
+        return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
 }

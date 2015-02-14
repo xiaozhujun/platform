@@ -55,7 +55,8 @@
             "getListByCondition":"rs/groupUser/getListByCondition"
         },
         "trackRecord":{
-            "list":"rs/tarckRecord/list"
+            "list":"rs/tarckRecord/list",
+            "getMongoDataByCondition":"rs/trackRecord/getMongoDataByCondition"
         },
         "websocket":{
             "register":"ws://localhost:8080/trackSystem/websocket/hello"

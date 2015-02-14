@@ -78,7 +78,7 @@
     </select>
 
     <select id="getListByCondition" parameterType="map" resultType="map">
-        SELECT d.name as deviceName,u.name as userName,g.name as groupName,d.number as deviceNumber
+        SELECT d.id as deviceId,d.name as deviceName,u.name as userName,g.name as groupName,d.number as deviceNumber
         FROM device as d,user_group as ug,user as u,`group` as g
         WHERE ug.appId=#{appId}
         <if test="groupId!=null"> AND ug.groupId=#{groupId}</if>

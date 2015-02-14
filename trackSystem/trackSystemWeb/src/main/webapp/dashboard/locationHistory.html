@@ -39,7 +39,8 @@
                     data:groupData,valueFieldID:"groupNameSelect",emptyText:null,
                     onSelected:function(groupId){
                         if(groupId!=null){
-                            $.post($.URL.groupUser.getUserByGroupId,{"groupId":parseInt(groupId)},function getCollectorByGroupIdCallback(data){
+                            $.post($.URL.groupUser.getUserByGroupId,{"groupId":parseInt(groupId)},
+                                    function getCollectorByGroupIdCallback(data){
                                 if(data.code==200){
                                     var userData=[];
                                     $.each(data.data,function(index,content){
@@ -74,7 +75,7 @@
         var manager, g;
         function f_initGrid()
         {
-            g = manager = $("#locationGrid").ligerGrid({
+            g = manager = $("#locationInfoGrid").ligerGrid({
                 columns: [
                     { display: '组名',name: 'groupName',width:'20%'},
                     { display:'用户名', name:'userName',width:'20%'},
@@ -100,11 +101,18 @@
 
         function getInfo(rowindex){
             currentMonitor = g.getRow(rowindex);
-            console.log(currentMonitor);
-            $("#locationHistory").load("dashboard/allData.html");
+            console.log(currentMonitor.deviceNumber);
         }
 
     </script>
+    <style type="text/css">
+        #locationInfoContainer {
+            display: none;
+        }
+        #locationInfo {
+            display: block;
+        }
+    </style>
 </head>
 <body style="padding:10px">
     <div class="searchContainer">
@@ -112,6 +120,9 @@
         <div class="searchItem"><span class="item_font">用户名:</span><span class="item_input"><input id="userName" type="text"></span></div>
         <div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn1" class="l-button l-button-submit" /></span></div>
     </div>
-<div id="locationGrid"></div>
+    <div id="locationInfoGrid"></div>
+    <div id="locationInfoContainer">
+        <div id="locationInfo"></div>
+    </div>
 </body>
 </html>

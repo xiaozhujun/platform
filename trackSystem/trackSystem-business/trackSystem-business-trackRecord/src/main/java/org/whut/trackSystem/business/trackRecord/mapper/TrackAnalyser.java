@@ -1,8 +1,7 @@
 package org.whut.trackSystem.business.trackRecord.mapper;
 
-import com.mongodb.DBObject;
-
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,5 +11,5 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface TrackAnalyser {
-    public void analyseTrack(List<DBObject> list);
+    public void analyseTrack(Map<String, List<String>> map);
 }

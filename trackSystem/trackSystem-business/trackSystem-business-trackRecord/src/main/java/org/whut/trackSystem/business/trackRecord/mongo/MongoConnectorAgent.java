@@ -1,7 +1,7 @@
 package org.whut.trackSystem.business.trackRecord.mongo;
 
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.*;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 
 import java.util.List;
@@ -38,5 +38,13 @@ public class MongoConnectorAgent {
 
     public Mongo getMongo() {
         return mongoConnector.getMongo();
+    }
+
+    public DBCursor getCursor(DBObject query) {
+        Mongo mongo = getMongo();
+        DB db = mongo.getDB(FundamentalConfigProvider.get("device.mongo.deviceDB"));
+        DBCollection collection = db.getCollection(FundamentalConfigProvider.get("device.mongo.deviceCollection"));
+        DBCursor cursor = collection.find(query);
+        return cursor;
     }
 }

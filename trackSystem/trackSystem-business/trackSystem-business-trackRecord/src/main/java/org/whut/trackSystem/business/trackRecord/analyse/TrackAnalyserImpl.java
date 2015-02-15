@@ -1,9 +1,9 @@
 package org.whut.trackSystem.business.trackRecord.analyse;
 
-import com.mongodb.DBObject;
 import org.whut.trackSystem.business.trackRecord.mapper.TrackAnalyser;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class TrackAnalyserImpl implements TrackAnalyser {
     /**
-     * 通过分析曲率半径的变化，抽取绘图必要数据，以减少向前台发送的数据量
-     * @param list
+     *
+     * @param map
      */
     @Override
-    public void analyseTrack(List<DBObject> list) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void analyseTrack(Map<String, List<String>> map) {
+
     }
 
     /**

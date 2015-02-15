@@ -29,7 +29,7 @@ public class TrackRecordServiceWeb {
     @Autowired
     private TrackRecordService trackRecordService;
     @Autowired
-    private TrackFinder trackCalculator;
+    private TrackFinder trackFinder;
 
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
@@ -45,7 +45,7 @@ public class TrackRecordServiceWeb {
     @POST
     public String getMongoDataByCondition(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,
                                           @FormParam("deviceNum")String deviceNum) {
-        Map<String,List<String>> map = trackCalculator.findTrackToMap(sTime, eTime, deviceNum);
+        Map<String,List<String>> map = trackFinder.findTrackToMap(sTime, eTime, deviceNum);
         return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
 }

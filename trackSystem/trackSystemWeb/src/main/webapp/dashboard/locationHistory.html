@@ -102,6 +102,7 @@
         function getInfo(rowindex){
             currentMonitor = g.getRow(rowindex);
             console.log(currentMonitor.deviceNumber);
+            $("#locationHistory").load("dashboard/allData.html");
         }
 
     </script>

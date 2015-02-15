@@ -3,5 +3,5 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="trackRecordService" class="org.whut.trackSystem.business.trackRecord.service.TrackRecordService" depends-on="mappers" />
-    <bean id="trackCalculator" class="org.whut.trackSystem.business.trackRecord.service.TrackFinderImpl"/>
+    <bean id="trackFinder" class="org.whut.trackSystem.business.trackRecord.service.TrackFinderImpl"/>
 </beans>

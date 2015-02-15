@@ -18,8 +18,10 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class TrackFinderImpl implements TrackFinder {
-    private static MongoConnectorAgent connectorAgent = new MongoConnectorAgent(FundamentalConfigProvider.get("device.mongo.deviceDB"),
+    private static MongoConnectorAgent connectorAgent = new MongoConnectorAgent(
+            FundamentalConfigProvider.get("device.mongo.deviceDB"),
             FundamentalConfigProvider.get("device.mongo.deviceCollection"));
+
     @Override
     public List<DBObject> findTrack(String startTime, String endTime, String devNum) {
         BasicDBObject query = createQuery(startTime, endTime, devNum);
@@ -37,11 +39,12 @@ public class TrackFinderImpl implements TrackFinder {
     @Override
     public Map<String, List<String>> findTrackToMap(String startTime, String endTime, String devNum) {
         BasicDBObject query = createQuery(startTime, endTime, devNum);
-        Mongo mongo = connectorAgent.getMongo();
-        DB db = mongo.getDB(FundamentalConfigProvider.get("device.mongo.deviceDB"));
-        DBCollection collection = db.getCollection(FundamentalConfigProvider.get("device.mongo.deviceCollection"));
-        DBCursor cursor = collection.find(query);
+        DBCursor cursor = connectorAgent.getCursor(query);
 
+        return convertResult2Map(cursor);
+    }
+
+    private Map<String,List<String>> convertResult2Map(DBCursor cursor) {
         List<String> l1 = new ArrayList<String>();
         List<String> l2 = new ArrayList<String>();
         boolean exists = cursor.hasNext();
@@ -56,6 +59,7 @@ public class TrackFinderImpl implements TrackFinder {
         map.put("lat",l2);
         return map;
     }
+
 
     public static void main(String[] args) {
         TrackFinder trackCalculator = new TrackFinderImpl();

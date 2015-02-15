@@ -125,4 +125,14 @@ public class DeviceServiceWeb {
         List<Map<String,String>> list = deviceService.findByCondition(appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Path("/getDeviceByCondition")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    public String getDeviceByCondition(@FormParam("groupId")Long groupId,@FormParam("userId")Long userId) {
+        Long appId = UserContext.currentUserAppId();
+        List<Map<String,String>> list = deviceService.getDeviceByCondition(groupId,userId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
 }

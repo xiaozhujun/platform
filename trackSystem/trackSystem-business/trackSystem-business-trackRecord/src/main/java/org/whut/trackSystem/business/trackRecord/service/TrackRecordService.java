@@ -6,6 +6,7 @@ import org.whut.trackSystem.business.trackRecord.mapper.TrackRecordMapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,5 +33,9 @@ public class TrackRecordService {
 
     public Long getIdByDeviceNumAndStartTime(String deviceNum,Date startTime,Long appId) {
         return trackRecordMapper.getIdByDeviceNumAndStartTime(deviceNum,startTime,appId);
+    }
+
+    public List<Map<String,String>> getListByCondition(String sTime,String eTime,Long deviceId,Long appId) {
+        return trackRecordMapper.getListByCondition(sTime,eTime,deviceId,appId);
     }
 }

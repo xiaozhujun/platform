@@ -25,6 +25,13 @@
             $("#userName").ligerComboBox({
                 data:null,valueFieldID:"userNameSelect",emptyText:null
             });
+            $("#deviceName").ligerComboBox({
+                data:null,valueFieldID:"deviceNameSelect",emptyText:null
+            });
+            var d = new Date();
+            var dd = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+            $("#st").ligerDateEditor({initValue: dd});
+            $("#et").ligerDateEditor({initValue: dd});
         });
         function groupCallback(data) {
             if(data.code == 200) {
@@ -35,12 +42,17 @@
                     d['id']=data.data[i].id;
                     groupData.push(d);
                 }
+
+                $("#deviceName").ligerComboBox({
+                    data:null,valueFieldID:"deviceNameSelect",emptyText:null
+                });
+
                 $("#groupName").ligerComboBox({
                     data:groupData,valueFieldID:"groupNameSelect",emptyText:null,
                     onSelected:function(groupId){
                         if(groupId!=null){
                             $.post($.URL.groupUser.getUserByGroupId,{"groupId":parseInt(groupId)},
-                                    function getCollectorByGroupIdCallback(data){
+                                    function getUserByGroupIdCallback(data){
                                 if(data.code==200){
                                     var userData=[];
                                     $.each(data.data,function(index,content){
@@ -49,7 +61,13 @@
                                         j["id"]=content.id;
                                         userData.push(j);
                                     })
-                                    $("#userName").ligerComboBox({data:userData});
+                                    $("#userName").ligerComboBox({
+                                        data:userData,valueFieldID:"userNameSelect",emptyText:null,
+                                        onSelected:function(userId){
+                                            $.post($.URL.device.getDeviceByCondition,{"groupId":parseInt(groupId),
+                                            "userId":parseInt(userId)},getDeviceCallback,"json");
+                                        }
+                                    });
                                 }
                             },"json");
                         }
@@ -58,13 +76,30 @@
             }
         }
 
+        function getDeviceCallback(data) {
+            if(data.code == 200) {
+                var deviceData=[];
+                for(var i=0;i<data.data.length;i++){
+                    var d={};
+                    d['text']=data.data[i].name;
+                    d['id']=data.data[i].id;
+                    deviceData.push(d);
+                }
+
+                $("#deviceName").ligerComboBox({
+                    data:deviceData
+                });
+            }
+        }
+
         $("#dataSubmitBtn1").click(function(){
-            var groupId = $("#groupName").ligerComboBox().getValue();
-            var userId = $("#userName").ligerComboBox().getValue();
-            $.post($.URL.groupUser.getListByCondition,{"groupId":groupId,"userId":userId},deviceListCallback,"json");
+            var sTime = $("#st").val();
+            var eTime = $("#et").val();
+            var deviceId = $("#deviceName").ligerComboBox().getValue();
+            $.post($.URL.trackRecord.getListByCondition,{"sTime":sTime,"eTime":eTime,"deviceId":deviceId},trackRecordListCallback,"json");
         });
 
-        function deviceListCallback(data) {
+        function trackRecordListCallback(data) {
             if(data.code==200){
                 gridData.Rows = data.data;
                 gridData.Total = data.data.length;
@@ -81,6 +116,8 @@
                     { display:'用户名', name:'userName',width:'20%'},
                     { display:'设备名',name:'deviceName',width:'auto'},
                     { display:'设备编号',name:'deviceNumber',width:'auto'},
+                    { display:'起始时间',name:'startTime',width:'auto'},
+                    { display:'结束时间',name:'endTime',width:'auto'},
                     { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value)
                     {
                         var h = "";
@@ -119,6 +156,9 @@
     <div class="searchContainer">
         <div class="searchItem"><span class="item_font">设备组:</span><span class="item_input"><input id="groupName" type="text"></span></div>
         <div class="searchItem"><span class="item_font">用户名:</span><span class="item_input"><input id="userName" type="text"></span></div>
+        <div class="searchItem"><span class="item_font">设备名:</span><span class="item_input"><input id="deviceName" type="text"></span></div>
+        <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="st" type="text"></span></div>
+        <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="et" type="text"></span></div>
         <div class="btn"><span><input type="button" value="查询" id="dataSubmitBtn1" class="l-button l-button-submit" /></span></div>
     </div>
     <div id="locationInfoGrid"></div>

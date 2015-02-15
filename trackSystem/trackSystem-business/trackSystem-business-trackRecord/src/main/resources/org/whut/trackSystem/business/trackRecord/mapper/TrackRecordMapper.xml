@@ -54,4 +54,12 @@
         FROM `trackrecord` as tr,device as d
         WHERE tr.appId=#{appId} AND d.number=#{deviceNum} AND tr.startTime=#{startTime} AND d.id=tr.deviceId
     </select>
+
+    <select id="getListByCondition" parameterType="map" resultType="map">
+        SELECT tr.*,d.name as deviceName,d.number as deviceNumber,ug.id as ugId,g.name as groupName,u.name as userName
+        FROM `trackrecord` as tr,device as d,`group` as g,user as u,user_group as ug
+        WHERE tr.appId=#{appId} AND d.id=#{deviceId} AND d.id = tr.deviceId AND tr.deviceId=ug.deviceId AND ug.groupId=g.id AND u.id=ug.userId
+        <if test="sTime!=null"><![CDATA[ AND tr.startTime>=#{sTime}]]></if>
+        <if test="eTime!=null"><![CDATA[ AND tr.endTime<=#{eTime}]]> </if>
+    </select>
 </mapper>

@@ -74,4 +74,10 @@
         FROM device as d,deviceType as dt,`group` as g
         WHERE d.appId=#{appId} AND dt.id=d.deviceTypeId AND d.groupId=g.id
     </select>
+
+    <select id="getDeviceByCondition" parameterType="map" resultType="map">
+       SELECT d.id as id,d.name as name
+       FROM device as d,user_group as ug
+       WHERE d.appId=#{appId} AND ug.deviceId=d.id AND ug.userId=#{userId} AND ug.groupId=#{groupId}
+    </select>
 </mapper>

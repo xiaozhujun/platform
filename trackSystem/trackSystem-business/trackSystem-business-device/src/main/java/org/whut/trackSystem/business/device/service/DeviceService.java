@@ -45,4 +45,9 @@ public class DeviceService {
     public List<Map<String,String>> findByCondition(Long appId) {
         return deviceMapper.findByCondition(appId);
     }
+
+    public List<Map<String,String>> getDeviceByCondition(Long groupId,Long userId,Long appId) {
+        return deviceMapper.getDeviceByCondition(groupId,userId,appId);
+    }
+
 }

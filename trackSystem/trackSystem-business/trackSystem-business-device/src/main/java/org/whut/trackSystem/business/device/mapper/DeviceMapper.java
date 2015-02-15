@@ -19,4 +19,5 @@ public interface DeviceMapper extends AbstractMapper<Device> {
     public Long getAppIdByDeviceNum(String number);
     public Long getIdByNumber(@Param("number")String number,@Param("appId")Long appId);
     public List<Map<String,String>> findByCondition(Long appId);
+    public List<Map<String,String>> getDeviceByCondition(@Param("groupId")Long groupId,@Param("userId")Long userId,@Param("appId")Long appId);
 }

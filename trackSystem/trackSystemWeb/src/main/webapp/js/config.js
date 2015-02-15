@@ -35,7 +35,8 @@
             "add":"rs/device/add",
             "update":"rs/device/update",
             "delete":"rs/device/delete",
-            "findByCondition":"rs/device/findByCondition"
+            "findByCondition":"rs/device/findByCondition",
+            "getDeviceByCondition":"rs/device/getDeviceByCondition"
         },
         "deviceType":{
             "list":"rs/deviceType/list",
@@ -56,7 +57,8 @@
         },
         "trackRecord":{
             "list":"rs/tarckRecord/list",
-            "getMongoDataByCondition":"rs/trackRecord/getMongoDataByCondition"
+            "getMongoDataByCondition":"rs/trackRecord/getMongoDataByCondition",
+            "getListByCondition":"rs/trackRecord/getListByCondition"
         },
         "websocket":{
             "register":"ws://localhost:8080/trackSystem/websocket/hello"

@@ -48,4 +48,15 @@ public class TrackRecordServiceWeb {
         Map<String,List<String>> map = trackFinder.findTrackToMap(sTime, eTime, deviceNum);
         return JsonResultUtils.getObjectResultByStringAsDefault(map, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Path("/getListByCondition")
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    public String getListByCondition(@FormParam("sTime")String sTime,@FormParam("eTime")String eTime,@FormParam("deviceId")Long deviceId) {
+        sTime=sTime+" "+" 00:00:00";
+        eTime=eTime+" "+" 23:59:59";
+        Long appId = UserContext.currentUserAppId();
+        List<Map<String,String>> list = trackRecordService.getListByCondition(sTime,eTime,deviceId,appId);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
 }

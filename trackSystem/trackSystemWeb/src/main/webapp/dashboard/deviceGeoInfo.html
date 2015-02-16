@@ -71,11 +71,11 @@
                 }
             }
             if(data.data[0]==undefined){
-                $.initMap("中国",5);
+                $.initMap("container","中国",5);
             }else if(state == 0){
                 $("#container").css("display","block");
-                $.initMapByLat(data.data[0].lng,data.data[0].lat,14);
-                $.addDeviceMark(data.data);
+                $.initMapByLat("container",data.data[0].lng,data.data[0].lat,14);
+                $.addDeviceMark(data.data,1);
                 $.rightHideList(data.data);
             }
             if(data.data.length>0){
@@ -103,7 +103,7 @@
 //                var marker = new BMap.Marker(point);        // 创建标注
 //                window.map.addOverlay(marker);
 //            }
-            $.addDeviceMark(curDeviceLocations.data);
+            $.addDeviceMark(curDeviceLocations.data,1);
             $.rightHideList(curDeviceLocations.data);
         }
     </script>

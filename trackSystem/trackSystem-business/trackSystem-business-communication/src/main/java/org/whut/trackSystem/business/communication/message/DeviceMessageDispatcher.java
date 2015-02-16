@@ -115,6 +115,8 @@ public class DeviceMessageDispatcher implements MessageDispatcher {
                     Device curDevice = JsonMapper.buildNonDefaultMapper().fromJson(jsonString,Device.class);
                     curDevice.setNumber(list.get(i).getNumber());
                     Long id = deviceService.getIdByNumber(curDevice.getNumber(),Long.parseLong(redisConnector.get("appId")));
+                    curDevice.setId(id);
+                    deviceService.update(curDevice);
                     trackRecord.setEndTime(new Date());
                     trackRecord.setDeviceId(id);
                     Date startTime = startTimeMap.get(curDevice.getNumber());

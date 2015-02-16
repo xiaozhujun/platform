@@ -7,13 +7,13 @@
  */
 $.extend({
     //创建地图函数：
-    createMap:function createMap(address,size){
-        var map = new BMap.Map("container");//在百度地图容器中创建一个地图
+    createMap:function createMap(div,address,size){
+        var map = new BMap.Map(div);//在百度地图容器中创建一个地图
         map.centerAndZoom(address,size);//设定地图的中心点和坐标并将地图显示在地图容器中
         window.map = map;//将map变量存储在全局
     },
-    createMapByLat:function createMapByLat(lng,lat,size){
-        var map = new BMap.Map("container");//在百度地图容器中创建一个地图
+    createMapByLat:function createMapByLat(div,lng,lat,size){
+        var map = new BMap.Map(div);//在百度地图容器中创建一个地图
         var point = new BMap.Point(lat,lng);
         map.centerAndZoom(point,size);
         window.map = map;//将map变量存储在全局
@@ -40,17 +40,17 @@ $.extend({
         var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
         map.addControl(ctrl_sca);
     },
-    initMap:function initMap(address,size){
-        $.createMap(address,size);//创建地图
+    initMap:function initMap(div,address,size){
+        $.createMap(div,address,size);//创建地图
         $.setMapEvent();//设置地图事件
         $.addMapControl();//向地图添加控件
     },
-    initMapByLat:function initMapByLat(lng,lat,size){
-        $.createMapByLat(lng,lat,size);
+    initMapByLat:function initMapByLat(div,lng,lat,size){
+        $.createMapByLat(div,lng,lat,size);
         $.setMapEvent();//设置地图事件
         $.addMapControl();//向地图添加控件
     },
-    addDeviceMark:function add(data){
+    addDeviceMark:function add(data,doClear){
         var riskRankArray=new Array();
         var count = 0;
         for(var i=0;i<data.length;i++){
@@ -72,7 +72,9 @@ $.extend({
             item.icon.l=46;
             riskRankArray.push(item);;
         }
-        $.clearAllMarker();
+        if(doClear == 1) {
+            $.clearAllMarker();
+        }
         $.addMarkerWithId(riskRankArray);
     }
 });

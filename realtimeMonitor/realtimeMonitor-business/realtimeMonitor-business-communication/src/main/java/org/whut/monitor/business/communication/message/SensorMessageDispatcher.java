@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.monitor.business.monitor.service.SensorService;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
+import org.whut.platform.fundamental.communication.api.MinaMessageDispatcher;
 import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
@@ -21,8 +22,8 @@ import java.util.List;
  * Time: 下午7:26
  * To change this template use File | Settings | File Templates.
  */
-public class SensorMessageDispatcher implements MessageDispatcher {
-
+public class SensorMessageDispatcher implements MinaMessageDispatcher {
+//    public class SensorMessageDispatcher implements MessageDispatcher {
     public static final PlatformLogger logger = PlatformLogger.getLogger(SensorMessageDispatcher.class);
 
     private static final String destination = Constants.SENSOR_QUEUE_DESTINATION;

@@ -8,6 +8,8 @@ import org.whut.platform.fundamental.communication.api.MinaMessageDispatcher;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -20,6 +22,8 @@ import java.util.HashMap;
 public class MinaServerHanlder extends IoHandlerAdapter {
     public static final PlatformLogger logger = PlatformLogger.getLogger(MinaServerHanlder.class);
     public static HashMap<IoSession,StringBuffer> msgBufferMap = new HashMap<IoSession, StringBuffer>();
+    public static HashMap<IoSession,Integer> IdleDeadlineMap = new HashMap<IoSession, Integer>();
+    public static HashMap<IoSession,Date> IdleDeadlineTimeMap = new HashMap<IoSession, Date>();
 
     @Autowired
     private MinaMessageDispatcher minaMessageDispatcher;
@@ -48,10 +52,6 @@ public class MinaServerHanlder extends IoHandlerAdapter {
     @Override
     public void messageReceived(IoSession session, Object message)throws Exception {
         String str = message.toString();
-        if( str.trim().equalsIgnoreCase("quit") ) {
-            session.close(Boolean.TRUE);
-            return;
-        }
         resolveMessage(str,session);
         logger.info("server -消息已经接收到!"+message);
     }
@@ -108,16 +108,27 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 
     @Override
     public void sessionClosed(IoSession session) throws Exception {
+        msgBufferMap.remove(session);
         logger.info("server-session关闭连接断开");
     }
 
     @Override
     public void sessionCreated(IoSession session) throws Exception {
+        IdleDeadlineMap.put(session,1);
         logger.info("server-session创建，建立连接");
     }
 
     @Override
     public void sessionIdle(IoSession session, IdleStatus status)throws Exception {
+        if (IdleDeadlineMap.get(session)==1){
+            IdleDeadlineTimeMap.put(session,new Date());
+            IdleDeadlineMap.put(session,2);
+        }
+        else {
+              if ((new Date()).getTime()-IdleDeadlineTimeMap.get(session).getTime()>(1000*60*30)){
+                  session.close(Boolean.TRUE);
+              }
+        }
         logger.info("server-服务端进入空闲状态..");
     }
 

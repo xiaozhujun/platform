@@ -191,15 +191,15 @@
     <select id="showRiskRank" parameterType="map" resultMap="craneInspectReportResultMap">
          SELECT cr.id,cr.unitAddress,r.riskvalue,cr.equipmentVariety
          FROM craneinspectreport cr,riskvalue r,address a
-         WHERE cr.reportnumber=r.reportnumber
-         AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area}
+         WHERE a.id=#{addressId} AND cr.reportnumber=r.reportnumber
+         AND a.id=cr.addressId
          group by cr.unitAddress order by r.riskvalue desc
     </select>
     <select id="showRiskRankByValueRange" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
         FROM craneinspectreport cr,riskvalue r,address a
-        WHERE cr.reportnumber=r.reportnumber
-        AND a.id=cr.addressId AND a.city=#{city} AND a.area=#{area} AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
+        WHERE a.id=#{addressId} AND cr.reportnumber=r.reportnumber
+        AND a.id=cr.addressId AND r.riskvalue BETWEEN #{startValue} AND #{endValue}
         group by cr.unitAddress order by r.riskvalue desc
     </select>
     <select id="getOneUnitAddressInfo" parameterType="java.lang.String" resultMap="craneInspectReportResultMap">
@@ -316,8 +316,8 @@
     <select id="getAreaInfo" parameterType="map" resultMap="craneInspectReportResultMap">
         SELECT cr.*,r.riskvalue,count(cr.reportnumber) as craneNumber
         FROM craneinspectreport cr,address a,riskvalue r
-        WHERE cr.reportnumber=r.reportnumber AND a.id=cr.addressId
-        AND a.city=#{city} AND a.area=#{area} GROUP BY cr.unitaddress
+        WHERE a.id=#{id} AND cr.reportnumber=r.reportnumber AND a.id=cr.addressId
+        GROUP BY cr.unitaddress
     </select>
     <select id="getProvinceRiskRankFormRiskRange" parameterType="map" resultType="map">
         SELECT a.id,a.province,round(avg(r.riskvalue)) as riskvalue,count(cr.reportnumber) as craneNumber,col.riskcolor as color

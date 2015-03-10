@@ -173,9 +173,13 @@ public class CraneInspectReportServiceWeb {
         if(city==null||city.trim().equals("")||area==null||area.trim().equals("")){
             return JsonResultUtils.getCodeAndMesByStringAsDefault(JsonResultUtils.Code.ERROR);
         }
-         List<CraneInspectReport> list=craneInspectReportService.getAreaInfo(city,area);
+
+         Long addressId = addressService.findIdByCityArea(city,area);
+
+         List<CraneInspectReport> list=craneInspectReportService.getAreaInfo(addressId);
          return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
     }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAreaInfoByUnitAddress")
@@ -215,8 +219,9 @@ public class CraneInspectReportServiceWeb {
     @POST
     public String showRiskRank(@FormParam("city") String city,@FormParam("area") String area)
     {
+        Long addressId = addressService.findIdByCityArea(city,area);
         //根据城市以及地区得到风险
-        List<CraneInspectReport> list=craneInspectReportService.showRiskRank(city,area);
+        List<CraneInspectReport> list=craneInspectReportService.showRiskRank(addressId);
 
         return JsonResultUtils.getObjectResultByStringAsDefault(list,JsonResultUtils.Code.SUCCESS);
 
@@ -228,7 +233,8 @@ public class CraneInspectReportServiceWeb {
         String[] values= value.split(";");
         float startValue = Float.parseFloat(values[0]);
         float endValue=Float.parseFloat(values[1]);
-        List<CraneInspectReport> list = craneInspectReportService.showRiskRankByValueRange(startValue,endValue,city,area);
+        Long addressId = addressService.findIdByCityArea(city,area);
+        List<CraneInspectReport> list = craneInspectReportService.showRiskRankByValueRange(startValue,endValue,addressId);
         return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
     }
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")

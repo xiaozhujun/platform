@@ -34,8 +34,14 @@ public class DataRoleAddressService {
     public List<Map<String,String>> getCityAndColorWithDataRole(String province,long userId){
         return dataRoleAddressMapper.getCityAndColorWithDataRole(province,userId);
     }
+    public List<Map<String,String>> getCityWithDataRole(String province,long userId){
+        return dataRoleAddressMapper.getCityWithDataRole(province,userId);
+    }
     public List<Map<String,String>> getAreaAndColorWithDataRole(String province,String city,long userId){
         return dataRoleAddressMapper.getAreaAndColorWithDataRole(province,city,userId);
+    }
+    public List<Map<String,String>> getAreaWithDataRole(String province,String city,long userId){
+        return dataRoleAddressMapper.getAreaWithDataRole(province,city,userId);
     }
 
     public List<Long> findAddressIdById(long id){

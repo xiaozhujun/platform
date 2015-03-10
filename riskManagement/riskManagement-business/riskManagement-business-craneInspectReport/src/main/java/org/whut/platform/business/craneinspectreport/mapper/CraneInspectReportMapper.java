@@ -30,8 +30,8 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<CraneInspectReport> getCraneInspectReportInfoByAddressAndEquipment(@Param("unitAddress") String unitAddress,@Param("equipmentVariety") String equipmentVariety);
     public List<CraneInspectReport> getUnitaddressByArea(@Param("province") String province,@Param("city") String city,@Param("area") String area);
     public Long findReportNumberByUnitAddress(String unitAddress);
-    public List<CraneInspectReport>showRiskRank(@Param("city") String city,@Param("area") String area);
-    public List<CraneInspectReport> showRiskRankByValueRange(@Param("startValue") float startValue,@Param("endValue") float endValue, @Param("city") String city, @Param("area") String area);
+    public List<CraneInspectReport>showRiskRank(@Param("addressId") Long addressId);
+    public List<CraneInspectReport> showRiskRankByValueRange(@Param("startValue") float startValue,@Param("endValue") float endValue, @Param("addressId") Long addressId);
     public CraneInspectReport getOneUnitAddressInfo(String unitAddress);
     public List<CraneInspectReport> getCraneInspectReportInfoById(long id);
     public List<CraneInspectReport> getCraneInspectReportInfoFromCircle(@Param("maxLng") String maxLng,@Param("maxLat") String maxLat,@Param("minLng")String minLng,@Param("minLat") String minLat);
@@ -51,7 +51,7 @@ public interface CraneInspectReportMapper extends AbstractMapper<CraneInspectRep
     public List<CraneInspectReport> fuzzyQueryBySafeManager(@Param("city") String city,@Param("area") String area,@Param("require") String require);
     public List<CraneInspectReport> fuzzyQueryByEquipmentVariety(@Param("city") String city,@Param("area") String area,@Param("require") String require);
     public List<CraneInspectReport> fuzzyQueryByManufactureUnit(@Param("city") String city,@Param("area") String area,@Param("require") String require);
-    public List<CraneInspectReport> getAreaInfo(@Param("city")String city,@Param("area")String area);
+    public List<CraneInspectReport> getAreaInfo(@Param("id")Long id);
     public List<Map<String,Float>>getProvinceRiskRankFormRiskRange(@Param("startValue") float startValue,@Param("endValue")float endValue);
     public List<Map<String,Float>>getCityRiskRankFormRiskRange(@Param("startValue") float startValue,@Param("endValue")float endValue,@Param("province")String province);
     public List<Map<String,Float>>getAreaRiskRankFormRiskRange(@Param("startValue") float startValue,@Param("endValue")float endValue,@Param("province")String province,@Param("city")String city);

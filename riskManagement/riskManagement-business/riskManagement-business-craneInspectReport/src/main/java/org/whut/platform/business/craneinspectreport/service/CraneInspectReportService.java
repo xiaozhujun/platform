@@ -214,11 +214,11 @@ public class CraneInspectReportService {
     public Long findReportNumberByUnitAddress(String unitAddress){
           return mapper.findReportNumberByUnitAddress(unitAddress);
     }
-     public List<CraneInspectReport> showRiskRank(String city,String area){
-         return mapper.showRiskRank(city,area);
+     public List<CraneInspectReport> showRiskRank(Long addressId){
+         return mapper.showRiskRank(addressId);
      }
-    public List<CraneInspectReport> showRiskRankByValueRange(float startValue,float endValue,String city,String area){
-        return mapper.showRiskRankByValueRange(startValue,endValue,city,area);
+    public List<CraneInspectReport> showRiskRankByValueRange(float startValue,float endValue,Long addressId){
+        return mapper.showRiskRankByValueRange(startValue,endValue,addressId);
     }
     public CraneInspectReport getOneUnitAddressInfo(String unitAddress){
         return mapper.getOneUnitAddressInfo(unitAddress);
@@ -302,8 +302,8 @@ public class CraneInspectReportService {
     {
         return  mapper.getEquipmentVarietyList();
     }
-    public List<CraneInspectReport> getAreaInfo(String city,String area){
-        return mapper.getAreaInfo(city,area);
+    public List<CraneInspectReport> getAreaInfo(Long id){
+        return mapper.getAreaInfo(id);
     }
     public List<Map<String,Float>> getProvinceRiskRankFormRiskRange(float startValue,float endValue){
           return mapper.getProvinceRiskRankFormRiskRange(startValue,endValue);

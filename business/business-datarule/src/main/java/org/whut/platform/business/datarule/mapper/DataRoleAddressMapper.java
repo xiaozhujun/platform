@@ -18,7 +18,9 @@ import java.util.Map;
 public interface DataRoleAddressMapper extends AbstractMapper<DataRoleAddress>{
     public List<Map<String,String>> getProvinceAndColorWithDataRole(@Param("userId")long userId);
     public List<Map<String,String>> getCityAndColorWithDataRole(@Param("province") String province,@Param("userId")long userId);
+    public List<Map<String,String>> getCityWithDataRole(@Param("province") String province,@Param("userId")long userId);
     public List<Map<String,String>> getAreaAndColorWithDataRole(@Param("province")String province,@Param("city")String city,@Param("userId")long userId);
+    public List<Map<String,String>> getAreaWithDataRole(@Param("province")String province,@Param("city")String city,@Param("userId")long userId);
 
     public List<Long>findAddressIdById(long id);
     public List<DataRoleAddress>findByCondition(long id);

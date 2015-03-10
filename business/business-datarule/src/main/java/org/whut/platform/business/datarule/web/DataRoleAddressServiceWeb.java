@@ -103,6 +103,28 @@ public class DataRoleAddressServiceWeb {
         }
         return JsonResultUtils.getObjectStrResultByStringAsDefault(resultList,200,province);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getCityWithDataRole")
+    public String getCityWithDataRole(@FormParam("province") String province){
+        String userName=userService.getMyUserDetailFromSession().getUsername();
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> list=dataRoleAddressService.getCityWithDataRole(province,userId);
+        List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
+        for(Map<String,String>map:list){
+            Map<String,String>map1=new HashMap<String, String>();
+            map1=dataRoleAddressService.transferCityMap(map1,map);
+            Long craneNumber=dataRoleAddressService.getCraneNumberByCity(province,map.get("city"));
+            if(craneNumber==null){
+                map1.put("craneNumber","0");
+            }
+            map1.put("craneNumber",String.valueOf(craneNumber));
+            resultList.add(map1);
+        }
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(resultList,200,province);
+    }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAreaAndColorWithDataRole")
@@ -124,6 +146,29 @@ public class DataRoleAddressServiceWeb {
         String province_city=province+","+city;
         return JsonResultUtils.getObjectStrResultByStringAsDefault(resultList,200,province_city);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @POST
+    @Path("/getAreaWithDataRole")
+    public String getAreaWithDataRole(@FormParam("province") String province,@FormParam("city")String city){
+        String userName=userService.getMyUserDetailFromSession().getUsername();
+        long userId=userService.getIdByName(userName);
+        List<Map<String,String>> list=dataRoleAddressService.getAreaWithDataRole(province,city,userId);
+        List<Map<String,String>> resultList=new ArrayList<Map<String, String>>();
+        for(Map<String,String>map:list){
+            Map<String,String> map1=new HashMap<String, String>();
+            map1=dataRoleAddressService.transferAreaMap(map1,map);
+            Long craneNumber=dataRoleAddressService.getCraneNumberByArea(province,city,map.get("area"));
+            if(craneNumber==null){
+                map1.put("craneNumber","0");
+            }
+            map1.put("craneNumber",String.valueOf(craneNumber));
+            resultList.add(map1);
+        }
+        String province_city=province+","+city;
+        return JsonResultUtils.getObjectStrResultByStringAsDefault(resultList,200,province_city);
+    }
+
     @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
     @POST
     @Path("/getAddressIdBydRoleName")

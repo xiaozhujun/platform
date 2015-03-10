@@ -118,13 +118,39 @@
         AND a.id=cr.addressId
         GROUP BY a.city order by avgRiskValue desc
     </select>
+
+    <select id="getCityWithDataRole" parameterType="map" resultType="map">
+        SELECT a.id,a.city,count(DISTINCT(cr.reportnumber)) as craneNumber
+        FROM user u
+		LEFT JOIN user_drole udr ON udr.userId=u.id
+		LEFT JOIN drole dr ON udr.droleId=dr.id
+		LEFT JOIN drole_address draddr ON draddr.droleId=dr.id
+		LEFT JOIN address a ON a.id=draddr.addressId
+		LEFT JOIN craneinspectreport cr ON cr.addressId=a.id
+        WHERE u.id=#{userId} and a.province=#{province}
+        GROUP BY a.city order by craneNumber desc
+    </select>
+
     <select id="getAreaAndColorWithDataRole" parameterType="map" resultType="map">
-         SELECT a.id,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
+        SELECT a.id,a.area,round(avg(r.riskvalue)) as avgRiskValue,count(DISTINCT(cr.reportnumber)) as craneNumber,col.riskcolor as color
         FROM craneinspectreport cr,riskvalue r,address a,riskcolor col,user u,drole dr,user_drole udr,drole_address draddr
         WHERE u.id=#{userId} and a.province=#{province} and a.city=#{city} and cr.id=r.reportId AND col.riskvalue=r.riskvalue AND u.id=udr.userId AND udr.droleId=dr.id AND draddr.droleId=dr.id AND draddr.addressId=a.id
         AND a.id=cr.addressId
         GROUP BY a.area order by avgRiskValue desc
     </select>
+
+    <select id="getAreaWithDataRole" parameterType="map" resultType="map">
+        SELECT a.id,a.city,a.area,count(DISTINCT(cr.reportnumber)) as craneNumber
+        FROM user u
+		LEFT JOIN user_drole udr ON udr.userId=u.id
+		LEFT JOIN drole dr ON udr.droleId=dr.id
+		LEFT JOIN drole_address draddr ON draddr.droleId=dr.id
+		LEFT JOIN address a ON a.id=draddr.addressId
+		LEFT JOIN craneinspectreport cr ON cr.addressId=a.id
+        WHERE u.id=#{userId} and a.province=#{province} and a.city=#{city}
+        GROUP BY a.area order by craneNumber desc
+    </select>
+
     <select id="findAddressIdById" parameterType="java.lang.Long"  resultType="java.lang.Long">
         Select addressId
         from   drole_address where droleId=#{id}

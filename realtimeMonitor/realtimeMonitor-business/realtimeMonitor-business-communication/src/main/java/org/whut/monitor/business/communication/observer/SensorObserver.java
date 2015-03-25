@@ -24,68 +24,23 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class SensorObserver implements Observer {
+    @Autowired
     private SensorService sensorService;
-    private RedisConnector redisConnector;
+    private RedisConnector redisConnector = new RedisConnector();
+    @Autowired
     private WarnConditionService warnConditionService;
+    @Autowired
     private AlgorithmService algorithmService;
+    @Autowired
     private CollectorService collectorService;
+    @Autowired
     private WsMessageDispatcher wsMessageDispatcher;
     DBObject curSensor;
     private int keyExpireTime = Integer.parseInt(FundamentalConfigProvider.get("redis.key.expire"));
 
-    public SensorService getSensorService() {
-        return sensorService;
-    }
-
-    public void setSensorService(SensorService sensorService) {
-        this.sensorService = sensorService;
-    }
-
-    public RedisConnector getRedisConnector() {
-        return redisConnector;
-    }
-
-    public void setRedisConnector(RedisConnector redisConnector) {
-        this.redisConnector = redisConnector;
-    }
-
-    public WarnConditionService getWarnConditionService() {
-        return warnConditionService;
-    }
-
-    public void setWarnConditionService(WarnConditionService warnConditionService) {
-        this.warnConditionService = warnConditionService;
-    }
-
-    public AlgorithmService getAlgorithmService() {
-        return algorithmService;
-    }
-
-    public void setAlgorithmService(AlgorithmService algorithmService) {
-        this.algorithmService = algorithmService;
-    }
-
-    public CollectorService getCollectorService() {
-        return collectorService;
-    }
-
-    public void setCollectorService(CollectorService collectorService) {
-        this.collectorService = collectorService;
-    }
-
-    public WsMessageDispatcher getWsMessageDispatcher() {
-        return wsMessageDispatcher;
-    }
-
-    public void setWsMessageDispatcher(WsMessageDispatcher wsMessageDispatcher) {
-        this.wsMessageDispatcher = wsMessageDispatcher;
-    }
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("实际需要处理的参数：" + arg);
-        System.out.println("检查是否注入2：" + this.sensorService + "|" + this.redisConnector
-                + "|" + warnConditionService + "|" + algorithmService);
         if (arg instanceof DBObject) {
             curSensor = (DBObject) arg;
         }
@@ -124,9 +79,6 @@ public class SensorObserver implements Observer {
     }
 
     private void transmitMessage(String number,ArrayList dataList,String dataType,String time,String warnType) {
-//        double meanVariance= (Double)algorithmService.getCurData().get("均方差");
-//        double MaxValue = (Double)algorithmService.getCurData().get("最大值");
-//        double MinValue = (Double)algorithmService.getCurData().get("最小值");
         double meanVariance,MaxValue,MinValue;
         meanVariance = MaxValue = MinValue = 0;
         if (warnType.equals("均方差")) {

@@ -2,6 +2,7 @@ package org.whut.monitor.business.communication.service;
 
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.whut.monitor.business.algorithm.service.AlgorithmService;
@@ -26,7 +27,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 @Service
-public class SensorDataService {
+public class SensorDataService implements InitializingBean {
     private static final PlatformLogger logger = PlatformLogger.getLogger(SensorDataService.class);
 
     private String sensorDB;
@@ -34,20 +35,11 @@ public class SensorDataService {
     private RedisConnector redisConnector;
     private MongoConnector mongoConnector;
     private int keyExpireTime;
-    private Map<String,Object> map = new HashMap<String, Object>();
-    private SensorObservable observable;
-    private SensorObserver observer;
 
     @Autowired
-    private SensorService sensorService;
+    private SensorObservable sensorObservable;
     @Autowired
-    private WarnConditionService warnConditionService;
-    @Autowired
-    private AlgorithmService algorithmService;
-    @Autowired
-    private CollectorService collectorService;
-    @Autowired
-    private WsMessageDispatcher wsMessageDispatcher;
+    private SensorObserver sensorObserver;
 
     //构造函数
     public SensorDataService(){
@@ -57,35 +49,20 @@ public class SensorDataService {
 
         redisConnector = new RedisConnector();
         mongoConnector = new MongoConnector(sensorDB,sensorCollection);
-        observer = new SensorObserver();
-        observable = new SensorObservable();
-        observable.addObserver(observer);
+
     }
 
     //保存消息对象
     public String saveMessage(String msg){
         String objectID = "";
-        if (observer.getSensorService() == null || observer.getRedisConnector() == null
-                || observer.getWarnConditionService() == null || observer.getAlgorithmService() == null
-                || observer.getCollectorService() == null || observer.getWsMessageDispatcher() == null) {
-            observer.setSensorService(sensorService);
-            observer.setRedisConnector(redisConnector);
-            observer.setWarnConditionService(warnConditionService);
-            observer.setAlgorithmService(algorithmService);
-            observer.setCollectorService(collectorService);
-            observer.setWsMessageDispatcher(wsMessageDispatcher);
-            logger.info("完成注入");
-        }
-        System.out.println("sssssssssssss " + observer.getSensorService());
         try{
             DBObject dbObject = (DBObject) JSON.parse(msg);
             ArrayList sensors = (ArrayList)dbObject.get("sensors");
-            logger.info("dddddddddddddddddd " + sensors.size() + " dddddddddddddddddd " + sensors);
             DBObject curSensor;
             for(int i=0;i<sensors.size();i++){
                 curSensor = (DBObject)sensors.get(i);
                 String sensor = curSensor.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.id")).toString();
-                observable.setObject(curSensor);
+                sensorObservable.setObject(curSensor);
                 String temp = mongoConnector.insertDocumentObject(curSensor);
                 if(objectID!=null){
                     if(redisConnector.set(sensor,keyExpireTime,temp)){
@@ -118,4 +95,8 @@ public class SensorDataService {
         return (ArrayList)dbObject.get(FundamentalConfigProvider.get("monitor.mongo.field.sensor.data"));
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        sensorObservable.addObserver(sensorObserver);
+    }
 }

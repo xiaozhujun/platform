@@ -6,4 +6,6 @@
     <!--<bean id="messageDispatcher" class="org.whut.monitor.business.communication.message.SensorMessageDispatcher"/>-->
     <bean id="sensorMessageListener" class="org.whut.monitor.business.communication.message.SensorMessageListener" depends-on="platformMessageDistributer"/>
     <bean id="sensorDataService" class="org.whut.monitor.business.communication.service.SensorDataService"/>
+    <bean id="observable" class="org.whut.monitor.business.communication.observer.SensorObservable"/>
+    <bean id="observer" class="org.whut.monitor.business.communication.observer.SensorObserver"/>
 </beans>

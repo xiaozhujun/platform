@@ -4,7 +4,18 @@
        xmlns:websocket="http://www.springframework.org/schema/websocket"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
-    <bean id="websocketMessageListener" class="org.whut.platform.fundamental.websocket.WebsocketMessageListener" depends-on="platformMessageDistributer"/>
+    <bean id="websocketMessageListener" class="org.whut.platform.fundamental.websocket.WebsocketMessageListener"
+          init-method="start" destroy-method="stop">
+        <property name="brokers">
+            <list>
+                <value>localhostA</value>
+                <value>localhostB</value>
+                <!--<value>localhostC</value>-->
+            </list>
+        </property>
+        <property name="myConnectionFactory" ref="consumerConnectionFactory"/>
+        <property name="websocketEndPoint" ref="websocketEndPoint"/>
+    </bean>
     <bean id="wsMessageDispatcher" class="org.whut.platform.fundamental.websocket.WebsocketMessageDispatcher"/>
     <bean id="websocketEndPoint" class="org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint"/>
 

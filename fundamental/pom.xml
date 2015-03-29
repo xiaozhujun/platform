@@ -30,6 +30,7 @@
         <module>fundamental-sms</module>
         <module>fundamental-websocket</module>
         <module>fundamental-command</module>
+        <module>fundamental-activemq</module>
     </modules>
 
 

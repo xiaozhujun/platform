@@ -5,6 +5,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.platform.fundamental.activemq.api.PooledMessageDispatcher;
+import org.whut.platform.fundamental.activemq.api.PooledMessageProducer;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
@@ -27,11 +29,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 上午11:56
  * To change this template use File | Settings | File Templates.
  */
-public class DeviceMessageDispatcher implements MessageDispatcher {
+public class DeviceMessageDispatcher implements PooledMessageDispatcher {
     public static final PlatformLogger logger = PlatformLogger.getLogger(DeviceMessageDispatcher.class);
     private static final String destination = Constants.DEVICE_QUEUE_DESTINATION;
     @Autowired
-    private PlatformMessageProducer platformMessageProducer;
+    private PooledMessageProducer pooledMessageProducer;
     private RedisConnector redisConnector = new RedisConnector();
     @Autowired
     private DeviceService deviceService;
@@ -47,7 +49,7 @@ public class DeviceMessageDispatcher implements MessageDispatcher {
             try {
                 ActiveMQTextMessage message = new ActiveMQTextMessage();
                 message.setText(messageBody);
-                platformMessageProducer.sendTopic(destination,message);
+                pooledMessageProducer.sendQueue(destination,message);
 
                 if (isFirst) {
                     logger.info("初始化本次记录");

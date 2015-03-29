@@ -2,6 +2,7 @@ package org.whut.platform.fundamental.websocket;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.platform.fundamental.activemq.api.PooledMessageProducer;
 import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
@@ -22,7 +23,7 @@ public class WebsocketMessageDispatcher implements WsMessageDispatcher {
     public static final String destination= Constants.WWBSOCKEY_QUEUE_DESTINATION;
 
     @Autowired
-    private PlatformMessageProducer platformMessageProducer;
+    private PooledMessageProducer pooledMessageProducer;
 
     @Override
     public void dispatchMessage(String messageBody) {
@@ -31,7 +32,7 @@ public class WebsocketMessageDispatcher implements WsMessageDispatcher {
             try{
                 ActiveMQTextMessage message=new ActiveMQTextMessage();
                 message.setText(messageBody);
-                platformMessageProducer.sendTopic(destination,message);
+                pooledMessageProducer.sendQueue(destination,message);
                 logger.info("dispatch message: "+messageBody);
             }catch(MessageNotWriteableException e){
                 logger.error(e.getMessage());

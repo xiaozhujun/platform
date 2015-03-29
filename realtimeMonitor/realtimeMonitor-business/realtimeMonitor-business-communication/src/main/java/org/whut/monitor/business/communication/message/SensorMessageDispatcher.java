@@ -4,11 +4,10 @@ import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.monitor.service.CollectorService;
 import org.whut.monitor.business.monitor.service.SensorService;
-import org.whut.platform.fundamental.communication.api.MessageDispatcher;
+import org.whut.platform.fundamental.activemq.api.PooledMessageProducer;
 import org.whut.platform.fundamental.communication.api.MinaMessageDispatcher;
 import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
-import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
 
 import javax.jms.MessageNotWriteableException;
@@ -29,7 +28,7 @@ public class SensorMessageDispatcher implements MinaMessageDispatcher {
     private static final String destination = Constants.SENSOR_QUEUE_DESTINATION;
 
     @Autowired
-    private PlatformMessageProducer platformMessageProducer;
+    private PooledMessageProducer pooledMessageProducer;
     @Autowired
     private CollectorService collectorService;
     @Autowired
@@ -45,21 +44,13 @@ public class SensorMessageDispatcher implements MinaMessageDispatcher {
             try {
                 ActiveMQTextMessage message = new ActiveMQTextMessage();
                 message.setText(messageBody);
-                platformMessageProducer.sendTopic(destination,message);
+                pooledMessageProducer.sendQueue(destination,message);
             } catch (MessageNotWriteableException e) {
                 logger.error(e.getMessage());
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
 
         }
-    }
-
-    public PlatformMessageProducer getPlatformMessageProducer() {
-        return platformMessageProducer;
-    }
-
-    public void setPlatformMessageProducer(PlatformMessageProducer platformMessageProducer) {
-        this.platformMessageProducer = platformMessageProducer;
     }
 
     @Override

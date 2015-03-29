@@ -7,11 +7,13 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.whut.platform.fundamental.activemq.consumer.PooledMessageConsumerBase;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
 import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
 
+import javax.jms.Destination;
 import javax.jms.Message;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +25,18 @@ import java.util.Map;
  * Time: 下午8:05
  * To change this template use File | Settings | File Templates.
  */
-public class WebsocketMessageListener extends PlatformMessageListenerBase {
+public class WebsocketMessageListener extends PooledMessageConsumerBase {
 
     public static final PlatformLogger logger=PlatformLogger.getLogger(WebsocketMessageListener.class);
 
-    @Autowired
-    private WebsocketEndPoint webSocket;
-    @Override
-    public String getMessageName() {
-        return Constants.WWBSOCKEY_QUEUE_DESTINATION;  //To change body of implemented methods use File | Settings | File Templates.
+    private WebsocketEndPoint websocketEndPoint;
+
+    public WebsocketEndPoint getWebsocketEndPoint() {
+        return websocketEndPoint;
+    }
+
+    public void setWebsocketEndPoint(WebsocketEndPoint websocketEndPoint) {
+        this.websocketEndPoint = websocketEndPoint;
     }
 
     @Override
@@ -77,5 +82,10 @@ public class WebsocketMessageListener extends PlatformMessageListenerBase {
             logger.error(exception.getMessage());
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    public void register(Destination destination) {
+        receiveMessage(destination);
     }
 }

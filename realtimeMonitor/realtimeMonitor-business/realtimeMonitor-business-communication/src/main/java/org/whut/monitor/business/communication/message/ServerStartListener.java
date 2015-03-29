@@ -1,5 +1,6 @@
 package org.whut.monitor.business.communication.message;
 
+import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -29,17 +30,20 @@ public class ServerStartListener implements ServletContextListener {
     private WebApplicationContext springContext;
     private MinaServer server;
 //    private NIOServer server;
-    private PlatformMessageMonitorRegistry platformMessageMonitorRegistry;
+//    private PlatformMessageMonitorRegistry platformMessageMonitorRegistry;
+    private SensorMessageListener sensorMessageListener;
 
 
     public void contextInitialized(ServletContextEvent event) {
         springContext =  WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
         server = (MinaServer)springContext.getBean("minaServer");
        // server = (NIOServer)springContext.getBean("nioServer");
-        platformMessageMonitorRegistry = (PlatformMessageMonitorRegistry)springContext.getBean("platformMessageMonitorRegistry");
+//        platformMessageMonitorRegistry = (PlatformMessageMonitorRegistry)springContext.getBean("platformMessageMonitorRegistry");
         socketServerListenThread = new Thread(server);
         socketServerListenThread.start();
-        platformMessageMonitorRegistry.registerMonitor(new ActiveMQTopic(Constants.SENSOR_QUEUE_DESTINATION));
+//        platformMessageMonitorRegistry.registerMonitor(new ActiveMQTopic(Constants.SENSOR_QUEUE_DESTINATION));
+        sensorMessageListener = (SensorMessageListener) springContext.getBean("sensorMessageListener");
+        sensorMessageListener.register(new ActiveMQQueue(Constants.SENSOR_QUEUE_DESTINATION));
         logger.info("nioServer is stated!");
     }
 

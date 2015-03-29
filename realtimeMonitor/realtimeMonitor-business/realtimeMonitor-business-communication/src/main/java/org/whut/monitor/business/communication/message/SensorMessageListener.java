@@ -5,9 +5,11 @@ import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.monitor.business.communication.service.SensorDataService;
 import org.whut.monitor.business.monitor.service.CollectorService;
+import org.whut.platform.fundamental.activemq.consumer.PooledMessageConsumerBase;
 import org.whut.platform.fundamental.logger.PlatformLogger;
-import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
+
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
@@ -18,7 +20,7 @@ import javax.jms.Message;
  * Time: 下午8:49
  * To change this template use File | Settings | File Templates.
  */
-public class SensorMessageListener extends PlatformMessageListenerBase{
+public class SensorMessageListener extends PooledMessageConsumerBase {
 
     public static final PlatformLogger logger = PlatformLogger.getLogger(SensorMessageListener.class);
 
@@ -29,11 +31,6 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
     private CollectorService collectorService;
 
     private RedisConnector redisConnector = new RedisConnector();
-
-    @Override
-    public String getMessageName() {
-        return Constants.SENSOR_QUEUE_DESTINATION;
-    }
 
 
     @Override
@@ -65,5 +62,10 @@ public class SensorMessageListener extends PlatformMessageListenerBase{
         System.out.println(s1.substring(0,endIndex));
         String s2= s1.substring(0,endIndex)+","+s+"}]}";
         System.out.println(s2);
+    }
+
+    @Override
+    public void register(Destination destination) {
+        receiveMessage(destination);
     }
 }

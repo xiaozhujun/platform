@@ -4,8 +4,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="minaMessageDispatcher" class="org.whut.monitor.business.communication.message.SensorMessageDispatcher"/>
     <!--<bean id="messageDispatcher" class="org.whut.monitor.business.communication.message.SensorMessageDispatcher"/>-->
-    <bean id="sensorMessageListener" class="org.whut.monitor.business.communication.message.SensorMessageListener" depends-on="platformMessageDistributer"/>
+    <!--<bean id="sensorMessageListener" class="org.whut.monitor.business.communication.message.SensorMessageListener" depends-on="platformMessageDistributer"/>-->
     <bean id="sensorDataService" class="org.whut.monitor.business.communication.service.SensorDataService"/>
     <bean id="observable" class="org.whut.monitor.business.communication.observer.SensorObservable"/>
     <bean id="observer" class="org.whut.monitor.business.communication.observer.SensorObserver"/>
+    <bean id="sensorMessageListener" class="org.whut.monitor.business.communication.message.SensorMessageListener"
+          init-method="start" destroy-method="stop">
+        <property name="brokers">
+            <list>
+                <value>localhostA</value>
+                <value>localhostB</value>
+                <!--<value>localhostC</value>-->
+            </list>
+        </property>
+        <property name="myConnectionFactory" ref="consumerConnectionFactory"/>
+    </bean>
 </beans>

@@ -13,11 +13,11 @@
     <artifactId>realtimeMonitor-business-communication</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>platform</groupId>
-            <artifactId>fundamental-message</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>platform</groupId>-->
+            <!--<artifactId>fundamental-message</artifactId>-->
+            <!--<version>${project.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>platform</groupId>
             <artifactId>fundamental-communication</artifactId>
@@ -145,6 +145,11 @@
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-pool</artifactId>
             <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>fundamental-activemq</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

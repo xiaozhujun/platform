@@ -3,6 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="messageDispatcher" class="org.whut.trackSystem.business.communication.message.DeviceMessageDispatcher"/>
-    <bean id="deviceMessageListener" class="org.whut.trackSystem.business.communication.message.DeviceMessageListener" depends-on="platformMessageDistributer"/>
+    <bean id="deviceMessageListener" class="org.whut.trackSystem.business.communication.message.DeviceMessageListener"
+          init-method="start" destroy-method="stop">
+        <property name="myConnectionFactory" ref="consumerConnectionFactory" />
+        <property name="brokers">
+            <list>
+                <value>localhostA</value>
+                <value>localhostB</value>
+                <!--<value>localhostC</value>-->
+            </list>
+        </property>
+    </bean>
     <bean id="deviceDataService" class="org.whut.trackSystem.business.communication.service.DeviceDataService"/>
 </beans>

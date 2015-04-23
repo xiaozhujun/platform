@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.deviceManagement.business.device.mapper.DeviceTypeMapper">
+    <sql id="deviceType_fields">
+         ID,NAME,DESCRIPTION,CREATETIME,UNIT,MAINDEVICE,WARNTIME,APPID
+     </sql>
+    <resultMap id="deviceTypeResultMap" type="DeviceType">
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createTime" column="CREATETIME"/>
+        <result property="unit" column="UNIT"/>
+        <result property="mainDevice" column="MAINDEVICE"/>
+        <result property="warnTime" column="WARNTIME"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="DeviceType"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        device_type(
+        <include refid="deviceType_fields" />
+        )
+        VALUES (#{id}, #{name},#{description},#{createTime},#{unit},#{mainDevice},#{warnTime},#{appId});
+        <selectKey resultType="long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="DeviceType">
+        UPDATE device_type
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="description!=null">DESCRIPTION=#{description},</if>
+            <if test="unit!=null">UNIT=#{unit},</if>
+            <if test="mainDevice!=null">MAINDEVICE=#{mainDevice},</if>
+            <if test="warnTime!=null">WARNTIME=#{warnTime}</if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <delete id="delete" parameterType="DeviceType">
+        DELETE  device_type,device FROM device_type LEFT JOIN device ON device_type.id=device.typeId
+        WHERE device_type.id=#{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE  device_type,device FROM device_type LEFT JOIN device ON device_type.id=device.deviceTypeId
+        WHERE device_type.id=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultMap="deviceTypeResultMap">
+        select
+        <include refid="deviceType_fields"/>
+        from device_type
+        where APPID=#{appId}
+    </select>
+
+    <select id="getIdByName" parameterType="map" resultType="java.lang.Long">
+        select id
+        from device_type
+        where NAME=#{name} and APPID=#{appId}
+    </select>
+
+</mapper>

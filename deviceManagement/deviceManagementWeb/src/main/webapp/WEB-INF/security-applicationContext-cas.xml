@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans  xmlns="http://www.springframework.org/schema/security"
+              xmlns:beans="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- 以下文件不检查权限 -->
+    <http entry-point-ref="casAuthenticationEntryPoint" auto-config="true"><!-- 访问权限 -->
+        <custom-filter position="CAS_FILTER" ref="casAuthenticationFilter"></custom-filter>
+        <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter" />
+        <logout logout-url="/logout"/>
+    </http>
+
+    <!-- 配置过滤器 -->
+    <beans:bean id="myFilter"
+                class="org.whut.platform.business.user.security.MySecurityInterceptorFilter">
+        <!-- 用户拥有的权限 -->
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <!-- 用户是否拥有所请求资源的权限 -->
+        <beans:property name="accessDecisionManager" ref="myAccessDecisionManager" />
+        <!-- 资源与权限对应关系 -->
+        <beans:property name="securityMetadataSource" ref="mySecurityMetadataSource" />
+    </beans:bean>
+
+    <beans:bean id="myAccessDecisionManager"
+                class="org.whut.platform.business.user.security.MyAccessDecisionManager">
+    </beans:bean>
+    <!-- 系统运行时加载 系统要拦截的资源   与用户请求时要过滤的资源 -->
+    <beans:bean id="mySecurityMetadataSource"
+                class="org.whut.platform.business.user.security.MySecurityMetadataSource"
+            >
+    </beans:bean>
+
+    <!--
+14	        Required for the casProcessingFilter, so define it explicitly set and
+15	        specify an Id Even though the authenticationManager is created by
+16	        default when namespace based config is used.
+17	    -->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="casAuthenticationProvider"></authentication-provider>
+    </authentication-manager>
+
+    <!--
+23	        This section is used to configure CAS. The service is the
+24	        actual redirect that will be triggered after the CAS login sequence.
+25	    -->
+    <beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
+        <!--config for web www.cseicms.com test -->
+        <beans:property name="service" value="http://www.cseicms.com/rentManagement/j_spring_cas_security_check"></beans:property>
+        <!--config for android test -->
+        <!--<beans:property name="service" value="http://www.cseicms.com/inspectinspectManagement/j_spring_cas_security_check"></beans:property>-->
+        <beans:property name="sendRenew" value="false"></beans:property>
+    </beans:bean>
+
+    <!--
+32	        The CAS filter handles the redirect from the CAS server and starts the ticket validation.
+33	    -->
+    <beans:bean id="casAuthenticationFilter" class="org.springframework.security.cas.web.CasAuthenticationFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+    </beans:bean>
+
+
+
+    <!--
+39	        The entryPoint intercepts all the CAS authentication requests.
+40	        It redirects to the CAS loginUrl for the CAS login page.
+41	    -->
+    <beans:bean id="casAuthenticationEntryPoint" class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
+        <beans:property name="loginUrl" value="http://www.cseicms.com/inspectCas/login"></beans:property>
+        <beans:property name="serviceProperties" ref="serviceProperties"></beans:property>
+    </beans:bean>
+
+    <!--
+48	        Handles the CAS ticket processing.
+49	     -->
+    <beans:bean id="casAuthenticationProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="myUserDeatailsService"></beans:property>
+        <beans:property name="serviceProperties" ref="serviceProperties"></beans:property>
+        <beans:property name="ticketValidator">
+            <beans:bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+                <beans:constructor-arg index="0" value="http://219.141.208.172/inspectCas"></beans:constructor-arg>
+            </beans:bean>
+        </beans:property>
+        <beans:property name="key" value="cas"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="myUserDeatailsService" class="org.whut.platform.business.user.security.MyUserDetailsService"/>
+
+
+
+    <!--
+    The users available for this application.
+-->
+    <user-service id="userService">
+        <user name="user" password="user" authorities="ROLE_USER"></user>
+        <user name="xiaozhujun" password="123456" authorities="ROLE_USER"></user>
+    </user-service>
+
+</beans:beans>

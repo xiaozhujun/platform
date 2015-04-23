@@ -16,6 +16,7 @@
         <module>realtimeMonitor</module>
         <module>rentManagement</module>
         <module>trackSystem</module>
+        <module>deviceManagement</module>
         <!--<module>auth</module>-->
     </modules>
     <properties>

@@ -17,4 +17,7 @@
     <bean id="tracksystem" class="platform.fundamental.datasource.DbcpFactoryBean">
         <property name="dbname" value="tracksystem"></property>
     </bean>
+    <bean id="devicemanagement" class="platform.fundamental.datasource.DbcpFactoryBean">
+        <property name="dbname" value="devicemanagement"></property>
+    </bean>
 </beans>

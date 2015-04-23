@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.deviceManagement.business.device.mapper.DeviceMapper">
+    <sql id="device_fields">
+          ID,TYPEID,ADDRESS,STATUS,NAME,NUMBER,PRICE,PRODUCETIME,CREATETIME,PRICEUNIT,LNG,LAT,APPID
+    </sql>
+    <resultMap id="device_resultMap" type="Device">
+        <id property="id" column="ID" />
+        <result property="typeId" column="TYPEID"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="status" column="STATUS"/>
+        <result property="name" column="NAME"/>
+        <result property="number" column="NUMBER"/>
+        <result property="price" column="PRICE"/>
+        <result property="produceTime" column="PRODUCETIME"/>
+        <result property="createTime" column="CREATETIME"/>
+        <result property="priceUnit" column="PRICEUNIT"/>
+        <result property="lng" column="LNG"/>
+        <result property="lat" column="LAT"/>
+        <result property="appId" column="APPID"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Device"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        device(
+        <include refid="device_fields" />
+        )
+        VALUES (#{id},#{typeId},#{address},#{status},#{name},#{number},#{price},#{produceTime},#{createTime},#{priceUnit},#{lng},#{lat},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Device">
+        update device
+        <set>
+            <if test="typeId!=null">TYPEID=#{typeId},</if>
+            <if test="contractId!=null">CONTRACTID=#{contractId},</if>
+            <if test="address!=null">ADDRESS=#{address},</if>
+            <if test="status!=null">STATUS=#{status},</if>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="number!=null">NUMBER=#{number},</if>
+            <if test="price!=null">PRICE=#{price},</if>
+            <if test="produceTime!=null">PRODUCETIME=#{produceTime},</if>
+            <if test="priceUnit!=null">PRICEUNIT=#{priceUnit},</if>
+            <if test="lng!=null">LNG=#{lng},</if>
+            <if test="lat!=null">LAT=#{lat},</if>
+            <if test="appId!=null">APPID=#{appId}</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM device
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select device.*,device_type.name as deviceType
+        from device
+        LEFT JOIN device_type ON device.typeId=device_type.id
+        where device.appId=#{appId}
+        <!--联查错误，改后台传name -->
+    </select>
+
+    <select id="getIdByNumber" parameterType="map" resultType="java.lang.Long">
+        select id
+        from device
+        where NUMBER=#{number} and APPID=#{appId}
+    </select>
+
+
+
+</mapper>

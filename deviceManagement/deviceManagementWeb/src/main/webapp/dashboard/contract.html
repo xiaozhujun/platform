@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/report.css">
+<link rel="stylesheet" href="css/reportShow.css">
+<script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+<script type="text/javascript">
+$.ligerDialog.close("#contract_uploadInfo");
+$(function(){
+    var d=new Date();
+    var startTime=(d.getFullYear()-1)+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+    var endTime=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+    $("#contractStartTime").ligerDateEditor({initValue: startTime});
+    $("#contractEndTime").ligerDateEditor({initValue: endTime});
+
+    getContractList();
+});
+
+function getContractList(){
+    var user=$("#contractUserName").val();
+    var device=$("#contractDeviceName").val();
+    var sTime=$("#contractStartTime").val();
+    var eTime=$("#contractEndTime").val();
+    $.post($.URL.dashboard.contractList,{"user":user,"device":device,"sTime":sTime,"eTime":eTime},getContractListCallback,"json");
+}
+
+$("#getContractListBtn").click(function(){
+    getContractList();
+});
+
+function getContractListCallback(data){
+    if(data.code==200){
+        if(data.data==null){
+            $.ligerDialog.alert("抱歉,记录不存在!");
+        }else{
+            $("#contractShow").html("");
+            contract_showGrid(data.data);
+        }
+    }
+}
+
+
+var contractData={};
+function contract_showGrid(data){
+    var grid = $("<div id='contractGrid'></div>");
+    $("#contractShow").append(grid);
+    contractData.Rows=data;
+    f_peopleRecord(grid);
+}
+var contract_manager, contract_g;
+var h = "";
+function f_peopleRecord(grid)
+{
+    contract_g = contract_manager = grid.ligerGrid({
+        columns: [
+            { display: '合同名称', name: 'name',
+                editor: { type: 'text' }
+            },
+            { display: '客户名称', name: 'customerName',
+                editor: { type: 'text' }
+            },
+            { display: '合同编号', name: 'number', type: 'string',
+                editor: { type: 'text' }
+            },
+            { display: '开始日期', name: 'startTime',
+                editor: { type: 'text' }
+            },
+            { display: '结束日期', name: 'endTime',
+                editor: { type: 'text' }
+            },
+            { display: '负责人', name: 'chargeMan',width:'auto',
+                editor: { type: 'text' }
+            },
+            { display: '项目地点', name: 'projectLocation',width:'auto',
+                editor: { type: 'text' }
+            },
+            { display: '操作', isSort: false,  render: function (rowdata, rowindex, value)
+            {
+                return "<a href='javascript:contract_resolve(" + rowindex + ")'>详情</a> ";
+            }
+            }
+        ],
+        onSelectRow: function (rowdata, rowindex)
+        {
+            $("#txtrowindex").val(rowindex);
+        },
+        enabledEdit: true,clickToEdit:false, isScroll: false,usePager:false,
+        data: contractData,
+        width: '100%'
+    });
+}
+
+var contractId;
+function contract_resolve(rowid){
+    var rowInfo = contract_manager.getRow(rowid);
+    var jsonString  = $.toJSON(rowInfo);
+    contractId = $.evalJSON(jsonString).id;
+    $.ligerDialog.open({
+        height:600,
+        width: 800,
+        title : '项目详情',
+        url: 'contract/contractDetail.html',
+        showMax: false,
+        showToggle: true,
+        showMin: false,
+        isResize: true,
+        slide: false,
+        data: {
+            name: $("#txtValue").val()
+        },
+        //自定义参数
+        myDataName: $("#txtValue").val()
+    });
+}
+
+</script>
+</head>
+<body>
+<div class="searchContainer">
+    <div class="searchItem"><span class="item_font">合同名称:</span><span class="item_input"><input id="contractDeviceName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">客户名称:</span><span class="item_input"><input id="contractUserName" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">起始时间:</span><span class="item_input"><input id="contractStartTime" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">终止时间:</span><span class="item_input"><input id="contractEndTime" type="text"></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="getContractListBtn" class="l-button l-button-submit" /></span></div>
+</div>
+<div class="reportContent" id="contractShow"></div>
+
+</body>
+</html>

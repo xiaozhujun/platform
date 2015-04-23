@@ -1,0 +1,57 @@
+<style type="text/css">
+    #title{
+        width:100%;
+        text-align: center;
+        font-size: 30px;
+        background-image: url("images/header_bg.jpg");
+        height: 68px;
+        line-height: 68px;
+    }
+
+    #userInfo{
+        position: absolute;
+        bottom: 0;
+        right: 5px;
+        font-size: 14px;
+        display: none;
+    }
+
+
+    #userInfo div{
+        float: left;
+    }
+    #userNameDiv
+    {
+        cursor: pointer;
+    }
+    a{
+        text-decoration: none;
+        color: #000000;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        $.get($.URL.user.currentUserInfo,null,userInfoCallback,"json");
+    });
+
+    function userInfoCallback(data){
+        if(data!=null){
+            $("#userInfo").show();
+            $("#userNameDiv").html(data.data.name);
+            $("#userNameDiv").click(function(){
+                alert("test");
+            });
+            if(data.data.role.indexOf("ROLE_ADMIN")>-1){
+                $("#adminLinkDiv").show();
+            }
+        }
+    }
+</script>
+<div id="title"><a href="index.jsp">桥梁设备健康管理信息可视化平台</a></div>
+<div id="userInfo">
+    <div>欢迎您，</div>
+    <div id="userNameDiv"></div>
+    <div id="adminLinkDiv" style="display: none">|<a href="admin.html">管理后台</a></div>
+    <div id="logoutDiv">|<a href="logout">安全退出</a></div>
+</div>
+

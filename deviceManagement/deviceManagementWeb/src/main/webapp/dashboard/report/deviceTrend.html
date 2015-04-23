@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/reportShow.css">
+    <script src="lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerButton.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#startTimeInput").ligerDateEditor();
+            $("#endTimeInput").ligerDateEditor();
+            $("#DeviceDiv").css("display","block");
+            $("#deviceReportSearch_submitBtn").click(function(){
+                showDeviceReport();
+            });
+
+        });
+        function showDeviceReport(){
+            var condition={};
+            if($("#DeviceType").val()!=""){
+                condition.deviceType = $("#DeviceType").val();
+            }
+            if($("#optionTypeInput").val()!=""){
+                condition.optionType = $("#optionTypeInput").val();
+            }
+            if($("#startTimeInput").val()!=""){
+                condition.startTime = $("#startTimeInput").val();
+            }
+            if($("#endTimeInput").val()!=""){
+                condition.endTime = $("#endTimeInput").val();
+            }
+            condition.reportType="html";
+
+            $("#deviceShow").load($.URL.deviceReport.deviceTrendReport,{"jsonString": $.toJSON(condition)},reportSearchCallback,"json");
+
+        }
+        function reportSearchCallback(data){
+            if(data.code==200){
+                $.ligerDialog.success('操作成功!');
+            }
+            else if(data.code==500){
+                $.ligerDialog.error(data.message);
+            }
+        }
+        $("#deviceReportSearch_exportBtn").click(function(){
+            var type=$("#DeviceInfType").val();//获取要打印的格式 如PDF或Excel
+            if(type!=null){
+                //var typeFlag=type+",0";
+                var condition={};
+                if($("#DeviceType").val()!=""){
+                    condition.deviceType = $("#DeviceType").val();
+                }
+                if($("#optionTypeInput").val()!=""){
+                    condition.optionType = $("#optionTypeInput").val();
+                }
+                if($("#startTimeInput").val()!=""){
+                    condition.startTime = $("#startTimeInput").val();
+                }
+                if($("#endTimeInput").val()!=""){
+                    condition.endTime = $("#endTimeInput").val();
+                }
+                condition.reportType=type;
+                window.open($.URL.deviceReport.exportDeviceTrendReport+"?jsonString="+ $.toJSON(condition),"_blank");
+            }else{
+                $.ligerDialog().alert("请输入导出报表类型!");
+            }
+        });
+        $("#DeviceInfType").ligerComboBox({       //下拉框
+            data: [
+                { text: 'pdf', id: '1' },
+                { text: 'word', id: '2' },
+                { text: 'excel', id: '3' }
+            ], valueFieldID: 'DeviceInfType'
+        });
+
+        $("#deviceReportSearch_submitBtn").trigger("click");
+    </script>
+</head>
+<body>
+<div id="searchContainer" class="searchContainer">
+    <div class="searchItem"><span class="item_font">设备类型:</span><span class="item_input"><input id="DeviceType" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">设备状态:</span><span class="item_input">
+        <select id="optionTypeInput" style="width: 125px;">
+            <option value="">请选择...</option>
+            <option value="1">安装</option>
+            <option value="2">拆卸</option>
+            <option value="3">运输</option>
+            <option value="4">入库</option>
+            <option value="5">出库</option>
+        </select>
+    </span></div>
+    <div style="float: left;margin-left: 5px;">
+        <table>
+            <tr>
+                <td>生产日期:&nbsp;</td>
+                <td><input id="startTimeInput" type="text"></td>
+                <td>&nbsp;到:&nbsp;</td>
+                <td><input id="endTimeInput" type="text"></td>
+            </tr>
+        </table></div>
+    <div class="searchItem"><span class="item_font">报表类型:</span><span class="item_input"><input type="text" id="DeviceInfType"></span></div>
+    <div class="btn"><span><input type="button" value="查看" id="deviceReportSearch_submitBtn" class="l-button l-button-submit" /></span></div>
+    <div class="btn"><span><input type="button" value="导出" id="deviceReportSearch_exportBtn" class="l-button l-button-submit" /></span></div>
+</div>
+
+<div id="deviceShow" class="reportShow"></div>
+</body>
+</html>

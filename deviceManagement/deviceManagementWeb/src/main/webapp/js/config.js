@@ -58,7 +58,24 @@
             "exportRentDeviceReport":"rs/deviceReport/exportRentDeviceReport",
             "deviceTrendReport":"rs/deviceReport/deviceTrendReport",
             "exportDeviceTrendReport":"rs/deviceReport/exportDeviceTrendReport"
-
+        },
+        "maintainRule":{
+            "add":"rs/maintainRule/add",
+            "update":"rs/maintainRule/update",
+            "delete":"rs/maintainRule/delete",
+            "list":"rs/maintainRule/list"
+        },
+        "deviceMaintain":{
+            "add":"rs/deviceMaintain/add",
+            "update":"rs/deviceMaintain/update",
+            "delete":"rs/deviceMaintain/delete",
+            "getLastDeviceMaintainByDeviceGroup":"rs/deviceMaintain/getLastDeviceMaintainByDeviceGroup"
+        },
+        "project":{
+            "add":"rs/project/add",
+            "update":"rs/project/update",
+            "delete":"rs/project/delete",
+            "list":"rs/project/list"
         }
     }
 })(jQuery);

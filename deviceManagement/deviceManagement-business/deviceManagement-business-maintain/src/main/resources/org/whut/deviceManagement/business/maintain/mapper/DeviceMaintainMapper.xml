@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.deviceManagement.business.maintain.mapper.DeviceMaintainMapper">
+    <sql id="device_maintain_fields">
+          id,deviceId,maintainRuleId,lastMaintainTime,appId
+    </sql>
+    <resultMap id="device_maintain_resultMap" type="DeviceMaintain">
+        <id property="id" column="id" />
+        <result property="deviceId" column="deviceId"/>
+        <result property="maintainRuleId" column="maintainRuleId"/>
+        <result property="lastMaintainTime" column="lastMaintainTime"/>
+        <result property="appId" column="appId"/>
+    </resultMap>
+
+    <insert id="add" parameterType="DeviceMaintain"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        device_maintain(
+        <include refid="device_maintain_fields" />
+        )
+        VALUES (#{id},#{deviceId},#{maintainRuleId},#{lastMaintainTime},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="DeviceMaintain">
+        update device_maintain
+        <set>
+            <if test="lastMaintainTime!=null">lastMaintainTime=#{lastMaintainTime}</if>
+        </set>
+        <where>
+            <if test="deviceId!=null">deviceId=#{deviceId}</if>
+            <if test="maintainRuleId!=null">and maintainRuleId=#{maintainRuleId}</if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM device_maintain
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select d.name deviceName,d.produceTime produceTime,mr.name ruleName,mr.period period,dm.lastMaintainTime lastMaintainTime
+        from device_maintain dm
+        LEFT JOIN device d ON dm.deviceId=d.id
+        LEFT JOIN device_type dt ON d.typeId=dt.id
+        LEFT JOIN maintain_rule mr ON dm.maintainRuleId=mr.id
+        where dm.appId=#{appId}
+    </select>
+
+</mapper>

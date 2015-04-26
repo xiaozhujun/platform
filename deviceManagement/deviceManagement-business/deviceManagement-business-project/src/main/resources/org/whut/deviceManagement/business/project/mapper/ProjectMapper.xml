@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.deviceManagement.business.project.mapper.ProjectMapper">
+    <sql id="project_fields">
+          ID,name,description,address,createTime,appId
+    </sql>
+    <resultMap id="project_resultMap" type="Project">
+        <id property="id" column="ID" />
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="address" column="address"/>
+        <result property="createTime" column="createTime"/>
+        <result property="appId" column="appId"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Project"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        project(
+        <include refid="project_fields" />
+        )
+        VALUES (#{id},#{name},#{description},#{address},#{createTime},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="Project">
+        update project
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="address!=null">address=#{address},</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM project
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select *
+        from project
+        where appId=#{appId}
+    </select>
+
+</mapper>

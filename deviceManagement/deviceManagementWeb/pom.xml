@@ -84,6 +84,16 @@
             <artifactId>deviceManagement-business-device</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>deviceManagement-business-maintain</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>deviceManagement-business-project</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.deviceManagement.business.maintain.mapper.MaintainRuleMapper">
+    <sql id="maintain_rule_fields">
+          id,name,period,parentId,deviceTypeId,createTime,appId
+    </sql>
+    <resultMap id="maintain_rule_resultMap" type="MaintainRule">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="period" column="period"/>
+        <result property="parentId" column="parentId"/>
+        <result property="deviceTypeId" column="deviceTypeId"/>
+        <result property="createTime" column="createTime"/>
+        <result property="appId" column="appId"/>
+    </resultMap>
+
+    <insert id="add" parameterType="MaintainRule"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        maintain_rule(
+        <include refid="maintain_rule_fields" />
+        )
+        VALUES (#{id},#{name},#{period},#{parentId},#{deviceTypeId},#{createTime},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="MaintainRule">
+        update maintain_rule
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="period!=null">period=#{period},</if>
+            <if test="parentId!=null">parentId=#{parentId},</if>
+            <if test="deviceTypeId!=null">deviceTypeId=#{deviceTypeId},</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM maintain_rule
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select *
+        from maintain_rule
+        where appId=#{appId}
+        <!--联查错误，改后台传name -->
+    </select>
+
+</mapper>

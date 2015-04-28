@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.deviceManagement.business.project.mapper.ProjectUnitMapper">
+    <sql id="project_unit_fields">
+          ID,name,description,projectId,createTime,appId
+    </sql>
+    <resultMap id="project_unit_resultMap" type="ProjectUnit">
+        <id property="id" column="ID" />
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="projectId" column="projectId"/>
+        <result property="createTime" column="createTime"/>
+        <result property="appId" column="appId"/>
+    </resultMap>
+
+    <insert id="add" parameterType="ProjectUnit"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        project_unit(
+        <include refid="project_unit_fields" />
+        )
+        VALUES (#{id},#{name},#{description},#{projectId},#{createTime},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="ProjectUnit">
+        update project_unit
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="projectId!=null">projectId=#{projectId},</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM project_unit
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select pu.*,p.name project
+        from project_unit pu
+        LEFT JOIN project p ON pu.projectId=p.id
+        where pu.appId=#{appId}
+    </select>
+
+</mapper>

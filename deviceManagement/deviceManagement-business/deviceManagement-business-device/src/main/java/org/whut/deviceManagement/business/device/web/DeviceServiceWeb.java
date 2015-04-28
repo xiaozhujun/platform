@@ -116,4 +116,29 @@ public class DeviceServiceWeb {
         long id=deviceService.getIdByNumber(number,appId);
         return JsonResultUtils.getObjectResultByStringAsDefault(id, JsonResultUtils.Code.SUCCESS);
     }
+
+    @Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+    @Path("/detailInfo")
+    @POST
+    public String detailInfo(@FormParam("id") Long id){
+        long appId= UserContext.currentUserAppId();
+        return JsonResultUtils.getObjectResultByStringAsDefault(deviceService.detailInfo(id,appId), JsonResultUtils.Code.SUCCESS);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")
+    @Path("/findByCondition")
+    @POST
+    public String listByCondition(@FormParam("jsonString") String jsonString){
+        logger.error("jsonString="+jsonString);
+        if(jsonString==null||jsonString.trim().equals("")){
+            return JsonResultUtils.getCodeAndMesByString(JsonResultUtils.Code.ERROR.getCode(), "对不起，参数不能为空!");
+        }
+
+        Map<String,Object> condition = JsonMapper.buildNonDefaultMapper().fromJson(jsonString, HashMap.class);
+        condition.put("appId",UserContext.currentUserAppId());
+        List<Map<String,Object>> list = deviceService.findByCondition(condition);
+        return JsonResultUtils.getObjectResultByStringAsDefault(list, JsonResultUtils.Code.SUCCESS);
+    }
+
+
 }

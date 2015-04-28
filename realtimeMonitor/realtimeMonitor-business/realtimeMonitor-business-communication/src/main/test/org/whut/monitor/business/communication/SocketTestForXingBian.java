@@ -17,7 +17,7 @@ import java.util.Date;
 public class SocketTestForXingBian {
     public static void main(String[] args)  {
         //为了简单起见，所有的异常都直接往外抛
-        //  String host = "www.cseicms.com";  //要连接的服务端IP地址
+//          String host = "www.cseicms.com";  //要连接的服务端IP地址
         String host = "127.0.0.1";  //要连接的服务端IP地
         int port = 38888;   //要连接的服务端对应的监听端址口
         //与服务端建立连接
@@ -39,7 +39,7 @@ public class SocketTestForXingBian {
                 for(int x=0;x<24;x++){
                     random[x] = Math.round(Math.random()*600);
                 }
-                String prefix="210000000001";
+                String prefix="310000000001";
                 Date now = new Date();
                 String json = "{sensors:["+"{sensorNum:'"+prefix+"0000',dataType:'Route',time:'"+format.format(now)+"',data:["+random[0]+"]},"
                         +"{sensorNum:'"+prefix+"0001',dataType:'Route',time:'"+format.format(now)+"',data:["+random[1]+"]},"

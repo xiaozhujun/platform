@@ -21,6 +21,16 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
 
+    <listener>
+        <description>mina通讯服务启动</description>
+        <listener-class>org.whut.platform.fundamental.communication.listener.MinaStartListener</listener-class>
+    </listener>
+
+    <listener>
+        <description>activeMQ消息监听启动</description>
+        <listener-class>org.whut.platform.fundamental.message.listener.MessageReceiverStartListener</listener-class>
+    </listener>
+
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

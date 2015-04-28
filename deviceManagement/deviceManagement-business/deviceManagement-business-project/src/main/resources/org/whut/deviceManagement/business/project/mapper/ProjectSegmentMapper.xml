@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whut.deviceManagement.business.project.mapper.ProjectSegmentMapper">
+    <sql id="project_segment_fields">
+          ID,sequence,projectUnitId,deviceId,totalCount,fulfillCount,createTime,appId
+    </sql>
+    <resultMap id="project_segment_resultMap" type="ProjectSegment">
+        <id property="id" column="ID" />
+        <result property="sequence" column="sequence"/>
+        <result property="projectUnitId" column="projectUnitId"/>
+        <result property="deviceId" column="deviceId"/>
+        <result property="totalCount" column="totalCount"/>
+        <result property="fulfillCount" column="fulfillCount"/>
+        <result property="createTime" column="createTime"/>
+        <result property="appId" column="appId"/>
+    </resultMap>
+
+    <insert id="add" parameterType="ProjectSegment"  keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        project_segment(
+        <include refid="project_segment_fields" />
+        )
+        VALUES (#{id},#{sequence},#{projectUnitId},#{deviceId},#{totalCount},#{fulfillCount},#{createTime},#{appId});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            select
+            LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="ProjectSegment">
+        update project_segment
+        <set>
+            <if test="sequence!=null">sequence=#{sequence},</if>
+            <if test="deviceId!=null">deviceId=#{deviceId},</if>
+            <if test="projectUnitId!=null">projectUnitId=#{projectUnitId},</if>
+            <if test="totalCount!=null">totalCount=#{totalCount},</if>
+            <if test="fulfillCount!=null">fulfillCount=#{fulfillCount}</if>
+        </set>
+        where id=#{id} and appId=#{appId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM project_segment
+        WHERE ID=#{id}
+    </delete>
+
+    <select id="getListByAppId" parameterType="java.lang.Long" resultType="map">
+        select ps.*,d.name device,p.name project,pu.name projectUnit
+        from project_segment ps
+        LEFT JOIN project_unit pu ON ps.projectUnitId=pu.id
+        LEFT JOIN project p ON pu.projectId=p.id
+        LEFT JOIN device d ON ps.deviceId=d.id
+        where ps.appId=#{appId}
+    </select>
+
+    <select id="getListByProjectId" parameterType="map" resultType="map">
+        select ps.*,d.name device,p.name project,pu.name projectUnit
+        from project_segment ps
+        LEFT JOIN project_unit pu ON ps.projectUnitId=pu.id
+        LEFT JOIN project p ON pu.projectId=p.id
+        LEFT JOIN device d ON ps.deviceId=d.id
+        where pu.projectId=#{projectId} and ps.appId=#{appId}
+    </select>
+
+</mapper>

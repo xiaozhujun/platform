@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css"/>
+<script src="lib/json2.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<script type="text/javascript">
+$.ligerDialog.close("#addDevice");
+$(function () {
+    $.post($.URL.deviceType.list, null, deviceTypeListCallBack, "json");
+    $.get($.URL.project.list, null, projectListCallBack, "json");
+    $.get($.URL.device.list, null, deviceCallback, "json");
+})
+
+var deviceGridData = {};
+function deviceCallback(data) {
+    if (data.code== 200) {
+        deviceGridData.Rows = data.data;
+        deviceGridData.Total = data.data.length;
+        device_f_initGrid();
+    }
+}
+
+var deviceTypeData = [];
+function deviceTypeListCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j.text = content.name;
+            j.value = content.id;
+            deviceTypeData.push(j);
+        });
+        $("#deviceType").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:deviceTypeData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'deviceTypeSelect'   /*下拉表Id是Device*/
+        });
+        $("#deviceSearchDeviceTypeInput").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:deviceTypeData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'deviceTypeSearchSelect'   /*下拉表Id是Device*/
+        });
+    }
+}
+
+var projectData = [];
+function projectListCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j.text = content.name;
+            j.value = content.id;
+            projectData.push(j);
+        });
+        $("#deviceProject").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:projectData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'deviceProjectSelect'   /*下拉表Id是Device*/
+        });
+        $("#deviceSearchDeviceProjectInput").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:projectData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'deviceProjectSearchSelect'   /*下拉表Id是Device*/
+        });
+    }
+}
+
+var f=new Date();      /*实现时间的选择*/
+var ff=f.getFullYear()+"-"+ (f.getMonth()+1)+"-"+ f.getDate();
+$("#createTime").ligerDateEditor({initValue: ff});
+
+var d=new Date();      /*实现时间的选择*/
+var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+$("#produceTime").ligerDateEditor({initValue: dd});
+
+var device_manager, g;
+function device_f_initGrid() {
+    g = device_manager = $("#deviceMainGrid").ligerGrid({
+        columns: [
+            { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+            { display: '设备名', name: 'name',
+                editor: { type: 'text'}
+            },
+            { display: '设备编号', name: 'number', type: 'text',
+                editor: { type: 'text'}
+            },
+            { display: '设备类型', name: 'typeId',type: 'int',
+                editor: { type: 'select', emptyText: null, data:deviceTypeData, valueField: 'value', textField: 'text'
+                },
+                render: function (item) {
+                    return item.deviceType;
+                }
+            },
+            { display: '施工项目', name: 'projectId',type: 'int',
+                editor: { type: 'select', emptyText: null, data:projectData, valueField: 'value', textField: 'text'
+                },
+                render: function (item) {
+                    return item.project;
+                }
+            },
+            { display: '制造商', name: 'producer', type: 'text',
+                editor: { type: 'text'}
+            },
+            { display:'生产时间',name:'produceTime',width:100,editor:{type:'date'}},
+            { display: '创建时间', name: 'createTime', width: 100},
+            { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value) {
+                var h = "";
+                if (!rowdata._editing) {
+                    h += "<a href='javascript:device_beginEdit(" + rowindex + ")'>修改</a> ";
+                    h += "<a href='javascript:device_deleteRow(" + rowindex + ")'>删除</a> ";
+                }
+                else {
+                    h += "<a href='javascript:device_endEdit(" + rowindex + ")'>提交</a> ";
+                    h += "<a href='javascript:device_cancelEdit(" + rowindex + ")'>取消</a> ";
+                }
+                return h;
+            }
+            }
+        ],
+        onSelectRow: function (rowdata, rowindex) {
+            $("#txtrowindex").val(rowindex);
+        },
+        enabledEdit: true, clickToEdit: false, isScroll: false,
+        data: deviceGridData,
+        width: '100%'
+    });
+}
+function device_beginEdit(rowid) {
+    device_manager.beginEdit(rowid);
+}
+function device_cancelEdit(rowid) {
+    device_manager.cancelEdit(rowid);
+}
+function device_endEdit(rowid) {
+    device_manager.endEdit(rowid);
+    var row = device_manager.getRow(rowid);
+    var jsonString = $.toJSON(row);
+    $.post($.URL.device.update, {"jsonString": jsonString}, device_updateCallback, "json");
+}
+
+function device_updateCallback(data) {
+    if (data.code == 200) {
+        $.get($.URL.device.list, null, deviceCallback, "json");
+        $.ligerDialog.success("修改成功");
+    }
+    else {
+        $.get($.URL.device.list, null, deviceCallback, "json");
+        $.ligerDialog.warn(data.message);
+    }
+}
+
+function device_deleteRow(rowid) {
+    if (confirm('确定删除?')) {
+        var row = device_manager.getRow(rowid);
+        var jsonString = $.toJSON(row);
+        $.post($.URL.device.delete, {"jsonString": jsonString}, device_deleteCallback, "json");
+        device_manager.deleteRow(rowid);
+    }
+}
+
+function device_deleteCallback(data) {
+    if (data.code == 200) {
+        $.ligerDialog.success("成功删除！");
+    } else {
+        $.ligerDialog.success("删除失败！");
+    }
+}
+
+$("#deviceAddSubmitBtn").click(function(){
+    document.getElementById('form1').reset();
+    c_show();
+    $.ligerDialog.open({title:'添加设备', target: $("#addDevice"),width:500});
+});
+
+function c_show(){
+    $('#addDevice').css('display','block');
+}
+
+$("#deviceAdd_submitBtn").click(function(){
+    var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
+    data.name=$("#deviceName").val();
+    data.number=$("#deviceNumber").val();
+    data.typeId=$("#deviceTypeSelect").val();
+    data.producer=$("#producer").val();
+    data.produceTime=$("#produceTime").val();
+    data.price=$("#devicePrice").val();
+    data.priceUnit=$("#devicePriceUnit").val();
+    data.optionType=$("#deviceOptionType").val();
+    $.post($.URL.device.add,{"jsonString": $.toJSON(data)},device_addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+});
+
+
+function device_addCallBack(data){
+    if(data.code==200){
+        $.ligerDialog.success('操作成功');
+        $.get($.URL.device.list,null,deviceCallback,"json");
+    }
+    else
+    {
+        $.ligerDialog.error(data.message);
+    }
+}
+
+$("#deviceSearchBtn").click(function(){
+    var data={};
+    if($("#deviceSearchNumberInput").val()!=""){
+        data.number=$("#deviceSearchNumberInput").val();
+    }
+    if($("#deviceTypeSearchSelect").val()!=""){
+        data.typeId=$("#deviceTypeSearchSelect").val();
+    }
+    if($("#deviceProjectSearchSelect").val()!=""){
+        data.projectId=$("#deviceProjectSearchSelect").val();
+    }
+    if(data.number==undefined&&data.typeId==undefined&&data.projectId==undefined){
+        $.get($.URL.device.list,null,deviceCallback,"json");
+    }else{
+        $.post($.URL.device.findByCondition,{"jsonString": $.toJSON(data)},deviceQueryListCallback,"json");
+    }
+});
+function deviceQueryListCallback(data){
+    if(data.code==200){
+        deviceGridData.Rows=data.data;
+        deviceGridData.Total=data.data.length;
+        device_f_initGrid();
+    }
+    else if(data.code==500) {
+        $.ligerDialog.error(data.message);
+    }
+};
+
+
+
+</script>
+<style type="text/css">
+    .l-table-edit {}
+    .l-table-edit-td {padding: 4px;}
+    .l-button-submit, .l-button-reset {width: 80px;float: left; margin-left: 10px;padding-bottom: 2px;}
+    .l-dialog-tc { background: #E0EDFF;}
+</style>
+</head>
+<body style="padding:10px">
+<div id="addDevice" style="display: none">
+    <form name="form1" method="post" action="" id="form1">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">设备名称:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceName" type="text" id="deviceName" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">设备编号:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceNumber" type="text"  id="deviceNumber"></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">价格:</td>
+                <td align="left" class="l-table-edit-td"><input name="price" type="text"  id="devicePrice"></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">价格单位:</td>
+                <td align="left" class="l-table-edit-td"><input name="priceUnit" type="text"  id="devicePriceUnit">（元、美元等）</td>
+                <td align="left"></td>
+            </tr>
+
+
+            <tr>
+                <td align="right" class="l-table-edit-td">制造商:</td>
+                <td align="left" class="l-table-edit-td"><input name="producer" type="text"  id="producer"></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">生产时间:</td>
+                <td align="left" class="l-table-edit-td"><input name="produceTime" type="date" id="produceTime" ltype="date" /></td>
+                <td align="left"></td>
+            </tr>
+
+
+            <tr>
+                <td align="right" class="l-table-edit-td">设备状态:</td>
+                <td align="left" class="l-table-edit-td">
+                    <select name="optionType" id="deviceOptionType" ltype="select" >
+                        <option value="1">入库</option>
+                        <option value="2">出库</option>
+                        <option value="3">运输</option>
+                        <option value="4">安装</option>
+                        <option value="5">拆卸</option>
+                    </select>
+                </td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">设备类型:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceType" type="text"  id="deviceType"></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">施工项目:</td>
+                <td align="left" class="l-table-edit-td"><input name="deviceProject" type="text"  id="deviceProject"></td>
+                <td align="left"></td>
+            </tr>
+
+        </table>
+        <br />
+        <input type="button" value="提交" id="deviceAdd_submitBtn" class="l-button l-button-submit" />
+    </form>
+</div>
+<div id="list">
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">设备编号:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="deviceNumber" type="text" id="deviceSearchNumberInput" ltype="text" />
+            </td>
+            <td align="right" class="l-table-edit-td">设备类型:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="typeId" type="text"  id="deviceSearchDeviceTypeInput">
+            </td>
+            <td align="right" class="l-table-edit-td">施工项目:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="typeId" type="text"  id="deviceSearchDeviceProjectInput">
+            </td>
+            <td align="right"><input type="button" value="查询" id="deviceSearchBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="添加" id="deviceAddSubmitBtn"  class="l-button l-button-submit" /></td>
+        </tr>
+    </table>
+    <div class="l-clear"></div>
+    <div id="deviceMainGrid" style="margin-top:5px"></div>
+    <br/>
+</div>
+<div style="display:none;">
+</div>
+
+</body>
+</html>

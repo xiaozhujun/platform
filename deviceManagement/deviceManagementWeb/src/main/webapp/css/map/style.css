@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
-#leftContainer{
+.leftContainer{
  width: 100%;
  float: left;
 }
@@ -22,7 +22,7 @@
     padding: 0;
 }
 
-#panelarrow2 {
+.panelArrow {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -43,7 +43,7 @@
     z-index: 1;
     cursor: pointer;
 }
-#rightmain{
+.rightMain{
     background: none repeat scroll 0 0 #FFFFFF;
     border-right-width: 0;
     box-shadow: -1px 0 1px #3399FF;
@@ -55,14 +55,14 @@
     float: left;
     height: 100%;
 }
-#myTab{
+.myTab{
     width: 385px;
     z-index: 1;
     margin: 0px;
     height: 40px;
     background-color:#F7F7F7;
 }
-#rightRank{
+.rightRank{
     background: none repeat scroll 0 0 #FFFFFF;
     border-right-width: 0;
     box-shadow: -1px 0 1px #AAAAAA;
@@ -77,14 +77,14 @@
 
 
 
-#panelimg2 {
+.panelImg {
     background: url("../../images/sprites.png") no-repeat scroll -2px -20px rgba(0, 0, 0, 0);
     height: 12px;
     margin-left: 8px;
     margin-top: 32px;
     width: 6px;
 }
-#deviceTitle{
+.rightShowTitle{
     width:385px ;
     height: 38px;
     background-color: highlight;
@@ -94,21 +94,23 @@
     margin-top: 1px;
     font-size: 15px;
 }
-#rightshow{
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-right-width: 0;
-    box-shadow: -1px 0 1px #AAAAAA;
-    margin: 0px;
+.rightShow{
+    float: left;
     height: 100%;
+    margin-left: 2px;
+    overflow: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    border-right-width: 0;
+    box-shadow: -1px 0 1px #aaaaaa;
+    float: left;
+    height: 100%;
+    padding-top: 1px;
     position: absolute;
+    right: 0;
     width: 385px;
     z-index: 1;
-    right:0px;
-    float: left;
-    overflow: auto;
-    padding-top: 1px;
 }
-.deviceItem{
+.rightShowItem{
    border-bottom: 1px solid #BED5F3;
    width: 385px;
    /*height: 70px;*/
@@ -116,7 +118,7 @@
    cursor: pointer;
    float: left;
 }
-.deviceItemHover{
+.rightShowItemHover{
     border-bottom: 1px solid #BED5F3;
     width: 385px;
     /*height: 70px;*/
@@ -125,7 +127,7 @@
     color: #ffffff;
     float: left;
 }
-.deviceItem:hover{
+.rightShowItem:hover{
     border-bottom: 1px solid #BED5F3;
     width: 385px;
     /*height: 70px;*/
@@ -163,7 +165,7 @@
 .deviceFont{
     margin-left: 1px;
 }
-.deviceAll{
+.rightShowItems{
     width: 385px;
     height: auto;
 }

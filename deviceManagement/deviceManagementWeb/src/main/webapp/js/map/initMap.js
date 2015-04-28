@@ -191,7 +191,7 @@ $.extend({
             item.userId=data.data[i].id;
             item.title="设备名称:"+data.data[i].name;
 
-            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>设备编号:"+data.data[i].number+"<br>生产日期:"+data.data[i].produceTime+"<br>设备地址:"+data.data[i].address+"<br><a mainDeviceId="+data.data[i].id+" class='showMainDeviceLink'>查看详情</a>"+"</div></div>";
+            item.content="<div style='float: left;width: 300px;'><div style='width: 200px;'>生产日期:"+data.data[i].produceTime+"<br>施工项目:"+data.data[i].project+"<br><a deviceId="+data.data[i].id+" class='showMainDeviceLink'>查看详情</a>"+"</div></div>";
             item.point=data.data[i].lng+"|"+data.data[i].lat;
             item.isOpen=0;
             item.icon={};

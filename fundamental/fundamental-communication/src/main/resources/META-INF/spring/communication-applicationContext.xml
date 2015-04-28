@@ -4,7 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <!--<bean id="nioServer" class="org.whut.platform.fundamental.communication.server.NIOServer"/>-->
       <bean id="minaServer" class="org.whut.platform.fundamental.communication.server.MinaServer"/>
-      <bean id="minaServerHanlder" class="org.whut.platform.fundamental.communication.server.MinaServerHanlder">
+      <bean id="minaMessageDispatcher" class="org.whut.platform.fundamental.communication.dispatcher.MinaMessageDispatcherImpl"/>
+
+    <bean id="minaServerHanlder" class="org.whut.platform.fundamental.communication.server.MinaServerHanlder">
           <property name="minaMessageDispatcher" ref="minaMessageDispatcher"/>
       </bean>
+
 </beans>

@@ -15,6 +15,7 @@
         <module>deviceManagement-business-device</module>
         <module>deviceManagement-business-maintain</module>
         <module>deviceManagement-business-project</module>
+        <module>deviceManagement-business-message</module>
     </modules>
 
 

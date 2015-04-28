@@ -8,19 +8,19 @@
         <property name="brokerInfos">
             <list>
                 <bean id="localhostA" class="org.whut.platform.fundamental.activemq.broker.BrokerInfo">
-                    <property name="brokerAddr" value="192.168.1.108"/>
+                    <property name="brokerAddr" value="127.0.0.1"/>
                     <property name="brokerName" value="localhostA"/>
                     <property name="brokerPort" value="61616"/>
                     <property name="monitorPort" value="11099"/>
                 </bean>
                 <bean id="localhostB" class="org.whut.platform.fundamental.activemq.broker.BrokerInfo">
-                    <property name="brokerAddr" value="192.168.1.108"/>
+                    <property name="brokerAddr" value="127.0.0.1"/>
                     <property name="brokerName" value="localhostB"/>
                     <property name="brokerPort" value="61617"/>
                     <property name="monitorPort" value="11098"/>
                 </bean>
                 <bean id="localhostC" class="org.whut.platform.fundamental.activemq.broker.BrokerInfo">
-                    <property name="brokerAddr" value="192.168.1.108"/>
+                    <property name="brokerAddr" value="127.0.0.1"/>
                     <property name="brokerName" value="localhostC"/>
                     <property name="brokerPort" value="61618"/>
                     <property name="monitorPort" value="11097"/>
@@ -46,7 +46,7 @@
             <list>
                 <value>localhostA</value>
                 <value>localhostB</value>
-                <!--<value>localhostC</value>-->
+                <value>localhostC</value>
             </list>
         </property>
     </bean>

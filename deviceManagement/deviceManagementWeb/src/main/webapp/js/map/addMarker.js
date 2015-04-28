@@ -101,12 +101,12 @@ $.extend({
 
         $(".showMainDeviceLink").unbind("click");
         $(".showMainDeviceLink").click(function(){
-            mainDeviceId=$(this).attr("mainDeviceId");
+            deviceId=$(this).attr("deviceId");
             $.ligerDialog.open({
                 height:600,
                 width: 800,
                 title : '设备详情',
-                url: 'device/mainDeviceDetail.html',
+                url: 'device/deviceDetail.html',
                 showMax: false,
                 showToggle: true,
                 showMin: false,

@@ -4,4 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="deviceService" class="org.whut.deviceManagement.business.device.service.DeviceService" depends-on="mappers"/>
     <bean id="deviceTypeService" class="org.whut.deviceManagement.business.device.service.DeviceTypeService" depends-on="mappers"/>
+    <bean id="deviceStatusService" class="org.whut.deviceManagement.business.device.service.DeviceStatusService" depends-on="mappers"/>
 </beans>

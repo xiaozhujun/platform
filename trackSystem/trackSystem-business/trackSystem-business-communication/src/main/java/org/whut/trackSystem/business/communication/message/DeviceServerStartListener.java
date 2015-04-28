@@ -1,12 +1,10 @@
 package org.whut.trackSystem.business.communication.message;
 
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.whut.platform.fundamental.communication.server.NIOServer;
 import org.whut.platform.fundamental.logger.PlatformLogger;
-import org.whut.platform.fundamental.message.api.PlatformMessageMonitorRegistry;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

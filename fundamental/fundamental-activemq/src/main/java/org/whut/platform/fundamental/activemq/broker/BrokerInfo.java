@@ -10,7 +10,7 @@ package org.whut.platform.fundamental.activemq.broker;
 public class BrokerInfo {
     public static final String USERNAME = "admin";
     public static final String PASSWORD = "admin";
-    public static final int MAX_CONNECTIONS = 1000;
+    public static final int MAX_CONNECTIONS = 500;
     public static final int MAXIMUN_Active = 50;
     public static final boolean BLOCKED = true;
     private String brokerAddr;

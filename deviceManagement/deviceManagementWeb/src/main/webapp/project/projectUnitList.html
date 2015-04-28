@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css"/>
+<script src="lib/json2.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+<script src="lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+<script type="text/javascript">
+$.ligerDialog.close("#addProjectUnit");
+$(function () {
+    $.get($.URL.project.list, null, projectListCallBack, "json");
+    $.get($.URL.projectUnit.list, null, projectUnitCallback, "json");
+})
+
+var projectUnitGridData = {};
+function projectUnitCallback(data) {
+    if (data.code== 200) {
+        projectUnitGridData.Rows = data.data;
+        projectUnitGridData.Total = data.data.length;
+        projectUnit_f_initGrid();
+    }
+}
+
+var projectData = [];
+function projectListCallBack(data) {
+    if (data.code == 200) {
+        $.each(data.data, function (index, content) {
+            var j = {};
+            j.text = content.name;
+            j.value = content.id;
+            projectData.push(j);
+        });
+        $("#project").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:projectData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'projectSelect'   /*下拉表Id是ProjectUnit*/
+        });
+        $("#projectUnitSearchProjectUnitTypeInput").ligerComboBox({isShowCheckBox:true,emptyText:null,    /*实现下拉表*/
+            data:projectData,
+            width:200,
+            valueField:'value',
+            textField:'text',
+            valueFieldID:'projectSearchSelect'   /*下拉表Id是ProjectUnit*/
+        });
+    }
+};
+
+var f=new Date();      /*实现时间的选择*/
+var ff=f.getFullYear()+"-"+ (f.getMonth()+1)+"-"+ f.getDate();
+$("#createTime").ligerDateEditor({initValue: ff});
+
+var d=new Date();      /*实现时间的选择*/
+var dd=d.getFullYear()+"-"+ (d.getMonth()+1)+"-"+ d.getDate();
+$("#produceTime").ligerDateEditor({initValue: dd});
+
+var projectUnit_manager, g;
+function projectUnit_f_initGrid() {
+    g = projectUnit_manager = $("#projectUnitMainGrid").ligerGrid({
+        columns: [
+            { display: '主键', name: 'id', width: 50, type: 'int', frozen: true },
+            { display: '工作单元名称', name: 'name',
+                editor: { type: 'text'}
+            },
+            { display: '工作单元描述', name: 'description', type: 'text',
+                editor: { type: 'text'}
+            },
+            { display: '项目', name: 'projectId',type: 'int',
+                editor: { type: 'select', emptyText: null, data:projectData, valueField: 'value', textField: 'text'
+                },
+                render: function (item) {
+                    return item.project;
+                }
+            },
+            { display: '创建时间', name: 'createTime', width: 100},
+            { display: '操作', isSort: false, width: 120, render: function (rowdata, rowindex, value) {
+                var h = "";
+                if (!rowdata._editing) {
+                    h += "<a href='javascript:projectUnit_beginEdit(" + rowindex + ")'>修改</a> ";
+                    h += "<a href='javascript:projectUnit_deleteRow(" + rowindex + ")'>删除</a> ";
+                }
+                else {
+                    h += "<a href='javascript:projectUnit_endEdit(" + rowindex + ")'>提交</a> ";
+                    h += "<a href='javascript:projectUnit_cancelEdit(" + rowindex + ")'>取消</a> ";
+                }
+                return h;
+            }
+            }
+        ],
+        onSelectRow: function (rowdata, rowindex) {
+            $("#txtrowindex").val(rowindex);
+        },
+        enabledEdit: true, clickToEdit: false, isScroll: false,
+        data: projectUnitGridData,
+        width: '100%'
+    });
+}
+function projectUnit_beginEdit(rowid) {
+    projectUnit_manager.beginEdit(rowid);
+}
+function projectUnit_cancelEdit(rowid) {
+    projectUnit_manager.cancelEdit(rowid);
+}
+function projectUnit_endEdit(rowid) {
+    projectUnit_manager.endEdit(rowid);
+    var row = projectUnit_manager.getRow(rowid);
+    var jsonString = $.toJSON(row);
+    $.post($.URL.projectUnit.update, {"jsonString": jsonString}, projectUnit_updateCallback, "json");
+}
+
+function projectUnit_updateCallback(data) {
+    if (data.code == 200) {
+        $.get($.URL.projectUnit.list, null, projectUnitCallback, "json");
+        $.ligerDialog.success("修改成功");
+    }
+    else {
+        $.get($.URL.projectUnit.list, null, projectUnitCallback, "json");
+        $.ligerDialog.warn(data.message);
+    }
+}
+
+function projectUnit_deleteRow(rowid) {
+    if (confirm('确定删除?')) {
+        var row = projectUnit_manager.getRow(rowid);
+        var jsonString = $.toJSON(row);
+        $.post($.URL.projectUnit.delete, {"jsonString": jsonString}, projectUnit_deleteCallback, "json");
+        projectUnit_manager.deleteRow(rowid);
+    }
+}
+
+function projectUnit_deleteCallback(data) {
+    if (data.code == 200) {
+        $.ligerDialog.success("成功删除！");
+    } else {
+        $.ligerDialog.success("删除失败！");
+    }
+}
+
+$("#projectUnitAddSubmitBtn").click(function(){
+    document.getElementById('form1').reset();
+    c_show();
+    $.ligerDialog.open({title:'添加设备', target: $("#addProjectUnit"),width:500});
+});
+
+function c_show(){
+    $('#addProjectUnit').css('display','block');
+}
+
+$("#submitBtn").click(function(){
+    var data = {};          //左边字段和数据库字段一样，右边字段和当前页面中table标签中的Id一样
+    data.name=$("#projectUnitName").val();
+    data.projectId=$("#project").ligerComboBox().getValue();
+    data.description=$("#projectUnitDescription").val();
+    $.post($.URL.projectUnit.add,{"jsonString": $.toJSON(data)},projectUnit_addCallBack,"json"); //将前台数据以json格式通过设置的URL发送到web后台
+});
+
+
+function projectUnit_addCallBack(data){
+    if(data.code==200){
+        $.ligerDialog.success('操作成功');
+        $.get($.URL.projectUnit.list,null,projectUnitCallback,"json");
+    }
+    else
+    {
+        $.ligerDialog.error(data.message);
+    }
+}
+
+$("#projectUnitSearchBtn").click(function(){
+    var data={};
+    if($("#projectUnitSearchNumberInput").val()!=""){
+        data.number=$("#projectUnitSearchNumberInput").val();
+    }
+    if($("#projectSearchSelect").val()!=""){
+        data.typeId=$("#projectSearchSelect").val();
+    }
+    if($("#batchSearchSelect").val()!=""){
+        data.batchId=$("#batchSearchSelect").val();
+    }
+    if(data.number==undefined&&data.typeId==undefined&&data.batchId==undefined){
+        $.get($.URL.projectUnit.list,null,projectUnitCallback,"json");
+    }else{
+        $.post($.URL.projectUnit.findByCondition,{"jsonString": $.toJSON(data)},projectUnitQueryListCallback,"json");
+    }
+});
+function projectUnitQueryListCallback(data){
+    if(data.code==200){
+        projectUnitGridData.Rows=data.data;
+        projectUnitGridData.Total=data.data.length;
+        projectUnit_f_initGrid();
+    }
+    else if(data.code==500) {
+        $.ligerDialog.error(data.message);
+    }
+};
+
+
+
+</script>
+<style type="text/css">
+    .l-table-edit {}
+    .l-table-edit-td {padding: 4px;}
+    .l-button-submit, .l-button-reset {width: 80px;float: left; margin-left: 10px;padding-bottom: 2px;}
+    .l-dialog-tc { background: #E0EDFF;}
+</style>
+</head>
+<body style="padding:10px">
+<div id="addProjectUnit" style="display: none">
+    <form name="form1" method="post" action="" id="form1">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+            <tr>
+                <td align="right" class="l-table-edit-td">设备名称:</td>
+                <td align="left" class="l-table-edit-td"><input name="projectUnitName" type="text" id="projectUnitName" ltype="text" /></td>
+                <td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">描述:</td>
+                <td align="left" class="l-table-edit-td"><textarea name="projectUnitDescription" type="text" id="projectUnitDescription" cols="20" rows="2" class="l-textarea" style="width:400px"></textarea>
+                </td><td align="left"></td>
+            </tr>
+
+            <tr>
+                <td align="right" class="l-table-edit-td">项目:</td>
+                <td align="left" class="l-table-edit-td"><input name="project" type="text"  id="project"></td>
+                <td align="left"></td>
+            </tr>
+
+        </table>
+        <br />
+        <input type="button" value="提交" id="submitBtn" class="l-button l-button-submit" />
+    </form>
+</div>
+<div id="list">
+    <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+        <tr>
+            <td align="right" class="l-table-edit-td">项目:</td>
+            <td align="left" class="l-table-edit-td">
+                <input name="typeId" type="text"  id="projectUnitSearchProjectUnitTypeInput">
+            </td>
+            <td align="right"><input type="button" value="查询" id="projectUnitSearchBtn" class="l-button l-button-submit" /></td>
+            <td align="right"><input type="button" value="添加" id="projectUnitAddSubmitBtn"  class="l-button l-button-submit" /></td>
+        </tr>
+    </table>
+    <div class="l-clear"></div>
+    <div id="projectUnitMainGrid" style="margin-top:5px"></div>
+    <br/>
+</div>
+<div style="display:none;">
+</div>
+
+</body>
+</html>

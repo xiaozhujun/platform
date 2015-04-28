@@ -1,13 +1,11 @@
 package org.whut.platform.fundamental.sms;
 
-import org.apache.activemq.command.ActiveMQMessage;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.whut.platform.fundamental.activemq.api.PooledMessageProducer;
 import org.whut.platform.fundamental.communication.api.MessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
-import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
 
-import javax.jms.MessageNotReadableException;
 import javax.jms.MessageNotWriteableException;
 
 /**
@@ -24,7 +22,7 @@ public class SmsMessageDispatcher implements MessageDispatcher{
     public static final String destination=Constants.SMS_QUEUE_DESTINATION;
 
     @Autowired
-    private PlatformMessageProducer platformMessageProducer;
+    private PooledMessageProducer pooledMessageProducer;
     @Override
     public void dispatchMessage(String messageBody) {
        if(messageBody!=null){
@@ -32,7 +30,7 @@ public class SmsMessageDispatcher implements MessageDispatcher{
            try{
                ActiveMQTextMessage message=new ActiveMQTextMessage();
                message.setText(messageBody);
-               platformMessageProducer.sendTopic(destination,message);
+               pooledMessageProducer.sendTopic(destination,message);
            }catch(MessageNotWriteableException e){
                e.printStackTrace();
            }

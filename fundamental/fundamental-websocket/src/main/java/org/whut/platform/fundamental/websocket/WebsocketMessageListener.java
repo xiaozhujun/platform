@@ -4,13 +4,11 @@ import org.apache.activemq.command.ActiveMQTextMessage;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.whut.platform.fundamental.activemq.consumer.PooledMessageConsumerBase;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
-import org.whut.platform.fundamental.message.impl.PlatformMessageListenerBase;
 import org.whut.platform.fundamental.websocket.handler.WebsocketEndPoint;
 
 import javax.jms.Destination;

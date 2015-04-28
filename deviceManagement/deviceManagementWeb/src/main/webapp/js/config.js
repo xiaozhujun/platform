@@ -33,6 +33,7 @@
             "delete":"rs/device/delete",
             "list":"rs/device/list",
             "getIdByNumber":"rs/device/getIdByNumber",
+            "detailInfo":"rs/device/detailInfo",
             "findByCondition":"rs/device/findByCondition"
         },
         "deviceType":{
@@ -76,6 +77,19 @@
             "update":"rs/project/update",
             "delete":"rs/project/delete",
             "list":"rs/project/list"
+        },
+        "projectUnit":{
+            "add":"rs/projectUnit/add",
+            "update":"rs/projectUnit/update",
+            "delete":"rs/projectUnit/delete",
+            "list":"rs/projectUnit/list"
+        },
+        "projectSegment":{
+            "add":"rs/projectSegment/add",
+            "update":"rs/projectSegment/update",
+            "delete":"rs/projectSegment/delete",
+            "list":"rs/projectSegment/list",
+            "getListByProjectId":"rs/projectSegment/getListByProjectId"
         }
     }
 })(jQuery);

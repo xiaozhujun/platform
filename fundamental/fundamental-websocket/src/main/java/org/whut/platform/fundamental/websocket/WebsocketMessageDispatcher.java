@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.fundamental.activemq.api.PooledMessageProducer;
 import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
-import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
 
 import javax.jms.MessageNotWriteableException;
 

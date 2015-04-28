@@ -21,11 +21,12 @@
     </style>
     <script type="text/javascript">
 
-        var mainDeviceId;
+        var deviceId;
 
         $(document).ready(function(){
             $.get($.URL.dashboard.deviceList,null,getDeviceLocateInfoCallback,"json");
         });
+
         function getDeviceLocateInfoCallback(data){
             if(data.data[0]==undefined){
                 $.initMap("中国",5);
@@ -34,26 +35,32 @@
             $.initMapByLat(data.data[0].lng,data.data[0].lat,17);
 
             $.addMyMark(data);
-            $("#rightshow").html("");
+            $("#rightShow").html("");
             for(i=0;i<data.data.length;i++){
-                var hideField={"id":data.data[i].id,"name":data.data[i].name,"number":data.data[i].number,"produceTime":data.data[i].produceTime,"lng":data.data[i].lng,"lat":data.data[i].lat,"address":data.data[i].address};
+                var hideField={"id":data.data[i].id,"name":data.data[i].name,"number":data.data[i].number,"produceTime":data.data[i].produceTime,"lng":data.data[i].lng,"lat":data.data[i].lat,"address":data.data[i].address,"project":data.data[i].project};
                 var jsonH= $.toJSON(hideField);
 
-                var deviceItem="<div class='deviceAll'><div class='deviceItem' id='deviceItem"+data.data[i].id+"'><span class='devicecontent'><span class='deviceApp'>设备名称:"+data.data[i].name+"</span><span class='deviceAddress'><span class='deviceFont'>设备编号:</span>"+data.data[i].number+"</span><span class='deviceAddress'><span class='deviceFont'>生产日期:</span>"+data.data[i].produceTime+"</span><span class='deviceAddress'><span class='deviceFont'>使用地点:</span>"+data.data[i].address+"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+jsonH+"</span></span></span></div></div>";
-                $("#rightshow").append(deviceItem);
-                var deviceItemId="#deviceItem"+data.data[i].id;
-                var deviceInfoId="#deviceInfo"+data.data[i].id;
-                $(deviceItemId).mouseover(function(){
-                    var id=this.id.substring(11,deviceItemId.length);
+                var rightShowItem="<div class='rightShowItems'><div class='rightShowItem' myid='"+data.data[i].id+"' id='rightShowItem"+data.data[i].id
+                        +"'><span class='devicecontent'><span class='deviceApp'>设备名称:"+data.data[i].name
+                        +"</span><span class='deviceAddress'><span class='deviceFont'>设备编号:</span>"+data.data[i].number
+                        +"</span><span class='deviceAddress'><span class='deviceFont'>生产日期:</span>"+data.data[i].produceTime
+                        +"</span><span class='deviceAddress'><span class='deviceFont'>施工项目:</span>"+data.data[i].project
+                        +"</span><span class='hideField' id='hideField"+data.data[i].id+"'>"+jsonH+"</span></span></span></div></div>";
+                $("#rightShow").append(rightShowItem);
+                var rightShowItemId="#rightShowItem"+data.data[i].id;
+                var rightShowItemInfoId="#rightShowItemInfo"+data.data[i].id;
+                $("#rightShowItem"+data.data[i].id).mouseover(function(){
+                    var id=$(this).attr("myid");
                     var hideField="#hideField"+id;
-                    var data= JSON2.parse($(hideField).text());
-                    var deviceId=data.id;
-                    var title="点检人员:"+data.userName;
+                    var hideData= JSON2.parse($(hideField).text());
+                    var deviceId=hideData.id;
+                    var title="设备名称:"+hideData.name;
 
-                    var name = data.name;
-                    var number = data.number;
-                    var content="<div style='float: left;width: 300px;'><div style='float: right;width: 200px;'>设备名称:"+data.name+"<br>设备编号:"+data.number+"<br>生产日期:"+data.produceTime+"<br>工作地点:"+data.address+"</div></div>";
-                    var point=data.lng+"|"+data.lat;
+                    var name = hideData.name;
+                    var number = hideData.number;
+                    var content="<div style='float: left;'><div style='float: right;width: 200px;'>"+"生产日期:"
+                            +hideData.produceTime+"<br>施工项目:"+hideData.project+"<br><a deviceId="+hideData.id+" class='showMainDeviceLink'>查看详情</a></div></div>";
+                    var point=hideData.lng+"|"+hideData.lat;
                     isOpen=0;
                     var icon={};
                     icon.w=23;
@@ -63,9 +70,29 @@
                     icon.lb=12;
                     icon.l=46;
                     $.addOneMarkerWithId(deviceId,title,content,point,isOpen,icon,0);
+                    $(".showMainDeviceLink").unbind("click");
+                    $(".showMainDeviceLink").click(function(){
+                        deviceId=$(this).attr("deviceId");
+                        $.ligerDialog.open({
+                            height:600,
+                            width: 800,
+                            title : '设备详情',
+                            url: 'device/deviceDetail.html',
+                            showMax: false,
+                            showToggle: true,
+                            showMin: false,
+                            isResize: true,
+                            slide: false,
+                            data: {
+                                name: $("#txtValue").val()
+                            },
+                            //自定义参数
+                            myDataName: $("#txtValue").val()
+                        });
+                            });
                 });
-                $(deviceItemId).click(function(){
-                      deviceItemClick(this.id,this.id.substring(11,deviceItemId.length));
+                $(rightShowItemId).click(function(){
+                      rightShowItemClick(this.id,this.id.substring(11,rightShowItemId.length));
                 });
 
 
@@ -77,12 +104,12 @@
                 setTimeout(function(){
                     window.map.centerAndZoom(new BMap.Point(parseFloat(data.data[0].lng),parseFloat(data.data[0].lat)),17);
                     $(".showMainDeviceLink").click(function(){
-                        mainDeviceId=$(this).attr("mainDeviceId");
+                        deviceId=$(this).attr("deviceId");
                         $.ligerDialog.open({
                             height:600,
                             width: 800,
                             title : '设备详情',
-                            url: 'device/mainDeviceDetail.html',
+                            url: 'device/deviceDetail.html',
                             showMax: false,
                             showToggle: true,
                             showMin: false,
@@ -97,25 +124,25 @@
                     });
                 },1000);
 
-                //deviceItemClick("deviceItem"+data.data[0].deviceId,data.data[0].deviceId);
+                //rightShowItemClick("rightShowItem"+data.data[0].deviceId,data.data[0].deviceId);
             }else{
-                $("#rightshow").html("没有找到设备！");
+                $("#rightShow").html("没有找到设备！");
             }
         }
-        function deviceItemClick(deviceItemId,deviceInfoId){
-            var deviceInfo="#deviceInfo"+deviceInfoId;
+        function rightShowItemClick(rightShowItemId,rightShowItemInfoId){
+            var rightShowItemInfo="#rightShowItemInfo"+rightShowItemInfoId;
 
-            $(".deviceItemHover").removeClass("deviceItemHover");
+            $(".rightShowItemHover").removeClass("rightShowItemHover");
 
-            if($("#"+deviceItemId).hasClass("deviceItem")){
-                $("#"+deviceItemId).addClass("deviceItemHover");
+            if($("#"+rightShowItemId).hasClass("rightShowItem")){
+                $("#"+rightShowItemId).addClass("rightShowItemHover");
             }else{
-                $("#"+deviceItemId).removeClass("deviceItemHover");
+                $("#"+rightShowItemId).removeClass("rightShowItemHover");
             }
-            if($(deviceInfo).hasClass("deviceInfoHide")){
-                $(deviceInfo).removeClass("deviceInfoHide").addClass("deviceInfoClick");
+            if($(rightShowItemInfo).hasClass("rightShowItemInfoHide")){
+                $(rightShowItemInfo).removeClass("rightShowItemInfoHide").addClass("rightShowItemInfoClick");
             }else{
-                $(deviceInfo).removeClass("deviceInfoClick").addClass("deviceInfoHide");
+                $(rightShowItemInfo).removeClass("rightShowItemInfoClick").addClass("rightShowItemInfoHide");
             }
         }
         function receiveInspectLocateInfoCallback(data){

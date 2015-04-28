@@ -15,26 +15,26 @@
     <script type="text/javascript">
         $(function (){
             $("#showMap").load("dashboard/deviceGeoInfo.html");
-            $.rightHidePanel("panelarrow2","panelimg2","rightmain");
+            $.rightHidePanel("panelArrow","panelImg","rightMain");
             $("#geoInfo").css("height",$("#tab").height()-26);
         });
     </script>
 </head>
 <body style="padding:10px">
-<div id="geoInfo" class="dataShow">
-    <div id="leftContainer" style="height: 100%;">
+<div id="geoInfo"  class="dataShow geoInfo">
+    <div id="leftContainer" class="leftContainer" style="height: 100%;">
         <div id="showMap" style="height: 100%;"></div>
     </div>
     <div class="relative"></div>
-    <div id="panelarrow2" title="隐藏列表" style="" class="">
-        <div id="panelimg2" class="arrow_bg_img"></div>
-        <!--<img class="collapse-left3" src="img/panelarrow2.png" id="panelimg2">-->
+    <div id="panelArrow" title="隐藏列表" style="" class="panelArrow">
+        <div id="panelImg" class="arrow_bg_img panelImg"></div>
+        <!--<img class="collapse-left3" src="img/panelArrow.png" id="panelImg">-->
     </div>
-    <div id="rightmain">
-        <div id="myTab">
+    <div id="rightMain" class="rightMain">
+        <div id="myTab" class="myTab">
             <!--右侧信息栏-->
-            <div id="deviceTitle">设备列表</div>
-            <div id="input_search" style="display: none">
+            <div id="rightShowTitle" class="rightShowTitle">设备列表</div>
+            <div id="input_search" class="input_search" style="display: none">
                 <div class="search_box">
                     <span class="left l_bg"></span>
                     <span class="right r_bg"></span>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <div id="rightshow">
+            <div id="rightShow" class="rightShow">
 
             </div>
         </div>

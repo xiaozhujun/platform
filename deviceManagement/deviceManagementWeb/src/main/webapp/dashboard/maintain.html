@@ -141,8 +141,11 @@ $(function(){
                 { display: '保养项目', name: 'ruleName',
                     editor: { type: 'text' }
                 },
-                { display: '保养周期', name: 'period', type: 'string',
-                    editor: { type: 'text' }
+                { display: '保养周期', name: 'period',
+                    editor: { type: 'text' },
+                    render:function(item){
+                        return item.period+"&nbsp;天";
+                    }
                 },
                 { display: '上次保养', name: 'lastMaintainTime',
                     editor: { type: 'text' }

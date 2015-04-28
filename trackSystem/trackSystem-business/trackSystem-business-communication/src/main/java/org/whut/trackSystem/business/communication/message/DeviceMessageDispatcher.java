@@ -7,9 +7,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.fundamental.activemq.api.PooledMessageDispatcher;
 import org.whut.platform.fundamental.activemq.api.PooledMessageProducer;
-import org.whut.platform.fundamental.communication.api.MessageDispatcher;
 import org.whut.platform.fundamental.logger.PlatformLogger;
-import org.whut.platform.fundamental.message.api.PlatformMessageProducer;
 import org.whut.platform.fundamental.redis.connector.RedisConnector;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.trackSystem.business.device.entity.Device;
@@ -18,7 +16,6 @@ import org.whut.trackSystem.business.trackRecord.entity.TrackRecord;
 import org.whut.trackSystem.business.trackRecord.service.TrackRecordService;
 
 import javax.jms.MessageNotWriteableException;
-import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 

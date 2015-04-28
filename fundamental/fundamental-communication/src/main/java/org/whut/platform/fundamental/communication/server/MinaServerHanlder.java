@@ -46,6 +46,7 @@ public class MinaServerHanlder extends IoHandlerAdapter {
     }
     @Override
     public void exceptionCaught(IoSession session, Throwable cause)throws Exception {
+        minaMessageDispatcher.exceptionProcess();
         cause.printStackTrace();
     }
 
@@ -57,53 +58,7 @@ public class MinaServerHanlder extends IoHandlerAdapter {
     }
 
     private void resolveMessage(String msg,IoSession key){
-        //client.register(selector, SelectionKey.OP_WRITE);
-        //对接受数据的处理
-        StringBuffer msgBuffer = getMsgBuffer(key);
-        String localMsg = msg;
-        while (true){
-            int startIndex = localMsg.indexOf("{"+FundamentalConfigProvider.get("message.nioServer.type")+":[{");
-            int endIndex = localMsg.indexOf("}]}",startIndex);
-            if(endIndex>=0&&startIndex>=0){
-                if(endIndex<startIndex){
-                    if(msgBuffer.length()>0){
-                        logger.info("text1:append: " + msg.substring(0, endIndex + 3));
-                        msgBuffer.append(msg.substring(0,endIndex+3));
-                        minaMessageDispatcher.dispatchMessage(msgBuffer.toString());
-                        msgBuffer.setLength(0);
-                    }
-                    localMsg = localMsg.substring(startIndex);
-                }else{
-                    logger.info("text2:append: "+localMsg.substring(startIndex,endIndex+3));
-                    minaMessageDispatcher.dispatchMessage(localMsg.substring(startIndex, endIndex + 3));
-                    if(msgBuffer.length()>0){
-                        msgBuffer.setLength(0);
-                    }
-                    localMsg = localMsg.substring(endIndex+3);
-                }
-            }else if(endIndex>=0&&startIndex<0){
-                if(msgBuffer.length()>0){
-                    logger.info("text3:append: " + msg.substring(0, endIndex + 3));
-                    msgBuffer.append(msg.substring(0,endIndex+3));
-                    minaMessageDispatcher.dispatchMessage(msgBuffer.toString());
-                    msgBuffer.setLength(0);
-                }
-                break;
-            }else if(endIndex<0&&startIndex>=0){
-                if(msgBuffer.length()>0){
-                    msgBuffer.setLength(0);
-                }
-                msgBuffer.append(localMsg.substring(startIndex));
-                break;
-            }else {
-                if(msgBuffer.length()>0){
-                    msgBuffer.append(localMsg);
-                }
-                break;
-            }
-
-        }
-
+        minaMessageDispatcher.dispatchMessage(msg);
     }
 
     @Override

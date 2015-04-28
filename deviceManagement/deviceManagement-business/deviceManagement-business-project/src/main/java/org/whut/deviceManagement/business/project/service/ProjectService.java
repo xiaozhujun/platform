@@ -37,6 +37,4 @@ public class ProjectService {
     public List<Map<String,String>> getListByAppId(long appId) {
         return projectMapper.getListByAppId(appId);
     }
-
-
 }

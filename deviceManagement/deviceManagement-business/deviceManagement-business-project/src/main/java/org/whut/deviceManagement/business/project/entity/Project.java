@@ -1,5 +1,8 @@
 package org.whut.deviceManagement.business.project.entity;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
+
 import java.util.Date;
 
 /**
@@ -14,6 +17,7 @@ public class Project {
     private String name;
     private String description;
     private String address;
+    @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date createTime;
     private Long appId;
 

@@ -2,7 +2,6 @@ package org.whut.deviceManagement.business.device.entity;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.whut.platform.fundamental.util.json.CustomDateDeserialize;
-
 import java.util.Date;
 
 /**
@@ -15,11 +14,14 @@ import java.util.Date;
 public class Device {
     private Long id;
     private Long typeId;
+    private Long projectId;
+    private String mongoId;
     private String address;
     private String status;
     private String name;
     private String number;
     private String price;
+    private String producer;
     @JsonDeserialize(using=CustomDateDeserialize.class)
     private Date produceTime;
     @JsonDeserialize(using=CustomDateDeserialize.class)
@@ -44,6 +46,22 @@ public class Device {
 
     public void setTypeId(Long typeId) {
         this.typeId = typeId;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getMongoId() {
+        return mongoId;
+    }
+
+    public void setMongoId(String mongoId) {
+        this.mongoId = mongoId;
     }
 
     public String getAddress() {
@@ -84,6 +102,14 @@ public class Device {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
     public Date getProduceTime() {

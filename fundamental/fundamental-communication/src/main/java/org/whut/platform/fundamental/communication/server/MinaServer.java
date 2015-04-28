@@ -37,7 +37,7 @@ public class MinaServer implements Runnable{
         logger.info("socket server listen:"+portString);
         int port = Integer.parseInt(portString);
         try{
-            IoAcceptor acceptor = new NioSocketAcceptor();
+            IoAcceptor acceptor = new NioSocketAcceptor(1);
             // 添加一个日志过滤器
             acceptor.getFilterChain().addLast("logger", new LoggingFilter());
             // 添加一个编码过滤器

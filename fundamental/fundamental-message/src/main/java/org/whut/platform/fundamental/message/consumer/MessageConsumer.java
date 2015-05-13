@@ -3,12 +3,13 @@ package org.whut.platform.fundamental.message.consumer;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.fundamental.activemq.consumer.PooledMessageConsumerBase;
+import org.whut.platform.fundamental.activemq.consumer.PooledSessionListenerBase;
 import org.whut.platform.fundamental.logger.PlatformLogger;
 import org.whut.platform.fundamental.message.parser.MessageParserProxyImpl;
 
 import javax.jms.*;
 
-public class MessageConsumer extends PooledMessageConsumerBase {
+public class MessageConsumer extends PooledSessionListenerBase {
 
     public static final PlatformLogger logger = PlatformLogger.getLogger(MessageConsumer.class);
 
@@ -33,8 +34,8 @@ public class MessageConsumer extends PooledMessageConsumerBase {
         }
     }
 
-    @Override
-    public void register(Destination destination) {
-        receiveMessage(destination);
-    }
+//    @Override
+//    public void register(Destination destination) {
+//        receiveMessage(destination);
+//    }
 }

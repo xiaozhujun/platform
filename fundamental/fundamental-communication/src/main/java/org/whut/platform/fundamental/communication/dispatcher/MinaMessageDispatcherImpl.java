@@ -3,6 +3,7 @@ package org.whut.platform.fundamental.communication.dispatcher;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.whut.platform.fundamental.activemq.api.PooledMessageProducer;
+import org.whut.platform.fundamental.activemq.api.PooledSessionProducer;
 import org.whut.platform.fundamental.communication.api.ExceptionResolver;
 import org.whut.platform.fundamental.communication.api.MinaMessageDispatcher;
 import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
@@ -29,8 +30,10 @@ public class MinaMessageDispatcherImpl implements MinaMessageDispatcher {
     //private static final String destination = FundamentalConfigProvider.get("message.queue.destination");
     private HashMap<String,String> destinationMap;
 
+//    @Autowired
+//    private PooledMessageProducer pooledMessageProducer;
     @Autowired
-    private PooledMessageProducer pooledMessageProducer;
+    private PooledSessionProducer pooledSessionProducer;
 
     @Autowired(required =false)
     private ExceptionResolver exceptionResolver;
@@ -45,9 +48,8 @@ public class MinaMessageDispatcherImpl implements MinaMessageDispatcher {
                 String destination = getDestination(messageBody);
                 logger.info("destination:"+destination);
                 if(destination!=null){
-                    pooledMessageProducer.sendQueue(destination,message);
+                    pooledSessionProducer.sendQueue(destination,message);
                 }
-
             } catch (MessageNotWriteableException e) {
                 logger.error(e.getMessage());
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

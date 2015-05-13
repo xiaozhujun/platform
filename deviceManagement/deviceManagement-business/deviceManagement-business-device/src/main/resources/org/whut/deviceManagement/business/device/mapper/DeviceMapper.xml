@@ -58,6 +58,26 @@
         where id=#{id} and appId=#{appId}
     </update>
 
+    <update id="updateByNumber" parameterType="Device">
+        update device
+        <set>
+            <if test="typeId!=null">typeId=#{typeId},</if>
+            <if test="projectId!=null">projectId=#{projectId},</if>
+            <if test="mongoId!=null">mongoId=#{mongoId},</if>
+            <if test="address!=null">address=#{address},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="number!=null">number=#{number},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="producer!=null">producer=#{producer},</if>
+            <if test="produceTime!=null">produceTime=#{produceTime},</if>
+            <if test="priceUnit!=null">priceUnit=#{priceUnit},</if>
+            <if test="lng!=null">lng=#{lng},</if>
+            <if test="lat!=null">lat=#{lat},</if>
+        </set>
+        where number=#{number}
+    </update>
+
     <delete id="delete" parameterType="java.lang.Long">
         DELETE FROM device
         WHERE ID=#{id}

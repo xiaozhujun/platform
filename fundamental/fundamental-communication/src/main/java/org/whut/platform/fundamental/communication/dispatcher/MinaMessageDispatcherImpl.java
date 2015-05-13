@@ -9,9 +9,11 @@ import org.whut.platform.fundamental.communication.api.WsMessageDispatcher;
 import org.whut.platform.fundamental.config.Constants;
 import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
+import org.whut.platform.fundamental.util.json.JsonMapper;
 
 import javax.jms.MessageNotWriteableException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,10 +24,10 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class MinaMessageDispatcherImpl implements MinaMessageDispatcher {
-    //    public class SensorMessageDispatcher implements MessageDispatcher {
     public static final PlatformLogger logger = PlatformLogger.getLogger(MinaMessageDispatcherImpl.class);
 
-    private static final String destination = FundamentalConfigProvider.get("message.queue.destination");
+    //private static final String destination = FundamentalConfigProvider.get("message.queue.destination");
+    private HashMap<String,String> destinationMap;
 
     @Autowired
     private PooledMessageProducer pooledMessageProducer;
@@ -40,13 +42,49 @@ public class MinaMessageDispatcherImpl implements MinaMessageDispatcher {
             try {
                 ActiveMQTextMessage message = new ActiveMQTextMessage();
                 message.setText(messageBody);
-                pooledMessageProducer.sendQueue(destination,message);
+                String destination = getDestination(messageBody);
+                logger.info("destination:"+destination);
+                if(destination!=null){
+                    pooledMessageProducer.sendQueue(destination,message);
+                }
+
             } catch (MessageNotWriteableException e) {
                 logger.error(e.getMessage());
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
 
         }
+    }
+
+    public void iniDestinationMap(){
+        if(destinationMap!=null) return;
+        String destinationConfig = FundamentalConfigProvider.get("message.queue.destination.config");
+        destinationMap = JsonMapper.buildNonDefaultMapper().fromJson( destinationConfig,HashMap.class);
+    }
+
+    public static void main(String[] args)
+    {
+
+        String test="{\"app\":1,\"command\":1,sensors:["+"{sensorNum:\"";
+        System.out.println(test.indexOf("app\":"));
+    }
+
+    public String getDestination(String message)
+    {
+        int startIndex = message.indexOf("app\":");
+        int endIndex = message.indexOf(",",startIndex);
+        String app="";
+        if(endIndex>startIndex)
+        {
+            app=message.substring(startIndex+5,endIndex);
+            if(destinationMap==null){
+                iniDestinationMap();
+            }
+            if(destinationMap!=null){
+                return destinationMap.get(app);
+            }
+        }
+        return null;
     }
 
     @Override

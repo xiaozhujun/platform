@@ -55,9 +55,19 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
 
+    <!--<listener>-->
+        <!--<description>Socket服务随web启动而启动</description>-->
+        <!--<listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>-->
+    <!--</listener>-->
+
     <listener>
-        <description>Socket服务随web启动而启动</description>
-        <listener-class>org.whut.monitor.business.communication.message.ServerStartListener</listener-class>
+        <description>mina通讯服务启动</description>
+        <listener-class>org.whut.platform.fundamental.communication.listener.MinaStartListener</listener-class>
+    </listener>
+
+    <listener>
+        <description>activeMQ消息监听启动</description>
+        <listener-class>org.whut.platform.fundamental.message.listener.MessageReceiverStartListener</listener-class>
     </listener>
 
     <listener>

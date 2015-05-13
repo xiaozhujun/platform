@@ -99,6 +99,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>fundamental-mongoConnector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

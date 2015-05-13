@@ -2695,7 +2695,7 @@ if(!Array.prototype.indexOf){
 		}
 		svg.Element.MISSING.prototype = new svg.Element.ElementBase;
 		
-		// element factory
+		// element parser
 		svg.CreateElement = function(node) {	
 			var className = node.nodeName.replace(/^[^:]+:/,''); // remove namespace
 			className = className.replace(/\-/g,''); // remove dashes

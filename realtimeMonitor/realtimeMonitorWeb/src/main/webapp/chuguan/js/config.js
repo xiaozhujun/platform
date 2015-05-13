@@ -1,5 +1,5 @@
 (function($){
-    var baseUrl="http://localhost:8080/realtimeMonitor/";
+    var baseUrl="http://www.cseicms.com/realtimeMonitor/";
     $.URL = {
         "power":{
             "add":baseUrl+"rs/power/add",
@@ -86,7 +86,7 @@
             "query":baseUrl+"rs/report/query/"
         } ,
         "websocket":{
-            "register":"ws://localhost:8080/realtimeMonitor/websocket/hello"
+            "register":"ws://www.cseicms.com/realtimeMonitor/websocket/hello"
         }
     }
 })(jQuery);

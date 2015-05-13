@@ -30,7 +30,7 @@ public class MessageReceiverStartListener implements ServletContextListener {
         springContext =  WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
         messageConsumer = (MessageConsumer) springContext.getBean("messageConsumer");
         messageConsumer.register(new ActiveMQQueue(FundamentalConfigProvider.get("message.queue.destination")));
-        logger.info("nioServer is stated!");
+        logger.info("MessageReceiverStartListener is stated!");
     }
 
     //tomcat关闭时，关闭线程，释放端口

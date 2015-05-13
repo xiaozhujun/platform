@@ -4,7 +4,9 @@ package org.whut.deviceManagement.business.device.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whut.platform.business.user.security.UserContext;
+import org.whut.platform.fundamental.config.FundamentalConfigProvider;
 import org.whut.platform.fundamental.logger.PlatformLogger;
+import org.whut.platform.fundamental.mongo.connector.MongoConnector;
 import org.whut.platform.fundamental.util.json.JsonMapper;
 import org.whut.platform.fundamental.util.json.JsonResultUtils;
 import org.whut.deviceManagement.business.device.entity.Device;
@@ -122,7 +124,11 @@ public class DeviceServiceWeb {
     @POST
     public String detailInfo(@FormParam("id") Long id){
         long appId= UserContext.currentUserAppId();
-        return JsonResultUtils.getObjectResultByStringAsDefault(deviceService.detailInfo(id,appId), JsonResultUtils.Code.SUCCESS);
+        Map<String,Object> deviceDetail = deviceService.detailInfo(id,appId);
+        String mongoId = (String)deviceDetail.get("mongoId");
+        MongoConnector mongoConnector = new MongoConnector(FundamentalConfigProvider.get("deviceManagement.mongo.db"),FundamentalConfigProvider.get("deviceTable"));
+        deviceDetail.put("status",mongoConnector.getDocument(mongoId));
+        return JsonResultUtils.getObjectResultByStringAsDefault(deviceDetail, JsonResultUtils.Code.SUCCESS);
     }
 
     @Produces(MediaType.APPLICATION_JSON +";charset=UTF-8")

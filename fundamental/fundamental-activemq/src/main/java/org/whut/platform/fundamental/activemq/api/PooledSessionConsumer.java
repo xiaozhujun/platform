@@ -17,7 +17,7 @@ public interface PooledSessionConsumer {
     public SessionPool getSessionPool();
     public void setSessionPool(SessionPool sessionPool);
     public void register(String broker, Destination destination);
-    public void receiveMessage(Message message);
+    public void onMessage(Message message);
     public void setListener();
     public void close();
 }

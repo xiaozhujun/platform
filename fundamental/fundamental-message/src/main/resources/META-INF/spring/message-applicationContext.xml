@@ -4,15 +4,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="messageParserProxy" class="org.whut.platform.fundamental.message.parser.MessageParserProxyImpl"/>
-    <bean id="messageConsumer" init-method="start" destroy-method="stop" class="org.whut.platform.fundamental.message.consumer.MessageConsumer">
-        <property name="brokers">
-            <list>
-                <value>localhostA</value>
-                <value>localhostB</value>
-                <value>localhostC</value>
-            </list>
-        </property>
-        <property name="myConnectionFactory" ref="consumerConnectionFactory"/>
+    <!--<bean id="messageConsumer" init-method="start" destroy-method="stop" class="org.whut.platform.fundamental.message.consumer.MessageConsumer">-->
+        <!--<property name="brokers">-->
+            <!--<list>-->
+                <!--<value>localhostA</value>-->
+                <!--<value>localhostB</value>-->
+                <!--<value>localhostC</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="myConnectionFactory" ref="consumerConnectionFactory"/>-->
+    <!--</bean>-->
+    <bean id="messageConsumer" class="org.whut.platform.fundamental.message.consumer.MessageConsumer">
+        <property name="sessionPool" ref="sessionPool"/>
     </bean>
 
 </beans>

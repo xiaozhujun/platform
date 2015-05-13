@@ -67,37 +67,37 @@
         <!--</property>-->
     <!--</bean>-->
 
-    <!--<bean id="sessionFactoryConfig" class="org.whut.platform.fundamental.activemq.config.SessionFactoryConfig">-->
-        <!--<property name="BROKER_NAMES">-->
-            <!--<list>-->
-                <!--<value>localhostA</value>-->
-                <!--<value>localhostB</value>-->
-                <!--<value>localhostC</value>-->
-            <!--</list>-->
-        <!--</property>-->
-        <!--<property name="BROKER_URLS">-->
-            <!--<list>-->
-                <!--<value>tcp://localhost:61616</value>-->
-                <!--<value>tcp://localhost:61617</value>-->
-                <!--<value>tcp://localhost:61618</value>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
-    <!--<bean id="connectionPool" class="org.whut.platform.fundamental.activemq.pool.ConnectionPool"-->
-          <!--init-method="start" destroy-method="stop">-->
-        <!--<property name="sessionFactoryConfig" ref="sessionFactoryConfig"/>-->
-    <!--</bean>-->
+    <bean id="sessionFactoryConfig" class="org.whut.platform.fundamental.activemq.config.SessionFactoryConfig">
+        <property name="BROKER_NAMES">
+            <list>
+                <value>localhostA</value>
+                <value>localhostB</value>
+                <value>localhostC</value>
+            </list>
+        </property>
+        <property name="BROKER_URLS">
+            <list>
+                <value>tcp://localhost:61616</value>
+                <value>tcp://localhost:61617</value>
+                <value>tcp://localhost:61618</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="connectionPool" class="org.whut.platform.fundamental.activemq.pool.ConnectionPool"
+          init-method="start" destroy-method="stop">
+        <property name="sessionFactoryConfig" ref="sessionFactoryConfig"/>
+    </bean>
 
-    <!--<bean id="sessionPool" class="org.whut.platform.fundamental.activemq.pool.SessionPool"-->
-          <!--init-method="start" destroy-method="stop">-->
-        <!--<property name="connectionPool" ref="connectionPool"/>-->
-        <!--<property name="sessionFactoryConfig" ref="sessionFactoryConfig"/>-->
-    <!--</bean>-->
+    <bean id="sessionPool" class="org.whut.platform.fundamental.activemq.pool.SessionPool"
+          init-method="start" destroy-method="stop">
+        <property name="connectionPool" ref="connectionPool"/>
+        <property name="sessionFactoryConfig" ref="sessionFactoryConfig"/>
+    </bean>
 
-    <!--<bean id="pooledSessionProducer" class="org.whut.platform.fundamental.activemq.producer.PooledSessionProducerImpl">-->
-        <!--<property name="sessionPool" ref="sessionPool"/>-->
-        <!--<property name="sessionFactoryConfig" ref="sessionFactoryConfig"/>-->
-    <!--</bean>-->
+    <bean id="pooledSessionProducer" class="org.whut.platform.fundamental.activemq.producer.PooledSessionProducerImpl">
+        <property name="sessionPool" ref="sessionPool"/>
+        <property name="sessionFactoryConfig" ref="sessionFactoryConfig"/>
+    </bean>
 
     <!--<bean id="testListener" class="org.whut.platform.fundamental.activemq.test.TestSessionListener">-->
         <!--<property name="sessionPool" ref="sessionPool"/>-->

@@ -38,7 +38,7 @@ public abstract class PooledSessionListenerBase implements PooledSessionConsumer
     }
 
     @Override
-    public void receiveMessage(Message message) {
+    public void onMessage(Message message) {
         LOG.info("super: " + message);
     }
 
@@ -54,7 +54,7 @@ public abstract class PooledSessionListenerBase implements PooledSessionConsumer
             messageConsumer.setMessageListener(new MessageListener() {
                 @Override
                 public void onMessage(Message message) {
-                    receiveMessage(message);
+                    PooledSessionListenerBase.this.onMessage(message);
                 }
             });
         } catch (JMSException e) {

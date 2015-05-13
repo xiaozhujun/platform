@@ -14,9 +14,10 @@ import javax.jms.Message;
  */
 public class TestSessionListener extends PooledSessionListenerBase {
     private static final PlatformLogger LOG = PlatformLogger.getLogger(TestSessionListener.class);
+
     @Override
-    public void receiveMessage(Message message) {
+    public void onMessage(Message message) {
         LOG.info("original:" + message);
-        super.receiveMessage(message);    //To change body of overridden methods use File | Settings | File Templates.
+        super.onMessage(message);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

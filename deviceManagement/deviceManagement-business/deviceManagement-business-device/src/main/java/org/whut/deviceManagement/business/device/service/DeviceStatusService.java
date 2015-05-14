@@ -22,16 +22,16 @@ public class DeviceStatusService {
     DeviceMapper deviceMapper;
 
     PlatformLogger logger = PlatformLogger.getLogger(DeviceStatusService.class);
-    MongoConnector mongoConnector = new MongoConnector(FundamentalConfigProvider.get("deviceManagement.mongo.db"),FundamentalConfigProvider.get("deviceTable"));
+    MongoConnector mongoConnector = new MongoConnector(FundamentalConfigProvider.get("deviceManagement.mongo.db"),FundamentalConfigProvider.get("deviceManagement.mongo.device.collection"));
 
     public void resolveStatus(String message){
         HashMap<String,Object> status = JsonMapper.buildNonDefaultMapper().fromJson(message,HashMap.class);
-        HashMap<String,Object> deviceStatus =(HashMap) status.get("msg");
-        String mongoId = mongoConnector.insertDocument(JsonMapper.buildNonDefaultMapper().toJson(deviceStatus));
-        String deviceNumber = (String)deviceStatus.get("deviceNumber");
+        String mongoId = mongoConnector.insertDocument(message);
+        String deviceNumber = (String)status.get("number");
         Device device = new Device();
         device.setNumber(deviceNumber);
         device.setMongoId(mongoId);
+        deviceMapper.updateByNumber(device);
         logger.info("DeviceStatusService.resolveStatus: "+message);
     }
 }

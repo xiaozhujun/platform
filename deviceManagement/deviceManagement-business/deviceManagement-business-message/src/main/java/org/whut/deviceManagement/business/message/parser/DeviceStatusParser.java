@@ -23,7 +23,7 @@ public class DeviceStatusParser implements MessageParser{
     @Autowired(required = true)
     private MessageParserProxy messageParserProxy;
 
-    private static final Integer app=1;
+    private static final Integer app=2;
     private static final Integer command=1;
 
     @Override
@@ -37,6 +37,7 @@ public class DeviceStatusParser implements MessageParser{
 
     @Override
     public void parse(String message) {
+        logger.info("parse: "+message);
         if(canParse(message)){
             deviceStatusService.resolveStatus(message);
         }

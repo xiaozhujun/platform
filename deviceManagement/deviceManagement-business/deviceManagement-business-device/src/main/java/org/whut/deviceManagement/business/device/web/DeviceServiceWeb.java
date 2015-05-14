@@ -126,8 +126,10 @@ public class DeviceServiceWeb {
         long appId= UserContext.currentUserAppId();
         Map<String,Object> deviceDetail = deviceService.detailInfo(id,appId);
         String mongoId = (String)deviceDetail.get("mongoId");
-        MongoConnector mongoConnector = new MongoConnector(FundamentalConfigProvider.get("deviceManagement.mongo.db"),FundamentalConfigProvider.get("deviceTable"));
-        deviceDetail.put("status",mongoConnector.getDocument(mongoId));
+        if(mongoId!=null){
+            MongoConnector mongoConnector = new MongoConnector(FundamentalConfigProvider.get("deviceManagement.mongo.db"),FundamentalConfigProvider.get("deviceManagement.mongo.device.collection"));
+            deviceDetail.put("status",mongoConnector.getDocument(mongoId));
+        }
         return JsonResultUtils.getObjectResultByStringAsDefault(deviceDetail, JsonResultUtils.Code.SUCCESS);
     }
 

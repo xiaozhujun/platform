@@ -45,6 +45,8 @@
             $("#md_producer").val(info.producer);
             $("#md_produceTime").val(info.produceTime);
             $("#md_project").val(info.project);
+            $("#md_cycle").val(info.status.cycle);
+            $("#md_workTime").val(info.status.worktime);
         }
 
     </script>
@@ -57,6 +59,8 @@
     <div class="searchItem"><span class="item_font">制造商:</span><span class="item_input"><input id="md_producer" type="text"></span></div>
     <div class="searchItem"><span class="item_font">生产日期:</span><span class="item_input"><input id="md_produceTime" type="text"></span></div>
     <div class="searchItem"><span class="item_font">施工项目:</span><span class="item_input"><input id="md_project" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">工作循环:</span><span class="item_input"><input id="md_cycle" type="text"></span></div>
+    <div class="searchItem"><span class="item_font">工作时间:</span><span class="item_input"><input id="md_workTime" type="text"></span></div>
 </div>
 <div class="reportContent" id="mainDeviceDetailShow"></div>
 </body>

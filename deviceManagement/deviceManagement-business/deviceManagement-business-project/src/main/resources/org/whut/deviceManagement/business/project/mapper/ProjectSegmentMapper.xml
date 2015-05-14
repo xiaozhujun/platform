@@ -65,4 +65,9 @@
         where pu.projectId=#{projectId} and ps.appId=#{appId}
     </select>
 
+    <select id="getByDeviceId" parameterType="java.lang.Long"  resultType="ProjectSegment">
+        select * from project_segment
+        where deviceId=#{deviceId}
+    </select>
+
 </mapper>

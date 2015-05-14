@@ -21,7 +21,7 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
 
-   <!-- <listener>
+<!--    <listener>
         <description>mina通讯服务启动</description>
         <listener-class>org.whut.platform.fundamental.communication.listener.MinaStartListener</listener-class>
     </listener>-->

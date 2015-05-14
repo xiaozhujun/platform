@@ -99,6 +99,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>platform</groupId>
+            <artifactId>deviceManagement-business-device</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

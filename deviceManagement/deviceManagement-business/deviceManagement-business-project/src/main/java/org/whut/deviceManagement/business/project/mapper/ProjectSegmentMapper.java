@@ -18,5 +18,7 @@ public interface ProjectSegmentMapper extends AbstractMapper<ProjectSegment> {
     public List<Map<String,String>> getListByAppId(long appId);
     public List<Map<String,String>> getListByProjectId(@Param("projectId") long projectId,@Param("appId") long appId);
     public int deleteById(@Param("id") long id);
+    public ProjectSegment getByDeviceId(@Param("deviceId") long deviceId);
+
 
 }

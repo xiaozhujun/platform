@@ -97,6 +97,12 @@
         where NUMBER=#{number} and APPID=#{appId}
     </select>
 
+    <select id="getByNumber" parameterType="java.lang.String" resultType="Device">
+        select *
+        from device
+        where NUMBER=#{number}
+    </select>
+
     <select id="detailInfo" parameterType="map" resultType="map">
         select device.*,device_type.name as deviceType,p.name project
         from device

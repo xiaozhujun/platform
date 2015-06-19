@@ -1,0 +1,1 @@
+mvn install:install-file -DgroupId=iTextAsianCmaps -DartifactId=iTextAsianCmaps -Dversion=1.0 -Dpackaging=jar -Dfile=iTextAsianCmaps-1.0.jar

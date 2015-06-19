@@ -29,84 +29,84 @@ public class Employee {
         return id;
     }
 
-    public long getDepartmentId() {
-        return departmentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public long getSkillId() {
-        return skillId;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Date getEmployedTime() {
-        return employedTime;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public long getAppId() {
-        return appId;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getDepartmentId() {
+        return departmentId;
     }
 
     public void setDepartmentId(long departmentId) {
         this.departmentId = departmentId;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSex() {
+        return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex;
     }
 
+    public long getSkillId() {
+        return skillId;
+    }
+
     public void setSkillId(long skillId) {
         this.skillId = skillId;
+    }
+
+    public String getTelephone() {
+        return telephone;
     }
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getEmployedTime() {
+        return employedTime;
     }
 
     public void setEmployedTime(Date employedTime) {
         this.employedTime = employedTime;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
     public void setPosition(String position) {
         this.position = position;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public long getAppId() {
+        return appId;
     }
 
     public void setAppId(long appId) {

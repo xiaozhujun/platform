@@ -13,7 +13,7 @@ public class SessionFactoryConfig {
     public static final int BROKER_NUM = 3;
     public static final int LISTENER_NUM = 3;
     public String[] BROKER_NAMES = {"localhostA", "localhostB", "localhostC"};
-    public String[] BROKER_URLS = {"tcp://localhost:61616", "tcp://localhost:61617", "tcp://localhost:61618"};
+    public String[] BROKER_URLS = {"tcp://127.0.0.1:61616", "tcp://127.0.0.1:61617", "tcp://127.0.0.1:61618"};
 
     public String[] getBROKER_NAMES() {
         return BROKER_NAMES;

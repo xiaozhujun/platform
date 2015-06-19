@@ -272,7 +272,7 @@ $.widget( "ui.tabs", {
 		}
 
 		if ( key === "disabled" ) {
-			// don't use the widget factory's disabled handling
+			// don't use the widget parser's disabled handling
 			this._setupDisabled( value );
 			return;
 		}

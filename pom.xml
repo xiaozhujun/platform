@@ -17,6 +17,7 @@
         <module>rentManagement</module>
         <module>trackSystem</module>
         <module>deviceManagement</module>
+        <module>dubboDemo</module>
         <!--<module>auth</module>-->
     </modules>
     <properties>
@@ -45,6 +46,9 @@
         <logback.ext.version>0.1.1</logback.ext.version>
         <activemq.version>5.7.0</activemq.version>
         <quartz.version>1.8.6</quartz.version>
+        <dubbo.version>2.5.3</dubbo.version>
+        <zookeeper.version>3.4.6</zookeeper.version>
+        <zkclient.version>0.1</zkclient.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -273,6 +277,7 @@
                 <version>${jedis.version}</version>
             </dependency>
 
+
             <!-- activeMQ begin-->
             <dependency>
                 <groupId>org.apache.activemq</groupId>
@@ -291,6 +296,25 @@
                 <artifactId>quartz</artifactId>
                 <version>${quartz.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zookeeper.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.sgroschupf</groupId>
+                <artifactId>zkclient</artifactId>
+                <version>${zkclient.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <repositories>

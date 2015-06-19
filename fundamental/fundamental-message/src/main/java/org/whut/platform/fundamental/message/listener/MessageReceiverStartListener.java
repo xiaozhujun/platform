@@ -48,7 +48,7 @@ public class MessageReceiverStartListener implements ServletContextListener {
 //        messageConsumer = (MessageConsumer) springContext.getBean("messageConsumer");
 //        messageConsumer.register(sessionFactoryConfig.BROKER_NAMES[0], new ActiveMQQueue(FundamentalConfigProvider.get("message.queue.destination")));
 
-        logger.info("messageReceiver is stated!");
+        logger.info("messageReceiver is start!");
     }
 
     //tomcat关闭时，关闭线程，释放端口

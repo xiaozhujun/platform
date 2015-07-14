@@ -22,7 +22,6 @@ public class DbcpFactoryBean implements FactoryBean<BasicDataSource>,
 	private Properties properties;
 	private String dbname;
 
-	@Override
 	public void afterPropertiesSet() throws Exception {
 		setProperties(FundamentalConfigProvider.getProp());
 	}

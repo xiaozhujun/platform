@@ -2,6 +2,8 @@ package org.whut.platform.fundamental.activemq.test;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTextMessage;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.whut.platform.fundamental.activemq.api.PooledSessionConsumer;
 import org.whut.platform.fundamental.activemq.api.PooledSessionProducer;
 import org.whut.platform.fundamental.activemq.config.SessionFactoryConfig;
@@ -24,48 +26,31 @@ import java.util.List;
 public class Test {
     private static int ThreadNun = 1000;
     private static int MessageNum = 500;
-    private static SessionFactoryConfig sessionFactoryConfig;
     public static void main(String[] args) throws Exception {
-        List<PooledSessionConsumer> l = new ArrayList<PooledSessionConsumer>();
-        ConnectionPool connectionPool = new ConnectionPool();
-
-        connectionPool.start();
-        SessionPool sessionPool = new SessionPool();
-        sessionPool.setConnectionPool(connectionPool);
-
-        sessionPool.start();
+        ApplicationContext context = new FileSystemXmlApplicationContext(
+                System.getProperty("user.dir")
+                        + "\\fundamental\\fundamental-activemq\\src\\main\\resources\\META-INF\\spring\\activemq-applicationContext.xml"
+        );
+        SessionFactoryConfig sessionFactoryConfig = (SessionFactoryConfig) context.getBean("sessionFactoryConfig");
 
         Destination destination = new ActiveMQQueue("test");
 
         for (int i = 0; i < SessionFactoryConfig.BROKER_NUM; i++) {
             for (int j = 0; j < SessionFactoryConfig.LISTENER_NUM; j++) {
-                PooledSessionConsumer consumer = new TestSessionListener();
-                consumer.setSessionPool(sessionPool);
+                PooledSessionConsumer consumer = (PooledSessionConsumer) context.getBean("testListener");
+                System.out.println(consumer.getSessionPool().getSessions());
                 consumer.register(sessionFactoryConfig.BROKER_NAMES[i], destination);
                 consumer.setListener();
-                l.add(consumer);
             }
         }
 
-        System.out.println(l);
-
-        PooledSessionProducer producer = new PooledSessionProducerImpl();
-        producer.setSessionPool(sessionPool);
         for (int m = 0; m < ThreadNun; m++) {
+            PooledSessionProducer producer = (PooledSessionProducer) context.getBean("pooledSessionProducer");
             Thread thread = new Thread(new TestRunnable(producer));
             thread.start();
         }
         System.out.println("发送完毕");
-        for (PooledSessionConsumer consumer : l) {
-            consumer.close();
-            System.out.println("释放完毕");
-        }
 
-        Thread.sleep(10000);
-
-        producer.shutdownThreadPool();
-        sessionPool.stop();
-        connectionPool.stop();
     }
 
     private static class TestRunnable implements Runnable {
@@ -82,7 +67,7 @@ public class Test {
                 try {
                     message.setText(producer + ": " + i);
                 } catch (MessageNotWriteableException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    e.printStackTrace();
                 }
                 producer.sendQueue("test", message);
             }

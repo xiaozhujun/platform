@@ -8,12 +8,12 @@ package org.whut.platform.fundamental.activemq.config;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionFactoryConfig {
-    public static final int MAX_SIZE = 100;
+    public static final int MAX_SIZE = 50;
     public static final int MAX_SESSION = 30;
     public static final int BROKER_NUM = 3;
     public static final int LISTENER_NUM = 3;
     public String[] BROKER_NAMES = {"localhostA", "localhostB", "localhostC"};
-    public String[] BROKER_URLS = {"tcp://localhost:61616", "tcp://localhost:61617", "tcp://localhost:61618"};
+    public String[] BROKER_URLS = {"tcp://localhost:61616?transport.useAsyncSend=true", "tcp://localhost:61617?transport.useAsyncSend=true", "tcp://localhost:61618?transport.useAsyncSend=true"};
 
     public String[] getBROKER_NAMES() {
         return BROKER_NAMES;

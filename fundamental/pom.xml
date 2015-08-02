@@ -31,6 +31,7 @@
         <module>fundamental-websocket</module>
         <module>fundamental-command</module>
         <module>fundamental-activemq</module>
+        <module>fundamental-algorithm</module>
     </modules>
 
 

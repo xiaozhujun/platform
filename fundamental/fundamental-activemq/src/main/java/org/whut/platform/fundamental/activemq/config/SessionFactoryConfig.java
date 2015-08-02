@@ -8,7 +8,7 @@ package org.whut.platform.fundamental.activemq.config;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionFactoryConfig {
-    public static final int MAX_SIZE = 50;
+    public static final int MAX_SIZE = 100;
     public static final int MAX_SESSION = 30;
     public static final int BROKER_NUM = 3;
     public static final int LISTENER_NUM = 3;

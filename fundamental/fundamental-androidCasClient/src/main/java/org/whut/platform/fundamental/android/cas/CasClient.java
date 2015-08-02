@@ -136,7 +136,7 @@ public class CasClient
         try
         {
             List <NameValuePair> nvps = new ArrayList <NameValuePair> ();
-            nvps.add(new BasicNameValuePair ("service", service));
+            nvps.add(new BasicNameValuePair ("web", service));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 
             HttpResponse response = httpClient.execute(httpPost);
@@ -283,7 +283,7 @@ public class CasClient
             System.out.println(message);
 //            HashMap<String,String> params = new HashMap<String, String>();
 //            params.put("resource","cas/**");
-//            params.put("type","service");
+//            params.put("type","web");
 //            params.put("description","cas client test from android");
 //            message  = casClient.doPost("http://www.cseicms.com/riskPlatform/rs/power/add",params);
 //            System.out.print(message);
